@@ -1,0 +1,934 @@
+:root {
+  --bg-color: #000000;
+  --text-color: #ffffff;
+  --secondary-text: #7e8299;
+  --primary-color: #1c1c1c;
+  --border-color: #2c2c34;
+  --button-color: #1c1c1c;
+  --card-bg: #14141a;
+  --nav-height: 60px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 700;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: var(--nav-height);
+  padding: 0 20px;
+  background-color: var(--bg-color);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.left-nav, .right-nav {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 24px;
+  margin-right: 20px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.search-bar {
+  position: relative;
+  margin-right: 15px;
+}
+
+.search-bar input {
+  background-color: #131316;
+  border: 1px solid #2c2c34;
+  border-radius: 4px;
+  padding: 8px 30px 8px 12px;
+  color: var(--text-color);
+  width: 180px;
+  font-size: 14px;
+}
+
+.search-bar i {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--secondary-text);
+}
+
+.theme-toggle {
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.login-btn, .signup-btn {
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-right: 12px;
+}
+
+.login-btn {
+  background-color: transparent;
+}
+
+.signup-btn {
+  background-color: var(--button-color);
+}
+
+.language {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.globe {
+  margin-right: 2px;
+}
+
+/* Hero Section */
+.hero {
+  display: flex;
+  padding: 140px 120px;
+  align-items: center;
+  position: relative;
+  background-color: var(--bg-color);
+  min-height: 90vh;
+  overflow: hidden;
+  gap: 160px;
+  justify-content: space-between;
+}
+
+.hero-content {
+  max-width: 600px;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.hero h1 {
+  font-size: 72px;
+  line-height: 1.1;
+  margin-bottom: 40px;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.email-form {
+  display: flex;
+  margin-bottom: 80px;
+  width: 100%;
+  gap: 12px;
+}
+
+.email-form input {
+  flex: 1;
+  padding: 16px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-color);
+  font-size: 16px;
+  outline: none;
+}
+
+.email-form input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.try-btn {
+  padding: 16px 32px;
+  font-size: 16px;
+}
+
+.partner-logos {
+  display: flex;
+  gap: 80px;
+  align-items: center;
+  margin-top: 100px;
+}
+
+.partner-logos img {
+  height: 50px;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.partner-logos img:hover {
+  opacity: 0.8;
+}
+
+.hero-image {
+  position: relative;
+  width: 340px;
+  z-index: 1;
+  flex-shrink: 0;
+  margin-right: 40px;
+}
+
+.phone-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.hero-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Trading Section */
+.trading {
+  text-align: center;
+  padding: 160px 0;
+  background-color: var(--bg-color);
+  overflow: hidden;
+}
+
+.trading h2 {
+  font-size: 56px;
+  margin-bottom: 24px;
+  color: var(--text-color);
+}
+
+.trading p {
+  color: var(--secondary-text);
+  margin-bottom: 80px;
+  font-size: 20px;
+}
+
+.trading-image {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.trading-image video {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Journey Section */
+.journey {
+  text-align: center;
+  padding: 160px 0;
+  background-color: var(--bg-color);
+}
+
+.journey h2 {
+  font-size: 56px;
+  margin-bottom: 24px;
+  color: var(--text-color);
+}
+
+.journey p {
+  color: var(--secondary-text);
+  margin-bottom: 80px;
+  font-size: 20px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.journey-illustrations {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.journey-illustrations video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* About Section */
+.about {
+  text-align: center;
+  padding: 160px 60px;
+}
+
+.about h2 {
+  font-size: 56px;
+  margin-bottom: 24px;
+}
+
+.about p {
+  color: var(--secondary-text);
+  margin-bottom: 40px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 20px;
+}
+
+.find-out-btn {
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 50px;
+  padding: 12px 32px;
+  font-size: 16px;
+  margin-bottom: 80px;
+  cursor: pointer;
+}
+
+.okx-logo-large {
+  margin-bottom: 80px;
+}
+
+.okx-logo-large img {
+  width: 180px;
+}
+
+.video-gallery {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 60px;
+}
+
+.video-card {
+  width: 380px;
+}
+
+.video-thumbnail {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  background-color: var(--card-bg);
+}
+
+.video-thumbnail video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  aspect-ratio: 16/9;
+}
+
+.video-controls {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 12px;
+  z-index: 2;
+}
+
+.play-btn {
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.video-time {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: white;
+}
+
+.video-card p {
+  text-align: left;
+  color: var(--text-color);
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+/* FAQ Section */
+.faq {
+  padding: 160px 60px;
+}
+
+.faq h2 {
+  text-align: center;
+  font-size: 56px;
+  margin-bottom: 80px;
+}
+
+.accordion {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.accordion-item {
+  border-bottom: 1px solid var(--border-color);
+  padding: 32px 0;
+}
+
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 0;
+  cursor: pointer;
+}
+
+.accordion-header h3 {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.accordion-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--card-bg);
+  border-radius: 50%;
+}
+
+.accordion-content {
+  padding: 0 0 24px;
+  display: none;
+  color: var(--secondary-text);
+}
+
+.accordion-item.active .accordion-content {
+  display: block;
+}
+
+.accordion-item.active .accordion-icon i {
+  transform: rotate(45deg);
+}
+
+/* Footer */
+footer {
+  background-color: var(--bg-color);
+  padding: 60px;
+  border-top: 1px solid var(--border-color);
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.footer-logo p {
+  color: var(--secondary-text);
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.download-app {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.download-btn {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+  border: none;
+  border-radius: 4px;
+  padding: 10px 18px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.qr-code {
+  text-align: center;
+}
+
+.qr-code img {
+  width: 80px;
+  margin-bottom: 8px;
+}
+
+.qr-code p {
+  color: var(--secondary-text);
+  font-size: 12px;
+}
+
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.footer-column h4 {
+  font-size: 14px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.footer-column ul li {
+  margin-bottom: 10px;
+}
+
+.footer-column ul li a {
+  color: var(--secondary-text);
+  font-size: 14px;
+}
+
+.footer-column ul li a:hover {
+  color: var(--text-color);
+}
+
+.footer-social {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-top: 1px solid var(--border-color);
+  padding-top: 20px;
+}
+
+.community {
+  color: var(--secondary-text);
+  font-size: 14px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.social-icons a {
+  color: var(--secondary-text);
+  font-size: 18px;
+}
+
+.chat-bubble {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: #14B195;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+/* Animation effects and hover states */
+.find-out-btn:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.video-thumbnail:hover img {
+  transform: scale(1.03);
+  transition: transform 0.3s ease;
+}
+
+.accordion-header:hover h3 {
+  color: var(--primary-color);
+}
+
+.download-btn:hover {
+  opacity: 0.9;
+}
+
+.social-icons a:hover {
+  color: var(--text-color);
+}
+
+.chat-bubble:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+  .hero {
+    padding: 100px 60px;
+    gap: 80px;
+  }
+  
+  .hero-image {
+    width: 300px;
+    margin-right: 20px;
+  }
+  
+  .footer-links {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .trading {
+    padding: 80px 20px;
+  }
+  
+  .trading h2 {
+    font-size: 36px;
+  }
+  
+  .trading p {
+    font-size: 16px;
+    margin-bottom: 40px;
+  }
+  
+  .trading-image, .journey-illustrations {
+    max-width: 1000px;
+  }
+  
+  .journey {
+    padding: 80px 20px;
+  }
+  
+  .journey h2 {
+    font-size: 36px;
+  }
+  
+  .journey p {
+    font-size: 16px;
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .video-gallery {
+    flex-wrap: wrap;
+  }
+  
+  .video-card {
+    width: calc(50% - 15px);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 80px 30px;
+    flex-direction: column;
+    text-align: center;
+    gap: 60px;
+  }
+  
+  .hero-content {
+    max-width: 100%;
+  }
+  
+  .hero h1 {
+    font-size: 40px;
+  }
+  
+  .email-form {
+    margin: 0 auto 40px;
+    max-width: 400px;
+  }
+  
+  .partner-logos {
+    gap: 40px;
+    justify-content: center;
+  }
+  
+  .partner-logos img {
+    height: 30px;
+  }
+  
+  .hero-image {
+    width: 240px;
+    margin-right: 0;
+  }
+  
+  .phone-wrapper {
+    transform: none !important;
+  }
+  
+  .hero-image img {
+    transform: none;
+    border-radius: 20px;
+  }
+  
+  .phone-wrapper::after {
+    bottom: -20px;
+  }
+  
+  .footer-links {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .footer-top {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .download-app {
+    flex-direction: column;
+  }
+  
+  .trading {
+    padding: 60px 20px;
+  }
+  
+  .trading h2 {
+    font-size: 32px;
+  }
+  
+  .trading-image {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+  
+  .trading-image video {
+    border-radius: 12px;
+  }
+  
+  .journey {
+    padding: 60px 20px;
+  }
+  
+  .journey h2 {
+    font-size: 32px;
+  }
+  
+  .video-gallery {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .video-card {
+    width: 100%;
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar {
+    padding: 0 10px;
+  }
+  
+  .search-bar, .theme-toggle, .language {
+    display: none;
+  }
+  
+  .hero {
+    padding: 40px 20px;
+  }
+  
+  .hero h1 {
+    font-size: 28px;
+  }
+  
+  .email-form {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .email-form input {
+    border-radius: 4px;
+  }
+  
+  .try-btn {
+    width: 100%;
+    border-radius: 4px;
+    padding: 12px;
+  }
+  
+  .partner-logos {
+    flex-wrap: wrap;
+  }
+  
+  .trading, .journey, .about, .faq {
+    padding: 60px 20px;
+  }
+  
+  .footer-links {
+    grid-template-columns: 1fr;
+  }
+  
+  footer {
+    padding: 40px 20px;
+  }
+}
+
+/* Additional styles for exact OKX matching */
+:root {
+  --primary-color: #1c1c1c;
+  --button-color: #1c1c1c;
+}
+
+/* Navbar refinements */
+.navbar {
+  max-width: 100%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.nav-item i {
+  font-size: 10px;
+  color: var(--secondary-text);
+}
+
+.search-bar input {
+  height: 32px;
+}
+
+.login-btn:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Hero section refinements */
+.hero {
+  min-height: 600px;
+}
+
+.hero h1 {
+  font-weight: 600;
+}
+
+.email-form input {
+  height: 44px;
+}
+
+.try-btn {
+  height: 44px;
+  font-size: 15px;
+}
+
+/* Trading section refinements */
+.trading-image {
+  display: flex;
+  justify-content: center;
+}
+
+.trading-image img {
+  max-width: 1000px;
+  border: 1px solid var(--border-color);
+}
+
+/* Journey illustration refinements */
+.journey-icons img {
+  opacity: 0.8;
+}
+
+.journey-icons img:hover {
+  opacity: 1;
+}
+
+/* Video gallery refinements */
+.video-thumbnail {
+  aspect-ratio: 16/9;
+}
+
+.video-thumbnail img {
+  height: 100%;
+  object-fit: cover;
+}
+
+/* FAQ refinements */
+.accordion-icon {
+  font-size: 12px;
+}
+
+/* Footer refinements */
+.footer-logo img {
+  height: 24px;
+}
+
+.download-btn {
+  height: 36px;
+  font-size: 14px;
+}
+
+/* Exact OKX color scheme */
+:root {
+  --primary-color: #0052ff;
+  --button-color: #0052ff;
+}
+
+/* Chat bubble color correction */
+.chat-bubble {
+  background-color: #14B195;
+}
+
+/* OKX-specific fonts */
+body {
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+/* OKX image styles */
+.okx-logo-large img {
+  filter: brightness(0.9);
+}
+
+/* Fix video controls positioning */
+.video-controls {
+  padding: 0 12px;
+  bottom: 12px;
+}
+
+/* Fix for footer links exact spacing */
+.footer-column ul li {
+  margin-bottom: 12px;
+}
+
+/* Fix for exact button styling */
+.try-btn, .signup-btn {
+  font-weight: 600;
+}
+
+/* Fix for journey text max width */
+.journey p {
+  max-width: 800px;
+}
