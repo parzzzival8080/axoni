@@ -7,6 +7,7 @@ import LoginPage from './pages/login/LoginPage';
 import Footer from './components/common/Footer';
 import ChatBubble from './components/common/ChatBubble';
 import './styles.css';
+import FutureTrading from './pages/FutureTrading';
 
 function App() {
   return (
@@ -19,6 +20,15 @@ function App() {
               <Navbar />
               <main>
                 <SpotTrading />
+              </main>
+              <ChatBubble />
+            </>
+          } />
+          <Route path="/future-trading" element={
+            <>
+              <Navbar />
+              <main>
+                <FutureTrading/>
               </main>
               <ChatBubble />
             </>

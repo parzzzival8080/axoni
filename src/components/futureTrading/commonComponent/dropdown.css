@@ -1,0 +1,28 @@
+.dropdown-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 200px;
+    margin: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .dropdown-label {
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .dropdown-select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+  }
+  
+  .dropdown-select:focus {
+    outline: none;
+    border-color: #007bff;
+  }
