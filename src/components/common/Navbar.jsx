@@ -56,16 +56,18 @@ const Navbar = () => {
                 </div>
               </Link>
               
-              <div className="dropdown-item with-arrow">
-                <div className="dropdown-icon">
-                  <i className="fas fa-chart-line"></i>
+              <Link to="/future-trading" className="dropdown-link">
+                <div className="dropdown-item with-arrow">
+                  <div className="dropdown-icon">
+                    <i className="fas fa-chart-line"></i>
+                  </div>
+                  <div className="dropdown-content">
+                    <h3>Futures</h3>
+                    <p>Trade perpetual and expiry futures with leverage</p>
+                  </div>
+                  <i className="fas fa-chevron-right"></i>
                 </div>
-                <div className="dropdown-content">
-                  <h3>Futures</h3>
-                  <p>Trade perpetual and expiry futures with leverage</p>
-                </div>
-                <i className="fas fa-chevron-right"></i>
-              </div>
+              </Link>
               
               <div className="dropdown-item with-arrow">
                 <div className="dropdown-icon">
