@@ -4,6 +4,7 @@ import Navbar from './components/common/Navbar';
 import HomePage from './pages/HomePage';
 import SpotTrading from './pages/SpotTrading';
 import LoginPage from './pages/login/LoginPage';
+import SignUpPage from './pages/SignUpPage';
 import Footer from './components/common/Footer';
 import ChatBubble from './components/common/ChatBubble';
 import './styles.css';
@@ -15,6 +16,7 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
           <Route path="/spot-trading" element={
             <>
               <Navbar />
