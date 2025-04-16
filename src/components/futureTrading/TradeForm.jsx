@@ -40,13 +40,6 @@ function TradeForm() {
         <div className="tab active">Trade</div>
         <div className="tab">Tools</div>
       </div>
-      <div className="margin-toggle">
-        <span>Margin</span>
-        <label className="switch">
-          <input type="checkbox" />
-          <span className="slider round"></span>
-        </label>
-      </div>
     </div>
 
     <div className="buy-sell-tabs">

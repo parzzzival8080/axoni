@@ -2,27 +2,17 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    width: 200px;
+    width: 100px;
     margin: 20px;
     font-family: Arial, sans-serif;
-  }
-  
-  .dropdown-label {
-    font-weight: 600;
-    color: #333;
+    background-color: #1e1e1e;
   }
   
   .dropdown-select {
-    padding: 10px;
-    border: 1px solid #ccc;
+    padding: 5px;
     border-radius: 6px;
     font-size: 16px;
-    background-color: #fff;
+    background-color: #1e1e1e;
     cursor: pointer;
-    transition: border-color 0.3s ease;
-  }
-  
-  .dropdown-select:focus {
-    outline: none;
-    border-color: #007bff;
+    color: white
   }

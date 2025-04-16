@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import './dropdown';
+import './dropdown.css';
 
 const Dropdown = () => {
-  const [selectedOption, setSelectedOption] = useState('isolated');
+  const [selectedOption, setSelectedOption] = useState('20');
 
   const handleChange = (e) => {
     setSelectedOption(e.target.value);
@@ -17,8 +17,8 @@ const Dropdown = () => {
         onChange={handleChange}
         className="dropdown-select"
       >
-        <option value="isolated">Isolated</option>
-        <option value="cross">Cross</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
       </select>
     </div>
   );
