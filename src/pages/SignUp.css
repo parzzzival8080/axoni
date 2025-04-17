@@ -164,6 +164,30 @@
     outline: none;
 }
 
+/* Add specific styling to ensure all inputs have the same background */
+input.form-control, 
+select.form-control,
+textarea.form-control {
+    background-color: var(--white-input-bg);
+}
+
+/* Make both phone and full name inputs match exactly */
+#fullName, #phone {
+    background-color: var(--white-input-bg);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+    transition: var(--transition);
+}
+
+#fullName:focus, #phone:focus {
+    border-color: #666;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.05);
+}
+
 .form-control::placeholder {
     color: #aaa;
 }
@@ -403,4 +427,15 @@
     .step-text {
         font-size: 10px;
     }
+}
+
+/* Error Message */
+.error-message {
+    background-color: #fff0f0;
+    color: #e74c3c;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    border-left: 3px solid #e74c3c;
 } 

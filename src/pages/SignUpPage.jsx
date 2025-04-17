@@ -1,9 +1,12 @@
 import React, { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './SignUp.css';
 import Navbar from '../components/common/Navbar';
 
 const SignUpPage = () => {
+  const navigate = useNavigate();
+  
   // State for form steps
   const [currentStep, setCurrentStep] = useState(1);
   
@@ -18,6 +21,12 @@ const SignUpPage = () => {
     phone: '',
     profilePic: null
   });
+
+  // State for error and loading
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [token, setToken] = useState(null);
 
   // Ref for file input
   const fileInputRef = useRef(null);
@@ -47,34 +56,208 @@ const SignUpPage = () => {
   };
   
   // Step navigation functions
-  const goToNextStep = (step) => {
+  const goToNextStep = async (step) => {
+    setError('');
+    
     if (step === 1) {
       if (!formData.country || !formData.termsAccepted) {
-        alert('Please select a country and agree to the terms');
+        setError('Please select a country and agree to the terms');
         return;
       }
+      setCurrentStep(currentStep + 1);
     } else if (step === 2) {
       if (!formData.email || !formData.password || !formData.confirmPassword) {
-        alert('Please fill in all fields');
+        setError('Please fill in all fields');
         return;
       }
       if (formData.password !== formData.confirmPassword) {
-        alert('Passwords do not match');
+        setError('Passwords do not match');
         return;
       }
+      
+      // Call the first API to register the user with email and password
+      try {
+        setLoading(true);
+        
+        const baseUrl = 'https://django.bhtokens.com/api/user_account/signup';
+        
+        console.log('Attempting registration with JSON payload');
+        
+        // Create JSON payload
+        const payload = {
+          email: formData.email,
+          password: formData.password,
+          confirm_password: formData.confirmPassword
+        };
+        
+        // Log what we're sending
+        console.log('Sending JSON payload:', payload);
+        
+        try {
+          // Send as JSON data
+          const response = await fetch(baseUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
+          });
+          
+          await handleApiResponse(response);
+          
+        } catch (fetchError) {
+          // Fetch API error
+          console.error('Fetch error:', fetchError);
+          setError(`Registration request failed: ${fetchError.message}`);
+        }
+      } catch (err) {
+        // General error
+        console.error('Registration error:', err);
+        setError(`Registration failed: ${err.message}`);
+      } finally {
+        setLoading(false);
+      }
     }
-    
-    setCurrentStep(currentStep + 1);
   };
   
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!formData.fullName || !formData.phone) {
-      alert('Please fill in all fields');
+  // Helper function to handle API response
+  const handleApiResponse = async (response) => {
+    // Log entire response for debugging
+    console.log('Raw response status:', response.status);
+    
+    // Check if response is JSON
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      // If not JSON, get the text and show it
+      const text = await response.text();
+      console.log('Non-JSON response:', text);
+      setError(`Server returned non-JSON response: ${text.substring(0, 100)}...`);
       return;
     }
-    alert('Registration successful! Welcome to TradeX.');
+    
+    // Parse JSON response
+    const data = await response.json();
+    console.log('Registration response data:', data);
+    
+    // Check if registration was successful
+    if (response.ok && data) {
+      // Set user data from response
+      let uid = data.user_id || data.id;
+      let token = data.jwt_token || data.token;
+      
+      // Store user ID and token
+      if (uid && token) {
+        setUserId(uid);
+        setToken(token);
+        
+        // Store in localStorage
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('user_id', uid);
+        
+        // Move to next step
+        setCurrentStep(currentStep + 1);
+      } else {
+        // Response OK but missing required data
+        setError('Registration response missing required data. Please try again.');
+        console.error('Invalid response format:', data);
+      }
+    } else {
+      // Handle error from API
+      const errorMessage = data.message || data.error || 'Registration failed';
+      setError(errorMessage);
+      console.error('Registration error:', data);
+    }
+  };
+  
+  // Handle form submission (final step)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    
+    if (!formData.fullName || !formData.phone) {
+      setError('Please fill in all fields');
+      return;
+    }
+    
+    try {
+      setLoading(true);
+      
+      // Get stored token and user ID if not already in state
+      const storedToken = token || localStorage.getItem('authToken');
+      const storedUserId = userId || localStorage.getItem('user_id');
+      
+      // Check if we have a user ID
+      if (!storedUserId) {
+        setError('User ID not found. Please try logging in again.');
+        setLoading(false);
+        return;
+      }
+      
+      let profileUpdateUrl = '';
+      let profileData = null;
+      
+      // Format the API endpoint
+      if (formData.profilePic && formData.profilePic.startsWith('data:image')) {
+        // If we have an image, we need to use FormData for multipart/form-data
+        profileData = new FormData();
+        
+        // Convert base64 to blob
+        const fetchResponse = await fetch(formData.profilePic);
+        const blob = await fetchResponse.blob();
+        
+        // Create a file from the blob
+        const profileImageFile = new File([blob], 'profile.jpg', { type: 'image/jpeg' });
+        
+        // Use the FormData approach when we have a file
+        profileData.append('name', formData.fullName);
+        profileData.append('phone_number', formData.phone);
+        profileData.append('user_profile', profileImageFile);
+        
+        profileUpdateUrl = `https://django.bhtokens.com/api/user_account/edit_profile/user=${storedUserId}`;
+      } else {
+        // If we don't have an image, we can use query params in the URL
+        profileUpdateUrl = `https://django.bhtokens.com/api/user_account/edit_profile/user=${storedUserId}?name=${encodeURIComponent(formData.fullName)}&phone_number=${encodeURIComponent(formData.phone)}`;
+        profileData = {};
+      }
+      
+      console.log('Profile update URL:', profileUpdateUrl);
+      
+      // Set the authorization header
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${storedToken}`,
+        }
+      };
+      
+      // Add Content-Type only if we're using FormData
+      if (profileData instanceof FormData) {
+        config.headers['Content-Type'] = 'multipart/form-data';
+      }
+      
+      // Call the API to update user profile - changed from PUT to POST
+      const response = await axios.post(
+        profileUpdateUrl,
+        profileData,
+        config
+      );
+      
+      console.log('Profile update response:', response.data);
+      
+      if (response.data.success) {
+        // Registration fully completed
+        alert('Registration successful! Welcome to TradeX.');
+        
+        // Redirect to login or dashboard
+        navigate('/spot-trading');
+      } else {
+        setError('Failed to update profile. Please try again.');
+      }
+    } catch (err) {
+      console.error('Profile update error:', err);
+      setError(err.response?.data?.message || `Failed to update profile: ${err.message}`);
+    } finally {
+      setLoading(false);
+    }
   };
   
   return (
@@ -114,6 +297,8 @@ const SignUpPage = () => {
                 <div className="step-text">Profile</div>
               </div>
             </div>
+            
+            {error && <div className="error-message">{error}</div>}
             
             {/* Step 1: Country Selection */}
             <div className={`form-step ${currentStep === 1 ? 'active' : ''}`}>
@@ -157,7 +342,13 @@ const SignUpPage = () => {
                 <p>By creating an account, I agree to TradeX <a href="#">Terms of Service</a>, <a href="#">Risk and Compliance Disclosure</a>, and <a href="#">Privacy Notice</a>.</p>
               </div>
               
-              <button className="btn btn-primary" onClick={() => goToNextStep(1)}>Next</button>
+              <button 
+                className="btn btn-primary" 
+                onClick={() => goToNextStep(1)}
+                disabled={loading}
+              >
+                {loading ? 'Processing...' : 'Next'}
+              </button>
               
               <div className="account-prompt">
                 <p>Already have an account? <Link to="/login">Log in</Link></p>
@@ -207,7 +398,13 @@ const SignUpPage = () => {
                 />
               </div>
               
-              <button className="btn btn-primary" onClick={() => goToNextStep(2)}>Next</button>
+              <button 
+                className="btn btn-primary" 
+                onClick={() => goToNextStep(2)}
+                disabled={loading}
+              >
+                {loading ? 'Processing...' : 'Next'}
+              </button>
             </div>
             
             {/* Step 3: Profile Details */}
@@ -264,7 +461,13 @@ const SignUpPage = () => {
                 />
               </div>
               
-              <button className="btn btn-primary" onClick={handleSubmit}>Sign up</button>
+              <button 
+                className="btn btn-primary" 
+                onClick={handleSubmit}
+                disabled={loading}
+              >
+                {loading ? 'Processing...' : 'Sign up'}
+              </button>
             </div>
           </div>
         </div>
