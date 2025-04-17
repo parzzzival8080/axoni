@@ -1,20 +1,88 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import axios from 'axios';
 
 const LoginForm = () => {
   const [activeTab, setActiveTab] = useState('email');
-  const [email, setEmail] = useState('');
+  const [credentials, setCredentials] = useState({
+    email: '',
+    password: ''
+  });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
+    setError('');
   };
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setCredentials({
+      ...credentials,
+      [name]: value
+    });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login attempt with:', activeTab);
+    
+    // If we're on the email step and no password is shown yet, show the password field
+    if (activeTab === 'email' && !showPassword) {
+      // Validate email format before proceeding
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(credentials.email)) {
+        setError('Please enter a valid email address');
+        return;
+      }
+      
+      setShowPassword(true);
+      return;
+    }
+    
+    // Otherwise proceed with login
+    setError('');
+    setLoading(true);
+    
+    try {
+      // Replace with your actual API endpoint
+      const response = await axios.post('https://django.bhtokens.com/api/user_account/login', credentials);
+      
+      // Handle successful login based on your specific response format
+      const { success, user_id, email, uid, jwt_token} = response.data;
+      
+      if (success) {
+        // Store the token in localStorage
+        localStorage.setItem('authToken', jwt_token);
+        
+        // Store user info as needed
+        localStorage.setItem('user', JSON.stringify({
+          user_id,
+          email,
+          uid,
+        }));
+        
+        // Set default authorization header for future requests
+        axios.defaults.headers.common['Authorization'] = `Bearer ${jwt_token}`;
+        
+        // Redirect to dashboard or home page
+        window.location.href = '/spot-trading';
+      } else {
+        // In case 'success' is false but no error was thrown
+        setError('Login failed. Please check your credentials and try again.');
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed. Please try again.');
+      console.error('Login error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSocialLogin = (provider) => {
+    console.log(`Attempting to login with ${provider}`);
+    // Implement social login logic here
+    // This would typically redirect to OAuth provider
   };
 
   return (
@@ -36,56 +104,85 @@ const LoginForm = () => {
         </div>
       </div>
       
+      {error && <div className="error-message">{error}</div>}
+      
       {activeTab !== 'qr' ? (
         <form onSubmit={handleSubmit}>
           <div className="email-input">
             <div className="email-field">
               <input 
                 type="email" 
+                name="email"
                 placeholder="Email address"
-                value={email}
-                onChange={handleEmailChange}
+                value={credentials.email}
+                onChange={handleInputChange}
                 required
               />
             </div>
           </div>
           
-          <button type="submit" className="next-btn">Next</button>
+          {showPassword && (
+            <div className="password-input">
+              <div className="password-field">
+                <input 
+                  type="password" 
+                  name="password"
+                  placeholder="Password"
+                  value={credentials.password}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+            </div>
+          )}
+          
+          <button 
+            type="submit" 
+            className="next-btn" 
+            disabled={loading}
+          >
+            {loading ? 'Processing...' : showPassword ? 'Log in' : 'Next'}
+          </button>
+          
+          {showPassword && (
+            <div className="forgot-password">
+              <a href="/forgot-password">Forgot password?</a>
+            </div>
+          )}
           
           <div className="signup-prompt">
             <p>Don't have an account? <a href="/signup">Sign up</a></p>
           </div>
-          
-          <div className="continue-text">
-            <p>or continue with</p>
-          </div>
-          
-          <div className="social-logins">
-            <div className="social-btn">
-              <div className="icon-circle">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" />
+              <div className="continue-text">
+                <p>or continue with</p>
               </div>
-              <span>Google</span>
-            </div>
-            <div className="social-btn">
-              <div className="icon-circle">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" />
+              
+              <div className="social-logins">
+                <div className="social-btn" onClick={() => handleSocialLogin('google')}>
+                  <div className="icon-circle">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" />
+                  </div>
+                  <span>Google</span>
+                </div>
+                <div className="social-btn" onClick={() => handleSocialLogin('apple')}>
+                  <div className="icon-circle">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" />
+                  </div>
+                  <span>Apple</span>
+                </div>
+                <div className="social-btn" onClick={() => handleSocialLogin('telegram')}>
+                  <div className="icon-circle">
+                    <img src="https://telegram.org/img/t_logo.svg" alt="Telegram" />
+                  </div>
+                  <span>Telegram</span>
+                </div>
+                <div className="social-btn" onClick={() => handleSocialLogin('wallet')}>
+                  <div className="icon-circle">
+                    <img src="https://static.okx.com/cdn/assets/imgs/2210/620F94C9C684246B.png" alt="Wallet" />
+                  </div>
+                  <span>Wallet</span>
+                </div>
               </div>
-              <span>Apple</span>
-            </div>
-            <div className="social-btn">
-              <div className="icon-circle">
-                <img src="https://telegram.org/img/t_logo.svg" alt="Telegram" />
-              </div>
-              <span>Telegram</span>
-            </div>
-            <div className="social-btn">
-              <div className="icon-circle">
-                <img src="https://static.okx.com/cdn/assets/imgs/2210/620F94C9C684246B.png" alt="Wallet" />
-              </div>
-              <span>Wallet</span>
-            </div>
-          </div>
         </form>
       ) : (
         <div className="qr-code-container">
@@ -101,4 +198,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm; 
+export default LoginForm;
