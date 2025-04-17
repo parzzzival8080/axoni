@@ -238,4 +238,50 @@ nav {
     .header-right .icon-group {
         display: none;
     }
+}
+
+/* User Menu Styles */
+.user-menu-container {
+    position: relative;
+}
+
+.user-dropdown-menu {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    width: 200px;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    padding: 8px 0;
+    z-index: 1000;
+    border: 1px solid #2a2a2a;
+}
+
+.user-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    color: #fff;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+}
+
+.user-menu-item:hover {
+    background-color: #2a2a2a;
+}
+
+.user-menu-item i {
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+}
+
+.user-menu-divider {
+    height: 1px;
+    background-color: #2a2a2a;
+    margin: 8px 0;
 } 

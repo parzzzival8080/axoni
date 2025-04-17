@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import './Navbar.css';
 
 const Navbar = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [showUserMenu, setShowUserMenu] = useState(false);
+
   const signupButtonStyle = {
     backgroundColor: 'black',
     border: '1px solid rgba(255, 255, 255, 0.8)',
@@ -13,6 +18,83 @@ const Navbar = () => {
     textDecoration: 'none',
     marginRight: '16px',
     fontWeight: '500'
+  };
+
+  // User menu style
+  const userMenuStyle = {
+    backgroundColor: 'black',
+    border: '1px solid rgba(255, 255, 255, 0.2)',
+    borderRadius: '20px',
+    padding: '5px 15px',
+    fontSize: '14px',
+    color: 'white',
+    textDecoration: 'none',
+    marginRight: '16px',
+    fontWeight: '500',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '5px'
+  };
+
+  // Check for authentication on component mount
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = localStorage.getItem('authToken');
+      const fullName = localStorage.getItem('fullName');
+      const userId = localStorage.getItem('user_id');
+      
+      if (token) {
+        setIsAuthenticated(true);
+        
+        if (fullName) {
+          setUserName(fullName);
+        } else if (userId) {
+          // If we have a userId but no name, fetch the user information
+          try {
+            const response = await axios.get(
+              `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${userId}`,
+              {
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                }
+              }
+            );
+            
+            if (response.data && response.data.user && response.data.user.name) {
+              const name = response.data.user.name;
+              setUserName(name);
+              localStorage.setItem('fullName', name);
+            } else {
+              setUserName('User');
+            }
+          } catch (error) {
+            console.error('Error fetching user information:', error);
+            setUserName('User');
+          }
+        } else {
+          setUserName('User');
+        }
+      }
+    };
+    
+    checkAuth();
+  }, []);
+
+  const handleLogout = () => {
+    // Clear auth data from localStorage
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('fullName');
+    localStorage.removeItem('user');
+    
+    // Update state
+    setIsAuthenticated(false);
+    setUserName('');
+    setShowUserMenu(false);
+    
+    // Redirect to home
+    window.location.href = '/';
   };
 
   return (
@@ -156,8 +238,42 @@ const Navbar = () => {
           <i className="fas fa-search"></i>
           <input type="text" placeholder="Search crypto" />
         </div>
-        <Link to="/login" className="login-link">Log in</Link>
-        <Link to="/signup" style={signupButtonStyle}>Sign up</Link>
+        
+        {isAuthenticated ? (
+          <div className="user-menu-container">
+            <div 
+              style={userMenuStyle} 
+              onClick={() => setShowUserMenu(!showUserMenu)}
+            >
+              <i className="fas fa-user-circle"></i>
+              Welcome, {userName}
+              <i className="fas fa-chevron-down"></i>
+            </div>
+            {showUserMenu && (
+              <div className="user-dropdown-menu">
+                <Link to="/profile" className="user-menu-item">
+                  <i className="fas fa-user"></i> Profile
+                </Link>
+                <Link to="/wallet" className="user-menu-item">
+                  <i className="fas fa-wallet"></i> Wallet
+                </Link>
+                <Link to="/settings" className="user-menu-item">
+                  <i className="fas fa-cog"></i> Settings
+                </Link>
+                <div className="user-menu-divider"></div>
+                <div className="user-menu-item" onClick={handleLogout}>
+                  <i className="fas fa-sign-out-alt"></i> Logout
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <>
+            <Link to="/login" className="login-link">Log in</Link>
+            <Link to="/signup" style={signupButtonStyle}>Sign up</Link>
+          </>
+        )}
+        
         <div className="icon-group">
           <a href="#" className="icon-link"><i className="fas fa-download"></i></a>
           <a href="#" className="icon-link"><i className="fas fa-bell"></i></a>

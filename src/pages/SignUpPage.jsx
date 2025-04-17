@@ -244,6 +244,9 @@ const SignUpPage = () => {
       console.log('Profile update response:', response.data);
       
       if (response.data.success) {
+        // Save user's full name to localStorage
+        localStorage.setItem('fullName', formData.fullName);
+        
         // Registration fully completed
         alert('Registration successful! Welcome to TradeX.');
         

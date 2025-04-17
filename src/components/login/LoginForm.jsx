@@ -54,6 +54,7 @@ const LoginForm = () => {
       if (success) {
         // Store the token in localStorage
         localStorage.setItem('authToken', jwt_token);
+        localStorage.setItem('user_id', user_id || uid);
         
         // Store user info as needed
         localStorage.setItem('user', JSON.stringify({
@@ -64,6 +65,30 @@ const LoginForm = () => {
         
         // Set default authorization header for future requests
         axios.defaults.headers.common['Authorization'] = `Bearer ${jwt_token}`;
+        
+        try {
+          // Fetch user profile to get the full name using the getUserInformation API
+          const profileResponse = await axios.get(
+            `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${user_id || uid}`,
+            {
+              headers: {
+                'Authorization': `Bearer ${jwt_token}`
+              }
+            }
+          );
+          
+          // Check if we got the user data and store full name
+          if (profileResponse.data && profileResponse.data.user && profileResponse.data.user.name) {
+            localStorage.setItem('fullName', profileResponse.data.user.name);
+          } else {
+            // Set a default name if name is not available
+            localStorage.setItem('fullName', 'User');
+          }
+        } catch (profileErr) {
+          console.error('Error fetching user information:', profileErr);
+          // Set a default name if profile fetch fails
+          localStorage.setItem('fullName', 'User');
+        }
         
         // Redirect to dashboard or home page
         window.location.href = '/spot-trading';
