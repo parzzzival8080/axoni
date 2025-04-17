@@ -296,6 +296,7 @@ nav {
     color: #666;
 }
 
+/* Email Input Styles */
 .email-input {
     margin-bottom: 20px;
 }
@@ -341,6 +342,77 @@ nav {
 
 .next-btn:hover {
     background-color: #eaeaea;
+}
+
+/* Password Input Styles */
+.password-input {
+    margin-bottom: 20px;
+}
+
+.password-field {
+    background-color: #f5f5f5;
+    border-radius: 6px;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease;
+    position: relative;
+}
+
+.password-field:focus-within {
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+}
+
+.password-field input {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    background-color: transparent;
+    font-size: 14px;
+    color: #000;
+    outline: none;
+}
+
+.password-field input::placeholder {
+    color: #999;
+}
+
+.forgot-password {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.forgot-password a {
+    font-size: 14px;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    position: relative;
+}
+
+.forgot-password a:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: #333;
+    transform: scaleX(0);
+    transition: transform 0.2s ease;
+}
+
+.forgot-password a:hover:after {
+    transform: scaleX(1);
+}
+
+/* Error Message */
+.error-message {
+    background-color: #fff0f0;
+    color: #e74c3c;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    border-left: 3px solid #e74c3c;
 }
 
 .signup-prompt {
