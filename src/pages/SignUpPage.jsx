@@ -142,17 +142,24 @@ const SignUpPage = () => {
     // Check if registration was successful
     if (response.ok && data) {
       // Set user data from response
-      let uid = data.user_id || data.id;
+      let userId = data.user_id || data.id;
       let token = data.jwt_token || data.token;
+      let uid = data.uid; // Get the uid for wallet API
       
       // Store user ID and token
-      if (uid && token) {
-        setUserId(uid);
+      if (userId && token) {
+        setUserId(userId);
         setToken(token);
         
         // Store in localStorage
         localStorage.setItem('authToken', token);
-        localStorage.setItem('user_id', uid);
+        localStorage.setItem('user_id', userId);
+        
+        // Store uid for wallet API if available
+        if (uid) {
+          localStorage.setItem('uid', uid);
+          console.log('Stored uid for wallet API:', uid);
+        }
         
         // Move to next step
         setCurrentStep(currentStep + 1);

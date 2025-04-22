@@ -1,0 +1,375 @@
+.trade-form.dark-theme {
+  background-color: #0d0d0d;
+  color: #f0f0f0;
+  padding: 16px;
+  border-radius: 4px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  max-width: 360px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Trade/Tools tabs */
+.trade-form .trade-tabs {
+  display: flex;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+}
+
+.trade-form .tab {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #777;
+  position: relative;
+}
+
+.trade-form .tab.active {
+  color: #fff;
+  font-weight: 600;
+}
+
+.trade-form .tab.active:after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #ffffff;
+}
+
+/* Position buttons */
+.trade-form .position-buttons {
+  display: flex;
+  margin-bottom: 12px;
+  width: 100%;
+  gap: 4px;
+}
+
+.trade-form .position-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  background-color: #222;
+  color: #bbb;
+}
+
+.trade-form .position-btn.active {
+  background-color: #1cb05e;
+  color: white;
+}
+
+/* Leverage selection */
+.trade-form .leverage-selection {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding: 8px 12px;
+  background-color: #1a1a1a;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.trade-form .leverage-mode,
+.trade-form .leverage-value {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.trade-form .green-text {
+  color: #1cb05e;
+  margin-right: 4px;
+}
+
+/* Order type selection */
+.trade-form .order-type-selection {
+  display: flex;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #2a2a2a;
+  padding-bottom: 8px;
+  position: relative;
+}
+
+.trade-form .order-type {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #777;
+  position: relative;
+}
+
+.trade-form .order-type.active {
+  color: #fff;
+  font-weight: 500;
+}
+
+.trade-form .order-type.active:after {
+  content: '';
+  position: absolute;
+  bottom: -9px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #ffffff;
+}
+
+.trade-form .help-icon {
+  position: absolute;
+  right: 0;
+  top: 8px;
+  color: #666;
+  cursor: pointer;
+}
+
+/* Price input section */
+.trade-form .price-input-section {
+  margin-bottom: 16px;
+}
+
+.trade-form .price-label {
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: #bbb;
+}
+
+.trade-form .price-input-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.trade-form .price-input {
+  flex: 1;
+  background-color: #191919;
+  border: 1px solid #333;
+  padding: 10px;
+  border-radius: 4px;
+  color: white;
+  font-size: 16px;
+}
+
+.trade-form .price-controls {
+  display: flex;
+  flex-direction: column;
+}
+
+.trade-form .price-control {
+  background-color: #191919;
+  border: 1px solid #333;
+  color: #ccc;
+  cursor: pointer;
+  height: 20px;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.trade-form .market-price-btn {
+  background-color: #191919;
+  border: 1px solid #333;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* Amount input section */
+.trade-form .amount-input-section {
+  margin-bottom: 16px;
+}
+
+.trade-form .amount-label {
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: #bbb;
+  display: flex;
+  align-items: center;
+}
+
+.trade-form .contract-value {
+  color: #777;
+  font-size: 13px;
+  background-color: #191919;
+  border: 1px solid #333;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.trade-form .amount-slider {
+  padding: 0 8px;
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.trade-form .slider {
+  width: 100%;
+  height: 2px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #333;
+  outline: none;
+  margin: 12px 0;
+}
+
+.trade-form .slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+}
+
+.trade-form .slider-markers {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin-top: -10px;
+}
+
+.trade-form .slider-marker-point {
+  width: 6px;
+  height: 6px;
+  background-color: #333;
+  border-radius: 50%;
+}
+
+.trade-form .slider-values {
+  display: flex;
+  justify-content: space-between;
+  color: #777;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Balance info */
+.trade-form .balance-info {
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #777;
+}
+
+.trade-form .available {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.trade-form .max-trade,
+.trade-form .max-short {
+  margin-bottom: 4px;
+  cursor: pointer;
+}
+
+.trade-form .info-btn {
+  background: none;
+  border: none;
+  color: #1cb05e;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Separator line */
+.trade-form .separator-line {
+  height: 1px;
+  background-color: #2a2a2a;
+  margin: 16px 0;
+}
+
+/* TP/SL Checkbox */
+.trade-form .tp-sl-container {
+  margin-bottom: 16px;
+}
+
+.trade-form .tp-sl-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.trade-form .tp-sl-checkbox input {
+  margin-right: 8px;
+}
+
+.trade-form .checkbox-text {
+  font-size: 14px;
+  color: #bbb;
+}
+
+/* Action button */
+.trade-form .action-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+
+.trade-form .action-btn.buy,
+.trade-form .action-btn.login {
+  background-color: #1cb05e;
+  color: white;
+}
+
+/* Cost section */
+.trade-form .cost-section {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  font-size: 12px;
+}
+
+.trade-form .cost-item {
+  flex: 1;
+}
+
+.trade-form .cost-label {
+  color: #777;
+  margin-bottom: 4px;
+}
+
+.trade-form .max-price,
+.trade-form .min-price {
+  font-weight: 500;
+  color: #bbb;
+}
+
+/* Tools section */
+.trade-form .tools-section {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #777;
+  margin-top: 8px;
+}
+
+.trade-form .tool-item {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.trade-form .percent-icon {
+  margin-right: 4px;
+  display: inline-block;
+  border: 1px solid #777;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  line-height: 14px;
+  text-align: center;
+  font-size: 10px;
+} 

@@ -1,8 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import OrderHistory from './OrderHistory';
 
 const TradingChart = () => {
   const chartContainerRef = useRef(null);
   const chartRef = useRef(null);
+  const [activeTab, setActiveTab] = useState('order-history');
 
   useEffect(() => {
     if (chartContainerRef.current && window.LightweightCharts) {
@@ -10,7 +12,7 @@ const TradingChart = () => {
         // Initialize chart with global LightweightCharts object
         const chart = window.LightweightCharts.createChart(chartContainerRef.current, {
           width: chartContainerRef.current.clientWidth,
-          height: 400,
+          height: 460,
           layout: {
             backgroundColor: '#000000',
             textColor: '#D9D9D9',
@@ -189,7 +191,7 @@ const TradingChart = () => {
             <div className="tool-button"><i className="fas fa-text-height"></i></div>
             <div className="tool-button"><i className="fas fa-object-group"></i></div>
           </div>
-          <div id="chart" ref={chartContainerRef} style={{ width: '100%', height: '400px' }}></div>
+          <div id="chart" ref={chartContainerRef} style={{ width: '100%', height: '460px' }}></div>
         </div>
 
         <div className="volume-info">
@@ -220,14 +222,46 @@ const TradingChart = () => {
       </div>
 
       <div className="orders-tabs">
-        <div className="tab active">Open orders</div>
-        <div className="tab">Order history</div>
-        <div className="tab">Open positions</div>
-        <div className="tab">Position history</div>
-        <div className="tab">Assets</div>
-        <div className="tab">Bots</div>
+        <div 
+          className={`tab ${activeTab === 'open-orders' ? 'active' : ''}`}
+          onClick={() => setActiveTab('open-orders')}
+        >
+          Open orders
+        </div>
+        <div 
+          className={`tab ${activeTab === 'order-history' ? 'active' : ''}`}
+          onClick={() => setActiveTab('order-history')}
+        >
+          Order history
+        </div>
+        <div 
+          className={`tab ${activeTab === 'open-positions' ? 'active' : ''}`}
+          onClick={() => setActiveTab('open-positions')}
+        >
+          Open positions
+        </div>
+        <div 
+          className={`tab ${activeTab === 'position-history' ? 'active' : ''}`}
+          onClick={() => setActiveTab('position-history')}
+        >
+          Position history
+        </div>
+        <div 
+          className={`tab ${activeTab === 'assets' ? 'active' : ''}`}
+          onClick={() => setActiveTab('assets')}
+        >
+          Assets
+        </div>
+        <div 
+          className={`tab ${activeTab === 'bots' ? 'active' : ''}`}
+          onClick={() => setActiveTab('bots')}
+        >
+          Bots
+        </div>
         <div className="more-options"><i className="fas fa-ellipsis-v"></i></div>
       </div>
+      
+      {activeTab === 'order-history' && <OrderHistory />}
     </div>
   );
 };

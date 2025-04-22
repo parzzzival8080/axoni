@@ -56,6 +56,12 @@ const LoginForm = () => {
         localStorage.setItem('authToken', jwt_token);
         localStorage.setItem('user_id', user_id || uid);
         
+        // Store the uid specifically for the wallet API
+        if (uid) {
+          localStorage.setItem('uid', uid);
+          console.log('Stored uid for wallet API:', uid);
+        }
+        
         // Store user info as needed
         localStorage.setItem('user', JSON.stringify({
           user_id,

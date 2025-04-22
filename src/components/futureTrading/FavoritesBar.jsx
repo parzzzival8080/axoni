@@ -1,18 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-function FavoritesBar() {
+function FavoritesBar({ onSelectCoin }) {
+  const [activeCoin, setActiveCoin] = useState('BTC');
+  
+  const coinPairs = [
+    { symbol: 'BTC', pair: 'BTC/USDT' },
+    { symbol: 'ETH', pair: 'ETH/USDT' },
+    { symbol: 'OKB', pair: 'OKB/USDT' },
+    { symbol: 'XRP', pair: 'XRP/USDT' },
+    { symbol: 'SOL', pair: 'SOL/USDT' },
+    { symbol: 'DOGE', pair: 'DOGE/USDT' },
+    { symbol: 'TRX', pair: 'TRX/USDT' },
+    { symbol: 'ADA', pair: 'ADA/USDT' }
+  ];
+  
+  const handleCoinSelect = (symbol) => {
+    setActiveCoin(symbol);
+    if (onSelectCoin) {
+      onSelectCoin(symbol);
+    }
+  };
+  
   return (
     <div className="favorites-bar">
-    <div className="favorite-item active">BTC/USDT</div>
-    <div className="favorite-item">ETH/USDT</div>
-    <div className="favorite-item">OKB/USDT</div>
-    <div className="favorite-item">XRP/USDT</div>
-    <div className="favorite-item">SOL/USDT</div>
-    <div className="favorite-item">DOGE/USDT</div>
-    <div className="favorite-item">TRX/USDT</div>
-    <div className="favorite-item">ADA/USDT</div>
-    <div className="favorite-item add">Add to Favorites</div>
-  </div>
+      {coinPairs.map((coin) => (
+        <div 
+          key={coin.symbol}
+          className={`favorite-item ${activeCoin === coin.symbol ? 'active' : ''}`}
+          onClick={() => handleCoinSelect(coin.symbol)}
+        >
+          {coin.pair}
+        </div>
+      ))}
+      <div className="favorite-item add">Add to Favorites</div>
+    </div>
   )
 }
 

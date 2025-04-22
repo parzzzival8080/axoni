@@ -65,6 +65,12 @@ const Navbar = () => {
               const name = response.data.user.name;
               setUserName(name);
               localStorage.setItem('fullName', name);
+              
+              // Check if there's a uid in the response and store it
+              if (response.data.user.uid) {
+                localStorage.setItem('uid', response.data.user.uid);
+                console.log('Stored uid from user info:', response.data.user.uid);
+              }
             } else {
               setUserName('User');
             }
