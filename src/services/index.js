@@ -1,8 +1,4 @@
-/**
- * This file re-exports all trading API functionality from the separate files.
- * Use this for backwards compatibility with existing imports.
- * For new code, please import directly from spotTradingApi.js or futureTradingApi.js.
- */
+
 
 // Import from future trading API
 import { 

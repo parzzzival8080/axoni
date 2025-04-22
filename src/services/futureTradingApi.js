@@ -1,6 +1,5 @@
 const API_BASE_URL = 'https://apiv2.bhtokens.com/api/v1';
 const API_KEY = 'A20RqFwVktRxxRqrKBtmi6ud';
-const DEFAULT_UID = 'yE8vKBNw'; // Default UID to use if none is provided
 
 /**
  * Fetches details for a specific coin by symbol
@@ -106,13 +105,18 @@ export const fetchCoinDetails = async (symbol) => {
  */
 export const executeFutureTradeOrder = async (params) => {
     try {
-        const { uid = DEFAULT_UID, symbol = 'BTC', order_type, execution_type, price, amount, leverage = 10 } = params;
+        const { uid, symbol = 'BTC', order_type, execution_type, price, amount, leverage = 10 } = params;
+        
+        // Validate required parameters
+        if (!uid) {
+            throw new Error('User ID is required for trading');
+        }
         
         // Calculate total
         const total_in_usdt = (price * amount).toFixed(6);
         
-        // Create URL with query parameters
-        const url = `${API_BASE_URL}/future/orders?uid=${uid}&symbol=${symbol}&order_type=${order_type}&execution_type=${execution_type}&price=${price}&amount=${amount}&leverage=${leverage}&total_in_usdt=${total_in_usdt}&apikey=${API_KEY}`;
+        // Use transaction_type instead of order_type as the API requires
+        const url = `${API_BASE_URL}/futures?uid=${uid}&symbol=${symbol}&transaction_type=${order_type}&execution_type=${execution_type}&entry_price=${price}&amount=${amount}&leverage=${leverage}&total_in_usdt=${total_in_usdt}&apikey=${API_KEY}`;
         
         console.log('Executing future trade with URL:', url);
         
@@ -124,11 +128,23 @@ export const executeFutureTradeOrder = async (params) => {
             }
         });
 
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new Error('API response is not in the expected JSON format');
+        }
+
         const data = await response.json();
         
         if (!response.ok) {
             console.error('Future Trade API error:', data);
-            throw new Error(data.message || 'Future trade execution failed');
+            throw new Error(data.message || `API error: ${response.status}`);
+        }
+
+        // Check if the API returned an error
+        if (data.error) {
+            console.error('API returned an error:', data.error);
+            throw new Error(data.error);
         }
 
         console.log('Future trade successful:', data);
@@ -139,10 +155,7 @@ export const executeFutureTradeOrder = async (params) => {
         };
     } catch (error) {
         console.error('Future trade execution error:', error);
-        return {
-            success: false,
-            message: error instanceof Error ? error.message : 'An error occurred during future trade execution'
-        };
+        throw error;
     }
 };
 
@@ -151,11 +164,33 @@ export const executeFutureTradeOrder = async (params) => {
  * @param uid - User ID
  * @returns Promise with balance information
  */
-export const getFutureBalance = async (uid = DEFAULT_UID) => {
+export const getFutureBalance = async (uid) => {
+    // Validate UID parameter
+    if (!uid) {
+        throw new Error('User ID is required for fetching balance');
+    }
+    
     try {
-        const url = `${API_BASE_URL}/future/balance/${uid}?apikey=${API_KEY}`;
+        // Use coin ID 1 for BTC/USDT as specified by the user
+        return await fetchWalletForCoin(uid, 1);
+    } catch (error) {
+        console.error('Error in getFutureBalance:', error);
+        throw error;
+    }
+};
+
+/**
+ * Helper function to fetch wallet balance for a specific coin
+ * @param uid - User ID
+ * @param coinId - Coin ID (1=BTC, 2=USDT)
+ * @returns Promise with balance information
+ */
+const fetchWalletForCoin = async (uid, coinId) => {
+    try {
+        // Use the exact endpoint shown in the user's message
+        const url = `${API_BASE_URL}/user-wallet/${uid}/${coinId}?apikey=${API_KEY}`;
         
-        console.log('Fetching future balance from:', url);
+        console.log(`Fetching wallet balance for coin ID ${coinId} from:`, url);
         
         const response = await fetch(url, {
             method: 'GET',
@@ -164,35 +199,72 @@ export const getFutureBalance = async (uid = DEFAULT_UID) => {
             }
         });
 
-        if (!response.ok) {
-            throw new Error('Failed to fetch future balance');
+        console.log(`Wallet API response status for coin ${coinId}:`, response.status);
+        
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            console.error(`API response for coin ${coinId} is not JSON. Content-Type:`, contentType);
+            throw new Error(`API did not return JSON for coin ${coinId}`);
         }
 
         const data = await response.json();
         
-        // Sample response for development if API doesn't return actual balances
-        const mockBalance = {
-            usdt: 50000.00,
-            margin_balance: 50000.00,
-            unrealized_pnl: 2500.00,
-            realized_pnl: 1200.00,
-            available_balance: 47500.00
-        };
+        // Log the full response data for debugging
+        console.log(`Full wallet API response for coin ${coinId}:`, JSON.stringify(data, null, 2));
         
-        // Use actual data if available, otherwise use mock data
-        const balance = data.balance || mockBalance;
+        if (!response.ok) {
+            console.error(`Error fetching balance for coin ${coinId}:`, data);
+            throw new Error(`API error for coin ${coinId}: ${response.status}`);
+        }
+
+        // Check if the API returned an error
+        if (data.error) {
+            console.error(`API returned an error for coin ${coinId}:`, data.error);
+            throw new Error(`API error for coin ${coinId}: ${data.error}`);
+        }
         
-        return {
-            success: true,
-            balance,
-            message: 'Future balance fetched successfully'
-        };
+        // Process the API response
+        if (data && typeof data === 'object') {
+            // For BTC/USDT pair (coinId = 1), the structure should have cryptoWallet and usdtWallet
+            let btcBalance = 0;
+            let usdtBalance = 0;
+            
+            // Extract BTC balance
+            if (data.cryptoWallet && typeof data.cryptoWallet === 'object') {
+                console.log(`Found cryptoWallet:`, data.cryptoWallet);
+                btcBalance = parseFloat(data.cryptoWallet.future_wallet || data.cryptoWallet.spot_wallet || 0);
+            }
+            
+            // Extract USDT balance
+            if (data.usdtWallet && typeof data.usdtWallet === 'object') {
+                console.log(`Found usdtWallet:`, data.usdtWallet);
+                usdtBalance = parseFloat(data.usdtWallet.future_wallet || data.usdtWallet.spot_wallet || 0);
+            }
+            
+            console.log(`Extracted balances - BTC: ${btcBalance}, USDT: ${usdtBalance}`);
+            
+            // Build a balance object
+            const balance = {
+                usdt: usdtBalance,
+                btc: btcBalance,
+                margin_balance: usdtBalance, // Use USDT as margin balance
+                available_balance: usdtBalance
+            };
+            
+            return {
+                success: true,
+                balance,
+                message: `Future balance fetched successfully for BTC/USDT pair`,
+                coin_id: coinId
+            };
+        } else {
+            console.warn(`Unexpected API response format for coin ${coinId}.`);
+            throw new Error(`Unexpected response format for coin ${coinId}`);
+        }
     } catch (error) {
-        console.error('Error fetching future balance:', error);
-        return {
-            success: false,
-            message: error instanceof Error ? error.message : 'An error occurred while fetching future balance'
-        };
+        console.error(`Error fetching future balance for coin ${coinId}:`, error);
+        throw error;
     }
 };
 
