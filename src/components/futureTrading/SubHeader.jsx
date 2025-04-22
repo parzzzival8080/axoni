@@ -1,11 +1,22 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import coinLogo from '../../assets/coin/bitcoin-2136339_640.webp';
 import { fetchCoinDetails } from '../../services/futureTradingApi.js';
+
+// Static coin logos for popular coins to use as fallbacks
+const staticLogos = {
+  'BTC': '/assets/coin/btc-logo.png',
+  'ETH': '/assets/coin/eth-logo.png',
+  'DOGE': '/assets/coin/doge-logo.png',
+  'SOL': '/assets/coin/sol-logo.png',
+  'XRP': '/assets/coin/xrp-logo.png',
+  'ADA': '/assets/coin/ada-logo.png'
+};
 
 function SubHeader({ symbol = 'BTC' }) {
   const [coinDetails, setCoinDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [logoUrl, setLogoUrl] = useState(null);
 
   // Helper function to safely convert price to number and format it
   const formatPrice = (price, decimals = 1) => {
@@ -24,25 +35,43 @@ function SubHeader({ symbol = 'BTC' }) {
     return numPrice.toFixed(decimals);
   };
 
+  // Reset state when symbol changes
+  useEffect(() => {
+    setCoinDetails(null);
+    setLoading(true);
+    setError(null);
+    setLogoUrl(null);
+  }, [symbol]);
+
   useEffect(() => {
     const getCoinDetails = async () => {
       setLoading(true);
       try {
+        // First set a static logo if available to prevent flickering
+        setLogoUrl(staticLogos[symbol] || null);
+        
         const response = await fetchCoinDetails(symbol);
         if (response.success && response.data) {
           setCoinDetails(response.data);
+          
+          // Update logo URL from API response if available
+          if (response.data.logo_path) {
+            setLogoUrl(response.data.logo_path);
+          } else if (response.data.logo) {
+            setLogoUrl(response.data.logo);
+          }
+          
           setError(null);
           
           // Log the received data for debugging
           console.log("Received coin details:", response.data);
-          console.log("Price type:", typeof response.data.price);
+          console.log("Logo path:", response.data.logo_path || response.data.logo);
         } else {
           setError(response.message || 'Failed to fetch coin details');
-          setCoinDetails(null);
         }
       } catch (err) {
+        console.error("Error fetching coin details:", err);
         setError('An error occurred while fetching coin details');
-        setCoinDetails(null);
       } finally {
         setLoading(false);
       }
@@ -59,12 +88,22 @@ function SubHeader({ symbol = 'BTC' }) {
   const volumeK = volume24h / 1000;
   const turnoverM = (volume24h * price) / 1000000;
 
+  // Handle logo loading error
+  const handleLogoError = () => {
+    console.log("Logo loading failed, using default");
+    setLogoUrl(null);
+  };
+
   return (
     <div className="sub-header">
       <div className="coin-info">
         <div className="coin-icon">
-          {coinDetails?.logo ? (
-            <img src={coinDetails.logo} alt={symbol} />
+          {logoUrl ? (
+            <img 
+              src={logoUrl} 
+              alt={symbol} 
+              onError={handleLogoError}
+            />
           ) : (
             <img src={coinLogo} alt={symbol} />
           )}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 function FavoritesBar({ onSelectCoin }) {
   const [activeCoin, setActiveCoin] = useState('BTC');
@@ -15,9 +15,14 @@ function FavoritesBar({ onSelectCoin }) {
   ];
   
   const handleCoinSelect = (symbol) => {
-    setActiveCoin(symbol);
-    if (onSelectCoin) {
-      onSelectCoin(symbol);
+    // Only update if selecting a different coin
+    if (activeCoin !== symbol) {
+      console.log(`Selecting coin: ${symbol} (previous: ${activeCoin})`);
+      setActiveCoin(symbol);
+      
+      if (onSelectCoin) {
+        onSelectCoin(symbol);
+      }
     }
   };
   

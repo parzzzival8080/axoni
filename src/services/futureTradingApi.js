@@ -71,6 +71,16 @@ export const fetchCoinDetails = async (symbol) => {
                         coinDetails[field] = parseFloat(coinDetails[field]) || 0;
                     }
                 });
+                
+                // Ensure logo information is available
+                if (!coinDetails.logo && coinDetails.logo_path) {
+                    coinDetails.logo = coinDetails.logo_path;
+                } else if (!coinDetails.logo_path && coinDetails.logo) {
+                    coinDetails.logo_path = coinDetails.logo;
+                }
+                
+                // Log the logo information for debugging
+                console.log(`Logo for ${coinSymbol}:`, coinDetails.logo || coinDetails.logo_path || 'No logo found');
 
                 // Success - found the coin
                 return {
