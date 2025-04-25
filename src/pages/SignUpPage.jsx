@@ -131,7 +131,13 @@ const SignUpPage = () => {
       // If not JSON, get the text and show it
       const text = await response.text();
       console.log('Non-JSON response:', text);
-      setError(`Server returned non-JSON response: ${text.substring(0, 100)}...`);
+      // Try to extract error message from HTML/text if possible
+      let extractedError = '';
+      const match = text.match(/([Ee]rror|[Mm]essage|[Ff]ailed)[^<\n:]*(.*)/);
+      if (match && match[2]) {
+        extractedError = match[2].trim();
+      }
+      setError(extractedError || `Server returned non-JSON response: ${text.substring(0, 200)}...`);
       return;
     }
     
@@ -165,12 +171,12 @@ const SignUpPage = () => {
         setCurrentStep(currentStep + 1);
       } else {
         // Response OK but missing required data
-        setError('Registration response missing required data. Please try again.');
+        setError(data.message || data.error || 'Registration response missing required data. Please try again.');
         console.error('Invalid response format:', data);
       }
     } else {
       // Handle error from API
-      const errorMessage = data.message || data.error || 'Registration failed';
+      const errorMessage = data.message || data.error || JSON.stringify(data) || 'Registration failed';
       setError(errorMessage);
       console.error('Registration error:', data);
     }

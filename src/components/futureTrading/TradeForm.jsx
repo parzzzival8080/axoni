@@ -11,7 +11,7 @@ function TradeForm({ symbol = 'BTC' }) {
   const [price, setPrice] = useState('83169.80'); // entry_price from image
   const [amount, setAmount] = useState(''); // remove default value
   const [sliderValue, setSliderValue] = useState(0); // reset to 0 to match empty amount
-  const [tpslEnabled, setTpslEnabled] = useState(false);
+      const [tpslEnabled, setTpslEnabled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Default to logged in
   const [isLoading, setIsLoading] = useState(false);
   const [notification, setNotification] = useState(null);
@@ -165,17 +165,17 @@ function TradeForm({ symbol = 'BTC' }) {
   };
 
   // Handle slider change
-  const handleSliderChange = (e) => {
-    setSliderValue(e.target.value);
+      const handleSliderChange = (e) => {
+        setSliderValue(e.target.value);
     
     // Calculate amount based on slider value using actual max amount
     const maxAmount = calculateMaxAmount();
     const newAmount = (e.target.value / 100 * maxAmount).toFixed(6);
     setAmount(newAmount);
-  };
-
+      };
+    
   // Handle amount change
-  const handleAmountChange = (e) => {
+      const handleAmountChange = (e) => {
     const value = e.target.value;
     if (/^[0-9]*\.?[0-9]*$/.test(value) || value === '') {
       setAmount(value);
@@ -221,8 +221,8 @@ function TradeForm({ symbol = 'BTC' }) {
       minimumFractionDigits: decimals,
       maximumFractionDigits: decimals
     });
-  };
-  
+      };
+    
   // Handle trade submission
   const handleTradeSubmit = async () => {
     if (!uid) {
@@ -408,14 +408,14 @@ function TradeForm({ symbol = 'BTC' }) {
           onClick={() => handleTabClick('trade')}
         >
           Trade
-        </div>
+    </div>
         <div 
           className={`tab ${activeTab === 'tools' ? 'active' : ''}`} 
           onClick={() => handleTabClick('tools')}
         >
           Tools
         </div>
-      </div>
+    </div>
 
       {/* Open/Close Position Buttons */}
       <div className="position-buttons">
@@ -459,19 +459,19 @@ function TradeForm({ symbol = 'BTC' }) {
         </div>
         <div className="help-icon">
           <i className="fas fa-question-circle"></i>
-        </div>
       </div>
+    </div>
 
       {/* Price Input */}
       <div className="price-input-section">
         <div className="price-label">Price</div>
         <div className="price-input-container">
-          <input 
-            type="text" 
+        <input 
+          type="text" 
             className="price-input" 
             value={price} 
             onChange={(e) => setPrice(e.target.value)}
-          />
+        />
           <div className="price-controls">
             <button className="price-control up"><i className="fas fa-caret-up"></i></button>
             <button className="price-control down"><i className="fas fa-caret-down"></i></button>
@@ -484,15 +484,15 @@ function TradeForm({ symbol = 'BTC' }) {
       <div className="amount-input-section">
         <div className="amount-label">
           Amount ({symbol}) <i className="fas fa-chevron-down"></i>
-        </div>
+    </div>
         <div className="amount-input-container">
-          <input 
-            type="text" 
+      <input 
+        type="text" 
             className="amount-input" 
             value={amount}
-            onChange={handleAmountChange}
+        onChange={handleAmountChange}
             placeholder=""
-          />
+      />
         </div>
 
         {/* Slider Container */}
@@ -524,21 +524,21 @@ function TradeForm({ symbol = 'BTC' }) {
                 Max short {formatNumber(calculateMaxAmount(), 6)} {symbol}
               </span>
             </div>
-          </div>
+        </div>
       </div>
-      </div>
+    </div>
 
       {/* TP/SL Checkbox */}
       <div className="tp-sl-container">
         <label className="tp-sl-checkbox">
-          <input 
-            type="checkbox" 
-            checked={tpslEnabled}
-            onChange={() => setTpslEnabled(!tpslEnabled)}
-          />
+      <input 
+        type="checkbox" 
+        checked={tpslEnabled}
+        onChange={() => setTpslEnabled(!tpslEnabled)}
+      />
           <span className="checkbox-text">TP/SL</span>
         </label>
-      </div>
+    </div>
 
       {/* Action Button */}
       <button 

@@ -1,0 +1,234 @@
+/* Root layout */
+.campaign-center-root {
+  min-height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.campaign-center-main {
+  flex: 1 0 auto;
+  background: #fff;
+  padding: 0;
+}
+
+/* Banner Section */
+.campaign-center-banner {
+  background: #111;
+  color: #fff;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 72px 0 56px 0;
+  min-height: 240px;
+  position: relative;
+  z-index: 1;
+}
+.banner-content {
+  margin-left: 150px;
+}
+.banner-title {
+  font-size: 2.9rem;
+  font-weight: 800;
+  color: #b6f400;
+  margin-bottom: 10px;
+  letter-spacing: -1px;
+  line-height: 1.08;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+.banner-desc {
+  font-size: 1.18rem;
+  color: #fff;
+  font-weight: 400;
+  margin-bottom: 0;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+.banner-icon {
+  margin-right: 170px;
+  margin-top: 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+/* Tasks Section */
+.campaign-center-tasks {
+  padding: 64px 0 0 0;
+  text-align: left;
+  margin-left: 150px;
+}
+.section-title {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 12px;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+.section-desc {
+  color: #222;
+  font-size: 1.13rem;
+  margin-bottom: 22px;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+.tasks-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 56px;
+  margin-bottom: 36px;
+  min-height: 110px;
+}
+.tasks-empty-icon img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+.tasks-empty-text {
+  color: #222;
+  font-size: 1.19rem;
+  margin-top: 8px;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+/* Campaigns Section */
+.campaign-center-campaigns {
+  margin-left: 150px;
+  margin-top: 74px;
+  margin-bottom: 110px;
+}
+.campaigns-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  margin-right: 150px;
+}
+.view-all {
+  color: #111;
+  font-size: 1.08rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.15s;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+.view-all:hover {
+  color: #b6f400;
+}
+.campaigns-list {
+  display: flex;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+.campaign-card {
+  background: #fafbfc;
+  border-radius: 18px;
+  box-shadow: 0 2px 14px 0 rgba(0,0,0,0.09);
+  padding: 36px 32px 32px 32px;
+  width: 430px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  min-height: 235px;
+  border: 1.5px solid #f0f0f0;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+.campaign-badge {
+  position: absolute;
+  top: 26px;
+  left: 32px;
+  background: #f6f6f6;
+  color: #888;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border-radius: 11px;
+  padding: 6px 22px;
+  letter-spacing: 0.01em;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+.campaign-img {
+  margin: 0 0 28px 0;
+  width: 130px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.campaign-title {
+  font-size: 1.19rem;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 8px;
+  margin-top: 2px;
+  line-height: 1.27;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+.campaign-desc {
+  color: #222;
+  font-size: 1.07rem;
+  margin-bottom: 22px;
+  line-height: 1.55;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+.campaign-join {
+  margin-top: auto;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 11px;
+  padding: 12px 44px;
+  font-size: 1.06rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+.campaign-join:hover {
+  background: #b6f400;
+  color: #222;
+}
+
+@media (max-width: 1400px) {
+  .banner-content, .campaign-center-tasks, .campaign-center-campaigns {
+    margin-left: 40px;
+  }
+  .banner-icon, .campaigns-header {
+    margin-right: 40px;
+  }
+}
+@media (max-width: 1050px) {
+  .banner-content, .campaign-center-tasks, .campaign-center-campaigns {
+    margin-left: 16px;
+  }
+  .banner-icon, .campaigns-header {
+    margin-right: 16px;
+  }
+  .campaigns-list {
+    flex-direction: column;
+    gap: 32px;
+  }
+  .campaign-card {
+    width: 100%;
+    min-width: 0;
+  }
+}
+@media (max-width: 700px) {
+  .campaign-center-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 32px 0 20px 0;
+  }
+  .banner-content {
+    margin-left: 0;
+    margin-bottom: 20px;
+  }
+  .banner-icon {
+    margin-right: 0;
+    margin-top: 0;
+  }
+}

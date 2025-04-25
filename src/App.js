@@ -9,6 +9,7 @@ import Footer from './components/common/Footer';
 import ChatBubble from './components/common/ChatBubble';
 import './styles.css';
 import FutureTrading from './pages/FutureTrading';
+import CampaignCenter from './pages/tools/CampaignCenter';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
               <ChatBubble />
             </>
           } />
+          <Route path="/tools/campaign-center" element={<CampaignCenter />} />
           <Route path="/" element={
             <>
               <Navbar />

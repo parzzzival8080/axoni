@@ -2178,3 +2178,82 @@ input[type="text"] {
     color: #666;
     font-size: 16px;
 }
+
+/* Responsive Spot Trading Layout */
+@media (max-width: 1200px) {
+  .main-container {
+    flex-direction: column;
+    height: auto;
+  }
+  .chart-section, .orderbook-section, .trade-section {
+    border-right: none;
+    border-bottom: 1px solid #1a1a1a;
+    max-width: 100%;
+    min-width: 0;
+  }
+  .chart-section, .orderbook-section, .trade-section {
+    width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  .main-container {
+    flex-direction: column;
+    height: auto;
+  }
+  .chart-section, .orderbook-section, .trade-section {
+    border-right: none;
+    border-bottom: 1px solid #1a1a1a;
+    max-width: 100%;
+    min-width: 0;
+    width: 100%;
+    padding: 0 8px;
+  }
+  .favorites-bar {
+    padding: 0 8px;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-container {
+    flex-direction: column;
+    height: auto;
+  }
+  .chart-section, .orderbook-section, .trade-section {
+    border-right: none;
+    border-bottom: 1px solid #1a1a1a;
+    max-width: 100%;
+    min-width: 0;
+    width: 100%;
+    padding: 0 4px;
+  }
+  .favorites-bar {
+    padding: 0 4px;
+    font-size: 12px;
+  }
+  .sub-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 8px;
+  }
+  .trading-actions {
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+  }
+  .orderbook-section, .trade-section {
+    min-width: 0;
+    max-width: 100%;
+    padding: 0;
+  }
+  .order-history-container, .tab-content {
+    padding: 10px 2px;
+  }
+  .trade-form {
+    padding: 10px 2px;
+  }
+  .favorites-bar {
+    font-size: 11px;
+  }
+}

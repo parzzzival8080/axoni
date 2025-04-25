@@ -399,4 +399,74 @@
   line-height: 14px;
   text-align: center;
   font-size: 10px;
-} 
+}
+
+/* Responsive Future Trading Layout */
+@media (max-width: 1200px) {
+  .trade-form.dark-theme {
+    max-width: 100%;
+    padding: 12px;
+  }
+  .trade-form .position-buttons,
+  .trade-form .order-type-selection,
+  .trade-form .leverage-selection {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 900px) {
+  .trade-form.dark-theme {
+    max-width: 100%;
+    padding: 8px;
+    font-size: 15px;
+  }
+  .trade-form .position-buttons,
+  .trade-form .order-type-selection,
+  .trade-form .leverage-selection {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+  .trade-form .tab {
+    font-size: 13px;
+    padding: 6px 8px;
+  }
+  .trade-form .slider-container {
+    padding: 10px 6px;
+  }
+}
+
+@media (max-width: 600px) {
+  .trade-form.dark-theme {
+    max-width: 100%;
+    padding: 4px;
+    font-size: 14px;
+  }
+  .trade-form .position-buttons,
+  .trade-form .order-type-selection,
+  .trade-form .leverage-selection {
+    flex-direction: column;
+    gap: 6px;
+    align-items: stretch;
+  }
+  .trade-form .tab {
+    font-size: 12px;
+    padding: 4px 4px;
+  }
+  .trade-form .slider-container {
+    padding: 6px 2px;
+  }
+  .trade-form .amount-input-container,
+  .trade-form .contract-value,
+  .trade-form .tp-sl-checkbox,
+  .trade-form .tools-section {
+    padding: 6px 2px;
+    font-size: 12px;
+  }
+  .trade-form .action-btn {
+    font-size: 15px;
+    padding: 10px;
+  }
+}

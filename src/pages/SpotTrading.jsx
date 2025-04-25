@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import TradingChart from '../components/spotTrading/TradingChart';
 import OrderBook from '../components/spotTrading/OrderBook';
@@ -50,92 +50,101 @@ const SpotTrading = () => {
     fetchAvailableCoins();
   }, []);
   
-  useEffect(() => {
-    const fetchCryptoData = async () => {
-      setLoading(true);
-      setError(null);
-      
-      try {
-        // Get the auth token and user ID from localStorage
-        const token = localStorage.getItem('authToken');
-        const userId = localStorage.getItem('user_id');
-        
-        // Get the user's UID for the wallet API
-        let uid = localStorage.getItem('uid');
-        
-        if (!userId || !token) {
-          setError("Please log in to access trading features");
-          setLoading(false);
-          return;
-        }
-        
-        // If we don't have a uid, try to get one from the getUserInformation API
-        if (!uid) {
-          try {
-            console.log('No uid found in localStorage, trying to fetch from API');
-            const userInfoResponse = await axios.get(
-              `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${userId}`,
-              {
-                headers: {
-                  'Authorization': `Bearer ${token}`
-                }
-              }
-            );
-            
-            if (userInfoResponse.data && userInfoResponse.data.user && userInfoResponse.data.user.uid) {
-              uid = userInfoResponse.data.user.uid;
-              localStorage.setItem('uid', uid);
-              console.log('Fetched and stored uid:', uid);
-            } else {
-              console.log('No uid available in API response, using default value');
-              uid = 'yE8vKBNw'; // Default to the example in the screenshot if we can't get a real uid
-            }
-          } catch (error) {
-            console.error('Error fetching user information:', error);
-            uid = 'yE8vKBNw'; // Default to the example in the screenshot if API fails
-          }
-        }
-        
-        // Use the API key from the screenshot
-        const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
-        
-        // Format the URL with both uid and coin_pair_id in the path
-        const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-wallet/${uid}/${coinPairId}?apikey=${apiKey}`;
-        
-        console.log('Calling API with uid:', uid);
-        console.log('Full API URL:', apiUrl);
-        
-        // Make the API call
-        const response = await axios.get(apiUrl);
-        
-        console.log('API Response:', response.data);
-        
-        if (response.data) {
-          setCryptoData({
-            cryptoName: response.data.cryptoWallet?.crypto_name || '',
-            cryptoSymbol: response.data.cryptoWallet?.crypto_symbol || '',
-            cryptoPrice: response.data.cryptoWallet?.price || 0,
-            cryptoLogoPath: response.data.cryptoWallet?.logo_path || '',
-            usdtName: response.data.usdtWallet?.crypto_name || 'USDT',
-            usdtSymbol: response.data.usdtWallet?.crypto_symbol || 'USDT',
-            usdtLogoPath: response.data.usdtWallet?.logo_path || ''
-          });
-          
-          setUserBalance({
-            cryptoBalance: response.data.cryptoWallet?.spot_wallet || 0,
-            usdtBalance: response.data.usdtWallet?.spot_wallet || 0
-          });
-        }
-      } catch (err) {
-        console.error('Error fetching crypto data:', err);
-        setError('Failed to load trading data. Please try again later.');
-      } finally {
+  const fetchCryptoData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Get the auth token and user ID from localStorage
+      const token = localStorage.getItem('authToken');
+      const userId = localStorage.getItem('user_id');
+
+      // Get the user's UID for the wallet API
+      let uid = localStorage.getItem('uid');
+
+      if (!userId || !token) {
+        setError("Please log in to access trading features");
         setLoading(false);
+        return;
       }
-    };
-    
-    fetchCryptoData();
+
+      // If we don't have a uid, try to fetch one
+      if (!uid) {
+        try {
+          const userInfoResponse = await axios.get(
+            `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${userId}`,
+            { headers: { 'Authorization': `Bearer ${token}` } }
+          );
+          uid = userInfoResponse.data?.user?.uid || 'yE8vKBNw';
+          localStorage.setItem('uid', uid);
+        } catch {
+          uid = 'yE8vKBNw';
+        }
+      }
+
+      const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
+      const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-wallet/${uid}/${coinPairId}?apikey=${apiKey}`;
+
+      const response = await axios.get(apiUrl);
+      if (response.data) {
+        setCryptoData({
+          cryptoName: response.data.cryptoWallet?.crypto_name || '',
+          cryptoSymbol: response.data.cryptoWallet?.crypto_symbol || '',
+          cryptoPrice: response.data.cryptoWallet?.price || 0,
+          cryptoLogoPath: response.data.cryptoWallet?.logo_path || '',
+          usdtName: response.data.usdtWallet?.crypto_name || 'USDT',
+          usdtSymbol: response.data.usdtWallet?.crypto_symbol || 'USDT',
+          usdtLogoPath: response.data.usdtWallet?.logo_path || ''
+        });
+        setUserBalance({
+          cryptoBalance: response.data.cryptoWallet?.spot_wallet || 0,
+          usdtBalance: response.data.usdtWallet?.spot_wallet || 0
+        });
+      }
+    } catch (err) {
+      console.error('Error fetching crypto data:', err);
+      setError('Failed to load trading data. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
   }, [coinPairId]);
+
+  // Only update balance (not loading state) after a trade
+  const fetchUserBalance = useCallback(async () => {
+    try {
+      const token = localStorage.getItem('authToken');
+      const userId = localStorage.getItem('user_id');
+      let uid = localStorage.getItem('uid');
+      if (!userId || !token) return;
+      if (!uid) {
+        try {
+          const userInfoResponse = await axios.get(
+            `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${userId}`,
+            { headers: { 'Authorization': `Bearer ${token}` } }
+          );
+          uid = userInfoResponse.data?.user?.uid || 'yE8vKBNw';
+          localStorage.setItem('uid', uid);
+        } catch {
+          uid = 'yE8vKBNw';
+        }
+      }
+      const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
+      const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-wallet/${uid}/${coinPairId}?apikey=${apiKey}`;
+      const response = await axios.get(apiUrl);
+      if (response.data) {
+        setUserBalance({
+          cryptoBalance: response.data.cryptoWallet?.spot_wallet || 0,
+          usdtBalance: response.data.usdtWallet?.spot_wallet || 0
+        });
+      }
+    } catch (err) {
+      // Optionally handle error
+    }
+  }, [coinPairId]);
+
+  useEffect(() => {
+    fetchCryptoData();
+  }, [fetchCryptoData]);
 
   if (loading) {
     return <div className="loading-screen">Loading trading data...</div>;
@@ -164,9 +173,10 @@ const SpotTrading = () => {
           cryptoData={cryptoData}
         />
         <TradeForm 
-          cryptoData={cryptoData}
+          cryptoData={cryptoData} 
           userBalance={userBalance}
           coinPairId={coinPairId}
+          onTradeSuccess={fetchUserBalance}
         />
       </div>
   

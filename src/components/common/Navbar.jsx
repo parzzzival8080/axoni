@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './Navbar.css';
+import MoreDropdown from './MoreDropdown';
 
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState('');
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showMoreDropdown, setShowMoreDropdown] = useState(false);
 
   const signupButtonStyle = {
     backgroundColor: 'black',
@@ -226,7 +228,7 @@ const Navbar = () => {
           </div>
           <div className="nav-item">
             Grow <i className="fas fa-chevron-down"></i>
-        </div>
+          </div>
           <div className="nav-item">
             Build <i className="fas fa-chevron-down"></i>
           </div>
@@ -234,8 +236,14 @@ const Navbar = () => {
             Institutional <i className="fas fa-chevron-down"></i>
           </div>
           <div className="nav-item">Learn</div>
-          <div className="nav-item">
+          <div
+            className="nav-item"
+            onMouseEnter={() => setShowMoreDropdown(true)}
+            onMouseLeave={() => setShowMoreDropdown(false)}
+            style={{ position: 'relative' }}
+          >
             More <i className="fas fa-chevron-down"></i>
+            <MoreDropdown visible={showMoreDropdown} />
           </div>
         </nav>
       </div>

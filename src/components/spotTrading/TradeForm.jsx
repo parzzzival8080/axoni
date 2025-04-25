@@ -355,6 +355,11 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
             type="text" 
             value={formatPrice(price)} 
             onChange={(e) => setPrice(Number(e.target.value.replace(/,/g, '')))}
+            onKeyDown={e => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+              }
+            }}
           />
           <span className="input-note">≈ ${formatPrice(price)}</span>
         </div>
@@ -420,8 +425,12 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
       {isAuthenticated ? (
         <button 
           className={`trade-button ${isBuy ? 'buy' : 'sell'}`}
-          onClick={handleTradeSubmit}
+          onClick={e => {
+            e.preventDefault();
+            handleTradeSubmit();
+          }}
           disabled={isLoading}
+          type="button"
         >
           {isLoading ? 'Processing...' : isBuy ? `Buy ${cryptoSymbol}` : `Sell ${cryptoSymbol}`}
         </button>
