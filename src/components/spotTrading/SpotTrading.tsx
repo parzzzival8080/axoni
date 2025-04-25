@@ -246,6 +246,8 @@ const TradeForm = ({ uid, isAuthenticated = true, cryptoSymbol = 'BTC', userBala
                     type={notification.type}
                 />
             )}
+
+
             
             <div className="trade-type-tabs">
                 <div 

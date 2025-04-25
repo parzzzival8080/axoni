@@ -28,6 +28,7 @@ const Header = () => {
         <div className="language"><i className="fas fa-globe"></i></div>
       </div>
     </header>
+    
   );
 };
 

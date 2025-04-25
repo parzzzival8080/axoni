@@ -1,0 +1,7 @@
+.TVChartContainer {
+	width: 100%;
+	max-height: auto;
+	/* overflow: hidden; */
+	height: 60vh;
+	/* Ensure the chart doesn't overflow */
+}
