@@ -175,16 +175,77 @@ export const executeFutureTradeOrder = async (params) => {
  * @returns Promise with balance information
  */
 export const getFutureBalance = async (uid) => {
-    // Validate UID parameter
-    if (!uid) {
-        throw new Error('User ID is required for fetching balance');
-    }
-    
     try {
-        // Use coin ID 1 for BTC/USDT as specified by the user
-        return await fetchWalletForCoin(uid, 1);
+        // Use the exact endpoint shown in the user's message
+        const url = `${API_BASE_URL}/user-wallet/${uid}/1?apikey=${API_KEY}`;
+        
+        console.log(`Fetching wallet balance for coin ID 1 from:`, url);
+        
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        console.log(`Wallet API response status for coin 1:`, response.status);
+        
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            console.error(`API response for coin 1 is not JSON. Content-Type:`, contentType);
+            throw new Error(`API did not return JSON for coin 1`);
+        }
+
+        const data = await response.json();
+        
+        // Log the full response data for debugging
+        console.log(`Full wallet API response for coin 1:`, JSON.stringify(data, null, 2));
+        
+        if (!response.ok) {
+            console.error(`Error fetching balance for coin 1:`, data);
+            throw new Error(`API error for coin 1: ${response.status}`);
+        }
+
+        // Check if the API returned an error
+        if (data.error) {
+            console.error(`API returned an error for coin 1:`, data.error);
+            throw new Error(`API error for coin 1: ${data.error}`);
+        }
+        
+        // Process the API response
+        if (data && typeof data === 'object') {
+            let futureWallet = 0;
+            let btcBalance = 0;
+            let usdtBalance = 0;
+
+            if (data.cryptoWallet && typeof data.cryptoWallet === 'object') {
+                futureWallet = parseFloat(data.cryptoWallet.future_wallet || 0);
+                btcBalance = parseFloat(data.cryptoWallet.spot_wallet || 0);
+            }
+            if (data.usdtWallet && typeof data.usdtWallet === 'object') {
+                usdtBalance = parseFloat(data.usdtWallet.spot_wallet || 0);
+            }
+
+            // Use futureWallet as available_balance for future trading
+            const balance = {
+                available_balance: futureWallet,
+                future_wallet: futureWallet,
+                btc: btcBalance,
+                usdt: usdtBalance
+            };
+            return {
+                success: true,
+                balance,
+                message: `Future balance fetched successfully for BTC/USDT pair`,
+                coin_id: 1
+            };
+        } else {
+            console.warn(`Unexpected API response format for coin 1.`);
+            throw new Error(`Unexpected response format for coin 1`);
+        }
     } catch (error) {
-        console.error('Error in getFutureBalance:', error);
+        console.error(`Error fetching future balance for coin 1:`, error);
         throw error;
     }
 };
