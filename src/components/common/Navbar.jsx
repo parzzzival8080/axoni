@@ -120,16 +120,19 @@ const Navbar = () => {
             Trade <i className="fas fa-chevron-down"></i>
             <div className="dropdown-menu">
               <h2>Trading instruments</h2>
-              
-              <div className="dropdown-item">
-                <div className="dropdown-icon">
-                  <i className="fas fa-sync-alt"></i>
+
+              <Link to="/conversion" className="dropdown-link">
+                <div className="dropdown-item with-arrow">
+                  <div className="dropdown-icon">
+                    <i className="fas fa-sync-alt"></i>
+                  </div>
+                  <div className="dropdown-content">
+                    <h3>Convert</h3>
+                    <p>Quick conversion, zero trading fees, no slippage</p>
+                    </div>
                 </div>
-                <div className="dropdown-content">
-                  <h3>Convert</h3>
-                  <p>Quick conversion, zero trading fees, no slippage</p>
-                </div>
-              </div>
+                <i className="fas fa-chevron-right"></i>
+              </Link>
               
               <Link to="/spot-trading" className="dropdown-link">
                 <div className="dropdown-item with-arrow">

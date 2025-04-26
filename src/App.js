@@ -9,6 +9,7 @@ import Footer from './components/common/Footer';
 import ChatBubble from './components/common/ChatBubble';
 import './styles.css';
 import FutureTrading from './pages/FutureTrading';
+import Conversion from './pages/Conversion';
 
 function App() {
   return (
@@ -17,6 +18,16 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/conversion" element={
+            <>
+              <Navbar />
+              <main>
+                <Conversion/>
+              </main>
+              <Footer />
+              <ChatBubble />
+            </>
+          } />
           <Route path="/spot-trading" element={
             <>
               <Navbar />
