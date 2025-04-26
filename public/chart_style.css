@@ -1,0 +1,39 @@
+/* Custom styles for TradingView chart */
+
+/* Main chart background */
+.chart-page,
+.chart-container,
+.tv-chart-container,
+.tv-chart__area,
+.chart-markup-table,
+.pane-legend-line.main,
+.chart-container-border {
+  background-color: #000000 !important;
+}
+
+/* Chart grid lines */
+.chart-markup-table.price-axis,
+.chart-markup-table.time-axis {
+  background-color: #000000 !important;
+  color: #d9d9d9 !important;
+}
+
+/* Chart borders */
+.chart-container-border {
+  border-color: #363c4e !important;
+}
+
+/* Chart loading screen */
+.loading-indicator {
+  background-color: #000000 !important;
+}
+
+/* Force all chart elements to have black background */
+[class*="chart"] {
+  background-color: #000000 !important;
+}
+
+/* Force iframe content to have black background */
+iframe {
+  background-color: #000000 !important;
+}

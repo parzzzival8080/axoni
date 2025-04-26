@@ -1,0 +1,183 @@
+/* MyRewards.css */
+
+.my-rewards-page {
+  background-color: #000;
+  color: #fff;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Hero Section */
+.hero-section {
+  background-color: #000;
+  padding: 60px 0 40px;
+  border-bottom: 1px solid #111;
+}
+
+.container {
+  width: 85%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero-section .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hero-content {
+  flex: 1;
+}
+
+.hero-content h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #9eff00; /* Bright green color from the image */
+}
+
+.hero-content p {
+  font-size: 1rem;
+  color: #fff;
+  opacity: 0.7;
+}
+
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.hero-image img {
+  max-width: 180px;
+  height: auto;
+}
+
+/* Main Content */
+.main-content {
+  padding: 40px 0;
+  background-color: #fff;
+  color: #000;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+.section h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #000;
+}
+
+/* Cards Grid */
+.cards-grid {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  width: 48%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border: 1px solid #eee;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.card-content h3 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 15px;
+  color: #000;
+}
+
+.amount {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #000;
+}
+
+.card-content p {
+  font-size: 0.8rem;
+  color: #666;
+  max-width: 180px;
+  line-height: 1.4;
+}
+
+.see-more-btn {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: fit-content;
+}
+
+.see-more-btn:hover {
+  background-color: #333;
+}
+
+/* Perk Card */
+.perk-card {
+  width: 48%;
+}
+
+/* Referral Images Section */
+.referral-images-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.referral-images {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.referral-img {
+  max-width: 80px;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Footer */
+.my-rewards-page footer {
+  background-color: #000;
+  color: #fff;
+  margin-top: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero-section .container {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .hero-image {
+    justify-content: center;
+    margin-top: 30px;
+  }
+  
+  .cards-grid {
+    flex-direction: column;
+  }
+  
+  .card {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+}
