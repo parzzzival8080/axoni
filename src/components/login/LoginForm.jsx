@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import React from 'react';
+
 const LoginForm = () => {
   const [activeTab, setActiveTab] = useState('email');
   const [credentials, setCredentials] = useState({
@@ -223,7 +223,7 @@ const LoginForm = () => {
       )}
       
       <div className="recaptcha-notice">
-        <p>This site is protected by Google reCAPTCHA to ensure you're not a bot. <a href="#">Learn more</a></p>
+        <p>This site is protected by Google reCAPTCHA to ensure you're not a bot. <button type="button" className="learn-more-btn">Learn more</button></p>
       </div>
     </div>
   );

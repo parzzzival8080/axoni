@@ -69,7 +69,7 @@ const Footer = () => {
       <div className="footer-top">
         <div className="footer-logo">
           <img src="/assets/images/okx-logo.png" alt="OKX" />
-          <p>© 2023 OKX</p>
+          <p> 2023 OKX</p>
         </div>
         <div className="download-app">
           <button className="download-btn">Download App</button>
@@ -86,7 +86,7 @@ const Footer = () => {
             <ul>
               {section.links.map((link, linkIndex) => (
                 <li key={linkIndex}>
-                  <a href="#">{link}</a>
+                  <button className="footer-link-btn" type="button">{link}</button>
                 </li>
               ))}
             </ul>
@@ -96,13 +96,13 @@ const Footer = () => {
       <div className="footer-social">
         <div className="community">Community</div>
         <div className="social-icons">
-          <a href="#"><FaTwitter /></a>
-          <a href="#"><FaTelegram /></a>
-          <a href="#"><FaDiscord /></a>
-          <a href="#"><FaFacebook /></a>
-          <a href="#"><FaInstagram /></a>
-          <a href="#"><FaReddit /></a>
-          <a href="#"><FaYoutube /></a>
+          <button className="footer-social-btn" type="button" aria-label="Twitter"><FaTwitter /></button>
+          <button className="footer-social-btn" type="button" aria-label="Telegram"><FaTelegram /></button>
+          <button className="footer-social-btn" type="button" aria-label="Discord"><FaDiscord /></button>
+          <button className="footer-social-btn" type="button" aria-label="Facebook"><FaFacebook /></button>
+          <button className="footer-social-btn" type="button" aria-label="Instagram"><FaInstagram /></button>
+          <button className="footer-social-btn" type="button" aria-label="Reddit"><FaReddit /></button>
+          <button className="footer-social-btn" type="button" aria-label="Youtube"><FaYoutube /></button>
         </div>
       </div>
     </footer>

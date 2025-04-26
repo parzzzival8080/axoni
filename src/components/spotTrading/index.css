@@ -5,3 +5,21 @@
 	height: 60vh;
 	/* Ensure the chart doesn't overflow */
 }
+
+/* Force black background on TradingView chart */
+.TVChartContainer iframe,
+.TVChartContainer div {
+	background-color: #000000 !important;
+}
+
+/* Target the chart specifically */
+.chart-area {
+	background-color: #000000 !important;
+}
+
+/* Target TradingView elements */
+.chart-markup-table,
+.tv-chart-container,
+.tv-chart__area {
+	background-color: #000000 !important;
+}

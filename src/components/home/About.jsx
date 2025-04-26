@@ -36,7 +36,7 @@ const About = () => {
     <section className="about">
       <h2>What is TradeX?</h2>
       <p>Find out why we're your new favorite crypto app with some help from our world-class partners.</p>
-      <a href="#" className="find-out-btn">Find out</a>
+      <button type="button" className="find-out-btn">Find out</button>
       <div className="logo-large">
         <img src={logo} alt="TradeX Logo" />
       </div>

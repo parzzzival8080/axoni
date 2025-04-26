@@ -9,16 +9,9 @@ import Footer from './components/common/Footer';
 import ChatBubble from './components/common/ChatBubble';
 import './styles.css';
 import FutureTrading from './pages/FutureTrading';
-<<<<<<< HEAD
 import CampaignCenter from './pages/morePages/CampaignCenter';
 import MyRewards from './pages/morePages/MyRewards';
 import Referral from './pages/morePages/Referral';
-import Conversion from './pages/Conversion';
-import Market from './pages/discover/Market';
-
-=======
-import CampaignCenter from './pages/tools/CampaignCenter';
->>>>>>> parent of 31be349 (.)
 
 function App() {
   return (
@@ -27,16 +20,6 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/conversion" element={
-            <>
-              <Navbar />
-              <main>
-                <Conversion/>
-              </main>
-              <Footer />
-              <ChatBubble />
-            </>
-          } />
           <Route path="/spot-trading" element={
             <>
               <Navbar />
@@ -55,23 +38,9 @@ function App() {
               <ChatBubble />
             </>
           } />
-<<<<<<< HEAD
           <Route path="/morePages/campaign-center" element={<CampaignCenter />} />
           <Route path="/morePages/my-rewards" element={<MyRewards />} />
           <Route path="/morePages/referral" element={<Referral />} />
-          <Route path="/market" element={
-            <>
-              <Navbar />
-              <main>
-                <Market/>
-              </main>
-              <Footer />
-              <ChatBubble />
-            </>
-          } />
-=======
-          <Route path="/tools/campaign-center" element={<CampaignCenter />} />
->>>>>>> parent of 31be349 (.)
           <Route path="/" element={
             <>
               <Navbar />
