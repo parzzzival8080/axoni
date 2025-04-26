@@ -9,12 +9,16 @@ import Footer from './components/common/Footer';
 import ChatBubble from './components/common/ChatBubble';
 import './styles.css';
 import FutureTrading from './pages/FutureTrading';
+<<<<<<< HEAD
 import CampaignCenter from './pages/morePages/CampaignCenter';
 import MyRewards from './pages/morePages/MyRewards';
 import Referral from './pages/morePages/Referral';
 import Conversion from './pages/Conversion';
 import Market from './pages/discover/Market';
 
+=======
+import CampaignCenter from './pages/tools/CampaignCenter';
+>>>>>>> parent of 31be349 (.)
 
 function App() {
   return (
@@ -51,6 +55,7 @@ function App() {
               <ChatBubble />
             </>
           } />
+<<<<<<< HEAD
           <Route path="/morePages/campaign-center" element={<CampaignCenter />} />
           <Route path="/morePages/my-rewards" element={<MyRewards />} />
           <Route path="/morePages/referral" element={<Referral />} />
@@ -64,6 +69,9 @@ function App() {
               <ChatBubble />
             </>
           } />
+=======
+          <Route path="/tools/campaign-center" element={<CampaignCenter />} />
+>>>>>>> parent of 31be349 (.)
           <Route path="/" element={
             <>
               <Navbar />
