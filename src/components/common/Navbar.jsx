@@ -117,9 +117,45 @@ const Navbar = () => {
           </div>
           <div className="nav-item">
             Discover <i className="fas fa-chevron-down"></i>
-          </div>
+              <div className='dropdown-menu'>
+                <Link to="/market" className="dropdown-link">
+                  <div className="dropdown-item with-arrow">
+                      <div className="dropdown-icon">
+                        <i className="fas fa-coins"></i>
+                      </div>
+                      <div className="dropdown-content">
+                        <h3>Markets</h3>
+                        <p>View the latest crypto prices, volume, and data</p>
+                      </div>
+                      <i className="fas fa-chevron-right"></i>
+                  </div>
+                </Link>
+                
+                <div className="dropdown-item with-arrow">
+                    <div className="dropdown-icon">
+                      <i className="fas fa-coins"></i>
+                    </div>
+                    <div className="dropdown-content">
+                      <h3>Opportunities</h3>
+                      <p>Discover hot and new crypto</p>
+                    </div>
+                    <i className="fas fa-chevron-right"></i>
+                </div>
+                <div className="dropdown-item with-arrow">
+                    <div className="dropdown-icon">
+                      <i className="fas fa-coins"/>
+                    </div>
+                    <div className="dropdown-content">
+                      <h3>Marketplace</h3>
+                      <p>Reap high returns with a community of top traders</p>
+                    </div>
+                    <i className="fas fa-chevron-right"/>
+                </div>
+                
+              </div>
+            </div>
           <div className="nav-item">
-            Trade <i className="fas fa-chevron-down"></i>
+            Trade <i className="fas fa-chevron-down"/>
             <div className="dropdown-menu">
               <h2 className="dropdown-title">Trading instruments</h2>
               
@@ -127,11 +163,8 @@ const Navbar = () => {
                 <div className="dropdown-icon">
                   <i className="fas fa-sync-alt"></i>
                 </div>
-                <div className="dropdown-content">
-                  <h3>Convert</h3>
-                  <p>Quick conversion, zero trading fees, no slippage</p>
-                </div>
-              </div>
+                <i className="fas fa-chevron-right"></i>
+              </Link>
               
               <Link to="/spot-trading" className="dropdown-link">
                 <div className="dropdown-item with-arrow">
