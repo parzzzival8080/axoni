@@ -210,12 +210,12 @@ textarea.form-control {
 }
 
 .btn-primary {
-    background-color: #000000;
-    color: #ffffff;
+    background-color: #000;
+    color: #fff;
 }
 
 .btn-primary:hover {
-    background-color: #333333;
+    background-color: #333;
 }
 
 .checkbox-group {

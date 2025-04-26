@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import OrderHistory from './OrderHistory';
 import './index.css';
-import './chart_override.css';
 import { widget } from '../../charting_library';
 
 function getLanguageFromURL() {
@@ -28,66 +27,9 @@ const TradingChart = () => {
 		fullscreen: false,
 		autosize: true,
 		studiesOverrides: {},
-    backgroundColor: '#000000',
 	};
 
   useEffect(() => {
-    // Inject styles to force black background
-    const styleElement = document.createElement('style');
-    styleElement.textContent = `
-      /* Force black background on TradingView chart */
-      .chart-container,
-      .tv-chart-container,
-      .layout__area--center,
-      .chart-page,
-      .chart-container__chartarea,
-      .chart-container__chartarea--themed-dark,
-      .chart-markup-table,
-      .tv-chart-container__bg {
-        background-color: #000000 !important;
-      }
-      
-      /* Target the chart canvas */
-      .chart-container canvas {
-        background-color: #000000 !important;
-      }
-      
-      /* Target the specific navy blue background */
-      body .chart-page,
-      body .chart-container,
-      body .chart-container__chartarea,
-      body .chart-container__chartarea--themed-dark,
-      body .layout__area--center,
-      body .tv-chart-container,
-      body iframe {
-        background-color: #000000 !important;
-      }
-      
-      /* Target the main chart area where candlesticks are displayed */
-      .chart-container__chartarea--themed-dark {
-        background-color: #000000 !important;
-      }
-      
-      /* Force all elements to have black background */
-      .TVChartContainer iframe,
-      .TVChartContainer iframe body,
-      .TVChartContainer iframe html {
-        background-color: #000000 !important;
-      }
-      
-      /* Target the specific navy background in TradingView */
-      .chart-page .chart-container {
-        background-color: #000000 !important;
-      }
-      
-      /* Target the background of the price and time scales */
-      .chart-page .chart-container .price-axis,
-      .chart-page .chart-container .time-axis {
-        background-color: #000000 !important;
-      }
-    `;
-    document.head.appendChild(styleElement);
-
 		const widgetOptions = {
 			symbol: defaultProps.symbol,
 			// BEWARE: no trailing slash is expected in feed URL
@@ -107,8 +49,6 @@ const TradingChart = () => {
 			autosize: defaultProps.autosize,
 			studies_overrides: defaultProps.studiesOverrides,
       theme: "dark",
-      custom_css_url: '', 
-      loading_screen: { backgroundColor: "#000000" },
       enabled_features: [
 				"hide_left_toolbar_by_default",
 				"chart_style_hilo_last_price",
@@ -117,39 +57,7 @@ const TradingChart = () => {
 				"chart_style_hilo",
 				"show_symbol_logos"
 			],
-			toolbar_bg: '#000000', 
-			overrides: {
-				// Candle styling
-				"mainSeriesProperties.candleStyle.upColor": "#26a69a",
-				"mainSeriesProperties.candleStyle.downColor": "#ef5350",
-				"mainSeriesProperties.candleStyle.wickUpColor": "#26a69a",
-				"mainSeriesProperties.candleStyle.wickDownColor": "#ef5350",
-				"mainSeriesProperties.candleStyle.borderUpColor": "#26a69a",
-				"mainSeriesProperties.candleStyle.borderDownColor": "#ef5350",
-				
-				// Scale and grid properties
-				"scalesProperties.backgroundColor": "#000000",
-				"paneProperties.vertGridProperties.color": "#363c4e",
-				"paneProperties.horzGridProperties.color": "#363c4e",
-				"scalesProperties.lineColor": "#363c4e",
-				"scalesProperties.textColor": "#d9d9d9",
-				
-				// Additional chart background properties
-				"chartProperties.background": "#000000",
-				"chartProperties.paneBackgroundColor": "#000000",
-				"chartProperties.backgroundColor": "#000000",
-				"paneProperties.backgroundType": "solid",
-				"paneProperties.backgroundGradientStartColor": "#000000",
-				"paneProperties.backgroundGradientEndColor": "#000000",
-				"paneProperties.crossHairProperties.color": "#d9d9d9",
-				"paneProperties.crossHairProperties.width": 1,
-				"paneProperties.crossHairProperties.transparency": 0,
-				"paneProperties.crossHairProperties.borderVisible": false,
-				"paneProperties.crossHairProperties.backgroundColor": "#000000",
-				"paneProperties.crossHairProperties.backgroundType": "solid",
-				"paneProperties.crossHairProperties.backgroundGradientStartColor": "#000000",
-				"paneProperties.crossHairProperties.backgroundGradientEndColor": "#000000",
-			},
+			toolbar_bg: '#1f2630',
 			disabled_features: [
 				"items_favoriting", 
 				// "legend_context_menu",
@@ -185,83 +93,6 @@ const TradingChart = () => {
 		const tvWidget = new widget(widgetOptions);
 
 		tvWidget.onChartReady(() => {
-			// Set chart background to black using the chart's API
-			tvWidget.activeChart().applyOverrides({
-				"paneProperties.background": "#000000",
-				"paneProperties.backgroundType": "solid"
-			});
-			
-			// Target the main chart background specifically
-			const chartElements = document.querySelectorAll('.tv-chart-container, .chart-container, .chart-markup-table, .chart-page');
-			chartElements.forEach(el => {
-				el.style.backgroundColor = '#000000';
-			});
-			
-			// Target the specific chart canvas background - the main chart area
-			setTimeout(() => {
-				// Use setTimeout to ensure the chart is fully rendered
-				// Apply direct style to the main chart area
-				const style = document.createElement('style');
-				style.textContent = `
-					/* Target the main chart area directly */
-					.chart-container__chartarea--themed-dark { background-color: #000000 !important; }
-					.chart-container__chartarea { background-color: #000000 !important; }
-					.layout__area--center { background-color: #000000 !important; }
-					.tv-chart-container { background-color: #000000 !important; }
-					.chart-markup-table { background-color: #000000 !important; }
-					
-					/* Target the navy blue background specifically */
-					[style*="background-color: rgb(19, 23, 34)"] { background-color: #000000 !important; }
-					[style*="background-color: #131722"] { background-color: #000000 !important; }
-					[style*="background-color: rgb(27, 32, 48)"] { background-color: #000000 !important; }
-					[style*="background-color: #1b2030"] { background-color: #000000 !important; }
-					
-					/* Target any element with navy blue background */
-					*[style*="background-color: rgb(19, 23, 34)"],
-					*[style*="background-color: #131722"],
-					*[style*="background-color: rgb(27, 32, 48)"],
-					*[style*="background-color: #1b2030"] {
-						background-color: #000000 !important;
-					}
-				`;
-				document.head.appendChild(style);
-				
-				// Find and modify the iframe content
-				const iframes = document.querySelectorAll('iframe');
-				iframes.forEach(iframe => {
-					try {
-						if (iframe.contentDocument) {
-							// Create a style element for the iframe
-							const iframeStyle = document.createElement('style');
-							iframeStyle.textContent = `
-								/* Target the navy blue background specifically in iframe */
-								body, html, .chart-page, .chart-container, .tv-chart-container, 
-								.layout__area--center, .chart-markup-table {
-									background-color: #000000 !important;
-								}
-								
-								/* Target any element with navy blue background */
-								*[style*="background-color: rgb(19, 23, 34)"],
-								*[style*="background-color: #131722"],
-								*[style*="background-color: rgb(27, 32, 48)"],
-								*[style*="background-color: #1b2030"] {
-									background-color: #000000 !important;
-								}
-							`;
-							iframe.contentDocument.head.appendChild(iframeStyle);
-							
-							// Directly set background color on elements
-							const iframeElements = iframe.contentDocument.querySelectorAll('.chart-page, .chart-container, .tv-chart-container');
-							iframeElements.forEach(el => {
-								el.style.backgroundColor = '#000000';
-							});
-						}
-					} catch (e) {
-						console.error('Error modifying iframe content:', e);
-					}
-				});
-			}, 1000);
-			
 			tvWidget.headerReady().then(() => {
 				const button = tvWidget.createButton();
 				button.setAttribute('title', 'Click to show a notification popup');
@@ -285,7 +116,7 @@ const TradingChart = () => {
 
   return (
     
-    <div className="chart-section" style={{ width: '100%', height: '700px', backgroundColor: '#000000' }}>
+    <div className="chart-section" style={{ width: '100%', height: '700px' }}>
      
       <div className="chart-nav">
         <div className="left-tabs">
@@ -333,7 +164,7 @@ const TradingChart = () => {
           </div>
         </div> */}
 
-        <div className="chart-area" style={{ backgroundColor: '#000000' }}>
+        <div className="chart-area">
           {/* <div className="side-toolbar">
             <div className="tool-button"><i className="fas fa-crosshair"></i></div>
             <div className="tool-button"><i className="fas fa-arrows-alt"></i></div>
@@ -344,23 +175,7 @@ const TradingChart = () => {
           </div> */}
           <div
 			ref={chartContainerRef}
-			className={'TVChartContainer'}
-			style={{ 
-				backgroundColor: '#000000',
-				position: 'relative'
-			}}>
-			{/* Overlay div to force black background */}
-			<div style={{
-				position: 'absolute',
-				top: 0,
-				left: 0,
-				right: 0,
-				bottom: 0,
-				backgroundColor: '#000000',
-				zIndex: -1
-			}}></div>
-		  </div>        
-		</div>
+			className={'TVChartContainer'}></div>        </div>
 
         {/* <div className="volume-info">
           <div className="volume-label">Volume <span className="volume-sma">SMA</span></div>

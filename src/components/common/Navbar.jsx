@@ -121,7 +121,7 @@ const Navbar = () => {
           <div className="nav-item">
             Trade <i className="fas fa-chevron-down"></i>
             <div className="dropdown-menu">
-              <h2 className="dropdown-title">Trading instruments</h2>
+              <h2>Trading instruments</h2>
               
               <div className="dropdown-item">
                 <div className="dropdown-icon">

@@ -16,9 +16,9 @@ const moreItems = [
   {
     group: 'Others',
     items: [
-      { icon: 'fa-bullhorn', label: 'Campaign center', to: '/morePages/campaign-center' },
-      { icon: 'fa-gift', label: 'My rewards', to: '/morePages/my-rewards' },
-      { icon: 'fa-ticket-alt', label: 'Referral', to: '/morePages/referral' },
+      { icon: 'fa-bullhorn', label: 'Campaign center', to: '/tools/campaign-center' },
+      { icon: 'fa-gift', label: 'My rewards' },
+      { icon: 'fa-ticket-alt', label: 'Referral' },
       { icon: 'fa-users', label: 'Affiliates' },
       { icon: 'fa-flask', label: 'OKX Ventures' },
       { icon: 'fa-chart-line', label: 'Trade on TradingView' },
