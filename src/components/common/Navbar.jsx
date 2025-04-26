@@ -157,19 +157,6 @@ const Navbar = () => {
             <div className="dropdown-menu">
               <h2>Trading instruments</h2>
 
-              <Link to="/conversion" className="dropdown-link">
-                <div className="dropdown-item with-arrow">
-                  <div className="dropdown-icon">
-                    <i className="fas fa-sync-alt"></i>
-                  </div>
-                  <div className="dropdown-content">
-                    <h3>Convert</h3>
-                    <p>Quick conversion, zero trading fees, no slippage</p>
-                    </div>
-                </div>
-                <i className="fas fa-chevron-right"></i>
-              </Link>
-              
               <Link to="/spot-trading" className="dropdown-link">
                 <div className="dropdown-item with-arrow">
                   <div className="dropdown-icon">
@@ -288,8 +275,7 @@ const Navbar = () => {
           <div className="user-menu-container">
             <div 
               style={userMenuStyle} 
-              onClick={() => setShowUserMenu(!showUserMenu)}
-            >
+              onClick={() => setShowUserMenu(!showUserMenu)}>
               <i className="fas fa-user-circle"></i>
               Welcome, {userName}
               <i className="fas fa-chevron-down"></i>
