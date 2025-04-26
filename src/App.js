@@ -10,6 +10,7 @@ import ChatBubble from './components/common/ChatBubble';
 import './styles.css';
 import FutureTrading from './pages/FutureTrading';
 import Conversion from './pages/Conversion';
+import Market from './pages/discover/Market';
 
 function App() {
   return (
@@ -43,6 +44,16 @@ function App() {
               <main>
                 <FutureTrading/>
               </main>
+              <ChatBubble />
+            </>
+          } />
+          <Route path="/market" element={
+            <>
+              <Navbar />
+              <main>
+                <Market/>
+              </main>
+              <Footer />
               <ChatBubble />
             </>
           } />
