@@ -223,7 +223,7 @@ const LoginForm = () => {
       )}
       
       <div className="recaptcha-notice">
-        <p>This site is protected by Google reCAPTCHA to ensure you're not a bot. <button type="button" className="learn-more-btn">Learn more</button></p>
+        <p>This site is protected by Google reCAPTCHA to ensure you're not a bot. <a href="#">Learn more</a></p>
       </div>
     </div>
   );

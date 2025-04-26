@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './Navbar.css';
-import MoreDropdown from './MoreDropdown';
 
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState('');
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const [showMoreDropdown, setShowMoreDropdown] = useState(false);
 
   const signupButtonStyle = {
     backgroundColor: 'black',
@@ -117,21 +115,60 @@ const Navbar = () => {
           </div>
           <div className="nav-item">
             Discover <i className="fas fa-chevron-down"></i>
-          </div>
-          <div className="nav-item">
-            Trade <i className="fas fa-chevron-down"></i>
-            <div className="dropdown-menu">
-              <h2 className="dropdown-title">Trading instruments</h2>
-              
-              <div className="dropdown-item">
-                <div className="dropdown-icon">
-                  <i className="fas fa-sync-alt"></i>
+              <div className='dropdown-menu'>
+                <Link to="/market" className="dropdown-link">
+                  <div className="dropdown-item with-arrow">
+                      <div className="dropdown-icon">
+                        <i className="fas fa-coins"></i>
+                      </div>
+                      <div className="dropdown-content">
+                        <h3>Markets</h3>
+                        <p>View the latest crypto prices, volume, and data</p>
+                      </div>
+                      <i className="fas fa-chevron-right"></i>
+                  </div>
+                </Link>
+                
+                <div className="dropdown-item with-arrow">
+                    <div className="dropdown-icon">
+                      <i className="fas fa-coins"></i>
+                    </div>
+                    <div className="dropdown-content">
+                      <h3>Opportunities</h3>
+                      <p>Discover hot and new crypto</p>
+                    </div>
+                    <i className="fas fa-chevron-right"></i>
                 </div>
-                <div className="dropdown-content">
-                  <h3>Convert</h3>
-                  <p>Quick conversion, zero trading fees, no slippage</p>
+                <div className="dropdown-item with-arrow">
+                    <div className="dropdown-icon">
+                      <i className="fas fa-coins"/>
+                    </div>
+                    <div className="dropdown-content">
+                      <h3>Marketplace</h3>
+                      <p>Reap high returns with a community of top traders</p>
+                    </div>
+                    <i className="fas fa-chevron-right"/>
                 </div>
+                
               </div>
+            </div>
+          <div className="nav-item">
+            Trade <i className="fas fa-chevron-down"/>
+            <div className="dropdown-menu">
+              <h2>Trading instruments</h2>
+
+              <Link to="/conversion" className="dropdown-link">
+                <div className="dropdown-item with-arrow">
+                  <div className="dropdown-icon">
+                    <i className="fas fa-sync-alt"></i>
+                  </div>
+                  <div className="dropdown-content">
+                    <h3>Convert</h3>
+                    <p>Quick conversion, zero trading fees, no slippage</p>
+                    </div>
+                </div>
+                <i className="fas fa-chevron-right"></i>
+              </Link>
               
               <Link to="/spot-trading" className="dropdown-link">
                 <div className="dropdown-item with-arrow">
@@ -228,7 +265,7 @@ const Navbar = () => {
           </div>
           <div className="nav-item">
             Grow <i className="fas fa-chevron-down"></i>
-          </div>
+        </div>
           <div className="nav-item">
             Build <i className="fas fa-chevron-down"></i>
           </div>
@@ -236,14 +273,8 @@ const Navbar = () => {
             Institutional <i className="fas fa-chevron-down"></i>
           </div>
           <div className="nav-item">Learn</div>
-          <div
-            className="nav-item"
-            onMouseEnter={() => setShowMoreDropdown(true)}
-            onMouseLeave={() => setShowMoreDropdown(false)}
-            style={{ position: 'relative' }}
-          >
+          <div className="nav-item">
             More <i className="fas fa-chevron-down"></i>
-            <MoreDropdown visible={showMoreDropdown} />
           </div>
         </nav>
       </div>
@@ -289,10 +320,10 @@ const Navbar = () => {
         )}
         
         <div className="icon-group">
-          <button className="icon-link" type="button" aria-label="Download"><i className="fas fa-download"></i></button>
-          <button className="icon-link" type="button" aria-label="Notifications"><i className="fas fa-bell"></i></button>
-          <button className="icon-link" type="button" aria-label="Help"><i className="fas fa-question-circle"></i></button>
-          <button className="icon-link" type="button" aria-label="Language"><i className="fas fa-globe"></i></button>
+          <a href="#" className="icon-link"><i className="fas fa-download"></i></a>
+          <a href="#" className="icon-link"><i className="fas fa-bell"></i></a>
+          <a href="#" className="icon-link"><i className="fas fa-question-circle"></i></a>
+          <a href="#" className="icon-link"><i className="fas fa-globe"></i></a>
         </div>
       </div>
     </header>
