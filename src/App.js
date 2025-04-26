@@ -9,7 +9,9 @@ import Footer from './components/common/Footer';
 import ChatBubble from './components/common/ChatBubble';
 import './styles.css';
 import FutureTrading from './pages/FutureTrading';
-import CampaignCenter from './pages/tools/CampaignCenter';
+import CampaignCenter from './pages/morePages/CampaignCenter';
+import MyRewards from './pages/morePages/MyRewards';
+import Referral from './pages/morePages/Referral';
 
 function App() {
   return (
@@ -36,7 +38,9 @@ function App() {
               <ChatBubble />
             </>
           } />
-          <Route path="/tools/campaign-center" element={<CampaignCenter />} />
+          <Route path="/morePages/campaign-center" element={<CampaignCenter />} />
+          <Route path="/morePages/my-rewards" element={<MyRewards />} />
+          <Route path="/morePages/referral" element={<Referral />} />
           <Route path="/" element={
             <>
               <Navbar />
