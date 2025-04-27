@@ -403,10 +403,10 @@ const Navbar = () => {
         )}
         
         <div className="icon-group">
-          <a href="#" className="icon-link"><i className="fas fa-download"></i></a>
-          <a href="#" className="icon-link"><i className="fas fa-bell"></i></a>
-          <a href="#" className="icon-link"><i className="fas fa-question-circle"></i></a>
-          <a href="#" className="icon-link"><i className="fas fa-globe"></i></a>
+          <button className="icon-link" type="button" aria-label="Download app" style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}><i className="fas fa-download"></i></button>
+          <button className="icon-link" type="button" aria-label="Notifications" style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}><i className="fas fa-bell"></i></button>
+          <button className="icon-link" type="button" aria-label="Help" style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}><i className="fas fa-question-circle"></i></button>
+          <button className="icon-link" type="button" aria-label="Language" style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}><i className="fas fa-globe"></i></button>
         </div>
       </div>
     </header>
