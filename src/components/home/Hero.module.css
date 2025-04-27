@@ -1,0 +1,173 @@
+.hero {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #000;
+  padding-left: 0;
+  padding-right: 0;
+  gap: 0;
+}
+
+.heroInner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 1320px;
+  padding: 0 48px;
+  gap: 0;
+}
+
+.heroContent {
+  max-width: 650px;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.heroTitle {
+  font-size: 64px;
+  line-height: 1.05;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 48px;
+  letter-spacing: -0.01em;
+}
+
+.emailForm {
+  display: flex;
+  width: 100%;
+  max-width: 560px;
+  margin-bottom: 56px;
+  gap: 0;
+}
+
+.emailInput {
+  flex: 1;
+  padding: 18px 20px;
+  border: none;
+  border-radius: 8px 0 0 8px;
+  background: #18181b;
+  color: #fff;
+  font-size: 18px;
+  outline: none;
+  box-shadow: none;
+}
+.emailInput::placeholder {
+  color: #888;
+}
+
+.tryBtn {
+  padding: 0 34px;
+  font-size: 18px;
+  background: #fff;
+  color: #000;
+  border: none;
+  border-radius: 0 8px 8px 0;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  height: 56px;
+}
+.tryBtn:hover {
+  background: #eaeaea;
+}
+
+.partnerLogos {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+  margin-top: 64px;
+  margin-bottom: 0;
+}
+.partnerLogos img {
+  height: 56px;
+  opacity: 1;
+  filter: none;
+  transition: transform 0.15s;
+}
+.partnerLogos img:hover {
+  transform: scale(1.07);
+}
+
+.heroImage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0;
+}
+.phoneWrapper {
+  width: 320px;
+  max-width: 100vw;
+  background: none;
+}
+.heroImage img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 32px;
+  box-shadow: 0 8px 32px #000a;
+  background: #18181b;
+  padding: 0;
+}
+
+@media (max-width: 1200px) {
+  .heroInner {
+    padding: 0 24px;
+    max-width: 1000px;
+  }
+  .phoneWrapper {
+    width: 240px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .hero {
+    padding: 40px 0 0 0;
+    min-height: unset;
+  }
+  .heroInner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 12px;
+    max-width: 100vw;
+  }
+  .heroImage {
+    justify-content: center;
+    width: 100%;
+  }
+  .heroContent {
+    max-width: 100vw;
+    text-align: left;
+    margin: 0 0 0 0;
+  }
+  .emailForm {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .heroTitle {
+    font-size: 34px;
+  }
+  .phoneWrapper {
+    width: 70vw;
+    max-width: 200px;
+  }
+  .partnerLogos {
+    gap: 20px;
+    margin-top: 28px;
+  }
+  .partnerLogos img {
+    height: 36px;
+  }
+  .heroContent {
+    margin: 0 10px;
+  }
+}
