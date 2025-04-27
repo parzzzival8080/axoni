@@ -1,6 +1,4 @@
 import React from 'react';
-import Navbar from '../../components/common/Navbar';
-import Footer from '../../components/common/Footer';
 import './MyRewards.css';
 import referralImage1 from '../../assets/referral/0DEDDD03AB730CD5.webp';
 import referralImage2 from '../../assets/referral/D664C8EB85A43D97.webp';
@@ -8,9 +6,7 @@ import referralImage3 from '../../assets/referral/F5935075AB7CA066.webp';
 
 const MyRewards = () => {
   return (
-    <div className="my-rewards-page">
-      <Navbar />
-      
+    <main className="my-rewards-main">
       {/* Hero Section */}
       <div className="hero-section">
         <div className="container">
@@ -101,9 +97,7 @@ const MyRewards = () => {
           </div>
         </div>
       </div>
-      
-      <Footer />
-    </div>
+    </main>
   );
 };
 

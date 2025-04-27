@@ -10,7 +10,6 @@ import ChatBubble from './components/common/ChatBubble';
 import './styles.css';
 import FutureTrading from './pages/FutureTrading';
 
-
 function App() {
   return (
     <Router>
@@ -41,6 +40,36 @@ function App() {
             <>
               <Navbar />
               <main>
+              </main>
+              <Footer />
+              <ChatBubble />
+            </>
+          } />
+          <Route path="/pages/morePages/CampaignCenter" element={
+            <>
+              <Navbar />
+              <main>
+                {require('./pages/morePages/CampaignCenter').default()}
+              </main>
+              <Footer />
+              <ChatBubble />
+            </>
+          } />
+          <Route path="/pages/morePages/MyRewards" element={
+            <>
+              <Navbar />
+              <main>
+                {require('./pages/morePages/MyRewards').default()}
+              </main>
+              <Footer />
+              <ChatBubble />
+            </>
+          } />
+          <Route path="/pages/morePages/Referral" element={
+            <>
+              <Navbar />
+              <main>
+                {require('./pages/morePages/Referral').default()}
               </main>
               <Footer />
               <ChatBubble />

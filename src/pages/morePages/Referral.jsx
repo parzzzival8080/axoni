@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import Navbar from '../../components/common/Navbar';
-import Footer from '../../components/common/Footer';
 import './Referral.css';
 import referralImage1 from '../../assets/referral/0DEDDD03AB730CD5.webp';
 import referralImage2 from '../../assets/referral/D664C8EB85A43D97.webp';
@@ -52,9 +50,7 @@ const Referral = () => {
   ];
 
   return (
-    <div className="referral-page">
-      <Navbar />
-      
+    <main className="referral-main">
       {/* Hero Section */}
       <div className="referral-hero">
         <div className="container">
@@ -171,9 +167,7 @@ const Referral = () => {
           </div>
         </div>
       </div>
-      
-      <Footer />
-    </div>
+    </main>
   );
 };
 

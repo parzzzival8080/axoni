@@ -7,6 +7,7 @@ const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState('');
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showMoreDropdown, setShowMoreDropdown] = useState(false);
 
   const signupButtonStyle = {
     backgroundColor: 'black',
@@ -157,6 +158,19 @@ const Navbar = () => {
             <div className="dropdown-menu">
               <h2>Trading instruments</h2>
 
+              <Link to="/conversion" className="dropdown-link">
+                <div className="dropdown-item with-arrow">
+                  <div className="dropdown-icon">
+                    <i className="fas fa-sync-alt"></i>
+                  </div>
+                  <div className="dropdown-content">
+                    <h3>Convert</h3>
+                    <p>Quick conversion, zero trading fees, no slippage</p>
+                    </div>
+                </div>
+                <i className="fas fa-chevron-right"></i>
+              </Link>
+              
               <Link to="/spot-trading" className="dropdown-link">
                 <div className="dropdown-item with-arrow">
                   <div className="dropdown-icon">
@@ -260,8 +274,90 @@ const Navbar = () => {
             Institutional <i className="fas fa-chevron-down"></i>
           </div>
           <div className="nav-item">Learn</div>
-          <div className="nav-item">
+          <div 
+            className="nav-item"
+            onMouseEnter={() => setShowMoreDropdown(true)}
+            onMouseLeave={() => setShowMoreDropdown(false)}
+            style={{position: 'relative'}}
+          >
             More <i className="fas fa-chevron-down"></i>
+            {showMoreDropdown && (
+              <div 
+                className="dropdown-menu more-dropdown-menu" 
+                style={{width: '480px', display: 'flex', padding: '32px 40px', gap: '48px', position: 'absolute', left: 0, top: '100%'}}
+                onMouseEnter={() => setShowMoreDropdown(true)}
+                onMouseLeave={() => setShowMoreDropdown(false)}
+              >
+                {/* Left Column: Products */}
+                <div style={{flex: 1}}>
+                  <div style={{fontWeight: 600, color: '#777', fontSize: '13px', marginBottom: '18px'}}>Products</div>
+                  <Link to="/okb" className="dropdown-link">
+                    <div className="dropdown-item" style={{gap: '12px'}}>
+                      <i className="fas fa-coins"></i> OKB
+                    </div>
+                  </Link>
+                  <Link to="/security-of-funds" className="dropdown-link">
+                    <div className="dropdown-item" style={{gap: '12px'}}>
+                      <i className="fas fa-shield-alt"></i> Security of funds
+                    </div>
+                  </Link>
+                  <Link to="/status" className="dropdown-link">
+                    <div className="dropdown-item" style={{gap: '12px'}}>
+                      <i className="fas fa-chart-bar"></i> Status
+                    </div>
+                  </Link>
+                  <Link to="/proof-of-reserves" className="dropdown-link">
+                    <div className="dropdown-item" style={{gap: '12px'}}>
+                      <i className="fas fa-file-invoice-dollar"></i> Proof of Reserves
+                    </div>
+                  </Link>
+                  <Link to="/okx-protect" className="dropdown-link">
+                    <div className="dropdown-item" style={{gap: '12px'}}>
+                      <i className="fas fa-user-shield"></i> OKX Protect
+                    </div>
+                  </Link>
+                </div>
+                {/* Right Column: Others */}
+                <div style={{flex: 1}}>
+                  <div style={{fontWeight: 600, color: '#777', fontSize: '13px', marginBottom: '18px'}}>Others</div>
+                  <Link to="/pages/morePages/CampaignCenter" className="dropdown-link">
+                    <div className="dropdown-item" style={{gap: '12px'}}>
+                      <i className="fas fa-bullhorn"></i> Campaign center
+                    </div>
+                  </Link>
+                  <Link to="/pages/morePages/MyRewards" className="dropdown-link">
+                    <div className="dropdown-item" style={{gap: '12px'}}>
+                      <i className="fas fa-gift"></i> My rewards
+                    </div>
+                  </Link>
+                  <Link to="/pages/morePages/Referral" className="dropdown-link">
+                    <div className="dropdown-item" style={{gap: '12px'}}>
+                      <i className="fas fa-user-friends"></i> Referral
+                    </div>
+                  </Link>
+                  <Link to="/affiliates" className="dropdown-link">
+                    <div className="dropdown-item" style={{gap: '12px'}}>
+                      <i className="fas fa-handshake"></i> Affiliates
+                    </div>
+                  </Link>
+                  <Link to="/okx-ventures" className="dropdown-link">
+                    <div className="dropdown-item" style={{gap: '12px'}}>
+                      <i className="fas fa-rocket"></i> OKX Ventures
+                    </div>
+                  </Link>
+                  <Link to="/trade-on-tradingview" className="dropdown-link">
+                    <div className="dropdown-item" style={{gap: '12px'}}>
+                      <i className="fas fa-chart-line"></i> Trade on TradingView
+                    </div>
+                  </Link>
+                  <Link to="/listing-application" className="dropdown-link">
+                    <div className="dropdown-item" style={{gap: '12px'}}>
+                      <i className="fas fa-list-alt"></i> Listing application
+                    </div>
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
         </nav>
       </div>
@@ -275,7 +371,8 @@ const Navbar = () => {
           <div className="user-menu-container">
             <div 
               style={userMenuStyle} 
-              onClick={() => setShowUserMenu(!showUserMenu)}>
+              onClick={() => setShowUserMenu(!showUserMenu)}
+            >
               <i className="fas fa-user-circle"></i>
               Welcome, {userName}
               <i className="fas fa-chevron-down"></i>

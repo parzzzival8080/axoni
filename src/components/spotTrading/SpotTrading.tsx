@@ -74,8 +74,10 @@ const OrderBookSection = ({ type, orders }: OrderBookSectionProps) => {
 };
 
 const TradeForm = ({ uid, isAuthenticated = true, cryptoSymbol = 'BTC', userBalance, onTradeComplete }: TradeFormProps) => {
-    const [activeTab, setActiveTab] = useState('buy' as const);
-    const [orderType, setOrderType] = useState('limit' as const);
+    // Allow both buy and sell tabs
+    const [activeTab, setActiveTab] = useState<'buy' | 'sell'>('buy');
+    // Allow both limit and market order types
+    const [orderType, setOrderType] = useState<'limit' | 'market'>('limit');
     const [price, setPrice] = useState('');
     const [amount, setAmount] = useState('');
     const [tpsl, setTpsl] = useState(false);
@@ -366,7 +368,7 @@ const SpotTrading = () => {
     const [refreshOrderHistory, setRefreshOrderHistory] = useState(0);
     const [refreshBalance, setRefreshBalance] = useState(0);
     // Set default active tab to history so it's visible immediately
-    const [activeTab, setActiveTab] = useState('history');
+    const [activeTab, setActiveTab] = useState<'trade' | 'orders' | 'history' | 'assets'>('history');
     
     // Add balance state
     const [userBalance, setUserBalance] = useState({
