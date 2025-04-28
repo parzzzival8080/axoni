@@ -4,6 +4,7 @@ import FavoritesBar from '../components/futureTrading/FavoritesBar'
 import TradingChart from '../components/futureTrading/TradingChart'
 import OrderBook from '../components/futureTrading/OrderBook'
 import TradeForm from '../components/futureTrading/TradeForm'
+import OrderHistory from '../components/futureTrading/OrderHistory'
 
 function FutureTrading() {
   const [selectedCoin, setSelectedCoin] = useState('BTC');
@@ -21,6 +22,7 @@ function FutureTrading() {
           <OrderBook symbol={selectedCoin} />
           <TradeForm symbol={selectedCoin} />
         </div>
+        <OrderHistory />
         {/* <div className="quick-start">
             Quick start <i className="fas fa-times close-quickstart"></i>
         </div> */}
