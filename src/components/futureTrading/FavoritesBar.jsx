@@ -1,45 +1,99 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown, faChevronUp, faStar, faPlus } from '@fortawesome/free-solid-svg-icons';
 
-function FavoritesBar({ onSelectCoin }) {
-  const [activeCoin, setActiveCoin] = useState('BTC');
+const FavoritesBar = ({ activeCoinPairId, availableCoins = [], onCoinSelect }) => {
+  const [showAllCoins, setShowAllCoins] = useState(false);
   
-  const coinPairs = [
-    { symbol: 'BTC', pair: 'BTC/USDT' },
-    { symbol: 'ETH', pair: 'ETH/USDT' },
-    { symbol: 'OKB', pair: 'OKB/USDT' },
-    { symbol: 'XRP', pair: 'XRP/USDT' },
-    { symbol: 'SOL', pair: 'SOL/USDT' },
-    { symbol: 'DOGE', pair: 'DOGE/USDT' },
-    { symbol: 'TRX', pair: 'TRX/USDT' },
-    { symbol: 'ADA', pair: 'ADA/USDT' }
-  ];
+  // Convert to number for comparison
+  const activeId = Number(activeCoinPairId) || 1;
   
-  const handleCoinSelect = (symbol) => {
-    // Only update if selecting a different coin
-    if (activeCoin !== symbol) {
-      console.log(`Selecting coin: ${symbol} (previous: ${activeCoin})`);
-      setActiveCoin(symbol);
-      
-      if (onSelectCoin) {
-        onSelectCoin(symbol);
-      }
+  // Use the coins from the API if available, otherwise use the hardcoded list
+  const allCoinPairs = availableCoins.length > 0 
+    ? availableCoins.filter(coin => coin.is_tradable).map(coin => ({
+        id: coin.coin_pair,
+        symbol: `${coin.symbol}/${coin.pair_name}`,
+        logo: coin.logo_path
+      }))
+    : [
+        { id: 1, symbol: 'BTC/USDT' },
+        { id: 4, symbol: 'ETH/USDT' },
+        { id: 13, symbol: 'XRP/USDT' },
+        { id: 15, symbol: 'SOL/USDT' },
+        { id: 16, symbol: 'DOGE/USDT' },
+        { id: 14, symbol: 'ADA/USDT' },
+        { id: 17, symbol: 'PEPE/USDT' },
+        { id: 19, symbol: 'NAI/USDT' },
+        { id: 20, symbol: 'PNM/USDT' },
+        { id: 21, symbol: 'COL/USDT' },
+        { id: 22, symbol: 'ONT/USDT' },
+        { id: 23, symbol: 'CHD/USDT' },
+        { id: 24, symbol: 'THAI/USDT' },
+        { id: 25, symbol: 'JAM/USDT' },
+        { id: 26, symbol: 'MOS/USDT' },
+        { id: 3, symbol: 'USDC/USDT' }
+      ];
+  
+  // Ensure the active coin is always shown, even if it's not in the top 10
+  const activeCoin = allCoinPairs.find(pair => pair.id === activeId);
+  
+  // Display logic - ensure active coin is in the first 10
+  let coinsToDisplay = [...allCoinPairs];
+  
+  if (!showAllCoins && coinsToDisplay.length > 10) {
+    // If active coin exists and is not in the first 9 coins
+    const activeIndex = coinsToDisplay.findIndex(pair => pair.id === activeId);
+    
+    if (activeIndex >= 0 && activeIndex >= 9) {
+      // Remove the active coin from its current position
+      const [activeCoinItem] = coinsToDisplay.splice(activeIndex, 1);
+      // Insert it at position 9 (making it the 10th item)
+      coinsToDisplay.splice(9, 0, activeCoinItem);
+    }
+    
+    // Only show first 10 coins
+    coinsToDisplay = coinsToDisplay.slice(0, 10);
+  }
+  
+  const hasMoreCoins = allCoinPairs.length > 10;
+  
+  // Handle coin selection
+  const handleCoinClick = (coinPairId, e) => {
+    // Only call onCoinSelect if it's provided and the coin is not already active
+    if (onCoinSelect && coinPairId !== activeId) {
+      e.preventDefault(); // Prevent default Link behavior
+      onCoinSelect(coinPairId);
     }
   };
   
   return (
     <div className="favorites-bar">
-      {coinPairs.map((coin) => (
-        <div 
-          key={coin.symbol}
-          className={`favorite-item ${activeCoin === coin.symbol ? 'active' : ''}`}
-          onClick={() => handleCoinSelect(coin.symbol)}
+      {coinsToDisplay.map((pair) => (
+        <Link 
+          key={pair.id}
+          to={`/future-trading?coin_pair_id=${pair.id}`} 
+          className={`favorite-item ${activeId === pair.id ? 'active' : ''}`}
+          onClick={(e) => handleCoinClick(pair.id, e)}
         >
-          {coin.pair}
-        </div>
+          {pair.symbol}
+        </Link>
       ))}
-      <div className="favorite-item add">Add to Favorites</div>
+      
+      {hasMoreCoins && (
+        <div 
+          className="favorite-item more"
+          onClick={() => setShowAllCoins(!showAllCoins)}
+        >
+          {showAllCoins ? 'Show Less' : 'More'} <FontAwesomeIcon icon={showAllCoins ? faChevronUp : faChevronDown} />
+        </div>
+      )}
+      
+      <div className="favorite-item add">
+        Add to favorites <FontAwesomeIcon icon={faStar} />
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default FavoritesBar
+export default FavoritesBar;

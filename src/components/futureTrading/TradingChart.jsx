@@ -283,7 +283,7 @@ const TradingChart = () => {
 
   return (
     
-    <div className="chart-section" style={{ width: '100%', height: '620px', backgroundColor: '#000000' }}>
+    <div className="chart-section" style={{ width: '100%', height: '620px !important', backgroundColor: '#000000' }}>
      
       <div className="chart-nav">
         <div className="left-tabs">

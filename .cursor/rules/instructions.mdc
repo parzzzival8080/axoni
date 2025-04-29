@@ -1,0 +1,31 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Core Rules
+
+1.Always maintain a dark mode aesthetic consistent with OKX's branding
+2.Prioritize responsive design that works across all device sizes
+Follow React best practices with functional components and hooks
+Keep bundle size minimal by avoiding unnecessary dependencies
+Implement proper error handling for all API interactions
+Ensure authentication flows are secure and intuitive
+Use CSS modules or styled-components for styling components
+Follow atomic design principles for component organization
+Include subtle animations for interactive elements (trading charts, buttons)
+Implement proper loading states for async operations
+
+Generate [component/feature description] for my OKX crypto trading platform clone using React and Vite.
+
+Requirements:
+- Follow dark mode UI aesthetic matching the provided screenshots
+- Implement responsive design with mobile-first approach
+- Use functional components with proper React hooks
+- Optimize for performance (memoization where appropriate)
+- Include proper loading/error states
+- Match OKX's interaction patterns and animations
+
+
+
+The component should interact with [describe API endpoint or data source] and handle [specific functionality].

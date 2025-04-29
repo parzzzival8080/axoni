@@ -1,165 +1,100 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import coinLogo from '../../assets/coin/bitcoin-2136339_640.webp';
-import { fetchCoinDetails } from '../../services/futureTradingApi.js';
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar as farStar } from '@fortawesome/free-regular-svg-icons';
+import { faExternalLinkAlt, faChartLine, faCog } from '@fortawesome/free-solid-svg-icons';
+import { faFileAlt } from '@fortawesome/free-regular-svg-icons';
+import defaultCoinLogo from '../../assets/coin/bitcoin-2136339_640.webp';
 
-// Static coin logos for popular coins to use as fallbacks
-const staticLogos = {
-  'BTC': '/assets/coin/btc-logo.png',
-  'ETH': '/assets/coin/eth-logo.png',
-  'DOGE': '/assets/coin/doge-logo.png',
-  'SOL': '/assets/coin/sol-logo.png',
-  'XRP': '/assets/coin/xrp-logo.png',
-  'ADA': '/assets/coin/ada-logo.png'
-};
+const SubHeader = ({ cryptoData, coinPairId }) => {
+  if (!cryptoData) {
+    return (
+      <div className="sub-header skeleton-loading">
+        <div className="loading-message">Loading coin data...</div>
+      </div>
+    );
+  }
 
-function SubHeader({ symbol = 'BTC' }) {
-  const [coinDetails, setCoinDetails] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [logoUrl, setLogoUrl] = useState(null);
+  const { 
+    cryptoName, 
+    cryptoSymbol, 
+    cryptoPrice, 
+    cryptoLogoPath,
+    usdtSymbol 
+  } = cryptoData;
+  
+  // Format the price for display
+  const formattedPrice = parseFloat(cryptoPrice).toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
 
-  // Helper function to safely convert price to number and format it
-  const formatPrice = (price, decimals = 1) => {
-    if (price === undefined || price === null) return "0.0";
-    
-    let numPrice;
-    if (typeof price === 'string') {
-      numPrice = parseFloat(price);
-    } else if (typeof price === 'number') {
-      numPrice = price;
-    } else {
-      numPrice = 0;
-    }
-    
-    if (isNaN(numPrice)) return "0.0";
-    return numPrice.toFixed(decimals);
-  };
-
-  // Reset state when symbol changes
-  useEffect(() => {
-    setCoinDetails(null);
-    setLoading(true);
-    setError(null);
-    setLogoUrl(null);
-  }, [symbol]);
-
-  useEffect(() => {
-    const getCoinDetails = async () => {
-      setLoading(true);
-      try {
-        // First set a static logo if available to prevent flickering
-        setLogoUrl(staticLogos[symbol] || null);
-        
-        const response = await fetchCoinDetails(symbol);
-        if (response.success && response.data) {
-          setCoinDetails(response.data);
-          
-          // Update logo URL from API response if available
-          if (response.data.logo_path) {
-            setLogoUrl(response.data.logo_path);
-          } else if (response.data.logo) {
-            setLogoUrl(response.data.logo);
-          }
-          
-          setError(null);
-          
-          // Log the received data for debugging
-          console.log("Received coin details:", response.data);
-          console.log("Logo path:", response.data.logo_path || response.data.logo);
-        } else {
-          setError(response.message || 'Failed to fetch coin details');
-        }
-      } catch (err) {
-        console.error("Error fetching coin details:", err);
-        setError('An error occurred while fetching coin details');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getCoinDetails();
-  }, [symbol]);
-
-  // Calculate derived values safely
-  const price = coinDetails?.price ? parseFloat(coinDetails.price) : 0;
-  const volume24h = coinDetails?.volume_24h ? parseFloat(coinDetails.volume_24h) : 0;
-  const low24h = price * 0.97;
-  const high24h = price * 1.03;
-  const volumeK = volume24h / 1000;
-  const turnoverM = (volume24h * price) / 1000000;
-
-  // Handle logo loading error
-  const handleLogoError = () => {
-    console.log("Logo loading failed, using default");
-    setLogoUrl(null);
-  };
+  // Use the logo from API or default to the static image
+  const logoSrc = cryptoLogoPath || defaultCoinLogo;
+  
+  // Calculate derived values for 24h stats
+  const price = parseFloat(cryptoPrice) || 0;
+  const low24h = (price * 0.97).toFixed(2);
+  const high24h = (price * 1.03).toFixed(2);
+  const volumeK = ((Math.random() * 100) + 50).toFixed(2); // Placeholder
+  const turnoverM = ((price * (Math.random() * 100) + 50) / 1000).toFixed(2); // Placeholder
 
   return (
     <div className="sub-header">
       <div className="coin-info">
         <div className="coin-icon">
-          {logoUrl ? (
-            <img 
-              src={logoUrl} 
-              alt={symbol} 
-              onError={handleLogoError}
-            />
-          ) : (
-            <img src={coinLogo} alt={symbol} />
-          )}
+          <img 
+            src={logoSrc} 
+            alt={cryptoSymbol} 
+            onError={(e) => {
+              e.target.onerror = null; 
+              e.target.src = defaultCoinLogo;
+            }}
+          />
         </div>
-        <div className="coin-pair">{symbol}/USDT</div>
-        <div className="leverage">10x</div>
-        <div className="favorite"><i className="far fa-star"></i></div>
+        <div className="coin-pair">{cryptoSymbol}/{usdtSymbol || 'USDT'}</div>
+        <div className="leverage">20x</div>
+        <div className="favorite">
+          <FontAwesomeIcon icon={farStar} />
+        </div>
       </div>
-      
-      {loading ? (
-        <div className="price-stats">
-          <div className="stat">
-            <div className="value">Loading...</div>
+      <div className="price-stats">
+        <div className="stat">
+          <div className="value green">{formattedPrice}</div>
+          <div className="label">
+            {cryptoName || cryptoSymbol} price <FontAwesomeIcon icon={faExternalLinkAlt} />
           </div>
+          <div className="sub-value">${formattedPrice}</div>
         </div>
-      ) : error ? (
-        <div className="price-stats">
-          <div className="stat">
-            <div className="value red">{error}</div>
-          </div>
+        <div className="stat">
+          <div className="value">{low24h}</div>
+          <div className="label">24h low</div>
         </div>
-      ) : (
-        <div className="price-stats">
-          <div className="stat">
-            <div className={`value ${coinDetails?.price_change_is_positive ? 'green' : 'red'}`}>
-              {formatPrice(price)}
-            </div>
-            <div className="label">{coinDetails?.name} price <i className="fas fa-external-link-alt"></i></div>
-            <div className="sub-value">{coinDetails?.formatted_price || `$${formatPrice(price, 2)}`}</div>
-          </div>
-          <div className="stat">
-            <div className="value">{formatPrice(low24h)}</div>
-            <div className="label">24h low</div>
-          </div>
-          <div className="stat">
-            <div className="value">{formatPrice(high24h)}</div>
-            <div className="label">24h high</div>
-          </div>
-          <div className="stat">
-            <div className="value">{formatPrice(volumeK, 2)}K</div>
-            <div className="label">24h volume ({symbol})</div>
-          </div>
-          <div className="stat">
-            <div className="value">{formatPrice(turnoverM, 2)}M</div>
-            <div className="label">24h turnover (USDT)</div>
-          </div>
+        <div className="stat">
+          <div className="value">{high24h}</div>
+          <div className="label">24h high</div>
         </div>
-      )}
-      
+        <div className="stat">
+          <div className="value">{volumeK}K</div>
+          <div className="label">24h volume ({cryptoSymbol})</div>
+        </div>
+        <div className="stat">
+          <div className="value">{turnoverM}M</div>
+          <div className="label">24h turnover ({usdtSymbol || 'USDT'})</div>
+        </div>
+      </div>
       <div className="trading-actions">
-        <button className="data-btn"><i className="fas fa-chart-line"></i> Trading data</button>
-        <button className="info-btn"><i className="far fa-file-alt"></i> Information</button>
-        <div className="settings"><i className="fas fa-cog"></i></div>
+        <button className="data-btn">
+          <FontAwesomeIcon icon={faChartLine} /> Trading data
+        </button>
+        <button className="info-btn">
+          <FontAwesomeIcon icon={faFileAlt} /> Information
+        </button>
+        <div className="settings">
+          <FontAwesomeIcon icon={faCog} />
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SubHeader
+export default SubHeader;

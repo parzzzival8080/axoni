@@ -132,18 +132,18 @@
     margin: 0 24px 16px;
     padding: 8px 12px;
 }
-.pagination {
+.order-history-pagination {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 20px;
     gap: 10px;
 }
-.page-numbers {
+.order-history-page-numbers {
     display: flex;
     align-items: center;
 }
-.page-numbers span {
+.order-history-page-numbers span {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -154,21 +154,26 @@
     margin: 0 2px;
     color: #999;
     transition: all 0.2s;
+    background-color: #000000;
 }
-.page-numbers span.active {
+.order-history-page-numbers span:hover:not(.active) {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+.order-history-page-numbers span.active {
     background-color: #ffffff;
     color: #000000;
 }
-.page-numbers span.ellipsis {
+.order-history-page-numbers span.ellipsis {
     cursor: default;
 }
-.page-numbers span.ellipsis:hover {
+.order-history-page-numbers span.ellipsis:hover {
     background-color: transparent;
     color: #999;
 }
-.prev-page, .next-page {
-    background: none;
-    border: 1px solid #333;
+.order-history-prev-page, .order-history-next-page {
+    background-color: #000000;
+    border: none;
     border-radius: 4px;
     width: 30px;
     height: 30px;
@@ -179,15 +184,15 @@
     color: #999;
     transition: all 0.2s;
 }
-.prev-page:hover, .next-page:hover {
-    background-color: #333;
+.order-history-prev-page:hover, .order-history-next-page:hover {
+    background-color: #1a1a1a;
     color: white;
 }
-.prev-page:disabled, .next-page:disabled {
+.order-history-prev-page:disabled, .order-history-next-page:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
-.page-info {
+.order-history-page-info {
     text-align: center;
     margin-top: 10px;
     font-size: 13px;

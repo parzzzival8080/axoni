@@ -1,30 +1,36 @@
 /* Base styles and reset */
-* {
+.spot-trading-container * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
-body {
+.spot-trading-container {
     background-color: #000;
     color: #fff;
     line-height: 1.4;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #000000;
+    padding: 0;
 }
 
 /* Header */
-header {
+.spot-trading-container header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 16px;
     height: 56px;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 2px solid #1a1a1a !important;
     background-color: #000;
 }
 
-.header-left, .header-right {
+.spot-trading-container .header-left,
+.spot-trading-container .header-right {
     display: flex;
     align-items: center;
 }
@@ -52,7 +58,7 @@ nav {
     color: #8c8c8c;
 }
 
-.header-right {
+.spot-trading-container .header-right {
     display: flex;
     align-items: center;
     gap: 16px;
@@ -76,12 +82,12 @@ nav {
 }
 
 /* Sub header */
-.sub-header {
+.spot-trading-container .sub-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 16px;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 2px solid #1a1a1a !important;
 }
 
 .coin-info {
@@ -180,7 +186,7 @@ nav {
     overflow-x: auto;
     padding: 0 16px;
     background-color: #0a0a0a;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 2px solid #1a1a1a !important;
     scrollbar-width: none;
     white-space: nowrap;
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
@@ -240,53 +246,396 @@ nav {
     font-size: 10px;
 }
 
-/* Main container - updated to three columns */
+/* Main container */
 .main-container {
-    display: flex;
-    height: calc(100vh - 144px);
+    display: grid !important;
+    grid-template-columns: 60% 20% 20% !important;
+    width: 100% !important;
+    height: 52vh !important;
+    background: #000 !important;
+    border: none !important;
+    gap: 8px !important;
 }
 
 .chart-section {
-    flex: 3;
-    display: flex;
-    flex-direction: column;
-    border-right: 1px solid #1a1a1a;
+    grid-column: 1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    background: #000 !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    border: 2px solid #1a1a1a !important;
+    border-radius: 4px !important;
 }
 
 .TVChartContainer {
-	width: 100%;
-	max-height: auto;
-	/* overflow: hidden; */
-	height: 60vh;
-	/* Ensure the chart doesn't overflow */
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    background: #000 !important;
+    overflow: hidden !important;
 }
 
 .orderbook-section {
-    flex: 1;
-    min-width: 250px;
-    max-width: 320px;
-    display: flex;
-    flex-direction: column;
-    border-right: 1px solid #1a1a1a;
-    overflow-y: auto;
-    background-color: #000000;
-    height: 100%;
+    grid-column: 2 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    background: #000 !important;
+    overflow: hidden !important;
+    height: 100% !important;
+    box-sizing: border-box !important;
+    border: 2px solid #1a1a1a !important;
+    border-radius: 4px !important;
+}
+
+.orderbook-section::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+}
+
+.orderbook-section {
+    -ms-overflow-style: none !important;  /* IE and Edge */
+    scrollbar-width: none !important;  /* Firefox */
 }
 
 .trade-section {
-    flex: 1;
-    min-width: 280px;
-    max-width: 340px;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
+    grid-column: 3 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    background: #000 !important;
+    overflow-y: auto !important;
+    height: 100% !important;
+    box-sizing: border-box !important;
+    z-index: 2 !important;
+    position: relative !important;
+    border: 2px solid #1a1a1a !important;
+    border-radius: 4px !important;
+}
+
+/* Chart section */
+.TVChartContainer {
+    width: 100%;
+    height: 700px !important;
+    background-color: #000000;
+}
+
+/* OrderBook section */
+.order-book {
+    background-color: #000000;
+    height: 700px !important;
+    width: 320px !import;
+    border-left: 2px solid #2a2e39 !important;
+    border-right: 2px solid #2a2e39 !important;
+}
+
+.order-book-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    padding: 8px 10px !important;
+    border-bottom: 2px solid #1a1a1a !important;
+    font-size: 12px !important;
+    color: #888 !important;
+    background: #000 !important;
+}
+
+.order-book-content {
+    height: calc(100% - 30px) !important;
+    overflow: hidden !important;
+    background: #000 !important;
+}
+
+.sell-orders, .buy-orders {
+    overflow: hidden !important;
+    background: #000 !important;
+}
+
+/* Trade form section with improved grid system */
+.trade-form {
+    background: #000 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    padding: 12px 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+    box-sizing: border-box !important;
+    overflow-y: auto !important;
+    max-height: calc(100% - 10px) !important;
+    border: 2px solid #1a1a1a !important;
+}
+
+/* Improved buy/sell tabs with grid */
+.trade-form .buy-sell-tabs {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 4px !important;
+    margin-bottom: 6px !important;
+}
+
+.trade-form .buy-sell-tabs .tab {
+    text-align: center !important;
+    padding: 6px 0 !important;
+    cursor: pointer !important;
+    border-radius: 4px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+}
+
+.trade-form .buy-sell-tabs .tab.active.buy {
+    background: rgba(0, 184, 151, 0.1) !important;
+    color: #00b897 !important;
+}
+
+.trade-form .buy-sell-tabs .tab.active.sell {
+    background: rgba(242, 54, 69, 0.1) !important;
+    color: #f23645 !important;
+}
+
+/* Order types with grid */
+.trade-form .order-types {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)) !important;
+    gap: 4px !important;
+    margin-bottom: 8px !important;
+}
+
+.trade-form .order-types .type {
+    padding: 4px 2px !important;
+    font-size: 12px !important;
+    text-align: center !important;
+    border-radius: 4px !important;
+    background: #111 !important;
+    cursor: pointer !important;
+}
+
+.trade-form .order-types .type.active {
+    background: #1a1a1a !important;
+    color: #fff !important;
+}
+
+/* Form groups with grid */
+.trade-form .form-group {
+    margin-bottom: 6px !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 2px !important;
+}
+
+.trade-form label {
+    display: block !important;
+    font-size: 12px !important;
+    color: #888 !important;
+}
+
+.trade-form input,
+.trade-form select {
+    width: 100% !important;
+    padding: 6px 8px !important;
+    background: #111 !important;
+    color: #fff !important;
+    border: 2px solid #222 !important;
+    border-radius: 4px !important;
+    font-size: 13px !important;
+}
+
+/* Input with note layout */
+.trade-form .input-wrapper {
+    position: relative !important;
+}
+
+.trade-form .input-note {
+    position: absolute !important;
+    right: 8px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    font-size: 11px !important;
+    color: #888 !important;
+}
+
+/* Slider container with grid */
+.trade-form .slider-container {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 2px !important;
+    margin: 4px 0 !important;
+}
+
+.trade-form .slider-labels {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important;
+    font-size: 11px !important;
+    color: #888 !important;
+}
+
+.trade-form .slider-labels span:not(:first-child) {
+    text-align: center !important;
+}
+
+.trade-form .slider-labels span:last-child {
+    text-align: right !important;
+}
+
+.trade-form .range-slider {
+    width: 100% !important;
+    height: 4px !important;
+    -webkit-appearance: none !important;
+    background: #333 !important;
+    outline: none !important;
+    border-radius: 2px !important;
+}
+
+.trade-form .range-slider::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 50% !important;
+    background: #00b897 !important;
+    cursor: pointer !important;
+}
+
+/* Balance info with grid */
+.trade-form .balance-info {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    font-size: 11px !important;
+    color: #888 !important;
+    margin-bottom: 6px !important;
+}
+
+.trade-form .balance-info span:last-child {
+    text-align: right !important;
+}
+
+/* Trade button */
+.trade-form .trade-button {
+    width: 100% !important;
+    padding: 8px 0 !important;
+    border-radius: 4px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    border: none !important;
+    cursor: pointer !important;
+    margin: 4px 0 !important;
+}
+
+.trade-form .trade-button.buy {
+    background: #00b897 !important;
+    color: #fff !important;
+}
+
+.trade-form .trade-button.sell {
+    background: #f23645 !important;
+    color: #fff !important;
+}
+
+/* Price info with grid */
+.trade-form .price-info {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    font-size: 11px !important;
+    color: #888 !important;
+    margin-bottom: 4px !important;
+}
+
+.trade-form .price-info span:last-child {
+    text-align: right !important;
+}
+
+/* Responsive layout adjustments */
+@media (max-width: 1200px) {
+    .main-container {
+        display: flex !important;
+        flex-direction: column !important;
+        height: auto !important;
+        gap: 8px !important;
+    }
+    
+    .chart-section, 
+    .orderbook-section, 
+    .trade-section {
+        width: 100% !important;
+        min-width: 0 !important;
+        height: auto !important;
+        max-height: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        box-sizing: border-box !important;
+    }
+    
+    .chart-section {
+        height: 40vh !important;
+        max-height: 40vh !important;
+    }
+    
+    .orderbook-section {
+        height: 30vh !important;
+        max-height: 30vh !important;
+    }
+    
+    .trade-section {
+        height: auto !important;
+        max-height: none !important;
+        padding-bottom: 20px !important;
+    }
+    
+    .trade-form {
+        max-height: none !important;
+        overflow-y: visible !important;
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        padding: 12px !important;
+    }
+    
+    .order-history-container {
+        margin-top: 20px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .trade-form .order-types {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+    
+    .chart-section {
+        height: 35vh !important;
+        max-height: 35vh !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .trade-form {
+        padding: 10px 8px !important;
+    }
+    
+    .trade-form .order-types {
+        grid-template-columns: repeat(2, 1fr) !important;
+        font-size: 11px !important;
+    }
+    
+    .chart-section {
+        height: 30vh !important;
+        max-height: 30vh !important;
+    }
 }
 
 /* Chart navigation */
 .chart-nav {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 2px solid #1a1a1a !important;
 }
 
 .left-tabs {
@@ -330,7 +679,7 @@ nav {
     display: flex;
     justify-content: space-between;
     padding: 10px 0;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 2px solid #1a1a1a !important;
 }
 
 .timeframes {
@@ -394,13 +743,7 @@ nav {
 /* Chart header */
 .chart-header {
     padding: 8px 0;
-    border-bottom: 1px solid #1a1a1a;
-}
-
-/* Chart header */
-.chart-header {
-    padding: 8px 0;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 2px solid #1a1a1a !important;
 }
 
 .chart-symbol {
@@ -474,7 +817,7 @@ nav {
     padding: 8px 0;
     font-size: 12px;
     color: #8c8c8c;
-    border-top: 1px solid #1a1a1a;
+    border-top: 2px solid #1a1a1a !important;
 }
 
 .volume-sma {
@@ -491,7 +834,7 @@ nav {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.8);
-    border: 1px solid #333;
+    border: 2px solid #333 !important;
     padding: 8px 12px;
     border-radius: 4px;
     display: flex;
@@ -513,7 +856,7 @@ nav {
     padding: 8px 0;
     font-size: 12px;
     color: #8c8c8c;
-    border-top: 1px solid #1a1a1a;
+    border-top: 2px solid #1a1a1a !important;
 }
 
 .time-ranges {
@@ -562,7 +905,7 @@ nav {
     display: flex;
     overflow-x: auto;
     padding: 0 16px;
-    border-top: 1px solid #1a1a1a;
+    border-top: 2px solid #1a1a1a !important;
     scrollbar-width: none;
 }
 
@@ -582,10 +925,15 @@ nav {
 /* Order History */
 .order-history-container {
     background-color: #000000;
-    border-radius: 8px;
-    padding: 20px;
+    border-radius: 4px;
+    padding: 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     position: relative;
+    margin-top: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    border: 2px solid #1a1a1a !important;
 }
 
 .loading-message, .error-message {
@@ -662,13 +1010,13 @@ nav {
     text-align: left;
     padding: 12px 8px;
     color: #8c8c8c;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 2px solid #1a1a1a !important;
     font-weight: normal;
 }
 
 .order-history-table td {
     padding: 12px 8px;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 2px solid #1a1a1a !important;
     color: #fff;
 }
 
@@ -714,7 +1062,7 @@ nav {
 
 .prev-page, .next-page {
     background-color: #1a1a1a;
-    border: none;
+    border: 2px solid #333 !important;
     color: #8c8c8c;
     width: 32px;
     height: 32px;
@@ -778,7 +1126,7 @@ nav {
     display: flex;
     align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #2a2e39;
+    border-bottom: 2px solid #2a2e39 !important;
 }
 
 .book-header .tab {
@@ -805,15 +1153,6 @@ nav {
     margin-left: 10px;
 }
 
-.order-book {
-    background-color: #000;
-    width: 100%;
-    max-width: 400px;
-    display: flex;
-    flex-direction: column;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-}
-
 .order-book-section {
     margin: 0;
     position: relative;
@@ -827,7 +1166,7 @@ nav {
     font-size: 11px;
     color: #5c5c5c;
     background-color: #000;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 2px solid #1a1a1a !important;
 }
 
 .order-book-row {
@@ -927,7 +1266,7 @@ nav {
     font-size: 12px;
     background-color: #1a1a1a;
     margin-top: auto;
-    border-top: 1px solid #2a2a2a;
+    border-top: 2px solid #2a2a2a !important;
 }
 
 .buy-percentage, .sell-percentage {
@@ -1116,7 +1455,7 @@ nav {
     display: flex;
     justify-content: space-between;
     padding: 10px 16px;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 2px solid #1a1a1a !important;
 }
 
 .tab-actions {
@@ -1266,7 +1605,7 @@ input:checked + .slider:before {
 .price-display {
     padding: 0 16px 16px;
     margin-bottom: 16px;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 2px solid #1a1a1a !important;
 }
 
 .price-row {
@@ -1317,7 +1656,7 @@ input[type="text"] {
     width: 100%;
     padding: 10px;
     background-color: #121212;
-    border: none;
+    border: 2px solid #222 !important;
     border-radius: 4px;
     color: #fff;
     font-size: 14px;
@@ -1515,6 +1854,7 @@ input[type="text"] {
 .trade-form {
     background-color: #000;
     padding: 16px 24px;
+    border: 2px solid #1a1a1a !important;
 }
 
 .trade-type-tabs {
@@ -1589,7 +1929,7 @@ input[type="text"] {
     width: 100%;
     padding: 12px;
     background-color: #1a1a1a;
-    border: none;
+    border: 2px solid #222 !important;
     border-radius: 4px;
     color: #fff;
     font-size: 14px;
@@ -1597,8 +1937,6 @@ input[type="text"] {
 
 .price-input-wrapper {
     position: relative;
-    display: flex;
-    align-items: center;
 }
 
 .price-input-wrapper .price-equals {
@@ -1726,10 +2064,11 @@ input[type="text"] {
 /* Order History Styles */
 .order-history-container {
     background-color: #000000;
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     position: relative;
+    border: 2px solid #1a1a1a !important;
 }
 
 .order-history-container h2 {
@@ -1742,7 +2081,7 @@ input[type="text"] {
 .order-history-filters {
     display: flex;
     margin-bottom: 20px;
-    border-bottom: 1px solid #333;
+    border-bottom: 2px solid #333 !important;
     padding-bottom: 10px;
     align-items: center;
 }
@@ -1846,12 +2185,12 @@ input[type="text"] {
     padding: 12px 8px;
     color: #999;
     font-weight: 500;
-    border-bottom: 1px solid #333;
+    border-bottom: 2px solid #333 !important;
 }
 
 .order-history-table td {
     padding: 12px 8px;
-    border-bottom: 1px solid #222;
+    border-bottom: 2px solid #222 !important;
     color: #ddd;
 }
 
@@ -1935,7 +2274,7 @@ input[type="text"] {
 .prev-page,
 .next-page {
     background: none;
-    border: 1px solid #333;
+    border: 2px solid #333 !important;
     border-radius: 4px;
     width: 30px;
     height: 30px;
@@ -1996,7 +2335,7 @@ input[type="text"] {
     animation: pulse 1.5s infinite;
 }
 
-.status-dot.connecting, 
+.status-dot.connecting,
 .status-dot.reconnecting {
     background-color: #f0b90b;
     animation: blink 1s infinite;
@@ -2026,9 +2365,15 @@ input[type="text"] {
 }
 
 @keyframes blink {
-    0% { opacity: 0.4; }
-    50% { opacity: 1; }
-    100% { opacity: 0.4; }
+    0% {
+        opacity: 0.4;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.4;
+    }
 }
 
 /* OrderBook Loading and Error States */
@@ -2076,7 +2421,7 @@ input[type="text"] {
 
 .reconnect-button {
     background-color: #1a1a1a;
-    border: 1px solid #333;
+    border: 2px solid #333 !important;
     color: #fff;
     padding: 8px 16px;
     border-radius: 4px;
@@ -2112,7 +2457,7 @@ input[type="text"] {
 }
 
 /* Ensure the order book sections take appropriate space */
-.sell-orders, 
+.sell-orders,
 .buy-orders {
     max-height: 200px;
     overflow-y: auto;
@@ -2135,7 +2480,7 @@ input[type="text"] {
 .trading-tabs {
     display: flex;
     margin: 20px 0;
-    border-bottom: 1px solid #333;
+    border-bottom: 2px solid #333 !important;
     padding-bottom: 2px;
 }
 
@@ -2188,80 +2533,99 @@ input[type="text"] {
 }
 
 /* Responsive Spot Trading Layout */
+@media (max-width: 1400px) {
+    .main-container {
+        grid-template-columns: minmax(0, 3.5fr) 320px 384px;
+    }
+}
+
 @media (max-width: 1200px) {
-  .main-container {
-    flex-direction: column;
-    height: auto;
-  }
-  .chart-section, .orderbook-section, .trade-section {
-    border-right: none;
-    border-bottom: 1px solid #1a1a1a;
-    max-width: 100%;
-    min-width: 0;
-  }
-  .chart-section, .orderbook-section, .trade-section {
-    width: 100%;
-  }
+    .main-container {
+        flex-direction: column;
+        height: auto;
+        gap: 0;
+        align-items: stretch;
+    }
+    .chart-section,
+    .orderbook-section,
+    .trade-section {
+        border-right: none;
+        border-left: none;
+        max-width: 100%;
+        min-width: 0;
+        width: 100%;
+        padding: 0;
+        height: 32vh;
+        max-height: 32vh;
+        box-sizing: border-box;
+    }
 }
 
 @media (max-width: 900px) {
-  .main-container {
-    flex-direction: column;
-    height: auto;
-  }
-  .chart-section, .orderbook-section, .trade-section {
-    border-right: none;
-    border-bottom: 1px solid #1a1a1a;
-    max-width: 100%;
-    min-width: 0;
-    width: 100%;
-    padding: 0 8px;
-  }
-  .favorites-bar {
-    padding: 0 8px;
-  }
+    .main-container {
+        flex-direction: column;
+        height: auto;
+        align-items: stretch;
+    }
+    .chart-section, 
+    .orderbook-section, 
+    .trade-section {
+        border-right: none;
+        border-left: none;
+        max-width: 100%;
+        min-width: 0;
+        width: 100%;
+        padding: 0;
+        height: 20vh;
+        max-height: 20vh;
+        box-sizing: border-box;
+    }
 }
 
 @media (max-width: 600px) {
-  .main-container {
-    flex-direction: column;
-    height: auto;
-  }
-  .chart-section, .orderbook-section, .trade-section {
-    border-right: none;
-    border-bottom: 1px solid #1a1a1a;
-    max-width: 100%;
-    min-width: 0;
-    width: 100%;
-    padding: 0 4px;
-  }
-  .favorites-bar {
-    padding: 0 4px;
-    font-size: 12px;
-  }
-  .sub-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    padding: 10px 8px;
-  }
-  .trading-actions {
-    flex-direction: column;
-    gap: 6px;
-    width: 100%;
-  }
-  .orderbook-section, .trade-section {
-    min-width: 0;
-    max-width: 100%;
-    padding: 0;
-  }
-  .order-history-container, .tab-content {
-    padding: 10px 2px;
-  }
-  .trade-form {
-    padding: 10px 2px;
-  }
-  .favorites-bar {
-    font-size: 11px;
-  }
+    .main-container {
+        flex-direction: column;
+        height: auto;
+        align-items: stretch;
+    }
+    .chart-section,
+    .orderbook-section,
+    .trade-section {
+        border-right: none;
+        border-left: none;
+        max-width: 100%;
+        min-width: 0;
+        width: 100%;
+        padding: 0;
+        height: 14vh;
+        max-height: 14vh;
+        box-sizing: border-box;
+    }
+}
+
+/* --- Always force black background for all major containers --- */
+.spot-trading-container,
+.main-container,
+.chart-section,
+.orderbook-section,
+.trade-section,
+.trade-form {
+    background: #000 !important;
+}
+
+/* Responsive layout adjustments */
+@media (max-width: 1200px) {
+    .main-container {
+        display: flex !important;
+        flex-direction: column !important;
+        height: auto !important;
+        gap: 8px !important;
+    }
+    
+    .chart-section, 
+    .orderbook-section, 
+    .trade-section {
+        border: 2px solid #1a1a1a !important;
+        border-radius: 4px !important;
+    }
 }

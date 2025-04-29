@@ -23,3 +23,63 @@
 .tv-chart__area {
 	background-color: #000000 !important;
 }
+
+.orders-section {
+	width: 100%;
+	border-radius: 4px;
+	background-color: #000000;
+	border: 1px solid #2a2e39;
+}
+
+.orders-tabs {
+	display: flex;
+	align-items: center;
+	padding: 0 16px;
+	border-bottom: 1px solid #2a2e39;
+	background-color: #000000;
+	height: 48px;
+	gap: 24px;
+}
+
+.orders-tabs .tab {
+	color: #848e9c;
+	font-size: 14px;
+	cursor: pointer;
+	padding: 12px 0;
+	position: relative;
+	transition: color 0.2s;
+}
+
+.orders-tabs .tab:hover {
+	color: #ffffff;
+}
+
+.orders-tabs .tab.active {
+	color: #ffffff;
+}
+
+.orders-tabs .tab.active::after {
+	content: '';
+	position: absolute;
+	bottom: -1px;
+	left: 0;
+	width: 100%;
+	height: 2px;
+	background-color: #00b897;
+}
+
+.orders-tabs .more-options {
+	margin-left: auto;
+	color: #848e9c;
+	cursor: pointer;
+	padding: 8px;
+}
+
+.orders-tabs .more-options:hover {
+	color: #ffffff;
+}
+
+.orders-content {
+	min-height: 200px;
+	padding: 16px;
+}

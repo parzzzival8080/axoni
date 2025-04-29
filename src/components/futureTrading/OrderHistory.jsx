@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './OrderHistory.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+  faChevronDown, 
+  faSyncAlt, 
+  faChevronLeft, 
+  faChevronRight,
+  faEllipsisH 
+} from '@fortawesome/free-solid-svg-icons';
 
 const OrderHistory = ({ refreshTrigger = 0 }) => {
+  const [activeFilter, setActiveFilter] = useState('all');
   const [orderHistoryData, setOrderHistoryData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -21,6 +29,7 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
         setOrderHistoryData(response.data);
       }
     } catch (err) {
+      console.error('Error fetching order history:', err);
       setError('Failed to load order history. Please try again later.');
     } finally {
       setLoading(false);
@@ -29,15 +38,23 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
 
   useEffect(() => {
     fetchOrderHistory();
-    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    if (refreshTrigger > 0) {
+      console.log('FutureTrading OrderHistory: Refresh triggered', refreshTrigger);
+      fetchOrderHistory();
+    }
   }, [refreshTrigger]);
 
   // Spot-style formatting and filtering
   const formatOrderData = (order) => {
     return {
+      id: order.id || `future-${Date.now()}-${Math.random()}`,
       date: order.date || '',
       pair: order.symbol || 'BTC/USDT',
       type: order.side ? (order.side.toLowerCase() === 'buy' ? 'Buy' : 'Sell') : '',
+      side: order.side ? order.side.toLowerCase() : '',
       priceType: order.execution_type || 'limit',
       price: order.entry_price || order.price || '',
       amount: order.amount || order.margin || '',
@@ -47,69 +64,106 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
     };
   };
 
-  // No filtering needed, just reverse for latest first
-  const processedData = orderHistoryData.map(formatOrderData).reverse();
-  const filteredData = processedData;
+  // Process and sort data with newest orders first
+  const processedData = orderHistoryData
+    .map(formatOrderData)
+    .sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by date, newest first
+  
+  const filteredData = activeFilter === 'all' 
+    ? processedData 
+    : processedData.filter(order => order.side === activeFilter);
 
-  // Pagination
+  // Calculate pagination
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-  const paginatedData = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+  
+  // Manual refresh function that can be called from outside
+  const refreshOrderHistory = () => {
+    fetchOrderHistory();
+  };
+  
+  // Handle page changes
+  const goToPage = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  
   const goToPreviousPage = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
   };
+  
   const goToNextPage = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
   };
-  const goToPage = (pageNum) => setCurrentPage(pageNum);
 
-  // Page numbers for pagination
+  // Generate page numbers for display
   const getPageNumbers = () => {
     const pageNumbers = [];
-    const maxPagesToShow = 5;
+    const maxPagesToShow = 5; // Show at most 5 page numbers
+    
     if (totalPages <= maxPagesToShow) {
-      for (let i = 1; i <= totalPages; i++) pageNumbers.push(i);
+      // If there are few pages, show all of them
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
     } else {
+      // Always show the first page
       pageNumbers.push(1);
+      
+      // If current page is among the first 3, show first 4 pages and then "..."
       if (currentPage <= 3) {
-        for (let i = 2; i <= 4; i++) pageNumbers.push(i);
+        for (let i = 2; i <= 4; i++) {
+          pageNumbers.push(i);
+        }
         pageNumbers.push('...');
         pageNumbers.push(totalPages);
-      } else if (currentPage >= totalPages - 2) {
+      } 
+      // If current page is among the last 3, show last 4 pages with "..." at the beginning
+      else if (currentPage >= totalPages - 2) {
         pageNumbers.push('...');
-        for (let i = totalPages - 3; i <= totalPages; i++) pageNumbers.push(i);
-      } else {
+        for (let i = totalPages - 3; i < totalPages; i++) {
+          pageNumbers.push(i);
+        }
+        pageNumbers.push(totalPages);
+      } 
+      // If current page is in the middle, show current page with one on each side and "..." at both ends
+      else {
         pageNumbers.push('...');
-        for (let i = currentPage - 1; i <= currentPage + 1; i++) pageNumbers.push(i);
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pageNumbers.push(i);
+        }
         pageNumbers.push('...');
         pageNumbers.push(totalPages);
       }
     }
+    
     return pageNumbers;
   };
-
-  if (loading && orderHistoryData.length === 0) {
-    return <div className="order-history-container"><div className="loading-message">Loading order history...</div></div>;
-  }
-  if (error && orderHistoryData.length === 0) {
-    return <div className="order-history-container"><div className="error-message">{error}</div></div>;
-  }
 
   return (
     <div className="order-history-container">
       <div className="order-history-filters">
-        <div
-          className={`filter-option active`}
-          style={{ pointerEvents: 'none' }}
-        >All</div>
-        <div className="filter-date">
-          Last 7 days <i className="fas fa-chevron-down"></i>
+        <div 
+          className="filter-option active"
+        >
+          All
         </div>
-        <div className="refresh-button" onClick={fetchOrderHistory}>
-          <i className="fas fa-sync-alt"></i>
+        <div className="filter-date">
+          <span>Last 7 days</span>
+          <FontAwesomeIcon icon={faChevronDown} />
+        </div>
+        <div className="refresh-button" onClick={refreshOrderHistory}>
+          <FontAwesomeIcon icon={faSyncAlt} />
         </div>
       </div>
+
       <div className="order-history-table">
+        {loading && <div className="overlay-loader">Refreshing...</div>}
         <table>
           <thead>
             <tr>
@@ -125,49 +179,67 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
             </tr>
           </thead>
           <tbody>
-            {paginatedData.length === 0 ? (
-              <tr><td colSpan="9" className="no-data">No order history found.</td></tr>
-            ) : (
-              paginatedData.map((order, idx) => (
-                <tr key={idx}>
+            {currentItems.length > 0 ? (
+              currentItems.map(order => (
+                <tr key={order.id}>
                   <td>{order.date ? new Date(order.date).toLocaleString() : '-'}</td>
                   <td>{order.pair}</td>
-                  <td className={order.type === 'Buy' ? 'buy-color' : order.type === 'Sell' ? 'sell-color' : ''}>{order.type}</td>
+                  <td className={order.side === 'buy' ? 'buy-color' : 'sell-color'}>{order.type}</td>
                   <td>{order.priceType} ({order.price})</td>
                   <td>{Number(order.amount).toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })}</td>
                   <td>{order.filled}</td>
                   <td>{Number(order.total).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                   <td className={order.status.toLowerCase() === 'pending' ? 'pending-status' : 'filled-status'}>{order.status}</td>
-                  <td className="actions"><i className="fas fa-ellipsis-h"></i></td>
+                  <td className="actions">
+                    <FontAwesomeIcon icon={faEllipsisH} />
+                  </td>
                 </tr>
               ))
+            ) : (
+              <tr>
+                <td colSpan="9" className="no-data">No order history data available</td>
+              </tr>
             )}
           </tbody>
         </table>
       </div>
-      {totalPages > 1 && (
-        <div className="pagination">
-          <button className="prev-page" onClick={goToPreviousPage} disabled={currentPage === 1}>
-            <i className="fas fa-chevron-left"></i>
+      
+      {filteredData.length > 0 && (
+        <div className="order-history-pagination">
+          <button 
+            className="order-history-prev-page" 
+            disabled={currentPage === 1}
+            onClick={goToPreviousPage}
+          >
+            <FontAwesomeIcon icon={faChevronLeft} />
           </button>
-          <div className="page-numbers">
+          <div className="order-history-page-numbers">
             {getPageNumbers().map((page, index) => (
-              page === '...'
-                ? <span key={`ellipsis-${index}`} className="ellipsis">...</span>
-                : <span
-                    key={page}
-                    className={currentPage === page ? 'active' : ''}
-                    onClick={() => typeof page === 'number' && goToPage(page)}
-                  >{page}</span>
+              page === '...' ? (
+                <span key={`ellipsis-${index}`} className="ellipsis">...</span>
+              ) : (
+                <span 
+                  key={page} 
+                  className={currentPage === page ? 'active' : ''}
+                  onClick={() => typeof page === 'number' && goToPage(page)}
+                >
+                  {page}
+                </span>
+              )
             ))}
           </div>
-          <button className="next-page" onClick={goToNextPage} disabled={currentPage === totalPages}>
-            <i className="fas fa-chevron-right"></i>
+          <button 
+            className="order-history-next-page"
+            disabled={currentPage === totalPages}
+            onClick={goToNextPage}
+          >
+            <FontAwesomeIcon icon={faChevronRight} />
           </button>
         </div>
       )}
-      <div className="page-info">
-        Showing {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, filteredData.length)} of {filteredData.length} orders
+
+      <div className="order-history-page-info">
+        Showing {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, filteredData.length)} of {filteredData.length} orders
       </div>
     </div>
   );

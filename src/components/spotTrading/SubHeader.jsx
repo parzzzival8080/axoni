@@ -1,4 +1,8 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar as farStar } from '@fortawesome/free-regular-svg-icons';
+import { faExternalLinkAlt, faChartLine, faCog } from '@fortawesome/free-solid-svg-icons';
+import { faFileAlt } from '@fortawesome/free-regular-svg-icons';
 import defaultCoinLogo from '../../assets/coin/bitcoin-2136339_640.webp';
 
 const SubHeader = ({ cryptoData, coinPairId }) => {
@@ -42,12 +46,16 @@ const SubHeader = ({ cryptoData, coinPairId }) => {
         </div>
         <div className="coin-pair">{cryptoSymbol}/{usdtSymbol}</div>
         <div className="leverage">10x</div>
-        <div className="favorite"><i className="far fa-star"></i></div>
+        <div className="favorite">
+          <FontAwesomeIcon icon={farStar} />
+        </div>
       </div>
       <div className="price-stats">
         <div className="stat">
           <div className="value green">{formattedPrice}</div>
-          <div className="label">{cryptoName} price <i className="fas fa-external-link-alt"></i></div>
+          <div className="label">
+            {cryptoName} price <FontAwesomeIcon icon={faExternalLinkAlt} />
+          </div>
           <div className="sub-value">${formattedPrice}</div>
         </div>
         <div className="stat">
@@ -68,9 +76,15 @@ const SubHeader = ({ cryptoData, coinPairId }) => {
         </div>
       </div>
       <div className="trading-actions">
-        <button className="data-btn"><i className="fas fa-chart-line"></i> Trading data</button>
-        <button className="info-btn"><i className="far fa-file-alt"></i> Information</button>
-        <div className="settings"><i className="fas fa-cog"></i></div>
+        <button className="data-btn">
+          <FontAwesomeIcon icon={faChartLine} /> Trading data
+        </button>
+        <button className="info-btn">
+          <FontAwesomeIcon icon={faFileAlt} /> Information
+        </button>
+        <div className="settings">
+          <FontAwesomeIcon icon={faCog} />
+        </div>
       </div>
     </div>
   );

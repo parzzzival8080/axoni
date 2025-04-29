@@ -1,84 +1,782 @@
-/* Future Trading specific styles */
+/* Future Trading specific styles - Adapted from SpotTrading with unique class names */
+.future-trading-container * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
 .future-trading-container {
-  background-color: #000000;
-  color: #ffffff;
-  width: 100%;
+    background-color: #000;
+    color: #fff;
+    line-height: 1.4;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #000000;
+    padding: 0;
 }
 
-.main-container {
-  display: flex;
-  height: calc(100vh - 144px);
-  background-color: #000000;
-  border: none;
+/* Header */
+.future-trading-container header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    height: 56px;
+    border-bottom: 2px solid #1a1a1a !important;
+    background-color: #000;
 }
 
-.chart-section {
-  flex: 3;
-  display: flex;
-  flex-direction: column;
-  border: none !important;
-  background-color: #000000;
-  overflow: hidden;
+.future-trading-container .header-left,
+.future-trading-container .header-right {
+    display: flex;
+    align-items: center;
 }
 
-.TVChartContainer {
-  width: 100%;
-  height: calc(100vh - 220px);
-  background-color: #000000 !important;
-  border: none !important;
-  outline: none !important;
-  overflow: hidden !important;
+/* Sub header */
+.future-trading-container .sub-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    border-bottom: 2px solid #1a1a1a !important;
+    background-color: #000;
 }
 
-/* Override any borders that might be coming from other components */
-.chart-section *,
-.TVChartContainer *,
-.trading-chart-container * {
-  border-color: transparent !important;
+.future-trading-container .coin-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.future-trading-container .coin-icon img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #fff;
+    padding: 2px;
+}
+
+.future-trading-container .coin-pair {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.future-trading-container .leverage {
+    background-color: #1a1a1a;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.future-trading-container .favorite {
+    color: #8c8c8c;
+    cursor: pointer;
+}
+
+.future-trading-container .price-stats {
+    display: flex;
+    gap: 30px;
+}
+
+.future-trading-container .stat {
+    text-align: center;
+}
+
+.future-trading-container .value {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.future-trading-container .green {
+    color: #00b897;
+}
+
+.future-trading-container .red {
+    color: #f23645;
+}
+
+.future-trading-container .label {
+    color: #8c8c8c;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.future-trading-container .sub-value {
+    color: #8c8c8c;
+    font-size: 12px;
+}
+
+.future-trading-container .trading-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.future-trading-container .data-btn, 
+.future-trading-container .info-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #1a1a1a;
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.future-trading-container .settings {
+    color: #8c8c8c;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Favorites bar */
+.future-trading-container .favorites-bar {
+    display: flex;
+    overflow-x: auto;
+    padding: 0 16px;
+    background-color: #0a0a0a;
+    border-bottom: 2px solid #1a1a1a !important;
+    scrollbar-width: none;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+.future-trading-container .favorites-bar::-webkit-scrollbar {
+    display: none;
+}
+
+.future-trading-container .favorite-item {
+    padding: 10px 8px;
+    margin-right: 16px;
+    cursor: pointer;
+    color: #8c8c8c;
+    white-space: nowrap;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    transition: color 0.2s ease;
+}
+
+.future-trading-container .favorite-item:hover {
+    color: #fff;
+}
+
+.future-trading-container .favorite-item.active {
+    color: #fff;
+    font-weight: 500;
+    border-bottom: 2px solid #00b897;
+}
+
+.future-trading-container .favorite-item.more, 
+.future-trading-container .favorite-item.add {
+    color: #8c8c8c;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 12px;
+    border-radius: 4px;
+    background-color: #1a1a1a;
+    margin-right: 12px;
+    transition: all 0.2s ease;
+}
+
+.future-trading-container .favorite-item.more {
+    cursor: pointer;
+}
+
+.future-trading-container .favorite-item.more:hover,
+.future-trading-container .favorite-item.add:hover {
+    color: #fff;
+    background-color: #262626;
+}
+
+/* Main container with grid layout */
+.future-trading-container .main-container {
+    display: grid !important;
+    grid-template-columns: 60% 20% 20% !important;
+    width: 100% !important;
+    height: 52vh !important;
+    background: #000 !important;
+    border: none !important;
+    gap: 8px !important;
+}
+
+/* Chart section */
+.future-trading-container .chart-section {
+    grid-column: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: #000 !important;
+    box-sizing: border-box !important;
+    border: 2px solid #1a1a1a !important;
+    border-radius: 4px !important;
+    overflow: hidden !important;
+}
+
+/* Orderbook section */
+.future-trading-container .orderbook-section {
+    grid-column: 2 !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow-y: auto !important;
+    background: #000 !important;
+    box-sizing: border-box !important;
+    border: 2px solid #1a1a1a !important;
+    border-radius: 4px !important;
+}
+
+/* Hide scrollbar for orderbook */
+.future-trading-container .orderbook-section::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+}
+
+.future-trading-container .orderbook-section {
+    -ms-overflow-style: none !important;  /* IE and Edge */
+    scrollbar-width: none !important;  /* Firefox */
+}
+
+/* Trade section */
+.future-trading-container .trade-section {
+    grid-column: 3 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    overflow-y: auto !important;
+    background: #000 !important;
+    box-sizing: border-box !important;
+    border: 2px solid #1a1a1a !important;
+    border-radius: 4px !important;
+}
+
+/* Order history container */
+.future-trading-container .order-history-container {
+    width: 100% !important;
+    margin-top: 8px !important;
+    background: #000 !important;
+    box-sizing: border-box !important;
+    border: 2px solid #1a1a1a !important;
+    border-radius: 4px !important;
+}
+
+/* Trade form section with improved grid system */
+.future-trading-container .trade-form {
+    background: #000 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    padding: 12px 10px !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow-y: auto !important;
+    display: grid !important;
+    grid-template-rows: auto auto auto 1fr auto !important;
+    gap: 8px !important;
+}
+
+/* Trade form margin toggle */
+.future-trading-container .margin-toggle {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 8px !important;
+}
+
+/* Buy/Sell tabs with grid */
+.future-trading-container .buy-sell-tabs {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 4px !important;
+    margin-bottom: 8px !important;
+}
+
+.future-trading-container .buy-sell-tabs .tab {
+    text-align: center !important;
+    padding: 8px 0 !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    background: #1a1a1a !important;
+    color: #888 !important;
+}
+
+.future-trading-container .buy-sell-tabs .tab.active.buy {
+    background: rgba(0, 184, 151, 0.1) !important;
+    color: #00b897 !important;
+}
+
+.future-trading-container .buy-sell-tabs .tab.active.sell {
+    background: rgba(242, 54, 69, 0.1) !important;
+    color: #f23645 !important;
+}
+
+/* Order types with grid */
+.future-trading-container .order-types {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)) !important;
+    gap: 4px !important;
+    margin-bottom: 8px !important;
+}
+
+.future-trading-container .order-types .type {
+    text-align: center !important;
+    padding: 6px 0 !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
+    background: #1a1a1a !important;
+    color: #888 !important;
+}
+
+.future-trading-container .order-types .type.active {
+    background: #262626 !important;
+    color: #fff !important;
+}
+
+.future-trading-container .order-types .type.dropdown {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 4px !important;
+}
+
+/* Form groups with grid */
+.future-trading-container .form-group {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 4px !important;
+    margin-bottom: 8px !important;
+    position: relative !important;
+}
+
+.future-trading-container .form-group label {
+    font-size: 12px !important;
+    color: #888 !important;
+}
+
+.future-trading-container .form-group input {
+    padding: 8px !important;
+    border-radius: 4px !important;
+    border: 1px solid #333 !important;
+    background: #1a1a1a !important;
+    color: #fff !important;
+    font-size: 14px !important;
+}
+
+.future-trading-container .input-wrapper {
+    position: relative !important;
+}
+
+.future-trading-container .input-note {
+    position: absolute !important;
+    right: 8px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    font-size: 11px !important;
+    color: #888 !important;
+}
+
+/* Slider container with grid */
+.future-trading-container .slider-container {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 2px !important;
+    margin: 4px 0 !important;
+}
+
+.future-trading-container .slider-labels {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    font-size: 11px !important;
+    color: #888 !important;
+}
+
+.future-trading-container .slider-labels span:last-child {
+    text-align: right !important;
+}
+
+.future-trading-container .range-slider {
+    width: 100% !important;
+    -webkit-appearance: none !important;
+    height: 4px !important;
+    border-radius: 2px !important;
+    background: #333 !important;
+    outline: none !important;
+}
+
+.future-trading-container .range-slider::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 50% !important;
+    background: #00b897 !important;
+    cursor: pointer !important;
+}
+
+/* Balance info with grid */
+.future-trading-container .balance-info {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    font-size: 11px !important;
+    color: #888 !important;
+    margin-bottom: 6px !important;
+}
+
+.future-trading-container .balance-info span:last-child {
+    text-align: right !important;
+}
+
+/* Trade button */
+.future-trading-container .trade-button {
+    width: 100% !important;
+    padding: 8px 0 !important;
+    border-radius: 4px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    border: none !important;
+    cursor: pointer !important;
+    margin-bottom: 8px !important;
+}
+
+.future-trading-container .trade-button.buy {
+    background: #00b897 !important;
+    color: #fff !important;
+}
+
+.future-trading-container .trade-button.sell {
+    background: #f23645 !important;
+    color: #fff !important;
+}
+
+/* Price info with grid */
+.future-trading-container .price-info {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    font-size: 11px !important;
+    color: #888 !important;
+    margin-bottom: 4px !important;
+}
+
+.future-trading-container .price-info span:last-child {
+    text-align: right !important;
+}
+
+/* Orders section */
+.future-trading-container .orders-section {
+    width: 100% !important;
+    background: #000 !important;
+    border: 2px solid #1a1a1a !important;
+    border-radius: 4px !important;
+    margin-top: 8px !important;
+}
+
+.future-trading-container .orders-tabs {
+    display: flex !important;
+    overflow-x: auto !important;
+    border-bottom: 1px solid #1a1a1a !important;
+    background: #000 !important;
+}
+
+.future-trading-container .orders-tabs .tab {
+    padding: 10px 16px !important;
+    white-space: nowrap !important;
+    cursor: pointer !important;
+    color: #888 !important;
+    font-size: 13px !important;
+    transition: color 0.2s !important;
+}
+
+.future-trading-container .orders-tabs .tab.active {
+    color: #fff !important;
+    border-bottom: 2px solid #00b897 !important;
+}
+
+.future-trading-container .orders-tabs .more-options {
+    margin-left: auto !important;
+    padding: 10px 16px !important;
+    color: #888 !important;
+    cursor: pointer !important;
+}
+
+/* Order history table */
+.future-trading-container .order-history-table {
+    width: 100% !important;
+    overflow-x: auto !important;
+    position: relative !important;
+}
+
+.future-trading-container .order-history-table table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+}
+
+.future-trading-container .order-history-table th {
+    padding: 10px 8px !important;
+    text-align: left !important;
+    font-weight: normal !important;
+    color: #888 !important;
+    font-size: 12px !important;
+    border-bottom: 1px solid #1a1a1a !important;
+}
+
+.future-trading-container .order-history-table td {
+    padding: 10px 8px !important;
+    font-size: 12px !important;
+    border-bottom: 1px solid #1a1a1a !important;
+}
+
+.future-trading-container .buy-color {
+    color: #00b897 !important;
+}
+
+.future-trading-container .sell-color {
+    color: #f23645 !important;
+}
+
+.future-trading-container .pending-status {
+    color: #f0b90b !important;
+}
+
+.future-trading-container .filled-status {
+    color: #00b897 !important;
+}
+
+.future-trading-container .actions {
+    color: #888 !important;
+    cursor: pointer !important;
+}
+
+/* Order history filters */
+.future-trading-container .order-history-filters {
+    display: flex !important;
+    padding: 10px 16px !important;
+    border-bottom: 1px solid #1a1a1a !important;
+    align-items: center !important;
+    background-color: #0a0a0a !important;
+}
+
+.future-trading-container .filter-option {
+    margin-right: 16px !important;
+    padding: 6px 12px !important;
+    border-radius: 4px !important;
+    background-color: #1a1a1a !important;
+    color: #fff !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+}
+
+.future-trading-container .filter-option.active {
+    color: #fff !important;
+    background-color: #262626 !important;
+    border-left: 2px solid #00b897 !important;
+}
+
+.future-trading-container .filter-date {
+    margin-left: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    color: #8c8c8c !important;
+    cursor: pointer !important;
+    font-size: 14px !important;
+    background-color: #1a1a1a !important;
+    padding: 6px 12px !important;
+    border-radius: 4px !important;
+    transition: all 0.2s ease !important;
+}
+
+.future-trading-container .filter-date:hover {
+    background-color: #262626 !important;
+    color: #fff !important;
+}
+
+.future-trading-container .refresh-button {
+    margin-left: 16px !important;
+    color: #8c8c8c !important;
+    cursor: pointer !important;
+    background-color: #1a1a1a !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 4px !important;
+    transition: all 0.2s ease !important;
+}
+
+.future-trading-container .refresh-button:hover {
+    background-color: #262626 !important;
+    color: #fff !important;
+}
+
+/* Pagination */
+.future-trading-container .order-history-pagination {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 10px !important;
+    gap: 8px !important;
+}
+
+.future-trading-container .order-history-page-numbers {
+    display: flex !important;
+    gap: 8px !important;
+}
+
+.future-trading-container .order-history-page-numbers span {
+    width: 24px !important;
+    height: 24px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
+}
+
+.future-trading-container .order-history-page-numbers span.active {
+    background: #1a1a1a !important;
+    color: #fff !important;
+}
+
+.future-trading-container .order-history-prev-page,
+.future-trading-container .order-history-next-page {
+    width: 24px !important;
+    height: 24px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    background: #1a1a1a !important;
+    border: none !important;
+    color: #fff !important;
+}
+
+.future-trading-container .order-history-prev-page:disabled,
+.future-trading-container .order-history-next-page:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+}
+
+.future-trading-container .order-history-page-info {
+    text-align: center !important;
+    font-size: 12px !important;
+    color: #888 !important;
+    padding: 0 0 10px !important;
+}
+
+/* Responsive layout adjustments */
+@media (max-width: 1200px) {
+    .future-trading-container .main-container {
+        display: flex !important;
+        flex-direction: column !important;
+        height: auto !important;
+        gap: 8px !important;
+    }
+    
+    .future-trading-container .chart-section, 
+    .future-trading-container .orderbook-section, 
+    .future-trading-container .trade-section {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 400px !important;
+    }
+    
+    .future-trading-container .trade-form {
+        grid-template-columns: 1fr !important;
+        padding: 12px !important;
+    }
+    
+    .future-trading-container .order-history-container {
+        margin-top: 20px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    
+    .future-trading-container .sub-header {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+    }
+    
+    .future-trading-container .price-stats {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .future-trading-container .order-types {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+    
+    .future-trading-container .chart-section {
+        height: 35vh !important;
+        max-height: 35vh !important;
+        min-height: 300px !important;
+    }
+    
+    .future-trading-container .sub-header {
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .future-trading-container .buy-sell-tabs {
+        grid-template-columns: 1fr 1fr !important;
+    }
+    
+    .future-trading-container .order-types {
+        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-rows: repeat(2, 1fr) !important;
+    }
+    
+    .future-trading-container .chart-section {
+        height: 30vh !important;
+        max-height: 30vh !important;
+        min-height: 250px !important;
+    }
+    
+    .future-trading-container .trading-actions {
+        flex-wrap: wrap;
+    }
+}
+
+/* --- Always force black background for all major containers --- */
+.future-trading-container,
+.future-trading-container .main-container,
+.future-trading-container .chart-section,
+.future-trading-container .orderbook-section,
+.future-trading-container .trade-section,
+.future-trading-container .trade-form,
+.future-trading-container .orders-section,
+.future-trading-container .order-history-container {
+    background: #000 !important;
+}
+
+/* TradingView chart specific overrides */
+.future-trading-container .TVChartContainer,
+.future-trading-container .chart-container,
+.future-trading-container .tv-chart-container,
+.future-trading-container iframe {
+    background-color: #000000 !important;
+    border: none !important;
 }
 
 /* Target any iframe within the chart container */
-.TVChartContainer iframe {
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-  background-color: #000000 !important;
-}
-
-/* Override any white backgrounds */
-.chart-section,
-.TVChartContainer,
-.trading-chart-container,
-.chart-container,
-.tv-chart-container {
-  background-color: #000000 !important;
-}
-
-/* Target the chart wrapper */
-.chart-container-wrapper {
-  background-color: #000000 !important;
-  border: none !important;
-  overflow: hidden !important;
-}
-
-/* Remove any margin or padding that might cause white space */
-.chart-section,
-.TVChartContainer,
-.trading-chart-container {
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* Override any borders from Assets.css or other components */
-.asset-card,
-.card-content,
-.assets-content,
-.assets-cards {
-  border: none !important;
-  background-color: transparent !important;
-}
-
-/* Ensure no white backgrounds are visible */
-body, html, #root, .App, main {
-  background-color: #000000;
+.future-trading-container .TVChartContainer iframe {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background-color: #000000 !important;
 }

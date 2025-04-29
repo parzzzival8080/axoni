@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner, faExclamationTriangle, faSync } from '@fortawesome/free-solid-svg-icons';
 import { formatNumber } from '../../utils/numberFormatter';
 import axios from 'axios';
 
@@ -536,12 +538,10 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   // Loading spinner component
   const LoadingSpinner = () => (
     <div className="order-book-loading">
-      <div className="spinner"></div>
-      <div className="loading-text">
-        {connectionStatus === 'connecting' && 'Connecting to order book...'}
-        {connectionStatus === 'reconnecting' && `Reconnecting (Attempt ${reconnectAttempts + 1}/${maxReconnectAttempts})...`}
-        {connectionStatus === 'loading' && 'Loading order book data...'}
+      <div className="spinner">
+        <FontAwesomeIcon icon={faSpinner} spin />
       </div>
+      <div className="loading-text">Loading order book...</div>
     </div>
   );
 
@@ -549,16 +549,15 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   const ConnectionError = () => (
     <div className="order-book-error">
       <div className="error-icon">
-        <i className="fas fa-exclamation-triangle"></i>
+        <FontAwesomeIcon icon={faExclamationTriangle} />
       </div>
       <div className="error-text">
-        {connectionStatus === 'error' && 'Error connecting to order book'}
-        {connectionStatus === 'failed' && 'Failed to connect after multiple attempts'}
-        {connectionStatus === 'fallback' && 'Using backup data source'}
-        {connectionStatus === 'disconnected' && 'WebSocket disconnected'}
+        Unable to connect to order book.
+        <br />
+        Please check your connection and try again.
       </div>
       <button className="reconnect-button" onClick={handleManualReconnect}>
-        <i className="fas fa-sync-alt"></i> Reconnect
+        <FontAwesomeIcon icon={faSync} /> Reconnect
       </button>
     </div>
   );

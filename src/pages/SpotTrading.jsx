@@ -6,6 +6,7 @@ import OrderBook from '../components/spotTrading/OrderBook';
 import TradeForm from '../components/spotTrading/TradeForm';
 import SubHeader from '../components/spotTrading/SubHeader';
 import FavoritesBar from '../components/spotTrading/FavoritesBar';
+import OrdersSection from '../components/spotTrading/OrdersSection';
 import '../components/spotTrading/SpotTrading.css';
 
 const SpotTrading = () => {
@@ -18,6 +19,7 @@ const SpotTrading = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [availableCoins, setAvailableCoins] = useState([]);
+  const [orderHistoryRefreshTrigger, setOrderHistoryRefreshTrigger] = useState(0);
 
   // Get coin_pair_id from URL params, default to 1 if not provided
   const coinPairId = searchParams.get('coin_pair_id') || 1;
@@ -137,14 +139,23 @@ const SpotTrading = () => {
           usdtBalance: response.data.usdtWallet?.spot_wallet || 0
         });
       }
+      
+      // Trigger order history refresh without affecting the chart
+      setOrderHistoryRefreshTrigger(prev => prev + 1);
     } catch (err) {
       // Optionally handle error
+      console.error('Error fetching user balance:', err);
     }
   }, [coinPairId]);
 
   useEffect(() => {
     fetchCryptoData();
-  }, [fetchCryptoData]);
+    
+    // Log when cryptoData changes for debugging
+    if (cryptoData?.cryptoSymbol) {
+      console.log('SpotTrading: Current crypto symbol:', cryptoData.cryptoSymbol);
+    }
+  }, [fetchCryptoData, cryptoData?.cryptoSymbol]);
 
   if (loading) {
     return <div className="loading-screen">Loading trading data...</div>;
@@ -166,8 +177,7 @@ const SpotTrading = () => {
       />
       <div className="main-container">
         <TradingChart 
-          cryptoSymbol={cryptoData?.cryptoSymbol} 
-          usdtSymbol={cryptoData?.usdtSymbol}
+          selectedSymbol={cryptoData?.cryptoSymbol} 
         />
         <OrderBook 
           cryptoData={cryptoData}
@@ -179,7 +189,9 @@ const SpotTrading = () => {
           onTradeSuccess={fetchUserBalance}
         />
       </div>
-  
+      <div className="orders-container">
+        <OrdersSection refreshTrigger={orderHistoryRefreshTrigger} />
+      </div>
     </div>
   );
 };

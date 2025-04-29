@@ -166,9 +166,13 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
       setTotal('');
       setSliderValue(0);
       
-      // Trigger refresh of order history
+      // Trigger refresh of order history and balance without affecting the chart
       if (onTradeSuccess) {
-        onTradeSuccess();
+        // Use setTimeout to ensure this happens after the current render cycle
+        // This prevents chart refresh issues
+        setTimeout(() => {
+          onTradeSuccess();
+        }, 100);
       }
       
     } catch (error) {
