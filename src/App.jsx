@@ -50,7 +50,10 @@ function App() {
             <>
               <Navbar />
               <main>
-                {require('./pages/morePages/CampaignCenter').default()}
+                {/* Using dynamic import instead of require for Vite compatibility */}
+                <React.Suspense fallback={<div>Loading...</div>}>
+                  {React.createElement(React.lazy(() => import('./pages/morePages/CampaignCenter')))}
+                </React.Suspense>
               </main>
               <Footer />
               <ChatBubble />
@@ -60,7 +63,10 @@ function App() {
             <>
               <Navbar />
               <main>
-                {require('./pages/morePages/MyRewards').default()}
+                {/* Using dynamic import instead of require for Vite compatibility */}
+                <React.Suspense fallback={<div>Loading...</div>}>
+                  {React.createElement(React.lazy(() => import('./pages/morePages/MyRewards')))}
+                </React.Suspense>
               </main>
               <Footer />
               <ChatBubble />
@@ -70,7 +76,10 @@ function App() {
             <>
               <Navbar />
               <main>
-                {require('./pages/morePages/Referral').default()}
+                {/* Using dynamic import instead of require for Vite compatibility */}
+                <React.Suspense fallback={<div>Loading...</div>}>
+                  {React.createElement(React.lazy(() => import('./pages/morePages/Referral')))}
+                </React.Suspense>
               </main>
               <Footer />
               <ChatBubble />

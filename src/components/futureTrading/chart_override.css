@@ -1,6 +1,7 @@
 /* Direct chart background override */
 .TVChartContainer iframe {
   background-color: #000000 !important;
+  border: none !important;
 }
 
 /* Override TradingView chart background */
@@ -10,17 +11,20 @@
 :root .chart-container__chartarea--themed-dark,
 :root .layout__area--center {
   background-color: #000000 !important;
+  border: none !important;
 }
 
 /* Target the main chart area */
 .chart-container__chartarea--themed-dark {
   background-color: #000000 !important;
+  border: none !important;
 }
 
 /* Target the price scale and time scale */
 .price-axis,
 .time-axis {
   background-color: #000000 !important;
+  border: none !important;
 }
 
 /* Target the chart grid */
@@ -42,6 +46,8 @@ canvas {
 .chart-page,
 .chart-container {
   background-color: #000000 !important;
+  border: none !important;
+  outline: none !important;
 }
 
 /* Target the main chart area where candlesticks are displayed */
@@ -53,9 +59,50 @@ canvas {
 /* Target the trading view chart */
 .trading-view-chart {
   background-color: #000000 !important;
+  border: none !important;
 }
 
 /* Force all elements to have black background */
 .TVChartContainer * {
   background-color: #000000 !important;
+}
+
+/* Remove all borders from chart elements */
+.chart-container *,
+.tv-chart-container *,
+.layout__area--center * {
+  border-color: transparent !important;
+}
+
+/* Target any white borders specifically */
+*[style*="border-color: white"],
+*[style*="border-color: #ffffff"],
+*[style*="border-color: rgb(255, 255, 255)"],
+*[style*="border: 1px solid white"],
+*[style*="border: 1px solid #ffffff"] {
+  border-color: transparent !important;
+  border: none !important;
+}
+
+/* Target the chart wrapper */
+.chart-container-wrapper {
+  background-color: #000000 !important;
+  border: none !important;
+  overflow: hidden !important;
+}
+
+/* Target the chart iframe */
+.TVChartContainer iframe {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove any margin or padding that might cause white space */
+.TVChartContainer,
+.chart-container,
+.tv-chart-container {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
 }

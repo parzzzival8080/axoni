@@ -126,28 +126,15 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
       setIsLoading(true);
       
       // Use the effective UID (either from localStorage or default)
-      const effectiveUid = uid || 'yE8vKBNw';
-      const numPrice = parseFloat(price);
-      const numAmount = parseFloat(amount);
-      
-      // IMPORTANT: Always use 'limit' as the execution type
-      const executionType = 'limit';
-      
-      console.log('Executing trade:', {
-        uid: effectiveUid,
-        order_type: isBuy ? 'buy' : 'sell',
-        excecution_type: executionType,
-        price: numPrice,
-        amount: numAmount
-      });
-      
-      // Call the API directly since we can't import the trading service
+      const effectiveUid = uid || localStorage.getItem('uid') || 'yE8vKBNw';
       const API_BASE_URL = 'https://apiv2.bhtokens.com/api/v1';
       const API_KEY = 'A20RqFwVktRxxRqrKBtmi6ud';
+      const numPrice = parseFloat(price);
+      const numAmount = parseFloat(amount);
       const total_in_usdt = (numPrice * numAmount).toFixed(6);
-      
-      // Use the exact query format from the working example with corrected parameter name
-      const url = `${API_BASE_URL}/orders?uid=${effectiveUid}&coin_id=1&order_type=${isBuy ? 'buy' : 'sell'}&excecution_type=${executionType}&price=${numPrice}&amount=${numAmount}&total_in_usdt=${total_in_usdt}&apikey=${API_KEY}`;
+      const executionType = activeOrderType;
+      // Use the coinPairId prop for coin_id in the API call
+      const url = `${API_BASE_URL}/orders?uid=${effectiveUid}&coin_id=${coinPairId}&order_type=${isBuy ? 'buy' : 'sell'}&excecution_type=${executionType}&price=${numPrice}&amount=${numAmount}&total_in_usdt=${total_in_usdt}&apikey=${API_KEY}`;
       
       console.log('Executing trade with URL:', url);
       
@@ -257,7 +244,7 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
           }}>
             {type === 'error' && (
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ color: '#F23645' }}>
-                <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-7v2h2v-2h-2zm0-8v6h2V7h-2z" fill="currentColor"/>
+                <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-7v2h2v-2h-2zm0-8v6h2V7h-2zm0-8v6h2V1h-2z" fill="currentColor"/>
               </svg>
             )}
             {type === 'success' && (

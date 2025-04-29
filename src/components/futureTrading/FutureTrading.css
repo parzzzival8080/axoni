@@ -1,0 +1,84 @@
+/* Future Trading specific styles */
+.future-trading-container {
+  background-color: #000000;
+  color: #ffffff;
+  width: 100%;
+}
+
+.main-container {
+  display: flex;
+  height: calc(100vh - 144px);
+  background-color: #000000;
+  border: none;
+}
+
+.chart-section {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  border: none !important;
+  background-color: #000000;
+  overflow: hidden;
+}
+
+.TVChartContainer {
+  width: 100%;
+  height: calc(100vh - 220px);
+  background-color: #000000 !important;
+  border: none !important;
+  outline: none !important;
+  overflow: hidden !important;
+}
+
+/* Override any borders that might be coming from other components */
+.chart-section *,
+.TVChartContainer *,
+.trading-chart-container * {
+  border-color: transparent !important;
+}
+
+/* Target any iframe within the chart container */
+.TVChartContainer iframe {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: #000000 !important;
+}
+
+/* Override any white backgrounds */
+.chart-section,
+.TVChartContainer,
+.trading-chart-container,
+.chart-container,
+.tv-chart-container {
+  background-color: #000000 !important;
+}
+
+/* Target the chart wrapper */
+.chart-container-wrapper {
+  background-color: #000000 !important;
+  border: none !important;
+  overflow: hidden !important;
+}
+
+/* Remove any margin or padding that might cause white space */
+.chart-section,
+.TVChartContainer,
+.trading-chart-container {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Override any borders from Assets.css or other components */
+.asset-card,
+.card-content,
+.assets-content,
+.assets-cards {
+  border: none !important;
+  background-color: transparent !important;
+}
+
+/* Ensure no white backgrounds are visible */
+body, html, #root, .App, main {
+  background-color: #000000;
+}

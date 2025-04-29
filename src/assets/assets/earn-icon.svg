@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Earn Icon</title>
+    <g id="Earn-Icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle fill="#F5F5F5" cx="24" cy="24" r="24"></circle>
+        <g transform="translate(12, 10)">
+            <circle stroke="#00A86B" stroke-width="2" cx="12" cy="12" r="12"></circle>
+            <path d="M12,6 L12,18" stroke="#00A86B" stroke-width="2" stroke-linecap="round"></path>
+            <path d="M6,12 L18,12" stroke="#00A86B" stroke-width="2" stroke-linecap="round"></path>
+            <path d="M8,20 L16,20" stroke="#00A86B" stroke-width="2" stroke-linecap="round"></path>
+            <path d="M10,24 L14,24" stroke="#00A86B" stroke-width="2" stroke-linecap="round"></path>
+        </g>
+    </g>
+</svg>

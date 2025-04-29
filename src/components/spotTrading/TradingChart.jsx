@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import OrderHistory from './OrderHistory';
 import './index.css';
 import './chart_override.css';
-import { widget } from '../../charting_library';
+import { widget } from '../../charting_library/charting_library.esm.js';
 
 function getLanguageFromURL() {
 	const regex = new RegExp('[\\?&]lang=([^&#]*)');
@@ -97,8 +97,44 @@ const TradingChart = () => {
 			library_path: defaultProps.libraryPath,
 
 			locale: getLanguageFromURL() || 'en',
-			disabled_features: ['use_localstorage_for_settings'],
-			enabled_features: ['study_templates'],
+			disabled_features: [
+				"use_localstorage_for_settings",
+				"items_favoriting", 
+				// "legend_context_menu",
+				// "hide_main_series_symbol_from_indicator_legend",
+				// "symbol_info",
+				"header_compare",
+				"header_fullscreen_button",
+				"header_settings",
+				"header_quick_search",
+				"symbol_search_hot_key",
+				"show_hide_button_in_legend",
+				"format_button_in_legend",
+				"header_symbol_search",
+				// "show_object_tree",
+				"header_saveload", 
+				"compare_symbol_search_spread_operators",
+				// "legend_widget",
+				"delete_button_in_legend",
+				"create_volume_indicator_by_default",
+				"show_chart_property_page",
+				// "control_bar",
+				"always_show_legend_values_on_mobile",
+				"adaptive_logo",
+				// "header_widget",
+				// "main_series_scale_menu",
+				"header_resolutions",
+				"timeframes_toolbar"
+			],
+			enabled_features: [
+				'study_templates',
+				"hide_left_toolbar_by_default",
+				"chart_style_hilo_last_price",
+				"hide_resolution_in_legend",
+				"hide_unresolved_symbols_in_legend",
+				"chart_style_hilo",
+				"show_symbol_logos"
+			],
 			charts_storage_url: defaultProps.chartsStorageUrl,
 			charts_storage_api_version: defaultProps.chartsStorageApiVersion,
 			client_id: defaultProps.clientId,
@@ -109,14 +145,6 @@ const TradingChart = () => {
       theme: "dark",
       custom_css_url: '', 
       loading_screen: { backgroundColor: "#000000" },
-      enabled_features: [
-				"hide_left_toolbar_by_default",
-				"chart_style_hilo_last_price",
-				"hide_resolution_in_legend",
-				"hide_unresolved_symbols_in_legend",
-				"chart_style_hilo",
-				"show_symbol_logos"
-			],
 			toolbar_bg: '#000000', 
 			overrides: {
 				// Candle styling
@@ -150,36 +178,6 @@ const TradingChart = () => {
 				"paneProperties.crossHairProperties.backgroundGradientStartColor": "#000000",
 				"paneProperties.crossHairProperties.backgroundGradientEndColor": "#000000",
 			},
-			disabled_features: [
-				"items_favoriting", 
-				// "legend_context_menu",
-				// "hide_main_series_symbol_from_indicator_legend",
-				// "symbol_info",
-				"header_compare",
-				"header_fullscreen_button",
-				"header_settings",
-				"header_quick_search",
-				"symbol_search_hot_key",
-				"show_hide_button_in_legend",
-				"format_button_in_legend",
-				"header_symbol_search",
-				// "show_object_tree",
-				"header_saveload", 
-				"compare_symbol_search_spread_operators",
-				// "legend_widget",
-				"format_button_in_legend",
-				"delete_button_in_legend",
-				"show_hide_button_in_legend",
-				"create_volume_indicator_by_default",
-				"show_chart_property_page",
-				// "control_bar",
-				"always_show_legend_values_on_mobile",
-				"adaptive_logo",
-				// "header_widget",
-				// "main_series_scale_menu",
-				"header_resolutions",
-				"timeframes_toolbar"
-			],
 		};
 
 		const tvWidget = new widget(widgetOptions);
@@ -285,7 +283,7 @@ const TradingChart = () => {
 
   return (
     
-    <div className="chart-section" style={{ width: '100%', height: '700px', backgroundColor: '#000000' }}>
+    <div style={{ width: '100%', height: '700px', backgroundColor: '#000000' }}>
      
       <div className="chart-nav">
         <div className="left-tabs">

@@ -382,8 +382,8 @@ const Navbar = () => {
                 <Link to="/profile" className="user-menu-item">
                   <i className="fas fa-user"></i> Profile
                 </Link>
-                <Link to="/wallet" className="user-menu-item">
-                  <i className="fas fa-wallet"></i> Wallet
+                <Link to="/Assets" className="user-menu-item">
+                  <i className="fas fa-wallet"></i> Assets
                 </Link>
                 <Link to="/settings" className="user-menu-item">
                   <i className="fas fa-cog"></i> Settings

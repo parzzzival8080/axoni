@@ -5,6 +5,7 @@ import TradingChart from '../components/futureTrading/TradingChart'
 import OrderBook from '../components/futureTrading/OrderBook'
 import TradeForm from '../components/futureTrading/TradeForm'
 import OrderHistory from '../components/futureTrading/OrderHistory'
+import '../components/futureTrading/FutureTrading.css'
 
 function FutureTrading() {
   const [selectedCoin, setSelectedCoin] = useState('BTC');
