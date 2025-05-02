@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { getFutureBalance, executeFutureTradeOrder } from '../../services/futureTradingApi';
 import './TradeForm.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretUp, faCaretDown, faSyncAlt, faSpinner, faChevronDown, faChartLine, faCheckCircle, faExclamationCircle, faInfoCircle, faExclamationTriangle, faTimes, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 
-function TradeForm({ symbol = 'BTC' }) {
+function TradeForm({ symbol = 'BTC', onTradeSuccess }) {
   const [activeTab, setActiveTab] = useState('trade'); // 'trade' or 'tools'
   const [positionType, setPositionType] = useState('open'); // 'open' or 'close'
   const [leverageMode, setLeverageMode] = useState('isolated'); // 'isolated' or 'cross'
@@ -151,23 +153,25 @@ function TradeForm({ symbol = 'BTC' }) {
     setOrderType(type);
   };
 
-  // Calculate max amount based on wallet balance and leverage
+  // Calculate max amount based on wallet balance and leverage, with buffer for fees/margin
   const calculateMaxAmount = () => {
-    // Use availableBalance for calculation
-    const available = parseFloat(walletBalance.availableBalance);
-    const lev = parseFloat(leverage);
-    const entryPrice = parseFloat(price);
+    // Parse all values as floats and use fallback defaults
+    const available = parseFloat(walletBalance.availableBalance) || 0;
+    const lev = parseFloat(leverage) || 1;
+    const entryPrice = parseFloat(price) || 1;
     if (!available || !lev || !entryPrice) return 0;
-    return (available * lev) / entryPrice;
+    // Subtract a 0.5% buffer for fees/margin
+    const buffer = 0.995;
+    return (available * lev * buffer) / entryPrice;
   };
 
   // Handle slider change
   const handleSliderChange = (e) => {
-    setSliderValue(e.target.value);
-
-    // Calculate amount based on slider value using actual max amount
+    const sliderVal = parseFloat(e.target.value) || 0;
+    setSliderValue(sliderVal);
+    // Calculate amount based on slider value using actual max amount (with buffer)
     const maxAmount = calculateMaxAmount();
-    const newAmount = (e.target.value / 100 * maxAmount).toFixed(6);
+    const newAmount = ((sliderVal / 100) * maxAmount).toFixed(6);
     setAmount(newAmount);
   };
 
@@ -176,13 +180,12 @@ function TradeForm({ symbol = 'BTC' }) {
     const value = e.target.value;
     if (/^[0-9]*\.?[0-9]*$/.test(value) || value === '') {
       setAmount(value);
-
       // Update slider if amount is entered directly
       if (value) {
         const maxAmount = calculateMaxAmount();
         if (maxAmount > 0) {
           const percent = (parseFloat(value) / maxAmount) * 100;
-          setSliderValue(Math.min(100, Math.max(0, percent)));
+          setSliderValue(Math.min(100, Math.max(0, Math.round(percent * 1000) / 1000)));
         }
       } else {
         setSliderValue(0);
@@ -278,6 +281,11 @@ function TradeForm({ symbol = 'BTC' }) {
       // Refresh wallet balance after trade
       fetchWalletBalance();
 
+      // Call onTradeSuccess callback to trigger order history refresh
+      if (typeof onTradeSuccess === 'function') {
+        onTradeSuccess();
+      }
+
       // Reset form
       setAmount('');
       setSliderValue(0);
@@ -293,20 +301,24 @@ function TradeForm({ symbol = 'BTC' }) {
     }
   };
 
+  // Ensure all displayed values are formatted and up-to-date
+  const formattedAvailable = formatNumber(walletBalance.availableBalance, 6);
+  const formattedMaxAmount = formatNumber(calculateMaxAmount(), 6);
+
   return (
     <div className="trade-form">
       {/* Notification Component */}
       {notification && (
         <div className={`notification ${notification.type}`}>
           <span className="notification-icon">
-            {notification.type === 'success' && <i className="fas fa-check-circle"></i>}
-            {notification.type === 'error' && <i className="fas fa-exclamation-circle"></i>}
-            {notification.type === 'info' && <i className="fas fa-info-circle"></i>}
-            {notification.type === 'warning' && <i className="fas fa-exclamation-triangle"></i>}
+            {notification.type === 'success' && <FontAwesomeIcon icon={faCheckCircle} />}
+            {notification.type === 'error' && <FontAwesomeIcon icon={faExclamationCircle} />}
+            {notification.type === 'info' && <FontAwesomeIcon icon={faInfoCircle} />}
+            {notification.type === 'warning' && <FontAwesomeIcon icon={faExclamationTriangle} />}
           </span>
           <span className="notification-message">{notification.message}</span>
           <button className="notification-close" onClick={() => setNotification(null)}>
-            <i className="fas fa-times"></i>
+            <FontAwesomeIcon icon={faTimes} />
           </button>
         </div>
       )}
@@ -361,7 +373,7 @@ function TradeForm({ symbol = 'BTC' }) {
         </div>
         <div className="leverage-value" onClick={toggleLeverage}>
           <span>{leverage}</span>×
-          <i className="fas fa-chevron-down" style={{ marginLeft: '4px', fontSize: '10px' }}></i>
+          <FontAwesomeIcon icon={faChevronDown} style={{ marginLeft: '4px', fontSize: '10px' }} />
         </div>
       </div>
 
@@ -387,7 +399,7 @@ function TradeForm({ symbol = 'BTC' }) {
             TP/SL
           </div>
           <div className="order-type-help">
-            <i className="fas fa-question-circle"></i>
+            <FontAwesomeIcon icon={faQuestionCircle} />
           </div>
         </div>
       </div>
@@ -403,8 +415,8 @@ function TradeForm({ symbol = 'BTC' }) {
             onChange={(e) => setPrice(e.target.value)}
           />
           <div className="price-controls">
-            <button className="price-control up"><i className="fas fa-caret-up"></i></button>
-            <button className="price-control down"><i className="fas fa-caret-down"></i></button>
+            <button className="price-control up"><FontAwesomeIcon icon={faCaretUp} /></button>
+            <button className="price-control down"><FontAwesomeIcon icon={faCaretDown} /></button>
           </div>
           <button className="market-price-btn">BBO</button>
         </div>
@@ -413,7 +425,7 @@ function TradeForm({ symbol = 'BTC' }) {
       {/* Amount Input */}
       <div className="amount-input-section">
         <div className="amount-label">
-          Amount ({symbol}) <i className="fas fa-chevron-down" style={{ fontSize: '10px' }}></i>
+          Amount ({symbol}) <FontAwesomeIcon icon={faChevronDown} style={{ fontSize: '10px' }} />
         </div>
         <div className="amount-input-container">
           <input
@@ -431,6 +443,7 @@ function TradeForm({ symbol = 'BTC' }) {
             type="range"
             min="0"
             max="100"
+            step="0.01"
             value={sliderValue}
             onChange={handleSliderChange}
             className="range-slider"
@@ -441,17 +454,17 @@ function TradeForm({ symbol = 'BTC' }) {
           </div>
           <div className="balance-info">
             <div className="available-balance">
-              Available {walletBalance.availableBalance} USDT
+              Available {formattedAvailable} USDT
               <button className="info-btn" onClick={fetchWalletBalance}>
-                <i className={isLoadingBalance ? "fas fa-spinner fa-spin" : "fas fa-sync-alt"}></i>
+                {isLoadingBalance ? <FontAwesomeIcon icon={faSpinner} spin /> : <FontAwesomeIcon icon={faSyncAlt} />}
               </button>
             </div>
             <div className="max-values">
               <span className="max-long">
-                Max long {formatNumber(calculateMaxAmount(), 6)} {symbol}
+                Max long {formattedMaxAmount} {symbol}
               </span>
               <span className="max-short">
-                Max short {formatNumber(calculateMaxAmount(), 6)} {symbol}
+                Max short {formattedMaxAmount} {symbol}
               </span>
             </div>
           </div>
@@ -478,7 +491,7 @@ function TradeForm({ symbol = 'BTC' }) {
       >
         {isLoading ? (
           <>
-            <i className="fas fa-spinner fa-spin" style={{ marginRight: '8px' }}></i>
+            <FontAwesomeIcon icon={faSpinner} spin style={{ marginRight: '8px' }} />
             Processing...
           </>
         ) : (
@@ -507,7 +520,8 @@ function TradeForm({ symbol = 'BTC' }) {
           <span className="percent-icon">%</span> Fees
         </div>
         <div className="tool-item">
-          <i className="fas fa-chart-line" style={{ marginRight: '4px' }}></i> Position builder
+          <FontAwesomeIcon icon={faChartLine} style={{ marginRight: '4px' }} />
+          Position builder
         </div>
       </div>
     </div>

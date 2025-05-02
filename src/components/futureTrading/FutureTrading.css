@@ -224,63 +224,90 @@
     background-color: #262626;
 }
 
-/* Main container with grid layout - matching spot trading */
+/* Main container with grid layout - increased height */
 .future-trading-container .main-container {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
     grid-template-rows: 1fr;
-    height: 525px;
+    height: 650px; /* Increased from 525px */
     gap: 0;
     background-color: var(--futures-primary-bg);
     position: relative;
-    margin-bottom: 1px;
+    margin-bottom: 20px;
     border: 1px solid var(--futures-border-color);
     border-radius: 0;
+    overflow: hidden;
 }
 
 /* Chart section */
 .future-trading-container .chart-section {
     grid-column: 1;
     height: 100%;
-    min-height: 500px;
+    min-height: 620px; /* Increased from 500px */
     background: #000000;
     overflow: hidden;
     box-sizing: border-box;
     position: relative;
     border: none;
     border-radius: 0;
-    border-right: 1px solid rgb(26, 26, 26);
+}
+
+/* Trading chart with updated height */
+.future-trading-container .trading-chart-container {
+    width: 100%;
+    height: 620px; /* Increased from 480px */
+    background-color: var(--futures-chart-bg);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+    min-height: 620px; /* Increased to match height */
+    border: 1px solid var(--futures-border-color);
+    border-radius: 0;
+    transition: height var(--futures-transition-speed) ease;
 }
 
 /* Orderbook section */
 .future-trading-container .orderbook-section {
     grid-column: 2;
     height: 100%;
-    background: var(--futures-primary-bg);
-    overflow-y: auto;
-    position: relative;
+    background: #000000;
+    overflow: hidden; /* Prevent overflow */
+    border-left: 1px solid var(--futures-border-color);
     border-right: 1px solid var(--futures-border-color);
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    position: relative; /* Ensure proper stacking context */
+    z-index: 1;
 }
 
-.future-trading-container .orderbook-section::-webkit-scrollbar {
-    display: none;
-}
-
-/* Trade section */
+/* Trade form section */
 .future-trading-container .trade-section {
     grid-column: 3;
     height: 100%;
-    background: var(--futures-primary-bg);
-    overflow-y: auto;
-    position: relative;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    background: #000000;
+    overflow: hidden; /* Prevent overflow */
+    position: relative; /* Ensure proper stacking context */
+    z-index: 1;
 }
 
-.future-trading-container .trade-section::-webkit-scrollbar {
-    display: none;
+/* Orders container - fixed to prevent being overlapped */
+.future-trading-container .orders-container {
+    width: 100%;
+    position: relative;
+    z-index: 2; /* Higher z-index than main-container */
+    margin-top: 20px; /* Add space between main container and orders */
+    clear: both; /* Ensure it starts on a new line */
+}
+
+/* Orders section */
+.future-trading-container .orders-section {
+    width: 100% !important;
+    background: #000 !important;
+    border: 1px solid #1a1a1a !important;
+    border-radius: 0 !important;
+    margin-top: 0 !important; /* Remove top margin as we've added it to the container */
+    position: relative;
+    z-index: 2;
 }
 
 /* Order history container */
