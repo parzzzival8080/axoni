@@ -209,29 +209,9 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
   const formattedCryptoBalance = formatNumber(cryptoBalance, 5);
   const formattedUsdtBalance = formatNumber(usdtBalance, 2);
 
-  // Custom notification component implementation
-  const CustomNotification = ({ message, type, onClose }) => {
-    useEffect(() => {
-      // Auto-close notification after 5 seconds
-      const timer = setTimeout(() => {
-        if (onClose) onClose();
-      }, 5000);
-      
-      return () => clearTimeout(timer);
-    }, [onClose]);
-    
-    return (
-      <div className={`notification ${type}`}>
-        <div className="notification-content">
-          <div className="notification-message">{message}</div>
-          <button className="notification-close" onClick={onClose}>×</button>
-        </div>
-      </div>
-    );
-  };
-
   return (
     <div className="trade-form">
+      {/* Top controls */}
       <div className="top-controls">
         <div className="margin-toggle">
           <span>Margin</span>
@@ -242,21 +222,47 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
         </div>
       </div>
 
-      <div className="buy-sell-tabs">
+      {/* Buy/Sell tabs - Fixed with proper styling */}
+      <div className="buy-sell-tabs" style={{ display: 'flex', width: '100%', borderRadius: '4px', overflow: 'hidden', marginBottom: '16px', border: '1px solid #333' }}>
         <div 
-          className={`tab ${isBuy ? 'buy active' : ''}`} 
+          className={`tab buy ${isBuy ? 'active' : ''}`} 
           onClick={() => setIsBuy(true)}
+          style={{ 
+            flex: 1, 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            padding: '10px 0', 
+            cursor: 'pointer',
+            backgroundColor: isBuy ? 'rgba(0, 181, 116, 0.2)' : 'transparent',
+            color: isBuy ? '#00B574' : '#FFFFFF',
+            fontWeight: isBuy ? '600' : '400',
+            transition: 'all 0.2s ease'
+          }}
         >
           Buy
         </div>
         <div 
-          className={`tab ${!isBuy ? 'sell active' : ''}`} 
+          className={`tab sell ${!isBuy ? 'active' : ''}`} 
           onClick={() => setIsBuy(false)}
+          style={{ 
+            flex: 1, 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            padding: '10px 0', 
+            cursor: 'pointer',
+            backgroundColor: !isBuy ? 'rgba(242, 54, 69, 0.2)' : 'transparent',
+            color: !isBuy ? '#F23645' : '#FFFFFF',
+            fontWeight: !isBuy ? '600' : '400',
+            transition: 'all 0.2s ease'
+          }}
         >
           Sell
         </div>
       </div>
 
+      {/* Order types */}
       <div className="order-types">
         {['Limit', 'Market', 'Stop-Limit'].map((type) => (
           <div 
@@ -269,8 +275,9 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
         ))}
       </div>
 
+      {/* Price input */}
       <div className="form-group">
-        <label>Price ({usdtSymbol})</label>
+        <label>Price ({cryptoData?.usdtSymbol || 'USDT'})</label>
         <div className="input-wrapper">
           <input 
             type="text" 
@@ -286,13 +293,14 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
         </div>
       </div>
 
+      {/* Amount input */}
       <div className="form-group">
-        <label>Amount ({cryptoSymbol})</label>
+        <label>Amount ({cryptoData?.cryptoSymbol || 'BTC'})</label>
         <input 
           type="text" 
           value={amount} 
           onChange={handleAmountChange}
-          placeholder={`Min 0.00001 ${cryptoSymbol}`}
+          placeholder={`Min 0.00001 ${cryptoData?.cryptoSymbol || 'BTC'}`}
         />
         <div className="slider-container">
           <input 
@@ -310,8 +318,9 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
         </div>
       </div>
 
+      {/* Total input */}
       <div className="form-group">
-        <label>Total ({usdtSymbol})</label>
+        <label>Total ({cryptoData?.usdtSymbol || 'USDT'})</label>
         <input 
           type="text" 
           placeholder="0.00" 
@@ -320,15 +329,21 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
         />
       </div>
 
+      {/* Balance info */}
       <div className="balance-info">
-        <span>Available: {isBuy ? formattedUsdtBalance : formattedCryptoBalance} {isBuy ? usdtSymbol : cryptoSymbol}</span>
+        <span>Available: {isBuy 
+          ? formatNumber(userBalance?.usdtBalance || 0, 2) 
+          : formatNumber(userBalance?.cryptoBalance || 0, 5)} {isBuy 
+            ? cryptoData?.usdtSymbol || 'USDT' 
+            : cryptoData?.cryptoSymbol || 'BTC'}</span>
         <span>Max {isBuy ? 'buy' : 'sell'}: {
           isBuy 
-            ? formatNumber(usdtBalance / (price || 1), 5) 
-            : formattedCryptoBalance
-        } {cryptoSymbol}</span>
+            ? formatNumber((userBalance?.usdtBalance || 0) / (price || 1), 5) 
+            : formatNumber(userBalance?.cryptoBalance || 0, 5)
+        } {cryptoData?.cryptoSymbol || 'BTC'}</span>
       </div>
 
+      {/* Trade button */}
       {isAuthenticated ? (
         <button 
           className={`trade-button ${isBuy ? 'buy' : 'sell'}`}
@@ -339,23 +354,33 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
           disabled={isLoading}
           type="button"
         >
-          {isLoading ? 'Processing...' : isBuy ? `Buy ${cryptoSymbol}` : `Sell ${cryptoSymbol}`}
+          {isLoading ? (
+            <>
+              <i className="fas fa-spinner fa-spin" style={{ marginRight: '8px' }}></i>
+              Processing...
+            </>
+          ) : (
+            isBuy ? `Buy ${cryptoData?.cryptoSymbol || 'BTC'}` : `Sell ${cryptoData?.cryptoSymbol || 'BTC'}`
+          )}
         </button>
       ) : (
         <Link to="/login" className="login-button">Log in/Sign up</Link>
       )}
 
+      {/* Price info */}
       <div className="price-info">
         <span>Max price: {formatPrice(price * 1.05)}</span>
         <span>Fees: 0.1%</span>
       </div>
 
+      {/* Notification */}
       {notification && (
-        <CustomNotification 
-          message={notification.message} 
-          type={notification.type} 
-          onClose={() => setNotification(null)} 
-        />
+        <div className={`notification ${notification.type}`}>
+          <div className="notification-content">
+            <div className="notification-message">{notification.message}</div>
+            <button className="notification-close" onClick={() => setNotification(null)}>×</button>
+          </div>
+        </div>
       )}
     </div>
   );

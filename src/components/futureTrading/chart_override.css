@@ -1,108 +1,174 @@
-/* Direct chart background override */
-.TVChartContainer iframe {
+/* Force black background on TradingView chart */
+.TVChartContainer,
+.TVChartContainer iframe,
+.TVChartContainer iframe body,
+.TVChartContainer iframe html,
+.chart-page,
+.chart-container,
+.layout__area--center,
+.chart-container__chartarea,
+.chart-container__chartarea--themed-dark,
+.chart-markup-table,
+.tv-chart-container,
+.tv-chart-container__bg {
   background-color: #000000 !important;
   border: none !important;
-}
-
-/* Override TradingView chart background */
-:root .chart-page,
-:root .chart-container,
-:root .chart-container__chartarea,
-:root .chart-container__chartarea--themed-dark,
-:root .layout__area--center {
-  background-color: #000000 !important;
-  border: none !important;
-}
-
-/* Target the main chart area */
-.chart-container__chartarea--themed-dark {
-  background-color: #000000 !important;
-  border: none !important;
-}
-
-/* Target the price scale and time scale */
-.price-axis,
-.time-axis {
-  background-color: #000000 !important;
-  border: none !important;
-}
-
-/* Target the chart grid */
-.tv-chart-container svg {
-  background-color: #000000 !important;
+  border-radius: 0 !important;
 }
 
 /* Target the chart canvas */
-canvas {
+.chart-container canvas {
   background-color: #000000 !important;
 }
 
 /* Target the specific navy blue background */
-.chart-container__chartarea--themed-dark,
-.chart-container__chartarea,
-.layout__area--center,
-.layout__area--center div,
-.tv-chart-container,
-.chart-page,
-.chart-container {
+body .chart-page,
+body .chart-container,
+body .chart-container__chartarea,
+body .chart-container__chartarea--themed-dark,
+body .layout__area--center,
+body .tv-chart-container,
+body iframe {
   background-color: #000000 !important;
   border: none !important;
-  outline: none !important;
 }
 
 /* Target the main chart area where candlesticks are displayed */
+.chart-container__chartarea--themed-dark {
+  background-color: #000000 !important;
+}
+
+/* Target the specific navy background in TradingView */
+.chart-page .chart-container {
+  background-color: #000000 !important;
+}
+
+/* Target the background of the price and time scales */
+.chart-page .chart-container .price-axis,
+.chart-page .chart-container .time-axis {
+  background-color: #000000 !important;
+}
+
+/* Target all TradingView elements */
+.tradingview-widget-container,
+.tradingview-widget-container iframe,
+.tradingview-widget-container div {
+  background-color: #000000 !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+/* Ensure no white borders anywhere */
+.future-trading-container *,
+.chart-section *,
+.TVChartContainer * {
+  border-radius: 0 !important;
+}
+
+/* Override any potential TradingView default styles */
+iframe {
+  background-color: #000000 !important;
+  border: none !important;
+}
+
+/* Force all chart elements to have black background */
+.chart-page .chart-container .chart-container__chartarea {
+  background-color: #000000 !important;
+}
+
+/* Override any potential white backgrounds */
+.chart-page .chart-container .chart-container__chartarea canvas {
+  background-color: #000000 !important;
+}
+
+/* Ensure grid lines use the correct color */
+.chart-page .chart-container .chart-container__chartarea .pane-legend-line.horizontal,
+.chart-page .chart-container .chart-container__chartarea .pane-legend-line.vertical {
+  stroke: rgb(26, 26, 26) !important;
+}
+
+/* Ensure chart borders match the specified color */
+.chart-section,
+.chart-area,
+.TVChartContainer {
+  border: 1px solid rgb(26, 26, 26) !important;
+  border-radius: 0 !important;
+}
+
+/* Increase chart height */
+.future-trading-container .chart-section {
+  min-height: 500px !important;
+  height: 500px !important;
+  max-height: 500px !important;
+  overflow: hidden !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.TVChartContainer {
+  height: 100% !important;
+  min-height: 450px !important;
+  max-height: 450px !important;
+  overflow: hidden !important;
+}
+
+/* Force black background on all chart elements */
+.chart-page .chart-container,
+.chart-page .chart-container *,
+.chart-page .chart-container *:before,
+.chart-page .chart-container *:after,
+.chart-page .chart-container *:hover,
+.chart-page .chart-container *:focus {
+  background-color: #000000 !important;
+}
+
+/* Override any potential background colors in chart elements */
+.chart-page .chart-container svg,
+.chart-page .chart-container svg *,
+.chart-page .chart-container canvas,
+.chart-page .chart-container div {
+  background-color: #000000 !important;
+}
+
+/* Ensure all chart elements have black background */
+.chart-page, 
+.chart-page *, 
+.layout__area--center, 
+.layout__area--center * {
+  background-color: #000000 !important;
+}
+
+/* Fix for navy blue background in TradingView */
 .tv-chart-container__bg {
   fill: #000000 !important;
+}
+
+/* Fix for chart container overflow */
+.chart-section {
+  contain: strict !important;
+}
+
+/* Force all TradingView elements to have black background */
+.chart-page .chart-container .chart-container__chartarea,
+.chart-page .chart-container .chart-container__chartarea--themed-dark,
+.chart-page .chart-container .chart-container__chartarea--themed-dark *,
+.chart-page .chart-container .chart-container__chartarea * {
   background-color: #000000 !important;
 }
 
-/* Target the trading view chart */
-.trading-view-chart {
-  background-color: #000000 !important;
-  border: none !important;
-}
-
-/* Force all elements to have black background */
-.TVChartContainer * {
-  background-color: #000000 !important;
-}
-
-/* Remove all borders from chart elements */
-.chart-container *,
-.tv-chart-container *,
-.layout__area--center * {
-  border-color: transparent !important;
-}
-
-/* Target any white borders specifically */
-*[style*="border-color: white"],
-*[style*="border-color: #ffffff"],
-*[style*="border-color: rgb(255, 255, 255)"],
-*[style*="border: 1px solid white"],
-*[style*="border: 1px solid #ffffff"] {
-  border-color: transparent !important;
-  border: none !important;
-}
-
-/* Target the chart wrapper */
-.chart-container-wrapper {
-  background-color: #000000 !important;
-  border: none !important;
-  overflow: hidden !important;
-}
-
-/* Target the chart iframe */
+/* Target the TradingView iframe directly */
 .TVChartContainer iframe {
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
+  background-color: #000000 !important;
 }
 
-/* Remove any margin or padding that might cause white space */
-.TVChartContainer,
-.chart-container,
-.tv-chart-container {
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
+/* Target the iframe content */
+.TVChartContainer iframe html,
+.TVChartContainer iframe body {
+  background-color: #000000 !important;
+}
+
+/* Fix for any gradient backgrounds */
+[style*="background-image"] {
+  background-image: none !important;
+  background-color: #000000 !important;
 }

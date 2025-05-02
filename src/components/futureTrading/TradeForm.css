@@ -1,472 +1,655 @@
-.trade-form.dark-theme {
-  background-color: #0d0d0d;
-  color: #f0f0f0;
-  padding: 16px;
-  border-radius: 4px;
+.future-trading-container .trade-form {
+  --buy-color: #00B574;
+  --sell-color: #F23645;
+  --primary-bg: #000000;
+  --secondary-bg: #1A1A1A;
+  --input-bg: #232323;
+  --border-color: #333333;
+  --focus-color: #3772FF;
+  --text-primary: #FFFFFF;
+  --text-secondary: #8A8A8A;
+  --text-tertiary: #555555;
+  --warning-color: #F0B90B;
+  --success-color: #00B574;
+  --error-color: #F23645;
+  --divider-color: #232323;
+  
+  /* Spacing variables */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  
+  /* Component sizing */
+  --input-height: 36px;
+  --button-height: 40px;
+  --border-radius: 4px;
+  
+  /* Typography */
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 600;
+  
+  /* Transitions */
+  --transition-speed: 150ms;
+  --transition-easing: ease-in-out;
+  
+  background-color: var(--primary-bg);
+  color: var(--text-primary);
+  padding: var(--spacing-md);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-  max-width: 360px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.2px;
+  border-radius: 0;
+  border: 1px solid var(--border-color);
+  box-shadow: none;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Trade/Tools tabs */
-.trade-form .trade-tabs {
+.future-trading-container .trade-form .trade-tabs {
   display: flex;
-  margin-bottom: 16px;
-  padding-bottom: 8px;
+  margin-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border-color);
 }
 
-.trade-form .tab {
-  padding: 8px 12px;
+.future-trading-container .trade-form .tab {
+  padding: var(--spacing-sm) var(--spacing-md);
   cursor: pointer;
-  font-weight: 500;
-  color: #777;
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
   position: relative;
+  transition: color var(--transition-speed) var(--transition-easing);
+  font-size: var(--font-size-md);
+  text-align: center;
+  flex: 1;
 }
 
-.trade-form .tab.active {
-  color: #fff;
-  font-weight: 600;
+.future-trading-container .trade-form .tab.active {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-bold);
 }
 
-.trade-form .tab.active:after {
+.future-trading-container .trade-form .tab.active:after {
   content: '';
   position: absolute;
-  bottom: -8px;
+  bottom: -1px;
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: #ffffff;
+  background-color: var(--focus-color);
 }
 
-/* Position buttons */
-.trade-form .position-buttons {
+/* Position type tabs (Open/Close) */
+.future-trading-container .trade-form .position-type {
   display: flex;
-  margin-bottom: 12px;
-  width: 100%;
-  gap: 4px;
+  margin-bottom: var(--spacing-md);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  background-color: var(--input-bg);
+  height: var(--button-height);
 }
 
-.trade-form .position-btn {
+.future-trading-container .trade-form .position-btn {
   flex: 1;
-  padding: 12px;
   border: none;
-  border-radius: 4px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
-  font-weight: 500;
-  font-size: 14px;
-  background-color: #222;
-  color: #bbb;
+  transition: all var(--transition-speed) var(--transition-easing);
+  height: 100%;
+  padding: 0;
 }
 
-.trade-form .position-btn.active {
-  background-color: #1cb05e;
+.future-trading-container .trade-form .position-btn.active.buy-more {
+  background-color: var(--buy-color);
   color: white;
 }
 
-/* Leverage selection */
-.trade-form .leverage-selection {
+.future-trading-container .trade-form .position-btn.active.sell {
+  background-color: var(--sell-color);
+  color: white;
+}
+
+/* Leverage mode toggle */
+.future-trading-container .trade-form .leverage-section {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 16px;
-  padding: 8px 12px;
-  background-color: #1a1a1a;
-  border-radius: 4px;
-  font-size: 13px;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-sm) 0;
 }
 
-.trade-form .leverage-mode,
-.trade-form .leverage-value {
+.future-trading-container .trade-form .leverage-mode {
   display: flex;
   align-items: center;
+  background-color: var(--input-bg);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  height: 28px;
+}
+
+.future-trading-container .trade-form .leverage-mode-btn {
+  padding: 0 var(--spacing-md);
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
   cursor: pointer;
+  height: 100%;
+  transition: all var(--transition-speed) var(--transition-easing);
 }
 
-.trade-form .green-text {
-  color: #1cb05e;
-  margin-right: 4px;
+.future-trading-container .trade-form .leverage-mode-btn.active {
+  background-color: var(--focus-color);
+  color: white;
 }
 
-/* Order type selection */
-.trade-form .order-type-selection {
+.future-trading-container .trade-form .leverage-value {
   display: flex;
-  margin-bottom: 16px;
-  border-bottom: 1px solid #2a2a2a;
-  padding-bottom: 8px;
-  position: relative;
-}
-
-.trade-form .order-type {
-  padding: 8px 12px;
+  align-items: center;
+  background-color: var(--input-bg);
+  border-radius: var(--border-radius);
+  padding: 0 var(--spacing-sm);
+  height: 28px;
+  color: var(--focus-color);
+  font-family: 'Roboto Mono', monospace;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
-  font-size: 14px;
-  color: #777;
+}
+
+.future-trading-container .trade-form .leverage-value span {
+  margin-right: var(--spacing-xs);
+}
+
+/* Order type selector */
+.future-trading-container .trade-form .order-type-section {
+  margin-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--divider-color);
+  padding-bottom: var(--spacing-md);
+}
+
+.future-trading-container .trade-form .order-types {
+  display: flex;
+  margin-bottom: var(--spacing-sm);
+}
+
+.future-trading-container .trade-form .order-type {
+  padding: var(--spacing-xs) var(--spacing-md);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
   position: relative;
+  transition: color var(--transition-speed) var(--transition-easing);
+  margin-right: var(--spacing-md);
 }
 
-.trade-form .order-type.active {
-  color: #fff;
-  font-weight: 500;
+.future-trading-container .trade-form .order-type.active {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
 }
 
-.trade-form .order-type.active:after {
+.future-trading-container .trade-form .order-type.active:after {
   content: '';
   position: absolute;
-  bottom: -9px;
+  bottom: -4px;
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: #ffffff;
+  background-color: var(--focus-color);
 }
 
-.trade-form .help-icon {
-  position: absolute;
-  right: 0;
-  top: 8px;
-  color: #666;
+.future-trading-container .trade-form .order-type-help {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
   cursor: pointer;
 }
 
 /* Price input section */
-.trade-form .price-input-section {
-  margin-bottom: 16px;
+.future-trading-container .trade-form .price-input-section {
+  margin-bottom: var(--spacing-md);
 }
 
-.trade-form .price-label {
-  font-size: 13px;
-  margin-bottom: 8px;
-  color: #bbb;
+.future-trading-container .trade-form .price-label {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xs);
+  display: flex;
+  justify-content: space-between;
 }
 
-.trade-form .price-input-container {
+.future-trading-container .trade-form .price-input-container {
+  display: flex;
+  height: var(--input-height);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.future-trading-container .trade-form .price-input {
+  flex: 1;
+  height: 100%;
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+  padding: 0 var(--spacing-md);
+  color: var(--text-primary);
+  font-family: 'Roboto Mono', monospace;
+  font-size: var(--font-size-md);
+  transition: border-color var(--transition-speed) var(--transition-easing);
+}
+
+.future-trading-container .trade-form .price-input:focus {
+  border-color: var(--focus-color);
+  outline: none;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.future-trading-container .trade-form .price-controls {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-color);
+  border-left: none;
+  background-color: var(--input-bg);
+}
+
+.future-trading-container .trade-form .price-control {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  padding: 0 var(--spacing-xs);
+  transition: background-color var(--transition-speed) var(--transition-easing);
 }
 
-.trade-form .price-input {
-  flex: 1;
-  background-color: #191919;
-  border: 1px solid #333;
-  padding: 10px;
+.future-trading-container .trade-form .price-control:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.future-trading-container .trade-form .price-control.down {
+  border-top: 1px solid var(--border-color);
+}
+
+.future-trading-container .trade-form .market-price-btn {
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-left: none;
+  color: var(--focus-color);
+  padding: 0 var(--spacing-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  transition: background-color var(--transition-speed) var(--transition-easing);
+}
+
+.future-trading-container .trade-form .market-price-btn:hover {
+  background-color: rgba(55, 114, 255, 0.1);
+}
+
+/* Amount input section */
+.future-trading-container .trade-form .amount-input-section {
+  margin-bottom: var(--spacing-md);
+}
+
+.future-trading-container .trade-form .amount-label {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xs);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.future-trading-container .trade-form .amount-input-container {
+  margin-bottom: var(--spacing-sm);
+}
+
+.future-trading-container .trade-form .amount-input {
+  width: 100%;
+  height: var(--input-height);
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 0 var(--spacing-md);
+  color: var(--text-primary);
+  font-family: 'Roboto Mono', monospace;
+  font-size: var(--font-size-md);
+  transition: border-color var(--transition-speed) var(--transition-easing);
+}
+
+.future-trading-container .trade-form .amount-input:focus {
+  border-color: var(--focus-color);
+  outline: none;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Slider */
+.future-trading-container .trade-form .slider-container {
+  margin-bottom: var(--spacing-md);
+}
+
+.future-trading-container .trade-form .range-slider {
+  width: 100%;
+  height: 2px;
+  -webkit-appearance: none;
+  background: var(--border-color);
+  outline: none;
+  border-radius: 2px;
+  margin: var(--spacing-md) 0;
+}
+
+.future-trading-container .trade-form .range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--focus-color);
+  cursor: pointer;
+  transition: all var(--transition-speed) var(--transition-easing);
+}
+
+.future-trading-container .trade-form .range-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--focus-color);
+  cursor: pointer;
+  border: none;
+  transition: all var(--transition-speed) var(--transition-easing);
+}
+
+.future-trading-container .trade-form .range-slider::-webkit-slider-thumb:hover,
+.future-trading-container .trade-form .range-slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+}
+
+.future-trading-container .trade-form .slider-labels {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  margin-bottom: var(--spacing-sm);
+}
+
+/* Balance info */
+.future-trading-container .trade-form .balance-info {
+  margin-top: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+.future-trading-container .trade-form .available-balance {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.future-trading-container .trade-form .info-btn {
+  background: transparent;
+  border: none;
+  color: var(--focus-color);
+  cursor: pointer;
+  padding: 0;
+  font-size: var(--font-size-sm);
+}
+
+.future-trading-container .trade-form .max-values {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-secondary);
+}
+
+.future-trading-container .trade-form .max-long,
+.future-trading-container .trade-form .max-short {
+  font-family: 'Roboto Mono', monospace;
+  font-size: var(--font-size-xs);
+}
+
+/* TP/SL Checkbox */
+.future-trading-container .trade-form .tp-sl-container {
+  margin-bottom: var(--spacing-md);
+  border-top: 1px solid var(--divider-color);
+  padding-top: var(--spacing-md);
+}
+
+.future-trading-container .trade-form .tp-sl-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.future-trading-container .trade-form .tp-sl-checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.future-trading-container .trade-form .tp-sl-checkbox input + .checkbox-text:before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: var(--spacing-sm);
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+  vertical-align: middle;
+  transition: all var(--transition-speed) var(--transition-easing);
+}
+
+.future-trading-container .trade-form .tp-sl-checkbox input:checked + .checkbox-text:before {
+  background-color: var(--focus-color);
+  border-color: var(--focus-color);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white' width='18px' height='18px'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+  background-size: 12px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.future-trading-container .trade-form .checkbox-text {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+/* Action Button */
+.future-trading-container .trade-form .action-btn {
+  width: 100%;
+  height: var(--button-height);
+  border: none;
   border-radius: 4px;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-speed) var(--transition-easing);
+  margin-bottom: var(--spacing-md);
   color: white;
-  font-size: 16px;
 }
 
-.trade-form .price-controls {
+.future-trading-container .trade-form .action-btn.buy-more {
+  background: linear-gradient(135deg, #00B07C, #00D67F);
+}
+
+.future-trading-container .trade-form .action-btn.sell {
+  background: linear-gradient(135deg, #E5394B, #F23645);
+}
+
+.future-trading-container .trade-form .action-btn:hover {
+  filter: brightness(1.05);
+}
+
+.future-trading-container .trade-form .action-btn:active {
+  transform: scale(0.98);
+}
+
+.future-trading-container .trade-form .action-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Cost Section */
+.future-trading-container .trade-form .cost-section {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-md);
+  border-top: 1px solid var(--divider-color);
+  padding-top: var(--spacing-md);
+}
+
+.future-trading-container .trade-form .cost-item {
   display: flex;
   flex-direction: column;
 }
 
-.trade-form .price-control {
-  background-color: #191919;
-  border: 1px solid #333;
-  color: #ccc;
-  cursor: pointer;
-  height: 20px;
-  width: 20px;
+.future-trading-container .trade-form .cost-label {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.future-trading-container .trade-form .max-price,
+.future-trading-container .trade-form .min-price {
+  font-family: 'Roboto Mono', monospace;
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+}
+
+/* Tools Section */
+.future-trading-container .trade-form .tools-section {
   display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--divider-color);
+  padding-top: var(--spacing-md);
+}
+
+.future-trading-container .trade-form .tool-item {
+  display: flex;
+  align-items: center;
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color var(--transition-speed) var(--transition-easing);
+}
+
+.future-trading-container .trade-form .tool-item:hover {
+  color: var(--text-primary);
+}
+
+.future-trading-container .trade-form .percent-icon {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
-}
-
-.trade-form .market-price-btn {
-  background-color: #191919;
-  border: 1px solid #333;
-  color: white;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-/* Amount input section */
-.trade-form .amount-input-section {
-  margin-bottom: 16px;
-}
-
-.trade-form .amount-label {
-  font-size: 13px;
-  margin-bottom: 8px;
-  color: #bbb;
-  display: flex;
-  align-items: center;
-}
-
-.trade-form .amount-input-container {
-  background-color: #000;
-  border: 1px solid #333;
-  border-radius: 4px;
-  padding: 10px 12px;
-  margin-bottom: 16px;
-}
-
-.trade-form .amount-input {
-  width: 100%;
-  background: transparent;
-  border: none;
-  outline: none;
-  color: white;
-  font-size: 16px;
-  padding: 0;
-  margin: 0;
-}
-
-.trade-form .amount-value {
-  color: #777;
-  font-size: 12px;
-  margin-top: 4px;
-}
-
-.trade-form .contract-value {
-  color: #777;
-  font-size: 13px;
-  background-color: #191919;
-  border: 1px solid #333;
-  padding: 12px;
-  border-radius: 4px;
-  margin-bottom: 16px;
-}
-
-/* Slider styling */
-.trade-form .slider-container {
-  margin-bottom: 16px;
-  background-color: #000;
-  border: 1px solid #333;
-  border-radius: 4px;
-  padding: 16px 12px;
-}
-
-.trade-form .range-slider {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 4px;
-  background: #333;
-  border-radius: 2px;
-  outline: none;
-  margin-bottom: 8px;
-}
-
-.trade-form .range-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
   width: 16px;
   height: 16px;
-  background: #fff;
+  background-color: var(--input-bg);
   border-radius: 50%;
-  cursor: pointer;
-}
-
-.trade-form .range-slider::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
-  background: #fff;
-  border-radius: 50%;
-  cursor: pointer;
-  border: none;
-}
-
-.trade-form .slider-labels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  color: #777;
-  margin-top: 4px;
-  margin-bottom: 12px;
-}
-
-/* Balance info */
-.trade-form .balance-info {
-  margin-top: 4px;
-}
-
-.trade-form .available-balance {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 6px;
-  color: #bbb;
-  font-size: 12px;
-}
-
-.trade-form .max-values {
-  display: flex;
-  justify-content: space-between;
-  color: #777;
-  font-size: 11px;
-}
-
-.trade-form .info-btn {
-  background: none;
-  border: none;
-  color: #1cb05e;
-  cursor: pointer;
-  padding: 0;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-}
-
-/* TP/SL Checkbox */
-.trade-form .tp-sl-container {
-  margin-bottom: 16px;
-}
-
-.trade-form .tp-sl-checkbox {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  background-color: #000;
-  border: 1px solid #333;
-  border-radius: 4px;
-  padding: 10px 12px;
-  width: fit-content;
-}
-
-.trade-form .tp-sl-checkbox input {
-  margin-right: 8px;
-}
-
-.trade-form .checkbox-text {
-  font-size: 14px;
-  color: #bbb;
-}
-
-/* Action button */
-.trade-form .action-btn {
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  text-align: center;
-  margin-bottom: 16px;
-}
-
-.trade-form .action-btn.buy-more {
-  background-color: #fff;
-  color: #000;
-}
-
-/* Cost section */
-.trade-form .cost-section {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  font-size: 12px;
-}
-
-.trade-form .cost-item {
-  flex: 1;
-  background-color: transparent;
-}
-
-.trade-form .cost-label {
-  color: #777;
-  margin-bottom: 4px;
-}
-
-.trade-form .max-price,
-.trade-form .min-price {
-  font-weight: 500;
-  color: #bbb;
-}
-
-/* Tools section */
-.trade-form .tools-section {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  color: #777;
-  margin-top: 8px;
-}
-
-.trade-form .tool-item {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-
-.trade-form .percent-icon {
-  margin-right: 4px;
-  display: inline-block;
-  border: 1px solid #777;
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
-  line-height: 14px;
-  text-align: center;
+  margin-right: var(--spacing-xs);
   font-size: 10px;
 }
 
-/* Responsive Future Trading Layout */
-@media (max-width: 1200px) {
-  .trade-form.dark-theme {
-    max-width: 100%;
-    padding: 12px;
+/* Notification */
+.future-trading-container .notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius);
+  background-color: var(--secondary-bg);
+  color: var(--text-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  max-width: 300px;
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+.future-trading-container .notification.success {
+  border-left: 3px solid var(--success-color);
+}
+
+.future-trading-container .trade-form .notification.error {
+  border-left: 3px solid var(--error-color);
+}
+
+.future-trading-container .trade-form .notification.info {
+  border-left: 3px solid var(--focus-color);
+}
+
+.future-trading-container .trade-form .notification.warning {
+  border-left: 3px solid var(--warning-color);
+}
+
+.future-trading-container .trade-form .notification-icon {
+  margin-right: var(--spacing-sm);
+  font-size: var(--font-size-lg);
+}
+
+.future-trading-container .trade-form .notification-message {
+  flex: 1;
+  font-size: var(--font-size-sm);
+}
+
+.future-trading-container .trade-form .notification-close {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  margin-left: var(--spacing-sm);
+  padding: 0;
+  font-size: var(--font-size-md);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
   }
-  .trade-form .position-buttons,
-  .trade-form .order-type-selection,
-  .trade-form .leverage-selection {
-    flex-direction: column;
-    gap: 8px;
-    align-items: stretch;
+  to {
+    transform: translateX(0);
+    opacity: 1;
   }
 }
 
-@media (max-width: 900px) {
-  .trade-form.dark-theme {
-    max-width: 100%;
-    padding: 8px;
-    font-size: 15px;
+/* Mobile Optimization */
+@media (max-width: 768px) {
+  .future-trading-container .trade-form {
+    padding: var(--spacing-md);
   }
-  .trade-form .position-buttons,
-  .trade-form .order-type-selection,
-  .trade-form .leverage-selection {
-    flex-direction: column;
-    gap: 8px;
-    align-items: stretch;
+  
+  .future-trading-container .trade-form .action-btn {
+    height: 44px;
+    font-size: var(--font-size-lg);
   }
-  .trade-form .tab {
-    font-size: 13px;
-    padding: 6px 8px;
+  
+  .future-trading-container .trade-form .price-input,
+  .future-trading-container .trade-form .amount-input {
+    height: 44px;
   }
-  .trade-form .slider-container {
-    padding: 10px 6px;
+  
+  .future-trading-container .trade-form .leverage-section,
+  .future-trading-container .trade-form .order-types,
+  .future-trading-container .trade-form .tools-section {
+    flex-wrap: wrap;
   }
-}
-
-@media (max-width: 600px) {
-  .trade-form.dark-theme {
-    max-width: 100%;
-    padding: 4px;
-    font-size: 14px;
-  }
-  .trade-form .position-buttons,
-  .trade-form .order-type-selection,
-  .trade-form .leverage-selection {
-    flex-direction: column;
-    gap: 6px;
-    align-items: stretch;
-  }
-  .trade-form .tab {
-    font-size: 12px;
-    padding: 4px 4px;
-  }
-  .trade-form .slider-container {
-    padding: 6px 2px;
-  }
-  .trade-form .amount-input-container,
-  .trade-form .contract-value,
-  .trade-form .tp-sl-checkbox,
-  .trade-form .tools-section {
-    padding: 6px 2px;
-    font-size: 12px;
-  }
-  .trade-form .action-btn {
-    font-size: 15px;
-    padding: 10px;
+  
+  .future-trading-container .trade-form .tool-item {
+    margin-bottom: var(--spacing-sm);
   }
 }

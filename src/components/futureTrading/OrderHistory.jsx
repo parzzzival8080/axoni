@@ -174,7 +174,6 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
               <th>Amount</th>
               <th>Filled</th>
               <th>Total</th>
-              <th>Status</th>
               <th></th>
             </tr>
           </thead>
@@ -189,7 +188,6 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
                   <td>{Number(order.amount).toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })}</td>
                   <td>{order.filled}</td>
                   <td>{Number(order.total).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                  <td className={order.status.toLowerCase() === 'pending' ? 'pending-status' : 'filled-status'}>{order.status}</td>
                   <td className="actions">
                     <FontAwesomeIcon icon={faEllipsisH} />
                   </td>
@@ -197,7 +195,7 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
               ))
             ) : (
               <tr>
-                <td colSpan="9" className="no-data">No order history data available</td>
+                <td colSpan="8" className="no-data">No order history data available</td>
               </tr>
             )}
           </tbody>

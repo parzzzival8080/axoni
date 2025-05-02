@@ -131,227 +131,222 @@ const TradeForm = ({ uid, isAuthenticated = true, cryptoSymbol = 'BTC', userBala
     // Set maximum amount based on available balance
     const handleSetMaxAmount = () => {
         if (maxTradeAmount > 0) {
-            // Format to 6 decimal places and avoid scientific notation
-            setAmount(maxTradeAmount.toFixed(6));
+            setAmount(maxTradeAmount.toFixed(5));
         }
     };
 
-    const handleTradeSubmit = async () => {
-        try {
-            if (!isAuthenticated) {
-                setNotification({
-                    message: 'Please log in to trade',
-                    type: 'error'
-                });
+    const handleTradeSubmit = () => {
+        // Validate inputs
+        const numPrice = parseFloat(price);
+        const numAmount = parseFloat(amount);
+        
+        if (!numPrice || numPrice <= 0) {
+            setNotification({ message: 'Please enter a valid price', type: 'error' });
+            return;
+        }
+        
+        if (!numAmount || numAmount <= 0) {
+            setNotification({ message: 'Please enter a valid amount', type: 'error' });
+            return;
+        }
+        
+        // Check if user has enough balance
+        if (activeTab === 'buy') {
+            const totalCost = numPrice * numAmount;
+            if (totalCost > userBalance.usdt) {
+                setNotification({ message: 'Insufficient USDT balance', type: 'error' });
                 return;
             }
-
-            setIsLoading(true);
-            setNotification(null);
-
-            if (!price || !amount) {
-                throw new Error('Please enter both price and amount');
-            }
-
-            const numPrice = parseFloat(price);
-            const numAmount = parseFloat(amount);
-
-            if (isNaN(numPrice) || isNaN(numAmount)) {
-                throw new Error('Invalid price or amount format');
-            }
-
-            if (numPrice <= 0) {
-                throw new Error('Price must be greater than 0');
-            }
-
-            if (numAmount < 0.00001) {
-                throw new Error(`Amount must be at least 0.00001 ${cryptoSymbol}`);
-            }
-
-            // Check if user has enough balance
-            const totalCost = numPrice * numAmount;
-            if (activeTab === 'buy' && totalCost > userBalance.usdt) {
-                throw new Error('Insufficient USDT balance for this purchase');
-            }
-
+        } else {
             const cryptoKey = cryptoSymbol.toLowerCase();
-            if (activeTab === 'sell' && numAmount > (userBalance[cryptoKey] || 0)) {
-                throw new Error(`Insufficient ${cryptoSymbol} balance for this sale`);
+            if (numAmount > (userBalance[cryptoKey] || 0)) {
+                setNotification({ message: `Insufficient ${cryptoSymbol} balance`, type: 'error' });
+                return;
             }
-
-            // Use default UID if not provided
-            const effectiveUid = uid || 'yE8vKBNw';
-            
-            console.log('Submitting trade:', {
-                uid: effectiveUid,
-                order_type: activeTab,
-                execution_type: orderType,
-                price: numPrice,
-                amount: numAmount
-            });
-
-            const result = await executeSpotTradeOrder({
-                uid: effectiveUid,
-                order_type: activeTab,
-                execution_type: orderType,
-                price: numPrice,
-                amount: numAmount
-            });
-
-            // Check result
-            if (result.success) {
-                // Clear form after successful trade
-                setPrice('');
-                setAmount('');
-                setNotification({
-                    message: `${activeTab === 'buy' ? 'Buy' : 'Sell'} order placed for ${numAmount} ${cryptoSymbol}`,
-                    type: 'success'
-                });
+        }
+        
+        // Start loading state
+        setIsLoading(true);
+        
+        // Prepare order data
+        const orderData = {
+            uid,
+            type: activeTab,
+            orderType,
+            cryptoSymbol,
+            price: numPrice,
+            amount: numAmount,
+            total: numPrice * numAmount
+        };
+        
+        // Execute trade
+        executeSpotTradeOrder(orderData)
+            .then(response => {
+                console.log('Trade executed:', response);
+                setNotification({ message: 'Trade executed successfully', type: 'success' });
                 
-                // Notify parent that a trade was completed to trigger order book refresh
-                console.log('Trade successful, calling onTradeComplete callback');
-                if (typeof onTradeComplete === 'function') {
+                // Clear form
+                setAmount('');
+                
+                // Notify parent component
+                if (onTradeComplete) {
                     onTradeComplete();
                 }
-            } else {
-                setNotification({
-                    message: result.message || 'Trade execution failed',
-                    type: 'error'
-                });
-            }
-
-        } catch (err) {
-            console.error('Trade error:', err);
-            setNotification({
-                message: err instanceof Error ? err.message : 'An error occurred during trade execution',
-                type: 'error'
+            })
+            .catch(error => {
+                console.error('Trade error:', error);
+                setNotification({ message: error.message || 'Failed to execute trade', type: 'error' });
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
-        } finally {
-            setIsLoading(false);
-        }
     };
-
-    // Calculate total as user types
-    const total = useMemo(() => {
-        const numPrice = parseFloat(price) || 0;
-        const numAmount = parseFloat(amount) || 0;
-        return (numPrice * numAmount).toFixed(6);
-    }, [price, amount]);
 
     return (
         <div className="trade-form">
-            {notification && (
-                <Notification
-                    message={notification.message}
-                    onClose={() => setNotification(null)}
-                    actionLabel="OK"
-                    type={notification.type}
-                />
-            )}
-
-
-            
-            <div className="trade-type-tabs">
-                <div 
-                    className={`trade-type-tab buy ${activeTab === 'buy' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('buy')}
-                >
-                    Buy {cryptoSymbol}
-                </div>
-                <div 
-                    className={`trade-type-tab sell ${activeTab === 'sell' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('sell')}
-                >
-                    Sell {cryptoSymbol}
+            {/* Top controls */}
+            <div className="top-controls">
+                <div className="margin-toggle">
+                    <span>Margin</span>
+                    <label className="switch">
+                        <input type="checkbox" />
+                        <span className="slider round"></span>
+                    </label>
                 </div>
             </div>
 
+            {/* Buy/Sell tabs */}
+            <div className="buy-sell-tabs">
+                <div 
+                    className={`tab buy ${activeTab === 'buy' ? 'active' : ''}`} 
+                    onClick={() => setActiveTab('buy')}
+                >
+                    Buy
+                </div>
+                <div 
+                    className={`tab sell ${activeTab === 'sell' ? 'active' : ''}`} 
+                    onClick={() => setActiveTab('sell')}
+                >
+                    Sell
+                </div>
+            </div>
+
+            {/* Order types */}
             <div className="order-types">
                 <div 
-                    className={`order-type ${orderType === 'limit' ? 'active' : ''}`}
+                    className={`type ${orderType === 'limit' ? 'active' : ''}`}
                     onClick={() => setOrderType('limit')}
                 >
                     Limit
                 </div>
                 <div 
-                    className={`order-type ${orderType === 'market' ? 'active' : ''}`}
+                    className={`type ${orderType === 'market' ? 'active' : ''}`}
                     onClick={() => setOrderType('market')}
                 >
                     Market
                 </div>
+                <div className="type">Stop-Limit</div>
             </div>
 
+            {/* Price input - only show for limit orders */}
+            {orderType === 'limit' && (
+                <div className="form-group">
+                    <label>Price (USDT)</label>
+                    <div className="input-wrapper">
+                        <input 
+                            type="text" 
+                            value={price}
+                            onChange={handlePriceChange}
+                            placeholder="0.00"
+                        />
+                        <span className="input-note">≈ ${price}</span>
+                    </div>
+                </div>
+            )}
+
+            {/* Amount input */}
             <div className="form-group">
-                <label className="form-label">Price (USDT)</label>
-                <div className="price-input-wrapper">
-                    <input
-                        type="text"
-                        className="form-input"
-                        value={price}
-                        onChange={handlePriceChange}
-                        placeholder="0"
-                        disabled={orderType === 'market'}
-                    />
-                    <span className="price-equals">≈ ${(parseFloat(price) || 0).toLocaleString()}</span>
-                </div>
-            </div>
-
-            <div className="form-group">
-                <label className="form-label">Amount ({cryptoSymbol})</label>
-                <div className="amount-input-wrapper">
-                    <input
-                        type="text"
-                        className="form-input"
-                        value={amount}
-                        onChange={handleAmountChange}
-                        placeholder="0"
-                    />
-                    <div className="min-amount">Min 0.00001 {cryptoSymbol}</div>
-                </div>
-
-                <div className="amount-slider">
-                    <div className="slider-point" data-value="0"></div>
-                    <div className="slider-point" data-value="25%"></div>
-                    <div className="slider-point" data-value="50%"></div>
-                    <div className="slider-point" data-value="75%"></div>
-                    <div className="slider-point" data-value="100%"></div>
-                </div>
-            </div>
-
-            <div className="available-balance">
-                <span>Available</span>
-                <span>{formatNumber(availableBalance, 6)} {activeTab === 'buy' ? 'USDT' : cryptoSymbol}</span>
-            </div>
-
-            <div className="max-buy" onClick={handleSetMaxAmount}>
-                Max {activeTab === 'buy' ? 'buy' : 'sell'} {formatNumber(maxTradeAmount, 6)} {cryptoSymbol}
-            </div>
-
-            <div className="tp-sl-checkbox">
-                <input
-                    type="checkbox"
-                    id="tpsl"
-                    checked={tpsl}
-                    onChange={(e) => setTpsl(e.target.checked)}
+                <label>Amount ({cryptoSymbol})</label>
+                <input 
+                    type="text" 
+                    value={amount}
+                    onChange={handleAmountChange}
+                    placeholder={`Min 0.00001 ${cryptoSymbol}`}
                 />
-                <label htmlFor="tpsl">TP/SL</label>
+                <div className="slider-container">
+                    <input 
+                        type="range" 
+                        min="0" 
+                        max="100" 
+                        value={maxTradeAmount > 0 ? (parseFloat(amount) / maxTradeAmount * 100) : 0} 
+                        className="range-slider"
+                        onChange={(e) => {
+                            const percent = parseInt(e.target.value);
+                            const newAmount = (maxTradeAmount * percent / 100).toFixed(5);
+                            setAmount(newAmount);
+                        }}
+                    />
+                    <div className="slider-labels">
+                        <span>0%</span>
+                        <span>100%</span>
+                    </div>
+                </div>
             </div>
 
+            {/* Total input - only show for limit orders */}
+            {orderType === 'limit' && (
+                <div className="form-group">
+                    <label>Total (USDT)</label>
+                    <input 
+                        type="text" 
+                        placeholder="0.00" 
+                        value={parseFloat(price) && parseFloat(amount) ? (parseFloat(price) * parseFloat(amount)).toFixed(2) : ''}
+                        readOnly
+                    />
+                </div>
+            )}
+
+            {/* Balance info */}
+            <div className="balance-info">
+                <span>Available: {formatNumber(availableBalance, activeTab === 'buy' ? 2 : 5)} {activeTab === 'buy' ? 'USDT' : cryptoSymbol}</span>
+                <span className="max-amount" onClick={handleSetMaxAmount}>Max</span>
+            </div>
+
+            {/* Trade button */}
             {isAuthenticated ? (
                 <button 
                     className={`trade-button ${activeTab}`}
                     onClick={handleTradeSubmit}
                     disabled={isLoading}
                 >
-                    {isLoading ? 'Processing...' : `${activeTab === 'buy' ? 'Buy' : 'Sell'} ${cryptoSymbol}`}
+                    {isLoading ? (
+                        <>
+                            <i className="fas fa-spinner fa-spin" style={{ marginRight: '8px' }}></i>
+                            Processing...
+                        </>
+                    ) : (
+                        activeTab === 'buy' ? `Buy ${cryptoSymbol}` : `Sell ${cryptoSymbol}`
+                    )}
                 </button>
             ) : (
-                <a href="/login" className="login-button">Log in/Sign up</a>
+                <button className="login-button">Log in/Sign up</button>
             )}
 
-            <div className="max-price">
-                Total: {total} USDT
+            {/* Price info */}
+            <div className="price-info">
+                <span>Fees: 0.1%</span>
+                <span>24h Change: +2.3%</span>
             </div>
+
+            {/* Notification */}
+            {notification && (
+                <div className={`notification ${notification.type}`}>
+                    <div className="notification-content">
+                        <div className="notification-message">{notification.message}</div>
+                        <button className="notification-close" onClick={() => setNotification(null)}>×</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
