@@ -351,6 +351,36 @@ const TradeForm = ({ uid, isAuthenticated = true, cryptoSymbol = 'BTC', userBala
     );
 };
 
+// FavoriteItem atom for favorites bar
+interface FavoriteCoin {
+    symbol: string;
+    name: string;
+    pair_name: string;
+    coin_pair: number;
+    price: string;
+    price_change_24h: number;
+    volume_24h?: string | null;
+    last_updated: string;
+    crypto_description?: string | null;
+    is_tradable: boolean;
+    logo_path: string;
+    is_favorite: boolean;
+}
+
+const FavoriteItem = memo(({ coin, isActive }: { coin: FavoriteCoin; isActive: boolean }) => {
+    const priceChange = parseFloat(coin.price_change_24h?.toString() || '0');
+    const changeClass = priceChange > 0 ? 'green' : priceChange < 0 ? 'red' : '';
+    const changeSign = priceChange > 0 ? '+' : '';
+    return (
+        <div className={`favorite-item-atomic${isActive ? ' active' : ''}`.trim()}>
+            <img src={coin.logo_path} alt={coin.symbol} className="fav-coin-logo" />
+            <span className="fav-pair">{coin.symbol}/{coin.pair_name} <span className="fav-leverage">10x</span></span>
+            <span className={`fav-change ${changeClass}`}>{changeSign}{priceChange.toFixed(2)}%</span>
+            <span className="fav-price">{parseFloat(coin.price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</span>
+        </div>
+    );
+});
+
 // Main component
 const SpotTrading = () => {
     const [cryptoData, setCryptoData] = useState({
@@ -424,24 +454,102 @@ const SpotTrading = () => {
         }
     }, [refreshOrderHistory]);
     
+    // --- FAVORITES BAR DATA ---
+    // Example: Replace with API data/fetch
+    const [favorites, setFavorites] = useState<FavoriteCoin[]>([
+        {
+            symbol: 'BTC', name: 'Bitcoin', pair_name: 'USDT', coin_pair: 1, price: '67080.00', price_change_24h: 0.68, volume_24h: null, last_updated: '', crypto_description: null, is_tradable: true, logo_path: '/coins/btc.svg', is_favorite: true,
+        },
+        {
+            symbol: 'ETH', name: 'Ethereum', pair_name: 'USDT', coin_pair: 2, price: '3183.00', price_change_24h: -0.11, volume_24h: null, last_updated: '', crypto_description: null, is_tradable: true, logo_path: '/coins/eth.svg', is_favorite: true,
+        },
+        {
+            symbol: 'OKB', name: 'OKB', pair_name: 'USDT', coin_pair: 3, price: '61.32', price_change_24h: -0.29, volume_24h: null, last_updated: '', crypto_description: null, is_tradable: true, logo_path: '/coins/okb.svg', is_favorite: true,
+        },
+        {
+            symbol: 'XRP', name: 'XRP', pair_name: 'USDT', coin_pair: 13, price: '2.2183', price_change_24h: 0.31, volume_24h: null, last_updated: '', crypto_description: null, is_tradable: true, logo_path: '/coins/xrp.svg', is_favorite: true,
+        },
+        {
+            symbol: 'SOL', name: 'Solana', pair_name: 'USDT', coin_pair: 5, price: '160.71', price_change_24h: -0.09, volume_24h: null, last_updated: '', crypto_description: null, is_tradable: true, logo_path: '/coins/sol.svg', is_favorite: true,
+        },
+        {
+            symbol: 'DOGE', name: 'Dogecoin', pair_name: 'USDT', coin_pair: 6, price: '0.18165', price_change_24h: 0.66, volume_24h: null, last_updated: '', crypto_description: null, is_tradable: true, logo_path: '/coins/doge.svg', is_favorite: true,
+        },
+        {
+            symbol: 'ADA', name: 'Cardano', pair_name: 'USDT', coin_pair: 7, price: '0.7140', price_change_24h: 1.31, volume_24h: null, last_updated: '', crypto_description: null, is_tradable: true, logo_path: '/coins/ada.svg', is_favorite: true,
+        },
+        {
+            symbol: 'TRX', name: 'TRON', pair_name: 'USDT', coin_pair: 8, price: '0.137', price_change_24h: 0.37, volume_24h: null, last_updated: '', crypto_description: null, is_tradable: true, logo_path: '/coins/trx.svg', is_favorite: true,
+        },
+    ]);
+
     return (
         <div className="spot-trading-container okx-dark">
+            {/* HEADER */}
+            <header className="okx-header">
+                <div className="header-left">
+                    <div className="logo"><img src="/okx-logo.svg" alt="OKX Logo" /></div>
+                    <nav>
+                        <div className="nav-item">Trade</div>
+                        <div className="nav-item">Markets</div>
+                        <div className="nav-item">Futures</div>
+                        <div className="nav-item">Earn</div>
+                    </nav>
+                </div>
+                <div className="header-right">
+                    <div className="search"><i className="fas fa-search"></i></div>
+                    <div className="download"><i className="fas fa-download"></i></div>
+                    <div className="notifications"><i className="fas fa-bell"></i></div>
+                    <div className="help"><i className="fas fa-question-circle"></i></div>
+                    <div className="language">EN</div>
+                    <div className="login">Login</div>
+                    <div className="signup">Sign Up</div>
+                </div>
+            </header>
+            {/* SUB-HEADER: Ticker/Coin Info */}
+            <div className="sub-header">
+                <div className="coin-info">
+                    <div className="coin-icon"><img src={`/coins/${cryptoData.cryptoSymbol.toLowerCase()}.svg`} alt={cryptoData.cryptoSymbol} /></div>
+                    <div className="coin-pair">{cryptoData.cryptoSymbol}/{cryptoData.usdtSymbol}</div>
+                    <div className="leverage">x20</div>
+                    <div className="favorite"><i className="fas fa-star"></i></div>
+                </div>
+                <div className="price-stats">
+                    <div className="stat">
+                        <div className="value green">{formatNumber(cryptoData.cryptoPrice, 2)}</div>
+                        <div className="label">Last Price</div>
+                    </div>
+                    <div className="stat">
+                        <div className="value">+2.3%</div>
+                        <div className="label">24h Change</div>
+                    </div>
+                    <div className="stat">
+                        <div className="value">$1.2B</div>
+                        <div className="label">24h Volume</div>
+                    </div>
+                </div>
+                <div className="trading-actions">
+                    <button className="data-btn">Depth</button>
+                    <button className="info-btn">Info</button>
+                    <div className="settings"><i className="fas fa-cog"></i></div>
+                </div>
+            </div>
+            {/* FAVORITES BAR */}
+            <div className="favorites-bar-atomic">
+                <span className="fav-label">Favorites:</span>
+                {favorites.map((coin, idx) => (
+                    <FavoriteItem coin={coin} isActive={idx === 0} key={coin.symbol + coin.pair_name} />
+                ))}
+            </div>
+            {/* MAIN CONTENT AREA */}
             <div className="trading-content">
-                {/* Left column with chart */}
                 <div className="trading-column chart-column">
                     <div className="chart-placeholder">
                         <span>Price Chart will be displayed here</span>
                     </div>
                 </div>
-                
-                {/* Right column with order book and trading form */}
                 <div className="trading-column order-column">
-                    {/* Pass the real OrderBook component with refresh trigger */}
-                    <OrderBook 
-                        cryptoData={cryptoData}
-                        forceRefresh={refreshOrderBook}
-                    />
-                    
+                    <OrderBook cryptoData={cryptoData} forceRefresh={refreshOrderBook} />
                     <div className="trade-form-wrapper">
                         <TradeForm 
                             uid="yE8vKBNw"
@@ -453,47 +561,23 @@ const SpotTrading = () => {
                     </div>
                 </div>
             </div>
-            
-            {/* Tabs for order history and other sections */}
+            {/* TABS */}
             <div className="trading-tabs">
-                <div 
-                    className={`tab ${activeTab === 'trade' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('trade')}
-                >
-                    Trade
-                </div>
-                <div 
-                    className={`tab ${activeTab === 'orders' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('orders')}
-                >
-                    Orders
-                </div>
-                <div 
-                    className={`tab ${activeTab === 'history' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('history')}
-                >
-                    Order History
-                </div>
-                <div 
-                    className={`tab ${activeTab === 'assets' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('assets')}
-                >
-                    Assets
-                </div>
+                <div className={`tab ${activeTab === 'trade' ? 'active' : ''}`} onClick={() => setActiveTab('trade')}>Trade</div>
+                <div className={`tab ${activeTab === 'orders' ? 'active' : ''}`} onClick={() => setActiveTab('orders')}>Orders</div>
+                <div className={`tab ${activeTab === 'history' ? 'active' : ''}`} onClick={() => setActiveTab('history')}>Order History</div>
+                <div className={`tab ${activeTab === 'assets' ? 'active' : ''}`} onClick={() => setActiveTab('assets')}>Assets</div>
             </div>
-            
-            {/* Always render OrderHistory but hide it when not active - this keeps its state alive */}
+            {/* TAB CONTENT */}
             <div className="tab-content">
                 <div style={{ display: activeTab === 'history' ? 'block' : 'none' }}>
                     <OrderHistory refreshTrigger={refreshOrderHistory} />
                 </div>
-                
                 {activeTab === 'orders' && (
                     <div className="orders-placeholder">
                         <p>Your active orders will appear here</p>
                     </div>
                 )}
-                
                 {activeTab === 'assets' && (
                     <div className="assets-placeholder">
                         <p>Your asset information will appear here</p>
