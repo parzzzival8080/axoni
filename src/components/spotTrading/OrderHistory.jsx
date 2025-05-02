@@ -235,7 +235,15 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
                   <td>{order.amount.toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })}</td>
                   <td>{order.filled}</td>
                   <td>{order.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                  <td className={order.status.toLowerCase() === 'pending' ? 'pending-status' : 'filled-status'}>{order.status}</td>
+                  <td>
+                    <span className={
+                      order.status.toLowerCase() === 'pending' ? 'pending-status' : 
+                      order.status.toLowerCase() === 'canceled' ? 'canceled-status' : 
+                      'filled-status'
+                    }>
+                      {order.status}
+                    </span>
+                  </td>
                   <td className="actions">
                     <FontAwesomeIcon icon={faEllipsisH} />
                   </td>

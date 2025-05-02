@@ -176,18 +176,24 @@ const SpotTrading = () => {
         availableCoins={availableCoins}
       />
       <div className="main-container">
-        <TradingChart 
-          selectedSymbol={cryptoData?.cryptoSymbol} 
-        />
-        <OrderBook 
-          cryptoData={cryptoData}
-        />
-        <TradeForm 
-          cryptoData={cryptoData} 
-          userBalance={userBalance}
-          coinPairId={coinPairId}
-          onTradeSuccess={fetchUserBalance}
-        />
+        <div className="chart-section">
+          <TradingChart 
+            selectedSymbol={cryptoData?.cryptoSymbol} 
+          />
+        </div>
+        <div className="orderbook-section">
+          <OrderBook 
+            cryptoData={cryptoData}
+          />
+        </div>
+        <div className="trade-section">
+          <TradeForm 
+            cryptoData={cryptoData} 
+            userBalance={userBalance}
+            coinPairId={coinPairId}
+            onTradeSuccess={fetchUserBalance}
+          />
+        </div>
       </div>
       <div className="orders-container">
         <OrdersSection refreshTrigger={orderHistoryRefreshTrigger} />
@@ -196,4 +202,4 @@ const SpotTrading = () => {
   );
 };
 
-export default SpotTrading; 
+export default SpotTrading;

@@ -6,7 +6,7 @@ const OrdersSection = ({ refreshTrigger = 0 }) => {
   const [activeTab, setActiveTab] = useState('order-history');
 
   return (
-    <div className="orders-section" style={{ backgroundColor: '#000000', marginTop: '20px' }}>
+    <div className="orders-section">
       <div className="orders-tabs">
         <div
           className={`tab ${activeTab === 'open-orders' ? 'active' : ''}`}
@@ -51,7 +51,11 @@ const OrdersSection = ({ refreshTrigger = 0 }) => {
 
       <div className="orders-content">
         {activeTab === 'order-history' && <OrderHistory refreshTrigger={refreshTrigger} />}
-        {/* Add other tab content components here */}
+        {activeTab === 'open-orders' && <div className="empty-tab-content">No open orders</div>}
+        {activeTab === 'open-positions' && <div className="empty-tab-content">No open positions</div>}
+        {activeTab === 'position-history' && <div className="empty-tab-content">No position history</div>}
+        {activeTab === 'assets' && <div className="empty-tab-content">Assets information will appear here</div>}
+        {activeTab === 'bots' && <div className="empty-tab-content">Bot information will appear here</div>}
       </div>
     </div>
   );

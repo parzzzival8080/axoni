@@ -16,6 +16,9 @@ const TradingChart = ({ selectedSymbol = 'BTC' }) => {
 	const tvWidgetRef = useRef(null);
 	const [activeTab, setActiveTab] = useState('order-history');
 	const [symbol, setSymbol] = useState(selectedSymbol || 'BTC');
+	const [chartType, setChartType] = useState('candles');
+	const [timeframe, setTimeframe] = useState('1m');
+	const [timeframes, setTimeframes] = useState(['1m', '5m', '1h', '4h']);
 
 	// Format the symbol for TradingView (use just the base symbol without USDT suffix)
 	const formatSymbolForChart = (sym) => {
@@ -44,7 +47,7 @@ const TradingChart = ({ selectedSymbol = 'BTC' }) => {
 		console.log('Formatted Symbol for Chart:', formattedSymbol);
 		return {
 			symbol: formattedSymbol,
-			interval: '1m',
+			interval: timeframe,
 			datafeedUrl: 'https://api.mpctoken.com/api/v3',
 			libraryPath: '/charting_library/',
 			chartsStorageUrl: 'https://saveload.tradingview.com',
@@ -87,7 +90,7 @@ const TradingChart = ({ selectedSymbol = 'BTC' }) => {
 			if (tvWidgetRef.current) {
 				try {
 					const formattedSymbol = formatSymbolForChart(selectedSymbol);
-					tvWidgetRef.current.setSymbol(formattedSymbol, '1m', () => {
+					tvWidgetRef.current.setSymbol(formattedSymbol, timeframe, () => {
 						console.log(`Chart symbol updated to ${formattedSymbol}`);
 					});
 				} catch (err) {
@@ -209,7 +212,7 @@ const TradingChart = ({ selectedSymbol = 'BTC' }) => {
 				client_id: getChartConfig(symbol).clientId,
 				user_id: getChartConfig(symbol).userId,
 				fullscreen: getChartConfig(symbol).fullscreen,
-				autosize: getChartConfig(symbol).autosize,
+				autosize: true,
 				studiesOverrides: getChartConfig(symbol).studiesOverrides,
 				theme: "dark",
 				custom_css_url: '',
@@ -255,7 +258,7 @@ const TradingChart = ({ selectedSymbol = 'BTC' }) => {
 					"paneProperties.bottomMargin": 10,
 					
 					// Chart type and style
-					"mainSeriesProperties.style": 1,
+					"mainSeriesProperties.style": chartType === 'candles' ? 1 : 2,
 					"mainSeriesProperties.showCountdown": true,
 					"mainSeriesProperties.visible": true,
 					"mainSeriesProperties.showPriceLine": true,
@@ -407,52 +410,58 @@ const TradingChart = ({ selectedSymbol = 'BTC' }) => {
 				}
 			}
 		};
-	}, [symbol]);
+	}, [symbol, timeframe, chartType]);
 
 	return (
-		<div style={{ width: '100%', height: '620px', backgroundColor: '#000000' }}>
-			<div className="chart-nav">
-				<div className="left-tabs">
-					<div className="tab active">Chart</div>
-					<div className="tab">Overview</div>
-					<div className="tab">Feed</div>
+		<div className="trading-chart-container">
+			<div className="chart-header">
+				<div className="chart-controls">
+					<div className="chart-type-selector">
+						<button className={chartType === 'candles' ? 'active' : ''} onClick={() => setChartType('candles')}>
+							<i className="fas fa-chart-bar"></i>
+						</button>
+						<button className={chartType === 'line' ? 'active' : ''} onClick={() => setChartType('line')}>
+							<i className="fas fa-chart-line"></i>
+						</button>
+					</div>
+					<div className="timeframe-selector">
+						{timeframes.map((tf) => (
+							<button 
+								key={tf} 
+								className={timeframe === tf ? 'active' : ''}
+								onClick={() => setTimeframe(tf)}
+							>
+								{tf}
+							</button>
+						))}
+					</div>
 				</div>
-				<div className="right-actions">
-					<div className="expand"><i className="far fa-square"></i></div>
-					<div className="more"><i className="fas fa-ellipsis-v"></i></div>
+				<div className="chart-tools">
+					<button className="tool-button">
+						<i className="fas fa-crosshairs"></i>
+					</button>
+					<button className="tool-button">
+						<i className="fas fa-ruler"></i>
+					</button>
+					<button className="tool-button">
+						<i className="fas fa-draw-polygon"></i>
+					</button>
+					<button className="tool-button">
+						<i className="fas fa-cog"></i>
+					</button>
 				</div>
 			</div>
-
 			<div className="chart-content">
-				<div className="chart-toolbar">
-					<div className="timeframes">
-						<div className="timeframe">1m</div>
-						<div className="timeframe">5m</div>
-						<div className="timeframe">1h</div>
-						<div className="timeframe">4h</div>
-					</div>
-				</div>
-
-				<div className="chart-area" style={{ backgroundColor: '#000000', maxWidth: '100%' }}>
-					<div
-						ref={chartContainerRef}
-						className={'TVChartContainer'}
-						style={{
+				<div className="chart-area" style={{ backgroundColor: '#000000', maxWidth: '100%', border: 'none' }}>
+					<div 
+						ref={chartContainerRef} 
+						className={'TVChartContainer'} 
+						style={{ 
+							height: '100%', 
 							backgroundColor: '#000000',
-							position: 'relative',
-							width: '100%',
-							maxWidth: '100%'
-						}}>
-						<div style={{
-							position: 'absolute',
-							top: 0,
-							left: 0,
-							right: 0,
-							bottom: 0,
-							backgroundColor: '#000000',
-							zIndex: -1
-						}}></div>
-					</div>
+							border: 'none'
+						}}
+					/>
 				</div>
 			</div>
 		</div>

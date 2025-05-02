@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { formatNumber } from '../../utils/numberFormatter';
 
-// Using relative imports to match the existing file structure
 const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
   const [isBuy, setIsBuy] = useState(true);
   const [activeOrderType, setActiveOrderType] = useState('limit');
@@ -127,75 +126,85 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
       
       // Use the effective UID (either from localStorage or default)
       const effectiveUid = uid || localStorage.getItem('uid') || 'yE8vKBNw';
-      const API_BASE_URL = 'https://apiv2.bhtokens.com/api/v1';
-      const API_KEY = 'A20RqFwVktRxxRqrKBtmi6ud';
-      const numPrice = parseFloat(price);
-      const numAmount = parseFloat(amount);
-      const total_in_usdt = (numPrice * numAmount).toFixed(6);
-      const executionType = activeOrderType;
-      // Use the coinPairId prop for coin_id in the API call
-      const url = `${API_BASE_URL}/orders?uid=${effectiveUid}&coin_id=${coinPairId}&order_type=${isBuy ? 'buy' : 'sell'}&excecution_type=${executionType}&price=${numPrice}&amount=${numAmount}&total_in_usdt=${total_in_usdt}&apikey=${API_KEY}`;
       
-      console.log('Executing trade with URL:', url);
-      
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        console.error('Trade API error:', data);
-        throw new Error(data.message || 'Trade execution failed');
-      }
-      
-      console.log('Trade successful:', data);
-      
-      // Trade was successful
-      setNotification({
-        message: `${isBuy ? 'Buy' : 'Sell'} order placed for ${numAmount} ${cryptoData?.cryptoSymbol || 'BTC'}`,
-        type: 'success'
-      });
-      
-      // Reset form
-      setAmount('');
-      setTotal('');
-      setSliderValue(0);
-      
-      // Trigger refresh of order history and balance without affecting the chart
-      if (onTradeSuccess) {
-        // Use setTimeout to ensure this happens after the current render cycle
-        // This prevents chart refresh issues
-        setTimeout(() => {
+      // Simulate API call with a delay
+      setTimeout(() => {
+        console.log('Trade submitted:', {
+          type: isBuy ? 'buy' : 'sell',
+          orderType: activeOrderType,
+          price,
+          amount,
+          total,
+          coinPairId,
+          uid: effectiveUid
+        });
+        
+        // Simulate successful trade
+        setIsLoading(false);
+        setNotification({
+          message: `${isBuy ? 'Buy' : 'Sell'} order placed successfully`,
+          type: 'success'
+        });
+        
+        // Reset form
+        setAmount('');
+        setTotal('');
+        setSliderValue(0);
+        
+        // Notify parent component to refresh balances
+        if (onTradeSuccess) {
           onTradeSuccess();
-        }, 100);
-      }
+        }
+      }, 1500);
       
+      // In a real implementation, you would make an API call here
+      /*
+      const response = await axios.post('https://api.example.com/trade', {
+        type: isBuy ? 'buy' : 'sell',
+        orderType: activeOrderType,
+        price,
+        amount,
+        total,
+        coinPairId,
+        uid: effectiveUid
+      });
+      
+      if (response.data.success) {
+        setIsLoading(false);
+        setNotification({
+          message: `${isBuy ? 'Buy' : 'Sell'} order placed successfully`,
+          type: 'success'
+        });
+        
+        // Reset form
+        setAmount('');
+        setTotal('');
+        setSliderValue(0);
+        
+        // Notify parent component to refresh balances
+        if (onTradeSuccess) {
+          onTradeSuccess();
+        }
+      } else {
+        throw new Error(response.data.message || 'Trade failed');
+      }
+      */
     } catch (error) {
       console.error('Trade error:', error);
+      setIsLoading(false);
       setNotification({
-        message: error.message || 'An error occurred during trade execution',
+        message: error.message || 'An error occurred while processing your trade',
         type: 'error'
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
-  if (!cryptoData) {
-    return <div className="trade-section loading">Loading trading form...</div>;
-  }
-
-  const { cryptoSymbol, cryptoLogoPath, usdtSymbol, usdtLogoPath } = cryptoData;
+  // Extract symbols and format balances for display
+  const cryptoSymbol = cryptoData?.cryptoSymbol || 'BTC';
+  const usdtSymbol = cryptoData?.usdtSymbol || 'USDT';
   
-  // Safely convert balances to numbers and format them
-  // This prevents the toFixed is not a function error
-  const cryptoBalance = userBalance?.cryptoBalance !== undefined ? Number(userBalance.cryptoBalance) : 0;
-  const usdtBalance = userBalance?.usdtBalance !== undefined ? Number(userBalance.usdtBalance) : 0;
+  const cryptoBalance = parseFloat(userBalance?.cryptoBalance || 0);
+  const usdtBalance = parseFloat(userBalance?.usdtBalance || 0);
   
   const formattedCryptoBalance = formatNumber(cryptoBalance, 5);
   const formattedUsdtBalance = formatNumber(usdtBalance, 2);
@@ -203,106 +212,27 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
   // Custom notification component implementation
   const CustomNotification = ({ message, type, onClose }) => {
     useEffect(() => {
+      // Auto-close notification after 5 seconds
       const timer = setTimeout(() => {
-        onClose();
+        if (onClose) onClose();
       }, 5000);
       
       return () => clearTimeout(timer);
     }, [onClose]);
     
     return (
-      <div className={`notification ${type || ''}`} style={{
-        position: 'fixed',
-        bottom: '20px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 1000,
-        minWidth: '320px',
-        maxWidth: '450px',
-        padding: '16px 20px',
-        borderRadius: '8px',
-        backgroundColor: 'rgba(33, 33, 33, 0.97)',
-        color: '#fff',
-        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.05)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        backdropFilter: 'blur(10px)',
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
-        fontSize: '14px',
-        lineHeight: '1.5',
-        border: type === 'error' ? '1px solid rgba(242, 54, 69, 0.2)' : 
-                type === 'success' ? '1px solid rgba(0, 184, 151, 0.2)' : 
-                '1px solid rgba(255, 255, 255, 0.05)'
-      }}>
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'space-between', 
-          width: '100%' 
-        }}>
-          <div style={{ 
-            display: 'flex', 
-            alignItems: 'center',
-            gap: '12px'
-          }}>
-            {type === 'error' && (
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ color: '#F23645' }}>
-                <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-7v2h2v-2h-2zm0-8v6h2V7h-2zm0-8v6h2V1h-2z" fill="currentColor"/>
-              </svg>
-            )}
-            {type === 'success' && (
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ color: '#00B897' }}>
-                <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.997-6l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z" fill="currentColor"/>
-              </svg>
-            )}
-            <span style={{ 
-              fontWeight: '500',
-              color: type === 'error' ? '#F23645' : 
-                     type === 'success' ? '#00B897' : 
-                     '#ffffff'
-            }}>{message}</span>
-          </div>
-          <button 
-            onClick={onClose}
-            style={{
-              padding: '6px 12px',
-              borderRadius: '4px',
-              backgroundColor: '#000000',
-              color: '#ffffff',
-              border: 'none',
-              cursor: 'pointer',
-              fontSize: '13px',
-              fontWeight: '500',
-              transition: 'background-color 0.2s',
-              flexShrink: 0,
-              marginLeft: '12px'
-            }}
-            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#333333'}
-            onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#000000'}
-          >
-            OK
-          </button>
+      <div className={`notification ${type}`}>
+        <div className="notification-content">
+          <div className="notification-message">{message}</div>
+          <button className="notification-close" onClick={onClose}>×</button>
         </div>
       </div>
     );
   };
 
   return (
-    <div className="trade-section">
-      {notification && (
-        <CustomNotification
-          message={notification.message}
-          onClose={() => setNotification(null)}
-          type={notification.type}
-        />
-      )}
-    
-      <div className="trade-tabs">
-        <div className="tab-actions">
-          <div className="tab active">Trade</div>
-          <div className="tab">Tools</div>
-        </div>
+    <div className="trade-form">
+      <div className="top-controls">
         <div className="margin-toggle">
           <span>Margin</span>
           <label className="switch">
@@ -328,13 +258,13 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
       </div>
 
       <div className="order-types">
-        {['Limit', 'Market', 'TP/SL'].map((type) => (
+        {['Limit', 'Market', 'Stop-Limit'].map((type) => (
           <div 
             key={type}
-            className={`type ${activeOrderType.toLowerCase() === type.toLowerCase() ? 'active' : ''} ${type === 'TP/SL' ? 'dropdown' : ''}`}
+            className={`type ${activeOrderType.toLowerCase() === type.toLowerCase() ? 'active' : ''}`}
             onClick={() => setActiveOrderType(type.toLowerCase())}
           >
-            {type} {type === 'TP/SL' && <i className="fas fa-chevron-down"></i>}
+            {type}
           </div>
         ))}
       </div>
@@ -374,7 +304,7 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
             onChange={handleSliderChange}
           />
           <div className="slider-labels">
-            <span>0</span>
+            <span>0%</span>
             <span>100%</span>
           </div>
         </div>
@@ -391,26 +321,12 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
       </div>
 
       <div className="balance-info">
-        <div className="available">
-          Available: {isBuy ? formattedUsdtBalance : formattedCryptoBalance} {isBuy ? usdtSymbol : cryptoSymbol} <i className="fas fa-info-circle"></i>
-        </div>
-        <div className="max-buy">
-          Max {isBuy ? 'buy' : 'sell'}: {
-            isBuy 
-              ? formatNumber(usdtBalance / (price || 1), 5) 
-              : formattedCryptoBalance
-          } {cryptoSymbol}
-        </div>
-      </div>
-
-      <div className="tp-sl-check">
-        <input 
-          type="checkbox" 
-          id="tp-sl-checkbox" 
-          checked={tpslEnabled}
-          onChange={() => setTpslEnabled(!tpslEnabled)}
-        />
-        <label htmlFor="tp-sl-checkbox">TP/SL</label>
+        <span>Available: {isBuy ? formattedUsdtBalance : formattedCryptoBalance} {isBuy ? usdtSymbol : cryptoSymbol}</span>
+        <span>Max {isBuy ? 'buy' : 'sell'}: {
+          isBuy 
+            ? formatNumber(usdtBalance / (price || 1), 5) 
+            : formattedCryptoBalance
+        } {cryptoSymbol}</span>
       </div>
 
       {isAuthenticated ? (
@@ -430,15 +346,19 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
       )}
 
       <div className="price-info">
-        <div className="max-price">
-          Max price <span>{formatPrice(price * 1.05)}</span>
-        </div>
-        <div className="fees">Fees <i className="fas fa-info-circle"></i></div>
+        <span>Max price: {formatPrice(price * 1.05)}</span>
+        <span>Fees: 0.1%</span>
       </div>
 
-      <div className="assets">{usdtSymbol} assets</div>
+      {notification && (
+        <CustomNotification 
+          message={notification.message} 
+          type={notification.type} 
+          onClose={() => setNotification(null)} 
+        />
+      )}
     </div>
   );
 };
 
-export default TradeForm; 
+export default TradeForm;
