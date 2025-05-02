@@ -222,44 +222,22 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
         </div>
       </div>
 
-      {/* Buy/Sell tabs - Fixed with proper styling */}
-      <div className="buy-sell-tabs" style={{ display: 'flex', width: '100%', borderRadius: '4px', overflow: 'hidden', marginBottom: '16px', border: '1px solid #333' }}>
-        <div 
-          className={`tab buy ${isBuy ? 'active' : ''}`} 
+      {/* Buy/Sell Tabs */}
+      <div className="okx-form-tabs">
+        <button
+          className={`okx-tab buy${isBuy ? ' active' : ''}`}
+          type="button"
           onClick={() => setIsBuy(true)}
-          style={{ 
-            flex: 1, 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center', 
-            padding: '10px 0', 
-            cursor: 'pointer',
-            backgroundColor: isBuy ? 'rgba(0, 181, 116, 0.2)' : 'transparent',
-            color: isBuy ? '#00B574' : '#FFFFFF',
-            fontWeight: isBuy ? '600' : '400',
-            transition: 'all 0.2s ease'
-          }}
         >
           Buy
-        </div>
-        <div 
-          className={`tab sell ${!isBuy ? 'active' : ''}`} 
+        </button>
+        <button
+          className={`okx-tab sell${!isBuy ? ' active' : ''}`}
+          type="button"
           onClick={() => setIsBuy(false)}
-          style={{ 
-            flex: 1, 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center', 
-            padding: '10px 0', 
-            cursor: 'pointer',
-            backgroundColor: !isBuy ? 'rgba(242, 54, 69, 0.2)' : 'transparent',
-            color: !isBuy ? '#F23645' : '#FFFFFF',
-            fontWeight: !isBuy ? '600' : '400',
-            transition: 'all 0.2s ease'
-          }}
         >
           Sell
-        </div>
+        </button>
       </div>
 
       {/* Order types */}
@@ -275,22 +253,10 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
         ))}
       </div>
 
-      {/* Price input */}
-      <div className="form-group">
+      {/* Price input or display */}
+      <div className="form-group price-container" style={{ borderRadius: '4px', overflow: 'hidden' }}>
         <label>Price ({cryptoData?.usdtSymbol || 'USDT'})</label>
-        <div className="input-wrapper">
-          <input 
-            type="text" 
-            value={formatPrice(price)} 
-            onChange={(e) => setPrice(Number(e.target.value.replace(/,/g, '')))}
-            onKeyDown={e => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-              }
-            }}
-          />
-          <span className="input-note">≈ ${formatPrice(price)}</span>
-        </div>
+        <span style={{flex:1, textAlign:'right', fontFamily:'monospace', fontWeight:500}}>{formatPrice(price)}</span>
       </div>
 
       {/* Amount input */}
@@ -302,29 +268,33 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
           onChange={handleAmountChange}
           placeholder={`Min 0.00001 ${cryptoData?.cryptoSymbol || 'BTC'}`}
         />
-        <div className="slider-container">
+        <div className="slider-row">
           <input 
             type="range" 
-            className="range-slider"
-            min={0}
-            max={100}
-            step={1}
+            min="0"
+            max="100"
+            step="1"
             value={sliderValue}
             onChange={handleSliderChange}
-            aria-label="Trade Amount Slider"
+            className="slider-range"
+            style={{
+              background: `linear-gradient(90deg, #00B574 ${sliderValue}%, #232323 ${sliderValue}%)`
+            }}
           />
+          <div className="slider-labels">
+            <span>0%</span>
+            <span>25%</span>
+            <span>50%</span>
+            <span>75%</span>
+            <span>100%</span>
+          </div>
         </div>
       </div>
 
-      {/* Total input */}
-      <div className="form-group">
+      {/* Total display */}
+      <div className="form-group total-container" style={{ borderRadius: '4px', overflow: 'hidden' }}>
         <label>Total ({cryptoData?.usdtSymbol || 'USDT'})</label>
-        <input 
-          type="text" 
-          placeholder="0.00" 
-          value={total}
-          onChange={handleTotalChange}
-        />
+        <span style={{flex:1, textAlign:'right', fontFamily:'monospace', fontWeight:500}}>{total}</span>
       </div>
 
       {/* Balance info */}
@@ -341,16 +311,13 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
         } {cryptoData?.cryptoSymbol || 'BTC'}</span>
       </div>
 
-      {/* Trade button */}
+      {/* Buy/Sell Button */}
       {isAuthenticated ? (
-        <button 
-          className={`trade-button ${isBuy ? 'buy' : 'sell'}`}
-          onClick={e => {
-            e.preventDefault();
-            handleTradeSubmit();
-          }}
+        <button
+          className={`buy-btn${isBuy ? '' : ' sell-btn'}`}
           disabled={isLoading}
-          type="button"
+          onClick={handleTradeSubmit}
+          style={{marginTop: 10, width: '100%', fontWeight: 600, fontSize: 18, padding: '12px 0', borderRadius: '4px'}}
         >
           {isLoading ? (
             <>

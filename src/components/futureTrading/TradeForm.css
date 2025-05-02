@@ -653,3 +653,24 @@
     margin-bottom: var(--spacing-sm);
   }
 }
+
+/* --- Compact trade form spacing for futures --- */
+.future-trading-container .trade-form .form-group,
+.future-trading-container .trade-form .form-group.price-container,
+.future-trading-container .trade-form .form-group.total-container {
+    margin-bottom: 6px !important;
+    gap: 2px;
+}
+.future-trading-container .trade-form .slider-row {
+    margin: 8px 0 4px 0 !important;
+}
+.future-trading-container .trade-form .slider-labels {
+    margin-top: 0 !important;
+    font-size: 12px;
+}
+.future-trading-container .trade-form .buy-btn,
+.future-trading-container .trade-form .sell-btn {
+    margin-top: 8px !important;
+    padding: 10px 0 !important;
+    font-size: 16px !important;
+}
