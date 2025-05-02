@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { formatNumber } from '../../utils/numberFormatter';
+import './TradeForm.css';
 
 const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
   const [isBuy, setIsBuy] = useState(true);
@@ -157,7 +158,6 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
         }
       }, 1500);
       
-      // In a real implementation, you would make an API call here
       /*
       const response = await axios.post('https://api.example.com/trade', {
         type: isBuy ? 'buy' : 'sell',
@@ -305,16 +305,14 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
         <div className="slider-container">
           <input 
             type="range" 
-            min="0" 
-            max="100" 
-            value={sliderValue} 
             className="range-slider"
+            min={0}
+            max={100}
+            step={1}
+            value={sliderValue}
             onChange={handleSliderChange}
+            aria-label="Trade Amount Slider"
           />
-          <div className="slider-labels">
-            <span>0%</span>
-            <span>100%</span>
-          </div>
         </div>
       </div>
 

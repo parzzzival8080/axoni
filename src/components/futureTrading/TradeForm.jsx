@@ -4,7 +4,8 @@ import './TradeForm.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretUp, faCaretDown, faSyncAlt, faSpinner, faChevronDown, faChartLine, faCheckCircle, faExclamationCircle, faInfoCircle, faExclamationTriangle, faTimes, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 
-function TradeForm({ symbol = 'BTC', onTradeSuccess }) {
+function TradeForm({ cryptoData, userBalance, coinPairId, onTradeSuccess }) {
+  const symbol = cryptoData?.cryptoSymbol || 'BTC';
   const [activeTab, setActiveTab] = useState('trade'); // 'trade' or 'tools'
   const [positionType, setPositionType] = useState('open'); // 'open' or 'close'
   const [leverageMode, setLeverageMode] = useState('isolated'); // 'isolated' or 'cross'
@@ -20,8 +21,7 @@ function TradeForm({ symbol = 'BTC', onTradeSuccess }) {
   const [uid, setUid] = useState(''); // Start with empty UID, will be populated from localStorage
   const [walletBalance, setWalletBalance] = useState({
     availableBalance: '0.00',
-    cryptoBalance: '0.00',
-    cryptoSymbol: symbol
+    cryptoBalance: '0.00'
   });
   const [isLoadingBalance, setIsLoadingBalance] = useState(false);
 
@@ -67,7 +67,7 @@ function TradeForm({ symbol = 'BTC', onTradeSuccess }) {
         fetchWalletBalance();
       }, 100);
     }
-  }, [symbol, uid]);
+  }, [cryptoData?.cryptoSymbol, uid]);
 
   // Fetch wallet balance from API using the getFutureBalance service
   const fetchWalletBalance = async () => {
@@ -101,14 +101,12 @@ function TradeForm({ symbol = 'BTC', onTradeSuccess }) {
       // Update wallet balance state with the structure expected by the component
       setWalletBalance({
         availableBalance: parseFloat(availableBalance).toFixed(6),
-        cryptoBalance: parseFloat(cryptoBalance).toFixed(6),
-        cryptoSymbol: symbol
+        cryptoBalance: parseFloat(cryptoBalance).toFixed(6)
       });
 
       console.log('Updated wallet balance:', {
         availableBalance: parseFloat(availableBalance).toFixed(6),
-        cryptoBalance: parseFloat(cryptoBalance).toFixed(6),
-        cryptoSymbol: symbol
+        cryptoBalance: parseFloat(cryptoBalance).toFixed(6)
       });
 
       // If it was a real, successful API call, clear any error notifications
@@ -248,24 +246,20 @@ function TradeForm({ symbol = 'BTC', onTradeSuccess }) {
 
       setIsLoading(true);
 
-      // Determine order_type and execution_type based on UI state
-      // Use "BUY MORE" for transaction_type when buying, as required by the API
-      const order_type = positionType === 'open' ? 'BUY MORE' : 'SELL SHORT';
-      const execution_type = orderType === 'market' ? 'market' : 'limit';
-
-      // Parse the price to remove commas
-      const cleanedPrice = parseFloat(price.replace(/,/g, ''));
-
-      // Use the executeFutureTradeOrder service function
-      const result = await executeFutureTradeOrder({
+      // Determine transaction_type based on positionType (BUY MORE for open/long, SELL SHORT for close/short)
+      const transaction_type = positionType === 'open' ? 'BUY MORE' : 'SELL SHORT';
+      const tradeParams = {
+        symbol: cryptoData?.cryptoSymbol,
+        coinPairId: coinPairId,
+        price,
+        amount,
+        leverage,
+        transaction_type,
         uid,
-        symbol,
-        order_type,
-        execution_type,
-        price: cleanedPrice,
-        amount: parseFloat(amount),
-        leverage: parseInt(leverage)
-      });
+        // Do not send execution_type
+      };
+
+      const result = await executeFutureTradeOrder(tradeParams);
 
       console.log('Future trade result:', result);
 
@@ -274,7 +268,7 @@ function TradeForm({ symbol = 'BTC', onTradeSuccess }) {
 
       // Trade was successful
       setNotification({
-        message: result.message || `${order_type.toUpperCase()} order placed for ${amount} ${symbol} with ${leverage}x leverage`,
+        message: result.message || `${positionType === 'open' ? 'Buy' : 'Sell'} order placed for ${amount} ${cryptoData?.cryptoSymbol} with ${leverage}x leverage`,
         type: notificationType
       });
 

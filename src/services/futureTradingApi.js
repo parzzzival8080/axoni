@@ -110,12 +110,12 @@ export const fetchCoinDetails = async (symbol) => {
 
 /**
  * Execute a future trade order
- * @param params - Trade parameters including symbol, order_type, execution_type, price, amount, leverage
+ * @param params - Trade parameters including symbol, transaction_type, price, amount, leverage
  * @returns Promise with trade result
  */
 export const executeFutureTradeOrder = async (params) => {
     try {
-        const { uid, symbol = 'BTC', order_type, execution_type, price, amount, leverage = 10 } = params;
+        const { uid, symbol = 'BTC', transaction_type, price, amount, leverage = 10 } = params;
         
         // Validate required parameters
         if (!uid) {
@@ -125,8 +125,8 @@ export const executeFutureTradeOrder = async (params) => {
         // Calculate total
         const total_in_usdt = (price * amount).toFixed(6);
         
-        // Use transaction_type instead of order_type as the API requires
-        const url = `${API_BASE_URL}/futures?uid=${uid}&symbol=${symbol}&transaction_type=${order_type}&execution_type=${execution_type}&entry_price=${price}&amount=${amount}&leverage=${leverage}&total_in_usdt=${total_in_usdt}&apikey=${API_KEY}`;
+        // Compose API URL using correct field names (no execution_type, use transaction_type)
+        const url = `${API_BASE_URL}/futures?uid=${uid}&symbol=${symbol}&transaction_type=${transaction_type}&entry_price=${price}&amount=${amount}&leverage=${leverage}&total_in_usdt=${total_in_usdt}&apikey=${API_KEY}`;
         
         console.log('Executing future trade with URL:', url);
         
@@ -161,7 +161,7 @@ export const executeFutureTradeOrder = async (params) => {
         return {
             success: true,
             data,
-            message: `Future ${order_type === 'buy' ? 'Buy' : 'Sell'} order executed successfully`
+            message: `Future ${transaction_type === 'BUY MORE' ? 'Buy' : 'Sell'} order executed successfully`
         };
     } catch (error) {
         console.error('Future trade execution error:', error);

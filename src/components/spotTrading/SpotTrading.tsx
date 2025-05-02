@@ -425,7 +425,7 @@ const SpotTrading = () => {
     }, [refreshOrderHistory]);
     
     return (
-        <div className="spot-trading-container">
+        <div className="spot-trading-container okx-dark">
             <div className="trading-content">
                 {/* Left column with chart */}
                 <div className="trading-column chart-column">
@@ -442,13 +442,15 @@ const SpotTrading = () => {
                         forceRefresh={refreshOrderBook}
                     />
                     
-                    <TradeForm 
-                        uid="yE8vKBNw"
-                        isAuthenticated={true}
-                        cryptoSymbol={cryptoData.cryptoSymbol}
-                        userBalance={userBalance}
-                        onTradeComplete={handleTradeComplete}
-                    />
+                    <div className="trade-form-wrapper">
+                        <TradeForm 
+                            uid="yE8vKBNw"
+                            isAuthenticated={true}
+                            cryptoSymbol={cryptoData.cryptoSymbol}
+                            userBalance={userBalance}
+                            onTradeComplete={handleTradeComplete}
+                        />
+                    </div>
                 </div>
             </div>
             

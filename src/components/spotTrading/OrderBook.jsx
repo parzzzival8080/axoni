@@ -539,7 +539,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
           ) : (
             <>
               <div className="sell-orders">
-                {orderBook.asks.slice(0, 10).map((ask, index) => (
+                {orderBook.asks.slice(0, 8).map((ask, index) => (
                   <div className="order-row" key={`ask-${index}`}>
                     <div className="order-bar sell" style={{ width: `${ask.percentage}%` }}></div>
                     <div className="order-price sell">
@@ -565,7 +565,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
               </div>
 
               <div className="buy-orders">
-                {orderBook.bids.slice(0, 10).map((bid, index) => (
+                {orderBook.bids.slice(0, 8).map((bid, index) => (
                   <div className="order-row" key={`bid-${index}`}>
                     <div className="order-bar buy" style={{ width: `${bid.percentage}%` }}></div>
                     <div className="order-price buy">
