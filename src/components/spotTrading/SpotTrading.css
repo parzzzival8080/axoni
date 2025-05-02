@@ -258,6 +258,43 @@ nav {
   .favorite-item-atomic { font-size: 11px; }
 }
 
+/* --- Skeleton loading for favorites bar --- */
+.fav-skeleton {
+  background: none;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+  padding: 0 10px;
+}
+.skeleton-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #23272f 25%, #222 50%, #23272f 75%);
+  animation: skeleton-loading 1.2s infinite linear;
+  flex-shrink: 0;
+}
+.skeleton-text {
+  height: 14px;
+  width: 48px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #23272f 25%, #222 50%, #23272f 75%);
+  animation: skeleton-loading 1.2s infinite linear;
+}
+.skeleton-text.short {
+  width: 34px;
+}
+@keyframes skeleton-loading {
+  0% {
+    background-position: -40px 0;
+  }
+  100% {
+    background-position: 40px 0;
+  }
+}
+
 /* Main container */
 .main-container {
     display: grid;

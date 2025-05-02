@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { formatNumber } from '../../utils/numberFormatter';
+import { executeSpotTradeOrder } from '../../services/spotTradingApi';
 import './TradeForm.css';
 
 const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
@@ -96,106 +97,46 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
 
   const handleTradeSubmit = async () => {
     try {
-      // Clear any existing notifications
       setNotification(null);
-      
       if (!isAuthenticated) {
-        setNotification({
-          message: 'Please log in to trade',
-          type: 'error'
-        });
+        setNotification({ message: 'Please log in to trade', type: 'error' });
         return;
       }
-
       if (!amount || parseFloat(amount) <= 0) {
-        setNotification({
-          message: 'Please enter a valid amount',
-          type: 'error'
-        });
+        setNotification({ message: 'Please enter a valid amount', type: 'error' });
         return;
       }
-
       if (parseFloat(amount) < 0.00001) {
-        setNotification({
-          message: `Amount must be at least 0.00001 ${cryptoData?.cryptoSymbol || 'BTC'}`,
-          type: 'error'
-        });
+        setNotification({ message: `Amount must be at least 0.00001 ${cryptoData?.cryptoSymbol || 'BTC'}`, type: 'error' });
         return;
       }
-
       setIsLoading(true);
-      
-      // Use the effective UID (either from localStorage or default)
       const effectiveUid = uid || localStorage.getItem('uid') || 'yE8vKBNw';
-      
-      // Simulate API call with a delay
-      setTimeout(() => {
-        console.log('Trade submitted:', {
-          type: isBuy ? 'buy' : 'sell',
-          orderType: activeOrderType,
-          price,
-          amount,
-          total,
-          coinPairId,
-          uid: effectiveUid
-        });
-        
-        // Simulate successful trade
-        setIsLoading(false);
-        setNotification({
-          message: `${isBuy ? 'Buy' : 'Sell'} order placed successfully`,
-          type: 'success'
-        });
-        
-        // Reset form
+      const symbol = cryptoData?.cryptoSymbol || 'BTC';
+      const params = {
+        uid: effectiveUid,
+        symbol,
+        order_type: isBuy ? 'buy' : 'sell',
+        excecution_type: activeOrderType, // <-- correct spelling for API
+        price: price,
+        amount: parseFloat(amount),
+      };
+      const result = await executeSpotTradeOrder(params);
+      setIsLoading(false);
+      if (result.success) {
+        setNotification({ message: `${isBuy ? 'Buy' : 'Sell'} order placed successfully`, type: 'success' });
         setAmount('');
         setTotal('');
         setSliderValue(0);
-        
-        // Notify parent component to refresh balances
-        if (onTradeSuccess) {
-          onTradeSuccess();
-        }
-      }, 1500);
-      
-      /*
-      const response = await axios.post('https://api.example.com/trade', {
-        type: isBuy ? 'buy' : 'sell',
-        orderType: activeOrderType,
-        price,
-        amount,
-        total,
-        coinPairId,
-        uid: effectiveUid
-      });
-      
-      if (response.data.success) {
-        setIsLoading(false);
-        setNotification({
-          message: `${isBuy ? 'Buy' : 'Sell'} order placed successfully`,
-          type: 'success'
-        });
-        
-        // Reset form
-        setAmount('');
-        setTotal('');
-        setSliderValue(0);
-        
-        // Notify parent component to refresh balances
         if (onTradeSuccess) {
           onTradeSuccess();
         }
       } else {
-        throw new Error(response.data.message || 'Trade failed');
+        setNotification({ message: result.message || 'Trade failed', type: 'error' });
       }
-      */
     } catch (error) {
-      console.error('Trade error:', error);
       setIsLoading(false);
-      setNotification({
-        message: error.message || 'An error occurred while processing your trade',
-        type: 'error'
-      });
+      setNotification({ message: error.message || 'An error occurred while processing your trade', type: 'error' });
     }
   };
 
