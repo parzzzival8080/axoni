@@ -49,11 +49,11 @@ const EarnNavBar = () => {
               
               {item.hasDropdown && activeDropdown === item.label && (
                 <div className="earn-dropdown-menu">
-                  <div className="dropdown-content">
-                    <a href={`${item.link}/option1`} className="dropdown-item">
+                  <div className="earn-dropdown-content">
+                    <a href={`${item.link}/option1`} className="earn-dropdown-item">
                       Option 1
                     </a>
-                    <a href={`${item.link}/option2`} className="dropdown-item">
+                    <a href={`${item.link}/option2`} className="earn-dropdown-item">
                       Option 2
                     </a>
                   </div>
