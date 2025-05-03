@@ -100,6 +100,52 @@ export const fetchCoinDetails = async (symbol) => {
 };
 
 /**
+ * Fetches all available coins for trading
+ * @returns Promise with array of coins
+ */
+export const fetchAllCoins = async () => {
+    try {
+        const url = `${API_BASE_URL}/coins?apikey=${API_KEY}`;
+        
+        console.log('Fetching all coins from:', url);
+        
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        
+        if (!response.ok) {
+            console.error('API Error:', response.status);
+            return { success: false, message: `API Error: ${response.status}` };
+        }
+        
+        const coinsData = await response.json();
+        
+        // Sort coins by symbol
+        const sortedCoins = coinsData.sort((a, b) => {
+            // Put BTC, ETH, and USDT at the top
+            const priority = { 'BTC': 1, 'ETH': 2, 'USDT': 3 };
+            const aPriority = priority[a.symbol] || 999;
+            const bPriority = priority[b.symbol] || 999;
+            
+            if (aPriority !== bPriority) {
+                return aPriority - bPriority;
+            }
+            
+            // Otherwise sort alphabetically
+            return a.symbol.localeCompare(b.symbol);
+        });
+        
+        return { success: true, coins: sortedCoins };
+    } catch (error) {
+        console.error('Error fetching coins:', error);
+        return { success: false, message: error.message || 'Failed to fetch coins' };
+    }
+};
+
+/**
  * Execute a spot trade order
  * @param params - Trade parameters including uid, symbol, coin_pair_id, order_type, excecution_type, price, amount
  * @returns Promise with trade result
