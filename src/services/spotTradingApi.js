@@ -106,7 +106,7 @@ export const fetchCoinDetails = async (symbol) => {
  */
 export const executeSpotTradeOrder = async (params) => {
     try {
-        const { uid = DEFAULT_UID, symbol = 'BTC', order_type, execution_type, price, amount } = params;
+        const { uid = DEFAULT_UID, symbol = 'BTC', order_type, excecution_type, price, amount } = params;
         
         // Calculate total
         const total_in_usdt = (price * amount).toFixed(6);
@@ -117,7 +117,7 @@ export const executeSpotTradeOrder = async (params) => {
                        symbol === 'XRP' ? 3 : 1; // Default to BTC if unknown
         
         // Create URL with query parameters
-        const url = `${API_BASE_URL}/orders?uid=${uid}&coin_id=${coin_id}&order_type=${order_type}&execution_type=${execution_type}&price=${price}&amount=${amount}&total_in_usdt=${total_in_usdt}&apikey=${API_KEY}`;
+        const url = `${API_BASE_URL}/orders?uid=${uid}&coin_id=${coin_id}&order_type=${order_type}&excecution_type=${excecution_type}&price=${price}&amount=${amount}&total_in_usdt=${total_in_usdt}&apikey=${API_KEY}`;
         
         console.log('Executing spot trade with URL:', url);
         

@@ -227,10 +227,11 @@
 /* Main container with grid layout - increased height */
 .future-trading-container .main-container {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    grid-template-rows: 1fr;
-    height: 650px; /* Increased from 525px */
+    grid-template-columns: 3.2fr 0.9fr 1.1fr;
     gap: 0;
+    width: 100%;
+    align-items: flex-start;
+    height: 480px; /* Reduced from 650px */
     background-color: var(--futures-primary-bg);
     position: relative;
     margin-bottom: 20px;
@@ -241,7 +242,9 @@
 
 /* Chart section */
 .future-trading-container .chart-section {
-    grid-column: 1;
+    grid-column: 1 / 2;
+    min-width: 0;
+    width: 100%;
     height: 100%;
     min-height: 620px; /* Increased from 500px */
     background: #000000;
@@ -270,24 +273,67 @@
 
 /* Orderbook section */
 .future-trading-container .orderbook-section {
-    grid-column: 2;
-    height: 100%;
+    grid-column: 2 / 3;
+    min-width: 0;
+    width: 100%;
+    max-width: unset;
+    flex: 1 1 0;
+    height: 340px;
     background: #000000;
-    overflow: hidden; /* Prevent overflow */
+    overflow: hidden;
     border-left: 1px solid var(--futures-border-color);
-    border-right: 1px solid var(--futures-border-color);
-    position: relative; /* Ensure proper stacking context */
-    z-index: 1;
+    margin: 0;
+    padding: 0 8px 0 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 /* Trade form section */
 .future-trading-container .trade-section {
     grid-column: 3;
-    height: 100%;
+    height: 340px; /* Reduced from 100% */
     background: #000000;
     overflow: hidden; /* Prevent overflow */
     position: relative; /* Ensure proper stacking context */
     z-index: 1;
+}
+
+/* Compact trade form spacing */
+.future-trading-container .trade-form .tab-row {
+    margin-bottom: 4px !important;
+    gap: 0 !important;
+}
+.future-trading-container .trade-form .trade-tabs {
+    margin-bottom: 0 !important;
+    gap: 0 !important;
+}
+.future-trading-container .trade-form .form-group,
+.future-trading-container .trade-form .form-group.price-container,
+.future-trading-container .trade-form .form-group.total-container {
+    margin-bottom: 4px !important;
+    gap: 0 !important;
+}
+.future-trading-container .trade-form .slider-row {
+    margin: 4px 0 2px 0 !important;
+}
+.future-trading-container .trade-form .slider-labels {
+    margin-top: 0 !important;
+    font-size: 12px;
+}
+.future-trading-container .trade-form .buy-btn,
+.future-trading-container .trade-form .sell-btn {
+    margin-top: 6px !important;
+    padding: 8px 0 !important;
+    font-size: 16px !important;
+}
+/* Remove space between limit/market/tp-sl tabs and price input */
+.future-trading-container .trade-form .trade-tabs + .form-group.price-container {
+    margin-top: 0 !important;
+}
+.future-trading-container .trade-form .trade-tabs {
+    margin-bottom: 0 !important;
 }
 
 /* Orders container - fixed to prevent being overlapped */
@@ -332,6 +378,22 @@
     display: grid !important;
     grid-template-rows: auto auto auto 1fr auto !important;
     gap: 8px !important;
+    scrollbar-width: thin;
+    scrollbar-color: #222 #101010;
+}
+
+.future-trading-container .trade-form::-webkit-scrollbar {
+    width: 8px;
+    background: #101010;
+}
+
+.future-trading-container .trade-form::-webkit-scrollbar-thumb {
+    background: #222;
+    border-radius: 8px;
+}
+
+.future-trading-container .trade-form::-webkit-scrollbar-thumb:hover {
+    background: #333;
 }
 
 /* Trade form margin toggle */
@@ -1037,13 +1099,12 @@
     overflow: hidden;
 }
 
-.future-trading-container .book-headers {
+.future-trading-container .book-headers,
+.future-trading-container .order-row {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    padding: 6px 12px;
-    font-size: 11px;
-    color: var(--futures-secondary-text);
-    border-bottom: 1px solid var(--futures-border-color);
+    grid-template-columns: 1.3fr 1.3fr 0.7fr;
+    align-items: center;
+    gap: 0;
 }
 
 .future-trading-container .price-header {
@@ -1084,7 +1145,7 @@
 
 .future-trading-container .order-row {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1.3fr 1.3fr 0.7fr;
     font-size: 12px;
     padding: 0 12px;
     position: relative;
@@ -1717,6 +1778,103 @@
     }
 }
 
+/* Atomic Favorites Bar: Improved spacing and alignment */
+.future-trading-container .favorites-bar-atomic {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 10px;
+  min-height: 30px;
+  background: #0a0a0a;
+  border-bottom: 2px solid #1a1a1a;
+}
+
+.future-trading-container .fav-label {
+  color: #8c8c8c;
+  font-size: 13px;
+  margin-right: 8px;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.future-trading-container .favorite-item-atomic {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 5px;
+  transition: background 0.18s, color 0.18s;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.future-trading-container .favorite-item-atomic.active {
+  background: rgba(55, 114, 255, 0.08);
+  color: #fff;
+}
+
+.future-trading-container .favorite-item-atomic:hover {
+  background: #181a20;
+  color: #fff;
+}
+
+.future-trading-container .fav-pair {
+  font-size: 13px;
+  color: #fff;
+  font-weight: 500;
+  margin-right: 2px;
+}
+
+.future-trading-container .fav-leverage {
+  background: #23272f;
+  color: #f0b90b;
+  border-radius: 3px;
+  font-size: 11px;
+  padding: 0 4px;
+  margin-left: 3px;
+  font-weight: 500;
+}
+
+.future-trading-container .fav-change {
+  font-size: 12px;
+  margin-right: 2px;
+}
+
+.future-trading-container .fav-price {
+  font-size: 12px;
+  color: #8c8c8c;
+  min-width: 36px;
+  text-align: right;
+  padding-left: 2px;
+}
+
+@media (max-width: 600px) {
+  .future-trading-container .favorites-bar-atomic {
+    gap: 6px;
+    padding: 0 3px;
+    min-height: 24px;
+  }
+  .future-trading-container .favorite-item-atomic {
+    gap: 2px;
+    padding: 1px 4px;
+    border-radius: 3px;
+  }
+  .future-trading-container .fav-label {
+    margin-right: 3px;
+  }
+  .future-trading-container .fav-pair,
+  .future-trading-container .fav-leverage,
+  .future-trading-container .fav-change,
+  .future-trading-container .fav-price {
+    font-size: 10px;
+  }
+  .future-trading-container .fav-price {
+    min-width: 24px;
+    padding-left: 1px;
+  }
+}
+
 /* Symbol display in chart toolbar */
 .future-trading-container .chart-toolbar {
   display: flex;
@@ -1763,4 +1921,68 @@
 .future-trading-container .chart-tool.active {
   color: #FFFFFF;
   background-color: rgb(26, 26, 26);
+}
+
+.future-trading-container .order-book .total {
+    min-width: unset;
+    max-width: 60px;
+    width: 100%;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Match spot trading: Atomic favorites bar coin icon */
+.future-trading-container .favorites-bar-atomic .fav-coin-logo {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-right: 3px;
+  background: transparent;
+  object-fit: cover;
+  box-shadow: none;
+  border: none;
+  padding: 0;
+}
+
+/* General: Remove background from all images (png, jpg, jpeg) in future trading section */
+.future-trading-container img[src$='.png'],
+.future-trading-container img[src*='.png?'],
+.future-trading-container img[src*='.png&'],
+.future-trading-container img[src$='.jpg'],
+.future-trading-container img[src*='.jpg?'],
+.future-trading-container img[src*='.jpg&'],
+.future-trading-container img[src$='.jpeg'],
+.future-trading-container img[src*='.jpeg?'],
+.future-trading-container img[src*='.jpeg&'] {
+  background: transparent !important;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+/* Remove background from all coin/logo images in FavoritesBar and SubHeader */
+.future-trading-container .fav-coin-logo,
+.future-trading-container .sub-header img,
+.future-trading-container .favorite-item-atomic img,
+.future-trading-container .coin-logo,
+.future-trading-container img.coin-logo,
+.future-trading-container img[src$='.png'],
+.future-trading-container img[src$='.jpg'],
+.future-trading-container img[src$='.jpeg'],
+.future-trading-container img[src*='.png?'],
+.future-trading-container img[src*='.jpg?'],
+.future-trading-container img[src*='.jpeg?'],
+.future-trading-container img[src*='.png&'],
+.future-trading-container img[src*='.jpg&'],
+.future-trading-container img[src*='.jpeg&'] {
+  background: transparent !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
 }

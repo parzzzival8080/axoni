@@ -482,7 +482,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
           <div className="book-headers">
             <div className="price-header">Price ({usdtSymbol})</div>
             <div>Amount ({cryptoSymbol})</div>
-            <div>Total</div>
+            <div className="total">Total</div>
           </div>
 
           {isLoading ? (
@@ -492,8 +492,8 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
           ) : (
             <>
               <div className="sell-orders">
-                {orderBook.asks.slice(0, 10).map((ask, index) => (
-                  <div className="order-row" key={`ask-${index}`}>
+                {orderBook.asks.slice(0, 8).map((ask, index) => (
+                  <div className="order-row" key={`ask-${index}`}> 
                     <div className="depth-visualization" style={{ width: `${ask.percentage}%` }}></div>
                     <div className="price sell">
                       {formatNumber(ask.price, decimalPrecision)}
@@ -518,8 +518,8 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
               </div>
 
               <div className="buy-orders">
-                {orderBook.bids.slice(0, 10).map((bid, index) => (
-                  <div className="order-row" key={`bid-${index}`}>
+                {orderBook.bids.slice(0, 8).map((bid, index) => (
+                  <div className="order-row" key={`bid-${index}`}> 
                     <div className="depth-visualization" style={{ width: `${bid.percentage}%` }}></div>
                     <div className="price buy">
                       {formatNumber(bid.price, decimalPrecision)}

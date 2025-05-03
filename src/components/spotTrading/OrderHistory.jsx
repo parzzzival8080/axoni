@@ -61,15 +61,16 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
     return {
       id: order.order_id,
       date: order.date,
-      pair: `${order.coin_name}/USDT`,
-      type: order.orde_type.toLowerCase() === 'buy' ? 'Buy' : 'Sell',
-      side: order.orde_type.toLowerCase(),
-      price: parseFloat(order.amount || 0),
+      pair: `${order.coin_name || order.symbol || order.asset}/USDT`,
+      type: (order.order_type || order.orde_type || '').toLowerCase() === 'buy' ? 'Buy' : 'Sell',
+      side: (order.order_type || order.orde_type || '').toLowerCase(),
+      price: parseFloat(order.price || order.amount || 0),
       amount: parseFloat(order.amount || 0),
-      execution_type: order.excecution_type,
+      execution_type: order.execution_type || order.excecution_type || '',
       filled: '100%',
-      total: parseFloat(order.account_balance || 0),
-      status: order.status
+      total: parseFloat(order.account_balance || order.total || 0),
+      status: order.status,
+      logo_path: order.logo_path || order.image_path || '',
     };
   };
   
