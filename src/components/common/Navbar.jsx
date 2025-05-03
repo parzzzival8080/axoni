@@ -335,7 +335,7 @@ const Navbar = () => {
                       <i className="fas fa-user-friends"></i> Referral
                     </div>
                   </Link>
-                  <Link to="/affiliates" className="dropdown-link">
+                  <Link to="/coming-soon" className="dropdown-link">
                     <div className="dropdown-item" style={{gap: '12px'}}>
                       <i className="fas fa-handshake"></i> Affiliates
                     </div>

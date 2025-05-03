@@ -91,6 +91,12 @@ body {
   /* border: 1px solid #eee; */
 }
 
+.coin-dropdown{
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
 .coin-img{
   width: 25px;
   height: 25px;
@@ -116,6 +122,7 @@ body {
   margin-bottom: 16px;
   font-size: 13px;
   color: #666;
+  dispaly: flex;
 }
 
 .balance-info a {
