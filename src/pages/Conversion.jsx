@@ -295,7 +295,7 @@ const Conversion = () => {
           </div>
         )}
         
-        <div className="form-group">
+        <div className="convert-form-group">
           <label>From</label>
           <div className="input-group">
             <input 
@@ -333,7 +333,7 @@ const Conversion = () => {
             )}
         </div>
 
-        <div className="form-group">
+        <div className="convert-form-group">
           <label>To</label>
           <div className="input-group">
             <input 

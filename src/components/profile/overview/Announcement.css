@@ -1,0 +1,117 @@
+/* Announcements.css - Compact Layout */
+
+.announcements {
+  background-color: white;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.announcements-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.announcements-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0;
+}
+
+.more-button {
+  background: none;
+  border: none;
+  color: #000000;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.3s ease;
+  padding: 0;
+}
+
+.more-button:hover {
+  color: #333333;
+}
+
+.more-button i {
+  font-size: 12px;
+}
+
+.announcements-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.announcement-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.announcement-item:last-child {
+  border-bottom: none;
+}
+
+.announcement-date {
+  display: block;
+  font-size: 12px;
+  color: #999999;
+  margin-bottom: 6px;
+}
+
+.announcement-text {
+  font-size: 14px;
+  color: #000000;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Link styling for announcement items */
+.announcement-item:hover {
+  background-color: #f9f9f9;
+  margin: 0 -16px;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .announcements {
+    padding: 12px;
+  }
+  
+  .announcements-title {
+    font-size: 16px;
+  }
+  
+  .announcement-text {
+    font-size: 13px;
+  }
+  
+  .announcement-item:hover {
+    margin: 0 -12px;
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .announcements-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .more-button {
+    align-self: flex-end;
+  }
+  
+  .announcement-text {
+    font-size: 12px;
+  }
+}
