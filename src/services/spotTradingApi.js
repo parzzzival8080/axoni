@@ -152,6 +152,56 @@ export const executeSpotTradeOrder = async (params) => {
 };
 
 /**
+ * Get user's spot trading wallet for a specific coin
+ * @param {string} uid - User ID
+ * @param {number} coinId - Coin ID
+ * @returns {Promise<Object>} Wallet data including balances and coin information
+ */
+export const getSpotWallet = async (uid, coinId) => {
+    if (!uid) {
+        console.error('getSpotWallet: Missing UID parameter');
+        return { error: true, message: 'User ID is required' };
+    }
+    
+    if (!coinId) {
+        console.error(`getSpotWallet: Missing coin ID parameter`);
+        return { error: true, message: 'Coin ID is required' };
+    }
+    
+    try {
+        // Use the user-wallet endpoint with the exact format from the screenshot
+        const url = `${API_BASE_URL}/user-wallet/${uid}/${coinId}?apikey=${API_KEY}`;
+        console.log(`Fetching spot wallet for UID ${uid}, Coin ID ${coinId} from:`, url);
+        
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: { 'Accept': 'application/json' }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`API Error: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        console.log('Spot wallet data:', data);
+        
+        return {
+            success: true,
+            cryptoWallet: data.cryptoWallet || {},
+            usdtWallet: data.usdtWallet || {},
+            message: 'Spot wallet fetched successfully'
+        };
+    } catch (error) {
+        console.error(`getSpotWallet error:`, error);
+        return { 
+            error: true, 
+            message: error.message || 'Failed to fetch spot wallet data' 
+        };
+    }
+};
+
+/**
  * Get user's spot trading account balance
  * @param uid - User ID
  * @returns Promise with balance information
@@ -225,4 +275,4 @@ const formatPrice = (price) => {
     } else {
         return `$${numPrice.toFixed(8)}`;
     }
-}; 
+};

@@ -388,6 +388,12 @@
 .future-trading-container .trade-form .balance-info {
   margin-top: var(--spacing-sm);
   font-size: var(--font-size-sm);
+  background-color: var(--primary-bg);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .future-trading-container .trade-form .available-balance {
@@ -395,7 +401,8 @@
   justify-content: space-between;
   align-items: center;
   color: var(--text-secondary);
-  margin-bottom: var(--spacing-xs);
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
 }
 
 .future-trading-container .trade-form .info-btn {
@@ -405,6 +412,7 @@
   cursor: pointer;
   padding: 0;
   font-size: var(--font-size-sm);
+  margin-left: var(--spacing-sm);
 }
 
 .future-trading-container .trade-form .max-values {
@@ -416,7 +424,15 @@
 .future-trading-container .trade-form .max-long,
 .future-trading-container .trade-form .max-short {
   font-family: 'Roboto Mono', monospace;
-  font-size: var(--font-size-xs);
+  font-size: 11px;
+}
+
+.future-trading-container .trade-form .max-long {
+  color: var(--buy-color);
+}
+
+.future-trading-container .trade-form .max-short {
+  color: var(--sell-color);
 }
 
 /* TP/SL Checkbox */

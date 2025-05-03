@@ -5,7 +5,21 @@ import { faExternalLinkAlt, faChartLine, faCog } from '@fortawesome/free-solid-s
 import { faFileAlt } from '@fortawesome/free-regular-svg-icons';
 import defaultCoinLogo from '../../assets/coin/bitcoin-2136339_640.webp';
 
+/**
+ * SubHeader Component
+ * Displays coin information and trading statistics in the OKX dark mode style
+ * 
+ * @param {Object} props 
+ * @param {Object} props.cryptoData - Coin data object
+ * @param {string} props.cryptoData.cryptoName - Coin name
+ * @param {string} props.cryptoData.cryptoSymbol - Coin symbol
+ * @param {string} props.cryptoData.cryptoPrice - Coin price
+ * @param {string} props.cryptoData.cryptoLogoPath - Coin logo path
+ * @param {string} props.cryptoData.usdtSymbol - USDT symbol
+ * @param {string} props.coinPairId - Coin pair ID
+ */
 const SubHeader = ({ cryptoData, coinPairId }) => {
+  // Show loading state if no data is available
   if (!cryptoData) {
     return (
       <div className="sub-header skeleton-loading">
@@ -31,12 +45,12 @@ const SubHeader = ({ cryptoData, coinPairId }) => {
   // Use the logo from API or default to the static image
   const logoSrc = cryptoLogoPath || defaultCoinLogo;
   
-  // Calculate derived values for 24h stats
+  // Calculate derived values for 24h stats (placeholder data)
   const price = parseFloat(cryptoPrice) || 0;
   const low24h = (price * 0.97).toFixed(2);
   const high24h = (price * 1.03).toFixed(2);
-  const volumeK = ((Math.random() * 100) + 50).toFixed(2); // Placeholder
-  const turnoverM = ((price * (Math.random() * 100) + 50) / 1000).toFixed(2); // Placeholder
+  const volumeK = ((Math.random() * 100) + 50).toFixed(2);
+  const turnoverM = ((price * (Math.random() * 100) + 50) / 1000).toFixed(2);
 
   return (
     <div className="sub-header">

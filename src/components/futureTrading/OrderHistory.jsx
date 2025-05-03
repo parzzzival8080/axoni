@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faChevronDown, 
-  faSyncAlt, 
-  faChevronLeft, 
+import {
+  faChevronDown,
+  faSyncAlt,
+  faChevronLeft,
   faChevronRight,
-  faEllipsisH 
+  faEllipsisH
 } from '@fortawesome/free-solid-svg-icons';
 
 const OrderHistory = ({ refreshTrigger = 0 }) => {
@@ -25,7 +25,7 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
       const apiKey = localStorage.getItem('apiKey') || 'A20RqFwVktRxxRqrKBtmi6ud';
       const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-futures/${uid}?apikey=${apiKey}`;
       const response = await axios.get(apiUrl);
-      
+
       if (response.data && Array.isArray(response.data)) {
         console.log("API Response:", response.data[0]); // Log first item for debugging
         setOrderHistoryData(response.data.map(order => ({ ...order, imgError: false })));
@@ -50,8 +50,8 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
 
   // Process and sort data by date (newest first)
   const processedData = orderHistoryData
-    .map((order, idx) => ({ 
-      ...order, 
+    .map((order, idx) => ({
+      ...order,
       _id: idx + '-' + order.date,
     }))
     .sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -63,11 +63,13 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
   const currentItems = processedData.slice(indexOfFirstItem, indexOfLastItem);
 
   // Debug: Show data structure in development
-  {process.env.NODE_ENV === 'development' && (
-    <pre style={{ color: '#fff', background: '#222', padding: 8, fontSize: 12, overflowX: 'auto' }}>
-      {JSON.stringify(currentItems, null, 2)}
-    </pre>
-  )}
+  {
+    process.env.NODE_ENV === 'development' && (
+      <pre style={{ color: '#fff', background: '#222', padding: 8, fontSize: 12, overflowX: 'auto' }}>
+        {JSON.stringify(currentItems, null, 2)}
+      </pre>
+    )
+  }
 
   // Pagination controls
   const goToPage = (pageNumber) => setCurrentPage(pageNumber);

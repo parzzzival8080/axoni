@@ -1,247 +1,146 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import axios from 'axios';
 import SubHeader from '../components/futureTrading/SubHeader';
 import FavoritesBar from '../components/futureTrading/FavoritesBar';
 import TradingChartDynamic from '../components/futureTrading/TradingChartDynamic';
 import OrderBook from '../components/futureTrading/OrderBook';
 import TradeForm from '../components/futureTrading/TradeForm';
 import OrdersSection from '../components/futureTrading/OrdersSection';
+import { fetchTradableCoins, fetchWalletData } from '../services/futureTradingApi';
 import '../components/futureTrading/FutureTrading.css';
 
+/**
+ * Future Trading Page Component
+ * Manages the overall state and data flow for the futures trading interface
+ */
 const FutureTrading = () => {
+  // URL parameters
   const [searchParams, setSearchParams] = useSearchParams();
-  const [cryptoData, setCryptoData] = useState(null);
-  const [userBalance, setUserBalance] = useState({
-    cryptoBalance: 0,
-    usdtBalance: 0
-  });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [availableCoins, setAvailableCoins] = useState([]);
-  const [orderHistoryRefreshTrigger, setOrderHistoryRefreshTrigger] = useState(0);
-
-  // Get coin_pair_id from URL params, default to 1 if not provided
   const coinPairId = Number(searchParams.get('coin_pair_id')) || 1;
   
-  // Fetch all available coins
+  // Core state
+  const [tradableCoins, setTradableCoins] = useState([]);
+  const [walletData, setWalletData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [orderHistoryRefreshTrigger, setOrderHistoryRefreshTrigger] = useState(0);
+  
+  // User authentication
+  const [uid, setUid] = useState(localStorage.getItem('uid') || '');
+  
+  // Fetch available tradable coins on component mount
   useEffect(() => {
-    const fetchAvailableCoins = async () => {
-      try {
-        // First try to get from API
-        const token = localStorage.getItem('authToken');
-        const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
-        
-        // Try to fetch from the coins API directly
-        const response = await axios.get(
-          `https://apiv2.bhtokens.com/api/v1/coins?apikey=${apiKey}`
-        );
-        
-        if (response.data && Array.isArray(response.data)) {
-          console.log('Available coins from API:', response.data);
-          setAvailableCoins(response.data);
-        }
-      } catch (error) {
-        console.error('Error fetching available coins:', error);
-      }
+    const loadTradableCoins = async () => {
+      const coins = await fetchTradableCoins();
+      setTradableCoins(coins);
     };
     
-    fetchAvailableCoins();
+    loadTradableCoins();
   }, []);
   
-  const fetchCryptoData = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      // Get the auth token and user ID from localStorage
-      const token = localStorage.getItem('authToken');
-      const userId = localStorage.getItem('user_id');
-
-      // Get the user's UID for the wallet API
-      let uid = localStorage.getItem('uid');
-
-      if (!userId || !token) {
+  // Fetch wallet data when coinPairId or uid changes
+  useEffect(() => {
+    const loadWalletData = async () => {
+      if (!uid) {
         setError("Please log in to access trading features");
         setLoading(false);
         return;
       }
-
-      // If we don't have a uid, try to fetch one
-      if (!uid) {
-        try {
-          const userInfoResponse = await axios.get(
-            `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${userId}`,
-            { headers: { 'Authorization': `Bearer ${token}` } }
-          );
-          uid = userInfoResponse.data?.user?.uid || 'yE8vKBNw';
-          localStorage.setItem('uid', uid);
-        } catch {
-          uid = 'yE8vKBNw';
-        }
-      }
-
-      // Ensure we have a valid coinPairId
-      const validCoinPairId = Number(coinPairId) || 1;
-      console.log(`FutureTrading: Using coin pair ID: ${validCoinPairId}`);
-
-      const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
-      const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-wallet/${uid}/${validCoinPairId}?apikey=${apiKey}`;
-      console.log(`FutureTrading: Fetching from API URL: ${apiUrl}`);
-
-      const response = await axios.get(apiUrl);
-      if (response.data) {
-        // Log the full response for debugging
-        console.log('FutureTrading: API Response:', response.data);
+      
+      setLoading(true);
+      
+      try {
+        // Get wallet data for the selected coin
+        const data = await fetchWalletData(uid, coinPairId);
         
-        // Ensure we have valid data
-        if (!response.data.cryptoWallet) {
-          console.error('FutureTrading: Missing cryptoWallet in API response');
-          setError('Invalid data received from server');
-          setLoading(false);
-          return;
+        if (data.error) {
+          setError(data.message);
+          setWalletData(null);
+        } else {
+          setWalletData(data);
+          setError(null);
         }
-        
-        setCryptoData({
-          cryptoName: response.data.cryptoWallet?.crypto_name || '',
-          cryptoSymbol: response.data.cryptoWallet?.crypto_symbol || '',
-          cryptoPrice: response.data.cryptoWallet?.price || 0,
-          cryptoLogoPath: response.data.cryptoWallet?.logo_path || '',
-          usdtName: response.data.usdtWallet?.crypto_name || 'USDT',
-          usdtSymbol: response.data.usdtWallet?.crypto_symbol || 'USDT',
-          usdtLogoPath: response.data.usdtWallet?.logo_path || '',
-          // Add these to ensure TradeForm has access to the full data
-          cryptoWallet: response.data.cryptoWallet,
-          usdtWallet: response.data.usdtWallet,
-          coinId: response.data.cryptoWallet?.coin_id || validCoinPairId
-        });
-        setUserBalance({
-          cryptoBalance: response.data.cryptoWallet?.spot_wallet || 0,
-          usdtBalance: response.data.usdtWallet?.spot_wallet || 0
-        });
+      } catch (err) {
+        console.error('Error fetching wallet data:', err);
+        setError('Failed to load trading data. Please try again.');
+        setWalletData(null);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error('Error fetching crypto data:', err);
-      setError('Failed to load trading data. Please try again later.');
-    } finally {
-      setLoading(false);
-    }
-  }, [coinPairId]);
-
-  // Only update balance (not loading state) after a trade
-  const fetchUserBalance = useCallback(async () => {
-    try {
-      const token = localStorage.getItem('authToken');
-      const userId = localStorage.getItem('user_id');
-      let uid = localStorage.getItem('uid');
-      if (!userId || !token) return;
-      if (!uid) {
-        try {
-          const userInfoResponse = await axios.get(
-            `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${userId}`,
-            { headers: { 'Authorization': `Bearer ${token}` } }
-          );
-          uid = userInfoResponse.data?.user?.uid || 'yE8vKBNw';
-          localStorage.setItem('uid', uid);
-        } catch {
-          uid = 'yE8vKBNw';
-        }
-      }
-      
-      // Ensure we have a valid coinPairId
-      const validCoinPairId = Number(coinPairId) || 1;
-      console.log(`FutureTrading.fetchUserBalance: Using coin pair ID: ${validCoinPairId}`);
-      
-      const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
-      const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-wallet/${uid}/${validCoinPairId}?apikey=${apiKey}`;
-      console.log(`FutureTrading.fetchUserBalance: Fetching from API URL: ${apiUrl}`);
-      
-      const response = await axios.get(apiUrl);
-      if (response.data) {
-        console.log('FutureTrading.fetchUserBalance: Got response:', response.data);
-        setUserBalance({
-          cryptoBalance: response.data.cryptoWallet?.spot_wallet || 0,
-          usdtBalance: response.data.usdtWallet?.spot_wallet || 0
-        });
-        
-        // Update cryptoData as well to ensure consistency
-        setCryptoData({
-          cryptoName: response.data.cryptoWallet?.crypto_name || '',
-          cryptoSymbol: response.data.cryptoWallet?.crypto_symbol || '',
-          cryptoPrice: response.data.cryptoWallet?.price || 0,
-          cryptoLogoPath: response.data.cryptoWallet?.logo_path || '',
-          usdtName: response.data.usdtWallet?.crypto_name || 'USDT',
-          usdtSymbol: response.data.usdtWallet?.crypto_symbol || 'USDT',
-          usdtLogoPath: response.data.usdtWallet?.logo_path || '',
-          cryptoWallet: response.data.cryptoWallet,
-          usdtWallet: response.data.usdtWallet,
-          coinId: response.data.cryptoWallet?.coin_id || validCoinPairId
-        });
-      }
-      
-      // Trigger order history refresh without affecting the chart
-      setOrderHistoryRefreshTrigger(prev => prev + 1);
-    } catch (err) {
-      // Optionally handle error
-      console.error('Error fetching user balance:', err);
-    }
-  }, [coinPairId]);
-
+    };
+    
+    loadWalletData();
+  }, [coinPairId, uid]);
+  
   // Handle coin selection from FavoritesBar
   const handleCoinSelect = useCallback((selectedCoinPairId) => {
     if (selectedCoinPairId !== coinPairId) {
       console.log('FutureTrading: Changing coin to pair ID:', selectedCoinPairId);
-      
-      // Force a refresh of crypto data when coin changes
-      setLoading(true); // Show loading state
-      
-      // Update URL params
       setSearchParams({ coin_pair_id: selectedCoinPairId });
-      
-      // Force immediate data refresh
-      setTimeout(() => {
-        fetchCryptoData();
-      }, 100);
     }
-  }, [coinPairId, setSearchParams, fetchCryptoData]);
-
-  // Fetch crypto data when coinPairId changes
-  useEffect(() => {
-    console.log('FutureTrading: Fetching data for coin pair ID:', coinPairId);
+  }, [coinPairId, setSearchParams]);
+  
+  // Handle successful trade execution
+  const handleTradeSuccess = useCallback(() => {
+    console.log('FutureTrading: Trade successful, refreshing data...');
     
-    // Reset state before fetching new data
-    setCryptoData(null);
-    setUserBalance({
-      cryptoBalance: 0,
-      usdtBalance: 0
-    });
+    // Refresh wallet data
+    const refreshWalletData = async () => {
+      if (!uid) return;
+      
+      try {
+        console.log('FutureTrading: Refreshing wallet data for coin pair ID:', coinPairId);
+        const data = await fetchWalletData(uid, coinPairId);
+        
+        if (!data.error) {
+          console.log('FutureTrading: Wallet data refreshed successfully:', data);
+          setWalletData(data);
+        } else {
+          console.error('FutureTrading: Error refreshing wallet data:', data.message);
+        }
+      } catch (err) {
+        console.error('FutureTrading: Exception refreshing wallet data:', err);
+      }
+    };
     
-    // Show loading state
-    setLoading(true);
+    refreshWalletData();
     
-    // Fetch new data with a slight delay to ensure UI updates
-    setTimeout(() => {
-      fetchCryptoData();
-    }, 200);
-  }, [fetchCryptoData, coinPairId]);
-
-  if (loading && !cryptoData) {
+    // Refresh order history
+    setOrderHistoryRefreshTrigger(prev => prev + 1);
+  }, [coinPairId, uid]);
+  
+  // Format wallet data for SubHeader component
+  const getSubHeaderData = () => {
+    if (!walletData) return null;
+    
+    return {
+      cryptoName: walletData.name,
+      cryptoSymbol: walletData.symbol,
+      cryptoPrice: walletData.price,
+      cryptoLogoPath: walletData.cryptoWallet?.logo_path,
+      usdtSymbol: walletData.usdtWallet?.crypto_symbol || 'USDT'
+    };
+  };
+  
+  // Loading state
+  if (loading && !walletData) {
     return <div className="loading-screen">Loading trading data...</div>;
   }
-
-  if (error) {
+  
+  // Error state
+  if (error && !walletData) {
     return <div className="error-message">{error}</div>;
   }
 
   return (
     <div className="future-trading-container">
       <SubHeader 
-        cryptoData={cryptoData} 
+        cryptoData={getSubHeaderData()} 
         coinPairId={coinPairId}
       />
       <FavoritesBar 
         activeCoinPairId={coinPairId} 
-        availableCoins={availableCoins}
+        tradableCoins={tradableCoins}
         onCoinSelect={handleCoinSelect}
       />
       {loading ? (
@@ -252,18 +151,17 @@ const FutureTrading = () => {
         <>
           <div className="main-container">
             <TradingChartDynamic 
-              selectedSymbol={cryptoData?.cryptoSymbol} 
+              selectedSymbol={walletData?.symbol} 
             />
             <OrderBook 
-              cryptoData={cryptoData}
+              cryptoData={getSubHeaderData()}
             />
             <TradeForm 
-              key={`trade-form-${coinPairId}`} // Force component remount on coin change
-              cryptoData={cryptoData} 
-              userBalance={userBalance}
+              walletData={walletData}
               coinPairId={coinPairId}
-              favorites={availableCoins}
-              onTradeSuccess={fetchUserBalance}
+              tradableCoins={tradableCoins}
+              onTradeSuccess={handleTradeSuccess}
+              uid={uid}
             />
           </div>
           <div className="orders-container">
