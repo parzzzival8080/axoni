@@ -69,41 +69,19 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
     }
   };
 
-  // Get max total (USDT) for buying
-  const getMaxTotal = () => {
-    if (isBuy) {
-      // For buying, max total is simply the USDT balance
-      return parseFloat(userBalance?.usdtSpotBalance || 0);
-    } else {
-      // For selling, max total is crypto balance * price
-      const cryptoBalance = parseFloat(userBalance?.cryptoSpotBalance || 0);
-      return parseFloat((cryptoBalance * price).toFixed(5));
-    }
-  };
-
   // Handle slider change with precise calculations
   const handleSliderChange = (e) => {
     const value = parseInt(e.target.value);
     setSliderValue(value);
     
-    if (isBuy) {
-      // For buying, calculate based on max USDT total
-      const maxTotal = getMaxTotal();
-      const calculatedTotal = (value / 100 * maxTotal).toFixed(5);
-      setTotal(calculatedTotal);
-      
-      // Calculate amount based on total
-      const calculatedAmount = price > 0 ? parseFloat(calculatedTotal) / price : 0;
-      setAmount(calculatedAmount.toFixed(5));
-    } else {
-      // For selling, calculate based on max crypto amount
-      const maxAmount = getMaxAmount();
-      const calculatedAmount = (value / 100 * maxAmount).toFixed(5);
-      setAmount(calculatedAmount);
-      
-      // Calculate total based on amount
-      setTotal(calculateTotal(calculatedAmount));
-    }
+    // Calculate amount based on available balance with full precision
+    const maxAmount = getMaxAmount();
+    
+    // Use full precision for calculations and ensure 5 decimal places
+    const calculatedAmount = (value / 100 * maxAmount);
+    const formattedAmount = calculatedAmount.toFixed(5);
+    setAmount(formattedAmount);
+    setTotal(calculateTotal(formattedAmount));
   };
 
   // Handle amount change with precise calculations
@@ -114,23 +92,15 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
     
     setAmount(value);
     
-    // Calculate total based on amount with 5 decimal precision
-    const calculatedTotal = (parseFloat(value || 0) * price).toFixed(5);
-    setTotal(calculatedTotal);
+    // Calculate total based on amount
+    setTotal(calculateTotal(value));
     
     // Update slider position
-    if (isBuy) {
-      const maxTotal = getMaxTotal();
-      if (maxTotal > 0) {
-        const sliderPercentage = (parseFloat(calculatedTotal) / maxTotal) * 100;
-        setSliderValue(sliderPercentage > 100 ? 100 : sliderPercentage);
-      }
-    } else {
-      const maxAmount = getMaxAmount();
-      if (maxAmount > 0) {
-        const sliderPercentage = (parseFloat(value) / maxAmount) * 100;
-        setSliderValue(sliderPercentage > 100 ? 100 : sliderPercentage);
-      }
+    const maxAmount = getMaxAmount();
+    
+    if (maxAmount > 0) {
+      const sliderPercentage = (parseFloat(value) / maxAmount) * 100;
+      setSliderValue(sliderPercentage > 100 ? 100 : sliderPercentage);
     }
   };
 
@@ -142,23 +112,17 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
     
     setTotal(value);
     
-    // Calculate amount based on total with 5 decimal precision
-    const calculatedAmount = price > 0 ? (parseFloat(value || 0) / price).toFixed(5) : 0;
-    setAmount(calculatedAmount);
+    // Calculate amount based on total with full precision
+    const calculatedAmount = price > 0 ? parseFloat(value) / price : 0;
+    const formattedAmount = calculatedAmount.toFixed(5);
+    setAmount(formattedAmount);
     
     // Update slider position
-    if (isBuy) {
-      const maxTotal = getMaxTotal();
-      if (maxTotal > 0) {
-        const sliderPercentage = (parseFloat(value) / maxTotal) * 100;
-        setSliderValue(sliderPercentage > 100 ? 100 : sliderPercentage);
-      }
-    } else {
-      const maxAmount = getMaxAmount();
-      if (maxAmount > 0) {
-        const sliderPercentage = (parseFloat(calculatedAmount) / maxAmount) * 100;
-        setSliderValue(sliderPercentage > 100 ? 100 : sliderPercentage);
-      }
+    const maxAmount = getMaxAmount();
+    
+    if (maxAmount > 0) {
+      const sliderPercentage = (calculatedAmount / maxAmount) * 100;
+      setSliderValue(sliderPercentage > 100 ? 100 : sliderPercentage);
     }
   };
 
@@ -177,17 +141,31 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
         setNotification({ message: `Amount must be at least 0.00001 ${cryptoData?.cryptoSymbol || 'BTC'}`, type: 'error' });
         return;
       }
+      
+      // Validate coin pair ID
+      if (!coinPairId) {
+        setNotification({ message: 'Invalid coin pair selected', type: 'error' });
+        return;
+      }
+      
       setIsLoading(true);
       const effectiveUid = uid || localStorage.getItem('uid') || 'yE8vKBNw';
       const symbol = cryptoData?.cryptoSymbol || 'BTC';
+      
+      console.log('Executing spot trade with coin pair ID:', coinPairId);
+      console.log('Current crypto data:', cryptoData);
+      
       const params = {
         uid: effectiveUid,
         symbol,
+        coin_pair_id: coinPairId, // Add the coin pair ID to the params
         order_type: isBuy ? 'buy' : 'sell',
         excecution_type: activeOrderType,
         price: parseFloat(price),
         amount: parseFloat(amount)
       };
+      
+      console.log('Trade parameters:', params);
       
       const result = await executeSpotTradeOrder(params);
       

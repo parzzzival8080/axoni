@@ -66,7 +66,7 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
       side: (order.order_type || order.orde_type || '').toLowerCase(),
       price: parseFloat(order.price || order.amount || 0),
       amount: parseFloat(order.amount || 0),
-      execution_type: order.execution_type || order.excecution_type || '',
+      excecution_type: order.excecution_type || order.excecution_type || '',
       filled: '100%',
       total: parseFloat(order.account_balance || order.total || 0),
       status: order.status,
@@ -232,7 +232,7 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
                   <td>{new Date(order.date).toLocaleString()}</td>
                   <td>{order.pair}</td>
                   <td className={order.side === 'buy' ? 'buy-color' : 'sell-color'}>{order.type}</td>
-                  <td>{order.execution_type} ({order.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})</td>
+                  <td>{order.excecution_type} ({order.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})</td>
                   <td>{order.amount.toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })}</td>
                   <td>{order.filled}</td>
                   <td>{order.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
