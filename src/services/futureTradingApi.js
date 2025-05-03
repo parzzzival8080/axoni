@@ -251,12 +251,70 @@ export const getFutureBalance = async (uid) => {
 };
 
 /**
+ * Fetch wallet and price for a specific coin pair (BTC/USDT, etc.)
+ * @param uid - User ID
+ * @param coinId - Coin ID (1=BTC, 2=USDT)
+ * @returns Promise with wallet and price info
+ */
+export const fetchWalletForCoin = async (uid, coinId) => {
+    try {
+        // Input validation
+        if (!uid) {
+            console.error('fetchWalletForCoin: Missing UID parameter');
+            return { error: true, message: 'User ID is required' };
+        }
+        
+        if (!coinId || isNaN(coinId) || coinId === undefined) {
+            console.error(`fetchWalletForCoin: Invalid coin ID: ${coinId}`);
+            return { error: true, message: 'Valid coin ID is required' };
+        }
+        
+        // Convert coinId to number to ensure it's valid for the API
+        const validCoinId = Number(coinId);
+        
+        // Log the request
+        console.log(`Fetching wallet data for UID: ${uid}, Coin ID: ${validCoinId}`);
+        
+        const url = `${API_BASE_URL}/user-wallet/${uid}/${validCoinId}?apikey=${API_KEY}`;
+        console.log(`API URL: ${url}`);
+        
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: { 'Accept': 'application/json' }
+        });
+        
+        if (!response.ok) {
+            console.error(`API error: ${response.status} ${response.statusText}`);
+            throw new Error(`Failed to fetch wallet: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('Wallet API response:', data);
+        
+        // Return both wallets to give access to both BTC and USDT data
+        return {
+            success: true,
+            cryptoWallet: data.cryptoWallet || null,
+            usdtWallet: data.usdtWallet || null,
+            // For backward compatibility
+            price: data.cryptoWallet?.price || '0',
+            available: data.cryptoWallet?.future_wallet || '0',
+            symbol: data.cryptoWallet?.crypto_symbol || 'BTC',
+            name: data.cryptoWallet?.crypto_name || 'Bitcoin'
+        };
+    } catch (e) {
+        console.error('Error fetching wallet:', e);
+        return { error: true, message: e.message };
+    }
+};
+
+/**
  * Helper function to fetch wallet balance for a specific coin
  * @param uid - User ID
  * @param coinId - Coin ID (1=BTC, 2=USDT)
  * @returns Promise with balance information
  */
-const fetchWalletForCoin = async (uid, coinId) => {
+const fetchWalletForCoinHelper = async (uid, coinId) => {
     try {
         // Use the exact endpoint shown in the user's message
         const url = `${API_BASE_URL}/user-wallet/${uid}/${coinId}?apikey=${API_KEY}`;

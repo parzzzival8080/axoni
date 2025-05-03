@@ -1986,3 +1986,35 @@
   border: none !important;
   padding: 0 !important;
 }
+
+/* Loading overlay */
+.future-trading-container .loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+}
+
+.future-trading-container .loading-spinner {
+    color: #fff;
+    font-size: 16px;
+    padding: 20px 30px;
+    background-color: #1e1e1e;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    border-left: 3px solid #5c6ac4;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.8; }
+    50% { opacity: 1; }
+    100% { opacity: 0.8; }
+}

@@ -1,10 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { getFutureBalance, executeFutureTradeOrder } from '../../services/futureTradingApi';
+import { getFutureBalance, executeFutureTradeOrder, fetchWalletForCoin } from '../../services/futureTradingApi';
 import './TradeForm.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretUp, faCaretDown, faSyncAlt, faSpinner, faChevronDown, faChartLine, faCheckCircle, faExclamationCircle, faInfoCircle, faExclamationTriangle, faTimes, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 
-function TradeForm({ cryptoData, userBalance, coinPairId, onTradeSuccess }) {
+// Utility: Get coinId from coinPairId (FavoritesBar and SubHeader pass coinPairId)
+const getCoinIdFromPair = (coinPairId, favorites) => {
+  // Try to find the coin object in favorites
+  if (!coinPairId || !Array.isArray(favorites)) return 1; // Default to BTC
+  
+  // Convert coinPairId to number for comparison
+  const coinPairIdNum = Number(coinPairId);
+  console.log(`Looking for coin with coin_pair = ${coinPairIdNum} in favorites:`, favorites);
+  
+  // Find the coin object with matching coin_pair
+  const coinObj = favorites.find(f => f.coin_pair === coinPairIdNum);
+  console.log('Found coin object:', coinObj);
+  
+  // Return the coin_id if found, otherwise default to 1 (BTC)
+  return coinObj ? coinObj.coin_id : 1;
+};
+
+function TradeForm({ cryptoData, userBalance, coinPairId, favorites = [], onTradeSuccess }) {
+  console.log('TradeForm: Rendering with coinPairId:', coinPairId);
+  console.log('TradeForm: cryptoData:', cryptoData);
+  
   const symbol = cryptoData?.cryptoSymbol || 'BTC';
   const [activeTab, setActiveTab] = useState('trade'); // 'trade' or 'tools'
   const [positionType, setPositionType] = useState('open'); // 'open' or 'close'
@@ -24,6 +44,10 @@ function TradeForm({ cryptoData, userBalance, coinPairId, onTradeSuccess }) {
     cryptoBalance: '0.00'
   });
   const [isLoadingBalance, setIsLoadingBalance] = useState(false);
+  const [pairCoinId, setPairCoinId] = useState(Number(coinPairId) || 1); // 1=BTC, 2=USDT
+  const [pairWallet, setPairWallet] = useState(null);
+  const [isLoadingPairWallet, setIsLoadingPairWallet] = useState(false);
+  const [pairWalletError, setPairWalletError] = useState(null);
 
   // API constants
   const API_BASE_URL = 'https://apiv2.bhtokens.com/api/v1';
@@ -31,6 +55,7 @@ function TradeForm({ cryptoData, userBalance, coinPairId, onTradeSuccess }) {
 
   // Check if user is authenticated on component mount
   useEffect(() => {
+    console.log('TradeForm: Initial mount effect');
     // First check for user authentication
     const userUid = localStorage.getItem('uid');
 
@@ -38,11 +63,6 @@ function TradeForm({ cryptoData, userBalance, coinPairId, onTradeSuccess }) {
       console.log('User UID from localStorage:', userUid);
       setUid(userUid);
       setIsLoggedIn(true);
-
-      // Fetch wallet balance after setting UID
-      setTimeout(() => {
-        fetchWalletBalance();
-      }, 100);
     } else {
       console.log('No user authenticated. Please login to trade.');
       setIsLoggedIn(false);
@@ -52,6 +72,34 @@ function TradeForm({ cryptoData, userBalance, coinPairId, onTradeSuccess }) {
       });
     }
   }, []);
+
+  // Reset state when coinPairId changes
+  useEffect(() => {
+    console.log('TradeForm: coinPairId changed to', coinPairId);
+    
+    // Reset state
+    setPairWallet(null);
+    setAmount('');
+    setSliderValue(0);
+    setPairWalletError(null);
+    
+    // Show loading state immediately
+    setIsLoadingPairWallet(true);
+    
+    // Update pairCoinId directly from prop
+    const newCoinId = Number(coinPairId) || 1;
+    console.log(`TradeForm: Setting pairCoinId directly to ${newCoinId}`);
+    setPairCoinId(newCoinId);
+    
+    // If we have a UID, fetch wallet data for the new coin
+    if (uid) {
+      console.log(`TradeForm: Fetching wallet data for new coin ID ${newCoinId}`);
+      // Use a timeout to ensure state updates have propagated
+      setTimeout(() => {
+        fetchPairWallet(uid, newCoinId);
+      }, 300);
+    }
+  }, [coinPairId, uid]);
 
   // Update price and reset amount when symbol changes
   useEffect(() => {
@@ -68,6 +116,68 @@ function TradeForm({ cryptoData, userBalance, coinPairId, onTradeSuccess }) {
       }, 100);
     }
   }, [cryptoData?.cryptoSymbol, uid]);
+
+  // Update pairCoinId when coinPairId changes (from FavoritesBar)
+  useEffect(() => {
+    console.log('TradeForm: coinPairId changed to', coinPairId);
+    console.log('TradeForm: favorites:', favorites);
+    
+    if (coinPairId) {
+      // First try to get coin_id from favorites
+      if (favorites && favorites.length > 0) {
+        const newCoinId = getCoinIdFromPair(coinPairId, favorites);
+        console.log(`Setting pairCoinId to ${newCoinId} based on coinPairId ${coinPairId} from favorites`);
+        setPairCoinId(newCoinId);
+      } 
+      // If we don't have favorites data, try to get coin_id from cryptoData
+      else if (cryptoData?.cryptoWallet?.coin_id) {
+        console.log(`Setting pairCoinId to ${cryptoData.cryptoWallet.coin_id} from cryptoData.cryptoWallet`);
+        setPairCoinId(cryptoData.cryptoWallet.coin_id);
+      }
+      // If we don't have cryptoData.cryptoWallet, use the coinPairId directly
+      else {
+        // For many APIs, coin_pair_id is the same as coin_id
+        console.log(`No favorites or cryptoData.cryptoWallet, using coinPairId ${coinPairId} directly`);
+        setPairCoinId(Number(coinPairId));
+      }
+    } else if (cryptoData?.cryptoWallet?.coin_id) {
+      console.log(`No coinPairId, setting pairCoinId to ${cryptoData.cryptoWallet.coin_id} from cryptoData.cryptoWallet`);
+      setPairCoinId(cryptoData.cryptoWallet.coin_id);
+    } else {
+      console.log('No coinPairId or cryptoData.cryptoWallet, defaulting to 1 (BTC)');
+      setPairCoinId(1); // Default BTC
+    }
+  }, [coinPairId, favorites, cryptoData]);
+
+  // Force refresh when coinPairId changes directly
+  useEffect(() => {
+    console.log(`TradeForm: coinPairId prop changed to ${coinPairId}, forcing wallet refresh`);
+    
+    // If we have a UID, force refresh the wallet data
+    if (uid && pairCoinId) {
+      // Short timeout to ensure state updates have propagated
+      setTimeout(() => {
+        console.log(`TradeForm: Refreshing wallet data for coinId: ${pairCoinId}`);
+        if (pairCoinId && !isNaN(pairCoinId) && pairCoinId !== undefined) {
+          fetchPairWallet(uid, pairCoinId);
+        } else {
+          console.error(`TradeForm: Invalid coinId (${pairCoinId}), cannot fetch wallet`);
+        }
+      }, 300); // Increased timeout to ensure state is updated
+    }
+  }, [coinPairId]); // Only depend on coinPairId to avoid circular dependencies
+
+  // Fetch pair wallet when pairCoinId changes
+  useEffect(() => {
+    if (uid && pairCoinId) {
+      console.log(`Fetching wallet data for coinId: ${pairCoinId}`);
+      if (pairCoinId && !isNaN(pairCoinId) && pairCoinId !== undefined) {
+        fetchPairWallet(uid, pairCoinId);
+      } else {
+        console.error(`TradeForm: Invalid coinId (${pairCoinId}), cannot fetch wallet`);
+      }
+    }
+  }, [uid, pairCoinId]);
 
   // Fetch wallet balance from API using the getFutureBalance service
   const fetchWalletBalance = async () => {
@@ -123,6 +233,63 @@ function TradeForm({ cryptoData, userBalance, coinPairId, onTradeSuccess }) {
       });
     } finally {
       setIsLoadingBalance(false);
+    }
+  };
+
+  // Fetch wallet and price for the selected pair
+  const fetchPairWallet = async (uid, coinId) => {
+    // Validate inputs
+    if (!uid) {
+      console.error('TradeForm.fetchPairWallet: Missing UID');
+      setPairWalletError('User ID is required');
+      return;
+    }
+    
+    if (!coinId || isNaN(coinId) || coinId === undefined) {
+      console.error(`TradeForm.fetchPairWallet: Invalid coin ID: ${coinId}`);
+      setPairWalletError('Invalid coin ID');
+      return;
+    }
+    
+    console.log(`TradeForm.fetchPairWallet: Fetching wallet for UID ${uid}, Coin ID ${coinId}`);
+    setIsLoadingPairWallet(true);
+    setPairWalletError(null);
+    
+    try {
+      const result = await fetchWalletForCoin(uid, coinId);
+      console.log('TradeForm.fetchPairWallet: API result:', result);
+      
+      if (result && !result.error) {
+        console.log('TradeForm.fetchPairWallet: Successfully fetched wallet data:', result);
+        
+        // Verify we're still on the same coin before updating state
+        // This prevents race conditions when changing coins quickly
+        if (coinId === pairCoinId) {
+          setPairWallet(result);
+          
+          // Update price from API data
+          if (result.cryptoWallet?.price) {
+            setPrice(result.cryptoWallet.price);
+          }
+          
+          // Update symbol based on the fetched data
+          if (result.cryptoWallet?.crypto_symbol) {
+            console.log(`TradeForm: Updating symbol to ${result.cryptoWallet.crypto_symbol}`);
+          }
+        } else {
+          console.log(`TradeForm: Ignoring stale wallet data for coin ${coinId}, current is ${pairCoinId}`);
+        }
+      } else {
+        console.error('TradeForm.fetchPairWallet: Error in response:', result);
+        setPairWallet(null);
+        setPairWalletError(result.message || 'Failed to fetch pair wallet');
+      }
+    } catch (error) {
+      console.error('TradeForm.fetchPairWallet: Exception:', error);
+      setPairWallet(null);
+      setPairWalletError(error.message || 'An error occurred');
+    } finally {
+      setIsLoadingPairWallet(false);
     }
   };
 
@@ -221,6 +388,26 @@ function TradeForm({ cryptoData, userBalance, coinPairId, onTradeSuccess }) {
     });
   };
 
+  // Calculate formatted values for display
+  const formattedAvailable = walletBalance.availableBalance || '0.00';
+  const formattedMaxAmount = calculateMaxAmount();
+
+  // Get the correct future_wallet balance based on selected coin
+  const getCryptoFutureWallet = () => {
+    if (!pairWallet || !pairWallet.cryptoWallet) return '0.00';
+    return pairWallet.cryptoWallet.future_wallet || '0.00';
+  };
+
+  // Format the future wallet balance for display
+  const formatWalletBalance = (balance) => {
+    if (!balance) return '0.00';
+    const num = parseFloat(balance);
+    return num.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 8
+    });
+  };
+
   // Handle trade submission
   const handleTradeSubmit = async () => {
     if (!uid) {
@@ -294,10 +481,6 @@ function TradeForm({ cryptoData, userBalance, coinPairId, onTradeSuccess }) {
       setIsLoading(false);
     }
   };
-
-  // Ensure all displayed values are formatted and up-to-date
-  const formattedAvailable = formatNumber(walletBalance.availableBalance, 6);
-  const formattedMaxAmount = formatNumber(calculateMaxAmount(), 6);
 
   return (
     <div className="trade-form">
@@ -405,8 +588,9 @@ function TradeForm({ cryptoData, userBalance, coinPairId, onTradeSuccess }) {
           <input
             type="text"
             className="price-input"
-            value={price}
+            value={pairWallet?.price || price}
             onChange={(e) => setPrice(e.target.value)}
+            disabled={isLoadingPairWallet}
           />
           <div className="price-controls">
             <button className="price-control up"><FontAwesomeIcon icon={faCaretUp} /></button>
@@ -414,12 +598,14 @@ function TradeForm({ cryptoData, userBalance, coinPairId, onTradeSuccess }) {
           </div>
           <button className="market-price-btn">BBO</button>
         </div>
+        {isLoadingPairWallet && <div className="loading-state">Loading price...</div>}
+        {pairWalletError && <div className="error-state">{pairWalletError}</div>}
       </div>
 
       {/* Amount Input */}
       <div className="amount-input-section">
         <div className="amount-label">
-          Amount ({symbol}) <FontAwesomeIcon icon={faChevronDown} style={{ fontSize: '10px' }} />
+          Amount ({pairWallet?.cryptoWallet?.crypto_symbol || symbol}) <FontAwesomeIcon icon={faChevronDown} style={{ fontSize: '10px' }} />
         </div>
         <div className="amount-input-container">
           <input
@@ -448,17 +634,38 @@ function TradeForm({ cryptoData, userBalance, coinPairId, onTradeSuccess }) {
           </div>
           <div className="balance-info">
             <div className="available-balance">
-              Available {formattedAvailable} USDT
-              <button className="info-btn" onClick={fetchWalletBalance}>
-                {isLoadingBalance ? <FontAwesomeIcon icon={faSpinner} spin /> : <FontAwesomeIcon icon={faSyncAlt} />}
+              {isLoadingPairWallet ? (
+                <div className="loading-balance">
+                  <span className="loading-text">Loading balance</span>
+                  <span className="loading-dots"><span>.</span><span>.</span><span>.</span></span>
+                  <FontAwesomeIcon icon={faSpinner} spin style={{ marginLeft: '8px' }} />
+                </div>
+              ) : pairWalletError ? (
+                <div className="error-balance">
+                  Error loading balance <FontAwesomeIcon icon={faExclamationCircle} />
+                </div>
+              ) : (
+                <>
+                  Available {formatWalletBalance(getCryptoFutureWallet())} {pairWallet?.cryptoWallet?.crypto_symbol || symbol}
+                </>
+              )}
+              <button 
+                className="info-btn" 
+                onClick={() => fetchPairWallet(uid, pairCoinId)}
+                disabled={isLoadingPairWallet}
+              >
+                {isLoadingPairWallet ? <FontAwesomeIcon icon={faSpinner} spin /> : <FontAwesomeIcon icon={faSyncAlt} />}
               </button>
+            </div>
+            <div className="pair-id-hint" style={{ color: '#8c8c8c', fontSize: '11px', marginTop: '2px' }}>
+              Selected Coin ID: {pairWallet?.cryptoWallet?.coin_id || pairCoinId} | Symbol: {pairWallet?.cryptoWallet?.crypto_symbol || symbol}
             </div>
             <div className="max-values">
               <span className="max-long">
-                Max long {formattedMaxAmount} {symbol}
+                Max long {formatNumber(formattedMaxAmount, 6)} {pairWallet?.cryptoWallet?.crypto_symbol || symbol}
               </span>
               <span className="max-short">
-                Max short {formattedMaxAmount} {symbol}
+                Max short {formatNumber(formattedMaxAmount, 6)} {pairWallet?.cryptoWallet?.crypto_symbol || symbol}
               </span>
             </div>
           </div>

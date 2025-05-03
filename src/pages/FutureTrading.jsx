@@ -22,27 +22,24 @@ const FutureTrading = () => {
   const [orderHistoryRefreshTrigger, setOrderHistoryRefreshTrigger] = useState(0);
 
   // Get coin_pair_id from URL params, default to 1 if not provided
-  const coinPairId = searchParams.get('coin_pair_id') || 1;
+  const coinPairId = Number(searchParams.get('coin_pair_id')) || 1;
   
   // Fetch all available coins
   useEffect(() => {
     const fetchAvailableCoins = async () => {
       try {
+        // First try to get from API
         const token = localStorage.getItem('authToken');
-        if (!token) return;
+        const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
         
+        // Try to fetch from the coins API directly
         const response = await axios.get(
-          'https://django.bhtokens.com/api/trading/coins',
-          {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          }
+          `https://apiv2.bhtokens.com/api/v1/coins?apikey=${apiKey}`
         );
         
         if (response.data && Array.isArray(response.data)) {
+          console.log('Available coins from API:', response.data);
           setAvailableCoins(response.data);
-          console.log('Available coins:', response.data);
         }
       } catch (error) {
         console.error('Error fetching available coins:', error);
@@ -84,11 +81,27 @@ const FutureTrading = () => {
         }
       }
 
+      // Ensure we have a valid coinPairId
+      const validCoinPairId = Number(coinPairId) || 1;
+      console.log(`FutureTrading: Using coin pair ID: ${validCoinPairId}`);
+
       const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
-      const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-wallet/${uid}/${coinPairId}?apikey=${apiKey}`;
+      const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-wallet/${uid}/${validCoinPairId}?apikey=${apiKey}`;
+      console.log(`FutureTrading: Fetching from API URL: ${apiUrl}`);
 
       const response = await axios.get(apiUrl);
       if (response.data) {
+        // Log the full response for debugging
+        console.log('FutureTrading: API Response:', response.data);
+        
+        // Ensure we have valid data
+        if (!response.data.cryptoWallet) {
+          console.error('FutureTrading: Missing cryptoWallet in API response');
+          setError('Invalid data received from server');
+          setLoading(false);
+          return;
+        }
+        
         setCryptoData({
           cryptoName: response.data.cryptoWallet?.crypto_name || '',
           cryptoSymbol: response.data.cryptoWallet?.crypto_symbol || '',
@@ -96,7 +109,11 @@ const FutureTrading = () => {
           cryptoLogoPath: response.data.cryptoWallet?.logo_path || '',
           usdtName: response.data.usdtWallet?.crypto_name || 'USDT',
           usdtSymbol: response.data.usdtWallet?.crypto_symbol || 'USDT',
-          usdtLogoPath: response.data.usdtWallet?.logo_path || ''
+          usdtLogoPath: response.data.usdtWallet?.logo_path || '',
+          // Add these to ensure TradeForm has access to the full data
+          cryptoWallet: response.data.cryptoWallet,
+          usdtWallet: response.data.usdtWallet,
+          coinId: response.data.cryptoWallet?.coin_id || validCoinPairId
         });
         setUserBalance({
           cryptoBalance: response.data.cryptoWallet?.spot_wallet || 0,
@@ -130,13 +147,35 @@ const FutureTrading = () => {
           uid = 'yE8vKBNw';
         }
       }
+      
+      // Ensure we have a valid coinPairId
+      const validCoinPairId = Number(coinPairId) || 1;
+      console.log(`FutureTrading.fetchUserBalance: Using coin pair ID: ${validCoinPairId}`);
+      
       const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
-      const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-wallet/${uid}/${coinPairId}?apikey=${apiKey}`;
+      const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-wallet/${uid}/${validCoinPairId}?apikey=${apiKey}`;
+      console.log(`FutureTrading.fetchUserBalance: Fetching from API URL: ${apiUrl}`);
+      
       const response = await axios.get(apiUrl);
       if (response.data) {
+        console.log('FutureTrading.fetchUserBalance: Got response:', response.data);
         setUserBalance({
           cryptoBalance: response.data.cryptoWallet?.spot_wallet || 0,
           usdtBalance: response.data.usdtWallet?.spot_wallet || 0
+        });
+        
+        // Update cryptoData as well to ensure consistency
+        setCryptoData({
+          cryptoName: response.data.cryptoWallet?.crypto_name || '',
+          cryptoSymbol: response.data.cryptoWallet?.crypto_symbol || '',
+          cryptoPrice: response.data.cryptoWallet?.price || 0,
+          cryptoLogoPath: response.data.cryptoWallet?.logo_path || '',
+          usdtName: response.data.usdtWallet?.crypto_name || 'USDT',
+          usdtSymbol: response.data.usdtWallet?.crypto_symbol || 'USDT',
+          usdtLogoPath: response.data.usdtWallet?.logo_path || '',
+          cryptoWallet: response.data.cryptoWallet,
+          usdtWallet: response.data.usdtWallet,
+          coinId: response.data.cryptoWallet?.coin_id || validCoinPairId
         });
       }
       
@@ -147,19 +186,43 @@ const FutureTrading = () => {
       console.error('Error fetching user balance:', err);
     }
   }, [coinPairId]);
-  
+
   // Handle coin selection from FavoritesBar
   const handleCoinSelect = useCallback((selectedCoinPairId) => {
     if (selectedCoinPairId !== coinPairId) {
       console.log('FutureTrading: Changing coin to pair ID:', selectedCoinPairId);
+      
+      // Force a refresh of crypto data when coin changes
+      setLoading(true); // Show loading state
+      
+      // Update URL params
       setSearchParams({ coin_pair_id: selectedCoinPairId });
+      
+      // Force immediate data refresh
+      setTimeout(() => {
+        fetchCryptoData();
+      }, 100);
     }
-  }, [coinPairId, setSearchParams]);
+  }, [coinPairId, setSearchParams, fetchCryptoData]);
 
   // Fetch crypto data when coinPairId changes
   useEffect(() => {
     console.log('FutureTrading: Fetching data for coin pair ID:', coinPairId);
-    fetchCryptoData();
+    
+    // Reset state before fetching new data
+    setCryptoData(null);
+    setUserBalance({
+      cryptoBalance: 0,
+      usdtBalance: 0
+    });
+    
+    // Show loading state
+    setLoading(true);
+    
+    // Fetch new data with a slight delay to ensure UI updates
+    setTimeout(() => {
+      fetchCryptoData();
+    }, 200);
   }, [fetchCryptoData, coinPairId]);
 
   if (loading && !cryptoData) {
@@ -181,23 +244,33 @@ const FutureTrading = () => {
         availableCoins={availableCoins}
         onCoinSelect={handleCoinSelect}
       />
-      <div className="main-container">
-        <TradingChartDynamic 
-          selectedSymbol={cryptoData?.cryptoSymbol} 
-        />
-        <OrderBook 
-          cryptoData={cryptoData}
-        />
-        <TradeForm 
-          cryptoData={cryptoData} 
-          userBalance={userBalance}
-          coinPairId={coinPairId}
-          onTradeSuccess={fetchUserBalance}
-        />
-      </div>
-      <div className="orders-container">
-        <OrdersSection refreshTrigger={orderHistoryRefreshTrigger} />
-      </div>
+      {loading ? (
+        <div className="loading-overlay">
+          <div className="loading-spinner">Loading trading data...</div>
+        </div>
+      ) : (
+        <>
+          <div className="main-container">
+            <TradingChartDynamic 
+              selectedSymbol={cryptoData?.cryptoSymbol} 
+            />
+            <OrderBook 
+              cryptoData={cryptoData}
+            />
+            <TradeForm 
+              key={`trade-form-${coinPairId}`} // Force component remount on coin change
+              cryptoData={cryptoData} 
+              userBalance={userBalance}
+              coinPairId={coinPairId}
+              favorites={availableCoins}
+              onTradeSuccess={fetchUserBalance}
+            />
+          </div>
+          <div className="orders-container">
+            <OrdersSection refreshTrigger={orderHistoryRefreshTrigger} />
+          </div>
+        </>
+      )}
     </div>
   );
 };

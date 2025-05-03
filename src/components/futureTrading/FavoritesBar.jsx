@@ -37,29 +37,70 @@ const FavoritesSkeleton = () => (
   </div>
 );
 
-const FavoritesBar = ({ activeCoinPairId }) => {
+const FavoritesBar = ({ activeCoinPairId, onCoinSelect }) => {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
   const activeId = Number(activeCoinPairId) || 1;
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Fetch coins on mount
   useEffect(() => {
-    async function fetchCoins() {
-      setLoading(true);
-      try {
-        const response = await fetch(API_URL);
-        const data = await response.json();
-        const tradable = data.filter(coin => coin.is_tradable);
-        setFavorites(tradable.slice(0, 8));
-      } catch (e) {
-        setFavorites([]);
-      } finally {
-        setLoading(false);
-      }
-    }
+    console.log('FavoritesBar: Mounting component, fetching coins');
     fetchCoins();
   }, []);
+
+  // Log when activeCoinPairId changes
+  useEffect(() => {
+    console.log('FavoritesBar: activeCoinPairId changed to', activeCoinPairId);
+  }, [activeCoinPairId]);
+
+  async function fetchCoins() {
+    console.log('FavoritesBar: Fetching coins from API');
+    setLoading(true);
+    try {
+      const response = await fetch(API_URL);
+      const data = await response.json();
+      console.log('FavoritesBar: Received coins data:', data);
+      
+      // Filter tradable coins
+      const tradable = data.filter(coin => coin.is_tradable);
+      
+      // Sort coins to ensure BTC is first
+      const sortedCoins = [...tradable].sort((a, b) => {
+        // BTC always comes first
+        if (a.symbol === 'BTC') return -1;
+        if (b.symbol === 'BTC') return 1;
+        
+        // Then sort by coin_pair for consistency
+        return a.coin_pair - b.coin_pair;
+      });
+      
+      console.log('FavoritesBar: Sorted coins with BTC first:', sortedCoins.map(c => c.symbol).join(', '));
+      
+      // Take the first 8 coins
+      setFavorites(sortedCoins.slice(0, 8));
+    } catch (e) {
+      console.error('FavoritesBar: Error fetching coins:', e);
+      setFavorites([]);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const handleCoinSelect = (coin) => {
+    console.log(`FavoritesBar: Selecting coin: ${coin.symbol}, coin_pair: ${coin.coin_pair}, coin_id: ${coin.coin_id}`);
+    
+    // Update URL params
+    const params = new URLSearchParams(location.search);
+    params.set('coin_pair_id', coin.coin_pair);
+    navigate({ search: params.toString() });
+    
+    // Call the parent's onCoinSelect callback if provided
+    if (typeof onCoinSelect === 'function') {
+      onCoinSelect(coin.coin_pair);
+    }
+  };
 
   if (loading) return <FavoritesSkeleton />;
 
@@ -74,11 +115,7 @@ const FavoritesBar = ({ activeCoinPairId }) => {
             key={coin.symbol + coin.pair_name}
             coin={coin}
             isActive={coin.coin_pair === activeId}
-            onClick={() => {
-              const params = new URLSearchParams(location.search);
-              params.set('coin_pair_id', coin.coin_pair);
-              navigate({ search: params.toString() });
-            }}
+            onClick={() => handleCoinSelect(coin)}
           />
         ))
       )}
