@@ -1,0 +1,238 @@
+/* PortfolioOverview.css - Compact Layout */
+
+.portfolio-overview {
+  width: 100%;
+  padding: 0;
+}
+
+.portfolio-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 12px;
+}
+
+.portfolio-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.estimated-value {
+  flex: 1;
+}
+
+.value-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.value-label {
+  font-size: 14px;
+  color: #666666;
+}
+
+.visibility-toggle {
+  margin-left: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666666;
+  padding: 0;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.visibility-toggle:hover {
+  color: #333333;
+}
+
+.value-display {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.value-amount {
+  font-size: 32px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.currency-selector {
+  background: none;
+  border: none;
+  font-size: 21px;
+  color: #000000;
+  cursor: pointer;
+  appearance: none;
+  padding-right: 14px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+
+.value-change {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pnl-label {
+  font-size: 13px;
+  color: #666666;
+}
+
+.pnl-value {
+  font-size: 13px;
+  color: #00c896;
+  font-weight: 500;
+}
+
+.pnl-percentage {
+  color: #00c896;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.action-button {
+  padding: 6px 16px;
+  border-radius: 16px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  min-height: 28px;
+  min-width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-button.primary {
+  background-color: #000000;
+  color: white;
+  border-color: #000000;
+}
+
+.action-button.primary:hover {
+  background-color: #333333;
+}
+
+.action-button.secondary {
+  background-color: transparent;
+  color: #000000;
+  border-color: #e6e6e6;
+}
+
+.action-button.secondary:hover {
+  background-color: #f9f9f9;
+}
+
+.chart-timeframe {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+  justify-content: flex-end;
+}
+
+.timeframe-button {
+  padding: 3px 10px;
+  border-radius: 4px;
+  border: none;
+  background-color: #f0f0f0;
+  color: #666666;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 13px;
+}
+
+.timeframe-button.active {
+  background-color: #000000;
+  color: white;
+}
+
+.timeframe-button:hover:not(.active) {
+  background-color: #e0e0e0;
+}
+
+.chart-container-placeholder {
+  min-height: 180px;
+  margin-bottom: 16px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  border: 1px dashed #e6e6e6;
+  position: relative;
+}
+
+.view-assets-section {
+  display: flex;
+  justify-content: center;
+}
+
+.view-assets-button {
+  background: none;
+  border: none;
+  color: #000000;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.view-assets-button:hover {
+  color: #333333;
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+  .portfolio-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .action-buttons {
+    justify-content: flex-start;
+  }
+  
+  .chart-timeframe {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 768px) {
+  .portfolio-card {
+    padding: 12px;
+  }
+  
+  .value-amount {
+    font-size: 28px;
+  }
+  
+  .currency-selector {
+    font-size: 18px;
+  }
+  
+  .chart-container-placeholder {
+    min-height: 140px;
+  }
+}
+
+@media (max-width: 480px) {
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .action-button {
+    width: 100%;
+  }
+}

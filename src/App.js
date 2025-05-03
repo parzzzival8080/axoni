@@ -76,6 +76,19 @@ function App() {
               <ChatBubble />
             </>
           } />
+          <Route path="/pages/morePages/Affiliate" element={
+            <>
+              <Navbar />
+              <main>
+                {/* Using dynamic import instead of require for Vite compatibility */}
+                <React.Suspense fallback={<div>Loading...</div>}>
+                  {React.createElement(React.lazy(() => import('./pages/morePages/Affiliate')))}
+                </React.Suspense>
+              </main>
+              <Footer />
+              <ChatBubble />
+            </>
+          } />
           <Route path="/assets" element={
             <>
               <Navbar />

@@ -155,6 +155,12 @@
   font-size: 18px;
 }
 
+.currency-icon.img{
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
 .currency-info {
   flex: 1;
 }

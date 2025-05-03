@@ -1,27 +1,83 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './CurrencyModal.css';
 
 const CurrencyModal = ({ onClose, onSelectCurrency }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('All');
+  const [currencies, setCurrencies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const currencies = [
-    { id: 'usdt', name: 'USDT', fullName: 'Tether', icon: '🟢' },
-    { id: 'eth', name: 'ETH', fullName: 'Ethereum', icon: '🔷' },
-    { id: 'usdc', name: 'USDC', fullName: 'USD Coin', icon: '🔵' },
-    { id: 'btc', name: 'BTC', fullName: 'Bitcoin', icon: '🟠' },
-    { id: 'sol', name: 'SOL', fullName: 'Solana', icon: '🟣' },
-  ];
+  useEffect(() => {
+    const fetchCurrencies = async () => {
+      try {
+        setLoading(true);
+        
+        // Using your API to fetch currencies
+        const response = await fetch(
+          'https://apiv2.bhtokens.com/api/v1/coin-conversions?apikey=A20RqFwVktRxxRqrKBtmi6ud'
+        );
+        
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status}`);
+        }
+        
+        const responseData = await response.json();
+        
+        // Handle different possible response structures
+        let coinsData = responseData;
+        
+        // If the API returns data inside a "data" property
+        if (!Array.isArray(responseData) && responseData.data) {
+          coinsData = responseData.data;
+        }
+        
+        if (!Array.isArray(coinsData)) {
+          throw new Error('Invalid API response format');
+        }
+        
+        // Map the API response to match our currency structure
+        const formattedCurrencies = coinsData.map((coin, index) => ({
+          id: coin.id || String(index), // Generate an id if not provided
+          symbol: coin.symbol || 'Unknown',  // Symbol for display (e.g., BTC, ETH)
+          name: coin.name || 'Unknown Currency', // Full name (e.g., Bitcoin, Ethereum)
+          icon: coin.image_path || null,
+          price: coin.price || null, // Make sure price is included
+          // Determine if it's a stablecoin based on name/symbol containing 'usd'
+          isStablecoin: 
+            (coin.symbol && coin.symbol.toLowerCase().includes('usd')) || 
+            (coin.name && coin.name.toLowerCase().includes('usd')) ||
+            (coin.symbol && ['usdt', 'usdc', 'dai', 'busd'].includes(coin.symbol.toLowerCase()))
+        }));
+        
+        setCurrencies(formattedCurrencies);
+      } catch (err) {
+        console.error('Error fetching currencies:', err);
+        setError('Failed to load currencies. Please try again later.');
+        
+        // Fallback to default currencies if API fails
+        setCurrencies([
+          { id: 'usdt', symbol: 'USDT', name: 'Tether', icon: '🟢', price: 1, isStablecoin: true },
+          { id: 'eth', symbol: 'ETH', name: 'Ethereum', icon: '🔷', price: 3500, isStablecoin: false },
+          { id: 'usdc', symbol: 'USDC', name: 'USD Coin', icon: '🔵', price: 1, isStablecoin: true },
+          { id: 'btc', symbol: 'BTC', name: 'Bitcoin', icon: '🟠', price: 60000, isStablecoin: false },
+          { id: 'sol', symbol: 'SOL', name: 'Solana', icon: '🟣', price: 150, isStablecoin: false },
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const stablecoins = currencies.filter(c => c.id === 'usdt' || c.id === 'usdc');
+    fetchCurrencies();
+  }, []);
   
   const filteredCurrencies = currencies
     .filter(currency => 
-      currency.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      currency.fullName.toLowerCase().includes(searchQuery.toLowerCase())
+      (currency.symbol && currency.symbol.toLowerCase().includes(searchQuery.toLowerCase())) || 
+      (currency.name && currency.name.toLowerCase().includes(searchQuery.toLowerCase()))
     )
     .filter(currency => 
-      activeTab === 'All' || (activeTab === 'Stablecoins' && stablecoins.some(c => c.id === currency.id))
+      activeTab === 'All' || (activeTab === 'Stablecoins' && currency.isStablecoin)
     );
 
   const handleSelectCurrency = (currency) => {
@@ -82,21 +138,40 @@ const CurrencyModal = ({ onClose, onSelectCurrency }) => {
           </div>
           
           <div className="currency-list">
-            {filteredCurrencies.map((currency) => (
-              <div 
-                key={currency.id}
-                className="currency-list-item"
-                onClick={() => handleSelectCurrency(currency.name)}
-              >
-                <div className="currency-icon">
-                  {currency.icon}
+            {loading ? (
+              <div className="currency-loading">Loading currencies...</div>
+            ) : error ? (
+              <div className="currency-error">{error}</div>
+            ) : filteredCurrencies.length > 0 ? (
+              filteredCurrencies.map((currency) => (
+                <div 
+                  key={currency.id}
+                  className="currency-list-item"
+                  onClick={() => handleSelectCurrency(currency)}
+                >
+                  <div className="currency-icon">
+                    {currency.icon ? (
+                      <img 
+                        src={currency.icon} 
+                        alt={currency.name} 
+                        style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'contain' }} 
+                      />
+                    ) : (
+                      'No image found'
+                    )}
+                  </div>
+                  <div className="currency-info">
+                    <div className="currency-name">{currency.symbol}</div>
+                    <div className="currency-full-name">{currency.name}</div>
+                  </div>
+                  {currency.price && (
+                    <div className="currency-price">${parseFloat(currency.price).toFixed(2)}</div>
+                  )}
                 </div>
-                <div className="currency-info">
-                  <div className="currency-name">{currency.name}</div>
-                  <div className="currency-full-name">{currency.fullName}</div>
-                </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <div className="currency-no-results">No currencies found</div>
+            )}
           </div>
         </div>
       </div>

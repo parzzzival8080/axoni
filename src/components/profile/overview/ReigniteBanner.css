@@ -1,0 +1,121 @@
+/* ReigniteBanner.css - Compact Layout */
+
+.reignite-banner {
+  background-color: white;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-content {
+  flex: 1;
+  max-width: 300px;
+}
+
+.banner-title {
+  font-size: 14px;
+  font-weight: 400;
+  color: #666666;
+  margin: 0 0 8px 0;
+}
+
+.banner-message {
+  font-size: 18px;
+  font-weight: 700;
+  color: #000000;
+  line-height: 1.2;
+  margin: 0 0 12px 0;
+}
+
+.start-button {
+  display: inline-block;
+  background-color: transparent;
+  border: none;
+  color: #000000;
+  font-size: 14px;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+  font-family: inherit;
+}
+
+.start-button:hover {
+  color: #333333;
+  text-decoration-thickness: 2px;
+}
+
+.banner-visual {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #e3ff88 0%, #c8ff00 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.9;
+}
+
+.hashtag-symbol {
+  font-size: 36px;
+  font-weight: 900;
+  color: white;
+  transform: rotate(-15deg);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .reignite-banner {
+    padding: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .banner-message {
+    font-size: 16px;
+  }
+  
+  .banner-visual {
+    position: relative;
+    top: auto;
+    transform: none;
+    right: auto;
+    margin-left: auto;
+    width: 50px;
+    height: 50px;
+  }
+  
+  .hashtag-symbol {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .reignite-banner {
+    padding: 10px;
+  }
+  
+  .banner-message {
+    font-size: 14px;
+  }
+  
+  .banner-visual {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .hashtag-symbol {
+    font-size: 24px;
+  }
+}

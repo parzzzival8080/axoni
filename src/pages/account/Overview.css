@@ -1,0 +1,149 @@
+/* Overview.css - Compact Layout */
+
+.overview-page {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.overview-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 16px;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Hide mobile ReigniteBanner on desktop */
+.mobile-reignite {
+  display: none;
+}
+
+/* Download App Section in Sidebar */
+.download-app-section {
+  background-color: white;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.download-app-button {
+  width: 100%;
+  padding: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: grid;
+  grid-template-areas: 
+    "text qr"
+    "info qr";
+  grid-template-columns: 1fr auto;
+  gap: 6px;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.download-app-button:hover {
+  background-color: #f9f9f9;
+}
+
+.download-app-text {
+  grid-area: text;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000000;
+  text-align: left;
+}
+
+.qr-code-preview {
+  grid-area: qr;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.qr-code-small {
+  width: 32px;
+  height: 32px;
+  background-color: #000000;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 1px;
+  padding: 2px;
+}
+
+.qr-pattern-small {
+  background-color: white;
+}
+
+.qr-pattern-small:nth-child(1),
+.qr-pattern-small:nth-child(4) {
+  background-color: #000000;
+}
+
+.download-app-info {
+  grid-area: info;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.app-name-small {
+  font-size: 13px;
+  font-weight: 500;
+  color: #000000;
+}
+
+.scan-text {
+  font-size: 11px;
+  color: #666666;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .overview-container {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  /* Show mobile ReigniteBanner */
+  .mobile-reignite {
+    display: block;
+    /* Let the component appear in its natural order in the DOM */
+  }
+  
+  .desktop-reignite {
+    display: none;
+  }
+  
+  .main-content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidebar-content {
+    order: 4; /* After main content */
+  }
+  
+  .download-app-button {
+    grid-template-areas: "text qr info";
+    grid-template-columns: 1fr auto 1fr;
+  }
+  
+  .download-app-info {
+    align-items: flex-end;
+  }
+}
