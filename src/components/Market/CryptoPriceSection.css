@@ -265,13 +265,13 @@
 }
 
 .page-button.active {
-  background-color: #0055FF;
+  background-color: #0B0B0B;
   color: white;
-  border-color: #0055FF;
+  border-color: #0B0B0B;
 }
 
 .page-button.active:hover {
-  background-color: #0055FF;
+  background-color: #0B0B0B;
   opacity: 0.9;
 }
 

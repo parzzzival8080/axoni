@@ -16,6 +16,8 @@ import Earn from './pages/Earn';
 import SimpleEarn from './components/earn/SimpleEarn';
 import Overview from './pages/account/Overview';
 import Profile from './pages/account/Profile';
+import Market from './pages/Market';
+
 function App() {
   return (
     <Router>
@@ -104,6 +106,7 @@ function App() {
             <>
               <Navbar />
               <main>
+                <Market/>
               </main>
               <Footer />
               <ChatBubble />

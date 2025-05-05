@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import {QRCodeSVG} from 'qrcode.react';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -103,6 +104,13 @@ const Navbar = () => {
     // Redirect to home
     window.location.href = '/';
   };
+  const appDownloadUrl = "https://download.tradex.com/android/tradex-v2.1.4.apk";
+  // ReactDOM.render(
+  //   <QRCodeSVG value={appDownloadUrl}/>,
+  //   document.getElementById('mountNode')
+  // );
+
+ 
 
   return (
     <header>
@@ -437,8 +445,10 @@ const Navbar = () => {
       </div>
       <div className="header-right">
         <div className="search-box">
-          <i className="fas fa-search"></i>
-          <input type="text" placeholder="Search crypto" />
+          <div className='search-icon'>
+             <i className="fas fa-search"></i>
+          </div>
+          <input className='search-input' type="text" placeholder="Search crypto" />
         </div>
         
         {isAuthenticated ? (
@@ -476,11 +486,125 @@ const Navbar = () => {
           </>
         )}
         
-        <div className="icon-group">
-          <button className="icon-link" type="button" aria-label="Download app" style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}><i className="fas fa-download"></i></button>
-          <button className="icon-link" type="button" aria-label="Notifications" style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}><i className="fas fa-bell"></i></button>
-          <button className="icon-link" type="button" aria-label="Help" style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}><i className="fas fa-question-circle"></i></button>
-          <button className="icon-link" type="button" aria-label="Language" style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}><i className="fas fa-globe"></i></button>
+          <div className="icon-group">
+          {/* Download App Icon with QR code dropdown */}
+          <div className="right-nav-item">
+            <button 
+              className="icon-link" 
+              type="button" 
+              aria-label="Download app" 
+              style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
+            >
+              <i className="fas fa-download"></i>
+            </button>
+            
+            <div className="right-dropdown-menu download-menu">
+              <h3 className="dropdown-title">Download app</h3>
+              <div className="qr-code-container">
+                {/* QR Code implementation */}
+                <QRCodeSVG 
+                    value={appDownloadUrl}
+                    size={120}
+                    level={"H"}
+                    includeMargin={true}
+                    className="qr-code-image"
+                  />
+              </div>
+              <div className='download-qr-code-container'>
+                <button className="dropdown-button">More options</button>
+                <p className="dropdown-subtitle">For mobile and desktop</p>
+              </div>
+            </div>
+          </div>
+          
+          {/* Notifications Icon with announcements dropdown */}
+          <div className="right-nav-item">
+            <button 
+              className="icon-link" 
+              type="button" 
+              aria-label="Notifications" 
+              style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
+            >
+              <i className="fas fa-bell"></i>
+            </button>
+            
+            <div className="right-dropdown-menu notifications-menu">
+              <div className="notification-item">
+                <h4 className="notification-title">TradeX to list perpetual futures for SIGN crypto</h4>
+                <p className="notification-time">04/28/2025, 14:00:00</p>
+              </div>
+              
+              <div className="notification-item">
+                <h4 className="notification-title">TradeX to delist ZKJ margin trading pair and perpetual future</h4>
+                <p className="notification-time">04/28/2025, 11:10:00</p>
+              </div>
+              
+              <div className="notification-item">
+                <h4 className="notification-title">TradeX to enable margin trading and Simple Earn for LAYER crypto</h4>
+                <p className="notification-time">04/25/2025, 19:20:00</p>
+              </div>
+              
+              <div className="notification-item">
+                <h4 className="notification-title">TradeX to list LAYER (Solayer) for spot trading</h4>
+                <p className="notification-time">04/25/2025, 14:00:00</p>
+              </div>
+              
+              <div className="notification-item">
+                <h4 className="notification-title">TradeX to list perpetual futures for INIT crypto</h4>
+                <p className="notification-time">04/24/2025, 14:00:00</p>
+              </div>
+              
+              <Link to="/announcements" className="more-link">
+                More announcements
+              </Link>
+            </div>
+          </div>
+          
+          {/* Help Icon with support dropdown */}
+          <div className="right-nav-item">
+            <button 
+              className="icon-link" 
+              type="button" 
+              aria-label="Help" 
+              style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
+            >
+              <i className="fas fa-question-circle"></i>
+            </button>
+            
+            <div className="right-dropdown-menu help-menu">
+              <Link to="/support" className="dropdown-menu-item">
+                Support center
+              </Link>
+              <Link to="/tickets" className="dropdown-menu-item">
+                My tickets
+              </Link>
+              <Link to="/connect" className="dropdown-menu-item">
+                Connect with TradeX
+              </Link>
+            </div>
+          </div>
+          
+          {/* Language Icon */}
+          {/* <div className="right-nav-item">
+            <button 
+              className="icon-link" 
+              type="button" 
+              aria-label="Language" 
+              style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
+            >
+              <i className="fas fa-globe"></i>
+            </button>
+            
+            <div className="right-dropdown-menu language-menu">
+              <div className="dropdown-menu-item">English</div>
+              <div className="dropdown-menu-item">Español</div>
+              <div className="dropdown-menu-item">Français</div>
+              <div className="dropdown-menu-item">Deutsch</div>
+              <div className="dropdown-menu-item">中文</div>
+              <div className="dropdown-menu-item">日本語</div>
+              <div className="dropdown-menu-item">한국어</div>
+            </div>
+          </div> */}
         </div>
       </div>
     </header>
