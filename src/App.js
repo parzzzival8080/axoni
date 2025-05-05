@@ -9,9 +9,7 @@ import Footer from './components/common/Footer';
 import ChatBubble from './components/common/ChatBubble';
 import './styles.css';
 import FutureTrading from './pages/FutureTrading';
-import CampaignCenter from './pages/morePages/CampaignCenter';
-import MyRewards from './pages/morePages/MyRewards';
-import Referral from './pages/morePages/Referral';
+import Assets from './pages/Assets';
 
 function App() {
   return (
@@ -20,6 +18,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+    
           <Route path="/spot-trading" element={
             <>
               <Navbar />
@@ -38,9 +37,68 @@ function App() {
               <ChatBubble />
             </>
           } />
-          <Route path="/morePages/campaign-center" element={<CampaignCenter />} />
-          <Route path="/morePages/my-rewards" element={<MyRewards />} />
-          <Route path="/morePages/referral" element={<Referral />} />
+          <Route path="/market" element={
+            <>
+              <Navbar />
+              <main>
+              </main>
+              <Footer />
+              <ChatBubble />
+            </>
+          } />
+          <Route path="/pages/morePages/CampaignCenter" element={
+            <>
+              <Navbar />
+              <main>
+                {require('./pages/morePages/CampaignCenter').default()}
+              </main>
+              <Footer />
+              <ChatBubble />
+            </>
+          } />
+          <Route path="/pages/morePages/MyRewards" element={
+            <>
+              <Navbar />
+              <main>
+                {require('./pages/morePages/MyRewards').default()}
+              </main>
+              <Footer />
+              <ChatBubble />
+            </>
+          } />
+          <Route path="/pages/morePages/Referral" element={
+            <>
+              <Navbar />
+              <main>
+                {require('./pages/morePages/Referral').default()}
+              </main>
+              <Footer />
+              <ChatBubble />
+            </>
+          } />
+          <Route path="/pages/morePages/Affiliate" element={
+            <>
+              <Navbar />
+              <main>
+                {/* Using dynamic import instead of require for Vite compatibility */}
+                <React.Suspense fallback={<div>Loading...</div>}>
+                  {React.createElement(React.lazy(() => import('./pages/morePages/Affiliate')))}
+                </React.Suspense>
+              </main>
+              <Footer />
+              <ChatBubble />
+            </>
+          } />
+          <Route path="/assets" element={
+            <>
+              <Navbar />
+              <main>
+                <Assets />
+              </main>
+              <Footer />
+              <ChatBubble />
+            </>
+          } />
           <Route path="/" element={
             <>
               <Navbar />

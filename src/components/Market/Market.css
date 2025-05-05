@@ -1,0 +1,24 @@
+.crypto-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 40px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 992px) {
+    .crypto-container {
+      padding: 24px 32px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .crypto-container {
+      padding: 20px 24px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .crypto-container {
+      padding: 16px 16px;
+    }
+  }

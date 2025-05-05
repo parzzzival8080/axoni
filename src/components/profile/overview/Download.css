@@ -1,0 +1,176 @@
+/* DownloadApp.css */
+
+.download-app-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background-color: white;
+    border-radius: 8px;
+    padding: 32px;
+    position: relative;
+    width: 500px;
+    max-width: 90%;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #333333;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+  }
+  
+  .close-button:hover {
+    color: #000000;
+  }
+  
+  .modal-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #000000;
+    margin: 0 0 24px 0;
+    text-align: center;
+  }
+  
+  .download-section {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+  
+  .qr-code-placeholder {
+    flex-shrink: 0;
+  }
+  
+  .qr-code-box {
+    width: 100px;
+    height: 100px;
+    background-color: #000000;
+    border: 1px solid #e6e6e6;
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 2px;
+    padding: 4px;
+  }
+  
+  .qr-pattern {
+    background-color: white;
+    position: relative;
+  }
+  
+  .qr-pattern:nth-child(1) {
+    background-color: #000000;
+  }
+  
+  .qr-pattern:nth-child(2) {
+    background-color: white;
+  }
+  
+  .qr-pattern:nth-child(3) {
+    background-color: #000000;
+  }
+  
+  .qr-pattern:nth-child(4) {
+    background-color: white;
+  }
+  
+  .qr-pattern:nth-child(5) {
+    background-color: #000000;
+  }
+  
+  .qr-pattern:nth-child(6) {
+    background-color: white;
+  }
+  
+  .qr-pattern:nth-child(7) {
+    background-color: #000000;
+  }
+  
+  .qr-pattern:nth-child(8) {
+    background-color: white;
+  }
+  
+  .qr-pattern:nth-child(9) {
+    background-color: #000000;
+  }
+  
+  .download-info {
+    flex: 1;
+  }
+  
+  .app-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #000000;
+    margin: 0 0 8px 0;
+  }
+  
+  .download-instruction {
+    font-size: 16px;
+    color: #666666;
+    margin: 0;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .modal-content {
+      padding: 24px;
+    }
+    
+    .modal-title {
+      font-size: 20px;
+    }
+    
+    .download-section {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .qr-code-box {
+      margin: 0 auto;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .modal-content {
+      padding: 20px;
+    }
+    
+    .modal-title {
+      font-size: 18px;
+    }
+    
+    .qr-code-box {
+      width: 80px;
+      height: 80px;
+    }
+    
+    .app-name {
+      font-size: 16px;
+    }
+    
+    .download-instruction {
+      font-size: 14px;
+    }
+  }

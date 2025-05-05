@@ -6,18 +6,21 @@ import OrderBook from '../components/spotTrading/OrderBook';
 import TradeForm from '../components/spotTrading/TradeForm';
 import SubHeader from '../components/spotTrading/SubHeader';
 import FavoritesBar from '../components/spotTrading/FavoritesBar';
+import OrdersSection from '../components/spotTrading/OrdersSection';
+import { getSpotWallet } from '../services/spotTradingApi';
 import '../components/spotTrading/SpotTrading.css';
 
 const SpotTrading = () => {
   const [searchParams] = useSearchParams();
   const [cryptoData, setCryptoData] = useState(null);
   const [userBalance, setUserBalance] = useState({
-    cryptoBalance: 0,
-    usdtBalance: 0
+    cryptoSpotBalance: 0,
+    usdtSpotBalance: 0
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [availableCoins, setAvailableCoins] = useState([]);
+  const [orderHistoryRefreshTrigger, setOrderHistoryRefreshTrigger] = useState(0);
 
   // Get coin_pair_id from URL params, default to 1 if not provided
   const coinPairId = searchParams.get('coin_pair_id') || 1;
@@ -82,24 +85,34 @@ const SpotTrading = () => {
         }
       }
 
-      const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
-      const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-wallet/${uid}/${coinPairId}?apikey=${apiKey}`;
-
-      const response = await axios.get(apiUrl);
-      if (response.data) {
+      // Use the new getSpotWallet function to fetch wallet data
+      const walletData = await getSpotWallet(uid, coinPairId);
+      
+      if (walletData.success) {
+        const { cryptoWallet, usdtWallet } = walletData;
+        
         setCryptoData({
-          cryptoName: response.data.cryptoWallet?.crypto_name || '',
-          cryptoSymbol: response.data.cryptoWallet?.crypto_symbol || '',
-          cryptoPrice: response.data.cryptoWallet?.price || 0,
-          cryptoLogoPath: response.data.cryptoWallet?.logo_path || '',
-          usdtName: response.data.usdtWallet?.crypto_name || 'USDT',
-          usdtSymbol: response.data.usdtWallet?.crypto_symbol || 'USDT',
-          usdtLogoPath: response.data.usdtWallet?.logo_path || ''
+          cryptoName: cryptoWallet?.crypto_name || '',
+          cryptoSymbol: cryptoWallet?.crypto_symbol || '',
+          cryptoPrice: cryptoWallet?.price || 0,
+          cryptoLogoPath: cryptoWallet?.logo_path || '',
+          usdtName: usdtWallet?.crypto_name || 'USDT',
+          usdtSymbol: usdtWallet?.crypto_symbol || 'USDT',
+          usdtLogoPath: usdtWallet?.logo_path || ''
         });
+        
         setUserBalance({
-          cryptoBalance: response.data.cryptoWallet?.spot_wallet || 0,
-          usdtBalance: response.data.usdtWallet?.spot_wallet || 0
+          cryptoSpotBalance: cryptoWallet?.spot_wallet || 0,
+          usdtSpotBalance: usdtWallet?.spot_wallet || 0
         });
+        
+        console.log('Spot wallet data loaded:', {
+          cryptoSymbol: cryptoWallet?.crypto_symbol,
+          cryptoBalance: cryptoWallet?.spot_wallet,
+          usdtBalance: usdtWallet?.spot_wallet
+        });
+      } else {
+        throw new Error(walletData.message || 'Failed to fetch wallet data');
       }
     } catch (err) {
       console.error('Error fetching crypto data:', err);
@@ -115,7 +128,9 @@ const SpotTrading = () => {
       const token = localStorage.getItem('authToken');
       const userId = localStorage.getItem('user_id');
       let uid = localStorage.getItem('uid');
+      
       if (!userId || !token) return;
+      
       if (!uid) {
         try {
           const userInfoResponse = await axios.get(
@@ -128,23 +143,41 @@ const SpotTrading = () => {
           uid = 'yE8vKBNw';
         }
       }
-      const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
-      const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-wallet/${uid}/${coinPairId}?apikey=${apiKey}`;
-      const response = await axios.get(apiUrl);
-      if (response.data) {
+      
+      // Use the new getSpotWallet function to fetch wallet data
+      const walletData = await getSpotWallet(uid, coinPairId);
+      
+      if (walletData.success) {
+        const { cryptoWallet, usdtWallet } = walletData;
+        
         setUserBalance({
-          cryptoBalance: response.data.cryptoWallet?.spot_wallet || 0,
-          usdtBalance: response.data.usdtWallet?.spot_wallet || 0
+          cryptoSpotBalance: cryptoWallet?.spot_wallet || 0,
+          usdtSpotBalance: usdtWallet?.spot_wallet || 0
+        });
+        
+        console.log('Updated spot wallet balances:', {
+          cryptoSymbol: cryptoWallet?.crypto_symbol,
+          cryptoBalance: cryptoWallet?.spot_wallet,
+          usdtBalance: usdtWallet?.spot_wallet
         });
       }
+      
+      // Trigger order history refresh without affecting the chart
+      setOrderHistoryRefreshTrigger(prev => prev + 1);
     } catch (err) {
       // Optionally handle error
+      console.error('Error fetching user balance:', err);
     }
   }, [coinPairId]);
 
   useEffect(() => {
     fetchCryptoData();
-  }, [fetchCryptoData]);
+    
+    // Log when cryptoData changes for debugging
+    if (cryptoData?.cryptoSymbol) {
+      console.log('SpotTrading: Current crypto symbol:', cryptoData.cryptoSymbol);
+    }
+  }, [fetchCryptoData, cryptoData?.cryptoSymbol]);
 
   if (loading) {
     return <div className="loading-screen">Loading trading data...</div>;
@@ -165,23 +198,30 @@ const SpotTrading = () => {
         availableCoins={availableCoins}
       />
       <div className="main-container">
-        <TradingChart 
-          cryptoSymbol={cryptoData?.cryptoSymbol} 
-          usdtSymbol={cryptoData?.usdtSymbol}
-        />
-        <OrderBook 
-          cryptoData={cryptoData}
-        />
-        <TradeForm 
-          cryptoData={cryptoData} 
-          userBalance={userBalance}
-          coinPairId={coinPairId}
-          onTradeSuccess={fetchUserBalance}
-        />
+        <div className="chart-section">
+          <TradingChart 
+            selectedSymbol={cryptoData?.cryptoSymbol} 
+          />
+        </div>
+        <div className="orderbook-section">
+          <OrderBook 
+            cryptoData={cryptoData}
+          />
+        </div>
+        <div className="trade-section">
+          <TradeForm 
+            cryptoData={cryptoData} 
+            userBalance={userBalance}
+            coinPairId={coinPairId}
+            onTradeSuccess={fetchUserBalance}
+          />
+        </div>
       </div>
-  
+      <div className="orders-container">
+        <OrdersSection refreshTrigger={orderHistoryRefreshTrigger} />
+      </div>
     </div>
   );
 };
 
-export default SpotTrading; 
+export default SpotTrading;

@@ -1,0 +1,45 @@
+/* SecondaryTabs.css */
+.secondary-tabs {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+  }
+  
+  .secondary-tabs .tab-item {
+    height: 32px;
+    padding: 0 16px;
+    font-size: 14px;
+    border-radius: 16px;
+    background-color: #F2F2F2;
+    color: #5E5E5E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-weight: 400;
+  }
+  
+  .secondary-tabs .tab-item:hover {
+    background-color: #EAEAEA;
+  }
+  
+  .secondary-tabs .tab-item.active {
+    background-color: #000000;
+    color: white;
+    font-weight: 500;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .secondary-tabs {
+      gap: 6px;
+    }
+    
+    .secondary-tabs .tab-item {
+      padding: 0 12px;
+      font-size: 13px;
+    }
+  }

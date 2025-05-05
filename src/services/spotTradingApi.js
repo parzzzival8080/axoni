@@ -100,26 +100,79 @@ export const fetchCoinDetails = async (symbol) => {
 };
 
 /**
+ * Fetches all available coins for trading
+ * @returns Promise with array of coins
+ */
+export const fetchAllCoins = async () => {
+    try {
+        const url = `${API_BASE_URL}/coins?apikey=${API_KEY}`;
+        
+        console.log('Fetching all coins from:', url);
+        
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        
+        if (!response.ok) {
+            console.error('API Error:', response.status);
+            return { success: false, message: `API Error: ${response.status}` };
+        }
+        
+        const coinsData = await response.json();
+        
+        // Sort coins by symbol
+        const sortedCoins = coinsData.sort((a, b) => {
+            // Put BTC, ETH, and USDT at the top
+            const priority = { 'BTC': 1, 'ETH': 2, 'USDT': 3 };
+            const aPriority = priority[a.symbol] || 999;
+            const bPriority = priority[b.symbol] || 999;
+            
+            if (aPriority !== bPriority) {
+                return aPriority - bPriority;
+            }
+            
+            // Otherwise sort alphabetically
+            return a.symbol.localeCompare(b.symbol);
+        });
+        
+        return { success: true, coins: sortedCoins };
+    } catch (error) {
+        console.error('Error fetching coins:', error);
+        return { success: false, message: error.message || 'Failed to fetch coins' };
+    }
+};
+
+/**
  * Execute a spot trade order
- * @param params - Trade parameters including uid, order_type, execution_type, price, amount
+ * @param params - Trade parameters including uid, symbol, coin_pair_id, order_type, excecution_type, price, amount
  * @returns Promise with trade result
  */
 export const executeSpotTradeOrder = async (params) => {
     try {
-        const { uid = DEFAULT_UID, symbol = 'BTC', order_type, execution_type, price, amount } = params;
+        const { 
+            uid = DEFAULT_UID, 
+            symbol = 'BTC', 
+            coin_pair_id, 
+            order_type, 
+            excecution_type, 
+            price, 
+            amount 
+        } = params;
         
         // Calculate total
         const total_in_usdt = (price * amount).toFixed(6);
         
-        // Get coin_id based on symbol (in a real implementation, this would be from an API or mapping)
-        const coin_id = symbol === 'BTC' ? 1 : 
-                       symbol === 'ETH' ? 2 : 
-                       symbol === 'XRP' ? 3 : 1; // Default to BTC if unknown
+        // Use the provided coin_pair_id instead of calculating it
+        const coin_id = coin_pair_id || 1; // Default to 1 (BTC) if not provided
         
         // Create URL with query parameters
-        const url = `${API_BASE_URL}/orders?uid=${uid}&coin_id=${coin_id}&order_type=${order_type}&execution_type=${execution_type}&price=${price}&amount=${amount}&total_in_usdt=${total_in_usdt}&apikey=${API_KEY}`;
+        const url = `${API_BASE_URL}/orders?uid=${uid}&coin_id=${coin_id}&order_type=${order_type}&excecution_type=${excecution_type}&price=${price}&amount=${amount}&total_in_usdt=${total_in_usdt}&apikey=${API_KEY}`;
         
         console.log('Executing spot trade with URL:', url);
+        console.log('Trade parameters:', { uid, symbol, coin_id, order_type, excecution_type, price, amount, total_in_usdt });
         
         const response = await fetch(url, {
             method: 'POST',
@@ -147,6 +200,56 @@ export const executeSpotTradeOrder = async (params) => {
         return {
             success: false,
             message: error instanceof Error ? error.message : 'An error occurred during spot trade execution'
+        };
+    }
+};
+
+/**
+ * Get user's spot trading wallet for a specific coin
+ * @param {string} uid - User ID
+ * @param {number} coinId - Coin ID
+ * @returns {Promise<Object>} Wallet data including balances and coin information
+ */
+export const getSpotWallet = async (uid, coinId) => {
+    if (!uid) {
+        console.error('getSpotWallet: Missing UID parameter');
+        return { error: true, message: 'User ID is required' };
+    }
+    
+    if (!coinId) {
+        console.error(`getSpotWallet: Missing coin ID parameter`);
+        return { error: true, message: 'Coin ID is required' };
+    }
+    
+    try {
+        // Use the user-wallet endpoint with the exact format from the screenshot
+        const url = `${API_BASE_URL}/user-wallet/${uid}/${coinId}?apikey=${API_KEY}`;
+        console.log(`Fetching spot wallet for UID ${uid}, Coin ID ${coinId} from:`, url);
+        
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: { 'Accept': 'application/json' }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`API Error: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        console.log('Spot wallet data:', data);
+        
+        return {
+            success: true,
+            cryptoWallet: data.cryptoWallet || {},
+            usdtWallet: data.usdtWallet || {},
+            message: 'Spot wallet fetched successfully'
+        };
+    } catch (error) {
+        console.error(`getSpotWallet error:`, error);
+        return { 
+            error: true, 
+            message: error.message || 'Failed to fetch spot wallet data' 
         };
     }
 };
@@ -225,4 +328,4 @@ const formatPrice = (price) => {
     } else {
         return `$${numPrice.toFixed(8)}`;
     }
-}; 
+};

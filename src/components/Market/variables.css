@@ -1,0 +1,12 @@
+/* variables.css */
+:root {
+    --primary-color: #0055FF;
+    --positive-color: #00C087;
+    --negative-color: #FF4A4A;
+    --background-color: #FFFFFF;
+    --secondary-bg: #F5F5F7;
+    --text-primary: #000000;
+    --text-secondary: #5E5E5E;
+    --border-color: #E5E5E7;
+    --hover-bg: #F0F0F2;
+  }

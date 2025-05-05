@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { formatNumber } from '../../utils/numberFormatter';
+import { executeSpotTradeOrder } from '../../services/spotTradingApi';
+import './TradeForm.css';
 
-// Using relative imports to match the existing file structure
 const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
   const [isBuy, setIsBuy] = useState(true);
   const [activeOrderType, setActiveOrderType] = useState('limit');
@@ -31,61 +32,6 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
     }
   }, [cryptoData]);
 
-  const handleSliderChange = (e) => {
-    const value = parseInt(e.target.value);
-    setSliderValue(value);
-    
-    // Calculate amount based on available balance
-    const maxAmount = isBuy 
-      ? parseFloat(userBalance?.usdtBalance || 0) / price 
-      : parseFloat(userBalance?.cryptoBalance || 0);
-    
-    const calculatedAmount = (value / 100 * maxAmount).toFixed(5);
-    setAmount(calculatedAmount);
-    setTotal((calculatedAmount * price).toFixed(2));
-  };
-
-  const handleAmountChange = (e) => {
-    const value = e.target.value;
-    // Validate number input
-    if (!/^(\d*\.?\d*)?$/.test(value)) return;
-    
-    setAmount(value);
-    
-    // Calculate total based on amount
-    setTotal((value * price).toFixed(2));
-    
-    // Update slider position
-    const maxAmount = isBuy 
-      ? parseFloat(userBalance?.usdtBalance || 0) / price 
-      : parseFloat(userBalance?.cryptoBalance || 0);
-    
-    if (maxAmount > 0) {
-      setSliderValue((value / maxAmount * 100) > 100 ? 100 : (value / maxAmount * 100));
-    }
-  };
-
-  const handleTotalChange = (e) => {
-    const value = e.target.value;
-    // Validate number input
-    if (!/^(\d*\.?\d*)?$/.test(value)) return;
-    
-    setTotal(value);
-    
-    // Calculate amount based on total
-    const calculatedAmount = (value / price).toFixed(5);
-    setAmount(calculatedAmount);
-    
-    // Update slider position
-    const maxAmount = isBuy 
-      ? parseFloat(userBalance?.usdtBalance || 0) / price 
-      : parseFloat(userBalance?.cryptoBalance || 0);
-    
-    if (maxAmount > 0) {
-      setSliderValue((calculatedAmount / maxAmount * 100) > 100 ? 100 : (calculatedAmount / maxAmount * 100));
-    }
-  };
-
   // Format price for display
   const formatPrice = (value) => {
     if (value === null || value === undefined || isNaN(Number(value))) {
@@ -94,224 +40,179 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
     return formatNumber(value, 2, true);
   };
 
+  // Format crypto amount with 5 decimal places
+  const formatCryptoAmount = (value) => {
+    if (value === null || value === undefined || isNaN(Number(value))) {
+      return '0.00000';
+    }
+    // Use exactly 5 decimal places for crypto amounts
+    return formatNumber(value, 5, false);
+  };
+
+  // Calculate total with proper precision
+  const calculateTotal = (amount) => {
+    const amountValue = parseFloat(amount) || 0;
+    const priceValue = parseFloat(price) || 0;
+    return (amountValue * priceValue).toFixed(5);
+  };
+
+  // Calculate max amount based on available balance with consistent precision
+  const getMaxAmount = () => {
+    if (isBuy) {
+      // For buying, max amount is USDT balance divided by price
+      const usdtSpotBalance = parseFloat(userBalance?.usdtSpotBalance || 0);
+      // Ensure we return with full precision for buying
+      return price > 0 ? parseFloat((usdtSpotBalance / price).toFixed(5)) : 0;
+    } else {
+      // For selling, max amount is crypto balance
+      return parseFloat(userBalance?.cryptoSpotBalance || 0);
+    }
+  };
+
+  // Handle slider change with precise calculations
+  const handleSliderChange = (e) => {
+    const value = parseInt(e.target.value);
+    setSliderValue(value);
+    
+    // Calculate amount based on available balance with full precision
+    const maxAmount = getMaxAmount();
+    
+    // Use full precision for calculations and ensure 5 decimal places
+    const calculatedAmount = (value / 100 * maxAmount);
+    const formattedAmount = calculatedAmount.toFixed(5);
+    setAmount(formattedAmount);
+    setTotal(calculateTotal(formattedAmount));
+  };
+
+  // Handle amount change with precise calculations
+  const handleAmountChange = (e) => {
+    const value = e.target.value;
+    // Validate number input
+    if (!/^(\d*\.?\d*)?$/.test(value)) return;
+    
+    setAmount(value);
+    
+    // Calculate total based on amount
+    setTotal(calculateTotal(value));
+    
+    // Update slider position
+    const maxAmount = getMaxAmount();
+    
+    if (maxAmount > 0) {
+      const sliderPercentage = (parseFloat(value) / maxAmount) * 100;
+      setSliderValue(sliderPercentage > 100 ? 100 : sliderPercentage);
+    }
+  };
+
+  // Handle total change with precise calculations
+  const handleTotalChange = (e) => {
+    const value = e.target.value;
+    // Validate number input
+    if (!/^(\d*\.?\d*)?$/.test(value)) return;
+    
+    setTotal(value);
+    
+    // Calculate amount based on total with full precision
+    const calculatedAmount = price > 0 ? parseFloat(value) / price : 0;
+    const formattedAmount = calculatedAmount.toFixed(5);
+    setAmount(formattedAmount);
+    
+    // Update slider position
+    const maxAmount = getMaxAmount();
+    
+    if (maxAmount > 0) {
+      const sliderPercentage = (calculatedAmount / maxAmount) * 100;
+      setSliderValue(sliderPercentage > 100 ? 100 : sliderPercentage);
+    }
+  };
+
   const handleTradeSubmit = async () => {
     try {
-      // Clear any existing notifications
       setNotification(null);
-      
       if (!isAuthenticated) {
-        setNotification({
-          message: 'Please log in to trade',
-          type: 'error'
-        });
+        setNotification({ message: 'Please log in to trade', type: 'error' });
         return;
       }
-
       if (!amount || parseFloat(amount) <= 0) {
-        setNotification({
-          message: 'Please enter a valid amount',
-          type: 'error'
-        });
+        setNotification({ message: 'Please enter a valid amount', type: 'error' });
         return;
       }
-
       if (parseFloat(amount) < 0.00001) {
-        setNotification({
-          message: `Amount must be at least 0.00001 ${cryptoData?.cryptoSymbol || 'BTC'}`,
-          type: 'error'
-        });
+        setNotification({ message: `Amount must be at least 0.00001 ${cryptoData?.cryptoSymbol || 'BTC'}`, type: 'error' });
         return;
       }
-
+      
+      // Validate coin pair ID
+      if (!coinPairId) {
+        setNotification({ message: 'Invalid coin pair selected', type: 'error' });
+        return;
+      }
+      
       setIsLoading(true);
+      const effectiveUid = uid || localStorage.getItem('uid') || 'yE8vKBNw';
+      const symbol = cryptoData?.cryptoSymbol || 'BTC';
       
-      // Use the effective UID (either from localStorage or default)
-      const effectiveUid = uid || 'yE8vKBNw';
-      const numPrice = parseFloat(price);
-      const numAmount = parseFloat(amount);
+      console.log('Executing spot trade with coin pair ID:', coinPairId);
+      console.log('Current crypto data:', cryptoData);
       
-      // IMPORTANT: Always use 'limit' as the execution type
-      const executionType = 'limit';
-      
-      console.log('Executing trade:', {
+      const params = {
         uid: effectiveUid,
+        symbol,
+        coin_pair_id: coinPairId, // Add the coin pair ID to the params
         order_type: isBuy ? 'buy' : 'sell',
-        excecution_type: executionType,
-        price: numPrice,
-        amount: numAmount
-      });
+        excecution_type: activeOrderType,
+        price: parseFloat(price),
+        amount: parseFloat(amount)
+      };
       
-      // Call the API directly since we can't import the trading service
-      const API_BASE_URL = 'https://apiv2.bhtokens.com/api/v1';
-      const API_KEY = 'A20RqFwVktRxxRqrKBtmi6ud';
-      const total_in_usdt = (numPrice * numAmount).toFixed(6);
+      console.log('Trade parameters:', params);
       
-      // Use the exact query format from the working example with corrected parameter name
-      const url = `${API_BASE_URL}/orders?uid=${effectiveUid}&coin_id=1&order_type=${isBuy ? 'buy' : 'sell'}&excecution_type=${executionType}&price=${numPrice}&amount=${numAmount}&total_in_usdt=${total_in_usdt}&apikey=${API_KEY}`;
+      const result = await executeSpotTradeOrder(params);
       
-      console.log('Executing trade with URL:', url);
-      
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
+      if (result.success) {
+        setNotification({ 
+          message: `${isBuy ? 'Buy' : 'Sell'} order placed successfully!`, 
+          type: 'success' 
+        });
+        // Reset form
+        setAmount('');
+        setTotal('');
+        setSliderValue(0);
+        // Refresh balances
+        if (typeof onTradeSuccess === 'function') {
+          onTradeSuccess();
         }
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        console.error('Trade API error:', data);
-        throw new Error(data.message || 'Trade execution failed');
+      } else {
+        setNotification({ 
+          message: result.message || 'Failed to place order', 
+          type: 'error' 
+        });
       }
-      
-      console.log('Trade successful:', data);
-      
-      // Trade was successful
-      setNotification({
-        message: `${isBuy ? 'Buy' : 'Sell'} order placed for ${numAmount} ${cryptoData?.cryptoSymbol || 'BTC'}`,
-        type: 'success'
-      });
-      
-      // Reset form
-      setAmount('');
-      setTotal('');
-      setSliderValue(0);
-      
-      // Trigger refresh of order history
-      if (onTradeSuccess) {
-        onTradeSuccess();
-      }
-      
     } catch (error) {
       console.error('Trade error:', error);
-      setNotification({
-        message: error.message || 'An error occurred during trade execution',
-        type: 'error'
+      setNotification({ 
+        message: error.message || 'An error occurred', 
+        type: 'error' 
       });
     } finally {
       setIsLoading(false);
     }
   };
 
-  if (!cryptoData) {
-    return <div className="trade-section loading">Loading trading form...</div>;
-  }
-
-  const { cryptoSymbol, cryptoLogoPath, usdtSymbol, usdtLogoPath } = cryptoData;
+  // Extract symbols and format balances for display
+  const cryptoSymbol = cryptoData?.cryptoSymbol || 'BTC';
+  const usdtSymbol = cryptoData?.usdtSymbol || 'USDT';
   
-  // Safely convert balances to numbers and format them
-  // This prevents the toFixed is not a function error
-  const cryptoBalance = userBalance?.cryptoBalance !== undefined ? Number(userBalance.cryptoBalance) : 0;
-  const usdtBalance = userBalance?.usdtBalance !== undefined ? Number(userBalance.usdtBalance) : 0;
+  const cryptoSpotBalance = parseFloat(userBalance?.cryptoSpotBalance || 0);
+  const usdtSpotBalance = parseFloat(userBalance?.usdtSpotBalance || 0);
   
-  const formattedCryptoBalance = formatNumber(cryptoBalance, 5);
-  const formattedUsdtBalance = formatNumber(usdtBalance, 2);
-
-  // Custom notification component implementation
-  const CustomNotification = ({ message, type, onClose }) => {
-    useEffect(() => {
-      const timer = setTimeout(() => {
-        onClose();
-      }, 5000);
-      
-      return () => clearTimeout(timer);
-    }, [onClose]);
-    
-    return (
-      <div className={`notification ${type || ''}`} style={{
-        position: 'fixed',
-        bottom: '20px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 1000,
-        minWidth: '320px',
-        maxWidth: '450px',
-        padding: '16px 20px',
-        borderRadius: '8px',
-        backgroundColor: 'rgba(33, 33, 33, 0.97)',
-        color: '#fff',
-        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.05)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        backdropFilter: 'blur(10px)',
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
-        fontSize: '14px',
-        lineHeight: '1.5',
-        border: type === 'error' ? '1px solid rgba(242, 54, 69, 0.2)' : 
-                type === 'success' ? '1px solid rgba(0, 184, 151, 0.2)' : 
-                '1px solid rgba(255, 255, 255, 0.05)'
-      }}>
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'space-between', 
-          width: '100%' 
-        }}>
-          <div style={{ 
-            display: 'flex', 
-            alignItems: 'center',
-            gap: '12px'
-          }}>
-            {type === 'error' && (
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ color: '#F23645' }}>
-                <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-7v2h2v-2h-2zm0-8v6h2V7h-2z" fill="currentColor"/>
-              </svg>
-            )}
-            {type === 'success' && (
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ color: '#00B897' }}>
-                <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.997-6l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z" fill="currentColor"/>
-              </svg>
-            )}
-            <span style={{ 
-              fontWeight: '500',
-              color: type === 'error' ? '#F23645' : 
-                     type === 'success' ? '#00B897' : 
-                     '#ffffff'
-            }}>{message}</span>
-          </div>
-          <button 
-            onClick={onClose}
-            style={{
-              padding: '6px 12px',
-              borderRadius: '4px',
-              backgroundColor: '#000000',
-              color: '#ffffff',
-              border: 'none',
-              cursor: 'pointer',
-              fontSize: '13px',
-              fontWeight: '500',
-              transition: 'background-color 0.2s',
-              flexShrink: 0,
-              marginLeft: '12px'
-            }}
-            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#333333'}
-            onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#000000'}
-          >
-            OK
-          </button>
-        </div>
-      </div>
-    );
-  };
+  const formattedCryptoSpotBalance = formatCryptoAmount(cryptoSpotBalance);
+  const formattedUsdtSpotBalance = formatNumber(usdtSpotBalance, 2);
 
   return (
-    <div className="trade-section">
-      {notification && (
-        <CustomNotification
-          message={notification.message}
-          onClose={() => setNotification(null)}
-          type={notification.type}
-        />
-      )}
-    
-      <div className="trade-tabs">
-        <div className="tab-actions">
-          <div className="tab active">Trade</div>
-          <div className="tab">Tools</div>
-        </div>
+    <div className="trade-form">
+      {/* Top controls */}
+      <div className="top-controls">
         <div className="margin-toggle">
           <span>Margin</span>
           <label className="switch">
@@ -321,133 +222,131 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
         </div>
       </div>
 
-      <div className="buy-sell-tabs">
-        <div 
-          className={`tab ${isBuy ? 'buy active' : ''}`} 
+      {/* Buy/Sell Tabs */}
+      <div className="okx-form-tabs">
+        <button
+          className={`okx-tab buy${isBuy ? ' active' : ''}`}
+          type="button"
           onClick={() => setIsBuy(true)}
         >
           Buy
-        </div>
-        <div 
-          className={`tab ${!isBuy ? 'sell active' : ''}`} 
+        </button>
+        <button
+          className={`okx-tab sell${!isBuy ? ' active' : ''}`}
+          type="button"
           onClick={() => setIsBuy(false)}
         >
           Sell
-        </div>
+        </button>
       </div>
 
+      {/* Order types */}
       <div className="order-types">
-        {['Limit', 'Market', 'TP/SL'].map((type) => (
+        {['Limit', 'Market', 'Stop-Limit'].map((type) => (
           <div 
             key={type}
-            className={`type ${activeOrderType.toLowerCase() === type.toLowerCase() ? 'active' : ''} ${type === 'TP/SL' ? 'dropdown' : ''}`}
+            className={`type ${activeOrderType.toLowerCase() === type.toLowerCase() ? 'active' : ''}`}
             onClick={() => setActiveOrderType(type.toLowerCase())}
           >
-            {type} {type === 'TP/SL' && <i className="fas fa-chevron-down"></i>}
+            {type}
           </div>
         ))}
       </div>
 
-      <div className="form-group">
-        <label>Price ({usdtSymbol})</label>
-        <div className="input-wrapper">
-          <input 
-            type="text" 
-            value={formatPrice(price)} 
-            onChange={(e) => setPrice(Number(e.target.value.replace(/,/g, '')))}
-            onKeyDown={e => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-              }
-            }}
-          />
-          <span className="input-note">≈ ${formatPrice(price)}</span>
-        </div>
+      {/* Price input or display */}
+      <div className="form-group price-container" style={{ borderRadius: '4px', overflow: 'hidden' }}>
+        <label>Price ({cryptoData?.usdtSymbol || 'USDT'})</label>
+        <span style={{flex:1, textAlign:'right', fontFamily:'monospace', fontWeight:500}}>{formatPrice(price)}</span>
       </div>
 
+      {/* Amount input */}
       <div className="form-group">
-        <label>Amount ({cryptoSymbol})</label>
+        <label>Amount ({cryptoData?.cryptoSymbol || 'BTC'})</label>
         <input 
           type="text" 
           value={amount} 
           onChange={handleAmountChange}
-          placeholder={`Min 0.00001 ${cryptoSymbol}`}
+          placeholder={`Min 0.00001 ${cryptoData?.cryptoSymbol || 'BTC'}`}
         />
-        <div className="slider-container">
+        <div className="slider-row">
           <input 
             type="range" 
-            min="0" 
-            max="100" 
-            value={sliderValue} 
-            className="range-slider"
+            min="0"
+            max="100"
+            step="1"
+            value={sliderValue}
             onChange={handleSliderChange}
+            className="slider-range"
+            style={{
+              background: `linear-gradient(90deg, #00B574 ${sliderValue}%, #232323 ${sliderValue}%)`
+            }}
           />
           <div className="slider-labels">
-            <span>0</span>
+            <span>0%</span>
+            <span>25%</span>
+            <span>50%</span>
+            <span>75%</span>
             <span>100%</span>
           </div>
         </div>
       </div>
 
-      <div className="form-group">
-        <label>Total ({usdtSymbol})</label>
-        <input 
-          type="text" 
-          placeholder="0.00" 
-          value={total}
-          onChange={handleTotalChange}
-        />
+      {/* Total display */}
+      <div className="form-group total-container" style={{ borderRadius: '4px', overflow: 'hidden' }}>
+        <label>Total ({cryptoData?.usdtSymbol || 'USDT'})</label>
+        <span style={{flex:1, textAlign:'right', fontFamily:'monospace', fontWeight:500}}>
+          {formatNumber(total, 5, false)}
+        </span>
       </div>
 
+      {/* Balance info */}
       <div className="balance-info">
-        <div className="available">
-          Available: {isBuy ? formattedUsdtBalance : formattedCryptoBalance} {isBuy ? usdtSymbol : cryptoSymbol} <i className="fas fa-info-circle"></i>
-        </div>
-        <div className="max-buy">
-          Max {isBuy ? 'buy' : 'sell'}: {
-            isBuy 
-              ? formatNumber(usdtBalance / (price || 1), 5) 
-              : formattedCryptoBalance
-          } {cryptoSymbol}
-        </div>
+        <span>Available: {isBuy 
+          ? formatNumber(userBalance?.usdtSpotBalance || 0, 5) 
+          : formatNumber(userBalance?.cryptoSpotBalance || 0, 5)} {isBuy 
+            ? cryptoData?.usdtSymbol || 'USDT' 
+            : cryptoData?.cryptoSymbol || 'BTC'}</span>
+        <span>Max {isBuy ? 'buy' : 'sell'}: {formatNumber(getMaxAmount(), 5)} {cryptoData?.cryptoSymbol || 'BTC'}</span>
       </div>
 
-      <div className="tp-sl-check">
-        <input 
-          type="checkbox" 
-          id="tp-sl-checkbox" 
-          checked={tpslEnabled}
-          onChange={() => setTpslEnabled(!tpslEnabled)}
-        />
-        <label htmlFor="tp-sl-checkbox">TP/SL</label>
-      </div>
-
+      {/* Buy/Sell Button */}
       {isAuthenticated ? (
-        <button 
-          className={`trade-button ${isBuy ? 'buy' : 'sell'}`}
-          onClick={e => {
-            e.preventDefault();
-            handleTradeSubmit();
-          }}
+        <button
+          className={`buy-btn${isBuy ? '' : ' sell-btn'}`}
           disabled={isLoading}
-          type="button"
+          onClick={handleTradeSubmit}
+          style={{marginTop: 10, width: '100%', fontWeight: 600, fontSize: 18, padding: '12px 0', borderRadius: '4px'}}
         >
-          {isLoading ? 'Processing...' : isBuy ? `Buy ${cryptoSymbol}` : `Sell ${cryptoSymbol}`}
+          {isLoading ? (
+            <>
+              <i className="fas fa-spinner fa-spin" style={{ marginRight: '8px' }}></i>
+              Processing...
+            </>
+          ) : (
+            isBuy ? `Buy ${cryptoData?.cryptoSymbol || 'BTC'}` : `Sell ${cryptoData?.cryptoSymbol || 'BTC'}`
+          )}
         </button>
       ) : (
         <Link to="/login" className="login-button">Log in/Sign up</Link>
       )}
 
+      {/* Price info */}
       <div className="price-info">
-        <div className="max-price">
-          Max price <span>{formatPrice(price * 1.05)}</span>
-        </div>
-        <div className="fees">Fees <i className="fas fa-info-circle"></i></div>
+        <span>Max price: {formatPrice(price * 1.05)}</span>
+        <span>Fees: 0.1%</span>
       </div>
 
-      <div className="assets">{usdtSymbol} assets</div>
+      {/* Notification */}
+      {notification && (
+        <div className={`notification ${notification.type}`}>
+          <div className="notification-content">
+            <div className="notification-message">{notification.message}</div>
+            <button className="notification-close" onClick={() => setNotification(null)}>×</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-export default TradeForm; 
+export default TradeForm;

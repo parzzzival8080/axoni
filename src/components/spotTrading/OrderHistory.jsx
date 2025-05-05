@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+  faChevronDown, 
+  faSyncAlt, 
+  faChevronLeft, 
+  faChevronRight,
+  faEllipsisH 
+} from '@fortawesome/free-solid-svg-icons';
 
 const OrderHistory = ({ refreshTrigger = 0 }) => {
   const [activeFilter, setActiveFilter] = useState('all');
@@ -43,6 +51,7 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
   // Refetch data when refreshTrigger changes
   useEffect(() => {
     if (refreshTrigger > 0) {
+      console.log('OrderHistory: Refresh triggered', refreshTrigger);
       fetchOrderHistory();
     }
   }, [refreshTrigger]);
@@ -52,15 +61,16 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
     return {
       id: order.order_id,
       date: order.date,
-      pair: `${order.coin_name}/USDT`,
-      type: order.orde_type.toLowerCase() === 'buy' ? 'Buy' : 'Sell',
-      side: order.orde_type.toLowerCase(),
-      price: parseFloat(order.amount || 0),
+      pair: `${order.coin_name || order.symbol || order.asset}/USDT`,
+      type: (order.order_type || order.orde_type || '').toLowerCase() === 'buy' ? 'Buy' : 'Sell',
+      side: (order.order_type || order.orde_type || '').toLowerCase(),
+      price: parseFloat(order.price || order.amount || 0),
       amount: parseFloat(order.amount || 0),
-      execution_type: order.excecution_type,
+      excecution_type: order.excecution_type || order.excecution_type || '',
       filled: '100%',
-      total: parseFloat(order.account_balance || 0),
-      status: order.status
+      total: parseFloat(order.account_balance || order.total || 0),
+      status: order.status,
+      logo_path: order.logo_path || order.image_path || '',
     };
   };
   
@@ -192,10 +202,10 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
         </div>
         <div className="filter-date">
           <span>Last 7 days</span>
-          <i className="fas fa-chevron-down"></i>
+          <FontAwesomeIcon icon={faChevronDown} />
         </div>
         <div className="refresh-button" onClick={refreshOrderHistory}>
-          <i className="fas fa-sync-alt"></i>
+          <FontAwesomeIcon icon={faSyncAlt} />
         </div>
       </div>
 
@@ -222,13 +232,21 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
                   <td>{new Date(order.date).toLocaleString()}</td>
                   <td>{order.pair}</td>
                   <td className={order.side === 'buy' ? 'buy-color' : 'sell-color'}>{order.type}</td>
-                  <td>{order.execution_type} ({order.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})</td>
+                  <td>{order.excecution_type} ({order.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})</td>
                   <td>{order.amount.toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })}</td>
                   <td>{order.filled}</td>
                   <td>{order.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                  <td className={order.status.toLowerCase() === 'pending' ? 'pending-status' : 'filled-status'}>{order.status}</td>
+                  <td>
+                    <span className={
+                      order.status.toLowerCase() === 'pending' ? 'pending-status' : 
+                      order.status.toLowerCase() === 'canceled' ? 'canceled-status' : 
+                      'filled-status'
+                    }>
+                      {order.status}
+                    </span>
+                  </td>
                   <td className="actions">
-                    <i className="fas fa-ellipsis-h"></i>
+                    <FontAwesomeIcon icon={faEllipsisH} />
                   </td>
                 </tr>
               ))
@@ -242,15 +260,15 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
       </div>
       
       {filteredData.length > 0 && (
-        <div className="pagination">
+        <div className="order-history-pagination">
           <button 
-            className="prev-page" 
+            className="order-history-prev-page" 
             disabled={currentPage === 1}
             onClick={goToPreviousPage}
           >
-            <i className="fas fa-chevron-left"></i>
+            <FontAwesomeIcon icon={faChevronLeft} />
           </button>
-          <div className="page-numbers">
+          <div className="order-history-page-numbers">
             {getPageNumbers().map((page, index) => (
               page === '...' ? (
                 <span key={`ellipsis-${index}`} className="ellipsis">...</span>
@@ -266,16 +284,16 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
             ))}
           </div>
           <button 
-            className="next-page"
+            className="order-history-next-page"
             disabled={currentPage === totalPages}
             onClick={goToNextPage}
           >
-            <i className="fas fa-chevron-right"></i>
+            <FontAwesomeIcon icon={faChevronRight} />
           </button>
         </div>
       )}
 
-      <div className="page-info">
+      <div className="order-history-page-info">
         Showing {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, filteredData.length)} of {filteredData.length} orders
       </div>
     </div>
