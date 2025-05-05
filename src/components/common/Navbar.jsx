@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {QRCodeSVG} from 'qrcode.react';
 import './Navbar.css';
+import ComingSoon from '../../components/common/ComingSoon';
 
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -105,10 +106,16 @@ const Navbar = () => {
     window.location.href = '/';
   };
   const appDownloadUrl = "https://download.tradex.com/android/tradex-v2.1.4.apk";
-  // ReactDOM.render(
-  //   <QRCodeSVG value={appDownloadUrl}/>,
-  //   document.getElementById('mountNode')
-  // );
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
  
 
@@ -417,11 +424,20 @@ const Navbar = () => {
                       <i className="fas fa-user-friends"></i> Referral
                     </div>
                   </Link>
-                  <Link to="/coming-soon" className="dropdown-link">
-                    <div className="dropdown-item" style={{gap: '12px'}}>
+                  
+                  <div className="dropdown-item" onClick={openModal} style={{gap: '12px'}}>
                       <i className="fas fa-handshake"></i> Affiliates
-                    </div>
-                  </Link>
+                  </div>
+                    <ComingSoon 
+                      isOpen={isModalOpen} 
+                      onClose={closeModal} 
+                    />
+                    {/* Modal */}
+                    <ComingSoon 
+                      isOpen={isModalOpen} 
+                      onClose={closeModal} 
+                    />
+                  
                   <Link to="/okx-ventures" className="dropdown-link">
                     <div className="dropdown-item" style={{gap: '12px'}}>
                       <i className="fas fa-rocket"></i> OKX Ventures
@@ -511,7 +527,10 @@ const Navbar = () => {
                   />
               </div>
               <div className='download-qr-code-container'>
-                <button className="dropdown-button">More options</button>
+                <Link to="/download">
+                  <button className="dropdown-button">More options</button>
+                </Link>
+                
                 <p className="dropdown-subtitle">For mobile and desktop</p>
               </div>
             </div>

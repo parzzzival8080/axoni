@@ -1,180 +1,143 @@
-/* ComingSoon.css */
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.3s ease;
+}
 
+/* Container */
 .coming-soon-container {
-    background-color: #000000;
-    min-height: 100vh;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    box-sizing: border-box;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 350px;
+  width: 90%;
+  animation: scaleIn 0.3s ease;
+}
+
+.content {
+  text-align: center;
+  color: white;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Hourglass container with circle */
+.hourglass-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hourglass-container::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid #333;
+}
+
+/* Hourglass image */
+.hourglass-container img {
+  width: 75px;
+  height: auto;
+}
+
+/* Heading styles */
+.heading {
+  font-size: 42px;
+  font-weight: 700;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  letter-spacing: 1px;
+  margin: 0 0 24px 0;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+/* Paragraph styles */
+.subtext {
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 0 0 40px 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Button styles */
+.ok-button {
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 30px;
+  color: white;
+  padding: 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  width: 100%;
+  max-width: 280px;
+}
+
+.ok-button:hover {
+  background-color: #252525;
+}
+
+.ok-button:active {
+  transform: scale(0.98);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .hourglass-container {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 30px;
   }
   
-  .content {
-    text-align: center;
-    color: white;
-    max-width: 600px;
-    width: 100%;
+  .hourglass-container img {
+    width: 65px;
   }
   
-  /* Hourglass image */
-  .content img {
-    height: auto;
-    width: 225px;
-    max-width: 80%;
-    margin-bottom: 40px;
-    display: inline-block;
+  .heading {
+    font-size: 36px;
+    margin-bottom: 16px;
   }
   
-  /* Heading styles */
-  .content h1 {
-    font-size: 56px;
-    font-weight: 900;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    letter-spacing: 1px;
-    margin: 0 0 24px 0;
-    line-height: 1;
-    text-transform: uppercase;
+  .subtext {
+    font-size: 15px;
+    margin-bottom: 30px;
   }
   
-  /* Paragraph styles */
-  .content p {
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 1.5;
-    margin: 0 0 48px 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  }
-  
-  /* Button styles */
   .ok-button {
-    background-color: transparent;
-    border: 2px solid white;
-    border-radius: 24px;
-    color: white;
-    padding: 12px 100px;
-    font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    width: auto;
-    min-width: 200px;
+    max-width: 240px;
   }
-  
-  .ok-button:hover {
-    background-color: white;
-    color: #000000;
-  }
-  
-  .ok-button:focus {
-    outline: 2px solid white;
-    outline-offset: 2px;
-  }
-  
-  /* Large tablets (768px - 1024px) */
-  @media (max-width: 1024px) {
-    .content h1 {
-      font-size: 48px;
-    }
-    
-    .content p {
-      font-size: 18px;
-    }
-    
-    .content img {
-      width: 130px;
-    }
-    
-    .ok-button {
-      padding: 12px 80px;
-    }
-  }
-  
-  /* Tablets (481px - 768px) */
-  @media (max-width: 768px) {
-    .content h1 {
-      font-size: 40px;
-      margin-bottom: 20px;
-    }
-    
-    .content p {
-      font-size: 16px;
-      margin-bottom: 40px;
-    }
-    
-    .content img {
-      width: 110px;
-      margin-bottom: 30px;
-    }
-    
-    .ok-button {
-      padding: 10px 60px;
-      font-size: 16px;
-    }
-  }
-  
-  /* Mobile (320px - 480px) */
-  @media (max-width: 480px) {
-    .coming-soon-container {
-      padding: 15px;
-    }
-    
-    .content h1 {
-      font-size: 32px;
-      margin-bottom: 15px;
-    }
-    
-    .content p {
-      font-size: 14px;
-      margin-bottom: 30px;
-    }
-    
-    .content img {
-      width: 95px;
-      margin-bottom: 20px;
-    }
-    
-    .ok-button {
-      padding: 10px 50px;
-      font-size: 16px;
-      width: 80%;
-      max-width: 200px;
-    }
-  }
-  
-  /* Extra small mobile (< 320px) */
-  @media (max-width: 319px) {
-    .content h1 {
-      font-size: 28px;
-    }
-    
-    .content p {
-      font-size: 13px;
-    }
-    
-    .content img {
-      width: 85px;
-    }
-    
-    .ok-button {
-      padding: 8px 40px;
-      font-size: 14px;
-    }
-  }
-  
-  /* Extra tall screens */
-  @media (min-height: 800px) {
-    .content img {
-      margin-bottom: 50px;
-    }
-    
-    .content h1 {
-      margin-bottom: 30px;
-    }
-    
-    .content p {
-      margin-bottom: 60px;
-    }
-  }
+}
