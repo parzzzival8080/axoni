@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { formatNumber } from '../../utils/numberFormatter';
 import { executeSpotTradeOrder } from '../../services/spotTradingApi';
 import './TradeForm.css';
@@ -20,9 +19,9 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
   // Check if user is authenticated
   useEffect(() => {
     const token = localStorage.getItem('authToken');
-    const userId = localStorage.getItem('userId');
-    setIsAuthenticated(!!token);
-    setUid(userId || '');
+    const userId = localStorage.getItem('user_id');
+    setIsAuthenticated(!!token && !!userId);
+    setUid(localStorage.getItem('uid') || '');
   }, []);
 
   // Update price when cryptoData changes
@@ -301,12 +300,18 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
 
       {/* Balance info */}
       <div className="balance-info">
-        <span>Available: {isBuy 
-          ? formatNumber(userBalance?.usdtSpotBalance || 0, 5) 
-          : formatNumber(userBalance?.cryptoSpotBalance || 0, 5)} {isBuy 
-            ? cryptoData?.usdtSymbol || 'USDT' 
-            : cryptoData?.cryptoSymbol || 'BTC'}</span>
-        <span>Max {isBuy ? 'buy' : 'sell'}: {formatNumber(getMaxAmount(), 5)} {cryptoData?.cryptoSymbol || 'BTC'}</span>
+        {isAuthenticated ? (
+          <>
+            <span>Available: {isBuy 
+              ? formatNumber(userBalance?.usdtSpotBalance || 0, 5) 
+              : formatNumber(userBalance?.cryptoSpotBalance || 0, 5)} {isBuy 
+                ? cryptoData?.usdtSymbol || 'USDT' 
+                : cryptoData?.cryptoSymbol || 'BTC'}</span>
+            <span>Max {isBuy ? 'buy' : 'sell'}: {formatNumber(getMaxAmount(), 5)} {cryptoData?.cryptoSymbol || 'BTC'}</span>
+          </>
+        ) : (
+          <span>Login to view your balance</span>
+        )}
       </div>
 
       {/* Buy/Sell Button */}
@@ -327,7 +332,28 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
           )}
         </button>
       ) : (
-        <Link to="/login" className="login-button">Log in/Sign up</Link>
+        <button 
+          onClick={() => window.location.href = '/login'}
+          style={{
+            borderRadius: '9999px',
+            width: '100%',
+            height: '48px',
+            marginTop: '20px',
+            marginBottom: '10px',
+            fontWeight: '700',
+            fontSize: '16px',
+            letterSpacing: '0.5px',
+            textTransform: 'uppercase',
+            backgroundColor: '#FFFFFF',
+            color: '#000000',
+            border: 'none',
+            boxShadow: '0 6px 12px rgba(0, 0, 0, 0.15)',
+            cursor: 'pointer',
+            outline: 'none'
+          }}
+        >
+          LOGIN TO TRADE
+        </button>
       )}
 
       {/* Price info */}

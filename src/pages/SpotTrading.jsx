@@ -7,7 +7,7 @@ import TradeForm from '../components/spotTrading/TradeForm';
 import SubHeader from '../components/spotTrading/SubHeader';
 import FavoritesBar from '../components/spotTrading/FavoritesBar';
 import OrdersSection from '../components/spotTrading/OrdersSection';
-import { getSpotWallet } from '../services/spotTradingApi';
+import { getSpotWallet, fetchAllCoins, fetchCoinDetails } from '../services/spotTradingApi';
 import '../components/spotTrading/SpotTrading.css';
 
 const SpotTrading = () => {
@@ -27,30 +27,21 @@ const SpotTrading = () => {
   
   // Fetch all available coins
   useEffect(() => {
-    const fetchAvailableCoins = async () => {
+    const fetchAvailableCoinsData = async () => {
       try {
-        const token = localStorage.getItem('authToken');
-        if (!token) return;
+        // Use the fetchAllCoins function from spotTradingApi.js
+        const response = await fetchAllCoins();
         
-        const response = await axios.get(
-          'https://django.bhtokens.com/api/trading/coins',
-          {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          }
-        );
-        
-        if (response.data && Array.isArray(response.data)) {
-          setAvailableCoins(response.data);
-          console.log('Available coins:', response.data);
+        if (response.success && Array.isArray(response)) {
+          setAvailableCoins(response);
+          console.log('Available coins:', response);
         }
       } catch (error) {
         console.error('Error fetching available coins:', error);
       }
     };
     
-    fetchAvailableCoins();
+    fetchAvailableCoinsData();
   }, []);
   
   const fetchCryptoData = useCallback(async () => {
@@ -64,10 +55,73 @@ const SpotTrading = () => {
 
       // Get the user's UID for the wallet API
       let uid = localStorage.getItem('uid');
+      
+      // Check if user is logged in
+      const isLoggedIn = token && userId;
 
-      if (!userId || !token) {
-        setError("Please log in to access trading features");
-        setLoading(false);
+      // If user is not logged in, fetch only the crypto data without wallet info
+      if (!isLoggedIn) {
+        try {
+          // Use BTC as default symbol if we don't have specific coin info
+          const defaultSymbol = 'BTC';
+          
+          // Use the fetchCoinDetails function from spotTradingApi.js
+          const coinResponse = await fetchCoinDetails(defaultSymbol);
+          
+          if (coinResponse.success) {
+            const coinData = coinResponse.data;
+            setCryptoData({
+              cryptoName: coinData?.name || 'Bitcoin',
+              cryptoSymbol: coinData?.symbol || 'BTC',
+              cryptoPrice: coinData?.price || 0,
+              cryptoLogoPath: coinData?.logo_path || '',
+              usdtName: 'USDT',
+              usdtSymbol: 'USDT',
+              usdtLogoPath: ''
+            });
+            
+            // Set empty balances for non-logged in users
+            setUserBalance({
+              cryptoSpotBalance: 0,
+              usdtSpotBalance: 0
+            });
+          } else {
+            // If we can't get coin details, set default values
+            setCryptoData({
+              cryptoName: 'Bitcoin',
+              cryptoSymbol: 'BTC',
+              cryptoPrice: 20000,
+              cryptoLogoPath: '',
+              usdtName: 'USDT',
+              usdtSymbol: 'USDT',
+              usdtLogoPath: ''
+            });
+            
+            setUserBalance({
+              cryptoSpotBalance: 0,
+              usdtSpotBalance: 0
+            });
+          }
+          setLoading(false);
+        } catch (err) {
+          console.error('Error fetching coin data:', err);
+          // Don't set error, just use default values
+          setCryptoData({
+            cryptoName: 'Bitcoin',
+            cryptoSymbol: 'BTC',
+            cryptoPrice: 20000,
+            cryptoLogoPath: '',
+            usdtName: 'USDT',
+            usdtSymbol: 'USDT',
+            usdtLogoPath: ''
+          });
+          
+          setUserBalance({
+            cryptoSpotBalance: 0,
+            usdtSpotBalance: 0
+          });
+          setLoading(false);
+        }
         return;
       }
 

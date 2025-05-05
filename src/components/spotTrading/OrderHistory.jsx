@@ -15,10 +15,24 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const itemsPerPage = 10;
+  
+  // Check if user is authenticated
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    const userId = localStorage.getItem('user_id');
+    setIsAuthenticated(!!token && !!userId);
+  }, []);
   
   const fetchOrderHistory = async () => {
     try {
+      // If user is not authenticated, don't fetch order history
+      if (!isAuthenticated) {
+        setLoading(false);
+        return;
+      }
+      
       setLoading(true);
       setError(null);
       
@@ -211,55 +225,61 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
 
       <div className="order-history-table">
         {loading && <div className="overlay-loader">Refreshing...</div>}
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Pair</th>
-              <th>Type</th>
-              <th>Price/Execution</th>
-              <th>Amount</th>
-              <th>Filled</th>
-              <th>Total</th>
-              <th>Status</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentItems.length > 0 ? (
-              currentItems.map(order => (
-                <tr key={order.id}>
-                  <td>{new Date(order.date).toLocaleString()}</td>
-                  <td>{order.pair}</td>
-                  <td className={order.side === 'buy' ? 'buy-color' : 'sell-color'}>{order.type}</td>
-                  <td>{order.excecution_type} ({order.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})</td>
-                  <td>{order.amount.toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })}</td>
-                  <td>{order.filled}</td>
-                  <td>{order.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                  <td>
-                    <span className={
-                      order.status.toLowerCase() === 'pending' ? 'pending-status' : 
-                      order.status.toLowerCase() === 'canceled' ? 'canceled-status' : 
-                      'filled-status'
-                    }>
-                      {order.status}
-                    </span>
-                  </td>
-                  <td className="actions">
-                    <FontAwesomeIcon icon={faEllipsisH} />
-                  </td>
-                </tr>
-              ))
-            ) : (
+        {!isAuthenticated ? (
+          <div className="login-message" style={{ textAlign: 'center', padding: '20px', color: '#999' }}>
+            Please login to view your order history
+          </div>
+        ) : (
+          <table>
+            <thead>
               <tr>
-                <td colSpan="9" className="no-data">No order history data available</td>
+                <th>Date</th>
+                <th>Pair</th>
+                <th>Type</th>
+                <th>Price/Execution</th>
+                <th>Amount</th>
+                <th>Filled</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th></th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {currentItems.length > 0 ? (
+                currentItems.map(order => (
+                  <tr key={order.id}>
+                    <td>{new Date(order.date).toLocaleString()}</td>
+                    <td>{order.pair}</td>
+                    <td className={order.side === 'buy' ? 'buy-color' : 'sell-color'}>{order.type}</td>
+                    <td>{order.excecution_type} ({order.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})</td>
+                    <td>{order.amount.toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })}</td>
+                    <td>{order.filled}</td>
+                    <td>{order.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td>
+                      <span className={
+                        order.status.toLowerCase() === 'pending' ? 'pending-status' : 
+                        order.status.toLowerCase() === 'canceled' ? 'canceled-status' : 
+                        'filled-status'
+                      }>
+                        {order.status}
+                      </span>
+                    </td>
+                    <td className="actions">
+                      <FontAwesomeIcon icon={faEllipsisH} />
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="9" className="no-data">No order history data available</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
       </div>
       
-      {filteredData.length > 0 && (
+      {isAuthenticated && filteredData.length > 0 && (
         <div className="order-history-pagination">
           <button 
             className="order-history-prev-page" 
