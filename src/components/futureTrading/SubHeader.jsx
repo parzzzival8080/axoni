@@ -181,14 +181,43 @@ const SubHeader = ({ cryptoData, coinPairId }) => {
           <div 
             className="selected-coin" 
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              background: 'transparent',
+              border: 'none',
+              borderRadius: '0',
+              padding: '5px'
+            }}
           >
-            <div className="coin-icon">
+            {/* Completely restructured coin icon with direct styling */}
+            <div 
+              style={{
+                width: '24px',
+                height: '24px',
+                marginRight: '8px',
+                borderRadius: '50%',
+                overflow: 'hidden',
+                flexShrink: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: 'transparent'
+              }}
+            >
               <img 
                 src={logoSrc} 
                 alt={cryptoSymbol} 
                 onError={(e) => {
                   e.target.onerror = null; 
                   e.target.src = defaultCoinLogo;
+                }}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  backgroundColor: 'transparent'
                 }}
               />
             </div>

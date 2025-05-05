@@ -480,52 +480,31 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
       </div>
 
       {/* Action Button */}
-      {isAuthenticated ? (
-        <button
-          className={`action-btn ${positionType === 'open' ? 'buy-more' : 'sell'}`}
-          onClick={handleTradeSubmit}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <>
-              <FontAwesomeIcon icon={faSpinner} spin style={{ marginRight: '8px' }} />
-              Processing...
-            </>
-          ) : (
-            positionType === 'open' ? 'Buy / Long' : 'Sell / Short'
-          )}
-        </button>
-      ) : (
-        <button 
-          className="login-to-trade-btn"
-          onClick={() => window.location.href = '/login'}
-          style={{
-            width: '100% !important',
-            padding: '12px 0 !important',
-            fontSize: '16px !important',
-            fontWeight: '600 !important',
-            backgroundColor: '#ffffff !important',
-            color: '#000000 !important',
-            border: 'none !important',
-            borderRadius: '50px !important', /* Pill shape */
-            cursor: 'pointer !important',
-            transition: 'all 0.2s !important',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1) !important',
-            margin: '10px 0 !important',
-            display: 'block !important'
-          }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.backgroundColor = '#f5f5f5 !important';
-            e.currentTarget.style.transform = 'translateY(-1px)';
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.backgroundColor = '#ffffff !important';
-            e.currentTarget.style.transform = 'translateY(0)';
-          }}
-        >
-          LOGIN TO TRADE
-        </button>
-      )}
+      <div style={{ display: 'flex', justifyContent: 'center', margin: '15px 0' }}>
+        {isAuthenticated ? (
+          <button
+            className={`action-btn ${positionType === 'open' ? 'buy-more' : 'sell'}`}
+            onClick={handleTradeSubmit}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <FontAwesomeIcon icon={faSpinner} spin style={{ marginRight: '8px' }} />
+                Processing...
+              </>
+            ) : (
+              positionType === 'open' ? 'Buy / Long' : 'Sell / Short'
+            )}
+          </button>
+        ) : (
+          <button 
+            className="future-login-pill-btn"
+            onClick={() => window.location.href = '/login'}
+          >
+            LOGIN TO TRADE
+          </button>
+        )}
+      </div>
 
       {/* Cost Section */}
       <div className="cost-section">
