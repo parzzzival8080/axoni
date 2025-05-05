@@ -576,36 +576,112 @@
   color: #fff;
 }
 
+/* Pill-shaped Login Button Override */
+.trade-form-login-btn, .trade-form-login-btn button, .trade-form-login-btn input[type="button"], .trade-form-login-btn input[type="submit"] {
+  border-radius: 999px !important;
+  padding: 0.85rem 0 !important;
+  min-width: 100% !important;
+  background: #181A20 !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  font-size: 1.25rem !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  transition: background 0.2s;
+}
+
+.trade-form-login-btn button:hover,
+.trade-form-login-btn input[type="button"]:hover,
+.trade-form-login-btn input[type="submit"]:hover {
+  background: #23262f !important;
+}
+
 /* Login button pill-shaped styling */
 .pill-login-button {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  width: 100% !important;
+  border-radius: 9999px !important;
+  width: 90% !important;
+  max-width: 320px !important;
   height: 48px !important;
-  margin-top: 20px !important;
-  margin-bottom: 10px !important;
+  margin: 20px auto 10px auto !important;
+  display: block !important;
   font-weight: 700 !important;
   font-size: 16px !important;
   letter-spacing: 0.5px !important;
   text-transform: uppercase !important;
-  background-color: #FFFFFF !important;
-  color: #000000 !important;
+  background-color: #181A20 !important; /* OKX dark mode */
+  color: #fff !important;
   border: none !important;
-  border-radius: 9999px !important;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
-  text-decoration: none !important;
-  transition: all 0.3s ease !important;
-  position: relative !important;
-  z-index: 100 !important;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15) !important;
   cursor: pointer !important;
   outline: none !important;
+  overflow: hidden !important;
+  transition: background 0.2s;
+}
+.pill-login-button:hover {
+  background: #23262f !important;
 }
 
-.pill-login-button:hover {
-  transform: translateY(-3px) !important;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2) !important;
-  background-color: #F8F8F8 !important;
+.spot-login-pill-btn {
+  border-radius: 32px !important; /* rounded corners, not fully pill */
+  width: 90% !important;
+  max-width: 320px !important;
+  height: 48px !important;
+  margin: 20px auto 10px auto !important;
+  display: block !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+  background-color: #fff !important;
+  color: #181A20 !important; /* black text for contrast */
+  border: 1.5px solid #fff !important;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15) !important;
+  cursor: pointer !important;
+  outline: none !important;
+  overflow: hidden !important;
+  transition: background 0.2s, color 0.2s;
+}
+.spot-login-pill-btn:hover {
+  background: #23262f !important;
+  color: #fff !important;
+  border-color: #23262f !important;
+}
+
+/* FORCE pill shape for spot login button */
+.spot-login-pill-btn, .spot-login-pill-btn *, .trade-form .spot-login-pill-btn, .trade-form .spot-login-pill-btn * {
+  border-radius: 9999px !important;
+  -webkit-border-radius: 9999px !important;
+  -moz-border-radius: 9999px !important;
+  -ms-border-radius: 9999px !important;
+  -o-border-radius: 9999px !important;
+}
+
+.spot-login-pill-btn {
+  width: 90% !important;
+  max-width: 320px !important;
+  height: 48px !important;
+  margin: 20px auto 10px auto !important;
+  display: block !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+  background-color: #fff !important;
+  color: #181A20 !important;
+  border: 1.5px solid #fff !important;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15) !important;
+  cursor: pointer !important;
+  outline: none !important;
+  overflow: hidden !important;
+  transition: background 0.2s, color 0.2s;
+  z-index: 9999 !important;
+  position: relative !important;
+}
+.spot-login-pill-btn:hover {
+  background: #23262f !important;
+  color: #fff !important;
+  border-color: #23262f !important;
 }
 
 @keyframes slideIn {

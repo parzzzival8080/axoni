@@ -266,83 +266,6 @@ const Navbar = () => {
           </div>
           <div className="nav-item">
             Grow <i className="fas fa-chevron-down"></i>
-            <div className='dropdown-menu'>
-              <div className="dropdown-section">
-                <Link to='/earn' className='dropdown-link'>
-                  <div className="dropdown-item main-item with-arrow">
-                    <div className="dropdown-icon">
-                      <i className="fas fa-coins"></i>
-                    </div>
-                    <div className="dropdown-content">
-                      <h3>Earn</h3>
-                      <p>Don't just HODL. Earn</p>
-                    </div>
-                    <i className="fas fa-chevron-right"></i>
-                </div>
-                </Link>
-               
-                
-                {/* Sub-items for Earn */}
-                <div className="dropdown-sub-items">
-                  <Link to="/earn/simple" className="dropdown-link">
-                    <div className="dropdown-sub-item">
-                      <div className="dropdown-icon-small">
-                        <i className="fas fa-circle"></i>
-                      </div>
-                      <span>Simple Earn</span>
-                    </div>
-                  </Link>
-                  
-                  <Link to="/earn/on-chain" className="dropdown-link">
-                    <div className="dropdown-sub-item">
-                      <div className="dropdown-icon-small">
-                        <i className="fas fa-circle"></i>
-                      </div>
-                      <span>On-chain Earn</span>
-                    </div>
-                  </Link>
-                  
-                  <Link to="/earn/structured" className="dropdown-link">
-                    <div className="dropdown-sub-item">
-                      <div className="dropdown-icon-small">
-                        <i className="fas fa-circle"></i>
-                      </div>
-                      <span>Structured Products</span>
-                    </div>
-                  </Link>
-                </div>
-              </div>
-              
-              <Link to="/loan" className="dropdown-link">
-                <div className="dropdown-item with-arrow">
-                  <div className="dropdown-icon">
-                    <i className="fas fa-coins"></i>
-                  </div>
-                  <div className="dropdown-content">
-                    <h3>Loan</h3>
-                    <p>Borrow to earn, borrow to spend</p>
-                  </div>
-                  <i className="fas fa-chevron-right"></i>
-                </div>
-              </Link>
-              
-              <Link to="/jumpstart" className="dropdown-link">
-                <div className="dropdown-item with-arrow">
-                  <div className="dropdown-icon">
-                    <i className="fas fa-coins"></i>
-                  </div>
-                  <div className="dropdown-content">
-                    <h3>Jumpstart</h3>
-                    <p>Discover new, high-quality projects around the world</p>
-                  </div>
-                  <i className="fas fa-chevron-right"></i>
-                </div>
-              </Link>
-            </div>
-
-        </div>
-          <div className="nav-item">
-            Build <i className="fas fa-chevron-down"></i>
           </div>
           <div className="nav-item">
             Institutional <i className="fas fa-chevron-down"></i>
@@ -436,9 +359,14 @@ const Navbar = () => {
         </nav>
       </div>
       <div className="header-right">
-        <div className="search-box">
-          <i className="fas fa-search"></i>
-          <input type="text" placeholder="Search crypto" />
+        {/* --- OKX DARK SEARCH FIELD, ISOLATED --- */}
+        <div className="okx-navbar-search-box">
+          <i className="fas fa-search" aria-hidden="true"></i>
+          <input
+            type="text"
+            placeholder="Search..."
+            aria-label="Search"
+          />
         </div>
         
         {isAuthenticated ? (

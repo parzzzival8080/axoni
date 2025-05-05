@@ -54,27 +54,64 @@ nav {
     transform: rotate(180deg);
 }
 
-.search-box {
-    position: relative;
-    margin-right: 20px;
+/* --- OKX DARK SEARCH FIELD, ISOLATED --- */
+.okx-navbar-search-box {
+  position: relative !important;
+  margin-right: 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  background: #181A20 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10) !important;
+  padding: 0 10px !important;
+  height: 32px !important;
+  min-width: 160px !important;
+  transition: box-shadow 0.2s !important;
+}
+.okx-navbar-search-box:focus-within {
+  box-shadow: 0 0 0 2pxrgb(218, 218, 218) !important;
 }
 
-.search-box input {
-    background-color: #14141A;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 30px 8px 30px;
-    color: #fff;
-    width: 180px;
-    font-size: 14px;
+.okx-navbar-search-box input {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  color: #fff !important;
+  padding: 0 28px 0 28px !important;
+  font-size: 14px !important;
+  height: 28px !important;
+  width: 140px !important;
+  border-radius: 8px !important;
+  transition: background 0.2s, color 0.2s !important;
+  box-shadow: none !important;
 }
 
-.search-box i {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #7e8299;
+
+.okx-navbar-search-box input::placeholder {
+  color: #7e8299 !important;
+  opacity: 1 !important;
+}
+.okx-navbar-search-box i {
+  position: absolute !important;
+  left: 14px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  color: #7e8299 !important;
+  font-size: 16px !important;
+  pointer-events: none !important;
+}
+@media (max-width: 768px) {
+  .okx-navbar-search-box {
+    min-width: 90px !important;
+    margin-right: 10px !important;
+    height: 28px !important;
+  }
+  .okx-navbar-search-box input {
+    width: 70px !important;
+    font-size: 12px !important;
+    height: 22px !important;
+    padding: 0 20px 0 20px !important;
+  }
 }
 
 .login-link {
@@ -244,7 +281,7 @@ nav {
         display: none;
     }
     
-    .header-right .search-box,
+    .header-right .okx-navbar-search-box,
     .header-right .icon-group {
         display: none;
     }

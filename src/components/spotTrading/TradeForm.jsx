@@ -333,24 +333,8 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
         </button>
       ) : (
         <button 
+          className="spot-login-pill-btn"
           onClick={() => window.location.href = '/login'}
-          style={{
-            borderRadius: '9999px',
-            width: '100%',
-            height: '48px',
-            marginTop: '20px',
-            marginBottom: '10px',
-            fontWeight: '700',
-            fontSize: '16px',
-            letterSpacing: '0.5px',
-            textTransform: 'uppercase',
-            backgroundColor: '#FFFFFF',
-            color: '#000000',
-            border: 'none',
-            boxShadow: '0 6px 12px rgba(0, 0, 0, 0.15)',
-            cursor: 'pointer',
-            outline: 'none'
-          }}
         >
           LOGIN TO TRADE
         </button>
