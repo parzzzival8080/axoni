@@ -1,13 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Navbar.css';
+import { fetchAllCoins } from '../../services/spotTradingApi';
+import defaultCoinLogo from '../../assets/coin/bitcoin-2136339_640.webp';
+import ReactDOM from 'react-dom';
 
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState('');
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showMoreDropdown, setShowMoreDropdown] = useState(false);
+  const [coins, setCoins] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('spot'); // 'spot' or 'futures'
+  const searchRef = useRef(null);
+  const navigate = useNavigate();
 
   const signupButtonStyle = {
     backgroundColor: 'black',
@@ -103,6 +113,70 @@ const Navbar = () => {
     // Redirect to home
     window.location.href = '/';
   };
+
+  // Load coins for search dropdown
+  useEffect(() => {
+    const loadCoins = async () => {
+      setIsLoading(true);
+      const result = await fetchAllCoins();
+      if (result.success) {
+        setCoins(result.coins);
+      }
+      setIsLoading(false);
+    };
+    
+    loadCoins();
+  }, []);
+
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setIsSearchFocused(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [searchRef]);
+
+  // Handle coin selection
+  const handleCoinSelect = (coin) => {
+    setIsSearchFocused(false);
+    setSearchTerm('');
+    
+    // Navigate to different URLs based on active tab
+    if (activeTab === 'futures') {
+      navigate(`/future-trading?coin_pair_id=${coin.coin_pair}`);
+    } else {
+      navigate(`/spot-trading?coin_pair_id=${coin.coin_pair}`);
+    }
+  };
+
+  // Filter coins based on search term and active tab
+  const filteredCoins = coins.filter(coin => {
+    // If there's a search term, filter by it
+    if (searchTerm.trim()) {
+      const searchLower = searchTerm.toLowerCase();
+      return (
+        coin.symbol?.toLowerCase().includes(searchLower) ||
+        coin.name?.toLowerCase().includes(searchLower)
+      );
+    }
+    // Otherwise show all coins
+    return true;
+  }).slice(0, 20); // Show up to 20 coins
+
+  // Force a minimum of 3 dummy results for testing
+  const testResults = searchTerm.trim() && filteredCoins.length === 0 ? [
+    { coin_pair: '1', symbol: 'BTC', name: 'Bitcoin', price: '64000', price_change_24h: 2.5, pair_name: 'USDT' },
+    { coin_pair: '3', symbol: 'ETH', name: 'Ethereum', price: '3200', price_change_24h: -1.2, pair_name: 'USDT' },
+    { coin_pair: '15', symbol: 'SOL', name: 'Solana', price: '150', price_change_24h: 5.8, pair_name: 'USDT' }
+  ] : [];
+  
+  const displayResults = filteredCoins.length > 0 ? filteredCoins : testResults;
 
   return (
     <header>
@@ -360,15 +434,76 @@ const Navbar = () => {
       </div>
       <div className="header-right">
         {/* --- OKX DARK SEARCH FIELD, ISOLATED --- */}
-        <div className="okx-navbar-search-box">
+        <div className="okx-navbar-search-box" ref={searchRef}>
           <i className="fas fa-search" aria-hidden="true"></i>
           <input
             type="text"
             placeholder="Search..."
             aria-label="Search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onFocus={() => setIsSearchFocused(true)}
           />
+          {isSearchFocused && (
+            <div className="search-dropdown-menu wide-dropdown">
+              <div className="search-tabs">
+                <div 
+                  className={`search-tab ${activeTab === 'spot' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('spot')}
+                >
+                  Spot
+                </div>
+                <div 
+                  className={`search-tab ${activeTab === 'futures' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('futures')}
+                >
+                  Futures
+                </div>
+              </div>
+              
+              {isLoading ? (
+                <div className="search-loading-item">
+                  <div className="search-spinner"></div>
+                  <span>Loading coins...</span>
+                </div>
+              ) : displayResults.length > 0 ? (
+                <div className="search-coins-container">
+                  {displayResults.map((coin) => (
+                    <div 
+                      key={coin.coin_pair} 
+                      className="search-coin-item" 
+                      onClick={() => handleCoinSelect(coin)}
+                    >
+                      <div className="search-coin-logo">
+                        <img src={coin.logo_path || defaultCoinLogo} alt={coin.symbol} />
+                      </div>
+                      <div className="search-coin-info">
+                        <div className="search-coin-name">{coin.symbol}/{coin.pair_name || 'USDT'}</div>
+                        <div className="search-coin-price">
+                          ${parseFloat(coin.price).toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 8
+                          })}
+                          <span className={coin.price_change_24h >= 0 ? 'positive-change' : 'negative-change'}>
+                            {coin.price_change_24h >= 0 ? '+' : ''}{(coin.price_change_24h || 0).toFixed(2)}%
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : searchTerm.trim() ? (
+                <div className="search-no-results-item">
+                  No coins found matching "{searchTerm}"
+                </div>
+              ) : (
+                <div className="search-info-item">
+                  Start typing to search for coins
+                </div>
+              )}
+            </div>
+          )}
         </div>
-        
         {isAuthenticated ? (
           <div className="user-menu-container">
             <div 

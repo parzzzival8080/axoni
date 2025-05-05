@@ -14,15 +14,38 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const itemsPerPage = 10;
+
+  // Check if user is authenticated
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    const userId = localStorage.getItem('user_id');
+    setIsAuthenticated(!!token && !!userId);
+  }, []);
 
   // Fetch order history from API
   const fetchOrderHistory = async () => {
     try {
+      // If user is not authenticated, don't fetch order history
+      if (!isAuthenticated) {
+        setLoading(false);
+        return;
+      }
+      
       setLoading(true);
       setError(null);
-      const uid = localStorage.getItem('uid') || 'yE8vKBNw';
+      
+      // Get UID and API key values from localStorage if available
+      const uid = localStorage.getItem('uid');
       const apiKey = localStorage.getItem('apiKey') || 'A20RqFwVktRxxRqrKBtmi6ud';
+      
+      // Only proceed if UID is available
+      if (!uid) {
+        setLoading(false);
+        return;
+      }
+      
       const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-futures/${uid}?apikey=${apiKey}`;
       const response = await axios.get(apiUrl);
 
@@ -40,13 +63,13 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
 
   useEffect(() => {
     fetchOrderHistory();
-  }, []);
+  }, [isAuthenticated]);
 
   useEffect(() => {
-    if (refreshTrigger > 0) {
+    if (refreshTrigger > 0 && isAuthenticated) {
       fetchOrderHistory();
     }
-  }, [refreshTrigger]);
+  }, [refreshTrigger, isAuthenticated]);
 
   // Process and sort data by date (newest first)
   const processedData = orderHistoryData
@@ -102,51 +125,52 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
 
   return (
     <div className="order-history-container dark-mode">
-      <div className="order-history-header">
-        <h3>Order History</h3>
-        <button className="refresh-btn" onClick={fetchOrderHistory} disabled={loading}>
-          <FontAwesomeIcon icon={faSyncAlt} spin={loading} />
-        </button>
-      </div>
+     
       <div className="order-history-table-wrapper">
         {loading && <div className="overlay-loader">Loading...</div>}
         {error && <div className="order-history-error">{error}</div>}
-        <table className="order-history-table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Coin</th>
-              <th>Leverage</th>
-              <th>Entry Price</th>
-              <th>Margin</th>
-              <th>Liquidation Price</th>
-              <th>Cycle</th>
-              <th>Asset</th>
-              <th>Return %</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentItems.length > 0 ? (
-              currentItems.map(order => (
-                <tr key={order._id} className="order-row-fadein">
-                  <td>{order.date ? new Date(order.date).toLocaleString() : '-'}</td>
-                  <td>{order.coin}</td>
-                  <td>{order.leverage}x</td>
-                  <td>{Number(order.entry_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                  <td>{Number(order.margin).toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })}</td>
-                  <td>{Number(order.liquidation_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                  <td>{order.cycle}d</td>
-                  <td>{Number(order.asset).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                  <td>{Number(order.return_percentage).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
-                </tr>
-              ))
-            ) : (
-              !loading && <tr><td colSpan="9" className="no-data">No order history data available</td></tr>
-            )}
-          </tbody>
-        </table>
+        {!isAuthenticated ? (
+          <div className="login-message" style={{ textAlign: 'center', padding: '20px', color: '#999' }}>
+            Please login to view your order history
+          </div>
+        ) : (
+          <table className="order-history-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Coin</th>
+                <th>Leverage</th>
+                <th>Entry Price</th>
+                <th>Margin</th>
+                <th>Liquidation Price</th>
+                <th>Cycle</th>
+                <th>Asset</th>
+                <th>Return %</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentItems.length > 0 ? (
+                currentItems.map(order => (
+                  <tr key={order._id} className="order-row-fadein">
+                    <td>{order.date ? new Date(order.date).toLocaleString() : '-'}</td>
+                    <td>{order.coin}</td>
+                    <td>{order.leverage}x</td>
+                    <td>{Number(order.entry_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td>{Number(order.margin).toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })}</td>
+                    <td>{Number(order.liquidation_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td>{order.cycle}d</td>
+                    <td>{Number(order.asset).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td>{Number(order.return_percentage).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
+                  </tr>
+                ))
+              ) : (
+                !loading && <tr><td colSpan="9" className="no-data">No order history data available</td></tr>
+              )}
+            </tbody>
+          </table>
+        )}
       </div>
-      {processedData.length > 0 && (
+      {isAuthenticated && processedData.length > 0 && (
         <div className="order-history-pagination">
           <button className="order-history-prev-page" disabled={currentPage === 1} onClick={goToPreviousPage}>
             <FontAwesomeIcon icon={faChevronLeft} />
@@ -163,9 +187,11 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
           </button>
         </div>
       )}
-      <div className="order-history-page-info">
-        Showing {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, processedData.length)} of {processedData.length} orders
-      </div>
+      {isAuthenticated && (
+        <div className="order-history-page-info">
+          Showing {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, processedData.length)} of {processedData.length} orders
+        </div>
+      )}
     </div>
   );
 };

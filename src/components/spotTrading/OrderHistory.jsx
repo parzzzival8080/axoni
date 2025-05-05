@@ -60,7 +60,7 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
   // Fetch data on initial load
   useEffect(() => {
     fetchOrderHistory();
-  }, []);
+  }, [isAuthenticated]);
   
   // Refetch data when refreshTrigger changes
   useEffect(() => {

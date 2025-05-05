@@ -45,6 +45,14 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingBalance, setIsLoadingBalance] = useState(false);
   const [notification, setNotification] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  
+  // Check if user is authenticated
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    const userId = localStorage.getItem('user_id');
+    setIsAuthenticated(!!token && !!userId);
+  }, []);
   
   // Extract data from wallet
   const symbol = walletData?.symbol || 'BTC';
@@ -419,34 +427,42 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
             <span>100%</span>
           </div>
           <div className="balance-info">
-            <div className="available-balance">
-              {isLoadingBalance ? (
-                <div className="loading-balance">
-                  <span className="loading-text">Loading balance</span>
-                  <span className="loading-dots"><span>.</span><span>.</span><span>.</span></span>
-                  <FontAwesomeIcon icon={faSpinner} spin style={{ marginLeft: '8px' }} />
+            {isAuthenticated ? (
+              <>
+                <div className="available-balance">
+                  {isLoadingBalance ? (
+                    <div className="loading-balance">
+                      <span className="loading-text">Loading balance</span>
+                      <span className="loading-dots"><span>.</span><span>.</span><span>.</span></span>
+                      <FontAwesomeIcon icon={faSpinner} spin style={{ marginLeft: '8px' }} />
+                    </div>
+                  ) : (
+                    <>
+                      <span>Available {formatNumber(availableBalance, 6)} {symbol}</span>
+                      <button 
+                        className="info-btn" 
+                        onClick={refreshWalletBalance}
+                        disabled={isLoadingBalance}
+                      >
+                        {isLoadingBalance ? <FontAwesomeIcon icon={faSpinner} spin /> : <FontAwesomeIcon icon={faSyncAlt} />}
+                      </button>
+                    </>
+                  )}
                 </div>
-              ) : (
-                <>
-                  <span>Available {formatNumber(availableBalance, 6)} {symbol}</span>
-                  <button 
-                    className="info-btn" 
-                    onClick={refreshWalletBalance}
-                    disabled={isLoadingBalance}
-                  >
-                    {isLoadingBalance ? <FontAwesomeIcon icon={faSpinner} spin /> : <FontAwesomeIcon icon={faSyncAlt} />}
-                  </button>
-                </>
-              )}
-            </div>
-            <div className="max-values">
-              <span className="max-long">
-                Max long {formatNumber(formattedMaxAmount, 6)} {symbol}
-              </span>
-              <span className="max-short">
-                Max short {formatNumber(formattedMaxAmount, 6)} {symbol}
-              </span>
-            </div>
+                <div className="max-values">
+                  <span className="max-long">
+                    Max long {formatNumber(formattedMaxAmount, 6)} {symbol}
+                  </span>
+                  <span className="max-short">
+                    Max short {formatNumber(formattedMaxAmount, 6)} {symbol}
+                  </span>
+                </div>
+              </>
+            ) : (
+              <div className="login-message" style={{ textAlign: 'center', padding: '10px', color: '#999' }}>
+                Login to view your balance
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -464,20 +480,52 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
       </div>
 
       {/* Action Button */}
-      <button
-        className={`action-btn ${positionType === 'open' ? 'buy-more' : 'sell'}`}
-        onClick={handleTradeSubmit}
-        disabled={isLoading}
-      >
-        {isLoading ? (
-          <>
-            <FontAwesomeIcon icon={faSpinner} spin style={{ marginRight: '8px' }} />
-            Processing...
-          </>
-        ) : (
-          positionType === 'open' ? 'Buy / Long' : 'Sell / Short'
-        )}
-      </button>
+      {isAuthenticated ? (
+        <button
+          className={`action-btn ${positionType === 'open' ? 'buy-more' : 'sell'}`}
+          onClick={handleTradeSubmit}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <>
+              <FontAwesomeIcon icon={faSpinner} spin style={{ marginRight: '8px' }} />
+              Processing...
+            </>
+          ) : (
+            positionType === 'open' ? 'Buy / Long' : 'Sell / Short'
+          )}
+        </button>
+      ) : (
+        <button 
+          className="login-to-trade-btn"
+          onClick={() => window.location.href = '/login'}
+          style={{
+            width: '100% !important',
+            padding: '12px 0 !important',
+            fontSize: '16px !important',
+            fontWeight: '600 !important',
+            backgroundColor: '#ffffff !important',
+            color: '#000000 !important',
+            border: 'none !important',
+            borderRadius: '50px !important', /* Pill shape */
+            cursor: 'pointer !important',
+            transition: 'all 0.2s !important',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1) !important',
+            margin: '10px 0 !important',
+            display: 'block !important'
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.backgroundColor = '#f5f5f5 !important';
+            e.currentTarget.style.transform = 'translateY(-1px)';
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.backgroundColor = '#ffffff !important';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}
+        >
+          LOGIN TO TRADE
+        </button>
+      )}
 
       {/* Cost Section */}
       <div className="cost-section">

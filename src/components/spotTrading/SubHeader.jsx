@@ -219,11 +219,7 @@ const SubHeader = ({ cryptoData, coinPairId }) => {
                   }}
                 />
               </div>
-              <div style={{
-                maxHeight: '540px',
-                overflowY: 'auto',
-                padding: '8px 0'
-              }}>
+              <div className="spot-coins-list okx-custom-scrollbar">
                 {isLoading ? (
                   renderSkeletonItems()
                 ) : (
