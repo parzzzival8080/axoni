@@ -16,6 +16,9 @@ import Earn from './pages/Earn';
 import SimpleEarn from './components/earn/SimpleEarn';
 import Overview from './pages/account/Overview';
 import Profile from './pages/account/Profile';
+import Market from './pages/Market';
+import DownloadPage from './pages/DownloadPage';
+
 function App() {
   return (
     <Router>
@@ -104,9 +107,19 @@ function App() {
             <>
               <Navbar />
               <main>
+                <Market/>
               </main>
               <Footer />
               <ChatBubble />
+            </>
+          } />
+          <Route path="/download" element={
+            <>
+              <Navbar />
+              <main>
+                <DownloadPage/>
+              </main>
+              <Footer />
             </>
           } />
           <Route path="/pages/morePages/CampaignCenter" element={

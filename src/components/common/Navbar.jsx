@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import {QRCodeSVG} from 'qrcode.react';
 import './Navbar.css';
 import { fetchAllCoins } from '../../services/spotTradingApi';
 import defaultCoinLogo from '../../assets/coin/bitcoin-2136339_640.webp';
 import ReactDOM from 'react-dom';
+import ComingSoon from '../../components/common/ComingSoon';
 
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -113,6 +115,19 @@ const Navbar = () => {
     // Redirect to home
     window.location.href = '/';
   };
+  const appDownloadUrl = "https://download.tradex.com/android/tradex-v2.1.4.apk";
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+ 
 
   // Load coins for search dropdown
   useEffect(() => {
@@ -406,11 +421,20 @@ const Navbar = () => {
                       <i className="fas fa-user-friends"></i> Referral
                     </div>
                   </Link>
-                  <Link to="/coming-soon" className="dropdown-link">
-                    <div className="dropdown-item" style={{gap: '12px'}}>
+                  
+                  <div className="dropdown-item" onClick={openModal} style={{gap: '12px'}}>
                       <i className="fas fa-handshake"></i> Affiliates
-                    </div>
-                  </Link>
+                  </div>
+                    <ComingSoon 
+                      isOpen={isModalOpen} 
+                      onClose={closeModal} 
+                    />
+                    {/* Modal */}
+                    <ComingSoon 
+                      isOpen={isModalOpen} 
+                      onClose={closeModal} 
+                    />
+                  
                   <Link to="/okx-ventures" className="dropdown-link">
                     <div className="dropdown-item" style={{gap: '12px'}}>
                       <i className="fas fa-rocket"></i> OKX Ventures
@@ -539,11 +563,128 @@ const Navbar = () => {
           </>
         )}
         
-        <div className="icon-group">
-          <button className="icon-link" type="button" aria-label="Download app" style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}><i className="fas fa-download"></i></button>
-          <button className="icon-link" type="button" aria-label="Notifications" style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}><i className="fas fa-bell"></i></button>
-          <button className="icon-link" type="button" aria-label="Help" style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}><i className="fas fa-question-circle"></i></button>
-          <button className="icon-link" type="button" aria-label="Language" style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}><i className="fas fa-globe"></i></button>
+          <div className="icon-group">
+          {/* Download App Icon with QR code dropdown */}
+          <div className="right-nav-item">
+            <button 
+              className="icon-link" 
+              type="button" 
+              aria-label="Download app" 
+              style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
+            >
+              <i className="fas fa-download"></i>
+            </button>
+            
+            <div className="right-dropdown-menu download-menu">
+              <h3 className="dropdown-title">Download app</h3>
+              <div className="qr-code-container">
+                {/* QR Code implementation */}
+                <QRCodeSVG 
+                    value={appDownloadUrl}
+                    size={120}
+                    level={"H"}
+                    includeMargin={true}
+                    className="qr-code-image"
+                  />
+              </div>
+              <div className='download-qr-code-container'>
+                <Link to="/download">
+                  <button className="dropdown-button">More options</button>
+                </Link>
+                
+                <p className="dropdown-subtitle">For mobile and desktop</p>
+              </div>
+            </div>
+          </div>
+          
+          {/* Notifications Icon with announcements dropdown */}
+          <div className="right-nav-item">
+            <button 
+              className="icon-link" 
+              type="button" 
+              aria-label="Notifications" 
+              style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
+            >
+              <i className="fas fa-bell"></i>
+            </button>
+            
+            <div className="right-dropdown-menu notifications-menu">
+              <div className="notification-item">
+                <h4 className="notification-title">TradeX to list perpetual futures for SIGN crypto</h4>
+                <p className="notification-time">04/28/2025, 14:00:00</p>
+              </div>
+              
+              <div className="notification-item">
+                <h4 className="notification-title">TradeX to delist ZKJ margin trading pair and perpetual future</h4>
+                <p className="notification-time">04/28/2025, 11:10:00</p>
+              </div>
+              
+              <div className="notification-item">
+                <h4 className="notification-title">TradeX to enable margin trading and Simple Earn for LAYER crypto</h4>
+                <p className="notification-time">04/25/2025, 19:20:00</p>
+              </div>
+              
+              <div className="notification-item">
+                <h4 className="notification-title">TradeX to list LAYER (Solayer) for spot trading</h4>
+                <p className="notification-time">04/25/2025, 14:00:00</p>
+              </div>
+              
+              <div className="notification-item">
+                <h4 className="notification-title">TradeX to list perpetual futures for INIT crypto</h4>
+                <p className="notification-time">04/24/2025, 14:00:00</p>
+              </div>
+              
+              <Link to="/announcements" className="more-link">
+                More announcements
+              </Link>
+            </div>
+          </div>
+          
+          {/* Help Icon with support dropdown */}
+          <div className="right-nav-item">
+            <button 
+              className="icon-link" 
+              type="button" 
+              aria-label="Help" 
+              style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
+            >
+              <i className="fas fa-question-circle"></i>
+            </button>
+            
+            <div className="right-dropdown-menu help-menu">
+              <Link to="/support" className="dropdown-menu-item">
+                Support center
+              </Link>
+              <Link to="/tickets" className="dropdown-menu-item">
+                My tickets
+              </Link>
+              <Link to="/connect" className="dropdown-menu-item">
+                Connect with TradeX
+              </Link>
+            </div>
+          </div>
+          
+          {/* Language Icon */}
+          {/* <div className="right-nav-item">
+            <button 
+              className="icon-link" 
+              type="button" 
+              aria-label="Language" 
+              style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
+            >
+              <i className="fas fa-globe"></i>
+            </button>
+            
+            <div className="right-dropdown-menu language-menu">
+              <div className="dropdown-menu-item">English</div>
+              <div className="dropdown-menu-item">Español</div>
+              <div className="dropdown-menu-item">Français</div>
+              <div className="dropdown-menu-item">Deutsch</div>
+              <div className="dropdown-menu-item">中文</div>
+              <div className="dropdown-menu-item">日本語</div>
+              <div className="dropdown-menu-item">한국어</div>
+            </div>
+          </div> */}
         </div>
       </div>
     </header>

@@ -1,30 +1,30 @@
-import React from 'react'
+import React from 'react';
 import './ComingSoon.css';
 import ComingSoonImg from '../../assets/img/coming-soon.png';
-import { useNavigate } from 'react-router-dom';
 
-const ComingSoon = () => {
-  const navigate = useNavigate();
-  const handleGoBack = () => {
-    // Using React Router v6
-    navigate(-1);
-  };
+const ComingSoon = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+  
   return (
-    <div className='coming-soon-container'>
+    <div className='modal-overlay' onClick={onClose}>
+      <div className='coming-soon-container' onClick={(e) => e.stopPropagation()}>
         <div className='content'>
+          <div className="hourglass-container">
             <img src={ComingSoonImg} alt="hour-glass" />
-            <h1 className='heading'>COMING SOON</h1>
-            <p className="subtext">
-                We're working hard to bring you this<br />
-                feature. Stay tuned!
-            </p>
+          </div>
+          <h1 className='heading'>COMING SOON</h1>
+          <p className="subtext">
+            We're working hard to bring you this<br />
+            feature. Stay tuned!
+          </p>
 
-            <button className="ok-button" aria-label="Acknowledge and close" onClick={handleGoBack}>
-                OK
-            </button>
+          <button className="ok-button" aria-label="Acknowledge and close" onClick={onClose}>
+            OK
+          </button>
         </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default ComingSoon
+export default ComingSoon;
