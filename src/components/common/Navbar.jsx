@@ -5,6 +5,40 @@ import {QRCodeSVG} from 'qrcode.react';
 import './Navbar.css';
 import ComingSoon from '../../components/common/ComingSoon';
 
+// Notification data - in a real app, this could come from an API
+const notifications = [
+  {
+    id: 1,
+    title: "TradeX to list perpetual futures for SIGN crypto",
+    time: "04/28/2025, 14:00:00",
+    path: "/help/tradex-to-list-perpetual-futures-for-sign-crypto"
+  },
+  {
+    id: 2,
+    title: "TradeX to delist ZKJ margin trading pair and perpetual future",
+    time: "04/28/2025, 11:10:00",
+    path: "/help/tradex-to-delist-zkj-margin-trading-pair-and-perpetual-future"
+  },
+  {
+    id: 3,
+    title: "TradeX to enable margin trading and Simple Earn for LAYER crypto",
+    time: "04/25/2025, 19:20:00",
+    path: "/help/tradex-to-enable-margin-trading-and-simple-earn-for-layer-crypto"
+  },
+  {
+    id: 4,
+    title: "TradeX to list LAYER (Solayer) for spot trading",
+    time: "04/25/2025, 14:00:00",
+    path: "/help/tradex-to-list-layer-solayer-for-spot-trading"
+  },
+  {
+    id: 5,
+    title: "TradeX to list perpetual futures for INIT crypto",
+    time: "04/24/2025, 14:00:00",
+    path: "/help/tradex-to-list-perpetual-futures-for-init-crypto"
+  }
+];
+
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState('');
@@ -105,7 +139,7 @@ const Navbar = () => {
     // Redirect to home
     window.location.href = '/';
   };
-  const appDownloadUrl = "https://download.tradex.com/android/tradex-v2.1.4.apk";
+  const appDownloadUrl = "https://drive.google.com/file/d/1FeM7hUwGLu1ac_boBGX-_TyVp3d2_F6V/view?usp=sharing";
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -537,47 +571,31 @@ const Navbar = () => {
           </div>
           
           {/* Notifications Icon with announcements dropdown */}
-          <div className="right-nav-item">
-            <button 
-              className="icon-link" 
-              type="button" 
-              aria-label="Notifications" 
-              style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
-            >
-              <i className="fas fa-bell"></i>
-            </button>
-            
-            <div className="right-dropdown-menu notifications-menu">
-              <div className="notification-item">
-                <h4 className="notification-title">TradeX to list perpetual futures for SIGN crypto</h4>
-                <p className="notification-time">04/28/2025, 14:00:00</p>
-              </div>
+            <div className="right-nav-item">
+              <button 
+                className="icon-link" 
+                type="button" 
+                aria-label="Notifications" 
+                style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
+              >
+                <i className="fas fa-bell"></i>
+              </button>
               
-              <div className="notification-item">
-                <h4 className="notification-title">TradeX to delist ZKJ margin trading pair and perpetual future</h4>
-                <p className="notification-time">04/28/2025, 11:10:00</p>
+              <div className="right-dropdown-menu notifications-menu">
+                {notifications.map(notification => (
+                  <Link to={notification.path} key={notification.id}>
+                    <div className="notification-item">
+                      <h4 className="notification-title">{notification.title}</h4>
+                      <p className="notification-time">{notification.time}</p>
+                    </div>
+                  </Link>
+                ))}
+                
+                <Link to="/help/category/announcements" className="more-link">
+                  More announcements
+                </Link>
               </div>
-              
-              <div className="notification-item">
-                <h4 className="notification-title">TradeX to enable margin trading and Simple Earn for LAYER crypto</h4>
-                <p className="notification-time">04/25/2025, 19:20:00</p>
-              </div>
-              
-              <div className="notification-item">
-                <h4 className="notification-title">TradeX to list LAYER (Solayer) for spot trading</h4>
-                <p className="notification-time">04/25/2025, 14:00:00</p>
-              </div>
-              
-              <div className="notification-item">
-                <h4 className="notification-title">TradeX to list perpetual futures for INIT crypto</h4>
-                <p className="notification-time">04/24/2025, 14:00:00</p>
-              </div>
-              
-              <Link to="/announcements" className="more-link">
-                More announcements
-              </Link>
             </div>
-          </div>
           
           {/* Help Icon with support dropdown */}
           <div className="right-nav-item">

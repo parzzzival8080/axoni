@@ -1,0 +1,245 @@
+/* Article.css */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    line-height: 1.5;
+    color: #333;
+  }
+  
+  .article-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Header and Breadcrumb */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .breadcrumb {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .breadcrumb .separator {
+    margin: 0 5px;
+    color: #999;
+  }
+  
+  .search-container {
+    position: relative;
+  }
+  
+  .search-input {
+    padding: 8px 15px;
+    padding-right: 35px;
+    border-radius: 20px;
+    border: none;
+    background-color: #f5f5f5;
+    width: 220px;
+    font-size: 14px;
+  }
+  
+  .search-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 14px;
+  }
+  
+  /* Article content */
+  .article-content {
+    padding: 0 0 30px;
+  }
+  
+  .article-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+  
+  .article-meta {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 16px;
+  }
+  
+  .read-time-separator {
+    margin: 0 5px;
+  }
+  
+  /* Social sharing */
+  .social-sharing {
+    display: flex;
+    margin-bottom: 24px;
+  }
+  
+  .share-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    background: #fff;
+    margin-right: 12px;
+    cursor: pointer;
+    color: #666;
+  }
+  
+  .share-button:hover {
+    background-color: #f5f5f5;
+  }
+  
+  /* Article sections */
+  .article-section {
+    margin-bottom: 28px;
+  }
+  
+  .article-section p {
+    margin-bottom: 16px;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  
+  .section-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  
+  /* Bullet lists */
+  .bullet-list {
+    list-style-type: disc;
+    padding-left: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .bullet-list li {
+    margin-bottom: 8px;
+    font-size: 16px;
+  }
+  
+  /* Links */
+  .article-link {
+    color: #1e9b4b;
+    text-decoration: none;
+  }
+  
+  .article-link:hover {
+    text-decoration: underline;
+  }
+  
+  .green-link {
+    color: #1e9b4b;
+    text-decoration: none;
+  }
+  
+  /* Features table */
+  .features-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 24px;
+  }
+  
+  .features-table th,
+  .features-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border: 1px solid #eee;
+  }
+  
+  .features-table th {
+    background-color: #f9f9f9;
+    font-weight: 600;
+  }
+  
+  .features-table tr:nth-child(even) {
+    background-color: #fafafa;
+  }
+  
+  .funding-rate-note {
+    font-size: 14px;
+    color: #666;
+    margin-top: 8px;
+  }
+  
+  /* Notes */
+  .note {
+    background-color: #f9f9f9;
+    padding: 16px;
+    border-radius: 4px;
+    margin-bottom: 24px;
+  }
+  
+  /* Signature */
+  .signature {
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+  
+  .signature p {
+    margin-bottom: 8px;
+  }
+  
+  /* Footer */
+  .article-footer {
+    border-top: 1px solid #eee;
+    padding-top: 30px;
+  }
+  
+  .footer-links {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .footer-link {
+    margin-bottom: 16px;
+    font-size: 15px;
+    text-decoration: none;
+  }
+  
+  .footer-link:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .search-container {
+      margin-top: 16px;
+      width: 100%;
+    }
+    
+    .search-input {
+      width: 100%;
+    }
+    
+    .article-title {
+      font-size: 26px;
+    }
+    
+    .features-table {
+      display: block;
+      overflow-x: auto;
+    }
+  }
