@@ -3,8 +3,9 @@ import { formatNumber } from '../../utils/numberFormatter';
 import { executeSpotTradeOrder } from '../../services/spotTradingApi';
 import './TradeForm.css';
 
-const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
-  const [isBuy, setIsBuy] = useState(true);
+const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess, isBuy }) => {
+  // If isBuy prop is provided, use it; otherwise default to internal state
+  const [localIsBuy, setLocalIsBuy] = useState(true);
   const [activeOrderType, setActiveOrderType] = useState('limit');
   const [sliderValue, setSliderValue] = useState(0);
   const [price, setPrice] = useState(0);
@@ -15,6 +16,9 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [notification, setNotification] = useState(null);
   const [uid, setUid] = useState('');
+
+  // Use external isBuy prop if provided (for mobile), otherwise use local state
+  const effectiveIsBuy = isBuy !== undefined ? isBuy : localIsBuy;
 
   // Check if user is authenticated
   useEffect(() => {
@@ -57,14 +61,14 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
 
   // Calculate max amount based on available balance with consistent precision
   const getMaxAmount = () => {
-    if (isBuy) {
+    if (effectiveIsBuy) {
       // For buying, max amount is USDT balance divided by price
-      const usdtSpotBalance = parseFloat(userBalance?.usdtSpotBalance || 0);
+      const usdtSpotBalance = parseFloat(userBalance?.usdtSpotBalance || userBalance?.usdtBalance || 0);
       // Ensure we return with full precision for buying
       return price > 0 ? parseFloat((usdtSpotBalance / price).toFixed(5)) : 0;
     } else {
       // For selling, max amount is crypto balance
-      return parseFloat(userBalance?.cryptoSpotBalance || 0);
+      return parseFloat(userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || 0);
     }
   };
 
@@ -113,8 +117,7 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
     
     // Calculate amount based on total with full precision
     const calculatedAmount = price > 0 ? parseFloat(value) / price : 0;
-    const formattedAmount = calculatedAmount.toFixed(5);
-    setAmount(formattedAmount);
+    setAmount(calculatedAmount.toFixed(5));
     
     // Update slider position
     const maxAmount = getMaxAmount();
@@ -126,167 +129,174 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
   };
 
   const handleTradeSubmit = async () => {
+    if (!isAuthenticated) {
+      setNotification({
+        type: 'error',
+        message: 'Please login to trade'
+      });
+      return;
+    }
+    
+    if (!amount || parseFloat(amount) <= 0) {
+      setNotification({
+        type: 'error',
+        message: 'Please enter a valid amount'
+      });
+      return;
+    }
+    
+    if (!price || parseFloat(price) <= 0) {
+      setNotification({
+        type: 'error',
+        message: 'Please enter a valid price'
+      });
+      return;
+    }
+    
+    // Check if user has enough balance
+    const maxAmount = getMaxAmount();
+    if (parseFloat(amount) > maxAmount) {
+      setNotification({
+        type: 'error',
+        message: `Insufficient balance. Max ${effectiveIsBuy ? 'buy' : 'sell'} amount: ${maxAmount.toFixed(5)}`
+      });
+      return;
+    }
+    
+    setIsLoading(true);
+    
     try {
-      setNotification(null);
-      if (!isAuthenticated) {
-        setNotification({ message: 'Please log in to trade', type: 'error' });
-        return;
-      }
-      if (!amount || parseFloat(amount) <= 0) {
-        setNotification({ message: 'Please enter a valid amount', type: 'error' });
-        return;
-      }
-      if (parseFloat(amount) < 0.00001) {
-        setNotification({ message: `Amount must be at least 0.00001 ${cryptoData?.cryptoSymbol || 'BTC'}`, type: 'error' });
-        return;
-      }
-      
-      // Validate coin pair ID
-      if (!coinPairId) {
-        setNotification({ message: 'Invalid coin pair selected', type: 'error' });
-        return;
-      }
-      
-      setIsLoading(true);
-      const effectiveUid = uid || localStorage.getItem('uid') || 'yE8vKBNw';
-      const symbol = cryptoData?.cryptoSymbol || 'BTC';
-      
-      console.log('Executing spot trade with coin pair ID:', coinPairId);
-      console.log('Current crypto data:', cryptoData);
-      
-      const params = {
-        uid: effectiveUid,
-        symbol,
-        coin_pair_id: coinPairId, // Add the coin pair ID to the params
-        order_type: isBuy ? 'buy' : 'sell',
-        excecution_type: activeOrderType,
+      // Execute trade order
+      const orderData = {
+        uid: uid,
+        coin_pair_id: coinPairId,
         price: parseFloat(price),
-        amount: parseFloat(amount)
+        amount: parseFloat(amount),
+        order_type: activeOrderType,
+        side: effectiveIsBuy ? 'buy' : 'sell'
       };
       
-      console.log('Trade parameters:', params);
+      console.log('Submitting trade order:', orderData);
       
-      const result = await executeSpotTradeOrder(params);
+      const response = await executeSpotTradeOrder(orderData);
       
-      if (result.success) {
-        setNotification({ 
-          message: `${isBuy ? 'Buy' : 'Sell'} order placed successfully!`, 
-          type: 'success' 
+      if (response.success) {
+        setNotification({
+          type: 'success',
+          message: `${effectiveIsBuy ? 'Buy' : 'Sell'} order placed successfully!`
         });
+        
         // Reset form
         setAmount('');
         setTotal('');
         setSliderValue(0);
-        // Refresh balances
-        if (typeof onTradeSuccess === 'function') {
+        
+        // Trigger refresh of balances
+        if (onTradeSuccess) {
           onTradeSuccess();
         }
       } else {
-        setNotification({ 
-          message: result.message || 'Failed to place order', 
-          type: 'error' 
+        setNotification({
+          type: 'error',
+          message: response.message || 'Failed to place order. Please try again.'
         });
       }
     } catch (error) {
-      console.error('Trade error:', error);
-      setNotification({ 
-        message: error.message || 'An error occurred', 
-        type: 'error' 
+      console.error('Error submitting trade:', error);
+      setNotification({
+        type: 'error',
+        message: 'An error occurred. Please try again later.'
       });
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Extract symbols and format balances for display
-  const cryptoSymbol = cryptoData?.cryptoSymbol || 'BTC';
-  const usdtSymbol = cryptoData?.usdtSymbol || 'USDT';
-  
-  const cryptoSpotBalance = parseFloat(userBalance?.cryptoSpotBalance || 0);
-  const usdtSpotBalance = parseFloat(userBalance?.usdtSpotBalance || 0);
-  
-  const formattedCryptoSpotBalance = formatCryptoAmount(cryptoSpotBalance);
-  const formattedUsdtSpotBalance = formatNumber(usdtSpotBalance, 2);
-
   return (
     <div className="trade-form">
-      {/* Top controls */}
-      <div className="top-controls">
-        <div className="margin-toggle">
-          <span>Margin</span>
-          <label className="switch">
-            <input type="checkbox" />
-            <span className="slider round"></span>
-          </label>
-        </div>
-      </div>
-
-      {/* Buy/Sell Tabs */}
-      <div className="okx-form-tabs">
-        <button
-          className={`okx-tab buy${isBuy ? ' active' : ''}`}
-          type="button"
-          onClick={() => setIsBuy(true)}
-        >
-          Buy
-        </button>
-        <button
-          className={`okx-tab sell${!isBuy ? ' active' : ''}`}
-          type="button"
-          onClick={() => setIsBuy(false)}
-        >
-          Sell
-        </button>
-      </div>
-
-      {/* Order types */}
-      <div className="order-types">
-        {['Limit', 'Market', 'Stop-Limit'].map((type) => (
-          <div 
-            key={type}
-            className={`type ${activeOrderType.toLowerCase() === type.toLowerCase() ? 'active' : ''}`}
-            onClick={() => setActiveOrderType(type.toLowerCase())}
+      {/* Buy/Sell toggle - only show in desktop mode when isBuy prop is not provided */}
+      {isBuy === undefined && (
+        <div className="trade-type-toggle">
+          <button
+            className={`toggle-btn ${localIsBuy ? 'active' : ''}`}
+            onClick={() => setLocalIsBuy(true)}
           >
-            {type}
-          </div>
-        ))}
+            Buy
+          </button>
+          <button
+            className={`toggle-btn ${!localIsBuy ? 'active' : ''}`}
+            onClick={() => setLocalIsBuy(false)}
+          >
+            Sell
+          </button>
+        </div>
+      )}
+
+      {/* Order type tabs */}
+      <div className="order-type-tabs">
+        <button
+          className={`tab-btn ${activeOrderType === 'limit' ? 'active' : ''}`}
+          onClick={() => setActiveOrderType('limit')}
+        >
+          Limit
+        </button>
+        <button
+          className={`tab-btn ${activeOrderType === 'market' ? 'active' : ''}`}
+          onClick={() => setActiveOrderType('market')}
+        >
+          Market
+        </button>
+        <button
+          className={`tab-btn ${activeOrderType === 'stop_limit' ? 'active' : ''}`}
+          onClick={() => setActiveOrderType('stop_limit')}
+        >
+          Stop-Limit
+        </button>
       </div>
 
-      {/* Price input or display */}
-      <div className="form-group price-container" style={{ borderRadius: '4px', overflow: 'hidden' }}>
+      {/* Price input */}
+      <div className="form-group">
         <label>Price ({cryptoData?.usdtSymbol || 'USDT'})</label>
-        <span style={{flex:1, textAlign:'right', fontFamily:'monospace', fontWeight:500}}>{formatPrice(price)}</span>
+        <input
+          type="text"
+          value={formatPrice(price)}
+          onChange={(e) => setPrice(e.target.value)}
+          className="form-input"
+          disabled={activeOrderType === 'market'}
+        />
       </div>
 
       {/* Amount input */}
       <div className="form-group">
         <label>Amount ({cryptoData?.cryptoSymbol || 'BTC'})</label>
-        <input 
-          type="text" 
-          value={amount} 
+        <input
+          type="text"
+          value={amount}
           onChange={handleAmountChange}
-          placeholder={`Min 0.00001 ${cryptoData?.cryptoSymbol || 'BTC'}`}
+          className="form-input"
         />
-        <div className="slider-row">
-          <input 
-            type="range" 
-            min="0"
-            max="100"
-            step="1"
-            value={sliderValue}
-            onChange={handleSliderChange}
-            className="slider-range"
-            style={{
-              background: `linear-gradient(90deg, #00B574 ${sliderValue}%, #232323 ${sliderValue}%)`
-            }}
-          />
-          <div className="slider-labels">
-            <span>0%</span>
-            <span>25%</span>
-            <span>50%</span>
-            <span>75%</span>
-            <span>100%</span>
-          </div>
+      </div>
+
+      {/* Slider */}
+      <div className="slider-container">
+        <input 
+          type="range" 
+          min="0"
+          max="100"
+          step="1"
+          value={sliderValue}
+          onChange={handleSliderChange}
+          className="slider-range"
+          style={{
+            background: `linear-gradient(90deg, ${effectiveIsBuy ? '#00B574' : '#F23645'} ${sliderValue}%, #232323 ${sliderValue}%)`
+          }}
+        />
+        <div className="slider-labels">
+          <span>0%</span>
+          <span>25%</span>
+          <span>50%</span>
+          <span>75%</span>
+          <span>100%</span>
         </div>
       </div>
 
@@ -302,12 +312,12 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
       <div className="balance-info">
         {isAuthenticated ? (
           <>
-            <span>Available: {isBuy 
-              ? formatNumber(userBalance?.usdtSpotBalance || 0, 5) 
-              : formatNumber(userBalance?.cryptoSpotBalance || 0, 5)} {isBuy 
+            <span>Available: {effectiveIsBuy 
+              ? formatNumber(userBalance?.usdtSpotBalance || userBalance?.usdtBalance || 0, 5) 
+              : formatNumber(userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || 0, 5)} {effectiveIsBuy 
                 ? cryptoData?.usdtSymbol || 'USDT' 
                 : cryptoData?.cryptoSymbol || 'BTC'}</span>
-            <span>Max {isBuy ? 'buy' : 'sell'}: {formatNumber(getMaxAmount(), 5)} {cryptoData?.cryptoSymbol || 'BTC'}</span>
+            <span>Max {effectiveIsBuy ? 'buy' : 'sell'}: {formatNumber(getMaxAmount(), 5)} {cryptoData?.cryptoSymbol || 'BTC'}</span>
           </>
         ) : (
           <span>Login to view your balance</span>
@@ -317,7 +327,7 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
       {/* Buy/Sell Button */}
       {isAuthenticated ? (
         <button
-          className={`buy-btn${isBuy ? '' : ' sell-btn'}`}
+          className={`buy-btn${effectiveIsBuy ? '' : ' sell-btn'}`}
           disabled={isLoading}
           onClick={handleTradeSubmit}
           style={{marginTop: 10, width: '100%', fontWeight: 600, fontSize: 18, padding: '12px 0', borderRadius: '4px'}}
@@ -328,7 +338,7 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess }) => {
               Processing...
             </>
           ) : (
-            isBuy ? `Buy ${cryptoData?.cryptoSymbol || 'BTC'}` : `Sell ${cryptoData?.cryptoSymbol || 'BTC'}`
+            effectiveIsBuy ? `Buy ${cryptoData?.cryptoSymbol || 'BTC'}` : `Sell ${cryptoData?.cryptoSymbol || 'BTC'}`
           )}
         </button>
       ) : (

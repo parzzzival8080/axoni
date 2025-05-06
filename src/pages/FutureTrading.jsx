@@ -24,6 +24,7 @@ const FutureTrading = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [orderHistoryRefreshTrigger, setOrderHistoryRefreshTrigger] = useState(0);
+  const [mobileTradeTab, setMobileTradeTab] = useState(''); // '' | 'buy' | 'sell'
   
   // User authentication
   const [uid, setUid] = useState(localStorage.getItem('uid') || '');
@@ -122,6 +123,39 @@ const FutureTrading = () => {
     };
   };
   
+  // Mobile app bar buy/sell buttons handler
+  const handleMobileTradeTab = (tab) => {
+    setMobileTradeTab(mobileTradeTab === tab ? '' : tab);
+  };
+
+  // Mobile bottom sheet trade form
+  const renderMobileTradeForm = () => (
+    <>
+      <div className={`future-mobile-trade-overlay${mobileTradeTab ? ' open' : ''}`} 
+           onClick={() => setMobileTradeTab('')}></div>
+      <div className={`future-mobile-trade-form-sheet${mobileTradeTab ? ' open' : ''}`}>
+        <div className="future-mobile-trade-form-header">
+          <div className="future-mobile-trade-form-title">
+            {mobileTradeTab === 'buy' ? 'Buy / Long' : 'Sell / Short'} {walletData?.symbol}
+          </div>
+          <button className="future-mobile-trade-form-close" onClick={() => setMobileTradeTab('')}>
+            ×
+          </button>
+        </div>
+        <div className="future-mobile-trade-form-content">
+          <TradeForm
+            walletData={walletData}
+            coinPairId={coinPairId}
+            tradableCoins={tradableCoins}
+            onTradeSuccess={handleTradeSuccess}
+            uid={uid}
+            positionType={mobileTradeTab === 'buy' ? 'open' : 'close'}
+          />
+        </div>
+      </div>
+    </>
+  );
+  
   // Loading state
   if (loading && !walletData) {
     return <div className="loading-screen">Loading trading data...</div>;
@@ -156,17 +190,36 @@ const FutureTrading = () => {
             <OrderBook 
               cryptoData={getSubHeaderData()}
             />
-            <TradeForm 
-              walletData={walletData}
-              coinPairId={coinPairId}
-              tradableCoins={tradableCoins}
-              onTradeSuccess={handleTradeSuccess}
-              uid={uid}
-            />
+            <div className="trade-form-container desktop-only">
+              <TradeForm 
+                walletData={walletData}
+                coinPairId={coinPairId}
+                tradableCoins={tradableCoins}
+                onTradeSuccess={handleTradeSuccess}
+                uid={uid}
+              />
+            </div>
           </div>
           <div className="orders-container">
             <OrdersSection refreshTrigger={orderHistoryRefreshTrigger} />
           </div>
+          
+          {/* Mobile app bar with buy/sell buttons */}
+          <div className="future-mobile-trade-bar">
+            <button 
+              className="future-mobile-trade-btn buy" 
+              onClick={() => handleMobileTradeTab('buy')}
+            >
+              Buy / Long
+            </button>
+            <button 
+              className="future-mobile-trade-btn sell" 
+              onClick={() => handleMobileTradeTab('sell')}
+            >
+              Sell / Short
+            </button>
+          </div>
+          {renderMobileTradeForm()}
         </>
       )}
     </div>

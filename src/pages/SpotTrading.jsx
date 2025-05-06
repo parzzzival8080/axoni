@@ -21,6 +21,7 @@ const SpotTrading = () => {
   const [error, setError] = useState(null);
   const [availableCoins, setAvailableCoins] = useState([]);
   const [orderHistoryRefreshTrigger, setOrderHistoryRefreshTrigger] = useState(0);
+  const [mobileTradeTab, setMobileTradeTab] = useState(''); // '' | 'buy' | 'sell'
 
   // Get coin_pair_id from URL params, default to 1 if not provided
   const coinPairId = searchParams.get('coin_pair_id') || 1;
@@ -233,6 +234,38 @@ const SpotTrading = () => {
     }
   }, [fetchCryptoData, cryptoData?.cryptoSymbol]);
 
+  // Mobile app bar buy/sell buttons handler
+  const handleMobileTradeTab = (tab) => {
+    setMobileTradeTab(mobileTradeTab === tab ? '' : tab);
+  };
+
+  // Mobile bottom sheet trade form
+  const renderMobileTradeForm = () => (
+    <>
+      <div className={`mobile-trade-overlay${mobileTradeTab ? ' open' : ''}`} 
+           onClick={() => setMobileTradeTab('')}></div>
+      <div className={`mobile-trade-form-sheet${mobileTradeTab ? ' open' : ''}`}>
+        <div className="mobile-trade-form-header">
+          <div className="mobile-trade-form-title">
+            {mobileTradeTab === 'buy' ? 'Buy' : 'Sell'} {cryptoData?.cryptoSymbol}
+          </div>
+          <button className="mobile-trade-form-close" onClick={() => setMobileTradeTab('')}>
+            ×
+          </button>
+        </div>
+        <div className="mobile-trade-form-content">
+          <TradeForm
+            cryptoData={cryptoData}
+            userBalance={userBalance}
+            coinPairId={coinPairId}
+            onTradeSuccess={fetchUserBalance}
+            isBuy={mobileTradeTab === 'buy'}
+          />
+        </div>
+      </div>
+    </>
+  );
+
   if (loading) {
     return <div className="loading-screen">Loading trading data...</div>;
   }
@@ -274,6 +307,13 @@ const SpotTrading = () => {
       <div className="orders-container">
         <OrdersSection refreshTrigger={orderHistoryRefreshTrigger} />
       </div>
+      
+      {/* Mobile app bar with buy/sell buttons */}
+      <div className="mobile-trade-bar">
+        <button className="mobile-trade-btn buy" onClick={() => handleMobileTradeTab('buy')}>Buy</button>
+        <button className="mobile-trade-btn sell" onClick={() => handleMobileTradeTab('sell')}>Sell</button>
+      </div>
+      {renderMobileTradeForm()}
     </div>
   );
 };
