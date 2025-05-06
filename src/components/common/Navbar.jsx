@@ -44,6 +44,7 @@ const Navbar = () => {
   const [userName, setUserName] = useState('');
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showMoreDropdown, setShowMoreDropdown] = useState(false);
+  const [showAssetsMenu, setShowAssetsMenu] = useState(false);
 
   const signupButtonStyle = {
     backgroundColor: 'black',
@@ -502,32 +503,91 @@ const Navbar = () => {
         </div>
         
         {isAuthenticated ? (
-          <div className="user-menu-container">
-            <div 
-              style={userMenuStyle} 
-              onClick={() => setShowUserMenu(!showUserMenu)}
-            >
-              <i className="fas fa-user-circle"></i>
-              Welcome, {userName}
-              <i className="fas fa-chevron-down"></i>
+          <div className="auth-menu-container">
+            {/* Assets Dropdown */}
+            <div className="dropdown-container">
+              <div className="assets-dropdown">
+                <span>Assets</span>
+                <i className="fas fa-chevron-down"></i>
+              </div>
+              <div className="assets-dropdown-menu">
+                <Link to="/assets" className="menu-item">
+                  <i className="fas fa-wallet"></i> My assets
+                </Link>
+                <Link to="/deposit" className="menu-item">
+                  <i className="fas fa-arrow-circle-down"></i> Deposit
+                </Link>
+                <Link to="/withdraw" className="menu-item">
+                  <i className="fas fa-arrow-circle-up"></i> Withdraw
+                </Link>
+                <Link to="/transfer" className="menu-item">
+                  <i className="fas fa-exchange-alt"></i> Transfer
+                </Link>
+                <Link to="/analysis" className="menu-item">
+                  <i className="fas fa-chart-line"></i> Analysis
+                </Link>
+                <Link to="/order-center" className="menu-item">
+                  <i className="fas fa-clipboard-list"></i> Order center
+                </Link>
+                <Link to="/trading-fees" className="menu-item">
+                  <i className="fas fa-tags"></i> My trading fees
+                </Link>
+                <Link to="/por-reports" className="menu-item">
+                  <i className="fas fa-file-alt"></i> PoR reports
+                </Link>
+              </div>
             </div>
-            {showUserMenu && (
-              <div className="user-dropdown-menu">
-                <Link to="/account/profile" className="user-menu-item">
+
+            {/* User Profile Dropdown */}
+            <div className="dropdown-container">
+              <div className="profile-dropdown">
+                <i className="far fa-user user-icon-small"></i>
+              </div>
+              <div className="profile-dropdown-menu">
+                <div className="user-info">
+                  <div className="user-avatar">
+                    <i className="fas fa-user-circle"></i>
+                  </div>
+                  <div className="user-details">
+                    <p className="user-email">{userName}</p>
+                    <p className="user-id">UID: {localStorage.getItem('uid') || 'N/A'}</p>
+                  </div>
+                </div>
+                <div className="switch-account-button">
+                  <button>Switch sub-account</button>
+                </div>
+                <Link to="/account/overview" className="menu-item">
+                  <i className="fas fa-clock"></i> Overview
+                </Link>
+                <Link to="/account/profile" className="menu-item">
                   <i className="fas fa-user"></i> Profile
                 </Link>
-                <Link to="/Assets" className="user-menu-item">
-                  <i className="fas fa-wallet"></i> Assets
+                <Link to="/security" className="menu-item">
+                  <i className="fas fa-shield-alt"></i> Security
                 </Link>
-                <Link to="/settings" className="user-menu-item">
-                  <i className="fas fa-cog"></i> Settings
+                <Link to="/verification" className="menu-item">
+                  <i className="fas fa-id-card"></i> Verification
                 </Link>
-                <div className="user-menu-divider"></div>
-                <div className="user-menu-item" onClick={handleLogout}>
-                  <i className="fas fa-sign-out-alt"></i> Logout
+                <Link to="/country-region" className="menu-item">
+                  <i className="fas fa-globe"></i> Country/Region
+                </Link>
+                <Link to="/preferences" className="menu-item">
+                  <i className="fas fa-cog"></i> Preferences
+                </Link>
+                <Link to="/sub-accounts" className="menu-item">
+                  <i className="fas fa-users"></i> Sub-accounts
+                </Link>
+                <Link to="/api" className="menu-item">
+                  <i className="fas fa-code"></i> API
+                </Link>
+                <Link to="/third-party" className="menu-item">
+                  <i className="fas fa-plug"></i> Third-party authorization
+                </Link>
+                <div className="menu-item logout" onClick={handleLogout}>
+                  <i className="fas fa-sign-out-alt"></i> Log out
                 </div>
               </div>
-            )}
+            </div>
           </div>
         ) : (
           <>

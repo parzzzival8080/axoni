@@ -142,11 +142,7 @@ nav {
     z-index: 1;
     pointer-events: none;
   }
-  
-  .search-box i {
-    color: #7e8299;
-    font-size: 14px;
-  }
+
   
   .search-input {
     background-color: transparent;
@@ -192,10 +188,11 @@ nav {
 .icon-group {
     display: flex;
     gap: 16px;
+    color: white;
 }
 
 .icon-link {
-    color: #7e8299;
+    color: white;
     font-size: 16px;
     text-decoration: none;
 }
@@ -329,6 +326,7 @@ nav {
 /* User Menu Styles */
 .user-menu-container {
     position: relative;
+    margin-right: 8px;
 }
 
 .user-dropdown-menu {
@@ -566,3 +564,241 @@ nav {
         right: -140px;
     }
 }
+
+.assets-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+    text-decoration: none;
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-right: 16px;
+    transition: background-color 0.2s;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .assets-dropdown:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .assets-dropdown span {
+    font-size: 14px;
+  }
+  
+  .assets-dropdown i {
+    font-size: 10px;
+    color: #7e8299;
+    margin-left: 2px;
+  }
+
+  /* Auth menu container */
+/* Auth menu container */
+.auth-menu-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-right: 18px;
+  }
+  
+  /* Dropdown container */
+  .dropdown-container {
+    position: relative;
+  }
+  
+  /* Assets dropdown button */
+  .assets-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+    text-decoration: none;
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-right: 16px;
+    transition: background-color 0.2s;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .assets-dropdown:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .assets-dropdown span {
+    font-size: 14px;
+  }
+  
+  .assets-dropdown i {
+    font-size: 10px;
+    color: #7e8299;
+    margin-left: 2px;
+  }
+  
+  /* Profile dropdown button */
+  .profile-dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+  }
+  
+  .profile-dropdown:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .user-icon-small {
+    font-size: 16px;
+    color: white;
+  }
+  
+  /* Dropdown menus */
+  .assets-dropdown-menu,
+  .profile-dropdown-menu {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: none;
+    animation: fadeIn 0.2s ease;
+  }
+  
+  .assets-dropdown-menu {
+    width: 240px;
+    padding: 8px 0;
+  }
+  
+  .profile-dropdown-menu {
+    width: 280px;
+    padding: 16px 0;
+  }
+  
+  /* Show dropdowns on hover */
+  .dropdown-container:hover .assets-dropdown-menu,
+  .dropdown-container:hover .profile-dropdown-menu,
+  .assets-dropdown-menu:hover,
+  .profile-dropdown-menu:hover {
+    display: block;
+  }
+  
+  /* Add hover buffer to prevent flicker */
+  .dropdown-container::after {
+    content: '';
+    position: absolute;
+    height: 15px;
+    width: 100%;
+    left: 0;
+    bottom: -15px;
+    z-index: 999;
+    background: transparent;
+  }
+  
+  /* User info section */
+  .user-info {
+    display: flex;
+    align-items: center;
+    padding: 0 16px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 8px;
+  }
+  
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+  }
+  
+  .user-avatar i {
+    font-size: 24px;
+    color: #ccc;
+  }
+  
+  .user-details {
+    flex: 1;
+  }
+  
+  .user-email {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0 0 4px;
+    color: #000;
+  }
+  
+  .user-id {
+    font-size: 12px;
+    color: #666;
+    margin: 0;
+  }
+  
+  /* Switch account button */
+  .switch-account-button {
+    padding: 0 16px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 8px;
+  }
+  
+  .switch-account-button button {
+    width: 100%;
+    padding: 8px;
+    border-radius: 20px;
+    border: 1px solid #e0e0e0;
+    background-color: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+  }
+  
+  .switch-account-button button:hover {
+    background-color: #f5f5f5;
+  }
+  
+  /* Menu items for both dropdowns */
+  .menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #000;
+    text-decoration: none;
+    transition: background-color 0.2s;
+  }
+  
+  .menu-item:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .menu-item i {
+    width: 24px;
+    margin-right: 12px;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .menu-item.logout {
+    color: #000;
+    cursor: pointer;
+    margin-top: 8px;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 16px;
+  }
+  
+  .menu-item.logout i {
+    color: #333;
+  }
