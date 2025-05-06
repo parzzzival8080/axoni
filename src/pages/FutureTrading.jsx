@@ -8,6 +8,8 @@ import TradeForm from '../components/futureTrading/TradeForm';
 import OrdersSection from '../components/futureTrading/OrdersSection';
 import { fetchTradableCoins, fetchWalletData } from '../services/futureTradingApi';
 import '../components/futureTrading/FutureTrading.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Future Trading Page Component
@@ -25,6 +27,9 @@ const FutureTrading = () => {
   const [error, setError] = useState(null);
   const [orderHistoryRefreshTrigger, setOrderHistoryRefreshTrigger] = useState(0);
   const [mobileTradeTab, setMobileTradeTab] = useState(''); // '' | 'buy' | 'sell'
+  
+  // Notification state
+  const [notification, setNotification] = useState({ show: false, message: '', type: 'success' });
   
   // User authentication
   const [uid, setUid] = useState(localStorage.getItem('uid') || '');
@@ -82,8 +87,20 @@ const FutureTrading = () => {
   }, [coinPairId, setSearchParams]);
   
   // Handle successful trade execution
-  const handleTradeSuccess = useCallback(() => {
+  const handleTradeSuccess = useCallback((message) => {
     console.log('FutureTrading: Trade successful, refreshing data...');
+    
+    // Show success notification
+    setNotification({
+      show: true,
+      message: message || 'Future trade executed successfully',
+      type: 'success'
+    });
+    
+    // Hide notification after 3 seconds
+    setTimeout(() => {
+      setNotification(prev => ({ ...prev, show: false }));
+    }, 3000);
     
     // Refresh wallet data
     const refreshWalletData = async () => {
@@ -156,6 +173,32 @@ const FutureTrading = () => {
     </>
   );
   
+  // Render notification
+  const renderNotification = () => {
+    if (!notification.show) return null;
+    
+    return (
+      <div className={`notification ${notification.type === 'error' ? 'error' : ''}`}>
+        <div className="notification-content">
+          <div className="notification-icon">
+            <FontAwesomeIcon 
+              icon={notification.type === 'success' ? faCheckCircle : faTimesCircle} 
+            />
+          </div>
+          <div className="notification-message">
+            {notification.message}
+          </div>
+        </div>
+        <button 
+          className="notification-close" 
+          onClick={() => setNotification(prev => ({ ...prev, show: false }))}
+        >
+          ×
+        </button>
+      </div>
+    );
+  };
+  
   // Loading state
   if (loading && !walletData) {
     return <div className="loading-screen">Loading trading data...</div>;
@@ -220,6 +263,7 @@ const FutureTrading = () => {
             </button>
           </div>
           {renderMobileTradeForm()}
+          {renderNotification()}
         </>
       )}
     </div>
