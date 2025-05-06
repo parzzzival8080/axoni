@@ -1146,12 +1146,6 @@ h1, h2, h3, h4 {
   font-size: 14px;
 }
 
-/* Exact OKX color scheme */
-:root {
-  --primary-color: #0052ff;
-  --button-color: #0052ff;
-}
-
 /* Chat bubble color correction */
 .chat-bubble {
   background-color: #14B195;
