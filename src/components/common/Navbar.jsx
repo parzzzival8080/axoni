@@ -39,12 +39,108 @@ const notifications = [
   }
 ];
 
+// Mobile menu items - matching the image provided with dropdowns
+const mobileMenuItems = [
+  { 
+    name: 'Buy crypto', 
+    hasDropdown: true,
+    subItems: [
+      { name: 'P2P trading', path: '/p2p-trading' },
+    ]
+  },
+  { 
+    name: 'Discover', 
+    hasDropdown: true,
+    subItems: [
+      { name: 'Markets', path: '/market' },
+      { name: 'Opportunities', path: '/opportunities' },
+      { name: 'Marketplace', path: '/marketplace' },
+    ]
+  },
+  { 
+    name: 'Trade', 
+    hasDropdown: true,
+    subItems: [
+      { name: 'Convert', path: '/conversion' },
+      { name: 'Spot', path: '/spot-trading' },
+      { name: 'Future', path: '/future-trading' },
+      { name: 'Options', path: '/options' },
+      { name: 'Pre-markets Futures', path: '/pre-market-futures'},
+      { name: 'Trading bots', path: '/trading-bots'},
+      { name: 'Marketplace', path: '/marketplace' },
+      { name: 'Nitro Spreads', path: '/nitro-spreads' },
+      { name: 'RFQ', path: '/rfq' },
+      { name: 'Demo trading', path: '/demo-trading' },
+    ]
+  },
+  { 
+    name: 'Grow', 
+    hasDropdown: true,
+    subItems: [
+      { name: 'Earn', path: '/earn' },
+      { name: 'Loan', path: '/loan' },
+      { name: 'Jumpstart', path: '/jumpstart' }
+    ]
+  },
+  { 
+    name: 'Build', 
+    hasDropdown: true,
+    subItems: [
+      { name: 'X Layer network', path: '/earn' },
+    ]
+  },
+  { 
+    name: 'Institutional', 
+    hasDropdown: true,
+    subItems: [
+      { name: 'Institutional home', path: '/institutional/home' },
+      { name: 'Liquid Marketplace', path: '/institutional/marketplace' },
+      { name: 'APIs', path: '/institutional/apis' },
+      { name: 'Broker Program', path: '/institutional/broker-program' },
+      { name: 'Managed Trading Sub-accounts', path: '/institutional/trading-sub-accounts' },
+      { name: 'Historical market data', path: '/institutional/market-data' },
+    ]
+  },
+  { name: 'Learn', path: '/learn', hasDropdown: false },
+  { 
+    name: 'More', 
+    hasDropdown: true,
+    subItems: [
+      { name: 'OKB', path: '/okb' },
+      { name: 'Security of funds', path: '/security-of-funds' },
+      { name: 'Status', path: '/status' },
+      { name: 'Proof of Reserves', path: '/proof-of-reserves'},
+      { name: 'TradeX Protect', path: '/tradex-protect' },
+      { name: 'Web3', path: '/web3' },
+      { name: 'Campaign center', path: '/campaign-center' },
+      { name: 'My rewards', path: '/my-rewards' },
+      { name: 'Referral', path: '/referral' },
+      { name: 'Affiliates', path: '/affiliates' },
+      { name: 'TradeX Ventures', path: '/tradex-ventures' },
+      { name: 'Trade on TradingView', path: '/trade-on-tradingview' },
+      { name: 'Listing application', path: '/listing-application' },
+    ]
+  },
+  { 
+    name: 'Support', 
+    hasDropdown: true,
+    subItems: [
+      { name: 'Support center', path: '/support-center' },
+      { name: 'My tickets', path: '/my-tickets' },
+      { name: 'Connect with TradeX', path: '/connect-with-tradex' },
+    ]
+  },
+];
+
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState('');
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showMoreDropdown, setShowMoreDropdown] = useState(false);
   const [showAssetsMenu, setShowAssetsMenu] = useState(false);
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [expandedMenus, setExpandedMenus] = useState([]);
 
   const signupButtonStyle = {
     backgroundColor: 'black',
@@ -140,9 +236,8 @@ const Navbar = () => {
     // Redirect to home
     window.location.href = '/';
   };
-  const appDownloadUrl = "https://drive.google.com/file/d/1FeM7hUwGLu1ac_boBGX-_TyVp3d2_F6V/view?usp=sharing";
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const appDownloadUrl = "https://drive.google.com/file/d/1FeM7hUwGLu1ac_boBGX-_TyVp3d2_F6V/view?usp=sharing";
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -152,7 +247,21 @@ const Navbar = () => {
     setIsModalOpen(false);
   };
 
- 
+  const toggleMobileMenu = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+  
+  const toggleSubmenu = (index) => {
+    if (expandedMenus.includes(index)) {
+      setExpandedMenus(expandedMenus.filter(item => item !== index));
+    } else {
+      setExpandedMenus([...expandedMenus, index]);
+    }
+  };
+
+  const toggleMobileSearch = () => {
+    setShowMobileSearch(!showMobileSearch);
+  };
 
   return (
     <header>
@@ -160,7 +269,7 @@ const Navbar = () => {
         <Link to="/" className="logo">
           <img src="/assets/logo/tradex-icon.png" alt="Logo" />
         </Link>
-        <nav>
+        <nav className="desktop-nav">
           <div className="nav-item">
             crypto <i className="fas fa-chevron-down"></i>
           </div>
@@ -170,7 +279,7 @@ const Navbar = () => {
                 <Link to="/market" className="dropdown-link">
                   <div className="dropdown-item with-arrow">
                       <div className="dropdown-icon">
-                      <i class="fa-solid fa-tv"></i>
+                      <i className="fa-solid fa-tv"></i>
                       </div>
                       <div className="dropdown-content">
                         <h3>Markets</h3>
@@ -321,7 +430,7 @@ const Navbar = () => {
                 <Link to='/earn' className='dropdown-link'>
                   <div className="dropdown-item main-item with-arrow">
                     <div className="dropdown-icon">
-                      <i class="fa-solid fa-bitcoin-sign"></i>
+                      <i className="fa-solid fa-bitcoin-sign"></i>
                     </div>
                     <div className="dropdown-content">
                       <h3>Earn</h3>
@@ -366,7 +475,7 @@ const Navbar = () => {
               <Link to="/loan" className="dropdown-link">
                 <div className="dropdown-item with-arrow">
                   <div className="dropdown-icon">
-                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                    <i className="fa-solid fa-hand-holding-dollar"></i>
                   </div>
                   <div className="dropdown-content">
                     <h3>Loan</h3>
@@ -494,18 +603,34 @@ const Navbar = () => {
           </div>
         </nav>
       </div>
+
+      {/* Header right section */}
       <div className="header-right">
-        <div className="search-box">
+        {/* Desktop search box */}
+        <div className="search-box desktop-search">
           <div className='search-icon'>
              <i className="fas fa-search"></i>
           </div>
           <input className='search-input' type="text" placeholder="Search crypto" />
         </div>
+
+        {/* Mobile search icon and expandable search box */}
+        <div className="mobile-search-container">
+          <div className="mobile-search-icon" onClick={toggleMobileSearch}>
+            <i className="fas fa-search"></i>
+          </div>
+          {showMobileSearch && (
+            <div className="mobile-search-box">
+              <input type="text" placeholder="Search" autoFocus />
+              <button onClick={toggleMobileSearch}><i className="fas fa-times"></i></button>
+            </div>
+          )}
+        </div>
         
         {isAuthenticated ? (
           <div className="auth-menu-container">
-            {/* Assets Dropdown */}
-            <div className="dropdown-container">
+            {/* Assets Dropdown - hidden on mobile */}
+            <div className="dropdown-container desktop-only">
               <div className="assets-dropdown">
                 <span>Assets</span>
                 <i className="fas fa-chevron-down"></i>
@@ -590,13 +715,13 @@ const Navbar = () => {
             </div>
           </div>
         ) : (
-          <>
+          <div className="auth-buttons">
             <Link to="/login" className="login-link">Log in</Link>
             <Link to="/signup" style={signupButtonStyle}>Sign up</Link>
-          </>
+          </div>
         )}
         
-          <div className="icon-group">
+        <div className="icon-group desktop-only">
           {/* Download App Icon with QR code dropdown */}
           <div className="right-nav-item">
             <button 
@@ -673,7 +798,7 @@ const Navbar = () => {
               <Link to="/support" className="dropdown-menu-item">
                 Support center
               </Link>
-              <Link to="/tickets" className="dropdown-menu-item">
+              <Link to="/support-center/history" className="dropdown-menu-item">
                 My tickets
               </Link>
               <Link to="/connect" className="dropdown-menu-item">
@@ -681,32 +806,62 @@ const Navbar = () => {
               </Link>
             </div>
           </div>
-          
-          {/* Language Icon */}
-          {/* <div className="right-nav-item">
-            <button 
-              className="icon-link" 
-              type="button" 
-              aria-label="Language" 
-              style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
-            >
-              <i className="fas fa-globe"></i>
-            </button>
-            
-            <div className="right-dropdown-menu language-menu">
-              <div className="dropdown-menu-item">English</div>
-              <div className="dropdown-menu-item">Español</div>
-              <div className="dropdown-menu-item">Français</div>
-              <div className="dropdown-menu-item">Deutsch</div>
-              <div className="dropdown-menu-item">中文</div>
-              <div className="dropdown-menu-item">日本語</div>
-              <div className="dropdown-menu-item">한국어</div>
-            </div>
-          </div> */}
+        </div>
+        
+        {/* Mobile-only hamburger menu button - moved to the end */}
+        <div className="mobile-menu-toggle" onClick={toggleMobileMenu}>
+          <i className="fas fa-bars"></i>
         </div>
       </div>
+
+       {/* Modal that appears when toggle is clicked */}
+       {isModalOpen && (
+        <div className="mobile-menu-overlay">
+          <div className="mobile-menu">
+            <div className="mobile-menu-header">
+              <div className="mobile-menu-close" onClick={toggleMobileMenu}>
+                <i className="fas fa-times"></i>
+              </div>
+            </div>
+            <div className="mobile-menu-items">
+              {mobileMenuItems.map((item, index) => (
+                <div key={index} className="mobile-menu-item-container">
+                  {item.hasDropdown ? (
+                    <div 
+                      className="mobile-menu-item"
+                      onClick={() => toggleSubmenu(index)}
+                    >
+                      <span>{item.name}</span>
+                      <i className={`fas fa-chevron-down ${expandedMenus.includes(index) ? 'rotated' : ''}`}></i>
+                    </div>
+                  ) : (
+                    <a href={item.path} className="mobile-menu-item">
+                      <span>{item.name}</span>
+                    </a>
+                  )}
+                  
+                  {item.hasDropdown && item.subItems && item.subItems.length > 0 && expandedMenus.includes(index) && (
+                    <div className="mobile-submenu">
+                      {item.subItems.map((subItem, subIndex) => (
+                        <a key={subIndex} href={subItem.path} className="mobile-submenu-item">
+                          {subItem.name}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="mobile-menu-footer">
+              <a href="/download" className="footer-download-button">
+                Download TradeX app
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
 
-export default Navbar; 
+export default Navbar;
