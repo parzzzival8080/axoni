@@ -685,10 +685,28 @@
 
 /* Mobile Optimization */
 @media (max-width: 768px) {
+  .desktop-trade-action-btn {
+    display: none !important;
+  }
   .future-trading-container .trade-form {
     padding: var(--spacing-md);
+    padding-bottom: 110px !important; /* leave space for fixed bar */
   }
-  
+  .future-trading-container .trade-form .action-btn,
+  .future-trading-container .future-login-pill-btn {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  /* Mobile fixed action bar is styled via styled-components */
+}
+
+@media (min-width: 769px) {
+  .desktop-trade-action-btn {
+    display: flex !important;
+  }
+}
+
+@media (max-width: 768px) {
   .future-trading-container .trade-form .action-btn {
     height: 44px;
     font-size: var(--font-size-lg);

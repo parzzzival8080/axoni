@@ -9,6 +9,25 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 
+// Fixed action bar for mobile
+const MobileTradeActionBar = styled.div`
+  display: none;
+  @media (max-width: 768px) {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #101010;
+    z-index: 10001;
+    box-shadow: 0 -2px 16px rgba(0,0,0,0.4);
+    padding: 10px 16px 16px 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+  }
+`;
+
 // Scrollable content wrapper for the trade form (OKX dark mode, responsive)
 const ScrollableFormContent = styled.div`
   flex: 1 1 auto;
@@ -33,6 +52,9 @@ const ScrollableFormContent = styled.div`
 
   @media (max-width: 900px) {
     max-height: 45vh;
+  }
+  @media (max-width: 768px) {
+    max-height: calc(100vh - 90px);
   }
   @media (max-width: 600px) {
     max-height: 38vh;
@@ -60,7 +82,7 @@ const getCoinIdFromPair = (coinPairId, tradableCoins) => {
  * TradeForm Component
  * Handles futures trading form inputs, calculations, and order submission
  */
-function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess, uid }) {
+function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess, uid, isBottomSheet = false }) {
   // Form state
   const [activeTab, setActiveTab] = useState('trade');
   const [positionType, setPositionType] = useState('open');
@@ -311,7 +333,7 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
   
   return (
     <div className="trade-form">
-      <ScrollableFormContent>
+      <ScrollableFormContent className={isBottomSheet ? 'bottom-sheet-mode' : ''}>
       {/* Tabs */}
       <div className="trade-tabs">
         <div
@@ -499,16 +521,33 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
         </div>
       </div>
 
-      {/* TP/SL Checkbox */}
-      <div className="tp-sl-container">
-        <label className="tp-sl-checkbox">
-          <input
-            type="checkbox"
-            checked={tpslEnabled}
-            onChange={() => setTpslEnabled(!tpslEnabled)}
-          />
-          <span className="checkbox-text">TP/SL</span>
-        </label>
+      {/* Action Button (now directly above cost section) */}
+      <div className="trade-action-btn-row" style={{ margin: '16px 0 8px 0', display: 'flex', justifyContent: 'center' }}>
+        {isAuthenticated ? (
+          <button
+            className={`action-btn ${positionType === 'open' ? 'buy-more' : 'sell'}`}
+            onClick={handleTradeSubmit}
+            disabled={isLoading}
+            style={{ width: '100%', maxWidth: 480 }}
+          >
+            {isLoading ? (
+              <>
+                <FontAwesomeIcon icon={faSpinner} spin style={{ marginRight: '8px' }} />
+                Processing...
+              </>
+            ) : (
+              positionType === 'open' ? 'Buy / Long' : 'Sell / Short'
+            )}
+          </button>
+        ) : (
+          <button 
+            className="future-login-pill-btn"
+            onClick={() => window.location.href = '/login'}
+            style={{ width: '100%', maxWidth: 480 }}
+          >
+            LOGIN TO TRADE
+          </button>
+        )}
       </div>
 
       {/* Cost Section */}
@@ -538,32 +577,7 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
       </div>
       </ScrollableFormContent>
 
-      {/* Action Button */}
-      <div style={{ display: 'flex', justifyContent: 'center', margin: '15px 0' }}>
-        {isAuthenticated ? (
-          <button
-            className={`action-btn ${positionType === 'open' ? 'buy-more' : 'sell'}`}
-            onClick={handleTradeSubmit}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <>
-                <FontAwesomeIcon icon={faSpinner} spin style={{ marginRight: '8px' }} />
-                Processing...
-              </>
-            ) : (
-              positionType === 'open' ? 'Buy / Long' : 'Sell / Short'
-            )}
-          </button>
-        ) : (
-          <button 
-            className="future-login-pill-btn"
-            onClick={() => window.location.href = '/login'}
-          >
-            LOGIN TO TRADE
-          </button>
-        )}
-      </div>
+
     </div>
   );
 }
