@@ -170,7 +170,7 @@ const Navbar = () => {
                 <Link to="/market" className="dropdown-link">
                   <div className="dropdown-item with-arrow">
                       <div className="dropdown-icon">
-                        <i className="fas fa-coins"></i>
+                      <i class="fa-solid fa-tv"></i>
                       </div>
                       <div className="dropdown-content">
                         <h3>Markets</h3>
@@ -321,7 +321,7 @@ const Navbar = () => {
                 <Link to='/earn' className='dropdown-link'>
                   <div className="dropdown-item main-item with-arrow">
                     <div className="dropdown-icon">
-                      <i className="fas fa-coins"></i>
+                      <i class="fa-solid fa-bitcoin-sign"></i>
                     </div>
                     <div className="dropdown-content">
                       <h3>Earn</h3>
@@ -334,7 +334,7 @@ const Navbar = () => {
                 
                 {/* Sub-items for Earn */}
                 <div className="dropdown-sub-items">
-                  <Link to="/earn/simple" className="dropdown-link">
+                  <Link to="/earn/simple-earn" className="dropdown-link">
                     <div className="dropdown-sub-item">
                       <div className="dropdown-icon-small">
                         <i className="fas fa-circle"></i>
@@ -366,7 +366,7 @@ const Navbar = () => {
               <Link to="/loan" className="dropdown-link">
                 <div className="dropdown-item with-arrow">
                   <div className="dropdown-icon">
-                    <i className="fas fa-coins"></i>
+                    <i class="fa-solid fa-hand-holding-dollar"></i>
                   </div>
                   <div className="dropdown-content">
                     <h3>Loan</h3>
@@ -605,7 +605,8 @@ const Navbar = () => {
               aria-label="Download app" 
               style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
             >
-              <i className="fas fa-download"></i>
+              <i className="far fa-arrow-alt-circle-down"></i>
+            
             </button>
             
             <div className="right-dropdown-menu download-menu">
@@ -638,7 +639,7 @@ const Navbar = () => {
                 aria-label="Notifications" 
                 style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
               >
-                <i className="fas fa-bell"></i>
+                <i className="far fa-bell"></i>
               </button>
               
               <div className="right-dropdown-menu notifications-menu">
@@ -665,7 +666,7 @@ const Navbar = () => {
               aria-label="Help" 
               style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
             >
-              <i className="fas fa-question-circle"></i>
+              <i className="far fa-question-circle"></i>
             </button>
             
             <div className="right-dropdown-menu help-menu">
