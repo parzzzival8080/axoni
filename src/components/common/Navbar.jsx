@@ -132,7 +132,7 @@ const mobileMenuItems = [
       { name: 'Connect with TradeX', path: '/connect-with-tradex' },
     ]
   },
-];
+  ];
 
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -252,7 +252,7 @@ const Navbar = () => {
   };
 
   const appDownloadUrl = "https://download.tradex.com/android/tradex-v2.1.4.apk";
-
+  
   const openComingSoon = () => setIsComingSoonOpen(true);
   const closeComingSoon = () => setIsComingSoonOpen(false);
   const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
@@ -472,7 +472,7 @@ const Navbar = () => {
                     <i className="fas fa-chevron-right"></i>
                 </div>
                 </Link>
-               
+                
                 {/* Sub-items for Earn */}
                 <div className="dropdown-sub-items">
                   <Link to="/earn/simple-earn" className="dropdown-link">
@@ -530,7 +530,7 @@ const Navbar = () => {
                 </div>
               </Link>
             </div>
-          </div>
+        </div>
           <div className="nav-item">
             Build <i className="fas fa-chevron-down"></i>
           </div>
@@ -601,7 +601,7 @@ const Navbar = () => {
                   </Link>
                   
                   <div className="dropdown-item" onClick={openComingSoon} style={{gap: '12px'}}>
-                    <i className="fas fa-handshake"></i> Affiliates
+                      <i className="fas fa-handshake"></i> Affiliates
                   </div>
                   <ComingSoon isOpen={isComingSoonOpen} onClose={closeComingSoon} />
                   
@@ -699,8 +699,8 @@ const Navbar = () => {
               )}
             </div>
           )}
-        </div>
-        
+              </div>
+              
         {isAuthenticated ? (
           <div className="auth-menu-container">
             {/* Assets Dropdown - hidden on mobile */}
@@ -829,32 +829,32 @@ const Navbar = () => {
           </div>
           
           {/* Notifications Icon with announcements dropdown */}
-          <div className="right-nav-item">
-            <button 
-              className="icon-link" 
-              type="button" 
-              aria-label="Notifications" 
-              style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
-            >
-              <i className="far fa-bell"></i>
-            </button>
-            
-            <div className="right-dropdown-menu notifications-menu">
-              {notifications.map(notification => (
-                <Link to={notification.path} key={notification.id}>
-                  <div className="notification-item">
-                    <h4 className="notification-title">{notification.title}</h4>
-                    <p className="notification-time">{notification.time}</p>
-                  </div>
-                </Link>
-              ))}
+            <div className="right-nav-item">
+              <button 
+                className="icon-link" 
+                type="button" 
+                aria-label="Notifications" 
+                style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
+              >
+                <i className="far fa-bell"></i>
+              </button>
               
-              <Link to="/help/category/announcements" className="more-link">
-                More announcements
-              </Link>
+              <div className="right-dropdown-menu notifications-menu">
+                {notifications.map(notification => (
+                  <Link to={notification.path} key={notification.id}>
+                    <div className="notification-item">
+                      <h4 className="notification-title">{notification.title}</h4>
+                      <p className="notification-time">{notification.time}</p>
+                    </div>
+                  </Link>
+                ))}
+                
+                <Link to="/help/category/announcements" className="more-link">
+                  More announcements
+                </Link>
+              </div>
             </div>
-          </div>
-        
+          
           {/* Help Icon with support dropdown */}
           <div className="right-nav-item">
             <button 
@@ -897,43 +897,43 @@ const Navbar = () => {
             </div>
             <div className="mobile-menu-items">
               {mobileMenuItems.map((item, index) => (
-                                <div key={index} className="mobile-menu-item-container">
-                                {item.hasDropdown ? (
-                                  <div 
-                                    className="mobile-menu-item"
-                                    onClick={() => toggleSubmenu(index)}
-                                  >
-                                    <span>{item.name}</span>
-                                    <i className={`fas fa-chevron-down ${expandedMenus.includes(index) ? 'rotated' : ''}`}></i>
-                                  </div>
-                                ) : (
-                                  <a href={item.path} className="mobile-menu-item">
-                                    <span>{item.name}</span>
-                                  </a>
-                                )}
-                                
-                                {item.hasDropdown && item.subItems && item.subItems.length > 0 && expandedMenus.includes(index) && (
-                                  <div className="mobile-submenu">
-                                    {item.subItems.map((subItem, subIndex) => (
-                                      <a key={subIndex} href={subItem.path} className="mobile-submenu-item">
-                                        {subItem.name}
-                                      </a>
-                                    ))}
-                                  </div>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                          <div className="mobile-menu-footer">
-                            <a href="/download" className="footer-download-button">
-                              Download TradeX app
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </header>
-                );
-              };
-              
-              export default Navbar;
+                <div key={index} className="mobile-menu-item-container">
+                  {item.hasDropdown ? (
+                    <div 
+                      className="mobile-menu-item"
+                      onClick={() => toggleSubmenu(index)}
+                    >
+                      <span>{item.name}</span>
+                      <i className={`fas fa-chevron-down ${expandedMenus.includes(index) ? 'rotated' : ''}`}></i>
+                    </div>
+                  ) : (
+                    <a href={item.path} className="mobile-menu-item">
+                      <span>{item.name}</span>
+                    </a>
+                  )}
+                  
+                  {item.hasDropdown && item.subItems && item.subItems.length > 0 && expandedMenus.includes(index) && (
+                    <div className="mobile-submenu">
+                      {item.subItems.map((subItem, subIndex) => (
+                        <a key={subIndex} href={subItem.path} className="mobile-submenu-item">
+                          {subItem.name}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="mobile-menu-footer">
+              <a href="/download" className="footer-download-button">
+                Download TradeX app
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+};
+
+export default Navbar;
