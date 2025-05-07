@@ -1,10 +1,18 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+// For subtle animations
+import styled, { keyframes } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faExclamationTriangle, faSync } from '@fortawesome/free-solid-svg-icons';
 import { formatNumber } from '../../utils/numberFormatter';
 import axios from 'axios';
 
 const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
+  // Feature detection (for older browsers, incognito, etc.)
+  const supportsWebSocket = typeof window !== 'undefined' && 'WebSocket' in window;
+  const supportsFetch = typeof window !== 'undefined' && 'fetch' in window;
+  // If not supported, fallback to REST only
+  const canUseWebSocket = supportsWebSocket && supportsFetch;
+
   const [activeTab, setActiveTab] = useState('orderbook');
   const [orderBook, setOrderBook] = useState({
     asks: [],
@@ -149,7 +157,11 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   }, [orderBook, cryptoData]);
 
   // Fetch order book data from REST API as fallback
-  const fetchOrderBookREST = useCallback(async () => {
+  // Retry logic for REST API
+const MAX_REST_RETRIES = 5;
+const REST_BACKOFF_BASE = 2000; // ms
+
+const fetchOrderBookREST = useCallback(async (retry = 0) => {
     try {
       // Clear any existing interval
       if (restFallbackRef.current) {
@@ -159,25 +171,33 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
       // Set up a function to fetch data
       const fetchData = async () => {
         try {
-          // Format symbol for API request
-          const symbol = cryptoData?.cryptoSymbol?.toUpperCase() || 'BTC';
-          const apiUrl = `https://api.mpctoken.com/api/v3/depth?symbol=${symbol}USDT&limit=20`;
-          
-          const response = await axios.get(apiUrl);
-          if (response.data && response.data.asks && response.data.bids) {
-            const processedData = processOrderBookData(response.data.asks, response.data.bids);
-            if (processedData) {
-              setOrderBook(processedData);
-              setIsLoading(false);
-              setConnectionStatus('fallback');
-              setDataSource('REST API');
-              lastUpdateTimeRef.current = Date.now();
-            }
-          }
-        } catch (error) {
-          console.error('[OrderBook] REST API fetch error:', error);
-          // Don't change connection status here, let the WebSocket handle that
-        }
+           // Format symbol for API request
+           const symbol = cryptoData?.cryptoSymbol?.toUpperCase() || 'BTC';
+           const apiUrl = `https://api.mpctoken.com/api/v3/depth?symbol=${symbol}USDT&limit=20`;
+           
+           const response = await axios.get(apiUrl);
+           if (response.data && response.data.asks && response.data.bids) {
+             const processedData = processOrderBookData(response.data.asks, response.data.bids);
+             if (processedData) {
+               setOrderBook(processedData);
+               setIsLoading(false);
+               setConnectionStatus('fallback');
+               setDataSource('REST API');
+               lastUpdateTimeRef.current = Date.now();
+             }
+           } else {
+             throw new Error('Malformed REST API response');
+           }
+         } catch (error) {
+           console.error('[OrderBook] REST API fetch error:', error);
+           // If all retries failed, show error state
+           if (retry < MAX_REST_RETRIES) {
+             setTimeout(() => fetchOrderBookREST(retry + 1), REST_BACKOFF_BASE * Math.pow(2, retry));
+           } else {
+             setConnectionStatus('error');
+             setIsLoading(false);
+           }
+         }
       };
       
       // Fetch immediately
@@ -244,7 +264,13 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   useEffect(() => {
     console.log('[OrderBook] Setting up WebSocket connection for', coinPair);
     setIsLoading(true);
-    connectWebSocket();
+    if (canUseWebSocket) {
+      connectWebSocket();
+    } else {
+      // Fallback to REST if WebSocket/fetch not supported
+      setConnectionStatus('fallback');
+      fetchOrderBookREST();
+    }
     
     return () => {
       // Clean up WebSocket connection when component unmounts
@@ -473,26 +499,57 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   const usdtSymbol = cryptoData?.usdtSymbol || 'USDT';
   const usdPrice = 1; // Assuming 1 USDT = 1 USD for simplicity
 
-  // Loading spinner component
-  const LoadingSpinner = () => (
-    <div className="order-book-loading">
-      <FontAwesomeIcon icon={faSpinner} spin className="spinner" />
-      <div className="loading-text">Loading order book data...</div>
-    </div>
-  );
+  // Subtle animation for loading
+const spin = keyframes`
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+`;
+const Spinner = styled(FontAwesomeIcon)`
+  animation: ${spin} 1s linear infinite;
+  color: #fff;
+`;
+const LoadingText = styled.div`
+  color: #aaa;
+  margin-top: 8px;
+  font-size: 1rem;
+`;
+const LoadingSpinner = () => (
+  <div className="order-book-loading">
+    <Spinner icon={faSpinner} spin className="spinner" />
+    <LoadingText>Loading order book data...</LoadingText>
+  </div>
+);
 
-  // Connection error component
-  const ConnectionError = () => (
-    <div className="order-book-error">
-      <FontAwesomeIcon icon={faExclamationTriangle} className="error-icon" />
-      <div className="error-text">
-        Unable to connect to order book data.
-      </div>
-      <button className="reconnect-button" onClick={handleManualReconnect}>
-        <FontAwesomeIcon icon={faSync} /> Reconnect
-      </button>
-    </div>
-  );
+  // Subtle error animation
+const shake = keyframes`
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-3px); }
+  40% { transform: translateX(3px); }
+  60% { transform: translateX(-2px); }
+  80% { transform: translateX(2px); }
+  100% { transform: translateX(0); }
+`;
+const ErrorIcon = styled(FontAwesomeIcon)`
+  color: #ff5b5b;
+  animation: ${shake} 0.6s;
+`;
+const ErrorText = styled.div`
+  color: #ff5b5b;
+  margin: 8px 0;
+  font-size: 1rem;
+`;
+const ConnectionError = () => (
+  <div className="order-book-error">
+    <ErrorIcon icon={faExclamationTriangle} className="error-icon" />
+    <ErrorText>
+      Unable to connect to order book data.<br />
+      Please check your connection or try again.
+    </ErrorText>
+    <button className="reconnect-button" onClick={handleManualReconnect}>
+      <FontAwesomeIcon icon={faSync} /> Reconnect
+    </button>
+  </div>
+);
 
   return (
     <div className="order-book-container">

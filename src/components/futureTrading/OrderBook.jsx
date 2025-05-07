@@ -1,10 +1,18 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+// For subtle animations
+import styled, { keyframes } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faExclamationTriangle, faSync } from '@fortawesome/free-solid-svg-icons';
 import { formatNumber } from '../../utils/numberFormatter';
 import axios from 'axios';
 
 const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
+  // Feature detection (for older browsers, incognito, etc.)
+  const supportsWebSocket = typeof window !== 'undefined' && 'WebSocket' in window;
+  const supportsFetch = typeof window !== 'undefined' && 'fetch' in window;
+  // If not supported, fallback to REST only
+  const canUseWebSocket = supportsWebSocket && supportsFetch;
+
   const [activeTab, setActiveTab] = useState('orderbook');
   const [orderBook, setOrderBook] = useState({
     asks: [],
@@ -70,6 +78,10 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   const cryptoSymbol = cryptoData?.cryptoSymbol || 'BTC';
   const usdtSymbol = cryptoData?.usdtSymbol || 'USDT';
   const usdPrice = 1; // Assuming 1 USDT = 1 USD for simplicity
+
+  // Retry logic for REST API
+  const MAX_REST_RETRIES = 5;
+  const REST_BACKOFF_BASE = 2000; // ms
 
   // Function to process order book data (common for both WebSocket and REST)
   const processOrderBookData = useCallback((asks, bids) => {
@@ -147,43 +159,72 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     return Math.min(90, Math.sqrt(total / maxTotal) * 90);
   };
 
-  // Set up a function to fetch data
-  const fetchData = async () => {
+  // Fetch order book data from REST API as fallback
+  const fetchOrderBookREST = useCallback(async (retry = 0) => {
     try {
-      console.log('[OrderBook] Fetching order book data via REST API');
-      const response = await axios.get(`https://api.binance.com/api/v3/depth?symbol=${cryptoSymbol}USDT&limit=20`);
-      
-      if (response.data && response.data.asks && response.data.bids) {
-        const processedData = processOrderBookData(response.data.asks, response.data.bids);
-        if (processedData) {
-          setOrderBook(processedData);
-          setIsLoading(false);
-          setConnectionStatus('fallback');
-          setDataSource('REST API');
-          console.log('[OrderBook] Successfully fetched order book data via REST API');
-        }
+      // Clear any existing interval
+      if (restFallbackRef.current) {
+        clearInterval(restFallbackRef.current);
       }
+      
+      // Set up a function to fetch data
+      const fetchData = async () => {
+        try {
+          // Format symbol for API request
+          const symbol = cryptoData?.cryptoSymbol?.toUpperCase() || 'BTC';
+          const apiUrl = `https://api.mpctoken.com/api/v3/depth?symbol=${symbol}USDT&limit=20`;
+          
+          const response = await axios.get(apiUrl);
+          if (response.data && response.data.asks && response.data.bids) {
+            const processedData = processOrderBookData(response.data.asks, response.data.bids);
+            if (processedData) {
+              setOrderBook(processedData);
+              setIsLoading(false);
+              setConnectionStatus('fallback');
+              setDataSource('REST API');
+              lastUpdateTimeRef.current = Date.now();
+            }
+          } else {
+            throw new Error('Malformed REST API response');
+          }
+        } catch (error) {
+          console.error('[OrderBook] REST API fetch error:', error);
+          // If all retries failed, show error state
+          if (retry < MAX_REST_RETRIES) {
+            setTimeout(() => fetchOrderBookREST(retry + 1), REST_BACKOFF_BASE * Math.pow(2, retry));
+          } else {
+            setConnectionStatus('error');
+            setIsLoading(false);
+          }
+        }
+      };
+      
+      // Fetch immediately
+      await fetchData();
+      
+      // Then set up interval for regular updates
+      restFallbackRef.current = setInterval(fetchData, 5000);
+      
+      return () => {
+        if (restFallbackRef.current) {
+          clearInterval(restFallbackRef.current);
+        }
+      };
     } catch (error) {
-      console.error('[OrderBook] Error fetching order book data via REST API:', error);
-      // If REST API fails, use mock data as ultimate fallback
-      const mockData = generateMockOrderBook(currentPrice || 86971.01);
-      setOrderBook(mockData);
-      setIsLoading(false);
-      setConnectionStatus('fallback');
-      setDataSource('Mock Data');
+      console.error('[OrderBook] Error setting up REST fallback:', error);
     }
-  };
+  }, [cryptoData, processOrderBookData]);
 
   // Use REST API as fallback if WebSocket fails
   useEffect(() => {
     if (connectionStatus === 'error' || connectionStatus === 'failed') {
       if (!restFallbackRef.current) {
         restFallbackRef.current = true;
-        fetchData();
+        fetchOrderBookREST();
         
         // Set up periodic refresh for REST API fallback
         dataUpdateIntervalRef.current = setInterval(() => {
-          fetchData();
+          fetchOrderBookREST();
         }, 10000); // Refresh every 10 seconds
       }
     }
@@ -195,40 +236,30 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     };
   }, [connectionStatus]);
 
-  // Set up WebSocket connection when component mounts or when forceRefresh changes
+  // Set up WebSocket connection when component mounts or when symbol changes
   useEffect(() => {
-    // Reset state for reconnection
     setIsLoading(true);
-    setConnectionStatus('connecting');
-    setReconnectAttempts(0);
-    
-    // Clear any existing reconnect timeout
-    if (reconnectTimeoutRef.current) {
-      clearTimeout(reconnectTimeoutRef.current);
-      reconnectTimeoutRef.current = null;
+    if (canUseWebSocket) {
+      connectWebSocket();
+    } else {
+      // Fallback to REST if WebSocket/fetch not supported
+      setConnectionStatus('fallback');
+      fetchOrderBookREST();
     }
-    
-    // Close any existing WebSocket connection
-    if (wsRef.current) {
-      wsRef.current.close();
-      wsRef.current = null;
-    }
-    
-    // Connect to WebSocket
-    connectWebSocket();
-    
-    // Clean up on unmount
     return () => {
+      // Clean up WebSocket connection when component unmounts
       if (wsRef.current) {
         wsRef.current.close();
         wsRef.current = null;
       }
       
+      // Clear any existing reconnect timeout
       if (reconnectTimeoutRef.current) {
         clearTimeout(reconnectTimeoutRef.current);
         reconnectTimeoutRef.current = null;
       }
       
+      // Clear any existing data update interval
       if (dataUpdateIntervalRef.current) {
         clearInterval(dataUpdateIntervalRef.current);
         dataUpdateIntervalRef.current = null;
@@ -378,69 +409,58 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     }
   };
 
-  // Function to handle manual reconnect
-  const handleReconnect = () => {
-    console.log('[OrderBook] Manual reconnect requested');
-    
-    // Reset state
-    setIsLoading(true);
-    setConnectionStatus('connecting');
-    setReconnectAttempts(0);
-    
-    // Clear any existing reconnect timeout
-    if (reconnectTimeoutRef.current) {
-      clearTimeout(reconnectTimeoutRef.current);
-      reconnectTimeoutRef.current = null;
-    }
-    
-    // Close any existing WebSocket connection
-    if (wsRef.current) {
-      wsRef.current.close();
-      wsRef.current = null;
-    }
-    
-    // Reset REST fallback flag
-    restFallbackRef.current = false;
-    
-    // Clear any existing data update interval
-    if (dataUpdateIntervalRef.current) {
-      clearInterval(dataUpdateIntervalRef.current);
-      dataUpdateIntervalRef.current = null;
-    }
-    
-    // Connect to WebSocket
-    connectWebSocket();
-  };
-
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-  };
-
-  const handlePrecisionChange = (precision) => {
-    setDecimalPrecision(precision);
-  };
-
   const handleManualReconnect = () => {
     handleReconnect();
   };
 
-  // Loading spinner component
+  // Subtle animation for loading
+  const spin = keyframes`
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  `;
+  const Spinner = styled(FontAwesomeIcon)`
+    animation: ${spin} 1s linear infinite;
+    color: #fff;
+  `;
+  const LoadingText = styled.div`
+    color: #aaa;
+    margin-top: 8px;
+    font-size: 1rem;
+  `;
   const LoadingSpinner = () => (
     <div className="order-book-loading">
-      <FontAwesomeIcon icon={faSpinner} spin />
-      <div className="loading-text">Loading order book...</div>
+      <Spinner icon={faSpinner} spin className="spinner" />
+      <LoadingText>Loading order book data...</LoadingText>
     </div>
   );
 
-  // Connection error component
+  // Subtle error animation
+  const shake = keyframes`
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-3px); }
+    40% { transform: translateX(3px); }
+    60% { transform: translateX(-2px); }
+    80% { transform: translateX(2px); }
+    100% { transform: translateX(0); }
+  `;
+  const ErrorIcon = styled(FontAwesomeIcon)`
+    color: #ff5b5b;
+    animation: ${shake} 0.6s;
+  `;
+  const ErrorText = styled.div`
+    color: #ff5b5b;
+    margin: 8px 0;
+    font-size: 1rem;
+  `;
   const ConnectionError = () => (
-    <div className="connection-error">
-      <FontAwesomeIcon icon={faExclamationTriangle} />
-      <div className="error-message">
-        Failed to connect to real-time data
-      </div>
-      <button onClick={handleManualReconnect} className="reconnect-btn">
-        <FontAwesomeIcon icon={faSync} /> Try Again
+    <div className="order-book-error">
+      <ErrorIcon icon={faExclamationTriangle} className="error-icon" />
+      <ErrorText>
+        Unable to connect to order book data.<br />
+        Please check your connection or try again.
+      </ErrorText>
+      <button className="reconnect-button" onClick={handleManualReconnect}>
+        <FontAwesomeIcon icon={faSync} /> Reconnect
       </button>
     </div>
   );
