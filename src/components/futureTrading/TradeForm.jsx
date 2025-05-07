@@ -7,6 +7,37 @@ import {
   faChartLine, faCheckCircle, faExclamationCircle, faInfoCircle, 
   faExclamationTriangle, faTimes, faQuestionCircle 
 } from '@fortawesome/free-solid-svg-icons';
+import styled from 'styled-components';
+
+// Scrollable content wrapper for the trade form (OKX dark mode, responsive)
+const ScrollableFormContent = styled.div`
+  flex: 1 1 auto;
+  overflow-y: auto;
+  max-height: 420px;
+  min-height: 0;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: #222 #101010;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    background: #101010;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #222;
+    border-radius: 8px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: #333;
+  }
+
+  @media (max-width: 900px) {
+    max-height: 45vh;
+  }
+  @media (max-width: 600px) {
+    max-height: 38vh;
+  }
+`;
 
 /**
  * Get coin ID from coin pair ID using the favorites array
@@ -280,6 +311,7 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
   
   return (
     <div className="trade-form">
+      <ScrollableFormContent>
       {/* Tabs */}
       <div className="trade-tabs">
         <div
@@ -479,6 +511,33 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
         </label>
       </div>
 
+      {/* Cost Section */}
+      <div className="cost-section">
+        <div className="cost-item">
+          <div className="cost-label">Cost</div>
+          <div className="max-price">{calculateUsdtValue().replace(' USDT', '')} USDT</div>
+        </div>
+        <div className="cost-item">
+          <div className="cost-label">Fees</div>
+          <div className="min-price">{(parseFloat(calculateUsdtValue().replace(' USDT', '')) * 0.0005).toFixed(2)} USDT</div>
+        </div>
+      </div>
+
+      {/* Tools Section */}
+      <div className="tools-section">
+        <div className="tool-item">
+          <span className="percent-icon">%</span> Calculator
+        </div>
+        <div className="tool-item">
+          <span className="percent-icon">%</span> Fees
+        </div>
+        <div className="tool-item">
+          <FontAwesomeIcon icon={faChartLine} style={{ marginRight: '4px' }} />
+          Position builder
+        </div>
+      </div>
+      </ScrollableFormContent>
+
       {/* Action Button */}
       <div style={{ display: 'flex', justifyContent: 'center', margin: '15px 0' }}>
         {isAuthenticated ? (
@@ -504,32 +563,6 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
             LOGIN TO TRADE
           </button>
         )}
-      </div>
-
-      {/* Cost Section */}
-      <div className="cost-section">
-        <div className="cost-item">
-          <div className="cost-label">Cost</div>
-          <div className="max-price">{calculateUsdtValue().replace(' USDT', '')} USDT</div>
-        </div>
-        <div className="cost-item">
-          <div className="cost-label">Fees</div>
-          <div className="min-price">{(parseFloat(calculateUsdtValue().replace(' USDT', '')) * 0.0005).toFixed(2)} USDT</div>
-        </div>
-      </div>
-
-      {/* Tools Section */}
-      <div className="tools-section">
-        <div className="tool-item">
-          <span className="percent-icon">%</span> Calculator
-        </div>
-        <div className="tool-item">
-          <span className="percent-icon">%</span> Fees
-        </div>
-        <div className="tool-item">
-          <FontAwesomeIcon icon={faChartLine} style={{ marginRight: '4px' }} />
-          Position builder
-        </div>
       </div>
     </div>
   );
