@@ -15,6 +15,7 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess, isBuy 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [notification, setNotification] = useState(null);
+  const [notificationTimeout, setNotificationTimeout] = useState(null);
   const [uid, setUid] = useState('');
 
   // Use external isBuy prop if provided (for mobile), otherwise use local state
@@ -129,37 +130,31 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess, isBuy 
   };
 
   const handleTradeSubmit = async () => {
+    // Clear any existing notification timeout
+    if (notificationTimeout) {
+      clearTimeout(notificationTimeout);
+      setNotificationTimeout(null);
+    }
+
     if (!isAuthenticated) {
-      setNotification({
-        type: 'error',
-        message: 'Please login to trade'
-      });
+      showNotification('error', 'Please login to trade');
       return;
     }
     
     if (!amount || parseFloat(amount) <= 0) {
-      setNotification({
-        type: 'error',
-        message: 'Please enter a valid amount'
-      });
+      showNotification('error', 'Please enter a valid amount');
       return;
     }
     
     if (!price || parseFloat(price) <= 0) {
-      setNotification({
-        type: 'error',
-        message: 'Please enter a valid price'
-      });
+      showNotification('error', 'Please enter a valid price');
       return;
     }
     
     // Check if user has enough balance
     const maxAmount = getMaxAmount();
     if (parseFloat(amount) > maxAmount) {
-      setNotification({
-        type: 'error',
-        message: `Insufficient balance. Max ${effectiveIsBuy ? 'buy' : 'sell'} amount: ${maxAmount.toFixed(5)}`
-      });
+      showNotification('error', `Insufficient balance. Max ${effectiveIsBuy ? 'buy' : 'sell'} amount: ${maxAmount.toFixed(5)}`);
       return;
     }
     
@@ -172,8 +167,9 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess, isBuy 
         coin_pair_id: coinPairId,
         price: parseFloat(price),
         amount: parseFloat(amount),
-        order_type: activeOrderType,
-        side: effectiveIsBuy ? 'buy' : 'sell'
+        order_type: effectiveIsBuy ? 'buy' : 'sell', // Using buy or sell for order_type
+        side: effectiveIsBuy ? 'buy' : 'sell',
+        excecution_type: 'limit' // Using excecution_type as per API requirements
       };
       
       console.log('Submitting trade order:', orderData);
@@ -181,10 +177,7 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess, isBuy 
       const response = await executeSpotTradeOrder(orderData);
       
       if (response.success) {
-        setNotification({
-          type: 'success',
-          message: `${effectiveIsBuy ? 'Buy' : 'Sell'} order placed successfully!`
-        });
+        showNotification('success', `${effectiveIsBuy ? 'Buy' : 'Sell'} order placed successfully!`);
         
         // Reset form
         setAmount('');
@@ -196,20 +189,30 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess, isBuy 
           onTradeSuccess();
         }
       } else {
-        setNotification({
-          type: 'error',
-          message: response.message || 'Failed to place order. Please try again.'
-        });
+        showNotification('error', response.message || 'Failed to place order. Please try again.');
       }
     } catch (error) {
       console.error('Error submitting trade:', error);
-      setNotification({
-        type: 'error',
-        message: 'An error occurred. Please try again later.'
-      });
+      showNotification('error', 'An error occurred. Please try again later.');
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Helper function to show notification with auto-dismiss
+  const showNotification = (type, message) => {
+    setNotification({
+      type,
+      message,
+      icon: type === 'success' ? '✓' : type === 'error' ? '✕' : type === 'warning' ? '⚠' : 'ℹ'
+    });
+    
+    // Auto-dismiss notification after 5 seconds
+    const timeout = setTimeout(() => {
+      setNotification(null);
+    }, 5000);
+    
+    setNotificationTimeout(timeout);
   };
 
   return (
@@ -383,8 +386,20 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess, isBuy 
       {notification && (
         <div className={`notification ${notification.type}`}>
           <div className="notification-content">
+            <div className="notification-icon">{notification.icon}</div>
             <div className="notification-message">{notification.message}</div>
-            <button className="notification-close" onClick={() => setNotification(null)}>×</button>
+            <button 
+              className="notification-close" 
+              onClick={() => {
+                if (notificationTimeout) {
+                  clearTimeout(notificationTimeout);
+                  setNotificationTimeout(null);
+                }
+                setNotification(null);
+              }}
+            >
+              ×
+            </button>
           </div>
         </div>
       )}
