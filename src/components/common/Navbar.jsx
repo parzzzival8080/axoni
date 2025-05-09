@@ -148,7 +148,9 @@ const Navbar = () => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('spot');
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const searchRef = useRef(null);
+  const mobileSearchRef = useRef(null);
   const navigate = useNavigate();
 
   const signupButtonStyle = {
@@ -296,6 +298,31 @@ const Navbar = () => {
   ] : [];
   
   const displayResults = filteredCoins.length > 0 ? filteredCoins : testResults;
+
+  // Function to toggle mobile search
+  const toggleMobileSearch = () => {
+    setIsMobileSearchOpen(!isMobileSearchOpen);
+    if (!isMobileSearchOpen) {
+      // When opening, focus the search input after a brief delay to allow animation
+      setTimeout(() => {
+        const searchInput = document.getElementById('mobile-search-input');
+        if (searchInput) searchInput.focus();
+      }, 100);
+    }
+  };
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  // Clear search input
+  const clearSearch = () => {
+    setSearchTerm('');
+    const searchInput = document.getElementById('mobile-search-input');
+    if (searchInput) searchInput.focus();
+  };
+
 
   return (
     <header>
@@ -629,15 +656,25 @@ const Navbar = () => {
 
       {/* Header right section */}
       <div className="header-right">
-        {/* Desktop search box */}
-        <div className="okx-navbar-search-box" ref={searchRef}>
+          {/* Mobile search icon - only visible on mobile */}
+          <div className="mobile-search-icon-wrapper">
+            <button 
+              className="mobile-search-icon" 
+              onClick={toggleMobileSearch}
+              aria-label="Search"
+            >
+              <i className="fas fa-search"></i>
+            </button>
+        </div>
+        {/* Desktop search box - hidden on mobile */}
+        <div className="desktop-search okx-navbar-search-box" ref={searchRef}>
           <i className="fas fa-search" aria-hidden="true"></i>
           <input
             type="text"
             placeholder="Search..."
             aria-label="Search"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleSearchChange}
             onFocus={() => setIsSearchFocused(true)}
           />
           {isSearchFocused && (
@@ -699,12 +736,106 @@ const Navbar = () => {
               )}
             </div>
           )}
+        </div>
+
+        {/* Mobile search container */}
+        {isMobileSearchOpen && (
+          <div className="mobile-search-container" ref={mobileSearchRef}>
+            <div className="mobile-search-header">
+              <div className="mobile-search-input-wrapper">
+                <i className="fas fa-search" aria-hidden="true"></i>
+                <input
+                  id="mobile-search-input"
+                  type="text"
+                  placeholder="Search..."
+                  aria-label="Search"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  autoFocus
+                />
+                {searchTerm && (
+                  <button 
+                    className="mobile-search-clear" 
+                    onClick={clearSearch}
+                    aria-label="Clear search"
+                  >
+                    <i className="fas fa-times"></i>
+                  </button>
+                )}
+              </div>
+              <button 
+                className="mobile-search-close" 
+                onClick={toggleMobileSearch}
+                aria-label="Close search"
+              >
+                Cancel
+              </button>
+            </div>
+            
+            <div className="mobile-search-content">
+              <div className="search-tabs">
+                <div 
+                  className={`search-tab ${activeTab === 'spot' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('spot')}
+                >
+                  Spot
+                </div>
+                <div 
+                  className={`search-tab ${activeTab === 'futures' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('futures')}
+                >
+                  Futures
+                </div>
               </div>
               
+              {isLoading ? (
+                <div className="search-loading-item">
+                  <div className="search-spinner"></div>
+                  <span>Loading coins...</span>
+                </div>
+              ) : displayResults.length > 0 ? (
+                <div className="search-coins-container">
+                  {displayResults.map((coin) => (
+                    <div 
+                      key={coin.coin_pair} 
+                      className="search-coin-item" 
+                      onClick={() => handleCoinSelect(coin)}
+                    >
+                      <div className="search-coin-logo">
+                        <img src={coin.logo_path || defaultCoinLogo} alt={coin.symbol} />
+                      </div>
+                      <div className="search-coin-info">
+                        <div className="search-coin-name">{coin.symbol}/{coin.pair_name || 'USDT'}</div>
+                        <div className="search-coin-price">
+                          ${parseFloat(coin.price).toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 8
+                          })}
+                          <span className={coin.price_change_24h >= 0 ? 'positive-change' : 'negative-change'}>
+                            {coin.price_change_24h >= 0 ? '+' : ''}{(coin.price_change_24h || 0).toFixed(2)}%
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : searchTerm.trim() ? (
+                <div className="search-no-results-item">
+                  No coins found matching "{searchTerm}"
+                </div>
+              ) : (
+                <div className="search-info-item">
+                  Start typing to search for coins
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+                      
         {isAuthenticated ? (
           <div className="auth-menu-container">
             {/* Assets Dropdown - hidden on mobile */}
-            <div className="dropdown-container desktop-only">
+            <div className="dropdown-container">
               <div className="assets-dropdown">
                 <span>Assets</span>
                 <i className="fas fa-chevron-down"></i>
@@ -799,7 +930,7 @@ const Navbar = () => {
           {/* Download App Icon with QR code dropdown */}
           <div className="right-nav-item">
             <button 
-              className="icon-link" 
+              className="navbar-icon-link" 
               type="button" 
               aria-label="Download app" 
               style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
@@ -828,17 +959,17 @@ const Navbar = () => {
             </div>
           </div>
           
-          {/* Notifications Icon with announcements dropdown */}
-            <div className="right-nav-item">
-              <button 
-                className="icon-link" 
-                type="button" 
-                aria-label="Notifications" 
-                style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
-              >
-                <i className="far fa-bell"></i>
-              </button>
-              
+            {/* Notifications Icon with announcements dropdown */}
+              <div className="right-nav-item">
+                <button 
+                  className="navbar-icon-link" 
+                  type="button" 
+                  aria-label="Notifications" 
+                  style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
+                >
+                  <i className="far fa-bell"></i>
+                </button>
+                
               <div className="right-dropdown-menu notifications-menu">
                 {notifications.map(notification => (
                   <Link to={notification.path} key={notification.id}>
@@ -858,7 +989,7 @@ const Navbar = () => {
           {/* Help Icon with support dropdown */}
           <div className="right-nav-item">
             <button 
-              className="icon-link" 
+              className="navbar-icon-link" 
               type="button" 
               aria-label="Help" 
               style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}

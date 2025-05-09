@@ -20,7 +20,6 @@ import Market from './pages/Market';
 import DownloadPage from './pages/DownloadPage';
 import Announcement from './pages/supportCenter/announcement/Announcement';
 import Article from './pages/supportCenter/announcement/Article';
-import MyTickets from './pages/supportCenter/history/MyTickets';
 
 function App() {
   return (
@@ -135,7 +134,7 @@ function App() {
               <ChatBubble />
             </>
           } />
-            <Route path="/help/:articleSlug" element={
+           <Route path="/help/:articleSlug" element={
               <>
                 <Navbar />
                 <main>
@@ -145,16 +144,6 @@ function App() {
                 <ChatBubble />
               </>
             } />
-            <Route path="/support-center/history" element={
-            <>
-              <Navbar />
-              <main>
-                <MyTickets/>
-              </main>
-              <Footer />
-              <ChatBubble />
-            </>
-          } />
           <Route path="/pages/morePages/CampaignCenter" element={
             <>
               <Navbar />

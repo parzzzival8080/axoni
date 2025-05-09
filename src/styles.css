@@ -483,7 +483,7 @@ h1, h2, h3, h4 {
   transform: rotate(45deg);
 }
 
-/* Footer.css */
+/* Footer */
 .footer {
   background-color: #000;
   color: #fff;
@@ -810,6 +810,7 @@ h1, h2, h3, h4 {
     margin-top: 10px;
   }
 }
+
 .chat-bubble {
   position: fixed;
   bottom: 20px;
@@ -1137,13 +1138,18 @@ h1, h2, h3, h4 {
 
 /* Footer refinements */
 .footer-logo img {
-  margin-bottom: 16px;
-  height: 36px;
+  height: 24px;
 }
 
 .download-btn {
   height: 36px;
   font-size: 14px;
+}
+
+/* Exact OKX color scheme */
+:root {
+  --primary-color: #0052ff;
+  --button-color: #0052ff;
 }
 
 /* Chat bubble color correction */

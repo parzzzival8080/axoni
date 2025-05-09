@@ -117,7 +117,7 @@ body {
   margin-left: 0;
 }
 
-.balance-info {
+.conversion-balance-info {
   margin-top: 16px;
   margin-bottom: 16px;
   font-size: 13px;
@@ -125,7 +125,7 @@ body {
   dispaly: flex;
 }
 
-.balance-info a {
+.conversion-balance-info a {
   color: #007bff;
   text-decoration: none;
   margin-left: 5px;

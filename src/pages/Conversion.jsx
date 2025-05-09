@@ -321,7 +321,7 @@ const Conversion = () => {
           </div>
         </div>
         
-        <div className="balance-info">
+        <div className="conversion-balance-info">
             {balance.loading ? (
               <span>Loading balance...</span>
             ) : balance.error ? (
