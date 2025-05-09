@@ -164,7 +164,7 @@ header {
   color: white;
 }
 
-.icon-link {
+.navbar-icon-link {
   color: white;
     font-size: 16px;
     text-decoration: none;
@@ -612,9 +612,9 @@ header {
 }
 
 /* Wider dropdown with tabs */
-.wide-dropdown {
+/* .wide-dropdown {
   width: 450px !important;
-}
+} */
 
 /* Tabs styling */
 .search-tabs {
@@ -922,7 +922,104 @@ header {
     width: 40px;
     z-index: 120;
   }
+
+  .auth-menu-container {
+    margin-right: 8px;
+    gap: 8px; /* Reduce gap between assets and profile */
+  }
+    /* Make assets dropdown more compact on mobile */
+    .assets-dropdown {
+      padding: 3px 6px;
+      margin-right: 6px;
+      font-size: 12px;
+      min-height: 28px;
+    }
+    
+    .assets-dropdown span {
+      font-size: 12px;
+    }
+    
+    .assets-dropdown i {
+      font-size: 9px;
+    }
+    
+    /* Make profile icon smaller on mobile */
+    .profile-dropdown {
+      width: 28px;
+      height: 28px;
+    }
+  
+    .user-icon-small {
+      font-size: 14px;
+    }
+    
+    /* Make search box smaller */
+    .okx-navbar-search-box {
+      min-width: 70px !important;
+      margin-right: 8px !important;
+      height: 26px !important;
+    }
+    
+    .okx-navbar-search-box input {
+      width: 60px !important;
+      font-size: 11px !important;
+      height: 22px !important;
+      padding: 0 16px 0 16px !important;
+    }
+    
+    .okx-navbar-search-box i {
+      left: 10px !important;
+      font-size: 12px !important;
+    }
+    
+    /* Reduce header padding */
+    header {
+      padding: 0 10px;
+    }
+    
+    /* Reduce logo margin */
+    .logo {
+      margin-right: 10px;
+    }
+    
+    /* Reduce size of logo */
+    .logo img {
+      height: 20px;
+    }
+    
+    /* Login/Signup buttons */
+    .login-link {
+      font-size: 12px;
+      margin-right: 6px;
+    }
+    
+    /* Signup button */
+    a[style*="signupButtonStyle"] {
+      padding: 3px 8px;
+      font-size: 12px;
+      margin-right: 6px;
+    }
+    .assets-dropdown-menu, 
+  .profile-dropdown-menu {
+    z-index: 1500; /* Ensure dropdowns appear above other elements */
+  }
+  
+  /* Touch-friendly menu items */
+  .assets-dropdown-menu .menu-item,
+  .profile-dropdown-menu .menu-item {
+    padding: 14px 16px;
+  }
 }
+
+/* Fix for mobile menu toggle button */
+@media (max-width: 1024px) {
+  .mobile-menu-toggle {
+    margin-left: 6px;
+    height: 36px;
+    width: 36px;
+  }
+}
+
 
 @media (min-width: 1025px) {
   .mobile-menu-toggle {
@@ -932,22 +1029,33 @@ header {
 
 /* Mobile search icon */
 .mobile-search-container {
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #000;
+  z-index: 2000;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  animation: slideDown 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  height: 100%;
+  overflow: hidden;
 }
 
 .mobile-search-icon {
   color: white;
   font-size: 16px;
+  background: none;
+  border: none;
   cursor: pointer;
-  padding: 4px;
-  margin-right: 12px;
-  width: 22px;
-  height: 22px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
 }
 
 /* Mobile expandable search box */
@@ -1175,4 +1283,313 @@ header {
     flex: 1;
     justify-content: flex-end;
     }
+    /* Further reduce size */
+  .auth-menu-container {
+    gap: 4px;
+  }
+  
+  /* Even more compact assets dropdown */
+  .assets-dropdown {
+    padding: 2px 5px;
+    margin-right: 4px;
+  }
+  
+  .assets-dropdown span {
+    font-size: 11px;
+  }
+  
+  .assets-dropdown i {
+    font-size: 8px;
+  }
+  
+  /* Make profile icon smaller */
+  .profile-dropdown {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .user-icon-small {
+    font-size: 12px;
+  }
+  
+  /* Make menu dropdowns position better */
+  .assets-dropdown-menu {
+    width: 200px;
+    right: -50px;
+    top: 32px;
+  }
+  
+  .assets-dropdown-menu::before {
+    right: 60px;
+  }
+  
+  .profile-dropdown-menu {
+    width: 240px;
+    right: -50px;
+    top: 32px;
+  }
+  
+  /* Make search box even smaller */
+  .okx-navbar-search-box {
+    min-width: 50px !important;
+    margin-right: 6px !important;
+    height: 24px !important;
+  }
+  
+  .okx-navbar-search-box input {
+    width: 40px !important;
+    padding: 0 16px 0 14px !important;
+  }
+  
+  .okx-navbar-search-box i {
+    left: 8px !important;
+  }
+  
+  /* Make menu items more compact */
+  .menu-item {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+  
+  .menu-item i {
+    margin-right: 8px;
+    font-size: 14px;
+  }
 }
+
+/* For very small screens like iPhone SE */
+@media (max-width: 360px) {
+  /* Micro-adjustments for tiny screens */
+  .auth-menu-container {
+    gap: 2px;
+  }
+  
+  /* Minimize assets dropdown text */
+  .assets-dropdown {
+    padding: 2px 4px;
+    margin-right: 2px;
+  }
+  
+  /* Make search box tiny */
+  .okx-navbar-search-box {
+    min-width: 30px !important;
+    margin-right: 4px !important;
+  }
+  
+  .okx-navbar-search-box input {
+    width: 20px !important;
+  }
+  
+  /* Adjust hamburger menu */
+  .mobile-menu-toggle {
+    margin-left: 4px;
+    width: 32px;
+  }
+  
+  /* Make profile icon tiny */
+  .profile-dropdown {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Mobile search icon styles */
+.mobile-search-icon-wrapper {
+  display: none; /* Hidden on desktop by default */
+}
+
+.mobile-search-icon {
+  color: white;
+  font-size: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.mobile-search-icon:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Mobile search container */
+.mobile-search-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #000;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  animation: slideDown 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  height: 100%;
+  overflow: hidden;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.mobile-search-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  border-bottom: 1px solid #1a1a1a;
+  height: 56px;
+}
+
+.mobile-search-input-wrapper {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #181A20;
+  border-radius: 8px;
+  padding: 0 10px;
+  height: 36px;
+  margin-right: 10px;
+}
+
+.mobile-search-input-wrapper i {
+  color: #7e8299;
+  font-size: 14px;
+  margin-right: 8px;
+}
+
+.mobile-search-input-wrapper input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 14px;
+  width: 100%;
+}
+
+.mobile-search-clear {
+  background: none;
+  border: none;
+  color: #7e8299;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.mobile-search-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.mobile-search-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Make sure the coin container is scrollable but the parent container isn't */
+.mobile-search-content .search-coins-container {
+  flex: 1;
+  overflow-y: auto;
+  max-height: calc(100vh - 110px); /* Subtract header and tabs heights */
+}
+
+.desktop-search.okx-navbar-search-box {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Media queries */
+@media (max-width: 1024px) {
+  .desktop-search.okx-navbar-search-box,
+  div.desktop-search.okx-navbar-search-box {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    left: -9999px !important;
+  }
+  /* Show mobile search icon, hide desktop search in mobile view */
+  .mobile-search-icon-wrapper {
+    display: block !important;
+    margin-right: 10px;
+  }
+  
+  .desktop-search {
+    display: none;
+  }
+  
+  /* Adjust elements to fit better */
+  .auth-menu-container {
+    margin-right: 6px;
+    gap: 6px;
+  }
+  
+  /* Make assets dropdown more compact */
+  .assets-dropdown {
+    padding: 3px 6px;
+    margin-right: 5px;
+    font-size: 12px;
+  }
+  
+  /* Reduce header padding */
+  header {
+    padding: 0 12px;
+  }
+  
+  /* Adjust coin item for touch */
+  .search-coin-item {
+    padding: 14px 16px;
+  }
+}
+
+/* For very small screens */
+@media (max-width: 360px) {
+  .mobile-search-header {
+    padding: 8px 12px;
+  }
+  
+  .mobile-search-close {
+    font-size: 13px;
+  }
+  
+  .mobile-search-input-wrapper {
+    height: 32px;
+    margin-right: 8px;
+  }
+}
+

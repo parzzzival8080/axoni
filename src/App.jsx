@@ -18,6 +18,8 @@ import Overview from './pages/account/Overview';
 import Profile from './pages/account/Profile';
 import Market from './pages/Market';
 import DownloadPage from './pages/DownloadPage';
+import Announcement from './pages/supportCenter/announcement/Announcement';
+import Article from './pages/supportCenter/announcement/Article';
 
 function App() {
   return (
@@ -122,6 +124,26 @@ function App() {
               <Footer />
             </>
           } />
+          <Route path="/help/category/announcements" element={
+            <>
+              <Navbar />
+              <main>
+                <Announcement/>
+              </main>
+              <Footer />
+              <ChatBubble />
+            </>
+          } />
+           <Route path="/help/:articleSlug" element={
+              <>
+                <Navbar />
+                <main>
+                  <Article />
+                </main>
+                <Footer />
+                <ChatBubble />
+              </>
+            } />
           <Route path="/pages/morePages/CampaignCenter" element={
             <>
               <Navbar />

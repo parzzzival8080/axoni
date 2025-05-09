@@ -1,11 +1,38 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { FaMobile, FaDesktop } from 'react-icons/fa';
 import './DownloadPage.css';
 import DownloadImage1 from '../assets/img/download-img-1.png';
 import DownloadImage2 from '../assets/img/download-img-2-removebg-preview.png';
 import DownloadImage3 from '../assets/img/download-img-3.png';
 import logo from '../assets/logo/logo.png';
+import ComingSoon from '../components/common/ComingSoon';
+
 const DownloadPage = () => {
+  const [isComingSoonOpen, setIsComingSoonOpen] = useState(false);
+  
+  const openComingSoonModal = () => {
+    setIsComingSoonOpen(true);
+  };
+  
+  const closeComingSoonModal = () => {
+    setIsComingSoonOpen(false);
+  };
+
+  const appDownloadUrl = "https://drive.google.com/file/d/1FeM7hUwGLu1ac_boBGX-_TyVp3d2_F6V/view?usp=sharing";
+  const handleAppDownload = () => {
+    // For Google Drive links, we need to convert the sharing URL to a direct download URL
+    // This works for public Google Drive files
+    const fileId = appDownloadUrl.split('/')[5]; // Extract the file ID from the URL
+    const directDownloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+    
+    // Create a temporary anchor element to trigger the download
+    const downloadLink = document.createElement('a');
+    downloadLink.href = directDownloadUrl;
+    downloadLink.setAttribute('download', 'TradeX.apk');
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  };
   return (
     <div className="landing">
       {/* Hero Section */}
@@ -19,11 +46,14 @@ const DownloadPage = () => {
             </h1>
             <p className="landing__tagline">Crypto trading — made easy for you</p>
             <div className="landing__buttons">
-              <button className="landing__button">
+              <button className="landing__button" onClick={handleAppDownload}>
                 <FaMobile className="landing__button-icon" />
                 Download app
               </button>
-              <button className="landing__button landing__button--outline">
+              <button 
+                className="landing__button landing__button--outline"
+                onClick={openComingSoonModal}
+              >
                 <FaDesktop className="landing__button-icon" />
                 Download Desktop
               </button>
@@ -81,17 +111,23 @@ const DownloadPage = () => {
             <p className="landing__footer-tagline">Crypto exchange on the go</p>
             </div>
             <div className="landing__footer-buttons">
-            <button className="landing__button landing__button--dark landing__button--outline">
+            <button className="landing__button landing__button--dark landing__button--outline" onClick={handleAppDownload}>
                 Download app
             </button>
-            <button className="landing__button landing__button--dark landing__button--outline">
+            <button 
+              className="landing__button landing__button--dark landing__button--outline"
+              onClick={openComingSoonModal}
+            >
                 Download Desktop
             </button>
             </div>
          </div>
-        </footer>
+      </footer>
+      
+      {/* Coming Soon Modal */}
+      <ComingSoon isOpen={isComingSoonOpen} onClose={closeComingSoonModal} />
     </div>
-  )
-}
+  );
+};
 
-export default DownloadPage
+export default DownloadPage;

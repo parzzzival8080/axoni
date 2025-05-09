@@ -15,7 +15,7 @@
     --futures-buy-color: #00b897;
     --futures-sell-color: #f23645;
     --futures-warning-color: #f0b90b;
-    --futures-accent-color: #3772FF; /* Futures-specific blue highlight */
+    /* --futures-accent-color: #3772FF; */
     
     /* Status colors with transparency */
     --futures-buy-bg: rgba(0, 181, 116, 0.2);
@@ -1933,7 +1933,6 @@
   font-family: 'Roboto Mono', monospace;
   font-size: 14px;
   font-weight: 600;
-  color: #3772FF;
 }
 
 /* Chart tools styling */
