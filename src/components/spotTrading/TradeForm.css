@@ -323,34 +323,36 @@
 
 .spot-trading-container .notification {
   position: fixed;
-  top: 20px;
+  bottom: 20px;
   right: 20px;
-  padding: var(--spacing-md);
-  border-radius: var(--border-radius);
-  background-color: var(--secondary-bg);
+  padding: 12px 16px;
+  border-radius: 8px;
+  background-color: #1E2026;
   color: var(--text-primary);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
   z-index: 1000;
   display: flex;
   align-items: center;
-  max-width: 300px;
+  max-width: 320px;
   animation: slideIn 0.3s ease-out forwards;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .spot-trading-container .notification.success {
-  border-left: 3px solid var(--success-color);
+  border-left: 4px solid var(--success-color);
 }
 
 .spot-trading-container .notification.error {
-  border-left: 3px solid var(--error-color);
+  border-left: 4px solid var(--error-color);
 }
 
 .spot-trading-container .notification.info {
-  border-left: 3px solid var(--focus-color);
+  border-left: 4px solid var(--focus-color);
 }
 
 .spot-trading-container .notification.warning {
-  border-left: 3px solid var(--warning-color);
+  border-left: 4px solid var(--warning-color);
 }
 
 .spot-trading-container .notification-content {
@@ -360,9 +362,44 @@
   width: 100%;
 }
 
+.spot-trading-container .notification-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-right: 12px;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.spot-trading-container .notification.success .notification-icon {
+  background-color: rgba(0, 181, 116, 0.15);
+  color: var(--success-color);
+}
+
+.spot-trading-container .notification.error .notification-icon {
+  background-color: rgba(242, 54, 69, 0.15);
+  color: var(--error-color);
+}
+
+.spot-trading-container .notification.info .notification-icon {
+  background-color: rgba(55, 114, 255, 0.15);
+  color: var(--focus-color);
+}
+
+.spot-trading-container .notification.warning .notification-icon {
+  background-color: rgba(240, 185, 11, 0.15);
+  color: var(--warning-color);
+}
+
 .spot-trading-container .notification-message {
   flex: 1;
-  font-size: var(--font-size-sm);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  padding-right: 8px;
 }
 
 .spot-trading-container .notification-close {
@@ -370,10 +407,22 @@
   border: none;
   color: var(--text-secondary);
   cursor: pointer;
-  margin-left: var(--spacing-sm);
+  margin-left: 8px;
   padding: 0;
-  font-size: var(--font-size-lg);
+  font-size: 18px;
   line-height: 1;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.spot-trading-container .notification-close:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
 }
 
 /* --- Modern/Professional OKX-style Slider --- */
@@ -576,13 +625,121 @@
   color: #fff;
 }
 
+/* Pill-shaped Login Button Override */
+.trade-form-login-btn, .trade-form-login-btn button, .trade-form-login-btn input[type="button"], .trade-form-login-btn input[type="submit"] {
+  border-radius: 999px !important;
+  padding: 0.85rem 0 !important;
+  min-width: 100% !important;
+  background: #181A20 !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  font-size: 1.25rem !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  transition: background 0.2s;
+}
+
+.trade-form-login-btn button:hover,
+.trade-form-login-btn input[type="button"]:hover,
+.trade-form-login-btn input[type="submit"]:hover {
+  background: #23262f !important;
+}
+
+/* Login button pill-shaped styling */
+.pill-login-button {
+  border-radius: 9999px !important;
+  width: 90% !important;
+  max-width: 320px !important;
+  height: 48px !important;
+  margin: 20px auto 10px auto !important;
+  display: block !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+  background-color: #181A20 !important; /* OKX dark mode */
+  color: #fff !important;
+  border: none !important;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15) !important;
+  cursor: pointer !important;
+  outline: none !important;
+  overflow: hidden !important;
+  transition: background 0.2s;
+}
+.pill-login-button:hover {
+  background: #23262f !important;
+}
+
+.spot-login-pill-btn {
+  border-radius: 32px !important; /* rounded corners, not fully pill */
+  width: 90% !important;
+  max-width: 320px !important;
+  height: 48px !important;
+  margin: 20px auto 10px auto !important;
+  display: block !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+  background-color: #fff !important;
+  color: #181A20 !important; /* black text for contrast */
+  border: 1.5px solid #fff !important;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15) !important;
+  cursor: pointer !important;
+  outline: none !important;
+  overflow: hidden !important;
+  transition: background 0.2s, color 0.2s;
+}
+.spot-login-pill-btn:hover {
+  background: #23262f !important;
+  color: #fff !important;
+  border-color: #23262f !important;
+}
+
+/* FORCE pill shape for spot login button */
+.spot-login-pill-btn, .spot-login-pill-btn *, .trade-form .spot-login-pill-btn, .trade-form .spot-login-pill-btn * {
+  border-radius: 9999px !important;
+  -webkit-border-radius: 9999px !important;
+  -moz-border-radius: 9999px !important;
+  -ms-border-radius: 9999px !important;
+  -o-border-radius: 9999px !important;
+}
+
+.spot-login-pill-btn {
+  width: 90% !important;
+  max-width: 320px !important;
+  height: 48px !important;
+  margin: 20px auto 10px auto !important;
+  display: block !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+  background-color: #fff !important;
+  color: #181A20 !important;
+  border: 1.5px solid #fff !important;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15) !important;
+  cursor: pointer !important;
+  outline: none !important;
+  overflow: hidden !important;
+  transition: background 0.2s, color 0.2s;
+  z-index: 9999 !important;
+  position: relative !important;
+}
+.spot-login-pill-btn:hover {
+  background: #23262f !important;
+  color: #fff !important;
+  border-color: #23262f !important;
+}
+
 @keyframes slideIn {
   from {
-    transform: translateX(100%);
+    transform: translateY(20px);
     opacity: 0;
   }
   to {
-    transform: translateX(0);
+    transform: translateY(0);
     opacity: 1;
   }
 }

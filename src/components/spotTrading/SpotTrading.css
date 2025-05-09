@@ -15,6 +15,8 @@
     flex-direction: column;
     min-height: 100vh;
     padding: 0;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 /* Header */
@@ -81,13 +83,17 @@ nav {
 }
 
 /* Sub header */
-.spot-trading-container .sub-header {
+.sub-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 16px;
+    padding: 6px 12px;
+    min-height: 40px;
+    font-size: 15px;
+    gap: 8px;
     border-bottom: 1px solid var(--border-color, #232323);
     background: #000 !important;
+    box-shadow: none;
 }
 
 .coin-info {
@@ -178,6 +184,17 @@ nav {
     color: var(--secondary-text);
     cursor: pointer;
     font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .sub-header {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    min-height: 36px;
+    font-size: 14px;
+  }
 }
 
 /* Favorites bar */
@@ -302,12 +319,13 @@ nav {
     grid-template-rows: 1fr;
     height: 525px;
     gap: 0;
-    background-color: var(--primary-bg);
+    background-color: var(--primary-bg) !important;
     position: relative;
     margin-bottom: 1px;
-    border: none !important;
+    border: 1.5px solid #18191d !important;
     border-radius: 0 !important;
     box-shadow: none !important;
+    z-index: 2;
 }
 
 .main-container *,
@@ -384,7 +402,7 @@ iframe.chart-iframe {
     right: 0;
     height: 100%;
     width: 1px;
-    background-color: var(--border-color);
+    background-color: #18191d !important;
 }
 
 .trade-section {
@@ -606,238 +624,13 @@ iframe.chart-iframe {
     background-color: var(--warning-color);
 }
 
-/* --- SPOT TRADE FORM STYLES MOVED TO TradeForm.css --- */
-/* All .trade-form and related selectors have been removed for modularity. */
-
-/* Order history styles */
-.order-history-section {
-    padding: 0;
-    background: var(--primary-bg);
-    border-radius: 0;
-    box-shadow: none;
-    height: 100%;
-}
-
-.order-history-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 16px;
-    height: 40px;
-    border-bottom: 1px solid var(--border-color);
-    background: var(--primary-bg);
-}
-
-.order-history-tabs {
-    display: flex;
-}
-
-.order-history-tabs .tab {
-    padding: 0 12px;
-    cursor: pointer;
-    font-size: 12px;
-    color: var(--secondary-text);
-    height: 40px;
-    display: flex;
-    align-items: center;
-}
-
-.order-history-tabs .tab.active {
-    color: var(--primary-text);
-    font-weight: 500;
-}
-
-.order-history-tabs .tab:hover {
-    color: var(--primary-text);
-}
-
-.order-history-content {
-    overflow-x: auto;
-    background: var(--primary-bg);
-    height: calc(100% - 40px);
-    max-height: 180px;
-}
-
-.order-history-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--primary-bg);
-    table-layout: fixed;
-}
-
-.order-history-table th {
-    text-align: left;
-    padding: 0 12px;
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--secondary-text);
-    border-bottom: 1px solid var(--border-color);
-    height: 32px;
-    background: var(--primary-bg);
-    position: sticky;
-    top: 0;
-    z-index: 1;
-}
-
-.order-history-table td {
-    padding: 0 12px;
-    font-size: 11px;
-    border-bottom: 1px solid var(--border-color);
-    height: 32px;
-    color: var(--primary-text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.order-history-table tr:hover {
-    background-color: rgba(35, 35, 35, 0.5);
-}
-
-.order-history-table .status-pill {
-    display: inline-block;
-    padding: 2px 6px;
-    border-radius: 2px;
-    font-size: 10px;
-    font-weight: 500;
-}
-
-.order-history-table .status-pill.completed {
-    background-color: rgba(0, 181, 116, 0.1);
-    color: var(--buy-color);
-}
-
-.order-history-table .status-pill.pending {
-    background-color: rgba(240, 185, 11, 0.1);
-    color: var(--warning-color);
-}
-
-.order-history-table .status-pill.canceled {
-    background-color: rgba(242, 54, 69, 0.1);
-    color: var(--sell-color);
-}
-
-.order-history-table th:nth-child(1),
-.order-history-table td:nth-child(1) {
-    width: 15%;
-}
-
-.order-history-table th:nth-child(2),
-.order-history-table td:nth-child(2) {
-    width: 10%;
-}
-
-.order-history-table th:nth-child(3),
-.order-history-table td:nth-child(3) {
-    width: 8%;
-}
-
-.order-history-table th:nth-child(4),
-.order-history-table td:nth-child(4) {
-    width: 15%;
-}
-
-.order-history-table th:nth-child(5),
-.order-history-table td:nth-child(5) {
-    width: 12%;
-}
-
-.order-history-table th:nth-child(6),
-.order-history-table td:nth-child(6) {
-    width: 10%;
-}
-
-.order-history-table th:nth-child(7),
-.order-history-table td:nth-child(7) {
-    width: 12%;
-}
-
-.order-history-table th:nth-child(8),
-.order-history-table td:nth-child(8) {
-    width: 10%;
-}
-
-.order-history-table th:nth-child(9),
-.order-history-table td:nth-child(9) {
-    width: 8%;
-    text-align: center;
-}
-
-/* Status styling */
-.order-history-table .pending-status {
-    display: inline-block;
-    padding: 2px 6px;
-    border-radius: 2px;
-    font-size: 10px;
-    background-color: #555555;
-    color: var(--warning-color);
-}
-
-.order-history-table .filled-status {
-    display: inline-block;
-    padding: 2px 6px;
-    border-radius: 2px;
-    font-size: 10px;
-    background-color: rgba(0, 181, 116, 0.2);
-    color: var(--buy-color);
-}
-
-.order-history-table .canceled-status {
-    display: inline-block;
-    padding: 2px 6px;
-    border-radius: 2px;
-    font-size: 10px;
-    background-color: rgba(242, 54, 69, 0.2);
-    color: var(--sell-color);
-}
-
-.order-history-table tr:nth-child(even) {
-    background-color: #111111 !important;
-}
-
-.order-history-table tr:nth-child(odd) {
-    background-color: #000000 !important;
-}
-
-.order-history-table tr:hover {
-    background-color: rgba(35, 35, 35, 0.5);
-}
-
-/* Empty tab content */
-.empty-tab-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 200px;
-    color: var(--secondary-text);
-    font-size: 12px;
-    background: var(--primary-bg);
-}
-
-/* Margin toggle */
-.margin-toggle {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 11px;
-    color: var(--secondary-text);
-}
-
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 24px;
-    height: 14px;
-}
-
-
 /* Responsive layout adjustments */
 @media (max-width: 1024px) {
     .main-container {
         grid-template-columns: 1fr 1fr;
         grid-template-rows: auto auto;
         height: auto !important;
-        border: none !important;
+        border: 1.5px solid #18191d !important;
         box-shadow: none !important;
     }
     
@@ -881,7 +674,7 @@ iframe.chart-iframe {
         grid-template-columns: 1fr;
         grid-template-rows: auto auto auto;
         height: 360px;
-        border: none !important;
+        border: 1.5px solid #18191d !important;
         box-shadow: none !important;
     }
     
@@ -1200,8 +993,9 @@ iframe.chart-iframe {
     margin-top: 0;
     border-top: none;
     min-height: 220px;
-    border: 1px solid rgb(26, 26, 26) !important;
+    border: none !important;
     border-radius: 0 !important;
+    box-shadow: none !important;
 }
 
 .trading-tabs {
@@ -1248,7 +1042,9 @@ iframe.chart-iframe {
     background-color: var(--primary-bg);
     padding: 0;
     min-height: 200px;
-    border: none;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
 }
 
 /* Loading and error states */
@@ -1453,6 +1249,7 @@ body, html {
 .order-history-table table {
     width: 100%;
     border-collapse: collapse;
+    background: var(--primary-bg);
     table-layout: fixed;
 }
 
@@ -2012,7 +1809,7 @@ body, html {
 .okx-header .search:hover, .okx-header .download:hover, .okx-header .notifications:hover, .okx-header .help:hover, .okx-header .language:hover { color: #fff; }
 
 /* Sub-header (ticker/coin info) */
-.sub-header { display: flex; justify-content: space-between; align-items: center; padding: 8px 16px; border-bottom: 1px solid var(--border-color, #232323); background: #000; }
+.sub-header { display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; border-bottom: 1px solid var(--border-color, #232323); background: #000; }
 .coin-info { display: flex; align-items: center; gap: 8px; }
 .coin-icon img { width: 32px; height: 32px; border-radius: 50%; background: #fff; padding: 2px; }
 .coin-pair { font-size: 17px; font-weight: 600; color: #fff; }
@@ -2078,14 +1875,6 @@ body, html {
   .favorites-bar::-webkit-scrollbar, .tab-content::-webkit-scrollbar { display: none; }
 }
 
-/* Atomic: ensure all atomic elements have correct spacing */
-.okx-spot-form, .trade-form-wrapper, .order-book-section, .order-row, .order-history-table, .order-history-tabs, .order-history-content {
-  box-sizing: border-box;
-}
-
-/* Remove accidental horizontal scroll */
-html, body, .spot-trading-container { overflow-x: hidden !important; }
-
 /* Minor polish */
 .trading-content, .tab-content { border-radius: 0 0 8px 8px; }
 
@@ -2112,3 +1901,575 @@ button:focus, .tab:focus, .order-row:focus { outline: none; }
 
 /* Atomic: consistent gutter for all major blocks */
 .spot-trading-container > * { margin-bottom: 0; }
+
+.spot-trading-container,
+.orders-container,
+.chart-section,
+.orderbook-section,
+.trade-section,
+.tab-content,
+.order-history-table {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.spot-trading-container {
+  background-color: var(--primary-bg);
+  color: var(--primary-text);
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.orders-container {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.chart-section,
+.orderbook-section,
+.trade-section,
+.tab-content {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.order-history-table {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* --- REMOVE ALL WHITE/LIGHT BORDERS: ENFORCE DARK BORDERS OR NONE --- */
+
+/* 1. Universal border cleanup for spot trading */
+.spot-trading-container,
+.main-container,
+.orders-container,
+.chart-section,
+.orderbook-section,
+.trade-section,
+.tab-content,
+.order-history-table,
+.order-book-content,
+.sell-orders,
+.buy-orders,
+.order-row,
+.trading-tabs,
+.orders-tabs,
+.order-history-container,
+.order-history-filters,
+.order-book-header,
+.book-headers,
+.chart-toolbar,
+.chart-header,
+.trading-content,
+.trading-column,
+.chart-column,
+.order-column {
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+
+/* 2. Enforce dark border where needed */
+.main-container {
+    border: 1.5px solid #18191d !important;
+}
+
+@media (max-width: 1024px) {
+    .main-container {
+        border: 1.5px solid #18191d !important;
+    }
+}
+@media (max-width: 768px) {
+    .main-container {
+        border: 1.5px solid #18191d !important;
+    }
+}
+
+/* 3. Remove light border overrides in orderbook/chart/trade sections */
+.chart-section,
+.orderbook-section,
+.trade-section,
+.tab-content,
+.order-history-table,
+.order-book-content,
+.sell-orders,
+.buy-orders {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* 4. Remove border from table headers and cells */
+.order-history-table th,
+.order-history-table td {
+    border: none !important;
+}
+
+/* 5. Remove border from trading tabs and orders tabs */
+.trading-tabs,
+.orders-tabs {
+    border: none !important;
+}
+
+/* 6. Remove border from chart and book headers */
+.chart-toolbar,
+.chart-header,
+.order-book-header,
+.book-headers {
+    border: none !important;
+}
+
+/* 7. Remove border from all buttons and inputs */
+button,
+input,
+select,
+textarea {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* 8. Remove border from all ::after and ::before pseudo-elements */
+.main-container::after,
+.main-container::before,
+.chart-section::after,
+.chart-section::before,
+.orderbook-section::after,
+.orderbook-section::before,
+.trade-section::after,
+.trade-section::before {
+    border: none !important;
+    background: transparent !important;
+}
+
+/* 9. Remove border from .orderbook-section::after vertical divider */
+.orderbook-section::after {
+    background: #18191d !important;
+}
+
+/* 10. Remove border from .tradingview-widget-container and related */
+.tradingview-widget-container,
+.tradingview-widget-container iframe,
+.tradingview-widget-container div {
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+/* --- STICKY BUY/SELL BAR AT BOTTOM FOR MOBILE --- */
+@media (max-width: 900px) {
+  .mobile-trade-bar {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    display: flex !important;
+    z-index: 9999 !important;
+    background: #101010 !important;
+    border-top: 2.5px solid #18191d !important;
+    height: 70px !important;
+    box-shadow: 0 -2px 16px 0 rgba(0,0,0,0.38) !important;
+    padding: 0 16px 16px 16px !important;
+    justify-content: space-between !important;
+    align-items: flex-end !important;
+    pointer-events: auto !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  .mobile-trade-btn {
+    flex: 1 1 48%;
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    border: none !important;
+    margin: 0 8px !important;
+    border-radius: 24px !important;
+    height: 48px !important;
+    background: #232323 !important;
+    color: #fff !important;
+    transition: background 0.18s, color 0.18s !important;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.18) !important;
+    outline: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    pointer-events: auto !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  .mobile-trade-btn.buy {
+    background: #00B574 !important;
+    color: #fff !important;
+  }
+  .mobile-trade-btn.sell {
+    background: #F23645 !important;
+    color: #fff !important;
+  }
+  .mobile-trade-btn.active {
+    filter: brightness(1.07) saturate(1.1) !important;
+    box-shadow: 0 4px 16px 0 rgba(0,0,0,0.18) !important;
+  }
+}
+
+@media (min-width: 901px) {
+  .mobile-trade-bar {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}
+
+/* --- MOBILE APP BAR BUY/SELL BUTTONS AND BOTTOM SHEET --- */
+@media (max-width: 900px) {
+  /* Hide desktop trade form on mobile */
+  .trade-section, .desktop-only {
+    display: none !important;
+  }
+
+  /* Mobile app bar with buy/sell buttons */
+  .mobile-trade-bar {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 64px !important;
+    display: flex !important;
+    z-index: 9999 !important;
+    background: #101010 !important;
+    border-top: 1px solid #18191d !important;
+    padding: 0 16px !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3) !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .mobile-trade-btn {
+    flex: 1 !important;
+    height: 44px !important;
+    max-width: 45% !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    border: none !important;
+    margin: 0 6px !important;
+    background: #232323 !important;
+    color: #fff !important;
+    transition: background 0.2s !important;
+    outline: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 22px !important; /* Pill shape */
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .mobile-trade-btn.buy {
+    background: #00B574 !important;
+    color: #fff !important;
+  }
+
+  .mobile-trade-btn.sell {
+    background: #F23645 !important;
+    color: #fff !important;
+  }
+
+  /* Bottom sheet for trade form */
+  .mobile-trade-form-sheet {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: -100vh !important;
+    height: 85vh !important;
+    z-index: 10000 !important;
+    background: #101010 !important;
+    border-radius: 12px 12px 0 0 !important;
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.5) !important;
+    transition: bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+
+  .mobile-trade-form-sheet.open {
+    bottom: 0 !important;
+  }
+
+  .mobile-trade-form-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 16px !important;
+    border-bottom: 1px solid #18191d !important;
+  }
+
+  .mobile-trade-form-title {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #fff !important;
+  }
+
+  .mobile-trade-form-close {
+    background: none !important;
+    border: none !important;
+    color: #8e8e8e !important;
+    font-size: 24px !important;
+    padding: 0 !important;
+    cursor: pointer !important;
+  }
+
+  .mobile-trade-form-content {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    padding: 16px !important;
+  }
+
+  /* Overlay when bottom sheet is open */
+  .mobile-trade-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    z-index: 9998 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: opacity 0.3s !important;
+  }
+
+  .mobile-trade-overlay.open {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  
+  /* Add extra padding to the bottom of the page to account for the fixed bar */
+  .spot-trading-container {
+    padding-bottom: 70px !important;
+  }
+  
+  /* Ensure the orders container doesn't get hidden behind the bar */
+  .orders-container {
+    margin-bottom: 60px !important;
+  }
+}
+
+@media (min-width: 901px) {
+  .mobile-trade-bar,
+  .mobile-trade-form-sheet,
+  .mobile-trade-overlay {
+    display: none !important;
+  }
+}
+
+/* --- DESKTOP TRADE FORM STYLES --- */
+.trade-form {
+  background: #101010;
+  border-radius: 4px;
+  padding: 16px;
+  color: #fff;
+  width: 100%;
+}
+
+.trade-type-toggle {
+  display: flex;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #18191d;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 10px 0;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.toggle-btn.active {
+  background: #00B574;
+}
+
+.toggle-btn:last-child.active {
+  background: #F23645;
+}
+
+.order-type-tabs {
+  display: flex;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #18191d;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 8px 0;
+  border: none;
+  background: transparent;
+  color: #8e8e8e;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-btn.active {
+  color: #fff;
+  background: #232323;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #8e8e8e;
+  font-size: 14px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  background: #18191d;
+  border: 1px solid #232323;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+}
+
+.slider-container {
+  margin-bottom: 16px;
+}
+
+.slider-range {
+  width: 100%;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #232323;
+  outline: none;
+  border-radius: 2px;
+  margin-bottom: 8px;
+}
+
+.slider-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  color: #8e8e8e;
+  font-size: 12px;
+}
+
+.total-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #18191d;
+  border-radius: 4px;
+}
+
+.balance-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  color: #8e8e8e;
+  font-size: 14px;
+}
+
+.buy-btn {
+  width: 100%;
+  padding: 12px 0;
+  background: #00B574;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.buy-btn:hover {
+  background: #00a067;
+}
+
+.buy-btn.sell-btn {
+  background: #F23645;
+}
+
+.buy-btn.sell-btn:hover {
+  background: #e02e3c;
+}
+
+.price-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  color: #8e8e8e;
+  font-size: 12px;
+}
+
+.notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 20px;
+  border-radius: 4px;
+  background: #232323;
+  color: #fff;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  animation: fadeIn 0.3s;
+}
+
+.notification.success {
+  background: #00B574;
+}
+
+.notification.error {
+  background: #F23645;
+}
+
+.notification-content {
+  display: flex;
+  align-items: center;
+}
+
+.notification-message {
+  margin-right: 12px;
+}
+
+.notification-close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, 20px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}

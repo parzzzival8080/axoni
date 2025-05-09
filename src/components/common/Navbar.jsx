@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {QRCodeSVG} from 'qrcode.react';
 import './Navbar.css';
+import { fetchAllCoins } from '../../services/spotTradingApi';
+import defaultCoinLogo from '../../assets/coin/bitcoin-2136339_640.webp';
 import ComingSoon from '../../components/common/ComingSoon';
 
-// Notification data - in a real app, this could come from an API
+// Notification data
 const notifications = [
   {
     id: 1,
@@ -39,7 +41,7 @@ const notifications = [
   }
 ];
 
-// Mobile menu items - matching the image provided with dropdowns
+// Mobile menu items
 const mobileMenuItems = [
   { 
     name: 'Buy crypto', 
@@ -130,7 +132,7 @@ const mobileMenuItems = [
       { name: 'Connect with TradeX', path: '/connect-with-tradex' },
     ]
   },
-];
+  ];
 
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -138,9 +140,16 @@ const Navbar = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showMoreDropdown, setShowMoreDropdown] = useState(false);
   const [showAssetsMenu, setShowAssetsMenu] = useState(false);
-  const [showMobileSearch, setShowMobileSearch] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isComingSoonOpen, setIsComingSoonOpen] = useState(false);
   const [expandedMenus, setExpandedMenus] = useState([]);
+  const [coins, setCoins] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('spot');
+  const searchRef = useRef(null);
+  const navigate = useNavigate();
 
   const signupButtonStyle = {
     backgroundColor: 'black',
@@ -152,23 +161,6 @@ const Navbar = () => {
     textDecoration: 'none',
     marginRight: '16px',
     fontWeight: '500'
-  };
-
-  // User menu style
-  const userMenuStyle = {
-    backgroundColor: 'black',
-    border: '1px solid rgba(255, 255, 255, 0.2)',
-    borderRadius: '20px',
-    padding: '5px 15px',
-    fontSize: '14px',
-    color: 'white',
-    textDecoration: 'none',
-    marginRight: '16px',
-    fontWeight: '500',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '5px'
   };
 
   // Check for authentication on component mount
@@ -184,7 +176,6 @@ const Navbar = () => {
         if (fullName) {
           setUserName(fullName);
         } else if (userId) {
-          // If we have a userId but no name, fetch the user information
           try {
             const response = await axios.get(
               `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${userId}`,
@@ -200,10 +191,8 @@ const Navbar = () => {
               setUserName(name);
               localStorage.setItem('fullName', name);
               
-              // Check if there's a uid in the response and store it
               if (response.data.user.uid) {
                 localStorage.setItem('uid', response.data.user.uid);
-                console.log('Stored uid from user info:', response.data.user.uid);
               }
             } else {
               setUserName('User');
@@ -221,35 +210,52 @@ const Navbar = () => {
     checkAuth();
   }, []);
 
+  // Load coins for search dropdown
+  useEffect(() => {
+    const loadCoins = async () => {
+      setIsLoading(true);
+      const result = await fetchAllCoins();
+      if (result.success) {
+        setCoins(result.coins);
+      }
+      setIsLoading(false);
+    };
+    
+    loadCoins();
+  }, []);
+
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setIsSearchFocused(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [searchRef]);
+
   const handleLogout = () => {
-    // Clear auth data from localStorage
     localStorage.removeItem('authToken');
     localStorage.removeItem('user_id');
     localStorage.removeItem('fullName');
     localStorage.removeItem('user');
     
-    // Update state
     setIsAuthenticated(false);
     setUserName('');
     setShowUserMenu(false);
     
-    // Redirect to home
     window.location.href = '/';
   };
 
-  const appDownloadUrl = "https://drive.google.com/file/d/1FeM7hUwGLu1ac_boBGX-_TyVp3d2_F6V/view?usp=sharing";
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const toggleMobileMenu = () => {
-    setIsModalOpen(!isModalOpen);
-  };
+  const appDownloadUrl = "https://download.tradex.com/android/tradex-v2.1.4.apk";
+  
+  const openComingSoon = () => setIsComingSoonOpen(true);
+  const closeComingSoon = () => setIsComingSoonOpen(false);
+  const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
   
   const toggleSubmenu = (index) => {
     if (expandedMenus.includes(index)) {
@@ -259,9 +265,37 @@ const Navbar = () => {
     }
   };
 
-  const toggleMobileSearch = () => {
-    setShowMobileSearch(!showMobileSearch);
+  // Handle coin selection
+  const handleCoinSelect = (coin) => {
+    setIsSearchFocused(false);
+    setSearchTerm('');
+    
+    if (activeTab === 'futures') {
+      navigate(`/future-trading?coin_pair_id=${coin.coin_pair}`);
+    } else {
+      navigate(`/spot-trading?coin_pair_id=${coin.coin_pair}`);
+    }
   };
+
+  // Filter coins based on search term and active tab
+  const filteredCoins = coins.filter(coin => {
+    if (searchTerm.trim()) {
+      const searchLower = searchTerm.toLowerCase();
+      return (
+        coin.symbol?.toLowerCase().includes(searchLower) ||
+        coin.name?.toLowerCase().includes(searchLower)
+      );
+    }
+    return true;
+  }).slice(0, 20);
+
+  const testResults = searchTerm.trim() && filteredCoins.length === 0 ? [
+    { coin_pair: '1', symbol: 'BTC', name: 'Bitcoin', price: '64000', price_change_24h: 2.5, pair_name: 'USDT' },
+    { coin_pair: '3', symbol: 'ETH', name: 'Ethereum', price: '3200', price_change_24h: -1.2, pair_name: 'USDT' },
+    { coin_pair: '15', symbol: 'SOL', name: 'Solana', price: '150', price_change_24h: 5.8, pair_name: 'USDT' }
+  ] : [];
+  
+  const displayResults = filteredCoins.length > 0 ? filteredCoins : testResults;
 
   return (
     <header>
@@ -279,7 +313,7 @@ const Navbar = () => {
                 <Link to="/market" className="dropdown-link">
                   <div className="dropdown-item with-arrow">
                       <div className="dropdown-icon">
-                      <i className="fa-solid fa-tv"></i>
+                        <i className="fas fa-coins"></i>
                       </div>
                       <div className="dropdown-content">
                         <h3>Markets</h3>
@@ -309,7 +343,6 @@ const Navbar = () => {
                     </div>
                     <i className="fas fa-chevron-right"/>
                 </div>
-                
               </div>
             </div>
           <div className="nav-item">
@@ -439,7 +472,6 @@ const Navbar = () => {
                     <i className="fas fa-chevron-right"></i>
                 </div>
                 </Link>
-               
                 
                 {/* Sub-items for Earn */}
                 <div className="dropdown-sub-items">
@@ -498,7 +530,6 @@ const Navbar = () => {
                 </div>
               </Link>
             </div>
-
         </div>
           <div className="nav-item">
             Build <i className="fas fa-chevron-down"></i>
@@ -569,18 +600,10 @@ const Navbar = () => {
                     </div>
                   </Link>
                   
-                  <div className="dropdown-item" onClick={openModal} style={{gap: '12px'}}>
+                  <div className="dropdown-item" onClick={openComingSoon} style={{gap: '12px'}}>
                       <i className="fas fa-handshake"></i> Affiliates
                   </div>
-                    <ComingSoon 
-                      isOpen={isModalOpen} 
-                      onClose={closeModal} 
-                    />
-                    {/* Modal */}
-                    <ComingSoon 
-                      isOpen={isModalOpen} 
-                      onClose={closeModal} 
-                    />
+                  <ComingSoon isOpen={isComingSoonOpen} onClose={closeComingSoon} />
                   
                   <Link to="/okx-ventures" className="dropdown-link">
                     <div className="dropdown-item" style={{gap: '12px'}}>
@@ -607,26 +630,77 @@ const Navbar = () => {
       {/* Header right section */}
       <div className="header-right">
         {/* Desktop search box */}
-        <div className="search-box desktop-search">
-          <div className='search-icon'>
-             <i className="fas fa-search"></i>
-          </div>
-          <input className='search-input' type="text" placeholder="Search crypto" />
-        </div>
-
-        {/* Mobile search icon and expandable search box */}
-        <div className="mobile-search-container">
-          <div className="mobile-search-icon" onClick={toggleMobileSearch}>
-            <i className="fas fa-search"></i>
-          </div>
-          {showMobileSearch && (
-            <div className="mobile-search-box">
-              <input type="text" placeholder="Search" autoFocus />
-              <button onClick={toggleMobileSearch}><i className="fas fa-times"></i></button>
+        <div className="okx-navbar-search-box" ref={searchRef}>
+          <i className="fas fa-search" aria-hidden="true"></i>
+          <input
+            type="text"
+            placeholder="Search..."
+            aria-label="Search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onFocus={() => setIsSearchFocused(true)}
+          />
+          {isSearchFocused && (
+            <div className="search-dropdown-menu wide-dropdown">
+              <div className="search-tabs">
+                <div 
+                  className={`search-tab ${activeTab === 'spot' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('spot')}
+                >
+                  Spot
+                </div>
+                <div 
+                  className={`search-tab ${activeTab === 'futures' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('futures')}
+                >
+                  Futures
+                </div>
+              </div>
+              
+              {isLoading ? (
+                <div className="search-loading-item">
+                  <div className="search-spinner"></div>
+                  <span>Loading coins...</span>
+                </div>
+              ) : displayResults.length > 0 ? (
+                <div className="search-coins-container">
+                  {displayResults.map((coin) => (
+                    <div 
+                      key={coin.coin_pair} 
+                      className="search-coin-item" 
+                      onClick={() => handleCoinSelect(coin)}
+                    >
+                      <div className="search-coin-logo">
+                        <img src={coin.logo_path || defaultCoinLogo} alt={coin.symbol} />
+                      </div>
+                      <div className="search-coin-info">
+                        <div className="search-coin-name">{coin.symbol}/{coin.pair_name || 'USDT'}</div>
+                        <div className="search-coin-price">
+                          ${parseFloat(coin.price).toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 8
+                          })}
+                          <span className={coin.price_change_24h >= 0 ? 'positive-change' : 'negative-change'}>
+                            {coin.price_change_24h >= 0 ? '+' : ''}{(coin.price_change_24h || 0).toFixed(2)}%
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : searchTerm.trim() ? (
+                <div className="search-no-results-item">
+                  No coins found matching "{searchTerm}"
+                </div>
+              ) : (
+                <div className="search-info-item">
+                  Start typing to search for coins
+                </div>
+              )}
             </div>
           )}
-        </div>
-        
+              </div>
+              
         {isAuthenticated ? (
           <div className="auth-menu-container">
             {/* Assets Dropdown - hidden on mobile */}
@@ -731,13 +805,11 @@ const Navbar = () => {
               style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
             >
               <i className="far fa-arrow-alt-circle-down"></i>
-            
             </button>
             
             <div className="right-dropdown-menu download-menu">
               <h3 className="dropdown-title">Download app</h3>
               <div className="qr-code-container">
-                {/* QR Code implementation */}
                 <QRCodeSVG 
                     value={appDownloadUrl}
                     size={120}
@@ -808,14 +880,14 @@ const Navbar = () => {
           </div>
         </div>
         
-        {/* Mobile-only hamburger menu button - moved to the end */}
+        {/* Mobile-only hamburger menu button */}
         <div className="mobile-menu-toggle" onClick={toggleMobileMenu}>
           <i className="fas fa-bars"></i>
         </div>
       </div>
 
-       {/* Modal that appears when toggle is clicked */}
-       {isModalOpen && (
+      {/* Mobile menu overlay */}
+      {isMobileMenuOpen && (
         <div className="mobile-menu-overlay">
           <div className="mobile-menu">
             <div className="mobile-menu-header">

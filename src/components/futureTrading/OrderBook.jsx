@@ -1,10 +1,18 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+// For subtle animations
+import styled, { keyframes } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faExclamationTriangle, faSync } from '@fortawesome/free-solid-svg-icons';
 import { formatNumber } from '../../utils/numberFormatter';
 import axios from 'axios';
 
 const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
+  // Feature detection (for older browsers, incognito, etc.)
+  const supportsWebSocket = typeof window !== 'undefined' && 'WebSocket' in window;
+  const supportsFetch = typeof window !== 'undefined' && 'fetch' in window;
+  // If not supported, fallback to REST only
+  const canUseWebSocket = supportsWebSocket && supportsFetch;
+
   const [activeTab, setActiveTab] = useState('orderbook');
   const [orderBook, setOrderBook] = useState({
     asks: [],
@@ -24,7 +32,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   const [dataSource, setDataSource] = useState('connecting');
   const lastUpdateTimeRef = useRef(Date.now());
   const updateQueueRef = useRef(null);
-  const throttleInterval = 500; // Update UI max every 500ms (2 updates per second)
+  const throttleInterval = 100; // Update UI max every 100ms (10 updates per second)
 
   // Mock data for order book to use as fallback
   const generateMockOrderBook = (basePrice = 86971.01) => {
@@ -71,6 +79,10 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   const usdtSymbol = cryptoData?.usdtSymbol || 'USDT';
   const usdPrice = 1; // Assuming 1 USDT = 1 USD for simplicity
 
+  // Retry logic for REST API
+  const MAX_REST_RETRIES = 5;
+  const REST_BACKOFF_BASE = 2000; // ms
+
   // Function to process order book data (common for both WebSocket and REST)
   const processOrderBookData = useCallback((asks, bids) => {
     if (!asks || !bids || !Array.isArray(asks) || !Array.isArray(bids)) {
@@ -86,7 +98,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
         total: 0 // Will be calculated below
       }))
       .sort((a, b) => a.price - b.price)
-      .slice(0, 15); // Limit to 15 for better performance
+      .slice(0, 20); // Increased to 20 for more depth visibility
     
     const processedBids = bids
       .map(item => ({
@@ -95,7 +107,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
         total: 0 // Will be calculated below
       }))
       .sort((a, b) => b.price - a.price)
-      .slice(0, 15); // Limit to 15 for better performance
+      .slice(0, 20); // Increased to 20 for more depth visibility
     
     // Calculate cumulative totals
     let askTotal = 0;
@@ -147,43 +159,93 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     return Math.min(90, Math.sqrt(total / maxTotal) * 90);
   };
 
-  // Set up a function to fetch data
-  const fetchData = async () => {
+  // Fetch order book data from REST API as fallback
+  const fetchOrderBookREST = useCallback(async (retry = 0) => {
     try {
-      console.log('[OrderBook] Fetching order book data via REST API');
-      const response = await axios.get(`https://api.binance.com/api/v3/depth?symbol=${cryptoSymbol}USDT&limit=20`);
-      
-      if (response.data && response.data.asks && response.data.bids) {
-        const processedData = processOrderBookData(response.data.asks, response.data.bids);
-        if (processedData) {
-          setOrderBook(processedData);
-          setIsLoading(false);
-          setConnectionStatus('fallback');
-          setDataSource('REST API');
-          console.log('[OrderBook] Successfully fetched order book data via REST API');
-        }
+      // Clear any existing interval
+      if (restFallbackRef.current) {
+        clearInterval(restFallbackRef.current);
       }
+      
+      // Set up a function to fetch data using OKX REST API
+      const fetchData = async (retry = 0) => {
+        try {
+          // Format symbol for OKX API request (BASE-QUOTE format)
+          const symbol = cryptoData?.cryptoSymbol?.toUpperCase() || 'BTC';
+          const instId = `${symbol}-USDT`;
+          const apiUrl = `https://www.okx.com/api/v5/market/books?instId=${instId}&sz=20`;
+          
+          console.log('[OrderBook] Fetching orderbook from OKX API:', apiUrl);
+          const response = await axios.get(apiUrl);
+          console.log('[OrderBook] Raw OKX API response:', response.data);
+          
+          if (response.data && response.data.code === '0' && response.data.data && 
+              Array.isArray(response.data.data) && response.data.data.length > 0) {
+            
+            const orderBookData = response.data.data[0];
+            
+            if (orderBookData && orderBookData.asks && orderBookData.bids) {
+              // Process the OKX format data
+              const processedData = processOrderBookData(orderBookData.asks, orderBookData.bids);
+              
+              if (processedData) {
+                setOrderBook(processedData);
+                setIsLoading(false);
+                setConnectionStatus('fallback');
+                setDataSource('OKX REST API');
+                lastUpdateTimeRef.current = Date.now();
+                
+                // Update current price from the first bid (highest bid)
+                if (orderBookData.bids && orderBookData.bids.length > 0) {
+                  setCurrentPrice(parseFloat(orderBookData.bids[0][0]));
+                }
+              }
+            } else {
+              console.error('[OrderBook] Malformed OKX REST API response structure:', orderBookData);
+              throw new Error('Malformed OKX REST API response structure');
+            }
+          } else {
+            console.error('[OrderBook] Malformed OKX REST API response:', response.data);
+            throw new Error('Malformed OKX REST API response');
+          }
+        } catch (error) {
+          console.error('[OrderBook] OKX REST API fetch error:', error);
+          // If all retries failed, show error state
+          if (retry < MAX_REST_RETRIES) {
+            setTimeout(() => fetchData(retry + 1), REST_BACKOFF_BASE * Math.pow(2, retry));
+          } else {
+            setConnectionStatus('error');
+            setIsLoading(false);
+          }
+        }
+      };
+      
+      // Fetch immediately
+      await fetchData();
+      
+      // Then set up interval for regular updates
+      restFallbackRef.current = setInterval(fetchData, 5000);
+      
+      return () => {
+        if (restFallbackRef.current) {
+          clearInterval(restFallbackRef.current);
+        }
+      };
     } catch (error) {
-      console.error('[OrderBook] Error fetching order book data via REST API:', error);
-      // If REST API fails, use mock data as ultimate fallback
-      const mockData = generateMockOrderBook(currentPrice || 86971.01);
-      setOrderBook(mockData);
-      setIsLoading(false);
-      setConnectionStatus('fallback');
-      setDataSource('Mock Data');
+      console.error('[OrderBook] Error setting up REST fallback:', error);
     }
-  };
+  }, [cryptoData, processOrderBookData]);
 
   // Use REST API as fallback if WebSocket fails
   useEffect(() => {
     if (connectionStatus === 'error' || connectionStatus === 'failed') {
       if (!restFallbackRef.current) {
         restFallbackRef.current = true;
-        fetchData();
+        fetchOrderBookREST();
         
         // Set up periodic refresh for REST API fallback
         dataUpdateIntervalRef.current = setInterval(() => {
-          fetchData();
+          fetchOrderBookREST();
         }, 10000); // Refresh every 10 seconds
       }
     }
@@ -195,40 +257,13 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     };
   }, [connectionStatus]);
 
-  // Set up WebSocket connection when component mounts or when forceRefresh changes
+  // Always use REST API for orderbook (same as spot)
   useEffect(() => {
-    // Reset state for reconnection
     setIsLoading(true);
-    setConnectionStatus('connecting');
-    setReconnectAttempts(0);
-    
-    // Clear any existing reconnect timeout
-    if (reconnectTimeoutRef.current) {
-      clearTimeout(reconnectTimeoutRef.current);
-      reconnectTimeoutRef.current = null;
-    }
-    
-    // Close any existing WebSocket connection
-    if (wsRef.current) {
-      wsRef.current.close();
-      wsRef.current = null;
-    }
-    
-    // Connect to WebSocket
-    connectWebSocket();
-    
-    // Clean up on unmount
+    setConnectionStatus('fallback');
+    fetchOrderBookREST();
     return () => {
-      if (wsRef.current) {
-        wsRef.current.close();
-        wsRef.current = null;
-      }
-      
-      if (reconnectTimeoutRef.current) {
-        clearTimeout(reconnectTimeoutRef.current);
-        reconnectTimeoutRef.current = null;
-      }
-      
+      // Clear any existing data update interval
       if (dataUpdateIntervalRef.current) {
         clearInterval(dataUpdateIntervalRef.current);
         dataUpdateIntervalRef.current = null;
@@ -237,14 +272,15 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   }, [forceRefresh]);
 
   const connectWebSocket = () => {
-    console.log('[OrderBook] Connecting to WebSocket...');
+    console.log('[OrderBook] Connecting to OKX WebSocket...');
     
-    // Try multiple WebSocket endpoints in case some are blocked
-    const wsEndpoints = [
-      `wss://stream.binance.com:9443/ws/${cryptoSymbol.toLowerCase()}usdt@depth20@100ms`,
-      `wss://stream.binance.com/ws/${cryptoSymbol.toLowerCase()}usdt@depth20@100ms`,
-      `wss://fstream.binance.com/ws/${cryptoSymbol.toLowerCase()}usdt@depth20@100ms`
-    ];
+    // Use OKX WebSocket endpoint
+    const wsEndpoint = 'wss://ws.okx.com:8443/ws/v5/public';
+    const wsEndpoints = [wsEndpoint];
+
+    // Format the trading pair for OKX (BASE-QUOTE format)
+    const orderCoin = `${cryptoSymbol}-USDT`;
+    console.log('[OrderBook] OKX WebSocket endpoint:', wsEndpoint, 'for instrument:', orderCoin);
     
     tryAlternateEndpoints(wsEndpoints, 0);
     
@@ -266,8 +302,23 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
           console.log(`[OrderBook] WebSocket connected to ${urls[index]}`);
           wsRef.current = socket;
           setConnectionStatus('connected');
-          setDataSource('WebSocket');
+          setDataSource('OKX WebSocket');
           setIsLoading(false);
+          
+          // Subscribe to order book updates using OKX format with higher frequency
+          const subscriptionMessage = {
+            "op": "subscribe",
+            "args": [
+              {
+                "channel": "books",  // Use 'books' instead of 'books5' for more frequent updates
+                "instId": orderCoin,
+                "sz": "400"  // Request more depth levels (up to 400)
+              }
+            ]
+          };
+          
+          console.log('[OrderBook] Sending subscription message:', JSON.stringify(subscriptionMessage));
+          socket.send(JSON.stringify(subscriptionMessage));
           
           // If we have an update queue, process it now
           if (updateQueueRef.current) {
@@ -303,32 +354,61 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
       // Handle incoming messages
       socket.onmessage = function(event) {
         try {
-          const data = JSON.parse(event.data);
+          const message = JSON.parse(event.data);
           
-          if (data && data.asks && data.bids) {
-            // Update last update time
-            lastUpdateTimeRef.current = Date.now();
+          // Handle subscription confirmation
+          if (message && message.event === 'subscribe') {
+            console.log("[OrderBook] Subscription confirmed:", message);
+            return;
+          }
+          
+          // Handle order book data updates
+          if (message && message.data && Array.isArray(message.data) && message.data.length > 0) {
+            const orderBookData = message.data[0]; // OKX format has data in an array
             
-            // If we're throttling updates, queue this update
-            if (updateQueueRef.current) {
-              updateQueueRef.current = {
-                asks: data.asks,
-                bids: data.bids
-              };
-              return;
-            }
-            
-            // Process the data
-            const processedData = processOrderBookData(data.asks, data.bids);
-            if (processedData) {
-              setOrderBook(processedData);
+            if (orderBookData && orderBookData.asks && Array.isArray(orderBookData.asks) &&
+                orderBookData.bids && Array.isArray(orderBookData.bids)) {
               
-              // Set up throttling for next update
-              updateQueueRef.current = {};
-              setTimeout(() => {
-                updateQueueRef.current = null;
-              }, throttleInterval);
+              // Update last update time
+              lastUpdateTimeRef.current = Date.now();
+              
+              // Format OKX data for our processOrderBookData function
+              // OKX format: [price, size, ...] -> convert to [[price, size], ...]
+              const formattedAsks = orderBookData.asks;
+              const formattedBids = orderBookData.bids;
+              
+              // If we're throttling updates, queue this update
+              if (updateQueueRef.current) {
+                updateQueueRef.current = {
+                  asks: formattedAsks,
+                  bids: formattedBids
+                };
+                return;
+              }
+              
+              // Process the data
+              const processedData = processOrderBookData(formattedAsks, formattedBids);
+              if (processedData) {
+                setOrderBook(processedData);
+                
+                // Update current price from the first bid (highest bid)
+                if (formattedBids.length > 0) {
+                  setCurrentPrice(parseFloat(formattedBids[0][0]));
+                }
+                
+                // Set up throttling for next update with requestAnimationFrame for smoother updates
+                updateQueueRef.current = {};
+                requestAnimationFrame(() => {
+                  setTimeout(() => {
+                    updateQueueRef.current = null;
+                  }, throttleInterval);
+                });
+              }
+            } else {
+              console.error("[OrderBook] Invalid format for order book data:", orderBookData);
             }
+          } else if (message.event === 'error') {
+            console.error("[OrderBook] WebSocket error message:", message);
           }
         } catch (error) {
           console.error('[OrderBook] Error processing WebSocket message:', error);
@@ -366,7 +446,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     function onopen() {
       console.log('[OrderBook] WebSocket connected successfully');
       setConnectionStatus('connected');
-      setDataSource('WebSocket');
+      setDataSource('OKX WebSocket');
       setIsLoading(false);
     }
     
@@ -378,69 +458,58 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     }
   };
 
-  // Function to handle manual reconnect
-  const handleReconnect = () => {
-    console.log('[OrderBook] Manual reconnect requested');
-    
-    // Reset state
-    setIsLoading(true);
-    setConnectionStatus('connecting');
-    setReconnectAttempts(0);
-    
-    // Clear any existing reconnect timeout
-    if (reconnectTimeoutRef.current) {
-      clearTimeout(reconnectTimeoutRef.current);
-      reconnectTimeoutRef.current = null;
-    }
-    
-    // Close any existing WebSocket connection
-    if (wsRef.current) {
-      wsRef.current.close();
-      wsRef.current = null;
-    }
-    
-    // Reset REST fallback flag
-    restFallbackRef.current = false;
-    
-    // Clear any existing data update interval
-    if (dataUpdateIntervalRef.current) {
-      clearInterval(dataUpdateIntervalRef.current);
-      dataUpdateIntervalRef.current = null;
-    }
-    
-    // Connect to WebSocket
-    connectWebSocket();
-  };
-
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-  };
-
-  const handlePrecisionChange = (precision) => {
-    setDecimalPrecision(precision);
-  };
-
   const handleManualReconnect = () => {
     handleReconnect();
   };
 
-  // Loading spinner component
+  // Subtle animation for loading
+  const spin = keyframes`
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  `;
+  const Spinner = styled(FontAwesomeIcon)`
+    animation: ${spin} 1s linear infinite;
+    color: #fff;
+  `;
+  const LoadingText = styled.div`
+    color: #aaa;
+    margin-top: 8px;
+    font-size: 1rem;
+  `;
   const LoadingSpinner = () => (
     <div className="order-book-loading">
-      <FontAwesomeIcon icon={faSpinner} spin />
-      <div className="loading-text">Loading order book...</div>
+      <Spinner icon={faSpinner} spin className="spinner" />
+      <LoadingText>Loading order book data...</LoadingText>
     </div>
   );
 
-  // Connection error component
+  // Subtle error animation
+  const shake = keyframes`
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-3px); }
+    40% { transform: translateX(3px); }
+    60% { transform: translateX(-2px); }
+    80% { transform: translateX(2px); }
+    100% { transform: translateX(0); }
+  `;
+  const ErrorIcon = styled(FontAwesomeIcon)`
+    color: #ff5b5b;
+    animation: ${shake} 0.6s;
+  `;
+  const ErrorText = styled.div`
+    color: #ff5b5b;
+    margin: 8px 0;
+    font-size: 1rem;
+  `;
   const ConnectionError = () => (
-    <div className="connection-error">
-      <FontAwesomeIcon icon={faExclamationTriangle} />
-      <div className="error-message">
-        Failed to connect to real-time data
-      </div>
-      <button onClick={handleManualReconnect} className="reconnect-btn">
-        <FontAwesomeIcon icon={faSync} /> Try Again
+    <div className="order-book-error">
+      <ErrorIcon icon={faExclamationTriangle} className="error-icon" />
+      <ErrorText>
+        Unable to connect to order book data.<br />
+        Please check your connection or try again.
+      </ErrorText>
+      <button className="reconnect-button" onClick={handleManualReconnect}>
+        <FontAwesomeIcon icon={faSync} /> Reconnect
       </button>
     </div>
   );

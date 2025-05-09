@@ -7,49 +7,42 @@ import TradeForm from '../components/spotTrading/TradeForm';
 import SubHeader from '../components/spotTrading/SubHeader';
 import FavoritesBar from '../components/spotTrading/FavoritesBar';
 import OrdersSection from '../components/spotTrading/OrdersSection';
+import { getSpotWallet, fetchAllCoins, fetchCoinDetails } from '../services/spotTradingApi';
 import '../components/spotTrading/SpotTrading.css';
 
 const SpotTrading = () => {
   const [searchParams] = useSearchParams();
   const [cryptoData, setCryptoData] = useState(null);
   const [userBalance, setUserBalance] = useState({
-    cryptoBalance: 0,
-    usdtBalance: 0
+    cryptoSpotBalance: 0,
+    usdtSpotBalance: 0
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [availableCoins, setAvailableCoins] = useState([]);
   const [orderHistoryRefreshTrigger, setOrderHistoryRefreshTrigger] = useState(0);
+  const [mobileTradeTab, setMobileTradeTab] = useState(''); // '' | 'buy' | 'sell'
 
   // Get coin_pair_id from URL params, default to 1 if not provided
   const coinPairId = searchParams.get('coin_pair_id') || 1;
   
   // Fetch all available coins
   useEffect(() => {
-    const fetchAvailableCoins = async () => {
+    const fetchAvailableCoinsData = async () => {
       try {
-        const token = localStorage.getItem('authToken');
-        if (!token) return;
+        // Use the fetchAllCoins function from spotTradingApi.js
+        const response = await fetchAllCoins();
         
-        const response = await axios.get(
-          'https://django.bhtokens.com/api/trading/coins',
-          {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          }
-        );
-        
-        if (response.data && Array.isArray(response.data)) {
-          setAvailableCoins(response.data);
-          console.log('Available coins:', response.data);
+        if (response.success && Array.isArray(response)) {
+          setAvailableCoins(response);
+          console.log('Available coins:', response);
         }
       } catch (error) {
         console.error('Error fetching available coins:', error);
       }
     };
     
-    fetchAvailableCoins();
+    fetchAvailableCoinsData();
   }, []);
   
   const fetchCryptoData = useCallback(async () => {
@@ -63,10 +56,73 @@ const SpotTrading = () => {
 
       // Get the user's UID for the wallet API
       let uid = localStorage.getItem('uid');
+      
+      // Check if user is logged in
+      const isLoggedIn = token && userId;
 
-      if (!userId || !token) {
-        setError("Please log in to access trading features");
-        setLoading(false);
+      // If user is not logged in, fetch only the crypto data without wallet info
+      if (!isLoggedIn) {
+        try {
+          // Use BTC as default symbol if we don't have specific coin info
+          const defaultSymbol = 'BTC';
+          
+          // Use the fetchCoinDetails function from spotTradingApi.js
+          const coinResponse = await fetchCoinDetails(defaultSymbol);
+          
+          if (coinResponse.success) {
+            const coinData = coinResponse.data;
+            setCryptoData({
+              cryptoName: coinData?.name || 'Bitcoin',
+              cryptoSymbol: coinData?.symbol || 'BTC',
+              cryptoPrice: coinData?.price || 0,
+              cryptoLogoPath: coinData?.logo_path || '',
+              usdtName: 'USDT',
+              usdtSymbol: 'USDT',
+              usdtLogoPath: ''
+            });
+            
+            // Set empty balances for non-logged in users
+            setUserBalance({
+              cryptoSpotBalance: 0,
+              usdtSpotBalance: 0
+            });
+          } else {
+            // If we can't get coin details, set default values
+            setCryptoData({
+              cryptoName: 'Bitcoin',
+              cryptoSymbol: 'BTC',
+              cryptoPrice: 20000,
+              cryptoLogoPath: '',
+              usdtName: 'USDT',
+              usdtSymbol: 'USDT',
+              usdtLogoPath: ''
+            });
+            
+            setUserBalance({
+              cryptoSpotBalance: 0,
+              usdtSpotBalance: 0
+            });
+          }
+          setLoading(false);
+        } catch (err) {
+          console.error('Error fetching coin data:', err);
+          // Don't set error, just use default values
+          setCryptoData({
+            cryptoName: 'Bitcoin',
+            cryptoSymbol: 'BTC',
+            cryptoPrice: 20000,
+            cryptoLogoPath: '',
+            usdtName: 'USDT',
+            usdtSymbol: 'USDT',
+            usdtLogoPath: ''
+          });
+          
+          setUserBalance({
+            cryptoSpotBalance: 0,
+            usdtSpotBalance: 0
+          });
+          setLoading(false);
+        }
         return;
       }
 
@@ -84,24 +140,34 @@ const SpotTrading = () => {
         }
       }
 
-      const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
-      const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-wallet/${uid}/${coinPairId}?apikey=${apiKey}`;
-
-      const response = await axios.get(apiUrl);
-      if (response.data) {
+      // Use the new getSpotWallet function to fetch wallet data
+      const walletData = await getSpotWallet(uid, coinPairId);
+      
+      if (walletData.success) {
+        const { cryptoWallet, usdtWallet } = walletData;
+        
         setCryptoData({
-          cryptoName: response.data.cryptoWallet?.crypto_name || '',
-          cryptoSymbol: response.data.cryptoWallet?.crypto_symbol || '',
-          cryptoPrice: response.data.cryptoWallet?.price || 0,
-          cryptoLogoPath: response.data.cryptoWallet?.logo_path || '',
-          usdtName: response.data.usdtWallet?.crypto_name || 'USDT',
-          usdtSymbol: response.data.usdtWallet?.crypto_symbol || 'USDT',
-          usdtLogoPath: response.data.usdtWallet?.logo_path || ''
+          cryptoName: cryptoWallet?.crypto_name || '',
+          cryptoSymbol: cryptoWallet?.crypto_symbol || '',
+          cryptoPrice: cryptoWallet?.price || 0,
+          cryptoLogoPath: cryptoWallet?.logo_path || '',
+          usdtName: usdtWallet?.crypto_name || 'USDT',
+          usdtSymbol: usdtWallet?.crypto_symbol || 'USDT',
+          usdtLogoPath: usdtWallet?.logo_path || ''
         });
+        
         setUserBalance({
-          cryptoBalance: response.data.cryptoWallet?.spot_wallet || 0,
-          usdtBalance: response.data.usdtWallet?.spot_wallet || 0
+          cryptoSpotBalance: cryptoWallet?.spot_wallet || 0,
+          usdtSpotBalance: usdtWallet?.spot_wallet || 0
         });
+        
+        console.log('Spot wallet data loaded:', {
+          cryptoSymbol: cryptoWallet?.crypto_symbol,
+          cryptoBalance: cryptoWallet?.spot_wallet,
+          usdtBalance: usdtWallet?.spot_wallet
+        });
+      } else {
+        throw new Error(walletData.message || 'Failed to fetch wallet data');
       }
     } catch (err) {
       console.error('Error fetching crypto data:', err);
@@ -117,7 +183,9 @@ const SpotTrading = () => {
       const token = localStorage.getItem('authToken');
       const userId = localStorage.getItem('user_id');
       let uid = localStorage.getItem('uid');
+      
       if (!userId || !token) return;
+      
       if (!uid) {
         try {
           const userInfoResponse = await axios.get(
@@ -130,13 +198,22 @@ const SpotTrading = () => {
           uid = 'yE8vKBNw';
         }
       }
-      const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
-      const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-wallet/${uid}/${coinPairId}?apikey=${apiKey}`;
-      const response = await axios.get(apiUrl);
-      if (response.data) {
+      
+      // Use the new getSpotWallet function to fetch wallet data
+      const walletData = await getSpotWallet(uid, coinPairId);
+      
+      if (walletData.success) {
+        const { cryptoWallet, usdtWallet } = walletData;
+        
         setUserBalance({
-          cryptoBalance: response.data.cryptoWallet?.spot_wallet || 0,
-          usdtBalance: response.data.usdtWallet?.spot_wallet || 0
+          cryptoSpotBalance: cryptoWallet?.spot_wallet || 0,
+          usdtSpotBalance: usdtWallet?.spot_wallet || 0
+        });
+        
+        console.log('Updated spot wallet balances:', {
+          cryptoSymbol: cryptoWallet?.crypto_symbol,
+          cryptoBalance: cryptoWallet?.spot_wallet,
+          usdtBalance: usdtWallet?.spot_wallet
         });
       }
       
@@ -156,6 +233,38 @@ const SpotTrading = () => {
       console.log('SpotTrading: Current crypto symbol:', cryptoData.cryptoSymbol);
     }
   }, [fetchCryptoData, cryptoData?.cryptoSymbol]);
+
+  // Mobile app bar buy/sell buttons handler
+  const handleMobileTradeTab = (tab) => {
+    setMobileTradeTab(mobileTradeTab === tab ? '' : tab);
+  };
+
+  // Mobile bottom sheet trade form
+  const renderMobileTradeForm = () => (
+    <>
+      <div className={`mobile-trade-overlay${mobileTradeTab ? ' open' : ''}`} 
+           onClick={() => setMobileTradeTab('')}></div>
+      <div className={`mobile-trade-form-sheet${mobileTradeTab ? ' open' : ''}`}>
+        <div className="mobile-trade-form-header">
+          <div className="mobile-trade-form-title">
+            {mobileTradeTab === 'buy' ? 'Buy' : 'Sell'} {cryptoData?.cryptoSymbol}
+          </div>
+          <button className="mobile-trade-form-close" onClick={() => setMobileTradeTab('')}>
+            ×
+          </button>
+        </div>
+        <div className="mobile-trade-form-content">
+          <TradeForm
+            cryptoData={cryptoData}
+            userBalance={userBalance}
+            coinPairId={coinPairId}
+            onTradeSuccess={fetchUserBalance}
+            isBuy={mobileTradeTab === 'buy'}
+          />
+        </div>
+      </div>
+    </>
+  );
 
   if (loading) {
     return <div className="loading-screen">Loading trading data...</div>;
@@ -198,6 +307,13 @@ const SpotTrading = () => {
       <div className="orders-container">
         <OrdersSection refreshTrigger={orderHistoryRefreshTrigger} />
       </div>
+      
+      {/* Mobile app bar with buy/sell buttons */}
+      <div className="mobile-trade-bar">
+        <button className="mobile-trade-btn buy" onClick={() => handleMobileTradeTab('buy')}>Buy</button>
+        <button className="mobile-trade-btn sell" onClick={() => handleMobileTradeTab('sell')}>Sell</button>
+      </div>
+      {renderMobileTradeForm()}
     </div>
   );
 };

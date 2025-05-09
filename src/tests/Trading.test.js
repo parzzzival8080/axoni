@@ -303,7 +303,7 @@ describe('Future Trading Functionality', () => {
     expect(apiCallParams.symbol).toBe('BTC');
     expect(apiCallParams.amount).toBe('0.5');
     expect(apiCallParams.order_type).toBe('open');
-    expect(apiCallParams.execution_type).toBe('limit');
+    expect(apiCallParams.excecution_type).toBe('limit');
   });
 
   test('should handle leverage changes for future trading', async () => {

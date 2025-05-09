@@ -70,11 +70,14 @@
   border-radius: 0 8px 8px 0;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.2s;
   height: 56px;
 }
 .tryBtn:hover {
   background: #eaeaea;
+}
+.tryBtn:active {
+  transform: scale(0.97);
 }
 
 .partnerLogos {
@@ -170,4 +173,35 @@
   .heroContent {
     margin: 0 10px;
   }
+}
+
+@media (max-width: 400px) {
+  .hero, .trading, .journey, .about, .faq {
+    padding: 32px 6px;
+  }
+  .hero h1, .trading h2, .journey h2, .about h2, .faq h2 {
+    font-size: 20px;
+  }
+  .email-form input, .try-btn {
+    font-size: 14px;
+    padding: 10px;
+  }
+  .video-gallery {
+    gap: 12px;
+  }
+  .video-card {
+    max-width: 100%;
+  }
+  .partner-logos {
+    gap: 10px;
+  }
+}
+
+body {
+  overflow-x: hidden;
+}
+
+section {
+  transition: opacity 0.4s;
+  opacity: 1;
 }

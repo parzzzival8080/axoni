@@ -386,6 +386,12 @@
 .future-trading-container .trade-form .balance-info {
   margin-top: var(--spacing-sm);
   font-size: var(--font-size-sm);
+  background-color: var(--primary-bg);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .future-trading-container .trade-form .available-balance {
@@ -393,7 +399,8 @@
   justify-content: space-between;
   align-items: center;
   color: var(--text-secondary);
-  margin-bottom: var(--spacing-xs);
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11px;
 }
 
 .future-trading-container .trade-form .info-btn {
@@ -402,6 +409,7 @@
   cursor: pointer;
   padding: 0;
   font-size: var(--font-size-sm);
+  margin-left: var(--spacing-sm);
 }
 
 .future-trading-container .trade-form .max-values {
@@ -413,7 +421,15 @@
 .future-trading-container .trade-form .max-long,
 .future-trading-container .trade-form .max-short {
   font-family: 'Roboto Mono', monospace;
-  font-size: var(--font-size-xs);
+  font-size: 11px;
+}
+
+.future-trading-container .trade-form .max-long {
+  color: var(--buy-color);
+}
+
+.future-trading-container .trade-form .max-short {
+  color: var(--sell-color);
 }
 
 /* TP/SL Checkbox */
@@ -470,13 +486,19 @@
   width: 100%;
   height: var(--button-height);
   border: none;
-  border-radius: 4px;
+  border-radius: 50px; /* Pill shape */
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: all var(--transition-speed) var(--transition-easing);
-  margin-bottom: var(--spacing-md);
+  margin: 10px auto; /* Center vertically with margin */
   color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .future-trading-container .trade-form .action-btn.buy-more {
@@ -489,15 +511,49 @@
 
 .future-trading-container .trade-form .action-btn:hover {
   filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .future-trading-container .trade-form .action-btn:active {
-  transform: scale(0.98);
+  transform: scale(0.98) translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .future-trading-container .trade-form .action-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+/* Login to trade button - pill shaped */
+.future-trading-container .future-login-pill-btn {
+  width: 100%;
+  padding: 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: none !important;
+  border-radius: 50px !important; /* Pill shape */
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 10px 0;
+  display: block;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.future-trading-container .future-login-pill-btn:hover {
+  background-color: #f5f5f5 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.future-trading-container .future-login-pill-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Cost Section */
@@ -626,10 +682,28 @@
 
 /* Mobile Optimization */
 @media (max-width: 768px) {
+  .desktop-trade-action-btn {
+    display: none !important;
+  }
   .future-trading-container .trade-form {
     padding: var(--spacing-md);
+    padding-bottom: 110px !important; /* leave space for fixed bar */
   }
-  
+  .future-trading-container .trade-form .action-btn,
+  .future-trading-container .future-login-pill-btn {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  /* Mobile fixed action bar is styled via styled-components */
+}
+
+@media (min-width: 769px) {
+  .desktop-trade-action-btn {
+    display: flex !important;
+  }
+}
+
+@media (max-width: 768px) {
   .future-trading-container .trade-form .action-btn {
     height: 44px;
     font-size: var(--font-size-lg);
@@ -670,4 +744,61 @@
     margin-top: 8px !important;
     padding: 10px 0 !important;
     font-size: 16px !important;
+}
+
+/* Loading balance indicator */
+.loading-balance {
+  display: flex;
+  align-items: center;
+  color: #8c8c8c;
+  font-size: 14px;
+}
+
+.loading-text {
+  margin-right: 4px;
+}
+
+.loading-dots {
+  display: inline-flex;
+}
+
+.loading-dots span {
+  animation: loadingDots 1.4s infinite;
+  opacity: 0;
+}
+
+.loading-dots span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes loadingDots {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Error balance indicator */
+.error-balance {
+  display: flex;
+  align-items: center;
+  color: #e74c3c;
+  font-size: 14px;
+}
+
+.error-balance svg {
+  margin-left: 6px;
+}
+
+/* Disabled button styles */
+.info-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

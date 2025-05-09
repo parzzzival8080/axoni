@@ -1,152 +1,82 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import axios from 'axios';
 import SubHeader from '../components/futureTrading/SubHeader';
 import FavoritesBar from '../components/futureTrading/FavoritesBar';
 import TradingChartDynamic from '../components/futureTrading/TradingChartDynamic';
 import OrderBook from '../components/futureTrading/OrderBook';
 import TradeForm from '../components/futureTrading/TradeForm';
 import OrdersSection from '../components/futureTrading/OrdersSection';
+import { fetchTradableCoins, fetchWalletData } from '../services/futureTradingApi';
 import '../components/futureTrading/FutureTrading.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
+/**
+ * Future Trading Page Component
+ * Manages the overall state and data flow for the futures trading interface
+ */
 const FutureTrading = () => {
+  // URL parameters
   const [searchParams, setSearchParams] = useSearchParams();
-  const [cryptoData, setCryptoData] = useState(null);
-  const [userBalance, setUserBalance] = useState({
-    cryptoBalance: 0,
-    usdtBalance: 0
-  });
+  const coinPairId = Number(searchParams.get('coin_pair_id')) || 1;
+  
+  // Core state
+  const [tradableCoins, setTradableCoins] = useState([]);
+  const [walletData, setWalletData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [availableCoins, setAvailableCoins] = useState([]);
   const [orderHistoryRefreshTrigger, setOrderHistoryRefreshTrigger] = useState(0);
-
-  // Get coin_pair_id from URL params, default to 1 if not provided
-  const coinPairId = searchParams.get('coin_pair_id') || 1;
+  const [mobileTradeTab, setMobileTradeTab] = useState(''); // '' | 'buy' | 'sell'
   
-  // Fetch all available coins
+  // Notification state
+  const [notification, setNotification] = useState({ show: false, message: '', type: 'success' });
+  
+  // User authentication
+  const [uid, setUid] = useState(localStorage.getItem('uid') || '');
+  
+  // Fetch available tradable coins on component mount
   useEffect(() => {
-    const fetchAvailableCoins = async () => {
-      try {
-        const token = localStorage.getItem('authToken');
-        if (!token) return;
-        
-        const response = await axios.get(
-          'https://django.bhtokens.com/api/trading/coins',
-          {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          }
-        );
-        
-        if (response.data && Array.isArray(response.data)) {
-          setAvailableCoins(response.data);
-          console.log('Available coins:', response.data);
-        }
-      } catch (error) {
-        console.error('Error fetching available coins:', error);
-      }
+    const loadTradableCoins = async () => {
+      const coins = await fetchTradableCoins();
+      setTradableCoins(coins);
     };
     
-    fetchAvailableCoins();
+    loadTradableCoins();
   }, []);
   
-  const fetchCryptoData = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      // Get the auth token and user ID from localStorage
-      const token = localStorage.getItem('authToken');
-      const userId = localStorage.getItem('user_id');
-
-      // Get the user's UID for the wallet API
-      let uid = localStorage.getItem('uid');
-
-      if (!userId || !token) {
+  // Fetch wallet data when coinPairId or uid changes
+  useEffect(() => {
+    const loadWalletData = async () => {
+      if (!uid) {
         setError("Please log in to access trading features");
         setLoading(false);
         return;
       }
-
-      // If we don't have a uid, try to fetch one
-      if (!uid) {
-        try {
-          const userInfoResponse = await axios.get(
-            `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${userId}`,
-            { headers: { 'Authorization': `Bearer ${token}` } }
-          );
-          uid = userInfoResponse.data?.user?.uid || 'yE8vKBNw';
-          localStorage.setItem('uid', uid);
-        } catch {
-          uid = 'yE8vKBNw';
-        }
-      }
-
-      const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
-      const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-wallet/${uid}/${coinPairId}?apikey=${apiKey}`;
-
-      const response = await axios.get(apiUrl);
-      if (response.data) {
-        setCryptoData({
-          cryptoName: response.data.cryptoWallet?.crypto_name || '',
-          cryptoSymbol: response.data.cryptoWallet?.crypto_symbol || '',
-          cryptoPrice: response.data.cryptoWallet?.price || 0,
-          cryptoLogoPath: response.data.cryptoWallet?.logo_path || '',
-          usdtName: response.data.usdtWallet?.crypto_name || 'USDT',
-          usdtSymbol: response.data.usdtWallet?.crypto_symbol || 'USDT',
-          usdtLogoPath: response.data.usdtWallet?.logo_path || ''
-        });
-        setUserBalance({
-          cryptoBalance: response.data.cryptoWallet?.spot_wallet || 0,
-          usdtBalance: response.data.usdtWallet?.spot_wallet || 0
-        });
-      }
-    } catch (err) {
-      console.error('Error fetching crypto data:', err);
-      setError('Failed to load trading data. Please try again later.');
-    } finally {
-      setLoading(false);
-    }
-  }, [coinPairId]);
-
-  // Only update balance (not loading state) after a trade
-  const fetchUserBalance = useCallback(async () => {
-    try {
-      const token = localStorage.getItem('authToken');
-      const userId = localStorage.getItem('user_id');
-      let uid = localStorage.getItem('uid');
-      if (!userId || !token) return;
-      if (!uid) {
-        try {
-          const userInfoResponse = await axios.get(
-            `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${userId}`,
-            { headers: { 'Authorization': `Bearer ${token}` } }
-          );
-          uid = userInfoResponse.data?.user?.uid || 'yE8vKBNw';
-          localStorage.setItem('uid', uid);
-        } catch {
-          uid = 'yE8vKBNw';
-        }
-      }
-      const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
-      const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-wallet/${uid}/${coinPairId}?apikey=${apiKey}`;
-      const response = await axios.get(apiUrl);
-      if (response.data) {
-        setUserBalance({
-          cryptoBalance: response.data.cryptoWallet?.spot_wallet || 0,
-          usdtBalance: response.data.usdtWallet?.spot_wallet || 0
-        });
-      }
       
-      // Trigger order history refresh without affecting the chart
-      setOrderHistoryRefreshTrigger(prev => prev + 1);
-    } catch (err) {
-      // Optionally handle error
-      console.error('Error fetching user balance:', err);
-    }
-  }, [coinPairId]);
+      setLoading(true);
+      
+      try {
+        // Get wallet data for the selected coin
+        const data = await fetchWalletData(uid, coinPairId);
+        
+        if (data.error) {
+          setError(data.message);
+          setWalletData(null);
+        } else {
+          setWalletData(data);
+          setError(null);
+        }
+      } catch (err) {
+        console.error('Error fetching wallet data:', err);
+        setError('Failed to load trading data. Please try again.');
+        setWalletData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadWalletData();
+  }, [coinPairId, uid]);
   
   // Handle coin selection from FavoritesBar
   const handleCoinSelect = useCallback((selectedCoinPairId) => {
@@ -155,49 +85,187 @@ const FutureTrading = () => {
       setSearchParams({ coin_pair_id: selectedCoinPairId });
     }
   }, [coinPairId, setSearchParams]);
+  
+  // Handle successful trade execution
+  const handleTradeSuccess = useCallback((message) => {
+    console.log('FutureTrading: Trade successful, refreshing data...');
+    
+    // Show success notification
+    setNotification({
+      show: true,
+      message: message || 'Future trade executed successfully',
+      type: 'success'
+    });
+    
+    // Hide notification after 3 seconds
+    setTimeout(() => {
+      setNotification(prev => ({ ...prev, show: false }));
+    }, 3000);
+    
+    // Refresh wallet data
+    const refreshWalletData = async () => {
+      if (!uid) return;
+      
+      try {
+        console.log('FutureTrading: Refreshing wallet data for coin pair ID:', coinPairId);
+        const data = await fetchWalletData(uid, coinPairId);
+        
+        if (!data.error) {
+          console.log('FutureTrading: Wallet data refreshed successfully:', data);
+          setWalletData(data);
+        } else {
+          console.error('FutureTrading: Error refreshing wallet data:', data.message);
+        }
+      } catch (err) {
+        console.error('FutureTrading: Exception refreshing wallet data:', err);
+      }
+    };
+    
+    refreshWalletData();
+    
+    // Refresh order history
+    setOrderHistoryRefreshTrigger(prev => prev + 1);
+  }, [coinPairId, uid]);
+  
+  // Format wallet data for SubHeader component
+  const getSubHeaderData = () => {
+    if (!walletData) return null;
+    
+    return {
+      cryptoName: walletData.name,
+      cryptoSymbol: walletData.symbol,
+      cryptoPrice: walletData.price,
+      cryptoLogoPath: walletData.cryptoWallet?.logo_path,
+      usdtSymbol: walletData.usdtWallet?.crypto_symbol || 'USDT'
+    };
+  };
+  
+  // Mobile app bar buy/sell buttons handler
+  const handleMobileTradeTab = (tab) => {
+    setMobileTradeTab(mobileTradeTab === tab ? '' : tab);
+  };
 
-  // Fetch crypto data when coinPairId changes
-  useEffect(() => {
-    console.log('FutureTrading: Fetching data for coin pair ID:', coinPairId);
-    fetchCryptoData();
-  }, [fetchCryptoData, coinPairId]);
-
-  if (loading && !cryptoData) {
+  // Mobile bottom sheet trade form
+  const renderMobileTradeForm = () => (
+    <>
+      <div className={`future-mobile-trade-overlay${mobileTradeTab ? ' open' : ''}`} 
+           onClick={() => setMobileTradeTab('')}></div>
+      <div className={`future-mobile-trade-form-sheet${mobileTradeTab ? ' open' : ''}`}>
+        <div className="future-mobile-trade-form-header">
+          <div className="future-mobile-trade-form-title">
+            {mobileTradeTab === 'buy' ? 'Buy / Long' : 'Sell / Short'} {walletData?.symbol}
+          </div>
+          <button className="future-mobile-trade-form-close" onClick={() => setMobileTradeTab('')}>
+            ×
+          </button>
+        </div>
+        <div className="future-mobile-trade-form-content">
+          <TradeForm
+            walletData={walletData}
+            coinPairId={coinPairId}
+            tradableCoins={tradableCoins}
+            onTradeSuccess={handleTradeSuccess}
+            uid={uid}
+            positionType={mobileTradeTab === 'buy' ? 'open' : 'close'}
+          />
+        </div>
+      </div>
+    </>
+  );
+  
+  // Render notification
+  const renderNotification = () => {
+    if (!notification.show) return null;
+    
+    return (
+      <div className={`notification ${notification.type === 'error' ? 'error' : ''}`}>
+        <div className="notification-content">
+          <div className="notification-icon">
+            <FontAwesomeIcon 
+              icon={notification.type === 'success' ? faCheckCircle : faTimesCircle} 
+            />
+          </div>
+          <div className="notification-message">
+            {notification.message}
+          </div>
+        </div>
+        <button 
+          className="notification-close" 
+          onClick={() => setNotification(prev => ({ ...prev, show: false }))}
+        >
+          ×
+        </button>
+      </div>
+    );
+  };
+  
+  // Loading state
+  if (loading && !walletData) {
     return <div className="loading-screen">Loading trading data...</div>;
   }
-
-  if (error) {
+  
+  // Error state
+  if (error && !walletData) {
     return <div className="error-message">{error}</div>;
   }
 
   return (
     <div className="future-trading-container">
       <SubHeader 
-        cryptoData={cryptoData} 
+        cryptoData={getSubHeaderData()} 
         coinPairId={coinPairId}
       />
       <FavoritesBar 
         activeCoinPairId={coinPairId} 
-        availableCoins={availableCoins}
+        tradableCoins={tradableCoins}
         onCoinSelect={handleCoinSelect}
       />
-      <div className="main-container">
-        <TradingChartDynamic 
-          selectedSymbol={cryptoData?.cryptoSymbol} 
-        />
-        <OrderBook 
-          cryptoData={cryptoData}
-        />
-        <TradeForm 
-          cryptoData={cryptoData} 
-          userBalance={userBalance}
-          coinPairId={coinPairId}
-          onTradeSuccess={fetchUserBalance}
-        />
-      </div>
-      <div className="orders-container">
-        <OrdersSection refreshTrigger={orderHistoryRefreshTrigger} />
-      </div>
+      {loading ? (
+        <div className="loading-overlay">
+          <div className="loading-spinner">Loading trading data...</div>
+        </div>
+      ) : (
+        <>
+          <div className="main-container">
+            <TradingChartDynamic 
+              selectedSymbol={walletData?.symbol} 
+            />
+            <OrderBook 
+              cryptoData={getSubHeaderData()}
+            />
+            <div className="trade-form-container desktop-only">
+              <TradeForm 
+                walletData={walletData}
+                coinPairId={coinPairId}
+                tradableCoins={tradableCoins}
+                onTradeSuccess={handleTradeSuccess}
+                uid={uid}
+              />
+            </div>
+          </div>
+          <div className="orders-container">
+            <OrdersSection refreshTrigger={orderHistoryRefreshTrigger} />
+          </div>
+          
+          {/* Mobile app bar with buy/sell buttons */}
+          <div className="future-mobile-trade-bar">
+            <button 
+              className="future-mobile-trade-btn buy" 
+              onClick={() => handleMobileTradeTab('buy')}
+            >
+              Buy / Long
+            </button>
+            <button 
+              className="future-mobile-trade-btn sell" 
+              onClick={() => handleMobileTradeTab('sell')}
+            >
+              Sell / Short
+            </button>
+          </div>
+          {renderMobileTradeForm()}
+          {renderNotification()}
+        </>
+      )}
     </div>
   );
 };
