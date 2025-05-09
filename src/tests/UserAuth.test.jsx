@@ -1,24 +1,28 @@
 import React from 'react';
+import { vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import LoginForm from '../components/login/LoginForm';
 import SignUpPage from '../pages/SignUpPage';
 
 // Mock react-router-dom
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: () => jest.fn(),
-  Link: ({ children, to }) => <a href={to}>{children}</a>
-}));
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: () => vi.fn(),
+    Link: ({ children, to }) => <a href={to}>{children}</a>
+  };
+});
 
 // Setup localStorage mock
 const localStorageMock = (() => {
   let store = {};
   return {
-    getItem: jest.fn(key => store[key]),
-    setItem: jest.fn((key, value) => { store[key] = value; }),
-    clear: jest.fn(() => { store = {}; }),
-    removeItem: jest.fn(key => { delete store[key]; })
+    getItem: vi.fn(key => store[key]),
+    setItem: vi.fn((key, value) => { store[key] = value; }),
+    clear: vi.fn(() => { store = {}; }),
+    removeItem: vi.fn(key => { delete store[key]; })
   };
 })();
 Object.defineProperty(window, 'localStorage', { value: localStorageMock });
@@ -39,15 +43,15 @@ let originalFetch;
 
 describe('LoginForm Tests', () => {
   beforeEach(() => {
-    jest.resetModules();
+    vi.resetModules();
     localStorageMock.clear();
     
     // Save original fetch
     originalFetch = global.fetch;
     
     // Mock axios before importing it
-    jest.doMock('axios', () => ({
-      post: jest.fn().mockResolvedValue({
+    vi.doMock('axios', () => ({
+      post: vi.fn().mockResolvedValue({
         data: {
           success: true,
           user_id: 122,
@@ -57,7 +61,7 @@ describe('LoginForm Tests', () => {
           ip_address: "65.181.9.198"
         }
       }),
-      get: jest.fn().mockResolvedValue({
+      get: vi.fn().mockResolvedValue({
         data: {
           user: { name: 'Test User' }
         }
@@ -71,7 +75,7 @@ describe('LoginForm Tests', () => {
   
   afterEach(() => {
     global.fetch = originalFetch;
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   test('renders login form correctly', () => {
@@ -104,11 +108,11 @@ describe('LoginForm Tests', () => {
 
 describe('SignupForm Tests', () => {
   beforeEach(() => {
-    jest.resetModules();
+    vi.resetModules();
     localStorageMock.clear();
     
     // Mock fetch for signup
-    global.fetch = jest.fn().mockImplementation(() => 
+    global.fetch = vi.fn().mockImplementation(() => 
       Promise.resolve({
         ok: true,
         headers: {
@@ -125,7 +129,7 @@ describe('SignupForm Tests', () => {
   });
   
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   test('renders signup form correctly', () => {
