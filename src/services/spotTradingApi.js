@@ -156,12 +156,15 @@ export const executeSpotTradeOrder = async (params) => {
             uid = DEFAULT_UID, 
             symbol = 'BTC', 
             coin_pair_id, 
-            order_type = 'limit', 
+            order_type, 
             excecution_type = 'limit',  // Changed from execution_type to excecution_type as per API requirements
             side = 'buy',
             price, 
             amount 
         } = params;
+        
+        // Use side value as order_type if not provided
+        const effectiveOrderType = order_type || side;
         
         // Validate required parameters
         if (!uid) {
@@ -184,7 +187,7 @@ export const executeSpotTradeOrder = async (params) => {
         const total_in_usdt = (parseFloat(price) * parseFloat(amount)).toFixed(6);
         
         // Create URL with query parameters as shown in the 4th screenshot
-        const url = `${API_BASE_URL}/orders?uid=${uid}&coin_id=${coin_pair_id}&order_type=${order_type}&excecution_type=${excecution_type}&price=${price}&amount=${amount}&total_in_usdt=${total_in_usdt}&apikey=${API_KEY}`;
+        const url = `${API_BASE_URL}/orders?uid=${uid}&coin_id=${coin_pair_id}&order_type=${effectiveOrderType}&excecution_type=${excecution_type}&price=${price}&amount=${amount}&total_in_usdt=${total_in_usdt}&apikey=${API_KEY}`;
         
         console.log('Executing spot trade with URL:', url);
         
