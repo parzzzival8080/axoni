@@ -1,0 +1,191 @@
+/* Modal backdrop - covers the entire screen */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.2s ease;
+}
+
+/* Language modal container */
+.language-modal {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 720px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: scaleIn 0.2s ease;
+}
+
+/* Modal header with tabs */
+.language-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 24px 0;
+}
+
+/* Tabs container */
+.language-modal-tabs {
+  display: flex;
+  gap: 24px;
+}
+
+/* Individual tab */
+.language-modal-tab {
+  font-size: 16px;
+  font-weight: 500;
+  color: #757575;
+  padding-bottom: 16px;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+}
+
+/* Active tab */
+.language-modal-tab.active {
+  color: #000;
+  font-weight: 600;
+}
+
+/* Active tab indicator line */
+.language-modal-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #000;
+  border-radius: 2px;
+}
+
+/* Close button */
+.language-modal-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #757575;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.language-modal-close:hover {
+  background-color: #f5f5f5;
+}
+
+/* Info box styling */
+.language-modal-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 16px 24px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+.language-modal-info i {
+  font-size: 16px;
+  color: #000;
+  margin-top: 2px;
+}
+
+/* Languages grid */
+.language-modal-content {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 16px 24px 24px;
+  overflow-y: auto;
+}
+
+/* Individual language option */
+.language-option {
+  padding: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.language-option:hover {
+  background-color: #f5f5f5;
+}
+
+.language-option.selected {
+  background-color: #f0f0f0;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .language-modal-content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .language-modal {
+    max-width: 90%;
+    max-height: 80vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .language-modal-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .language-modal-tab {
+    font-size: 14px;
+  }
+  
+  .language-modal-header {
+    padding: 16px 16px 0;
+  }
+  
+  .language-modal-content {
+    padding: 12px 16px 16px;
+  }
+  
+  .language-option {
+    padding: 12px;
+  }
+}

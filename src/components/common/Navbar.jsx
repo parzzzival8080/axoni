@@ -6,6 +6,7 @@ import './Navbar.css';
 import { fetchAllCoins } from '../../services/spotTradingApi';
 import defaultCoinLogo from '../../assets/coin/bitcoin-2136339_640.webp';
 import ComingSoon from '../../components/common/ComingSoon';
+import LanguageModal from './LanguageModal';
 
 // Notification data
 const notifications = [
@@ -152,6 +153,7 @@ const Navbar = () => {
   const searchRef = useRef(null);
   const mobileSearchRef = useRef(null);
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const signupButtonStyle = {
     backgroundColor: 'black',
@@ -321,6 +323,16 @@ const Navbar = () => {
     setSearchTerm('');
     const searchInput = document.getElementById('mobile-search-input');
     if (searchInput) searchInput.focus();
+  };
+  
+
+  
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
 
@@ -1009,6 +1021,19 @@ const Navbar = () => {
               </Link>
             </div>
           </div>
+
+          {/* Language icon with support dropdown */}
+          <div className="right-nav-item">
+            <button 
+              className="navbar-icon-link" 
+              type="button" 
+              aria-label="Language" 
+              style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
+              onClick={openModal}
+            >
+              <i className="fas fa-globe"></i>
+            </button>
+          </div>
         </div>
         
         {/* Mobile-only hamburger menu button */}
@@ -1016,7 +1041,11 @@ const Navbar = () => {
           <i className="fas fa-bars"></i>
         </div>
       </div>
-
+      {/* Language Modal */}
+      <LanguageModal 
+        isOpen={isModalOpen} 
+        onClose={closeModal} 
+      />
       {/* Mobile menu overlay */}
       {isMobileMenuOpen && (
         <div className="mobile-menu-overlay">
