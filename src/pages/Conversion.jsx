@@ -83,12 +83,10 @@ const Conversion = () => {
     // Fetch balance when currency changes
     useEffect(() => {
       fetchBalance();
-    }, [toCurrency]);
+    }, []);
 
     const fetchBalance = async () => {
-      if (!toCurrency.symbol) {
-        return;
-      }
+
       
       setBalance(prev => ({
         ...prev,
@@ -97,7 +95,7 @@ const Conversion = () => {
       }));
       
       try {
-        const url = `https://apiv2.bhtokens.com/api/v1/coin-balance/${uid}?apikey=${apiKey}&symbol=${toCurrency.symbol}`;
+        const url = `https://apiv2.bhtokens.com/api/v1/user-wallet/${uid}/1?apikey=${apiKey}`;
         
         const response = await fetch(url);
         
@@ -110,7 +108,7 @@ const Conversion = () => {
         setBalance({
           loading: false,
           error: null,
-          spotWallet: data.spot_wallet || '0'
+          spotWallet: data.usdtWallet?.spot_wallet || '0'
         });
       } catch (error) {
         setBalance(prev => ({
