@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { executeFutureTrade, fetchWalletData, formatPrice, calculateMaxAmount } from '../../services/futureTradingApi';
 import './TradeForm.css';
+import styles from './FutureTradeNotification.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faCaretUp, faCaretDown, faSyncAlt, faSpinner, faChevronDown, 
@@ -98,6 +99,16 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingBalance, setIsLoadingBalance] = useState(false);
   const [notification, setNotification] = useState(null);
+
+  // Auto-hide notification after 3 seconds
+  useEffect(() => {
+    if (notification) {
+      const timer = setTimeout(() => {
+        setNotification(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [notification]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   
   // Check if user is authenticated
@@ -333,6 +344,33 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
   
   return (
     <div className="trade-form">
+      <div className={styles['future-trade-notification-container']} aria-live="polite" style={{ marginBottom: notification ? 16 : 0 }}>
+        {notification && (
+          <div
+            className={[
+              styles['future-trade-notification'],
+              notification.type === 'success' ? styles['success'] : '',
+              notification.type === 'error' ? styles['error'] : ''
+            ].join(' ')}
+          >
+            {notification.type === 'success' && (
+              <FontAwesomeIcon icon={faCheckCircle} className={styles.icon} />
+            )}
+            {notification.type === 'error' && (
+              <FontAwesomeIcon icon={faExclamationCircle} className={styles.icon} />
+            )}
+            <span className={styles.message}>{notification.message}</span>
+            <button
+              className={styles.close}
+              aria-label="Close notification"
+              onClick={() => setNotification(null)}
+              tabIndex={0}
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+          </div>
+        )}
+      </div>
       <ScrollableFormContent className={isBottomSheet ? 'bottom-sheet-mode' : ''}>
       {/* Tabs */}
       <div className="trade-tabs">
@@ -349,23 +387,6 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
           Tools
         </div>
       </div>
-
-      {/* Notification */}
-      {notification && (
-        <div className={`notification ${notification.type}`}>
-          <span className="notification-icon">
-            {notification.type === 'success' && <FontAwesomeIcon icon={faCheckCircle} />}
-            {notification.type === 'error' && <FontAwesomeIcon icon={faExclamationCircle} />}
-            {notification.type === 'info' && <FontAwesomeIcon icon={faInfoCircle} />}
-            {notification.type === 'warning' && <FontAwesomeIcon icon={faExclamationTriangle} />}
-          </span>
-          <span className="notification-message">{notification.message}</span>
-          <button className="notification-close" onClick={() => setNotification(null)}>
-            <FontAwesomeIcon icon={faTimes} />
-          </button>
-        </div>
-      )}
-
       {/* Position Type */}
       <div className="position-type">
         <button
@@ -576,8 +597,6 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
         </div>
       </div>
       </ScrollableFormContent>
-
-
     </div>
   );
 }

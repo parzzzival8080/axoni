@@ -266,10 +266,6 @@ const SpotTrading = () => {
     </>
   );
 
-  if (loading) {
-    return <div className="loading-screen">Loading trading data...</div>;
-  }
-
   if (error) {
     return <div className="error-message">{error}</div>;
   }

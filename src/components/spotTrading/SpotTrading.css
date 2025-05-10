@@ -1048,17 +1048,61 @@ iframe.chart-iframe {
 }
 
 /* Loading and error states */
-.loading-screen, .error-message {
+.error-message {
     display: flex;
     justify-content: center;
     align-items: center;
-    height:7vh;
+    min-height: 100vh;
+    width: 100vw;
     background-color: var(--primary-bg);
-    color: var(--primary-text);
+    color: var(--sell-color);
     font-size: 16px;
     text-align: center;
     padding: 20px;
 }
+
+/* Skeleton loader for order book rows */
+.order-row.skeleton {
+  pointer-events: none;
+}
+.skeleton-cell.skeleton-rect {
+  background: linear-gradient(90deg, #23272f 25%, #18191d 50%, #23272f 75%);
+  border-radius: 4px;
+  min-height: 16px;
+  min-width: 32px;
+  width: 100%;
+  height: 16px;
+  animation: skeleton-loading 1.2s infinite linear;
+  margin: 0 2px;
+}
+.skeleton-bar {
+  background: linear-gradient(90deg, #23272f 25%, #18191d 50%, #23272f 75%);
+  border-radius: 4px;
+  height: 100%;
+  min-width: 0;
+  width: 0;
+  animation: skeleton-loading 1.2s infinite linear;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+}
+@keyframes skeleton-loading {
+  0% {
+    background-position: -40px 0;
+  }
+  100% {
+    background-position: 40px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .skeleton-cell.skeleton-rect {
+    min-height: 12px;
+    height: 12px;
+  }
+}
+
 
 .error-message {
     color: var(--sell-color);

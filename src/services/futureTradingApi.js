@@ -128,7 +128,8 @@ export const executeFutureTrade = async (params) => {
             resolve({
               success: true,
               data,
-              message: `Future ${transaction_type === 'BUY MORE' ? 'Buy' : 'Sell'} order executed successfully`
+              message: `Future ${transaction_type === 'BUY MORE' ? 'Buy' : 'Sell'} order executed successfully`,
+              important: true
             });
           } catch (error) {
             console.error('Error parsing JSON response:', error);

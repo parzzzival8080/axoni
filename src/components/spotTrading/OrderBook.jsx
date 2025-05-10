@@ -28,7 +28,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   const [dataSource, setDataSource] = useState('Connecting...');
   const lastUpdateTimeRef = useRef(Date.now());
   const staleConnectionCheckRef = useRef(null);
-  const throttleInterval = 1500; // Update UI max every 1500ms (1.5 seconds) for better performance
+  const throttleInterval = 100; // Update UI max every 100ms for fast, responsive updates
   const lastUpdateRef = useRef(Date.now());
   const pendingUpdateRef = useRef(null);
 
@@ -122,7 +122,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
 
     const fetchData = async () => {
       try {
-        const apiUrl = `https://www.okx.com/api/v5/market/books?instId=${instId}&sz=50`; // sz for depth, increased to get more orders
+        const apiUrl = `https://www.okx.com/api/v5/market/books?instId=${instId}&sz=5`; // Use top 5 levels for fast loading
         console.log('[OrderBook] Fetching from OKX REST API:', apiUrl);
         const response = await axios.get(apiUrl);
 
@@ -220,7 +220,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
           op: 'subscribe',
           args: [
             {
-              channel: 'books', // Using full depth to get more orders
+              channel: 'books5', // Use top 5 levels for speed and parity with futures
               instId: instId,
             },
           ],
@@ -518,7 +518,32 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
           </div>
 
           {isLoading && (orderBook.asks.length === 0 && orderBook.bids.length === 0) ? (
-            <LoadingSpinner />
+            <>
+              <div className="sell-orders">
+                {Array.from({ length: 8 }).map((_, idx) => (
+                  <div className="order-row skeleton" key={`ask-skeleton-${idx}`}>
+                    <div className="order-bar sell skeleton-bar" />
+                    <div className="order-price sell skeleton-cell skeleton-rect" />
+                    <div className="order-amount skeleton-cell skeleton-rect" />
+                    <div className="order-total skeleton-cell skeleton-rect" />
+                  </div>
+                ))}
+              </div>
+              <div className="current-price">
+                <div className="price-value skeleton-cell skeleton-rect" style={{ width: 80, height: 18, margin: '0 auto' }} />
+                <div className="price-usd skeleton-cell skeleton-rect" style={{ width: 60, height: 11, margin: '6px auto 0' }} />
+              </div>
+              <div className="buy-orders">
+                {Array.from({ length: 8 }).map((_, idx) => (
+                  <div className="order-row skeleton" key={`bid-skeleton-${idx}`}>
+                    <div className="order-bar buy skeleton-bar" />
+                    <div className="order-price buy skeleton-cell skeleton-rect" />
+                    <div className="order-amount skeleton-cell skeleton-rect" />
+                    <div className="order-total skeleton-cell skeleton-rect" />
+                  </div>
+                ))}
+              </div>
+            </>
           ) : (connectionStatus === 'error' || connectionStatus === 'failed') && orderBook.asks.length === 0 ? (
             <ConnectionError />
           ) : (

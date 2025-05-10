@@ -199,11 +199,6 @@ const FutureTrading = () => {
     );
   };
   
-  // Loading state
-  if (loading && !walletData) {
-    return <div className="loading-screen">Loading trading data...</div>;
-  }
-  
   // Error state
   if (error && !walletData) {
     return <div className="error-message">{error}</div>;
@@ -220,52 +215,45 @@ const FutureTrading = () => {
         tradableCoins={tradableCoins}
         onCoinSelect={handleCoinSelect}
       />
-      {loading ? (
-        <div className="loading-overlay">
-          <div className="loading-spinner">Loading trading data...</div>
+      <>
+        <div className="main-container">
+          <TradingChartDynamic 
+            selectedSymbol={walletData?.symbol} 
+          />
+          <OrderBook 
+            cryptoData={getSubHeaderData()}
+          />
+          <div className="trade-form-container desktop-only">
+            <TradeForm 
+              walletData={walletData}
+              coinPairId={coinPairId}
+              tradableCoins={tradableCoins}
+              onTradeSuccess={handleTradeSuccess}
+              uid={uid}
+            />
+          </div>
         </div>
-      ) : (
-        <>
-          <div className="main-container">
-            <TradingChartDynamic 
-              selectedSymbol={walletData?.symbol} 
-            />
-            <OrderBook 
-              cryptoData={getSubHeaderData()}
-            />
-            <div className="trade-form-container desktop-only">
-              <TradeForm 
-                walletData={walletData}
-                coinPairId={coinPairId}
-                tradableCoins={tradableCoins}
-                onTradeSuccess={handleTradeSuccess}
-                uid={uid}
-              />
-            </div>
-          </div>
-          <div className="orders-container">
-            <OrdersSection refreshTrigger={orderHistoryRefreshTrigger} />
-          </div>
-          
-          {/* Mobile app bar with buy/sell buttons */}
-          <div className="future-mobile-trade-bar">
-            <button 
-              className="future-mobile-trade-btn buy" 
-              onClick={() => handleMobileTradeTab('buy')}
-            >
-              Buy / Long
-            </button>
-            <button 
-              className="future-mobile-trade-btn sell" 
-              onClick={() => handleMobileTradeTab('sell')}
-            >
-              Sell / Short
-            </button>
-          </div>
-          {renderMobileTradeForm()}
-          {renderNotification()}
-        </>
-      )}
+        <div className="orders-container">
+          <OrdersSection refreshTrigger={orderHistoryRefreshTrigger} />
+        </div>
+        {/* Mobile app bar with buy/sell buttons */}
+        <div className="future-mobile-trade-bar">
+          <button 
+            className="future-mobile-trade-btn buy" 
+            onClick={() => handleMobileTradeTab('buy')}
+          >
+            Buy / Long
+          </button>
+          <button 
+            className="future-mobile-trade-btn sell" 
+            onClick={() => handleMobileTradeTab('sell')}
+          >
+            Sell / Short
+          </button>
+        </div>
+        {renderMobileTradeForm()}
+        {renderNotification()}
+      </>
     </div>
   );
 };
