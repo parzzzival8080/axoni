@@ -91,6 +91,13 @@ body {
   /* border: 1px solid #eee; */
 }
 
+.input-group input:focus {
+  outline: none; /* Remove default outline */
+  box-shadow: none; /* Remove any box shadow */
+  border: none; /* Ensure no border */
+  background: #f9f9f9; /* Keep the same background as unfocused state */
+}
+
 .coin-dropdown{
   display: flex;
   align-items: center;
