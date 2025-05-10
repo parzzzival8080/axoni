@@ -126,7 +126,18 @@ const Conversion = () => {
       // Only allow numeric input with decimal point
       if (amount === '' || /^[0-9]*\.?[0-9]*$/.test(amount)) {
         setFromAmount(amount);
-        
+
+        // Check if amount exceeds balance
+        if (amount && parseFloat(amount) > parseFloat(balance.spotWallet)) {
+          setConversionError("Amount exceeds available balance");
+        } else {
+          // Clear any previous error about insufficient balance
+          if (conversionError === "Amount exceeds available balance" || 
+              conversionError === "Insufficient balance") {
+            setConversionError(null);
+          }
+        }
+            
         // Calculate to amount based on toCurrency.price directly
         if (amount && toCurrency.price) {
           const calculatedAmount = parseFloat(amount) / parseFloat(toCurrency.price);
@@ -217,6 +228,15 @@ const Conversion = () => {
       if (!fromAmount || !toAmount || parseFloat(fromAmount) <= 0) {
         setConversionError("Please enter a valid amount to convert");
         return;
+      }
+
+      //Check usdt Balance is sufficient
+      const userBalance = parseFloat(balance.spotWallet)
+      const amountFromConvert = parseFloat(fromAmount)
+
+      if(amountFromConvert > userBalance){
+        setConversionError("Insufficient balance");
+        return
       }
       
       // Reset states

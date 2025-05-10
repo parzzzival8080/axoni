@@ -1052,7 +1052,7 @@ iframe.chart-iframe {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height:7vh;
     background-color: var(--primary-bg);
     color: var(--primary-text);
     font-size: 16px;
