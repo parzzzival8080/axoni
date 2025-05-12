@@ -20,218 +20,254 @@ import Market from './pages/Market';
 import DownloadPage from './pages/DownloadPage';
 import Announcement from './pages/supportCenter/announcement/Announcement';
 import Article from './pages/supportCenter/announcement/Article';
+import Deposit from './pages/account/Deposit';
+import Withdraw from './pages/account/Withdraw';
+import Transfer from './pages/account/Transfer';
+import { CryptoProvider } from './context/CryptoContext';
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
+    <CryptoProvider>
+      <Router>
+        <div className="App">
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
     
-          <Route path="/spot-trading" element={
-            <>
-              <Navbar />
-              <main>
-                <SpotTrading />
-              </main>
-              <ChatBubble />
-            </>
-          } />
-          <Route path="/future-trading" element={
-            <>
-              <Navbar />
-              <main>
-                <FutureTrading/>
-              </main>
-              <ChatBubble />
-            </>
-          } />
-            <Route path="/conversion" element={
-                      <>
-                        <Navbar />
-                        <main>
-                          <Conversion/>
-                        </main>
-                        <Footer />
-                        <ChatBubble />
-                      </>
-          } />
-          <Route path="/earn" element={
-                      <>
-                        <Navbar />
-                        <main>
-                          <Earn/>
-                        </main>
-                        <Footer />
-                        <ChatBubble />
-                      </>
-          } />
-            <Route path="/coming-soon" element={
-                      <>
-                        <main>
-                          <ComingSoon/>
-                        </main>
-                        <ChatBubble />
-                      </>
-          } />
-           <Route path="/earn/simple-earn" element={
-                      <>
-                      <Navbar />
-                        <main>
-                          <SimpleEarn/>
-                        </main>
-                        <Footer />
-                        <ChatBubble />
-                      </>
-          } />
-          <Route path="/account/overview" element={
-                      <>
-                      <Navbar />
-                        <main>
-                          <Overview/>
-                        </main>
-                        <Footer />
-                        <ChatBubble />
-                      </>
-          } />
-           <Route path="/account/profile" element={
-                      <>
-                      <Navbar />
-                        <main>
-                          <Profile/>
-                        </main>
-                        <Footer />
-                        <ChatBubble />
-                      </>
-          } />
-          <Route path="/market" element={
-            <>
-              <Navbar />
-              <main>
-                <Market/>
-              </main>
-              <Footer />
-              <ChatBubble />
-            </>
-          } />
-          <Route path="/download" element={
-            <>
-              <Navbar />
-              <main>
-                <DownloadPage/>
-              </main>
-              <Footer />
-            </>
-          } />
-          <Route path="/help/category/announcements" element={
-            <>
-              <Navbar />
-              <main>
-                <Announcement/>
-              </main>
-              <Footer />
-              <ChatBubble />
-            </>
-          } />
-           <Route path="/help/:articleSlug" element={
+            <Route path="/spot-trading" element={
               <>
                 <Navbar />
                 <main>
-                  <Article />
+                  <SpotTrading />
+                </main>
+                <ChatBubble />
+              </>
+            } />
+            <Route path="/future-trading" element={
+              <>
+                <Navbar />
+                <main>
+                  <FutureTrading/>
+                </main>
+                <ChatBubble />
+              </>
+            } />
+            <Route path="/deposit" element={
+              <>
+                <Navbar />
+                <main>
+                  <Deposit />
                 </main>
                 <Footer />
                 <ChatBubble />
               </>
             } />
-          <Route path="/pages/morePages/CampaignCenter" element={
-            <>
-              <Navbar />
-              <main>
-                {/* Using dynamic import instead of require for Vite compatibility */}
-                <React.Suspense fallback={<div>Loading...</div>}>
-                  {React.createElement(React.lazy(() => import('./pages/morePages/CampaignCenter')))}
-                </React.Suspense>
-              </main>
-              <Footer />
-              <ChatBubble />
-            </>
-          } />
-          <Route path="/pages/morePages/MyRewards" element={
-            <>
-              <Navbar />
-              <main>
-                {/* Using dynamic import instead of require for Vite compatibility */}
-                <React.Suspense fallback={<div>Loading...</div>}>
-                  {React.createElement(React.lazy(() => import('./pages/morePages/MyRewards')))}
-                </React.Suspense>
-              </main>
-              <Footer />
-              <ChatBubble />
-            </>
-          } />
-          <Route path="/pages/morePages/Referral" element={
-            <>
-              <Navbar />
-              <main>
-                {/* Using dynamic import instead of require for Vite compatibility */}
-                <React.Suspense fallback={<div>Loading...</div>}>
-                  {React.createElement(React.lazy(() => import('./pages/morePages/Referral')))}
-                </React.Suspense>
-              </main>
-              <Footer />
-              <ChatBubble />
-            </>
-          } />
-            {/* <Route path="/pages/morePages/Affiliate" element={
-            <>
-              <Navbar />
-              <main>
-              
-                <React.Suspense fallback={<div>Loading...</div>}>
-                  {React.createElement(React.lazy(() => import('./pages/morePages/Affiliate')))}
-                </React.Suspense>
-              </main>
-              <Footer />
-              <ChatBubble />
-            </>
-          } /> */}
-           <Route path="./components/common/ComingSoon" element={
-            <>
-              <Navbar />
-              <main>
-                {/* Using dynamic import instead of require for Vite compatibility */}
-                <React.Suspense fallback={<div>Loading...</div>}>
-                  {React.createElement(React.lazy(() => import('./components/common/ComingSoon')))}
-                </React.Suspense>
-              </main>
-              <Footer />
-              <ChatBubble />
-            </>
-          } />
-          <Route path="/assets" element={
-            <>
-              <Navbar />
-              <main>
-                <Assets />
-              </main>
-              <Footer />
-              <ChatBubble />
-            </>
-          } />
-          <Route path="/" element={
-            <>
-              <Navbar />
-              <main>
-                <HomePage />
-              </main>
-              <Footer />
-              <ChatBubble />
-            </>
-          } />
-        </Routes>
-      </div>
-    </Router>
+            <Route path="/withdraw" element={
+              <>
+                <Navbar />
+                <main>
+                  <Withdraw />
+                </main>
+                <Footer />
+                <ChatBubble />
+              </>
+            } />
+            <Route path="/transfer" element={
+              <>
+                <Navbar />
+                <main>
+                  <Transfer />
+                </main>
+                <Footer />
+                <ChatBubble />
+              </>
+            } />
+              <Route path="/conversion" element={
+                        <>
+                          <Navbar />
+                          <main>
+                            <Conversion/>
+                          </main>
+                          <Footer />
+                          <ChatBubble />
+                        </>
+              } />
+            <Route path="/earn" element={
+                        <>
+                          <Navbar />
+                          <main>
+                            <Earn/>
+                          </main>
+                          <Footer />
+                          <ChatBubble />
+                        </>
+            } />
+              <Route path="/coming-soon" element={
+                        <>
+                          <main>
+                            <ComingSoon/>
+                          </main>
+                          <ChatBubble />
+                        </>
+            } />
+             <Route path="/earn/simple-earn" element={
+                        <>
+                        <Navbar />
+                          <main>
+                            <SimpleEarn/>
+                          </main>
+                          <Footer />
+                          <ChatBubble />
+                        </>
+            } />
+            <Route path="/account/overview" element={
+                        <>
+                        <Navbar />
+                          <main>
+                            <Overview/>
+                          </main>
+                          <Footer />
+                          <ChatBubble />
+                        </>
+            } />
+             <Route path="/account/profile" element={
+                        <>
+                        <Navbar />
+                          <main>
+                            <Profile/>
+                          </main>
+                          <Footer />
+                          <ChatBubble />
+                        </>
+            } />
+            <Route path="/market" element={
+              <>
+                <Navbar />
+                <main>
+                  <Market/>
+                </main>
+                <Footer />
+                <ChatBubble />
+              </>
+            } />
+            <Route path="/download" element={
+              <>
+                <Navbar />
+                <main>
+                  <DownloadPage/>
+                </main>
+                <Footer />
+              </>
+            } />
+            <Route path="/help/category/announcements" element={
+              <>
+                <Navbar />
+                <main>
+                  <Announcement/>
+                </main>
+                <Footer />
+                <ChatBubble />
+              </>
+            } />
+             <Route path="/help/:articleSlug" element={
+                <>
+                  <Navbar />
+                  <main>
+                    <Article />
+                  </main>
+                  <Footer />
+                  <ChatBubble />
+                </>
+              } />
+            <Route path="/pages/morePages/CampaignCenter" element={
+              <>
+                <Navbar />
+                <main>
+                  {/* Using dynamic import instead of require for Vite compatibility */}
+                  <React.Suspense fallback={<div>Loading...</div>}>
+                    {React.createElement(React.lazy(() => import('./pages/morePages/CampaignCenter')))}
+                  </React.Suspense>
+                </main>
+                <Footer />
+                <ChatBubble />
+              </>
+            } />
+            <Route path="/pages/morePages/MyRewards" element={
+              <>
+                <Navbar />
+                <main>
+                  {/* Using dynamic import instead of require for Vite compatibility */}
+                  <React.Suspense fallback={<div>Loading...</div>}>
+                    {React.createElement(React.lazy(() => import('./pages/morePages/MyRewards')))}
+                  </React.Suspense>
+                </main>
+                <Footer />
+                <ChatBubble />
+              </>
+            } />
+            <Route path="/pages/morePages/Referral" element={
+              <>
+                <Navbar />
+                <main>
+                  {/* Using dynamic import instead of require for Vite compatibility */}
+                  <React.Suspense fallback={<div>Loading...</div>}>
+                    {React.createElement(React.lazy(() => import('./pages/morePages/Referral')))}
+                  </React.Suspense>
+                </main>
+                <Footer />
+                <ChatBubble />
+              </>
+            } />
+              {/* <Route path="/pages/morePages/Affiliate" element={
+              <>
+                <Navbar />
+                <main>
+                
+                  <React.Suspense fallback={<div>Loading...</div>}>
+                    {React.createElement(React.lazy(() => import('./pages/morePages/Affiliate')))}
+                  </React.Suspense>
+                </main>
+                <Footer />
+                <ChatBubble />
+              </>
+            } /> */}
+             <Route path="./components/common/ComingSoon" element={
+              <>
+                <Navbar />
+                <main>
+                  {/* Using dynamic import instead of require for Vite compatibility */}
+                  <React.Suspense fallback={<div>Loading...</div>}>
+                    {React.createElement(React.lazy(() => import('./components/common/ComingSoon')))}
+                  </React.Suspense>
+                </main>
+                <Footer />
+                <ChatBubble />
+              </>
+            } />
+            <Route path="/assets" element={
+              <>
+                <Navbar />
+                <main>
+                  <Assets />
+                </main>
+                <Footer />
+                <ChatBubble />
+              </>
+            } />
+            <Route path="/" element={
+              <>
+                <Navbar />
+                <main>
+                  <HomePage />
+                </main>
+                <Footer />
+                <ChatBubble />
+              </>
+            } />
+          </Routes>
+        </div>
+      </Router>
+    </CryptoProvider>
   );
 }
 

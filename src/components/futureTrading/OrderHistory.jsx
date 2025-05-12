@@ -164,7 +164,21 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
                   </tr>
                 ))
               ) : (
-                !loading && <tr><td colSpan="9" className="no-data">No order history data available</td></tr>
+                !loading && (
+                  <tr>
+                    <td colSpan="9" className="no-data">
+                      <div className="flex flex-col items-center justify-center py-8">
+                        <img
+                          src="/assets/img/no-records-found.webp"
+                          alt="No records found"
+                          className="w-16 h-16 mb-4"
+                        />
+                        <p className="text-base font-medium text-gray-400 mb-1">No records found</p>
+                        <p className="text-sm text-gray-500">Get started with your first transaction</p>
+                      </div>
+                    </td>
+                  </tr>
+                )
               )}
             </tbody>
           </table>
