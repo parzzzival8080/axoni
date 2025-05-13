@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import OrderHistory from './OrderHistory';
+import FutureAssetsList from './FutureAssetsList';
 import './FutureTrading.css';
 
 const OrdersSection = ({ refreshTrigger = 0 }) => {
@@ -7,30 +8,12 @@ const OrdersSection = ({ refreshTrigger = 0 }) => {
 
   return (
     <div className="orders-section" style={{ backgroundColor: '#000000', marginTop: '20px' }}>
-      <div className="orders-tabs">
-        <div
-          className={`tab ${activeTab === 'open-orders' ? 'active' : ''}`}
-          onClick={() => setActiveTab('open-orders')}
-        >
-          Open orders
-        </div>
+      <div className="orders-tabs flex items-center border-b border-gray-800 mb-4">
         <div
           className={`tab ${activeTab === 'order-history' ? 'active' : ''}`}
           onClick={() => setActiveTab('order-history')}
         >
-          Order history
-        </div>
-        <div
-          className={`tab ${activeTab === 'open-positions' ? 'active' : ''}`}
-          onClick={() => setActiveTab('open-positions')}
-        >
-          Open positions
-        </div>
-        <div
-          className={`tab ${activeTab === 'position-history' ? 'active' : ''}`}
-          onClick={() => setActiveTab('position-history')}
-        >
-          Position history
+          Order History
         </div>
         <div
           className={`tab ${activeTab === 'assets' ? 'active' : ''}`}
@@ -38,23 +21,13 @@ const OrdersSection = ({ refreshTrigger = 0 }) => {
         >
           Assets
         </div>
-        <div
-          className={`tab ${activeTab === 'bots' ? 'active' : ''}`}
-          onClick={() => setActiveTab('bots')}
-        >
-          Bots
-        </div>
-        <div className="more-options">
-          <i className="fas fa-ellipsis-v"></i>
-        </div>
       </div>
-
       <div className="orders-content">
         {activeTab === 'order-history' && <OrderHistory refreshTrigger={refreshTrigger} />}
-        {/* Add other tab content components here */}
+        {activeTab === 'assets' && <FutureAssetsList />}
       </div>
     </div>
   );
-};
+}
 
 export default OrdersSection;
