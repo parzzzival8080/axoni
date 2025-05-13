@@ -105,8 +105,8 @@ function withdraw() { // Using App as the main exportable component name
   const addressBookDropdownRef = useRef(null); // Ref for address book dropdown/modal
 
   // --- Constants ---
-  const COIN_API_URL = 'https://apiv2.bhtokens.com/api/v1/coins?apikey=A20RqFwVktRxxRqrKBtmi6ud';
-  const WITHDRAW_API_URL = 'https://django.bhtokens.com/api/wallet/withdraw';
+  // No COIN_API_URL or WITHDRAW_API_URL; use dynamic API URL for coin details only
+
   const headerTabs = [
     'Overview', 'Funding', 'Trading', 'Grow', 'Analysis', 'Order center', 'Fees', 'Account statement', 'PoR reports'
   ];
@@ -135,18 +135,31 @@ function withdraw() { // Using App as the main exportable component name
       setCoinsError(null);
 
       try {
-        const response = await axios.get(COIN_API_URL);
+        const uid = localStorage.getItem('uid');
+        if (!uid) {
+          setCoinsError('User ID not found. Please log in again.');
+          setCoins([]);
+          setIsLoadingCoins(false);
+          return;
+        }
+        const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
+        const apiUrl = `https://apiv2.bhtokens.com/api/v1/coin-transaction?apikey=${apiKey}&uid=${uid}&transaction_type=withdrawal`;
+        const response = await axios.get(apiUrl);
         setCoins(response.data);
       } catch (error) {
-        console.error('Error fetching coins:', error);
-        setCoinsError('Failed to load cryptocurrencies. Please try again.');
+        if (error.response && error.response.status === 400) {
+          setCoinsError('Bad request to API (400). Please check your credentials or try again later.');
+        } else {
+          setCoinsError('Failed to load cryptocurrencies. Please try again.');
+        }
+        setCoins([]);
       } finally {
         setIsLoadingCoins(false);
       }
     };
 
     fetchCoins();
-  }, [COIN_API_URL]);
+  }, []);
 
   // Close dropdowns on outside click
   useEffect(() => {
@@ -167,15 +180,12 @@ function withdraw() { // Using App as the main exportable component name
     setAmountReceived(amountNum > feeNum ? amountNum - feeNum : 0);
   }, [withdrawalAmount, networkFee]);
 
-  // Set Network Fee (Placeholder Logic)
+  // Set Network Fee from selected network object
   useEffect(() => {
-    // In a real app, fetch fee based on coin and network
-    if (selectedNetwork) {
-        if (selectedNetwork.value === 'tron') setNetworkFee(1.7); // Example fee for Tron
-        else if (selectedNetwork.value === 'ethereum') setNetworkFee(5.5); // Example fee for Ethereum
-        else setNetworkFee(0.5); // Default placeholder fee
+    if (selectedNetwork && typeof selectedNetwork.fee !== 'undefined') {
+      setNetworkFee(Number(selectedNetwork.fee));
     } else {
-        setNetworkFee(0);
+      setNetworkFee(0);
     }
   }, [selectedNetwork]);
 
@@ -196,15 +206,11 @@ function withdraw() { // Using App as the main exportable component name
     return coins.find(coin => coin.symbol === selectedCryptoSymbol);
   }, [selectedCryptoSymbol, coins]);
 
-  // Network Options based on Selected Coin (Placeholder)
+  // Network Options based on Selected Coin (from API)
   const networkOptions = useMemo(() => {
-    if (!selectedCryptoSymbol) return [];
-    // *** Placeholder - Fetch actual networks per coin from API ideally ***
-    if (selectedCryptoSymbol === 'BTC') return [{ value: 'bitcoin', label: 'Bitcoin' }, { value: 'lightning', label: 'Lightning Network' }];
-    if (selectedCryptoSymbol === 'ETH') return [{ value: 'ethereum', label: 'Ethereum (ERC20)' }, { value: 'arbitrum', label: 'Arbitrum One' }];
-    if (selectedCryptoSymbol === 'USDT') return [{ value: 'tron', label: 'Tron (TRC20)' }, { value: 'ethereum', label: 'Ethereum (ERC20)' }, { value: 'solana', label: 'Solana' }];
-    return [{ value: `${selectedCryptoSymbol.toLowerCase()}-mainnet`, label: `${selectedCryptoSymbol} Mainnet` }];
-  }, [selectedCryptoSymbol]);
+    if (!selectedCoinDetails || !Array.isArray(selectedCoinDetails.network)) return [];
+    return selectedCoinDetails.network.map(net => ({ ...net, value: net.symbol, label: net.name }));
+  }, [selectedCoinDetails]);
 
   // Determine active step
   const activeStep = useMemo(() => {
@@ -213,6 +219,16 @@ function withdraw() { // Using App as the main exportable component name
       if (selectedCryptoSymbol) return 2;
       return 1;
   }, [selectedCryptoSymbol, selectedNetwork, withdrawalAddress, withdrawalAmount]);
+
+  // --- Keep availableBalance in sync with selected coin ---
+  useEffect(() => {
+    if (!selectedCryptoSymbol || !Array.isArray(coins)) {
+      setAvailableBalance(0);
+      return;
+    }
+    const coin = coins.find(c => c.symbol === selectedCryptoSymbol);
+    setAvailableBalance(coin && coin.balance && coin.balance.spot_wallet ? Number(coin.balance.spot_wallet) : 0);
+  }, [selectedCryptoSymbol, coins]);
 
   // --- Event Handlers ---
 
@@ -223,11 +239,10 @@ function withdraw() { // Using App as the main exportable component name
     setWithdrawalAmount(''); // Reset amount
     setIsCryptoDropdownOpen(false);
     setSearchTerm('');
-    // Placeholder: Fetch/set available balance for the selected coin
-    setAvailableBalance(Math.random() * 1000); // Example random balance
+    // availableBalance is now set by useEffect below
   }, []);
 
-  const handleNetworkSelect = useCallback((network) => { // network is now { value, label }
+  const handleNetworkSelect = useCallback((network) => { // network is now the full network object
     setSelectedNetwork(network);
     setIsNetworkDropdownOpen(false);
   }, []);
@@ -284,21 +299,23 @@ function withdraw() { // Using App as the main exportable component name
     setSubmitError(null);
     setSubmitSuccess(false);
 
-    // Prepare API Payload
-    const payload = {
-        wallet_id: 51,
-        crypto_id: selectedCoinDetails?.coin_pair || (selectedCoinDetails?.symbol === 'USDT' ? 2 : 1), // More robust fallback
-        network_id: selectedNetwork?.value === 'tron' ? 2 : (selectedNetwork?.value === 'ethereum' ? 1 : 3), // Example mapping
-        amount: amountNum,
-        destination_address: withdrawalAddress,
-        comment: comment || `Withdraw ${selectedCryptoSymbol}`,
-    };
+    // Build new API URL for withdrawal submission
+    const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
+    const wallet_id = selectedCoinDetails?.balance?.id;
+    const initial_amount = amountNum;
+    const network_id = selectedNetwork?.id;
+    const apiUrl = `https://apiv2.bhtokens.com/api/v1/submit-withdrawal?wallet_id=${wallet_id}&initial_amount=${initial_amount}&apikey=${apiKey}&network_id=${network_id}`;
 
-    console.log("Submitting withdrawal with payload:", payload);
+    console.log("Submitting withdrawal with:", { wallet_id, initial_amount, network_id, apiKey });
 
     try {
-        const response = await axios.post(WITHDRAW_API_URL, payload);
-        const result = await response.data;
+        // Use POST as required by backend
+        const response = await axios.post(
+          apiUrl,
+          {}, // If your backend expects data in the body, put it here; otherwise, keep it empty
+          { headers: { 'Content-Type': 'application/json' } }
+        );
+        const result = response.data;
         console.log('Withdrawal successful:', result);
         setSubmitSuccess(true);
     } catch (err) {
@@ -313,7 +330,91 @@ function withdraw() { // Using App as the main exportable component name
   ]);
 
 
-  // --- Render ---
+  // --- Withdrawal History Table Component ---
+const WithdrawalHistoryTable = () => {
+  const [history, setHistory] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
+  useEffect(() => {
+    const fetchHistory = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const uid = localStorage.getItem('uid');
+        if (!uid) {
+          setError('User ID not found. Please log in again.');
+          setHistory([]);
+          setIsLoading(false);
+          return;
+        }
+        const url = `https://apiv2.bhtokens.com/api/v1/transaction-history/${uid}?apikey=${apiKey}&transaction_type=withdraw`;
+        const response = await axios.get(url);
+        setHistory(Array.isArray(response.data) ? response.data : []);
+      } catch (err) {
+        setError('Failed to load withdrawal history.');
+        setHistory([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchHistory();
+  }, []);
+
+  return (
+    <section className="w-full">
+      <div className="flex justify-between items-center border-b border-gray-200 mb-6 pb-2 dark:border-gray-700">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Withdrawal History</h2>
+        <button
+          className="text-sm px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 transition"
+          onClick={() => window.location.reload()}
+        >
+          Refresh
+        </button>
+      </div>
+      {isLoading ? (
+        <div className="flex justify-center items-center py-8">
+          <Spinner />
+        </div>
+      ) : error ? (
+        <div className="text-red-500 text-center py-4">{error}</div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900 rounded shadow-md">
+            <thead className="bg-gray-100 dark:bg-gray-800">
+              <tr>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Date</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Coin</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Amount</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-100 dark:divide-gray-800">
+              {history.length === 0 ? (
+                <tr>
+                  <td colSpan={3} className="text-center text-gray-500 dark:text-gray-400 py-8">No withdrawal history found.</td>
+                </tr>
+              ) : (
+                history.map((item, idx) => (
+                  <tr key={idx}>
+                    <td className="px-4 py-3 text-xs text-gray-700 dark:text-gray-200 whitespace-nowrap">{item.date ? new Date(item.date).toLocaleString() : '-'}</td>
+                    <td className="px-4 py-3 text-xs text-gray-700 dark:text-gray-200 whitespace-nowrap flex items-center gap-2">
+                      {item.image_path && <img src={item.image_path} alt={item.coin_name} className="w-5 h-5 rounded-full" />}
+                      <span>{item.coin_name || '-'}</span>
+                    </td>
+                    <td className="px-4 py-3 text-xs text-gray-700 dark:text-gray-200 whitespace-nowrap">{item.final_amount || '-'}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
+  );
+};
+
+// --- Render ---
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: scrollbarStyles }} />
@@ -614,45 +715,14 @@ function withdraw() { // Using App as the main exportable component name
                 ))}
               </ul>
             </div>
-            {selectedCryptoSymbol && (
-                 <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 sticky top-48">
-                    <h2 className="text-base font-semibold mb-2 text-gray-900">24h available limit</h2>
-                    <p className="text-sm text-gray-800">
-                        <span className="font-medium">{availableLimit.toLocaleString(undefined, {maximumFractionDigits: 2})}</span>
-                        <span className="text-gray-600"> / 9,999,200.06 {selectedCryptoSymbol}</span>
-                    </p>
-                 </div>
-            )}
+            
           </aside>
 
         </div>
 
         {/* Withdrawal History Section */}
         <section className="mt-12">
-           <div className="flex justify-between items-center border-b border-gray-200 mb-6 pb-2">
-               <h2 className="text-lg font-semibold text-gray-900">All withdrawals</h2>
-               <a href="#" className="text-sm text-black hover:text-gray-700 font-medium flex items-center">
-                   Open history <ChevronRightIcon />
-               </a>
-           </div>
-            <div className="hidden md:grid grid-cols-8 gap-4 text-xs text-gray-500 uppercase px-4 mb-4">
-                <span>Time</span>
-                <span>Reference no.</span>
-                <span className="col-span-2">Address</span>
-                <span>TXID</span>
-                <span>Crypto</span>
-                <span className="text-right">Amount</span>
-                <span className="text-right">Status</span>
-            </div>
-            <div className="text-center py-16">
-                 <img
-                    src="/assets/img/no-records-found.webp"
-                    alt="No records found"
-                    className="mx-auto h-16 w-16 mb-4"
-                 />
-                 <h3 className="text-sm font-medium text-gray-900 mb-1">No records found</h3>
-                 <p className="text-sm text-gray-500">Get started with your first transaction</p>
-            </div>
+          <WithdrawalHistoryTable />
         </section>
 
       </main>
@@ -661,4 +731,4 @@ function withdraw() { // Using App as the main exportable component name
   );
 }
 
-export default withdraw; 
+export default withdraw;

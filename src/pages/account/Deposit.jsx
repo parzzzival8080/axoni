@@ -88,7 +88,7 @@ function App() { // Renamed to App for standard React export
   const networkDropdownRef = useRef(null); // Ref for network dropdown
 
   // --- Constants ---
-  const API_URL = 'https://apiv2.bhtokens.com/api/v1/coins?apikey=A20RqFwVktRxxRqrKBtmi6ud';
+  const API_KEY = 'A20RqFwVktRxxRqrKBtmi6ud';
   const headerTabs = [
     'Overview', 'Funding', 'Trading', 'Grow', 'Analysis', 'Order center', 'Fees', 'Account statement', 'PoR reports'
   ];
@@ -101,33 +101,23 @@ function App() { // Renamed to App for standard React export
   // Popular coins for quick selection (based on screenshot)
   const popularCoins = ['USDT', 'BTC', 'ETH', 'PI', 'SOL'];
 
-  // Hardcoded network options - replace with dynamic logic if needed
+  // --- Get details of the currently selected coin ---
+  const selectedCoinDetails = useMemo(() => {
+    if (!selectedCryptoSymbol || !Array.isArray(coins)) return null;
+    return coins.find(coin => coin.symbol === selectedCryptoSymbol);
+  }, [selectedCryptoSymbol, coins]);
+  const selectedCoinBalance = selectedCoinDetails?.balance || '0.00';
+
+  // Dynamically generate network options from selected coin details
   const networkOptions = useMemo(() => {
-      if (!selectedCryptoSymbol) return []; // No options if no crypto selected
-      // In a real app, these would likely depend on the selectedCryptoSymbol
-      // Fetching network info per coin from the API would be ideal
-      if (selectedCryptoSymbol === 'BTC') {
-          return [
-              { value: 'bitcoin', label: 'Bitcoin' },
-              { value: 'lightning', label: 'Lightning Network' },
-              { value: 'btc-segwit', label: 'BTC Segwit' },
-          ];
-      } else if (selectedCryptoSymbol === 'ETH') {
-           return [
-               { value: 'ethereum', label: 'Ethereum (ERC20)' },
-               { value: 'arbitrum', label: 'Arbitrum One' },
-               { value: 'optimism', label: 'Optimism' },
-           ];
-      } else if (selectedCryptoSymbol === 'USDT') {
-           return [
-               { value: 'tron', label: 'Tron (TRC20)' },
-               { value: 'ethereum', label: 'Ethereum (ERC20)' },
-               { value: 'solana', label: 'Solana' },
-           ];
-      }
-      // Default or fallback networks for other coins
-      return [{ value: `${selectedCryptoSymbol.toLowerCase()}-mainnet`, label: `${selectedCryptoSymbol} Mainnet` }];
-  }, [selectedCryptoSymbol]);
+    if (!selectedCoinDetails || !selectedCoinDetails.network) return [];
+    return selectedCoinDetails.network.map((net) => ({
+      value: net.symbol || net.name,
+      label: `${net.name} (${net.symbol})`,
+      fee: net.fee,
+      id: net.id
+    }));
+  }, [selectedCoinDetails]);
 
 
   // --- API Fetching Effect ---
@@ -137,29 +127,39 @@ function App() { // Renamed to App for standard React export
       setError(null);
       setSelectedCryptoSymbol(null);
       setSelectedNetwork(null);
-      console.log("Fetching coins from:", API_URL);
       try {
-        const response = await fetch(API_URL);
+        const uid = localStorage.getItem('uid');
+        if (!uid) {
+          setError('User ID not found. Please log in again.');
+          setCoins([]);
+          setIsLoading(false);
+          return;
+        }
+        const apiUrl = `https://apiv2.bhtokens.com/api/v1/coin-transaction?apikey=${API_KEY}&uid=${uid}&transaction_type=deposit`;
+        const response = await fetch(apiUrl);
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
+          if (response.status === 400) {
+            setError('Bad request to API (400). Please check your credentials or try again later.');
+          } else {
+            setError(`HTTP error! status: ${response.status} - ${response.statusText}`);
+          }
+          setCoins([]);
+          setIsLoading(false);
+          return;
         }
         const data = await response.json();
-        console.log("API Response Data:", data);
-
         if (Array.isArray(data)) {
-           setCoins(data);
-           // Set default selected crypto to USDT if available, otherwise first coin
-           const defaultCoin = data.find(coin => coin.symbol === 'USDT') || data[0];
-           if (defaultCoin) {
-               setSelectedCryptoSymbol(defaultCoin.symbol);
-           }
+          setCoins(data);
+          // Set default selected crypto to USDT if available, otherwise first coin
+          const defaultCoin = data.find(coin => coin.symbol === 'USDT') || data[0];
+          if (defaultCoin) {
+            setSelectedCryptoSymbol(defaultCoin.symbol);
+          }
         } else {
-           console.error("API did not return an array:", data);
-           setError("Unexpected data format received from API.");
-           setCoins([]);
+          setError("Unexpected data format received from API.");
+          setCoins([]);
         }
       } catch (err) {
-        console.error("Failed to fetch coins:", err);
         setError(err.message || "Failed to load coin data. Please try again.");
         setCoins([]);
       } finally {
@@ -167,7 +167,7 @@ function App() { // Renamed to App for standard React export
       }
     };
     fetchCoins();
-  }, [API_URL]);
+  }, []); // Only run on mount
 
   // --- Update deposit address when coin/network changes (Placeholder) ---
    useEffect(() => {
@@ -211,10 +211,6 @@ function App() { // Renamed to App for standard React export
   }, [coins, searchTerm]);
 
   // --- Get details of the currently selected coin ---
-  const selectedCoinDetails = useMemo(() => {
-      if (!selectedCryptoSymbol || !Array.isArray(coins)) return null;
-      return coins.find(coin => coin.symbol === selectedCryptoSymbol);
-  }, [selectedCryptoSymbol, coins]);
 
   // --- Event Handlers ---
   const handleCryptoSelect = useCallback((symbol) => {

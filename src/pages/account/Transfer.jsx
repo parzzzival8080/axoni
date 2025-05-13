@@ -67,6 +67,9 @@ const Transfer = () => {
   const [isToDropdownOpen, setIsToDropdownOpen] = useState(false);
   const [transferAmount, setTransferAmount] = useState('');
   const [availableBalance, setAvailableBalance] = useState(0);
+  const [spotBalance, setSpotBalance] = useState(0);
+  const [futureBalance, setFutureBalance] = useState(0);
+  const [isBalanceLoading, setIsBalanceLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -96,6 +99,50 @@ const Transfer = () => {
     
     fetchCoins();
   }, []);
+
+  // Fetch spot and future balances for selected coin
+  useEffect(() => {
+    if (!selectedAsset) {
+      setSpotBalance(0);
+      setFutureBalance(0);
+      setAvailableBalance(0);
+      return;
+    }
+    const fetchCoinBalance = async () => {
+      setIsBalanceLoading(true);
+      try {
+        const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
+        const uid = localStorage.getItem('uid');
+        const url = `https://apiv2.bhtokens.com/api/v1/coin-balance/${uid}?apikey=${apiKey}&symbol=${selectedAsset}`;
+        const response = await axios.get(url);
+        setSpotBalance(Number(response.data.spot_wallet) || 0);
+        setFutureBalance(Number(response.data.future_wallet) || 0);
+        // Set availableBalance based on fromAccount
+        setAvailableBalance(fromAccount.toLowerCase() === 'spot' ? Number(response.data.spot_wallet) || 0 : Number(response.data.future_wallet) || 0);
+      } catch (err) {
+        setSpotBalance(0);
+        setFutureBalance(0);
+        setAvailableBalance(0);
+      } finally {
+        setIsBalanceLoading(false);
+      }
+    };
+    fetchCoinBalance();
+  }, [selectedAsset, fromAccount]);
+
+  // Refetch balances after a successful transfer
+  useEffect(() => {
+    if (success && selectedAsset) {
+      const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
+      const uid = localStorage.getItem('uid');
+      const url = `https://apiv2.bhtokens.com/api/v1/coin-balance/${uid}?apikey=${apiKey}&symbol=${selectedAsset}`;
+      axios.get(url).then(response => {
+        setSpotBalance(Number(response.data.spot_wallet) || 0);
+        setFutureBalance(Number(response.data.future_wallet) || 0);
+        setAvailableBalance(fromAccount.toLowerCase() === 'spot' ? Number(response.data.spot_wallet) || 0 : Number(response.data.future_wallet) || 0);
+      });
+    }
+  }, [success, selectedAsset, fromAccount]);
 
   // Header tabs
   const headerTabs = [
@@ -204,17 +251,38 @@ const Transfer = () => {
       return;
     }
 
-    // Submit transfer (mock)
+    // Submit transfer via API
     setIsSubmitting(true);
     setError(null);
+    setSuccess(false);
 
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSuccess(true);
-      setTransferAmount('');
-      // In a real app, you would update the balance after transfer
-    }, 1500);
+    const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
+    const uid = localStorage.getItem('uid');
+    const transfer_from = fromAccount.toLowerCase();
+    const transfer_to = toAccount.toLowerCase();
+    const symbol = selectedAsset;
+    const amount = parseFloat(transferAmount);
+    const url = `https://apiv2.bhtokens.com/api/v1/transfers`;
+    const data = {
+      apikey: apiKey,
+      uid: uid,
+      transfer_from: transfer_from,
+      transfer_to: transfer_to,
+      symbol: symbol,
+      amount: amount
+    };
+
+    axios.post(url, data, { headers: { 'Content-Type': 'application/json' } })
+      .then(response => {
+        setIsSubmitting(false);
+        setSuccess(true);
+        setTransferAmount('');
+        // Optionally update balances here
+      })
+      .catch(err => {
+        setIsSubmitting(false);
+        setError(err.response?.data?.message || 'Transfer failed. Please try again.');
+      });
   };
 
   // Swap from and to accounts
@@ -414,8 +482,19 @@ const Transfer = () => {
                     </button>
                   </div>
                 </div>
-                <div className="text-sm mt-2 text-gray-500">
-                  Available: {availableBalance.toFixed(8)} {selectedAsset}
+                <div className="flex flex-row gap-4 mt-2">
+                  <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-full px-4 py-2 shadow-sm border border-gray-200 dark:border-gray-700 min-w-[150px]">
+                    <svg className="w-4 h-4 mr-2 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" strokeWidth="2"/><path d="M8 12h8" strokeWidth="2"/></svg>
+                    <span className="text-xs text-gray-600 dark:text-gray-300 font-semibold mr-1">Spot</span>
+                    <span className="text-sm text-gray-900 dark:text-white font-bold">{isBalanceLoading ? '...' : spotBalance.toFixed(8)}</span>
+                    <span className="ml-1 text-xs text-gray-500 dark:text-gray-400">{selectedAsset}</span>
+                  </div>
+                  <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-full px-4 py-2 shadow-sm border border-gray-200 dark:border-gray-700 min-w-[150px]">
+                    <svg className="w-4 h-4 mr-2 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" strokeWidth="2"/><path d="M16 12H8" strokeWidth="2"/></svg>
+                    <span className="text-xs text-gray-600 dark:text-gray-300 font-semibold mr-1">Futures</span>
+                    <span className="text-sm text-gray-900 dark:text-white font-bold">{isBalanceLoading ? '...' : futureBalance.toFixed(8)}</span>
+                    <span className="ml-1 text-xs text-gray-500 dark:text-gray-400">{selectedAsset}</span>
+                  </div>
                 </div>
               </div>
 
