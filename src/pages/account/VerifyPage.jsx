@@ -11,26 +11,11 @@ import {
   ImagePlus,
   Info,
   LockKeyhole,
-  Loader2,
-  Check // Added for the verified screen icon
+  Loader2
 } from "lucide-react";
-import ProfileNavBar from "../../components/profile/ProfileNavBar"; // Assuming this path is correct
+import ProfileNavBar from "../../components/profile/ProfileNavBar";
 
-// Illustration for the "Already Verified" screen (based on user's image)
-const VerifiedIllustration = () => (
-  <div className="relative w-28 h-28 mb-6 animate-pulse"> {/* Slightly larger and pulsing container */}
-    {/* Outer dashed/dotted circles - simplified with borders and animation */}
-    <div className="absolute inset-0 border-2 border-gray-300 border-dashed rounded-full animate-spin-slow"></div>
-    <div className="absolute inset-2 border-t-2 border-gray-200 rounded-full animate-spin" style={{ animationDuration: '2s' }}></div>
-    {/* Inner static circle with checkmark */}
-    <div className="absolute inset-5 bg-green-500 rounded-full flex items-center justify-center shadow-lg">
-      <Check size={48} className="text-white" strokeWidth={3}/> {/* Larger check, more prominent */}
-    </div>
-  </div>
-);
-
-
-// Original VerifyIllustration for the first step of KYC
+// Original VerifyIllustration
 const InitialVerifyIllustration = () => (
   <svg width="100" height="100" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect width="120" height="120" rx="24" fill="#F3F4F6" />
@@ -96,32 +81,23 @@ const VerifyPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [submissionError, setSubmissionError] = useState("");
   const [currentUserId, setCurrentUserId] = useState(null);
-  const [isAlreadyVerified, setIsAlreadyVerified] = useState(false); // New state for verification status
 
   useEffect(() => {
-    // Fetch user_id from localStorage
     const storedUserId = localStorage.getItem('user_id');
     if (storedUserId) {
       setCurrentUserId(storedUserId);
     } else {
       console.error("User ID not found in localStorage. Verification may fail.");
-      // Potentially set an error or redirect if user_id is critical for page load
-      // For now, the KYC flow will show an error if user_id is missing at submission
+      setSubmissionError("User ID not found. Please log in again.");
     }
-
-    // Check verification status from localStorage
-    const storedIsVerified = localStorage.getItem('is_verified');
-    if (storedIsVerified === 'true') {
-      setIsAlreadyVerified(true);
-    }
-  }, []); // Empty dependency array ensures this runs once on mount
+  }, []);
 
   const handleNextStep = () => {
-    setSubmissionError(""); // Clear previous errors
+    setSubmissionError("");
     setCurrentStep((prev) => prev + 1);
   }
   const handlePrevStep = () => {
-    setSubmissionError(""); // Clear previous errors
+    setSubmissionError("");
     setCurrentStep((prev) => prev - 1);
   }
 
@@ -131,7 +107,7 @@ const VerifyPage = () => {
       if (fileType === "idFront") setIdFront(file);
       else if (fileType === "idBack") setIdBack(file);
       else if (fileType === "selfie") setSelfie(file);
-      setSubmissionError(""); // Clear error if user changes a file
+      setSubmissionError("");
     }
   };
 
@@ -142,22 +118,39 @@ const VerifyPage = () => {
 
     if (!currentUserId) {
         setSubmissionError("User ID is missing. Cannot submit verification.");
+        console.error("Validation fail: currentUserId is missing");
         return;
     }
     if (!selectedIdInfo || !selectedIdInfo.apiValue) {
         setSubmissionError("ID type information is missing or invalid. Please re-select an ID type.");
+        console.error("Validation fail: selectedIdInfo or selectedIdInfo.apiValue is missing. selectedIdInfo:", selectedIdInfo);
         return;
     }
     if (!selfie || !idFront) {
         setSubmissionError("Missing required images for submission (selfie or ID front).");
+        console.error("Validation fail: Selfie or ID Front is missing.");
         return;
     }
+    // Conditional check for back_captured_image based on selectedIdInfo.needsBack
     if (selectedIdInfo.needsBack && !idBack) {
+        // Check if your backend requires back_captured_image conditionally or always.
+        // The backend code snippet checks: if not all([captured_selfie, front_captured_image, back_captured_image]):
+        // This implies back_captured_image is ALWAYS required by that specific check.
+        // If it's truly conditional, the backend check needs adjustment.
+        // For now, aligning with the provided backend snippet that implies it's always needed:
+        // However, if your selectedIdInfo.needsBack IS ACCURATE, and backend implies always needs it, this is a mismatch.
+        // Let's assume for a moment your `selectedIdInfo.needsBack` is the source of truth for whether to *send* it.
+        // The backend check `if not all([...])` should be more granular if `back_captured_image` is optional.
+        // For now, sticking to your frontend logic for `needsBack`.
         setSubmissionError(`Back side of ${selectedIdInfo.name} is required.`);
+        console.error("Validation fail: Back side of ID is missing when required by frontend logic.");
         return;
     }
 
+
     const documentTypeApiValue = selectedIdInfo.apiValue;
+    console.log("Document Type to be sent in FormData:", documentTypeApiValue);
+
     if (!documentTypeApiValue || typeof documentTypeApiValue !== 'string' || documentTypeApiValue.trim() === "") {
         console.error("CRITICAL FAILURE: documentTypeApiValue is invalid. Value:", `'${documentTypeApiValue}'`);
         setSubmissionError("A critical error occurred: Invalid document type configured.");
@@ -169,26 +162,37 @@ const VerifyPage = () => {
     setSubmissionError("");
 
     const formData = new FormData();
-    formData.append('document_type', documentTypeApiValue);
+    formData.append('document_type', documentTypeApiValue); // <-- KEY CHANGE: Add document_type to FormData
     formData.append('captured_selfie', selfie, selfie.name);
     formData.append('front_captured_image', idFront, idFront.name);
     
+    // Only append back_captured_image if it's needed and present
     if (selectedIdInfo.needsBack && idBack) {
       formData.append('back_captured_image', idBack, idBack.name);
     } else if (selectedIdInfo.needsBack && !idBack) {
-        // This should ideally be caught by earlier validation
+        // This case should have been caught by the earlier validation, but as a safeguard:
+        console.error("Error: Back ID needed but not provided for FormData.");
         setSubmissionError(`Back side of ${selectedIdInfo.name} is required for submission.`);
         setIsLoading(false);
         return;
     }
 
+
+    // API URL no longer needs document_type as a query parameter
     const apiUrl = `https://django.bhtokens.com/api/user_account/upload-kyc/user=${currentUserId}`;
+
     console.log("Final API URL being called (POST):", apiUrl);
+    console.log("FormData content (cannot directly log files, but check keys):");
+    for (let key of formData.keys()) {
+        console.log(`FormData key: ${key}`);
+    }
+
 
     try {
       const response = await fetch(apiUrl, {
         method: 'POST',
         body: formData,
+        // Headers like 'Content-Type': 'multipart/form-data' are set automatically by the browser with FormData
       });
 
       if (!response.ok) {
@@ -204,10 +208,8 @@ const VerifyPage = () => {
         throw new Error(errorData.message || `API request failed. See console for details.`);
       }
       
-      // On successful submission
-      localStorage.setItem('is_verified', 'true'); // Set verification status in localStorage
-      setIsAlreadyVerified(true); // Update state to show verified screen immediately
-      // No need to setCurrentStep(6) as isAlreadyVerified will control the display
+      localStorage.setItem('is_verified', 'true');
+      setCurrentStep(6);
 
     } catch (error) {
       console.error("Catch Block - API Submission Error Object:", error);
@@ -217,105 +219,10 @@ const VerifyPage = () => {
     }
   };
 
-  const totalStepsForProgress = 5; // Total steps in the KYC flow itself
+  const totalStepsForProgress = 5;
   const progress = currentStep > 1 && currentStep <= totalStepsForProgress + 1 ? ((currentStep - 1) / totalStepsForProgress) * 100 : 0;
 
-  // Main return for the component
-  return (
-    <div className="min-h-screen bg-white flex flex-col items-center py-8 px-4 font-sans">
-      {/* ProfileNavBar is always displayed at the top */}
-      <div className="w-full max-w-4xl mb-6">
-        <ProfileNavBar />
-      </div>
-
-      {/* Conditional rendering based on verification status */}
-      {isAlreadyVerified ? (
-        // "Identity Verified" screen
-        <div className="w-full max-w-md flex flex-col items-center justify-center text-center p-6 sm:p-8"> {/* Centering content */}
-            <VerifiedIllustration />
-            <h1 className="text-2xl sm:text-3xl font-semibold text-black mt-4">Identity verified</h1>
-            <p className="text-sm sm:text-base text-gray-600 mt-3 max-w-xs mx-auto">
-              You've completed your identity verification. Get started on your crypto journey now!
-            </p>
-            {/* Optional: Add a button to navigate away, e.g., to dashboard 
-            <button 
-              onClick={() => { // Replace with your navigation logic (e.g., using react-router-dom)
-                  // Example: history.push('/dashboard'); 
-                  console.log("Navigate to dashboard or home page");
-              }}
-              className="mt-8 px-8 py-3 bg-black text-white font-semibold rounded-lg text-sm shadow-md hover:bg-gray-800 transition-colors duration-150"
-            >
-              Explore Now
-            </button>
-            */}
-        </div>
-      ) : (
-        // KYC Verification Flow
-        <div className="w-full max-w-md"> 
-          {currentStep > 1 && currentStep < 6 && ( // Header for steps 2-5
-              <div className="mb-5 text-center">
-               <LockKeyhole size={28} className="text-black mx-auto mb-2" />
-               <h1 className="text-2xl font-semibold text-black">Identity Verification</h1>
-              <div className="w-full bg-gray-200 rounded-full h-1.5 mt-3 mb-1">
-                  <div
-                  className="bg-black h-1.5 rounded-full transition-all duration-300 ease-out"
-                  style={{ width: `${progress}%` }}
-                  ></div>
-              </div>
-              <p className="text-xs text-gray-500">Step {currentStep-1} of {totalStepsForProgress}</p>
-             </div>
-          )}
-
-          {/* Main content area for KYC steps */}
-          <div className={`w-full bg-white rounded-xl 
-               ${currentStep === 1 || currentStep === 6 ? 'flex flex-col items-center' : ''}
-               ${(currentStep >= 1 && currentStep <= 5) ? 'p-6 sm:p-8' : ''} {/* Consistent padding for active KYC steps */}
-               ${currentStep === 6 ? 'py-8' : ''} {/* Specific padding if step 6 is reached (e.g. error before verified) */}
-               `}>
-            {renderStepContent()} {/* Renders content for the current KYC step */}
-            {currentStep > 1 && currentStep < 6 && ( // Navigation for steps 2-5
-              <div className="mt-8 flex items-center justify-between">
-                <button
-                  onClick={handlePrevStep}
-                  disabled={isLoading || !currentUserId}
-                  className="px-5 py-2.5 text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-100 transition duration-150 flex items-center disabled:opacity-70"
-                >
-                  <ChevronLeft size={16} className="mr-1" /> Back
-                </button>
-                <button
-                  onClick={currentStep === 5 ? handleSubmitVerification : handleNextStep}
-                  disabled={isNextDisabled()}
-                  className="px-5 py-2.5 bg-black text-white font-semibold rounded-lg text-sm shadow-md hover:bg-gray-800 transition duration-150 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[100px]"
-                >
-                  {isLoading && currentStep === 5 ? (
-                    <Loader2 size={18} className="animate-spin" />
-                  ) : (
-                    <>
-                      {currentStep === 5 ? "Submit Verification" : "Next"}
-                      {currentStep < 5 && <ChevronRight size={16} className="ml-1" />}
-                    </>
-                  )}
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* Footer information - only show during KYC flow */}
-          {currentStep < 6 && (
-            <div className="text-xs text-gray-500 mt-6 text-center max-w-xs mx-auto">
-              <Info size={14} className="inline mr-1 mb-0.5 text-gray-400" />
-              Your information is encrypted and stored securely. It will only be used for identity verification purposes.
-              <a href="#" className="ml-1 text-black hover:underline font-medium">Learn more</a>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
-
-
-  // Renders content based on the current KYC step (only if not already verified)
-  function renderStepContent() {
+  const renderStepContent = () => {
     switch (currentStep) {
       case 1:
         return (
@@ -340,17 +247,12 @@ const VerifyPage = () => {
             </div>
             <button
               onClick={handleNextStep}
-              disabled={!currentUserId && !submissionError} // Disable if no user ID and no other submission error displayed
+              disabled={!currentUserId && currentStep === 1}
               className="w-full bg-black text-white font-semibold rounded-lg py-3 text-sm shadow-md hover:bg-gray-800 transition duration-150 flex items-center justify-center disabled:opacity-50"
             >
               Start Verification <ChevronRight size={18} className="ml-1" />
             </button>
-            {/* Show error if user_id is missing OR if there's a submissionError */}
-            {(submissionError || (!currentUserId && currentStep === 1)) && (
-                <p className="mt-3 text-sm text-red-600 text-center">
-                    {submissionError || "User ID not found. Please log in again."}
-                </p>
-            )}
+            {!currentUserId && currentStep === 1 && submissionError && <p className="mt-3 text-sm text-red-600 text-center">{submissionError}</p>}
           </>
         );
 
@@ -500,10 +402,7 @@ const VerifyPage = () => {
           </div>
         );
 
-      // Step 6 is effectively the "Thank you / Pending" screen.
-      // If isAlreadyVerified becomes true, this step won't be shown due to the top-level conditional rendering.
-      // This step would only show if some other logic sets currentStep to 6 AND isAlreadyVerified is false.
-      case 6: 
+      case 6: // Submitted / Thank you
         return (
           <div className="w-full text-center py-8">
             <CheckCircle2 size={56} className="mx-auto mb-4 text-green-500" strokeWidth={1.5}/>
@@ -512,8 +411,14 @@ const VerifyPage = () => {
               Thank you! Your information has been submitted for review. We'll notify you via email once the verification process is complete.
             </p>
             <button
-              onClick={() => { /* Consider navigation logic, e.g., to a dashboard */
-                console.log("Done button clicked on Step 6");
+              onClick={() => {
+                setCurrentStep(1);
+                setSelectedCountry("PH");
+                setSelectedIdInfo(null);
+                setIdFront(null);
+                setIdBack(null);
+                setSelfie(null);
+                setSubmissionError("");
               }}
               className="px-8 py-2.5 bg-black text-white font-semibold rounded-lg text-sm shadow-md hover:bg-gray-800 transition"
             >
@@ -524,10 +429,11 @@ const VerifyPage = () => {
       default:
         return <p className="text-gray-700">An unexpected error occurred. Please try again.</p>;
     }
-  } // End of renderStepContent function
+  };
 
-  // The isNextDisabled function is part of the main VerifyPage component scope
-  function isNextDisabled() {
+  const showNavigation = currentStep > 1 && currentStep < 6;
+
+  const isNextDisabled = () => {
     if (isLoading) return true;
     if (!currentUserId) return true;
     if (currentStep === 2 && !selectedCountry) return true;
@@ -536,18 +442,71 @@ const VerifyPage = () => {
     return false;
   };
 
-}; // End of VerifyPage component
+  return (
+    <div className="min-h-screen bg-white flex flex-col items-center py-8 px-4 font-sans">
+      <div className="w-full max-w-4xl mb-6">
+        <ProfileNavBar />
+      </div>
+      <div className="w-full max-w-md"> {/* This div constrains the overall width */}
+        {currentStep > 1 && currentStep < 6 && (
+            <div className="mb-5 text-center">
+             <LockKeyhole size={28} className="text-black mx-auto mb-2" />
+             <h1 className="text-2xl font-semibold text-black">Identity Verification</h1>
+            <div className="w-full bg-gray-200 rounded-full h-1.5 mt-3 mb-1">
+                <div
+                className="bg-black h-1.5 rounded-full transition-all duration-300 ease-out"
+                style={{ width: `${progress}%` }}
+                ></div>
+            </div>
+            <p className="text-xs text-gray-500">Step {currentStep-1} of {totalStepsForProgress}</p>
+           </div>
+        )}
+
+        {/* Main content area: styling updated for less "card" feel */}
+        <div className={`w-full bg-white rounded-xl 
+             ${currentStep === 1 || currentStep === 6 ? 'flex flex-col items-center' : ''}
+             ${(currentStep > 1 && currentStep < 6) ? 'p-6 sm:p-8' : ''} 
+             ${currentStep === 1 ? 'p-6 sm:p-8' : ''} 
+             ${currentStep === 6 ? 'py-8' : ''}      
+             `}>
+          {renderStepContent()}
+          {showNavigation && (
+            <div className="mt-8 flex items-center justify-between">
+              <button
+                onClick={handlePrevStep}
+                disabled={isLoading || !currentUserId}
+                className="px-5 py-2.5 text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-100 transition duration-150 flex items-center disabled:opacity-70"
+              >
+                <ChevronLeft size={16} className="mr-1" /> Back
+              </button>
+              <button
+                onClick={currentStep === 5 ? handleSubmitVerification : handleNextStep}
+                disabled={isNextDisabled()}
+                className="px-5 py-2.5 bg-black text-white font-semibold rounded-lg text-sm shadow-md hover:bg-gray-800 transition duration-150 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[100px]"
+              >
+                {isLoading && currentStep === 5 ? (
+                  <Loader2 size={18} className="animate-spin" />
+                ) : (
+                  <>
+                    {currentStep === 5 ? "Submit Verification" : "Next"}
+                    {currentStep < 5 && <ChevronRight size={16} className="ml-1" />}
+                  </>
+                )}
+              </button>
+            </div>
+          )}
+        </div>
+
+        {currentStep < 6 && (
+          <div className="text-xs text-gray-500 mt-6 text-center max-w-xs mx-auto">
+            <Info size={14} className="inline mr-1 mb-0.5 text-gray-400" />
+            Your information is encrypted and stored securely. It will only be used for identity verification purposes.
+            <a href="#" className="ml-1 text-black hover:underline font-medium">Learn more</a>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 export default VerifyPage;
-
-// To use the custom animation 'spin-slow', you might need to add it to your tailwind.config.js:
-// module.exports = {
-//   theme: {
-//     extend: {
-//       animation: {
-//         'spin-slow': 'spin 3s linear infinite',
-//       },
-//     },
-//   },
-//   plugins: [],
-// }
