@@ -8,12 +8,12 @@ const ProfileNavBar = () => {
   const navItems = [
     { label: 'Overview', path: '/account/overview' },
     { label: 'Profile', path: '/account/profile' },
-    { label: 'Security', path: '/profile/security', badge: 'New' },
-    { label: 'Verification', path: '/verify' },
-    { label: 'Preferences', path: '/profile/preferences' },
-    { label: 'Sub-accounts', path: '/profile/sub-accounts' },
-    { label: 'API', path: '/profile/api' },
-    { label: 'Third-party authorization', path: '/profile/third-party' },
+    { label: 'Security', path: '/account/profile/security', badge: 'New' },
+    { label: 'Verification', path: '/account/profile/verify' },
+    { label: 'Preferences', path: '/account/profile/preferences' },
+    { label: 'Sub-accounts', path: '/account/profile/sub-accounts' },
+    { label: 'API', path: '/account/profile/api' },
+    { label: 'Third-party authorization', path: '/account/profile/third-party' },
   ];
 
   return (

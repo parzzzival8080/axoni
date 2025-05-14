@@ -23,6 +23,7 @@ import Article from './pages/supportCenter/announcement/Article';
 import Deposit from './pages/account/Deposit';
 import Withdraw from './pages/account/Withdraw';
 import Transfer from './pages/account/Transfer';
+import VerifyPage from './pages/account/VerifyPage';
 import { CryptoProvider } from './context/CryptoContext';
 
 function App() {
@@ -140,6 +141,66 @@ function App() {
                           <ChatBubble />
                         </>
             } />
+            <Route path="/account/profile/verify" element={
+                        <>
+                        <Navbar />
+                          <main>
+                            <VerifyPage/>
+                          </main>
+                          <Footer />
+                          <ChatBubble />
+                        </>
+             } />
+             <Route path="/account/profile/security" element={
+                        <>
+                        <Navbar />
+                          <main>
+                            {React.createElement(React.lazy(() => import('./pages/account/Security')))}
+                          </main>
+                          <Footer />
+                          <ChatBubble />
+                        </>
+             } />
+             <Route path="/account/profile/preferences" element={
+                        <>
+                        <Navbar />
+                          <main>
+                            <ComingSoon title="Preferences" message="This feature is coming soon" />
+                          </main>
+                          <Footer />
+                          <ChatBubble />
+                        </>
+             } />
+             <Route path="/account/profile/sub-accounts" element={
+                        <>
+                        <Navbar />
+                          <main>
+                            <ComingSoon title="Sub-accounts" message="This feature is coming soon" />
+                          </main>
+                          <Footer />
+                          <ChatBubble />
+                        </>
+             } />
+             <Route path="/account/profile/api" element={
+                        <>
+                        <Navbar />
+                          <main>
+                            <ComingSoon title="API Management" message="This feature is coming soon" />
+                          </main>
+                          <Footer />
+                          <ChatBubble />
+                        </>
+             } />
+             <Route path="/account/profile/third-party" element={
+                        <>
+                        <Navbar />
+                          <main>
+                            <ComingSoon title="Third-party Authorization" message="This feature is coming soon" />
+                          </main>
+                          <Footer />
+                          <ChatBubble />
+                        </>
+             } />
             <Route path="/market" element={
               <>
                 <Navbar />

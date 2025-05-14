@@ -55,7 +55,7 @@ const LoginForm = () => {
       if (success) {
         // Store the token in localStorage
         localStorage.setItem('authToken', jwt_token);
-        localStorage.setItem('user_id', user_id || uid);
+        localStorage.setItem('user_id', user_id);
         
         // Store the uid specifically for the wallet API
         if (uid) {

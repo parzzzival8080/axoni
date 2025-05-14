@@ -11,9 +11,10 @@ const Profile = () => {
         tradingLevel: "Level 1"
       };
   return (
-    <div className='profile-container'>
-        <ProfileNavBar/>
-        <h1 className="profile-title">Profile</h1>
+    <div className='profile-container' style={{ backgroundColor: '#ffffff', margin: 0, maxWidth: '100%' }}>
+        <div style={{ backgroundColor: '#ffffff', maxWidth: '1200px', margin: '0 auto' }}>
+          <ProfileNavBar/>
+          <h1 className="profile-title">Profile</h1>
       
       {/* Profile Avatar Section */}
       <section className="profile-section">
@@ -95,6 +96,7 @@ const Profile = () => {
           <button className="action-btn secondary">View details</button>
         </div>
       </section>
+        </div>
     </div>
   )
 }
