@@ -91,6 +91,13 @@ const LoginForm = () => {
             // Set a default name if name is not available
             localStorage.setItem('fullName', 'User');
           }
+          // Save is_verified to localStorage and log it for debugging
+          if (profileResponse.data && profileResponse.data.user_detail && typeof profileResponse.data.user_detail.is_verified !== 'undefined') {
+            localStorage.setItem('is_verified', profileResponse.data.user_detail.is_verified);
+            console.log('is_verified saved to localStorage:', profileResponse.data.user_detail.is_verified);
+          } else {
+            console.warn('is_verified not found in user_detail');
+          }
         } catch (profileErr) {
           console.error('Error fetching user information:', profileErr);
           // Set a default name if profile fetch fails

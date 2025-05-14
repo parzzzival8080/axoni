@@ -10,6 +10,7 @@ import ChatBubble from './components/common/ChatBubble';
 import './styles.css';
 import FutureTrading from './pages/FutureTrading';
 import Assets from './pages/Assets';
+import VerifyPage from './pages/account/VerifyPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/verify" element={<VerifyPage />} />
     
           <Route path="/spot-trading" element={
             <>

@@ -9,7 +9,7 @@ const ProfileNavBar = () => {
     { label: 'Overview', path: '/account/overview' },
     { label: 'Profile', path: '/account/profile' },
     { label: 'Security', path: '/profile/security', badge: 'New' },
-    { label: 'Verification', path: '/profile/verification' },
+    { label: 'Verification', path: '/verify' },
     { label: 'Preferences', path: '/profile/preferences' },
     { label: 'Sub-accounts', path: '/profile/sub-accounts' },
     { label: 'API', path: '/profile/api' },
