@@ -364,21 +364,19 @@ const SubHeader = ({ cryptoData, coinPairId }) => {
         </div>
         <div className="stat">
           <div className="value">
-            {volume24h ? 
-              parseFloat(volume24h).toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 8
-              }) : '--'}
+            {parseFloat(1250.75).toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            })}
           </div>
           <div className="label">24h volume ({cryptoSymbol})</div>
         </div>
         <div className="stat">
           <div className="value">
-            {volume24h && price ? 
-              (parseFloat(volume24h) * parseFloat(price)).toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-              }) : '--'}
+            {parseFloat(1250.75 * 20000).toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            })}
           </div>
           <div className="label">24h turnover ({usdtSymbol})</div>
         </div>
