@@ -330,10 +330,10 @@ nav {
     display: block;
     width: 100%;
     padding: 14px;
-    background-color: #000000;
+    background-color: #000000 !important;
     border: none;
     border-radius: 6px;
-    color: #ffffff;
+    color: #ffffff !important;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
@@ -342,7 +342,7 @@ nav {
 }
 
 .next-btn:hover {
-    background-color: #333333;
+    background-color: #333333 !important;
 }
 
 /* Password Input Styles */
