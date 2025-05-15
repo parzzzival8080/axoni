@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './SignUp.css';
@@ -19,7 +19,8 @@ const SignUpPage = () => {
     confirmPassword: '',
     fullName: '',
     phone: '',
-    profilePic: null
+    profilePic: null,
+    otp: ['', '', '', '', '', '']
   });
 
   // State for error and loading
@@ -27,10 +28,36 @@ const SignUpPage = () => {
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState(null);
   const [token, setToken] = useState(null);
+  const [resendTimer, setResendTimer] = useState(60);
+  const [canResend, setCanResend] = useState(false);
 
-  // Ref for file input
+  // Refs for file input and OTP inputs
   const fileInputRef = useRef(null);
-  
+  const otpRefs = useRef([]);
+
+  // Initialize OTP refs
+  useEffect(() => {
+    otpRefs.current = Array(6).fill().map((_, i) => otpRefs.current[i] || React.createRef());
+  }, []);
+
+  // Timer for OTP resend
+  useEffect(() => {
+    let interval;
+    if (currentStep === 3 && resendTimer > 0) {
+      interval = setInterval(() => {
+        setResendTimer(prev => {
+          if (prev <= 1) {
+            setCanResend(true);
+            clearInterval(interval);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [currentStep, resendTimer]);
+
   // Handle input changes
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -39,7 +66,61 @@ const SignUpPage = () => {
       [name]: type === 'checkbox' ? checked : value
     });
   };
-  
+
+  // Handle OTP input changes
+  const handleOtpChange = (index, value) => {
+    // Only allow numbers
+    if (value && !/^\d+$/.test(value)) return;
+    
+    const newOtp = [...formData.otp];
+    newOtp[index] = value;
+    
+    setFormData({
+      ...formData,
+      otp: newOtp
+    });
+    
+    // Auto-focus next input if value is entered
+    if (value && index < 5) {
+      otpRefs.current[index + 1].focus();
+    }
+  };
+
+  // Handle key press in OTP fields
+  const handleOtpKeyDown = (index, e) => {
+    // Move to previous input on backspace if current input is empty
+    if (e.key === 'Backspace' && !formData.otp[index] && index > 0) {
+      otpRefs.current[index - 1].focus();
+    }
+  };
+
+  // Handle paste for OTP
+  const handleOtpPaste = (e) => {
+    e.preventDefault();
+    const pasteData = e.clipboardData.getData('text');
+    if (!/^\d+$/.test(pasteData)) return;
+    
+    const digits = pasteData.slice(0, 6).split('');
+    const newOtp = [...formData.otp];
+    
+    digits.forEach((digit, index) => {
+      if (index < 6) newOtp[index] = digit;
+    });
+    
+    setFormData({
+      ...formData,
+      otp: newOtp
+    });
+    
+    // Focus the next empty field or the last field
+    const nextEmptyIndex = newOtp.findIndex(val => !val);
+    if (nextEmptyIndex !== -1 && nextEmptyIndex < 6) {
+      otpRefs.current[nextEmptyIndex].focus();
+    } else {
+      otpRefs.current[5].focus();
+    }
+  };
+
   // Handle profile picture upload
   const handleProfileUpload = (e) => {
     const file = e.target.files[0];
@@ -54,7 +135,7 @@ const SignUpPage = () => {
       reader.readAsDataURL(file);
     }
   };
-  
+
   // Step navigation functions
   const goToNextStep = async (step) => {
     setError('');
@@ -105,6 +186,12 @@ const SignUpPage = () => {
           
           await handleApiResponse(response);
           
+          // If successful, move to OTP verification step
+          setCurrentStep(3);
+          // Reset the resend timer
+          setResendTimer(60);
+          setCanResend(false);
+          
         } catch (fetchError) {
           // Fetch API error
           console.error('Fetch error:', fetchError);
@@ -117,9 +204,95 @@ const SignUpPage = () => {
       } finally {
         setLoading(false);
       }
+    } else if (step === 3) {
+      // Verify OTP
+      const otpValue = formData.otp.join('');
+      if (otpValue.length !== 6) {
+        setError('Please enter the complete verification code');
+        return;
+      }
+      
+      try {
+        setLoading(true);
+        
+        const verifyUrl = 'https://django.bhtokens.com/api/user_account/verify-otp';
+        
+        const payload = {
+          email: formData.email,
+          otp: otpValue
+        };
+        
+        console.log('Verifying OTP:', payload);
+        
+        const response = await fetch(verifyUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload)
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          console.log('OTP verification successful:', data);
+          // Move to profile step
+          setCurrentStep(4);
+        } else {
+          console.error('OTP verification failed:', data);
+          setError(data.message || 'Invalid verification code. Please try again.');
+        }
+      } catch (err) {
+        console.error('OTP verification error:', err);
+        setError(`Verification failed: ${err.message}`);
+      } finally {
+        setLoading(false);
+      }
     }
   };
-  
+
+  // Resend OTP function
+  const handleResendOtp = async () => {
+    if (!canResend) return;
+    
+    try {
+      setLoading(true);
+      setError('');
+      
+      // Call the API to resend OTP
+      const resendUrl = 'https://django.bhtokens.com/api/user_account/resend-otp';
+      
+      const payload = {
+        email: formData.email
+      };
+      
+      const response = await fetch(resendUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        console.log('OTP resent successfully:', data);
+        // Reset timer
+        setResendTimer(60);
+        setCanResend(false);
+      } else {
+        console.error('Failed to resend OTP:', data);
+        setError(data.message || 'Failed to resend verification code');
+      }
+    } catch (err) {
+      console.error('Resend OTP error:', err);
+      setError(`Failed to resend code: ${err.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Helper function to handle API response
   const handleApiResponse = async (response) => {
     // Log entire response for debugging
@@ -132,56 +305,46 @@ const SignUpPage = () => {
       const text = await response.text();
       console.log('Non-JSON response:', text);
       // Try to extract error message from HTML/text if possible
-      let extractedError = '';
-      const match = text.match(/([Ee]rror|[Mm]essage|[Ff]ailed)[^<\n:]*(.*)/);
-      if (match && match[2]) {
-        extractedError = match[2].trim();
-      }
-      setError(extractedError || `Server returned non-JSON response: ${text.substring(0, 200)}...`);
-      return;
+      throw new Error('Server returned non-JSON response');
     }
     
-    // Parse JSON response
     const data = await response.json();
-    console.log('Registration response data:', data);
+    console.log('Response data:', data);
     
-    // Check if registration was successful
-    if (response.ok && data) {
-      // Set user data from response
-      let userId = data.user_id || data.id;
-      let token = data.jwt_token || data.token;
-      let uid = data.uid; // Get the uid for wallet API
+    if (!response.ok) {
+      // Handle error response
+      let errorMessage = 'Registration failed';
       
-      // Store user ID and token
-      if (userId && token) {
-        setUserId(userId);
-        setToken(token);
-        
-        // Store in localStorage
-        localStorage.setItem('authToken', token);
-        localStorage.setItem('user_id', userId);
-        
-        // Store uid for wallet API if available
-        if (uid) {
-          localStorage.setItem('uid', uid);
-          console.log('Stored uid for wallet API:', uid);
-        }
-        
-        // Move to next step
-        setCurrentStep(currentStep + 1);
-      } else {
-        // Response OK but missing required data
-        setError(data.message || data.error || 'Registration response missing required data. Please try again.');
-        console.error('Invalid response format:', data);
+      if (data.message) {
+        errorMessage = data.message;
+      } else if (data.error) {
+        errorMessage = data.error;
+      } else if (data.detail) {
+        errorMessage = data.detail;
+      } else if (data.email) {
+        // Field-specific errors
+        errorMessage = `Email: ${data.email}`;
+      } else if (data.password) {
+        errorMessage = `Password: ${data.password}`;
       }
-    } else {
-      // Handle error from API
-      const errorMessage = data.message || data.error || JSON.stringify(data) || 'Registration failed';
-      setError(errorMessage);
-      console.error('Registration error:', data);
+      
+      throw new Error(errorMessage);
     }
+    
+    // Handle successful response
+    console.log('Registration successful:', data);
+    
+    if (data.user_id) {
+      setUserId(data.user_id);
+    }
+    
+    if (data.token) {
+      setToken(data.token);
+    }
+    
+    // Don't move to the next step here anymore, it's handled in goToNextStep
   };
-  
+
   // Handle form submission (final step)
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -257,13 +420,44 @@ const SignUpPage = () => {
       console.log('Profile update response:', response.data);
       
       if (response.data.success) {
-        // Save user's full name to localStorage
+        // Set authentication state in localStorage
         localStorage.setItem('fullName', formData.fullName);
+        localStorage.setItem('authToken', storedToken);
+        localStorage.setItem('user_id', storedUserId);
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('email', formData.email);
         
-        // Registration fully completed
-        alert('Registration successful! Welcome to TradeX.');
+        // Additional user data if available in the response
+        if (response.data.user) {
+          if (response.data.user.phone_number) {
+            localStorage.setItem('phone', response.data.user.phone_number);
+          }
+          if (response.data.user.profile_image) {
+            localStorage.setItem('profileImage', response.data.user.profile_image);
+          }
+        }
         
-        // Redirect to login or dashboard
+        // Get user wallet data if needed
+        try {
+          const walletUrl = `https://django.bhtokens.com/api/user_account/get_wallet/user=${storedUserId}`;
+          const walletResponse = await axios.get(walletUrl, {
+            headers: {
+              'Authorization': `Bearer ${storedToken}`
+            }
+          });
+          
+          if (walletResponse.data && walletResponse.data.success) {
+            localStorage.setItem('walletData', JSON.stringify(walletResponse.data.wallet));
+          }
+        } catch (walletErr) {
+          console.error('Error fetching wallet data:', walletErr);
+          // Non-critical error, continue with sign-in
+        }
+        
+        // Registration fully completed with auto sign-in
+        alert('Registration successful! You are now signed in.');
+        
+        // Redirect to dashboard
         navigate('/spot-trading');
       } else {
         setError('Failed to update profile. Please try again.');
@@ -275,7 +469,7 @@ const SignUpPage = () => {
       setLoading(false);
     }
   };
-  
+
   return (
     <div className="layout">
       <Navbar />
@@ -303,18 +497,26 @@ const SignUpPage = () => {
             <h2>Let's get you started</h2>
             
             <div className="progress-bar">
-              <div className={`step ${currentStep >= 1 ? 'active' : ''} ${currentStep > 1 ? 'completed' : ''}`}>
-                <div className="step-text">Country</div>
+              <div className={`step ${currentStep >= 1 ? 'active' : ''}`}>
+                <span className="step-text">Country</span>
               </div>
-              <div className={`step ${currentStep >= 2 ? 'active' : ''} ${currentStep > 2 ? 'completed' : ''}`}>
-                <div className="step-text">Credentials</div>
+              <div className={`step ${currentStep >= 2 ? 'active' : ''}`}>
+                <span className="step-text">Credentials</span>
               </div>
               <div className={`step ${currentStep >= 3 ? 'active' : ''}`}>
-                <div className="step-text">Profile</div>
+                <span className="step-text">Verification</span>
+              </div>
+              <div className={`step ${currentStep >= 4 ? 'active' : ''}`}>
+                <span className="step-text">Profile</span>
               </div>
             </div>
             
-            {error && <div className="error-message">{error}</div>}
+            {error && (
+                <div className="error-message">
+                  <i className="fas fa-exclamation-circle" style={{ marginRight: '6px', fontSize: '10px' }}></i>
+                  {error}
+                </div>
+              )}
             
             {/* Step 1: Country Selection */}
             <div className={`form-step ${currentStep === 1 ? 'active' : ''}`}>
@@ -423,8 +625,49 @@ const SignUpPage = () => {
               </button>
             </div>
             
-            {/* Step 3: Profile Details */}
+            {/* Step 3: OTP Verification */}
             <div className={`form-step ${currentStep === 3 ? 'active' : ''}`}>
+              <h3>Verify it's you</h3>
+              <p className="otp-instruction">Look out for the code we've sent to {formData.email}</p>
+              
+              <div className="otp-container">
+                {formData.otp.map((digit, index) => (
+                  <input
+                    key={index}
+                    type="text"
+                    maxLength="1"
+                    className="otp-input"
+                    value={digit}
+                    onChange={(e) => handleOtpChange(index, e.target.value)}
+                    onKeyDown={(e) => handleOtpKeyDown(index, e)}
+                    onPaste={index === 0 ? handleOtpPaste : undefined}
+                    ref={(el) => { otpRefs.current[index] = el }}
+                    autoFocus={index === 0 && currentStep === 3}
+                  />
+                ))}
+              </div>
+              
+              <div className="resend-container">
+                <button 
+                  className="resend-btn" 
+                  onClick={handleResendOtp}
+                  disabled={!canResend || loading}
+                >
+                  Resend {resendTimer > 0 && `(${resendTimer}s)`}
+                </button>
+              </div>
+              
+              <button 
+                className="btn btn-primary" 
+                onClick={() => goToNextStep(3)}
+                disabled={loading || formData.otp.join('').length !== 6}
+              >
+                {loading ? 'Verifying...' : 'Verify'}
+              </button>
+            </div>
+            
+            {/* Step 4: Profile Details */}
+            <div className={`form-step ${currentStep === 4 ? 'active' : ''}`}>
               <h3>Complete your profile</h3>
               
               <div 
