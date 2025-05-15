@@ -343,30 +343,24 @@ const SubHeader = ({ cryptoData, coinPairId }) => {
           <div className="sub-value">${formattedPrice}</div>
         </div>
         <div className="stat">
-          <div className={`value ${low24h ? 'blue' : ''}`}>
-            {low24h ? 
-              parseFloat(low24h).toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 8
-              }) : '--'}
+          <div className="value blue">
+            {parseFloat(19500).toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            })}
           </div>
           <div className="label">24h low</div>
-          {low24h && 
-            <div className="sub-value">{low24hFormatted || `$${parseFloat(low24h).toFixed(2)}`}</div>
-          }
+          <div className="sub-value">$19,500.00</div>
         </div>
         <div className="stat">
-          <div className={`value ${high24h ? 'green' : ''}`}>
-            {high24h ? 
-              parseFloat(high24h).toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 8
-              }) : '--'}
+          <div className="value green">
+            {parseFloat(20500).toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            })}
           </div>
           <div className="label">24h high</div>
-          {high24h && 
-            <div className="sub-value">{high24hFormatted || `$${parseFloat(high24h).toFixed(2)}`}</div>
-          }
+          <div className="sub-value">$20,500.00</div>
         </div>
         <div className="stat">
           <div className="value">
