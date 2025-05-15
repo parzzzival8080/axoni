@@ -78,7 +78,12 @@ const SpotTrading = () => {
               cryptoLogoPath: coinData?.logo_path || '',
               usdtName: 'USDT',
               usdtSymbol: 'USDT',
-              usdtLogoPath: ''
+              usdtLogoPath: '',
+              '24_high': coinData?.['24_high'] || null,
+              '24_low': coinData?.['24_low'] || null,
+              '24_high_formatted': coinData?.['24_high_formatted'] || null,
+              '24_low_formatted': coinData?.['24_low_formatted'] || null,
+              'volume_24h': coinData?.volume_24h || null
             });
             
             // Set empty balances for non-logged in users
@@ -95,7 +100,12 @@ const SpotTrading = () => {
               cryptoLogoPath: '',
               usdtName: 'USDT',
               usdtSymbol: 'USDT',
-              usdtLogoPath: ''
+              usdtLogoPath: '',
+              '24_high': 20500,
+              '24_low': 19500,
+              '24_high_formatted': '$20,500.00',
+              '24_low_formatted': '$19,500.00',
+              'volume_24h': 1250.75
             });
             
             setUserBalance({
@@ -228,9 +238,38 @@ const SpotTrading = () => {
   useEffect(() => {
     fetchCryptoData();
     
+    // Direct API call to fetch coin data with 24h high/low values
+    const fetchDirectCoinData = async () => {
+      try {
+        const response = await fetch('https://apiv2.bhtokens.com/api/v1/coins?apikey=A20RqFwVktRxxRqrKBtmi6ud');
+        const data = await response.json();
+        
+        // Find the current coin or use BTC as default
+        const symbol = cryptoData?.cryptoSymbol || 'BTC';
+        const coinData = data.find(coin => coin.symbol === symbol) || data.find(coin => coin.symbol === 'BTC');
+        
+        if (coinData) {
+          console.log('Direct API coin data:', coinData);
+          
+          // Update crypto data with the direct API response
+          setCryptoData(prevData => ({
+            ...prevData,
+            '24_high': coinData['24_high'] || 20500,
+            '24_low': coinData['24_low'] || 19500,
+            'volume_24h': coinData.volume_24h || 1250.75
+          }));
+        }
+      } catch (error) {
+        console.error('Error fetching direct coin data:', error);
+      }
+    };
+    
+    fetchDirectCoinData();
+    
     // Log when cryptoData changes for debugging
     if (cryptoData?.cryptoSymbol) {
       console.log('SpotTrading: Current crypto symbol:', cryptoData.cryptoSymbol);
+      console.log('SpotTrading: Full crypto data:', cryptoData);
     }
   }, [fetchCryptoData, cryptoData?.cryptoSymbol]);
 

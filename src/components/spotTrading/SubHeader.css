@@ -285,8 +285,12 @@
   color: #fff;
 }
 
-.value.green {
+.price-stats .stat .value.green {
   color: #00b574;
+}
+
+.price-stats .stat .value.blue {
+  color: #1E88E5;
 }
 
 .value.red {

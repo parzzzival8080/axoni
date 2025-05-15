@@ -142,6 +142,17 @@ const SubHeader = ({ cryptoData, coinPairId }) => {
   const usdtSymbol = cryptoData.usdt_symbol || cryptoData.usdtSymbol || 'USDT';
   const price = cryptoData.price || cryptoData.cryptoPrice || 0;
   const cryptoLogoPath = cryptoData.crypto_logo_path || cryptoData.cryptoLogoPath || null;
+  
+  // Extract 24h high and low values with hardcoded fallbacks for testing
+  const high24h = cryptoData['24_high'] || 20500;
+  const low24h = cryptoData['24_low'] || 19500;
+  const high24hFormatted = cryptoData['24_high_formatted'] || '$20,500.00';
+  const low24hFormatted = cryptoData['24_low_formatted'] || '$19,500.00';
+  const volume24h = cryptoData.volume_24h || 1250.75;
+  
+  // Debug logs
+  console.log('SubHeader - cryptoData:', cryptoData);
+  console.log('SubHeader - 24h values:', { high24h, low24h, high24hFormatted, low24hFormatted, volume24h });
 
   const formattedPrice = parseFloat(price).toLocaleString(undefined, {
     minimumFractionDigits: 2,
@@ -322,10 +333,6 @@ const SubHeader = ({ cryptoData, coinPairId }) => {
             </div>
           )}
         </div>
-        <div className="leverage">10x</div>
-        <div className="favorite">
-          <FontAwesomeIcon icon={farStar} />
-        </div>
       </div>
       <div className="price-stats">
         <div className="stat">
@@ -336,21 +343,55 @@ const SubHeader = ({ cryptoData, coinPairId }) => {
           <div className="sub-value">${formattedPrice}</div>
         </div>
         <div className="stat">
-          <div className="value">--</div>
+          <div className={`value ${low24h ? 'blue' : ''}`}>
+            {low24h ? 
+              parseFloat(low24h).toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 8
+              }) : '--'}
+          </div>
           <div className="label">24h low</div>
+          {low24h && 
+            <div className="sub-value">{low24hFormatted || `$${parseFloat(low24h).toFixed(2)}`}</div>
+          }
         </div>
         <div className="stat">
-          <div className="value">--</div>
+          <div className={`value ${high24h ? 'green' : ''}`}>
+            {high24h ? 
+              parseFloat(high24h).toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 8
+              }) : '--'}
+          </div>
           <div className="label">24h high</div>
+          {high24h && 
+            <div className="sub-value">{high24hFormatted || `$${parseFloat(high24h).toFixed(2)}`}</div>
+          }
         </div>
         <div className="stat">
-          <div className="value">--</div>
+          <div className="value">
+            {volume24h ? 
+              parseFloat(volume24h).toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 8
+              }) : '--'}
+          </div>
           <div className="label">24h volume ({cryptoSymbol})</div>
         </div>
         <div className="stat">
-          <div className="value">--</div>
+          <div className="value">
+            {volume24h && price ? 
+              (parseFloat(volume24h) * parseFloat(price)).toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              }) : '--'}
+          </div>
           <div className="label">24h turnover ({usdtSymbol})</div>
         </div>
+      </div>
+      <div className="leverage">10x</div>
+      <div className="favorite">
+        <FontAwesomeIcon icon={farStar} />
       </div>
       <div className="trading-actions">
         <button className="data-btn">

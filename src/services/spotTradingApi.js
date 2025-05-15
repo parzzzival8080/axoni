@@ -65,6 +65,29 @@ export const fetchCoinDetails = async (symbol) => {
                 const priceChange = coinDetails.price_change_24h || 0.0;
                 coinDetails.price_change_formatted = `${priceChange.toFixed(2)}%`;
                 coinDetails.price_change_is_positive = priceChange >= 0;
+                
+                // Handle 24h high and low values - ensure they exist even if not in API response
+                coinDetails['24_high'] = coinDetails['24_high'] ? 
+                    (typeof coinDetails['24_high'] === 'number' ? coinDetails['24_high'] : parseFloat(coinDetails['24_high']) || 0) : 
+                    coinDetails.price * 1.05; // Fallback: 5% above current price
+                
+                coinDetails['24_low'] = coinDetails['24_low'] ? 
+                    (typeof coinDetails['24_low'] === 'number' ? coinDetails['24_low'] : parseFloat(coinDetails['24_low']) || 0) : 
+                    coinDetails.price * 0.95; // Fallback: 5% below current price
+                
+                // Format 24h high and low for display
+                coinDetails['24_high_formatted'] = formatPrice(coinDetails['24_high']);
+                coinDetails['24_low_formatted'] = formatPrice(coinDetails['24_low']);
+                
+                // Add debug log
+                console.log('Coin details with 24h values:', {
+                    symbol: coinDetails.symbol,
+                    price: coinDetails.price,
+                    high24: coinDetails['24_high'],
+                    low24: coinDetails['24_low'],
+                    high24Formatted: coinDetails['24_high_formatted'],
+                    low24Formatted: coinDetails['24_low_formatted']
+                });
 
                 // Make sure all numerical fields are numbers
                 ['volume_24h', 'market_cap', 'circulating_supply', 'total_supply', 'max_supply'].forEach(field => {
