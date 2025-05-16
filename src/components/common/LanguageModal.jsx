@@ -3,16 +3,16 @@ import './LanguageModal.css';
 import './okx-translate-spinner.css';
 
 const languageMap = {
-  'English': 'en',
+  English: 'en',
   '简体中文': 'zh-CN',
   '繁體中文': 'zh-TW',
   'Tiếng Việt': 'vi',
-  'Русский': 'ru',
-  'Español (Latinoamérica)': 'es',
+  Русский: 'ru',
+  Español: 'es',
   'Bahasa Indonesia': 'id',
-  'Français': 'fr',
-  'Українська': 'uk',
-  'العربية': 'ar',
+  Français: 'fr',
+  Українська: 'uk',
+  العربية: 'ar',
 };
 
 function injectGoogleTranslateScript() {
@@ -53,12 +53,25 @@ function injectGoogleTranslateScript() {
   }
 }
 
-function setGoogleTranslateLang(langCode) {
-  const select = document.querySelector('select.goog-te-combo');
-  if (select) {
-    select.value = langCode;
-    select.dispatchEvent(new Event('change'));
-  }
+function setGoogleTranslateLang(langCode, callback) {
+  // Poll for the select element in case it's not ready
+  const trySetLang = (attempts = 0) => {
+    const select = document.querySelector('select.goog-te-combo');
+    if (select) {
+      select.value = langCode;
+      select.dispatchEvent(new Event('change'));
+      // Wait for translation to finish, then call callback
+      setTimeout(() => {
+        if (typeof callback === 'function') callback();
+      }, 1500);
+    } else if (attempts < 10) {
+      setTimeout(() => trySetLang(attempts + 1), 200);
+    } else {
+      // If not found after several attempts, just call callback
+      if (typeof callback === 'function') callback();
+    }
+  };
+  trySetLang();
 }
 
 // Handles language click and shows loading spinner
@@ -66,18 +79,23 @@ function handleLanguageClick(lang, setLoading) {
   const langCode = languageMap[lang];
   setLoading(true);
   injectGoogleTranslateScript();
+  // Wait for the widget to load, then set language
   setTimeout(() => {
-    setGoogleTranslateLang(langCode);
-    // Wait for translation to finish, then hide loading
-    setTimeout(() => setLoading(false), 1800);
-  }, 1000);
+    setGoogleTranslateLang(langCode, () => setLoading(false));
+  }, 500);
 };
 
 const LanguageModal = ({ isOpen, onClose }) => {
   const [activeTab, setActiveTab] = useState('language');
   const [loading, setLoading] = useState(false);
   
-  const onLanguageClick = (lang) => handleLanguageClick(lang, setLoading);
+  const onLanguageClick = (lang) => {
+  if (lang === 'English') {
+    window.location.reload();
+    return;
+  }
+  handleLanguageClick(lang, setLoading);
+};
 
   if (!isOpen) return null;
   
@@ -113,42 +131,17 @@ const LanguageModal = ({ isOpen, onClose }) => {
         
         {activeTab === 'language' && (
           <>
-            <div className="language-modal-info">
-              <i className="fas fa-info-circle"></i>
-              <p>Your language selection applies to OKX emails, SMS, in-app notifications and all devices you're logged in to</p>
-            </div>
-            
+
             <div className="language-modal-content">
-              <div className="language-option" onClick={() => onLanguageClick('English')}>
-                English
-              </div>
-              <div className="language-option" onClick={() => onLanguageClick('简体中文')}>
-                简体中文
-              </div>
-              <div className="language-option" onClick={() => onLanguageClick('繁體中文')}>
-                繁體中文
-              </div>
-              <div className="language-option" onClick={() => onLanguageClick('Tiếng Việt')}>
-                Tiếng Việt
-              </div>
-              <div className="language-option" onClick={() => onLanguageClick('Русский')}>
-                Русский
-              </div>
-              <div className="language-option" onClick={() => onLanguageClick('Español (Latinoamérica)')}>
-                Español (Latinoamérica)
-              </div>
-              <div className="language-option" onClick={() => onLanguageClick('Bahasa Indonesia')}>
-                Bahasa Indonesia
-              </div>
-              <div className="language-option" onClick={() => onLanguageClick('Français')}>
-                Français
-              </div>
-              <div className="language-option" onClick={() => onLanguageClick('Українська')}>
-                Українська
-              </div>
-              <div className="language-option" onClick={() => onLanguageClick('العربية')}>
-                العربية
-              </div>
+              {Object.keys(languageMap).map((lang) => (
+                <div
+                  key={lang}
+                  className="language-option"
+                  onClick={() => onLanguageClick(lang)}
+                >
+                  {lang}
+                </div>
+              ))}
             </div>
           </>
         )}

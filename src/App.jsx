@@ -25,6 +25,7 @@ import Withdraw from './pages/account/Withdraw';
 import Transfer from './pages/account/Transfer';
 import VerifyPage from './pages/account/VerifyPage';
 import { CryptoProvider } from './context/CryptoContext';
+import TradingChartWebView from './pages/trading_chartWebView';
 
 function App() {
   return (
@@ -32,6 +33,8 @@ function App() {
       <Router>
         <div className="App">
           <Routes>
+            {/* Fullscreen TradingView chart page, no layout wrappers */}
+            <Route path="/tradingviewEmbed" element={<TradingChartWebView />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignUpPage />} />
     

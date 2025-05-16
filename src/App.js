@@ -11,6 +11,7 @@ import './styles.css';
 import FutureTrading from './pages/FutureTrading';
 import Assets from './pages/Assets';
 import VerifyPage from './pages/account/VerifyPage';
+import TradingChartWebView from './pages/trading_chartWebView';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/tradingviewEmbed" element={<TradingChartWebView />} />
     
           <Route path="/spot-trading" element={
             <>
@@ -110,6 +112,7 @@ function App() {
               <ChatBubble />
             </>
           } />
+          <Route path="*" element={<div style={{color: 'white', width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#111'}}>404 - Not Found</div>} />
         </Routes>
       </div>
     </Router>
