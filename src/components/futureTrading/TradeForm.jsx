@@ -129,19 +129,28 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
     }
   }, [walletData]);
   
-  // Calculate max amount based on wallet balance and leverage
-  const calculateMaxTradeAmount = () => {
-    if (!availableBalance || !price) return 0;
+  // Format number for display
+  const formatNumber = (value, decimals = 2) => {
+    if (!value || isNaN(value)) return '0.00';
     
-    return calculateMaxAmount(
-      availableBalance,
-      price,
-      leverage
-    );
+    return parseFloat(value).toLocaleString('en-US', {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals
+    });
   };
+
+  // Use available balance directly as the max amount for the slider
+  const [maxTradeAmount, setMaxTradeAmount] = useState(0);
+  
+  // Update max amount when available balance changes
+  useEffect(() => {
+    // Parse the available balance as a float
+    const parsedBalance = parseFloat(availableBalance) || 0;
+    setMaxTradeAmount(parsedBalance);
+  }, [availableBalance]);
   
   // Format the max amount for display
-  const formattedMaxAmount = calculateMaxTradeAmount();
+  const formattedMaxAmount = formatNumber(maxTradeAmount, 6);
   
   // Handle tab click
   const handleTabClick = (tab) => {
@@ -177,9 +186,8 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
     const newSliderValue = parseFloat(e.target.value);
     setSliderValue(newSliderValue);
     
-    // Calculate amount based on slider percentage
-    const maxAmount = calculateMaxTradeAmount();
-    const newAmount = (maxAmount * newSliderValue / 100).toFixed(6);
+    // Calculate amount based on slider percentage of available balance
+    const newAmount = (maxTradeAmount * newSliderValue / 100).toFixed(6);
     setAmount(newAmount);
   };
   
@@ -189,10 +197,11 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
     setAmount(newAmount);
     
     // Update slider based on amount
-    const maxAmount = calculateMaxTradeAmount();
-    if (maxAmount > 0) {
-      const newSliderValue = (parseFloat(newAmount) / maxAmount) * 100;
-      setSliderValue(isNaN(newSliderValue) ? 0 : Math.min(newSliderValue, 100));
+    if (newAmount && !isNaN(newAmount)) {
+      if (maxTradeAmount > 0) {
+        const newSliderValue = (parseFloat(newAmount) / maxTradeAmount) * 100;
+        setSliderValue(Math.min(100, Math.max(0, newSliderValue)));
+      }
     } else {
       setSliderValue(0);
     }
@@ -207,16 +216,6 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
     const usdtValue = amountValue * priceValue;
     
     return `${usdtValue.toFixed(2)} USDT`;
-  };
-  
-  // Format number for display
-  const formatNumber = (value, decimals = 2) => {
-    if (!value || isNaN(value)) return '0.00';
-    
-    return parseFloat(value).toLocaleString('en-US', {
-      minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals
-    });
   };
   
   // Refresh wallet balance
@@ -315,11 +314,7 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
           type: 'error'
         });
       } else {
-        // Show success notification
-        setNotification({
-          message: result.message || `${positionType === 'open' ? 'Buy' : 'Sell'} order placed for ${amount} ${symbol} with ${leverage}x leverage`,
-          type: 'success'
-        });
+        console.log(`${positionType === 'open' ? 'Buy' : 'Sell'} order placed for ${amount} ${symbol} with ${leverage}x leverage`);
         
         // Notify parent component of successful trade to trigger wallet refresh
         if (typeof onTradeSuccess === 'function') {
@@ -346,25 +341,21 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
     <div className="trade-form">
       <div className={styles['future-trade-notification-container']} aria-live="polite" style={{ marginBottom: notification ? 16 : 0 }}>
         {notification && (
-          <div
-            className={[
-              styles['future-trade-notification'],
-              notification.type === 'success' ? styles['success'] : '',
-              notification.type === 'error' ? styles['error'] : ''
-            ].join(' ')}
-          >
-            {notification.type === 'success' && (
-              <FontAwesomeIcon icon={faCheckCircle} className={styles.icon} />
-            )}
-            {notification.type === 'error' && (
-              <FontAwesomeIcon icon={faExclamationCircle} className={styles.icon} />
-            )}
-            <span className={styles.message}>{notification.message}</span>
-            <button
-              className={styles.close}
-              aria-label="Close notification"
+          <div className={`${styles['future-trade-notification']} ${styles[notification.type]}`}>
+            <div className={styles.icon}>
+              {notification.type === 'success' ? (
+                <FontAwesomeIcon icon={faCheckCircle} style={{ color: '#09C989' }} />
+              ) : notification.type === 'error' ? (
+                <FontAwesomeIcon icon={faExclamationCircle} style={{ color: '#F23645' }} />
+              ) : (
+                <FontAwesomeIcon icon={faInfoCircle} style={{ color: '#3C78E0' }} />
+              )}
+            </div>
+            <div className={styles.message}>{notification.message}</div>
+            <button 
+              className={styles.close} 
               onClick={() => setNotification(null)}
-              tabIndex={0}
+              aria-label="Close notification"
             >
               <FontAwesomeIcon icon={faTimes} />
             </button>
@@ -526,10 +517,10 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
                 </div>
                 <div className="max-values">
                   <span className="max-long">
-                    Max long {formatNumber(formattedMaxAmount, 6)} {symbol}
+                    Max long {formatNumber(maxTradeAmount, 6)} {symbol}
                   </span>
                   <span className="max-short">
-                    Max short {formatNumber(formattedMaxAmount, 6)} {symbol}
+                    Max short {formatNumber(maxTradeAmount, 6)} {symbol}
                   </span>
                 </div>
               </>

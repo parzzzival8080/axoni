@@ -8,6 +8,7 @@ import TradeForm from '../components/futureTrading/TradeForm';
 import OrdersSection from '../components/futureTrading/OrdersSection';
 import { fetchTradableCoins, fetchWalletData } from '../services/futureTradingApi';
 import '../components/futureTrading/FutureTrading.css';
+import '../components/futureTrading/FutureNotification.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
@@ -178,19 +179,19 @@ const FutureTrading = () => {
     if (!notification.show) return null;
     
     return (
-      <div className={`notification ${notification.type === 'error' ? 'error' : ''}`}>
-        <div className="notification-content">
-          <div className="notification-icon">
+      <div className={`future-notification ${notification.type === 'error' ? 'error' : ''}`}>
+        <div className="future-notification-content">
+          <div className="future-notification-icon">
             <FontAwesomeIcon 
               icon={notification.type === 'success' ? faCheckCircle : faTimesCircle} 
             />
           </div>
-          <div className="notification-message">
+          <div className="future-notification-message">
             {notification.message}
           </div>
         </div>
         <button 
-          className="notification-close" 
+          className="future-notification-close" 
           onClick={() => setNotification(prev => ({ ...prev, show: false }))}
         >
           ×
