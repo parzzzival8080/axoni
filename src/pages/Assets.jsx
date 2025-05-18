@@ -50,7 +50,7 @@ export default function Assets() {
       try {
         setLoading(true);
         // Get UID from localStorage (assuming it's stored there from login)
-        const uid = localStorage.getItem('uid') || 'QEaIjLlY'; // Fallback to example UID
+        const uid = localStorage.getItem('uid'); // Fallback to example UID
         
         // API key from your image
         const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
@@ -71,7 +71,9 @@ export default function Assets() {
             balance: parseFloat(coin.spot_wallet).toLocaleString(),
             value: (parseFloat(coin.price) * parseFloat(coin.spot_wallet)).toLocaleString(),
             raw_balance: parseFloat(coin.spot_wallet),
-            raw_value: parseFloat(coin.price) * parseFloat(coin.spot_wallet)
+            raw_value: parseFloat(coin.price) * parseFloat(coin.spot_wallet),
+            future_wallet: parseFloat(coin.future_wallet),
+            funding_wallet: parseFloat(coin.funding_wallet)
           }));
           
           setCoins(formattedCoins);

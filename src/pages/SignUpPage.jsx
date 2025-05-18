@@ -433,6 +433,41 @@ const SignUpPage = () => {
           console.error('Error fetching wallet data:', walletErr);
         }
         
+        // Call login API to get the true UID after successful signup
+        try {
+          console.log('Calling login API to get true UID...');
+          const loginResponse = await axios.post('https://django.bhtokens.com/api/user_account/login', {
+            email: formData.email,
+            password: formData.password
+          });
+          
+          const { success, user_id, uid, jwt_token } = loginResponse.data;
+          
+          if (success && uid) {
+            // Store the true UID from login response
+            localStorage.setItem('uid', uid);
+            console.log('True UID obtained and stored:', uid);
+            
+            // Update user info with the true UID
+            localStorage.setItem('user', JSON.stringify({
+              user_id,
+              email: formData.email,
+              uid
+            }));
+            
+            // Update token if a new one was provided
+            if (jwt_token) {
+              localStorage.setItem('authToken', jwt_token);
+              axios.defaults.headers.common['Authorization'] = `Bearer ${jwt_token}`;
+            }
+          } else {
+            console.warn('Login API called but no UID returned');
+          }
+        } catch (loginErr) {
+          console.error('Error getting true UID from login API:', loginErr);
+          // Continue with registration process even if getting the true UID fails
+        }
+        
         alert('Registration successful! You are now signed in.');
         navigate('/spot-trading');
       } else {

@@ -31,6 +31,13 @@ const TradingTab = ({
       
       return true;
     });
+    
+  // Calculate pagination
+  const coinsPerPage = 10;
+  const totalPages = Math.ceil(filteredCoins.length / coinsPerPage);
+  const startIndex = (page - 1) * coinsPerPage;
+  const endIndex = startIndex + coinsPerPage;
+  const paginatedCoins = filteredCoins.slice(startIndex, endIndex);
 
   return (
     <>
@@ -104,6 +111,7 @@ const TradingTab = ({
                 placeholder="Search coin" 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                className="search-input-white"
               />
             </div>
             <div className="filter-buttons">
@@ -136,11 +144,10 @@ const TradingTab = ({
                     <th className="right-align">Last Price</th>
                     <th className="right-align">Balance</th>
                     <th className="right-align">Value</th>
-                    <th className="action-header">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredCoins.map((coin) => (
+                  {paginatedCoins.map((coin) => (
                     <tr key={coin.symbol}>
                       <td className="coin-cell">
                         {coin.logo ? (
@@ -154,14 +161,11 @@ const TradingTab = ({
                       <td className="right-align">${coin.price}</td>
                       <td className="right-align">{coin.balance}</td>
                       <td className="right-align">${coin.value}</td>
-                      <td className="action-cell">
-                        <button className="action-button">—</button>
-                      </td>
                     </tr>
                   ))}
                   {filteredCoins.length === 0 && (
                     <tr>
-                      <td colSpan="6" className="empty-message">No coins found</td>
+                      <td colSpan="5" className="empty-message">No coins found</td>
                     </tr>
                   )}
                 </tbody>
@@ -170,11 +174,56 @@ const TradingTab = ({
           </div>
           
           <div className="pagination">
-            <button className={page === 1 ? "page-button active" : "page-button"} onClick={() => setPage(1)}>1</button>
-            <button className={page === 2 ? "page-button active" : "page-button"} onClick={() => setPage(2)}>2</button>
-            <button className={page === 3 ? "page-button active" : "page-button"} onClick={() => setPage(3)}>3</button>
-            <button className={page === 4 ? "page-button active" : "page-button"} onClick={() => setPage(4)}>4</button>
-            <button className={page === 5 ? "page-button active" : "page-button"} onClick={() => setPage(5)}>5</button>
+            {totalPages > 0 && (
+              <>
+                {/* Previous page button */}
+                <button 
+                  className="page-button nav-button" 
+                  onClick={() => setPage(Math.max(1, page - 1))}
+                  disabled={page === 1}
+                >
+                  &lt;
+                </button>
+                
+                {/* Generate page buttons dynamically */}
+                {[...Array(Math.min(totalPages, 5)).keys()].map(i => {
+                  // Show pages around the current page
+                  let pageNum;
+                  if (totalPages <= 5) {
+                    // If 5 or fewer pages, show all pages
+                    pageNum = i + 1;
+                  } else if (page <= 3) {
+                    // If near the start, show first 5 pages
+                    pageNum = i + 1;
+                  } else if (page >= totalPages - 2) {
+                    // If near the end, show last 5 pages
+                    pageNum = totalPages - 4 + i;
+                  } else {
+                    // Otherwise show 2 pages before and 2 after current page
+                    pageNum = page - 2 + i;
+                  }
+                  
+                  return (
+                    <button 
+                      key={pageNum} 
+                      className={page === pageNum ? "page-button active" : "page-button"} 
+                      onClick={() => setPage(pageNum)}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                })}
+                
+                {/* Next page button */}
+                <button 
+                  className="page-button nav-button" 
+                  onClick={() => setPage(Math.min(totalPages, page + 1))}
+                  disabled={page === totalPages}
+                >
+                  &gt;
+                </button>
+              </>
+            )}
           </div>
         </>
       )}
