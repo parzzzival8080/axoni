@@ -197,8 +197,8 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
         enabled_features: [
           "study_templates",
           "chart_style_hilo_last_price",
-          "hide_resolution_in_legend",
-          "hide_unresolved_symbols_in_legend",
+          // "hide_resolution_in_legend",
+          // "hide_unresolved_symbols_in_legend",
           "chart_style_hilo",
           "show_symbol_logos",
           "left_toolbar",
