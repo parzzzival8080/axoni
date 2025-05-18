@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import OrderHistory from "./OrderHistory";
+import "./index.css";
 import "./chart_override.css";
 import { widget } from "../../charting_library/charting_library.esm.js";
 
@@ -10,7 +12,7 @@ function getLanguageFromURL() {
     : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-const TradingChart = ({ selectedSymbol = "BTC" }) => {
+const TradingChartDynamic = ({ selectedSymbol = "BTC" }) => {
   const chartContainerRef = useRef(null);
   const tvWidgetRef = useRef(null);
   const [activeTab, setActiveTab] = useState("order-history");
@@ -489,4 +491,4 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
   );
 };
 
-export default TradingChart;
+export default TradingChartDynamic;
