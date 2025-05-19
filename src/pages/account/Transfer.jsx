@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import axios from 'axios';
 
 // Custom scrollbar styles
@@ -40,11 +40,43 @@ const ArrowsIcon = () => (
   </svg>
 );
 
-// Image fallback component
+// Image fallback component with lazy loading
 const ImageWithFallback = ({ src, alt, className, symbol }) => {
   const [error, setError] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const imgRef = useRef(null);
+  
   const handleImageError = () => setError(true);
-  useEffect(() => setError(false), [src]); // Reset error on src change
+  const handleImageLoad = () => setLoaded(true);
+  
+  useEffect(() => {
+    setError(false);
+    setLoaded(false);
+  }, [src]); // Reset states on src change
+
+  useEffect(() => {
+    // Set up intersection observer for lazy loading
+    if (!imgRef.current) return;
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          if (img.dataset.src) {
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+          }
+          observer.unobserve(img);
+        }
+      });
+    }, { rootMargin: '100px' });
+    
+    observer.observe(imgRef.current);
+    
+    return () => {
+      if (imgRef.current) observer.unobserve(imgRef.current);
+    };
+  }, []);
 
   if (error || !src) {
     return (
@@ -53,8 +85,31 @@ const ImageWithFallback = ({ src, alt, className, symbol }) => {
       </span>
     );
   }
-  return <img src={src} alt={alt} className={className} onError={handleImageError} />;
+  
+  return (
+    <>
+      {!loaded && (
+        <span className={`${className} flex items-center justify-center bg-gray-200 text-gray-600 font-bold text-xs rounded-full`}>
+          {symbol?.substring(0, 1)?.toUpperCase() || '?'}
+        </span>
+      )}
+      <img 
+        ref={imgRef}
+        data-src={src} 
+        src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" // Tiny transparent placeholder
+        alt={alt} 
+        className={`${className} ${loaded ? 'opacity-100' : 'opacity-0 absolute'}`} 
+        onError={handleImageError}
+        onLoad={handleImageLoad}
+        loading="lazy"
+      />
+    </>
+  );
 };
+
+// Cache key for local storage
+const COINS_CACHE_KEY = 'transfer_coins_cache';
+const CACHE_EXPIRY_TIME = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
 const Transfer = () => {
   // State variables
@@ -87,24 +142,105 @@ const Transfer = () => {
 
   // State for coins data
   const [coins, setCoins] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [filteredCoins, setFilteredCoins] = useState([]);
+  const [isLoading, setIsLoading] = useState(false); // Start with false to show cached data immediately
+  const [searchTerm, setSearchTerm] = useState('');
   
-  // Fetch coins data from API
+  // State for virtual scrolling
+  const [visibleCoinsRange, setVisibleCoinsRange] = useState({ start: 0, end: 30 });
+  
+  // Load coins from cache first, then fetch from API
   useEffect(() => {
-    const fetchCoins = async () => {
+    // Try to load from cache first
+    const loadFromCache = () => {
       try {
-        setIsLoading(true);
-        const response = await axios.get('https://apiv2.bhtokens.com/api/v1/coins?apikey=A20RqFwVktRxxRqrKBtmi6ud');
-        setCoins(response.data);
-      } catch (error) {
-        console.error('Error fetching coins:', error);
-      } finally {
-        setIsLoading(false);
+        const cachedData = localStorage.getItem(COINS_CACHE_KEY);
+        if (cachedData) {
+          const { data, timestamp } = JSON.parse(cachedData);
+          const now = new Date().getTime();
+          
+          // Check if cache is still valid (less than 24 hours old)
+          if (now - timestamp < CACHE_EXPIRY_TIME && Array.isArray(data) && data.length > 0) {
+            console.log('Loading coins from cache:', data.length, 'coins');
+            setCoins(data);
+            setFilteredCoins(data);
+            return true; // Successfully loaded from cache
+          }
+        }
+        return false; // Cache not available or expired
+      } catch (e) {
+        console.error('Error loading from cache:', e);
+        return false;
       }
     };
     
+    // If we couldn't load from cache, prepare a placeholder list
+    if (!loadFromCache()) {
+      // Create placeholder data while we fetch the real data
+      const placeholderCoins = Array(20).fill(null).map((_, i) => ({
+        id: `placeholder-${i}`,
+        symbol: `...${''.padEnd(i % 3)}`,
+        name: 'Loading...',
+        isPlaceholder: true
+      }));
+      setCoins(placeholderCoins);
+      setFilteredCoins(placeholderCoins);
+    }
+    
+    // Always fetch fresh data regardless of cache
     fetchCoins();
   }, []);
+  
+  // Fetch coins data from API - using useCallback to memoize the function
+  const fetchCoins = useCallback(async () => {
+    if (coins.length > 0 && !coins[0]?.isPlaceholder) return; // Don't fetch if we already have real coins
+    
+    try {
+      // Don't set loading to true if we have placeholder data
+      if (coins.length === 0) {
+        setIsLoading(true);
+      }
+      
+      console.log('Fetching fresh coins data...');
+      const response = await axios.get('https://apiv2.bhtokens.com/api/v1/coins?apikey=A20RqFwVktRxxRqrKBtmi6ud');
+      const coinsData = response.data;
+      console.log('Fresh coins data loaded:', coinsData.length, 'coins');
+      
+      // Save to cache
+      try {
+        localStorage.setItem(COINS_CACHE_KEY, JSON.stringify({
+          data: coinsData,
+          timestamp: new Date().getTime()
+        }));
+        console.log('Coins data saved to cache');
+      } catch (e) {
+        console.error('Error saving to cache:', e);
+      }
+      
+      setCoins(coinsData);
+      setFilteredCoins(coinsData);
+    } catch (error) {
+      console.error('Error fetching coins:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [coins]);
+  
+  // Filter coins based on search term
+  useEffect(() => {
+    if (!searchTerm.trim()) {
+      setFilteredCoins(coins);
+      return;
+    }
+    
+    const term = searchTerm.toLowerCase();
+    const filtered = coins.filter(coin => 
+      coin.symbol.toLowerCase().includes(term) || 
+      (coin.name && coin.name.toLowerCase().includes(term))
+    );
+    
+    setFilteredCoins(filtered);
+  }, [searchTerm, coins]);
 
   // Fetch transfer history function
   const fetchTransferHistory = async () => {
@@ -245,7 +381,8 @@ const Transfer = () => {
   const handleAssetSelect = (symbol) => {
     setSelectedAsset(symbol);
     setIsAssetDropdownOpen(false);
-    setTransferAmount('');
+    setTransferAmount(''); // Reset amount when changing asset
+    setSearchTerm(''); // Reset search term when selecting an asset
     setError(null);
     setSuccess(false);
   };
@@ -403,26 +540,78 @@ const Transfer = () => {
                   {isAssetDropdownOpen && (
                     <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
                       <style>{scrollbarStyles}</style>
-                      <div className="max-h-60 overflow-y-auto custom-scrollbar">
-                        {isLoading ? (
+                      
+                      {/* Search input */}
+                      <div className="p-2 border-b border-gray-200">
+                        <input
+                          type="text"
+                          placeholder="Search assets..."
+                          className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                          onClick={(e) => e.stopPropagation()} // Prevent dropdown from closing
+                          autoFocus // Auto focus on the search input when dropdown opens
+                        />
+                      </div>
+                      
+                      <div 
+                        className="max-h-60 overflow-y-auto custom-scrollbar" 
+                        onScroll={(e) => {
+                          // Virtual scrolling - update visible range based on scroll position
+                          const container = e.target;
+                          const scrollTop = container.scrollTop;
+                          const viewportHeight = container.clientHeight;
+                          const itemHeight = 48; // Approximate height of each item (px-4 py-3)
+                          
+                          const startIndex = Math.floor(scrollTop / itemHeight);
+                          const visibleItems = Math.ceil(viewportHeight / itemHeight);
+                          const endIndex = startIndex + visibleItems + 10; // Add buffer
+                          
+                          setVisibleCoinsRange({
+                            start: Math.max(0, startIndex - 5), // Add buffer at top
+                            end: Math.min(filteredCoins.length, endIndex)
+                          });
+                        }}
+                      >
+                        {isLoading && coins.length === 0 ? (
                           <div className="p-4 text-center text-gray-500">Loading assets...</div>
+                        ) : filteredCoins.length === 0 ? (
+                          <div className="p-4 text-center text-gray-500">No assets found</div>
                         ) : (
-                          Array.isArray(coins) && coins.map((coin) => (
-                            <button
-                              key={coin.symbol}
-                              className="w-full flex items-center px-4 py-3 hover:bg-gray-100 transition-colors text-left"
-                              onClick={() => handleAssetSelect(coin.symbol)}
-                            >
-                              <ImageWithFallback 
-                                src={coin.logo_path} 
-                                alt={coin.symbol}
-                                className="w-6 h-6 rounded-full mr-2"
-                                symbol={coin.symbol}
-                              />
-                              <span>{coin.symbol}</span>
-                              <span className="ml-2 text-xs text-gray-500">{coin.name}</span>
-                            </button>
-                          ))
+                          <>
+                            {/* Total height placeholder to maintain scrollbar size */}
+                            <div style={{ height: `${filteredCoins.length * 48}px`, position: 'relative' }}>
+                              {/* Only render visible items */}
+                              {filteredCoins.slice(visibleCoinsRange.start, visibleCoinsRange.end).map((coin, index) => (
+                                <button
+                                  key={coin.id || coin.symbol}
+                                  className="w-full flex items-center px-4 py-3 hover:bg-gray-100 transition-colors text-left absolute left-0 right-0"
+                                  style={{ top: `${(index + visibleCoinsRange.start) * 48}px` }}
+                                  onClick={() => !coin.isPlaceholder && handleAssetSelect(coin.symbol)}
+                                  disabled={coin.isPlaceholder}
+                                >
+                                  {coin.isPlaceholder ? (
+                                    <>
+                                      <div className="w-6 h-6 rounded-full bg-gray-200 animate-pulse mr-2"></div>
+                                      <div className="h-4 bg-gray-200 animate-pulse rounded w-16"></div>
+                                      <div className="ml-2 h-3 bg-gray-200 animate-pulse rounded w-24"></div>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <ImageWithFallback 
+                                        src={coin.logo_path} 
+                                        alt={coin.symbol}
+                                        className="w-6 h-6 rounded-full mr-2"
+                                        symbol={coin.symbol}
+                                      />
+                                      <span>{coin.symbol}</span>
+                                      <span className="ml-2 text-xs text-gray-500">{coin.name}</span>
+                                    </>
+                                  )}
+                                </button>
+                              ))}
+                            </div>
+                          </>
                         )}
                       </div>
                     </div>
