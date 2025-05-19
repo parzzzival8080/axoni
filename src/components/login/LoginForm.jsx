@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const LoginForm = () => {
@@ -9,12 +9,24 @@ const LoginForm = () => {
     password: ''
   });
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  
+  // Forgot password states
+  const [forgotPasswordMode, setForgotPasswordMode] = useState(false);
+  const [forgotPasswordStep, setForgotPasswordStep] = useState('request'); // 'request', 'verify', 'reset'
+  const [resetEmail, setResetEmail] = useState('');
+  const [otp, setOtp] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [otpTimer, setOtpTimer] = useState(0);
+  const [canResendOtp, setCanResendOtp] = useState(false);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     setError('');
+    setForgotPasswordMode(false);
   };
 
   const handleInputChange = (e) => {
@@ -23,6 +35,182 @@ const LoginForm = () => {
       ...credentials,
       [name]: value
     });
+  };
+  
+  // Timer for OTP resend
+  useEffect(() => {
+    let interval;
+    if (otpTimer > 0) {
+      interval = setInterval(() => {
+        setOtpTimer(prevTimer => {
+          if (prevTimer <= 1) {
+            setCanResendOtp(true);
+            return 0;
+          }
+          return prevTimer - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [otpTimer]);
+  
+  // Handle forgot password mode
+  const handleForgotPassword = () => {
+    setForgotPasswordMode(true);
+    setForgotPasswordStep('request');
+    setResetEmail(credentials.email || '');
+    setError('');
+    setSuccess('');
+  };
+  
+  // Handle back button in forgot password flow
+  const handleBackToLogin = () => {
+    setForgotPasswordMode(false);
+    setError('');
+    setSuccess('');
+  };
+  
+  // Request password reset
+  const handleRequestPasswordReset = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+    setLoading(true);
+    
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(resetEmail)) {
+      setError('Please enter a valid email address');
+      setLoading(false);
+      return;
+    }
+    
+    try {
+      const response = await axios.post('https://django.bhtokens.com/api/user_account/password_reset/request', {
+        email: resetEmail
+      });
+      
+      if (response.data.success) {
+        setSuccess('OTP has been sent to your email');
+        setForgotPasswordStep('verify');
+        setOtpTimer(60); // Start 60 second timer
+        setCanResendOtp(false);
+      } else {
+        setError(response.data.message || 'Failed to send OTP. Please try again.');
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to send OTP. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  // Verify OTP
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+    setLoading(true);
+    
+    if (!otp || otp.length < 4) {
+      setError('Please enter a valid OTP');
+      setLoading(false);
+      return;
+    }
+    
+    try {
+      const response = await axios.post('https://django.bhtokens.com/api/user_account/password_reset/verify_otp', {
+        email: resetEmail,
+        otp: otp
+      });
+      
+      if (response.data.success) {
+        setSuccess('OTP verified successfully');
+        setForgotPasswordStep('reset');
+      } else {
+        setError(response.data.message || 'Invalid OTP. Please try again.');
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to verify OTP. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  // Resend OTP
+  const handleResendOtp = async () => {
+    if (!canResendOtp) return;
+    
+    setError('');
+    setSuccess('');
+    setLoading(true);
+    
+    try {
+      const response = await axios.post('https://django.bhtokens.com/api/user_account/password_reset/resend-otp', {
+        email: resetEmail
+      });
+      
+      if (response.data.success) {
+        setSuccess('OTP has been resent to your email');
+        setOtpTimer(60); // Reset timer
+        setCanResendOtp(false);
+      } else {
+        setError(response.data.message || 'Failed to resend OTP. Please try again.');
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to resend OTP. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  // Reset password
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+    setLoading(true);
+    
+    // Validate passwords
+    if (newPassword.length < 8) {
+      setError('Password must be at least 8 characters long');
+      setLoading(false);
+      return;
+    }
+    
+    if (newPassword !== confirmPassword) {
+      setError('Passwords do not match');
+      setLoading(false);
+      return;
+    }
+    
+    try {
+      const response = await axios.post('https://django.bhtokens.com/api/user_account/password_reset/reset', {
+        email: resetEmail,
+        otp: otp,
+        new_password: newPassword,
+        confirm_password: confirmPassword
+      });
+      
+      if (response.data.success) {
+        setSuccess('Password has been reset successfully');
+        setTimeout(() => {
+          setForgotPasswordMode(false);
+          setShowPassword(true);
+          setCredentials({
+            ...credentials,
+            email: resetEmail,
+            password: ''
+          });
+        }, 2000);
+      } else {
+        setError(response.data.message || 'Failed to reset password. Please try again.');
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to reset password. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -146,7 +334,119 @@ const LoginForm = () => {
       {error && <div className="error-message">{error}</div>}
       
       {activeTab !== 'qr' ? (
-        <form onSubmit={handleSubmit}>
+        forgotPasswordMode ? (
+          <div className="forgot-password-container">
+            <div className="back-to-login">
+              <a href="#" onClick={(e) => { e.preventDefault(); handleBackToLogin(); }}>
+                &larr; Back to login
+              </a>
+            </div>
+            
+            <h3>Reset your password</h3>
+            
+            {error && <div className="error-message">{error}</div>}
+            {success && <div className="success-message">{success}</div>}
+            
+            {forgotPasswordStep === 'request' && (
+              <form onSubmit={handleRequestPasswordReset}>
+                <div className="email-input">
+                  <div className="email-field">
+                    <input 
+                      type="email" 
+                      placeholder="Email address"
+                      value={resetEmail}
+                      onChange={(e) => setResetEmail(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <button 
+                  type="submit" 
+                  className="next-btn" 
+                  disabled={loading}
+                >
+                  {loading ? 'Processing...' : 'Send OTP'}
+                </button>
+              </form>
+            )}
+            
+            {forgotPasswordStep === 'verify' && (
+              <form onSubmit={handleVerifyOtp}>
+                <div className="otp-input">
+                  <div className="otp-field">
+                    <input 
+                      type="text" 
+                      placeholder="Enter OTP"
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <div className="resend-otp">
+                  {otpTimer > 0 ? (
+                    <p>Resend OTP in {otpTimer} seconds</p>
+                  ) : (
+                    <a 
+                      href="#" 
+                      onClick={(e) => { e.preventDefault(); handleResendOtp(); }}
+                      className={canResendOtp ? 'active' : 'disabled'}
+                    >
+                      Resend OTP
+                    </a>
+                  )}
+                </div>
+                
+                <button 
+                  type="submit" 
+                  className="next-btn" 
+                  disabled={loading}
+                >
+                  {loading ? 'Processing...' : 'Verify OTP'}
+                </button>
+              </form>
+            )}
+            
+            {forgotPasswordStep === 'reset' && (
+              <form onSubmit={handleResetPassword}>
+                <div className="password-input">
+                  <div className="password-field">
+                    <input 
+                      type="password" 
+                      placeholder="New password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <div className="password-input">
+                  <div className="password-field">
+                    <input 
+                      type="password" 
+                      placeholder="Confirm new password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <button 
+                  type="submit" 
+                  className="next-btn" 
+                  disabled={loading}
+                >
+                  {loading ? 'Processing...' : 'Reset Password'}
+                </button>
+              </form>
+            )}
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit}>
           <div className="email-input">
             <div className="email-field">
               <input 
@@ -185,7 +485,7 @@ const LoginForm = () => {
           
           {showPassword && (
             <div className="forgot-password">
-              <a href="/forgot-password">Forgot password?</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); handleForgotPassword(); }}>Forgot password?</a>
             </div>
           )}
           
@@ -223,6 +523,7 @@ const LoginForm = () => {
                 </div>
               </div>
         </form>
+        )
       ) : (
         <div className="qr-code-container">
           <img src="/assets/login/qr-code.png" alt="Login QR Code" className="qr-code" />

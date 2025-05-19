@@ -9,7 +9,8 @@ import {
   faEllipsisH,
   faTimes,
   faExclamationTriangle,
-  faCheckCircle
+  faCheckCircle,
+  faInfoCircle
 } from '@fortawesome/free-solid-svg-icons';
 
 const OrderHistory = ({ refreshTrigger = 0 }) => {
@@ -118,12 +119,12 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
       }
     } catch (err) {
       console.error('Error closing position:', err);
-      setError('Failed to close position. Please try again later.');
+      setError('You cannot close position currently. Please contact customer service.');
       
-      // Show error in notification
+      // Show info notification instead of error
       setApiResponse({
         success: false,
-        message: err.message || 'Failed to close position'
+        message: 'You cannot close position currently. Please contact customer service.'
       });
       setShowNotification(true);
       
@@ -379,20 +380,20 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
     
       {/* API Response Notification */}
       {showNotification && apiResponse && (
-        <div className={`fixed bottom-6 right-6 max-w-md p-4 rounded-lg shadow-lg border-l-4 ${apiResponse.success ? 'bg-[#181A20] border-green-500' : 'bg-[#181A20] border-red-500'} transition-all duration-300 transform ${showNotification ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'} z-50`}>
+        <div className={`fixed bottom-6 right-6 max-w-md p-4 rounded-lg shadow-lg border-l-4 ${apiResponse.success ? 'bg-[#181A20] border-green-500' : 'bg-[#181A20] border-blue-500'} transition-all duration-300 transform ${showNotification ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'} z-50`}>
           <div className="flex items-start">
-            <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${apiResponse.success ? 'bg-green-500 bg-opacity-20' : 'bg-red-500 bg-opacity-20'} mr-3`}>
+            <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${apiResponse.success ? 'bg-green-500 bg-opacity-20' : 'bg-blue-500 bg-opacity-20'} mr-3`}>
               <FontAwesomeIcon 
-                icon={apiResponse.success ? faCheckCircle : faExclamationTriangle} 
-                className={`${apiResponse.success ? 'text-green-500' : 'text-red-500'} text-lg`} 
+                icon={apiResponse.success ? faCheckCircle : faInfoCircle} 
+                className={`${apiResponse.success ? 'text-green-500' : 'text-blue-500'} text-lg`} 
               />
             </div>
             <div className="flex-1">
               <h3 className="text-sm font-medium text-white mb-1">
-                {apiResponse.success ? 'Position Closed Successfully' : 'Error Closing Position'}
+                {apiResponse.success ? 'Position Closed Successfully' : 'Position Information'}
               </h3>
               <p className="text-xs text-gray-400">
-                {apiResponse.message || (apiResponse.success ? 'Your position has been closed.' : 'Failed to close position.')}
+                {apiResponse.message || (apiResponse.success ? 'Your position has been closed.' : 'You cannot close position currently. Please contact customer service.')}
               </p>
               {apiResponse.data && (
                 <div className="mt-2 p-2 bg-gray-800 bg-opacity-50 rounded text-xs text-gray-300 max-h-24 overflow-y-auto">
