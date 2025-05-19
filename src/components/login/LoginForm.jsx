@@ -90,16 +90,23 @@ const LoginForm = () => {
         email: resetEmail
       });
       
-      if (response.data.success) {
+      // Check for Message field in the response which indicates success
+      if (response.data.Message) {
+        setSuccess(response.data.Message || 'OTP has been sent to your email');
+        setForgotPasswordStep('verify');
+        setOtpTimer(60); // Start 60 second timer
+        setCanResendOtp(false);
+      } else if (response.data.success) {
+        // Fallback for success field if present
         setSuccess('OTP has been sent to your email');
         setForgotPasswordStep('verify');
         setOtpTimer(60); // Start 60 second timer
         setCanResendOtp(false);
       } else {
-        setError(response.data.message || 'Failed to send OTP. Please try again.');
+        setError(response.data.message || response.data.error || 'Failed to send OTP. Please try again.');
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to send OTP. Please try again.');
+      setError(err.response?.data?.message || err.response?.data?.error || 'Failed to send OTP. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -124,14 +131,23 @@ const LoginForm = () => {
         otp: otp
       });
       
+      console.log('OTP verification response:', response.data);
+      
+      // Handle success case with success and message fields
       if (response.data.success) {
-        setSuccess('OTP verified successfully');
+        setSuccess(response.data.message || 'OTP verified successfully');
+        setForgotPasswordStep('reset');
+      } 
+      // Alternative format with Message field
+      else if (response.data.Message) {
+        setSuccess(response.data.Message);
         setForgotPasswordStep('reset');
       } else {
-        setError(response.data.message || 'Invalid OTP. Please try again.');
+        setError(response.data.message || response.data.error || 'Invalid OTP. Please try again.');
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to verify OTP. Please try again.');
+      console.error('OTP verification error:', err);
+      setError(err.response?.data?.message || err.response?.data?.error || 'Failed to verify OTP. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -150,15 +166,31 @@ const LoginForm = () => {
         email: resetEmail
       });
       
-      if (response.data.success) {
+      console.log('Resend OTP response:', response.data);
+      
+      // Check for message field which indicates success
+      if (response.data.message) {
+        setSuccess(response.data.message);
+        setOtpTimer(60); // Reset timer
+        setCanResendOtp(false);
+      }
+      // Alternative format with Message field (capitalized)
+      else if (response.data.Message) {
+        setSuccess(response.data.Message);
+        setOtpTimer(60); // Reset timer
+        setCanResendOtp(false);
+      }
+      // Fallback for success field if present
+      else if (response.data.success) {
         setSuccess('OTP has been resent to your email');
         setOtpTimer(60); // Reset timer
         setCanResendOtp(false);
       } else {
-        setError(response.data.message || 'Failed to resend OTP. Please try again.');
+        setError(response.data.error || 'Failed to resend OTP. Please try again.');
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to resend OTP. Please try again.');
+      console.error('Resend OTP error:', err);
+      setError(err.response?.data?.message || err.response?.data?.error || 'Failed to resend OTP. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -192,8 +224,11 @@ const LoginForm = () => {
         confirm_password: confirmPassword
       });
       
-      if (response.data.success) {
-        setSuccess('Password has been reset successfully');
+      console.log('Password reset response:', response.data);
+      
+      // Check for success with message format
+      if (response.data.success && response.data.message) {
+        setSuccess(response.data.message);
         setTimeout(() => {
           setForgotPasswordMode(false);
           setShowPassword(true);
@@ -203,11 +238,36 @@ const LoginForm = () => {
             password: ''
           });
         }, 2000);
+      }
+      // Alternative format with Message field
+      else if (response.data.Message) {
+        setSuccess(response.data.Message);
+        setTimeout(() => {
+          setForgotPasswordMode(false);
+          setShowPassword(true);
+          setCredentials({
+            ...credentials,
+            email: resetEmail,
+            password: ''
+          });
+        }, 2000);
+      }
+      // Check for error field which indicates failure
+      else if (response.data.error) {
+        setError(response.data.error);
       } else {
-        setError(response.data.message || 'Failed to reset password. Please try again.');
+        setError('Failed to reset password. Please try again.');
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to reset password. Please try again.');
+      console.error('Password reset error:', err);
+      // Check for error in response data
+      if (err.response?.data?.error) {
+        setError(err.response.data.error);
+      } else if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError('Failed to reset password. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -331,39 +391,47 @@ const LoginForm = () => {
         </div>
       </div>
       
-      {error && <div className="error-message">{error}</div>}
+      {/* Only show error message if not in forgot password mode */}
+      {error && !forgotPasswordMode && <div className="error-message">{error}</div>}
       
       {activeTab !== 'qr' ? (
         forgotPasswordMode ? (
-          <div className="forgot-password-container">
-            <div className="back-to-login">
-              <a href="#" onClick={(e) => { e.preventDefault(); handleBackToLogin(); }}>
-                &larr; Back to login
+          <div className="w-full max-w-md mx-auto p-4">
+            <div className="flex items-center mb-4">
+              <a href="#" onClick={(e) => { e.preventDefault(); handleBackToLogin(); }} className="text-gray-400 hover:text-white flex items-center">
+                <span className="mr-1">&larr;</span> Back to login
               </a>
             </div>
             
-            <h3>Reset your password</h3>
+            <h3 className="text-xl font-medium text-white mb-4">Reset your password</h3>
             
-            {error && <div className="error-message">{error}</div>}
-            {success && <div className="success-message">{success}</div>}
+            {/* Only show one message at a time - prioritize error */}
+            {error ? (
+              <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 mb-4 rounded">
+                {error}
+              </div>
+            ) : success ? (
+              <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-3 mb-4 rounded">
+                {success}
+              </div>
+            ) : null}
             
             {forgotPasswordStep === 'request' && (
-              <form onSubmit={handleRequestPasswordReset}>
-                <div className="email-input">
-                  <div className="email-field">
-                    <input 
-                      type="email" 
-                      placeholder="Email address"
-                      value={resetEmail}
-                      onChange={(e) => setResetEmail(e.target.value)}
-                      required
-                    />
-                  </div>
+              <form onSubmit={handleRequestPasswordReset} className="space-y-4">
+                <div className="w-full">
+                  <input 
+                    type="email" 
+                    placeholder="Email address"
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                    required
+                    className="w-full bg-gray-100 border border-gray-300 rounded-md p-3 text-black focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  />
                 </div>
                 
                 <button 
                   type="submit" 
-                  className="next-btn" 
+                  className="w-full bg-black text-white font-medium py-3 rounded-md hover:bg-gray-900 transition-colors" 
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Send OTP'}
@@ -372,27 +440,26 @@ const LoginForm = () => {
             )}
             
             {forgotPasswordStep === 'verify' && (
-              <form onSubmit={handleVerifyOtp}>
-                <div className="otp-input">
-                  <div className="otp-field">
-                    <input 
-                      type="text" 
-                      placeholder="Enter OTP"
-                      value={otp}
-                      onChange={(e) => setOtp(e.target.value)}
-                      required
-                    />
-                  </div>
+              <form onSubmit={handleVerifyOtp} className="space-y-4">
+                <div className="w-full">
+                  <input 
+                    type="text" 
+                    placeholder="Enter OTP"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    required
+                    className="w-full bg-gray-100 border border-gray-300 rounded-md p-3 text-black focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  />
                 </div>
                 
-                <div className="resend-otp">
+                <div className="text-center text-sm">
                   {otpTimer > 0 ? (
-                    <p>Resend OTP in {otpTimer} seconds</p>
+                    <p className="text-gray-400">Resend OTP in {otpTimer} seconds</p>
                   ) : (
                     <a 
                       href="#" 
                       onClick={(e) => { e.preventDefault(); handleResendOtp(); }}
-                      className={canResendOtp ? 'active' : 'disabled'}
+                      className={`${canResendOtp ? 'text-blue-500 hover:text-blue-400' : 'text-gray-500 cursor-not-allowed'}`}
                     >
                       Resend OTP
                     </a>
@@ -401,7 +468,7 @@ const LoginForm = () => {
                 
                 <button 
                   type="submit" 
-                  className="next-btn" 
+                  className="w-full bg-black text-white font-medium py-3 rounded-md hover:bg-gray-900 transition-colors" 
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Verify OTP'}
@@ -410,40 +477,49 @@ const LoginForm = () => {
             )}
             
             {forgotPasswordStep === 'reset' && (
-              <form onSubmit={handleResetPassword}>
-                <div className="password-input">
-                  <div className="password-field">
-                    <input 
-                      type="password" 
-                      placeholder="New password"
-                      value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
-                      required
-                    />
+              <form onSubmit={handleResetPassword} className="space-y-4">
+                {/* Error message specifically for password validation */}
+                {newPassword.length > 0 && newPassword.length < 8 && (
+                  <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 mb-4 rounded">
+                    Password must be at least 8 characters long
                   </div>
+                )}
+                
+                <div className="w-full">
+                  <input 
+                    type="password" 
+                    placeholder="New password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required
+                    className="w-full bg-gray-100 border border-gray-300 rounded-md p-3 text-black focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  />
                 </div>
                 
-                <div className="password-input">
-                  <div className="password-field">
-                    <input 
-                      type="password" 
-                      placeholder="Confirm new password"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      required
-                    />
-                  </div>
+                <div className="w-full">
+                  <input 
+                    type="password" 
+                    placeholder="Confirm new password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    className="w-full bg-gray-100 border border-gray-300 rounded-md p-3 text-black focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  />
                 </div>
                 
                 <button 
                   type="submit" 
-                  className="next-btn" 
+                  className="w-full bg-black text-white font-medium py-3 rounded-md hover:bg-gray-900 transition-colors" 
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Reset Password'}
                 </button>
               </form>
             )}
+            
+            <div className="text-xs text-center text-gray-400 mt-8">
+              This site is protected by Google reCAPTCHA to ensure you're not a bot. <a href="#" className="text-blue-500 hover:text-blue-400">Learn more</a>
+            </div>
           </div>
         ) : (
           <form onSubmit={handleSubmit}>
