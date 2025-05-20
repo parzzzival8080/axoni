@@ -1,12 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as farStar } from '@fortawesome/free-regular-svg-icons';
-import { faExternalLinkAlt, faChartLine, faCog, faChevronDown, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faExternalLinkAlt, faChartLine, faCog, faChevronDown, faSearch, faSync } from '@fortawesome/free-solid-svg-icons';
 import { faFileAlt } from '@fortawesome/free-regular-svg-icons';
 import defaultCoinLogo from '../../assets/coin/bitcoin-2136339_640.webp';
 import { fetchAllCoins } from '../../services/spotTradingApi';
 import { useNavigate } from 'react-router-dom';
 import './SubHeader.css';
+
+// Cache configuration
+const CACHE_KEY = 'spot_subheader_coins';
+const CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes
 
 const SubHeader = ({ cryptoData, coinPairId }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -16,19 +20,43 @@ const SubHeader = ({ cryptoData, coinPairId }) => {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
-  // Fetch all available coins
-  useEffect(() => {
-    const loadCoins = async () => {
-      setIsLoading(true);
+  // Load coins from cache or API
+  const loadCoins = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      // Try to load from cache first
+      const cachedData = localStorage.getItem(CACHE_KEY);
+      if (cachedData) {
+        const { data, timestamp } = JSON.parse(cachedData);
+        if (Date.now() - timestamp < CACHE_EXPIRY) {
+          setCoins(data);
+          setIsLoading(false);
+          return;
+        }
+      }
+
+      // Fetch fresh data if cache is expired or missing
       const result = await fetchAllCoins();
       if (result.success) {
+        // Update cache
+        localStorage.setItem(CACHE_KEY, JSON.stringify({
+          data: result.coins,
+          timestamp: Date.now()
+        }));
+
         setCoins(result.coins);
       }
+    } catch (error) {
+      console.error('Error loading coins:', error);
+    } finally {
       setIsLoading(false);
-    };
-    
-    loadCoins();
+    }
   }, []);
+
+  // Load coins on mount
+  useEffect(() => {
+    loadCoins();
+  }, [loadCoins]);
 
   // Handle click outside to close dropdown
   useEffect(() => {
@@ -336,12 +364,33 @@ const SubHeader = ({ cryptoData, coinPairId }) => {
       </div>
       <div className="price-stats">
         <div className="stat">
-          <div className="value green">{formattedPrice}</div>
-          <div className="label">
-            {cryptoName} price <FontAwesomeIcon icon={faExternalLinkAlt} />
+          <div className="value">
+            <div className="flex items-center">
+              <span className={cryptoData.priceChange24h >= 0 ? 'text-[#00b574]' : 'text-[#f23645]'} style={{ fontSize: '24px', fontWeight: '500' }}>
+                {parseFloat(cryptoData.cryptoPrice).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2
+                })}
+              </span>
+             
+            </div>
           </div>
-          <div className="sub-value">${formattedPrice}</div>
+          <div className="label">
+            {cryptoName} price <FontAwesomeIcon icon={faExternalLinkAlt} className="ml-1" />
+          </div>
+         
         </div>
+
+        <div className="stat">
+          <div className="value green">
+          <span className={`text ${cryptoData.priceChange24h >= 0 ? 'text-[#00b574]' : 'text-[#f23645]'}`}>
+                {cryptoData.priceChange24h >= 0 ? '+' : ''}{cryptoData.priceChange24h?.toFixed(2)}%
+              </span>
+          </div>
+          <div className="label">24h high</div>
+        </div>
+
+
         <div className="stat">
           <div className="value blue">
             {parseFloat(19500).toLocaleString(undefined, {
@@ -350,7 +399,6 @@ const SubHeader = ({ cryptoData, coinPairId }) => {
             })}
           </div>
           <div className="label">24h low</div>
-          <div className="sub-value">$19,500.00</div>
         </div>
         <div className="stat">
           <div className="value green">
@@ -360,7 +408,6 @@ const SubHeader = ({ cryptoData, coinPairId }) => {
             })}
           </div>
           <div className="label">24h high</div>
-          <div className="sub-value">$20,500.00</div>
         </div>
         <div className="stat">
           <div className="value">
@@ -371,15 +418,7 @@ const SubHeader = ({ cryptoData, coinPairId }) => {
           </div>
           <div className="label">24h volume ({cryptoSymbol})</div>
         </div>
-        <div className="stat">
-          <div className="value">
-            {parseFloat(1250.75 * 20000).toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2
-            })}
-          </div>
-          <div className="label">24h turnover ({usdtSymbol})</div>
-        </div>
+    
       </div>
       <div className="leverage">10x</div>
       <div className="favorite">

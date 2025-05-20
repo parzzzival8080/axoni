@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 const API_URL = 'https://apiv2.bhtokens.com/api/v1/coins?apikey=A20RqFwVktRxxRqrKBtmi6ud';
 const CACHE_KEY = 'favorites_bar_data';
-const CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes in milliseconds
+const CACHE_EXPIRY = 7 * 24 * 60 * 60 * 1000; // 1 week in milliseconds
 
 const FavoriteItem = ({ coin, isActive, onClick }) => {
   const priceChange = parseFloat(coin.price_change_24h?.toString() || '0');

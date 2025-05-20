@@ -1,16 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import TradeForm from './TradeForm';
 import OrderHistory from './OrderHistory';
 import FavoritesBar from './FavoritesBar';
-import { getSpotBalance } from '../../services/spotTradingApi';
+import { getSpotBalance, getCoins } from '../../services/spotTradingApi';
+
+// Cache configuration
+const CACHE_KEY = 'spot_trading_coins';
+const CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes
 
 const TradingPage = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [availableCoins, setAvailableCoins] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCoinPair, setSelectedCoinPair] = useState({
     id: 1,
     symbol: 'BTC/USDT',
     cryptoSymbol: 'BTC',
     cryptoPrice: 80000,
+    priceChange24h: 0,
     cryptoLogoPath: '/images/btc.png',
     usdtSymbol: 'USDT',
     usdtLogoPath: '/images/usdt.png'
@@ -21,11 +28,52 @@ const TradingPage = () => {
   });
   const [mobileTradeTab, setMobileTradeTab] = useState(''); // '' | 'buy' | 'sell'
 
-  const availableCoins = [
-    { id: 1, symbol: 'BTC', pair_name: 'USDT', is_tradable: true, logo_path: '/images/btc.png', cryptoPrice: 80000 },
-    { id: 4, symbol: 'ETH', pair_name: 'USDT', is_tradable: true, logo_path: '/images/eth.png', cryptoPrice: 4000 },
-    { id: 13, symbol: 'XRP', pair_name: 'USDT', is_tradable: true, logo_path: '/images/xrp.png', cryptoPrice: 1.5 },
-  ];
+  // Load coins from cache or API
+  const loadCoins = useCallback(async () => {
+    try {
+      // Try to load from cache first
+      const cachedData = localStorage.getItem(CACHE_KEY);
+      if (cachedData) {
+        const { data, timestamp } = JSON.parse(cachedData);
+        if (Date.now() - timestamp < CACHE_EXPIRY) {
+          setAvailableCoins(data);
+          setLoading(false);
+          return;
+        }
+      }
+
+      // Fetch fresh data if cache is expired or missing
+      const response = await getCoins();
+      if (response.success && response.data) {
+        const coins = response.data.map(coin => ({
+          id: coin.coin_pair,
+          symbol: coin.symbol,
+          pair_name: coin.pair_name,
+          is_tradable: coin.is_tradable === 'yes',
+          logo_path: coin.logo_path,
+          cryptoPrice: parseFloat(coin.price),
+          priceChange24h: parseFloat(coin.price_change_24h)
+        }));
+
+        // Update cache
+        localStorage.setItem(CACHE_KEY, JSON.stringify({
+          data: coins,
+          timestamp: Date.now()
+        }));
+
+        setAvailableCoins(coins);
+      }
+    } catch (error) {
+      console.error('Error loading coins:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Load coins on mount and refresh trigger
+  useEffect(() => {
+    loadCoins();
+  }, [loadCoins, refreshTrigger]);
 
   const handleTradeSuccess = () => setRefreshTrigger(prev => prev + 1);
 
@@ -37,6 +85,7 @@ const TradingPage = () => {
         symbol: `${coin.symbol}/${coin.pair_name}`,
         cryptoSymbol: coin.symbol,
         cryptoPrice: coin.cryptoPrice,
+        priceChange24h: coin.priceChange24h,
         cryptoLogoPath: coin.logo_path,
         usdtSymbol: coin.pair_name,
         usdtLogoPath: '/images/usdt.png'
