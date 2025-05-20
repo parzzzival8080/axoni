@@ -5,7 +5,7 @@ import { faChevronDown, faChevronUp, faSpinner, faSync } from '@fortawesome/free
 
 // Cache key for local storage
 const CACHE_KEY = 'future_favorites_bar_data';
-const CACHE_EXPIRY = 7 * 24 * 60 * 60 * 1000; // 1 week in milliseconds
+const CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes in milliseconds
 
 /**
  * Individual favorite item component

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import TradingChart from '../components/spotTrading/TradingChart';
@@ -11,7 +11,7 @@ import { getSpotWallet, fetchAllCoins, fetchCoinDetails } from '../services/spot
 import '../components/spotTrading/SpotTrading.css';
 
 const SpotTrading = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [cryptoData, setCryptoData] = useState(null);
   const [userBalance, setUserBalance] = useState({
     cryptoSpotBalance: 0,
@@ -20,13 +20,48 @@ const SpotTrading = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [availableCoins, setAvailableCoins] = useState([]);
+  const [lastFetchTimestamp, setLastFetchTimestamp] = useState(0);
+  const FETCH_COOLDOWN = 2000; // 2 seconds cooldown between fetches
   const [orderHistoryRefreshTrigger, setOrderHistoryRefreshTrigger] = useState(0);
   const [mobileTradeTab, setMobileTradeTab] = useState(''); // '' | 'buy' | 'sell'
 
   // Get coin_pair_id from URL params, default to 1 if not provided
   const coinPairId = searchParams.get('coin_pair_id') || 1;
+
+  // Effect to handle coin pair changes
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        // Find the selected coin from available coins
+        const selectedCoin = availableCoins.find(coin => coin.id.toString() === coinPairId.toString());
+        if (selectedCoin) {
+          const coinResponse = await fetchCoinDetails(selectedCoin.symbol);
+          if (coinResponse.success) {
+            setCryptoData(prevData => ({
+              ...prevData,
+              cryptoName: selectedCoin.name,
+              cryptoSymbol: selectedCoin.symbol,
+              cryptoPrice: parseFloat(coinResponse.data.price || 0),
+              cryptoLogoPath: selectedCoin.logo_path,
+              priceChange24h: parseFloat(coinResponse.data.price_change_24h || 0),
+            }));
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching coin data:', error);
+        setError('Failed to fetch coin data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (availableCoins.length > 0) {
+      fetchData();
+    }
+  }, [coinPairId, availableCoins, fetchCoinDetails]); // Re-run when coinPairId or availableCoins change
   
-  // Fetch all available coins
+  // Fetch all available coins on component mount
   useEffect(() => {
     const fetchAvailableCoinsData = async () => {
       try {
@@ -43,13 +78,38 @@ const SpotTrading = () => {
     };
     
     fetchAvailableCoinsData();
-  }, []);
+  }, []); // Re-run when component mounts
   
   // Cache configuration
   const CACHE_KEY = 'spot_trading_data';
   const CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes
 
+  // Memoize the default crypto data object
+  const defaultCryptoData = useMemo(() => ({
+    cryptoName: 'Bitcoin',
+    cryptoSymbol: 'BTC',
+    cryptoPrice: 0,
+    cryptoLogoPath: '',
+    priceChange24h: 0,
+    usdtName: 'USDT',
+    usdtSymbol: 'USDT',
+    usdtLogoPath: '',
+    '24_high': null,
+    '24_low': null,
+    '24_high_formatted': null,
+    '24_low_formatted': null,
+    'volume_24h': null
+  }), []);
+
+  // Periodic data refresh
   const fetchCryptoData = useCallback(async () => {
+    // Check fetch cooldown
+    const now = Date.now();
+    if (now - lastFetchTimestamp < FETCH_COOLDOWN) {
+      return;
+    }
+    setLastFetchTimestamp(now);
+
     setLoading(true);
     setError(null);
 
@@ -66,7 +126,9 @@ const SpotTrading = () => {
       const cachedData = localStorage.getItem(CACHE_KEY);
       if (cachedData) {
         const { data, timestamp } = JSON.parse(cachedData);
-        if (Date.now() - timestamp < CACHE_EXPIRY) {
+        // Ensure the cached data is for the current coinPairId or a default
+        const currentCoinSymbol = availableCoins.find(c => c.id.toString() === coinPairId.toString())?.symbol || 'BTC';
+        if (Date.now() - timestamp < CACHE_EXPIRY && data?.cryptoSymbol === currentCoinSymbol) {
           setCryptoData(data);
           setLoading(false);
           return;
@@ -76,15 +138,16 @@ const SpotTrading = () => {
       // If user is not logged in, fetch only the crypto data without wallet info
       if (!isLoggedIn) {
         try {
-          // Use BTC as default symbol if we don't have specific coin info
-          const defaultSymbol = 'BTC';
+          // Use BTC as default symbol or the symbol of the current coinPairId
+          const targetSymbol = availableCoins.find(c => c.id.toString() === coinPairId.toString())?.symbol || 'BTC';
           
           // Use the fetchCoinDetails function from spotTradingApi.js
-          const coinResponse = await fetchCoinDetails(defaultSymbol);
+          const coinResponse = await fetchCoinDetails(targetSymbol);
           
           if (coinResponse.success) {
             const coinData = coinResponse.data;
             const cryptoDataObj = {
+              ...defaultCryptoData,
               cryptoName: coinData?.name || 'Bitcoin',
               cryptoSymbol: coinData?.symbol || 'BTC',
               cryptoPrice: coinData?.price || 0,
@@ -206,7 +269,7 @@ const SpotTrading = () => {
     } finally {
       setLoading(false);
     }
-  }, [coinPairId]);
+  }, [coinPairId, lastFetchTimestamp, FETCH_COOLDOWN, availableCoins, defaultCryptoData, fetchCoinDetails]); // Adjusted dependencies
 
   // Only update balance (not loading state) after a trade
   const fetchUserBalance = useCallback(async () => {
@@ -304,7 +367,16 @@ const SpotTrading = () => {
       console.log('SpotTrading: Current crypto symbol:', cryptoData.cryptoSymbol);
       console.log('SpotTrading: Full crypto data:', cryptoData);
     }
-  }, [fetchCryptoData, cryptoData?.cryptoSymbol]);
+  }, [fetchCryptoData, cryptoData?.cryptoSymbol, lastFetchTimestamp, FETCH_COOLDOWN, availableCoins, coinPairId, defaultCryptoData, fetchCoinDetails]); // Adjusted dependencies
+
+  // Handle coin selection from FavoritesBar
+  const handleCoinSelect = useCallback((selectedCoinPairId) => {
+    if (selectedCoinPairId.toString() !== coinPairId.toString()) {
+      console.log('SpotTrading: FavoritesBar selected new coin. Current coinPairId:', coinPairId, 'New coin_pair_id:', selectedCoinPairId);
+      setSearchParams({ coin_pair_id: selectedCoinPairId.toString() });
+      // The useEffect hook listening to `coinPairId` will handle fetching the new data.
+    }
+  }, [coinPairId, setSearchParams]);
 
   // Mobile app bar buy/sell buttons handler
   const handleMobileTradeTab = (tab) => {
@@ -351,6 +423,7 @@ const SpotTrading = () => {
       <FavoritesBar 
         activeCoinPairId={coinPairId} 
         availableCoins={availableCoins}
+        onCoinSelect={handleCoinSelect} // Pass the callback here
       />
       <div className="main-container">
         <div className="chart-section">

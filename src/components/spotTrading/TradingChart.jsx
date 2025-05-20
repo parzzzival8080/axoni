@@ -17,6 +17,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
   const tvWidgetRef = useRef(null);
   const [activeTab, setActiveTab] = useState("order-history");
   const [symbol, setSymbol] = useState(selectedSymbol || "BTC");
+  const [shouldReinitialize, setShouldReinitialize] = useState(false);
   const [chartType, setChartType] = useState("candles");
   const [timeframe, setTimeframe] = useState("1");
   const [timeframes, setTimeframes] = useState(["1", "5", "1", "4"]);
@@ -78,30 +79,26 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
     };
   };
 
-  // Effect to update chart when symbol changes
+  // Effect to handle symbol changes
   useEffect(() => {
     console.log("Symbol Effect - selectedSymbol:", selectedSymbol);
     console.log("Symbol Effect - current symbol state:", symbol);
 
     if (selectedSymbol && selectedSymbol !== symbol) {
+      console.log("Symbol change detected:", selectedSymbol);
       setSymbol(selectedSymbol);
-      console.log("Updating symbol to:", selectedSymbol);
-
-      // If widget exists, update the symbol
+      
+      // Force chart reinitialization
       if (tvWidgetRef.current) {
-        try {
-          const formattedSymbol = formatSymbolForChart(selectedSymbol);
-          tvWidgetRef.current.setSymbol(formattedSymbol, timeframe, () => {
-            console.log(`Chart symbol updated to ${formattedSymbol}`);
-          });
-        } catch (err) {
-          console.error("Error updating chart symbol:", err);
-        }
+        console.log("Removing existing chart for reinitialization");
+        tvWidgetRef.current.remove();
+        tvWidgetRef.current = null;
+        setShouldReinitialize(true);
       }
     }
-  }, [selectedSymbol, symbol]);
+  }, [selectedSymbol]);
 
-  // Effect to initialize chart
+  // Effect to initialize or reinitialize chart
   useEffect(() => {
     console.log("Chart Init Effect - using symbol:", symbol);
     console.log("Chart Init Effect - dependencies:", [symbol]);
@@ -420,7 +417,8 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
         }
       }
     };
-  }, [symbol, timeframe, chartType]);
+    setShouldReinitialize(false);
+  }, [symbol, timeframe, chartType, shouldReinitialize]);
 
   return (
     <div className="trading-chart-container">

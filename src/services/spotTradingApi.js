@@ -7,7 +7,27 @@ const DEFAULT_UID = 'yE8vKBNw'; // Default UID to use if none is provided
  * @param symbol - The coin symbol (e.g., 'BTC', 'ETH')
  * @returns Promise with coin details or error information
  */
-export const fetchCoinDetails = async (symbol) => {
+// Retry configuration
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 1000; // 1 second
+
+// Request queue to prevent multiple simultaneous requests for the same data
+const requestQueue = new Map();
+
+// Helper function to delay execution
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+// Helper function to handle API errors
+const handleApiError = (error, symbol) => {
+    console.error(`API Error for ${symbol}:`, error);
+    return {
+        success: false,
+        message: error.message || 'An unexpected error occurred',
+        error: error
+    };
+};
+
+export const fetchCoinDetails = async (symbol, retryCount = 0) => {
     try {
         // Validate input
         if (!symbol) {
@@ -23,18 +43,48 @@ export const fetchCoinDetails = async (symbol) => {
 
         console.log(`Fetching coin data for ${coinSymbol} from: ${url}`);
 
-        // Send request
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
+        // Check if there's already a request in progress for this symbol
+        if (requestQueue.has(coinSymbol)) {
+            return requestQueue.get(coinSymbol);
+        }
+
+        // Create a new request promise
+        const requestPromise = (async () => {
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Cache-Control': 'no-cache'
+                    },
+                    timeout: 5000 // 5 second timeout
+                });
+
+                // Remove from queue after completion
+                requestQueue.delete(coinSymbol);
+
+                return response;
+            } catch (error) {
+                requestQueue.delete(coinSymbol);
+                throw error;
             }
-        });
+        })();
+
+        // Add to queue
+        requestQueue.set(coinSymbol, requestPromise);
+
+        // Send request
+        const response = await requestPromise;
 
         console.log("Status code:", response.status);
 
         // Check response status
         if (!response.ok) {
+            if (retryCount < MAX_RETRIES) {
+                console.log(`Retrying request for ${coinSymbol} (Attempt ${retryCount + 1}/${MAX_RETRIES})`);
+                await delay(RETRY_DELAY * (retryCount + 1));
+                return fetchCoinDetails(symbol, retryCount + 1);
+            }
             console.error('API Error:', response.status);
             return { success: false, message: `API Error: ${response.status}` };
         }
