@@ -10,7 +10,7 @@ import './SubHeader.css';
 
 // Cache configuration
 const CACHE_KEY = 'spot_subheader_coins';
-const CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes
+const CACHE_EXPIRY = 7 * 24 * 60 * 60 * 1000; // 1 week in milliseconds
 
 const SubHeader = ({ cryptoData, coinPairId }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

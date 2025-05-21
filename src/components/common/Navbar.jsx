@@ -907,7 +907,7 @@ const Navbar = () => {
                 <Link to="/security" className="menu-item">
                   <i className="fas fa-shield-alt"></i> Security
                 </Link>
-                <Link to="/verification" className="menu-item">
+                <Link to="/account/profile/verify" className="menu-item">
                   <i className="fas fa-id-card"></i> Verification
                 </Link>
                 <Link to="/country-region" className="menu-item">

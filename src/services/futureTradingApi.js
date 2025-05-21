@@ -1,14 +1,33 @@
 const API_BASE_URL = 'https://apiv2.bhtokens.com/api/v1';
 const API_KEY = 'A20RqFwVktRxxRqrKBtmi6ud';
 
+// Cache configuration for tradable coins
+const TRADABLE_COINS_CACHE_KEY = 'future_tradable_coins';
+const TRADABLE_COINS_CACHE_EXPIRY = 15 * 60 * 1000; // 15 minutes
+
 /**
  * Fetch all available tradable coins
  * @returns {Promise<Array>} List of available coins with trading information
  */
 export const fetchTradableCoins = async () => {
+  // Check cache first
+  try {
+    const cachedData = localStorage.getItem(TRADABLE_COINS_CACHE_KEY);
+    if (cachedData) {
+      const { timestamp, data } = JSON.parse(cachedData);
+      if (Date.now() - timestamp < TRADABLE_COINS_CACHE_EXPIRY) {
+        console.log('Returning cached tradable coins (futures)');
+        return data;
+      }
+    }
+  } catch (error) {
+    console.error('Error reading tradable coins from cache (futures):', error);
+    // Proceed to fetch from API if cache read fails
+  }
+
   try {
     const url = `${API_BASE_URL}/coins?apikey=${API_KEY}`;
-    console.log('Fetching tradable coins from:', url);
+    console.log('Fetching tradable coins from (futures):', url);
     
     const response = await fetch(url, {
       method: 'GET',
@@ -23,18 +42,35 @@ export const fetchTradableCoins = async () => {
     
     // Filter tradable coins and sort (BTC first, then by coin_pair)
     const tradableCoins = data
-      .filter(coin => coin.is_tradable)
+      .filter(coin => coin.is_tradable) // Assuming is_tradable is the correct property
       .sort((a, b) => {
         if (a.symbol === 'BTC') return -1;
         if (b.symbol === 'BTC') return 1;
-        return a.coin_pair - b.coin_pair;
+        // Ensure coin_pair exists and is a number before sorting
+        const coinPairA = Number(a.coin_pair);
+        const coinPairB = Number(b.coin_pair);
+        if (!isNaN(coinPairA) && !isNaN(coinPairB)) {
+            return coinPairA - coinPairB;
+        }
+        return 0; // Default sort if coin_pair is not valid
       });
     
-    console.log(`Fetched ${tradableCoins.length} tradable coins`);
+    console.log(`Fetched ${tradableCoins.length} tradable coins (futures)`);
+
+    // Save to cache
+    try {
+      localStorage.setItem(TRADABLE_COINS_CACHE_KEY, JSON.stringify({
+        timestamp: Date.now(),
+        data: tradableCoins
+      }));
+    } catch (error) {
+      console.error('Error saving tradable coins to cache (futures):', error);
+    }
+
     return tradableCoins;
   } catch (error) {
-    console.error('Error fetching tradable coins:', error);
-    return [];
+    console.error('Error fetching tradable coins (futures):', error);
+    return []; // Return empty array on error, or re-throw as per existing logic
   }
 };
 

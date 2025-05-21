@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import SubHeader from '../components/futureTrading/SubHeader';
 import FavoritesBar from '../components/futureTrading/FavoritesBar';
@@ -47,10 +47,11 @@ const FutureTrading = () => {
   
   // Fetch wallet data when coinPairId or uid changes
   useEffect(() => {
-    const loadWalletData = async () => {
+    const loadInitialWalletData = async () => {
       if (!uid) {
         setError("Please log in to access trading features");
         setLoading(false);
+        setWalletData(null); // Clear previous wallet data
         return;
       }
       
@@ -76,8 +77,29 @@ const FutureTrading = () => {
       }
     };
     
-    loadWalletData();
+    loadInitialWalletData();
   }, [coinPairId, uid]);
+
+  // Refresh wallet data function, memoized with useCallback
+  const refreshWalletData = useCallback(async () => {
+    if (!uid) return;
+
+    console.log('FutureTrading: Refreshing wallet data for coin pair ID:', coinPairId);
+    try {
+      const data = await fetchWalletData(uid, coinPairId);
+      if (!data.error) {
+        setWalletData(data);
+        setError(null); // Clear previous errors on successful refresh
+      } else {
+        // Optionally set error from refresh if needed, or just log
+        console.error('Error refreshing wallet data:', data.message);
+        // setError(data.message); // Uncomment if you want to show refresh errors prominently
+      }
+    } catch (err) {
+      console.error('Failed to refresh wallet data:', err);
+      // setError('Failed to refresh data.'); // Uncomment if you want to show refresh errors prominently
+    }
+  }, [uid, coinPairId]);
   
   // Handle coin selection from FavoritesBar
   const handleCoinSelect = useCallback((selectedCoinPairId) => {
@@ -104,32 +126,15 @@ const FutureTrading = () => {
     }, 3000);
     
     // Refresh wallet data
-    const refreshWalletData = async () => {
-      if (!uid) return;
-      
-      try {
-        console.log('FutureTrading: Refreshing wallet data for coin pair ID:', coinPairId);
-        const data = await fetchWalletData(uid, coinPairId);
-        
-        if (!data.error) {
-          console.log('FutureTrading: Wallet data refreshed successfully:', data);
-          setWalletData(data);
-        } else {
-          console.error('FutureTrading: Error refreshing wallet data:', data.message);
-        }
-      } catch (err) {
-        console.error('FutureTrading: Exception refreshing wallet data:', err);
-      }
-    };
+    refreshWalletData(); // Call the memoized refresh function
     
-    refreshWalletData();
-    
-    // Refresh order history
+    // Trigger refresh for orders section (if it relies on a separate trigger)
     setOrderHistoryRefreshTrigger(prev => prev + 1);
-  }, [coinPairId, uid]);
+    
+  }, [refreshWalletData]); // Add refreshWalletData to dependencies
   
-  // Format wallet data for SubHeader component
-  const getSubHeaderData = () => {
+  // Format wallet data for SubHeader component, memoized with useMemo
+  const subHeaderData = useMemo(() => {
     if (!walletData) return null;
     
     return {
@@ -139,7 +144,7 @@ const FutureTrading = () => {
       cryptoLogoPath: walletData.cryptoWallet?.logo_path,
       usdtSymbol: walletData.usdtWallet?.crypto_symbol || 'USDT'
     };
-  };
+  }, [walletData]);
   
   // Mobile app bar buy/sell buttons handler
   const handleMobileTradeTab = (tab) => {
@@ -208,8 +213,9 @@ const FutureTrading = () => {
   return (
     <div className="future-trading-container">
       <SubHeader 
-        cryptoData={getSubHeaderData()} 
+        cryptoData={subHeaderData} // Use memoized data
         coinPairId={coinPairId}
+        tradableCoins={tradableCoins} // Pass tradableCoins as a prop
       />
       <FavoritesBar 
         activeCoinPairId={coinPairId} 
@@ -222,7 +228,7 @@ const FutureTrading = () => {
             selectedSymbol={walletData?.symbol} 
           />
           <OrderBook 
-            cryptoData={getSubHeaderData()}
+            cryptoData={subHeaderData} // Use memoized data for OrderBook too if it consumes similar props
           />
           <div className="trade-form-container desktop-only">
             <TradeForm 

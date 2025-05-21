@@ -16,13 +16,12 @@ const Conversion = () => {
     const [conversionError, setConversionError] = useState(null);
     const [conversionSuccess, setConversionSuccess] = useState(false);
     
-    // Store the full currency objects, not just the names
     const [fromCurrency, setFromCurrency] = useState({
       id: 'usdt',
       symbol: 'USDT',
       name: 'Tether',
       icon: TetherLogo,
-      price: 1 // Default price for USDT is 1
+      price: 1 
     });
     
     const [toCurrency, setToCurrency] = useState({
@@ -43,105 +42,63 @@ const Conversion = () => {
       spotWallet: '0'
     });
 
-    // API key and user ID - these should ideally come from your auth context or environment variables
     const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
-    const uid = 
-    localStorage.getItem('uid'); // Replace with actual user ID or get it from auth context
+    const uid = localStorage.getItem('uid');
 
-    // Fetch BTC price on initial load
     useEffect(() => {
       fetchBtcPrice();
     }, []);
 
-    // Fetch BTC price from the API
     const fetchBtcPrice = async () => {
       try {
         const response = await fetch(
           `https://apiv2.bhtokens.com/api/v1/coin-balance/${uid}?apikey=${apiKey}&symbol=BTC`
         );
-        
-        if (!response.ok) {
-          throw new Error(`API error: ${response.status}`);
-        }
-        
+        if (!response.ok) throw new Error(`API error: ${response.status}`);
         const data = await response.json();
-        
-        // Update toCurrency with the fetched price
         if (data && data.price) {
           const btcPrice = parseFloat(data.price);
-          
-          setToCurrency(prev => ({
-            ...prev,
-            price: btcPrice
-          }));
+          setToCurrency(prev => ({ ...prev, price: btcPrice }));
         }
       } catch (error) {
-        // Error handling could be improved here
+        console.error('Failed to fetch BTC price:', error);
       }
     };
 
-    // Fetch balance when currency changes
     useEffect(() => {
       fetchBalance();
     }, []);
 
     const fetchBalance = async () => {
-
-      
-      setBalance(prev => ({
-        ...prev,
-        loading: true,
-        error: null
-      }));
-      
+      setBalance(prev => ({ ...prev, loading: true, error: null }));
       try {
         const url = `https://apiv2.bhtokens.com/api/v1/user-wallet/${uid}/1?apikey=${apiKey}`;
-        
         const response = await fetch(url);
-        
-        if (!response.ok) {
-          throw new Error(`API error: ${response.status}`);
-        }
-        
+        if (!response.ok) throw new Error(`API error: ${response.status}`);
         const data = await response.json();
-        
         setBalance({
           loading: false,
           error: null,
           spotWallet: data.usdtWallet?.spot_wallet || '0'
         });
       } catch (error) {
-        setBalance(prev => ({
-          ...prev,
-          loading: false,
-          error: 'Failed to load balance information',
-          spotWallet: '0'
-        }));
+        console.error('Failed to load balance:', error);
+        setBalance(prev => ({ ...prev, loading: false, error: 'Failed to load balance', spotWallet: '0' }));
       }
     };
 
     const handleFromAmountChange = (e) => {
       const amount = e.target.value;
-      
-      // Only allow numeric input with decimal point
       if (amount === '' || /^[0-9]*\.?[0-9]*$/.test(amount)) {
         setFromAmount(amount);
-
-        // Check if amount exceeds balance
-        if (amount && parseFloat(amount) > parseFloat(balance.spotWallet)) {
-          setConversionError("Amount exceeds available balance");
+        if (parseFloat(amount) > parseFloat(balance.spotWallet)) {
+          setConversionError('Amount exceeds available balance.');
         } else {
-          // Clear any previous error about insufficient balance
-          if (conversionError === "Amount exceeds available balance" || 
-              conversionError === "Insufficient balance") {
-            setConversionError(null);
-          }
+          setConversionError(null);
         }
-            
-        // Calculate to amount based on toCurrency.price directly
-        if (amount && toCurrency.price) {
-          const calculatedAmount = parseFloat(amount) / parseFloat(toCurrency.price);
-          setToAmount(calculatedAmount.toFixed(8));
+        if (fromCurrency.price && toCurrency.price && amount) {
+          const calculatedToAmount = (parseFloat(amount) * fromCurrency.price) / toCurrency.price;
+          setToAmount(formatNumber(calculatedToAmount));
         } else {
           setToAmount('');
         }
@@ -150,286 +107,236 @@ const Conversion = () => {
 
     const handleToAmountChange = (e) => {
       const amount = e.target.value;
-      
-      // Only allow numeric input with decimal point
       if (amount === '' || /^[0-9]*\.?[0-9]*$/.test(amount)) {
         setToAmount(amount);
-        
-        // Calculate from amount based on toCurrency.price directly
-        if (amount && toCurrency.price) {
-          const calculatedAmount = parseFloat(amount) * parseFloat(toCurrency.price);
-          setFromAmount(calculatedAmount.toFixed(8));
+        if (fromCurrency.price && toCurrency.price && amount) {
+          const calculatedFromAmount = (parseFloat(amount) * toCurrency.price) / fromCurrency.price;
+          setFromAmount(formatNumber(calculatedFromAmount));
+          if (parseFloat(calculatedFromAmount) > parseFloat(balance.spotWallet)) {
+            setConversionError('Required amount exceeds available balance.');
+          } else {
+            setConversionError(null);
+          }
         } else {
           setFromAmount('');
         }
       }
     };
 
-    const openFromModal = () => {
-      setIsFromModalOpen(true);
-    };
-  
-    const closeFromModal = () => {
-      setIsFromModalOpen(false);
-    };
-  
-    const openToModal = () => {
-      setIsToModalOpen(true);
-    };
-  
-    const closeToModal = () => {
-      setIsToModalOpen(false);
-    };
-  
+    const openFromModal = () => setIsFromModalOpen(true);
+    const closeFromModal = () => setIsFromModalOpen(false);
+    const openToModal = () => setIsToModalOpen(true);
+    const closeToModal = () => setIsToModalOpen(false);
+
     const handleFromCurrencySelect = (currency) => {
-      // Store the entire currency object
       setFromCurrency(currency);
-      closeFromModal();
-      
-      // Recalculate the conversion if there's an amount entered
-      if (fromAmount && toCurrency.price) {
-        const calculatedAmount = parseFloat(fromAmount) / parseFloat(toCurrency.price);
-        setToAmount(calculatedAmount.toFixed(8));
-      }
-    };
-  
-    const handleToCurrencySelect = (currency) => {
-      // Store the entire currency object
-      setToCurrency(currency);
-      closeToModal();
-      
-      // Recalculate the conversion if there's an amount entered
-      if (fromAmount && currency.price) {
-        const calculatedAmount = parseFloat(fromAmount) / parseFloat(currency.price);
-        setToAmount(calculatedAmount.toFixed(8));
-      }
+      setFromAmount(''); 
+      setToAmount('');
+      setIsFromModalOpen(false);
+      fetchBalance(); // Re-fetch balance for the new currency if needed, assuming USDT is the only 'from'
     };
 
-    // Format number with commas and fixed decimal places
-    const formatNumber = (num, decimals = 8) => {
-      if (!num) {
-        return '0';
-      }
-      
-      // If the number is very small, show all significant digits
-      if (Math.abs(parseFloat(num)) < 0.000001 && parseFloat(num) !== 0) {
-        return parseFloat(num).toFixed(8);
-      }
-      
-      return parseFloat(num).toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: decimals
-      });
+    const handleToCurrencySelect = (currency) => {
+      setToCurrency(currency);
+      setFromAmount('');
+      setToAmount('');
+      setIsToModalOpen(false);
     };
-    
-    // Handle conversion submission
+
+    const formatNumber = (num, decimals = 8) => {
+      const number = parseFloat(num);
+      if (isNaN(number)) return '';
+      return number.toFixed(decimals).replace(/\.?0+$/, ""); // Remove trailing zeros after decimal
+    };
+
     const handleConvert = async () => {
-      // Validate inputs
+      if (parseFloat(fromAmount) > parseFloat(balance.spotWallet)) {
+        setConversionError('Insufficient balance to make this conversion.');
+        return;
+      }
       if (!fromAmount || !toAmount || parseFloat(fromAmount) <= 0) {
-        setConversionError("Please enter a valid amount to convert");
+        setConversionError('Please enter a valid amount to convert.');
         return;
       }
 
-      //Check usdt Balance is sufficient
-      const userBalance = parseFloat(balance.spotWallet)
-      const amountFromConvert = parseFloat(fromAmount)
-
-      if(amountFromConvert > userBalance){
-        setConversionError("Insufficient balance");
-        return
-      }
-      
-      // Reset states
       setIsSubmitting(true);
       setConversionError(null);
       setConversionSuccess(false);
-      
+
       try {
-        // Prepare payload
-        const payload = {
-          uid: uid,
-          convert_from: fromCurrency.symbol,
-          convert_to: toCurrency.symbol,
-          amount: parseFloat(fromAmount),
-          converted_amount: parseFloat(toAmount)
-        };
-        console.log(payload)
-        
-        // Make API call
-        const response = await fetch(`https://apiv2.bhtokens.com/api/v1/conversions?apikey=${apiKey}`, {
+        const response = await fetch('https://apiv2.bhtokens.com/api/v1/coin-convert', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
-          body: JSON.stringify(payload)
+          body: JSON.stringify({
+            uid: uid,
+            apikey: apiKey,
+            from_coin: fromCurrency.symbol,
+            to_coin: toCurrency.symbol,
+            from_amount: parseFloat(fromAmount),
+            to_amount: parseFloat(toAmount) 
+          }),
         });
+
+        const responseData = await response.json();
+
+        if (!response.ok || responseData.code !== "200") {
+          throw new Error(responseData.msg || 'Conversion failed. Please try again.');
+        }
         
-          // Handle response
-          if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || `API error: ${response.status}`);
-          }
-        
-        const data = await response.json();
-        console.log('Conversion API response:', data);
-        
-        // Set success state
         setConversionSuccess(true);
-        
-        // Clear form
         setFromAmount('');
         setToAmount('');
-        
-        // Refresh balance
-        fetchBalance();
-        
+        fetchBalance(); // Refresh balance after successful conversion
+
+        setTimeout(() => {
+          setConversionSuccess(false);
+        }, 5000); 
+
       } catch (error) {
-        setConversionError(error.message || "Failed to complete conversion. Please try again.");
+        setConversionError(error.message || 'An unexpected error occurred.');
       } finally {
         setIsSubmitting(false);
       }
     };
-  
+
   return (
-    <div className="convert-container">
-    <header className="convert-header">
-      <h1 className="convert-title">Convert</h1>
-      <p className="convert-subtitle">
-        Zero trading fees | Lower limits | Simple transactions
-      </p>
-    </header>
+    <div className="conversion-container bg-gray-50 min-h-screen">
+      <header className="conversion-header">
+        <h1>Convert</h1>
+        <p className="conversion-subtitle">Easily convert between different cryptocurrencies.</p>
+      </header>
 
-    <section className="convert-form">
-      <div className="convert-card">
-        {conversionSuccess && (
-          <div className="success-message" style={{ color: 'green', marginBottom: '15px', textAlign: 'center' }}>
-            Conversion completed successfully!
-          </div>
-        )}
-        
-        {conversionError && (
-          <div className="error-message" style={{ color: 'red', marginBottom: '15px', textAlign: 'center' }}>
-            {conversionError}
-          </div>
-        )}
-        
-        <div className="convert-form-group">
-          <label>From</label>
-          <div className="input-group">
-            <input 
-              className='fromConvert' 
-              type="text" 
-              placeholder="0.00001-0.54" 
-              value={fromAmount}
-              onChange={handleFromAmountChange}
-            />
-            <div className='coin-dropdown' onClick={openFromModal}>
-              <img 
-                className='coin-img' 
-                src={fromCurrency.icon || TetherLogo}
-                alt={fromCurrency.symbol} 
-                style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'contain' }}
-              />
-              <button className="currency-btn">
-                {fromCurrency.symbol}
-              </button>
-              <span className={`dropdown-icon ${isFromDropdownOpen ? 'open' : ''}`}>▼</span>
+      <section className="conversion-form-section">
+        <div className="conversion-card">
+          {conversionSuccess && (
+            <div className="success-message bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+              <strong className="font-bold">Success!</strong>
+              <span className="block sm:inline"> Your conversion was processed.</span>
             </div>
-        
-          </div>
-        </div>
-        
-        <div className="conversion-balance-info">
-            {balance.loading ? (
-              <span>Loading balance...</span>
-            ) : balance.error ? (
-              <span style={{ color: 'red' }}>{balance.error}</span>
-            ) : (
-              <>
-                Available: {formatNumber(balance.spotWallet)} {fromCurrency.symbol} <a href="#">Deposit</a>
-              </>
-            )}
-        </div>
-
-        <div className="convert-form-group">
-          <label>To</label>
-          <div className="input-group">
-            <input 
-              className='toConvert' 
-              type="text" 
-              placeholder="0.92116-50,000" 
-              value={toAmount}
-              onChange={handleToAmountChange}
-            />
-            <div className='coin-dropdown' onClick={openToModal}>
-              <img 
-                className='coin-img' 
-                src={toCurrency.icon || Coin} 
-                alt={toCurrency.symbol} 
-                style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'contain' }}
+          )}
+          
+          {conversionError && (
+            <div className="error-message text-red-600 mb-4 text-center">
+              {conversionError}
+            </div>
+          )}
+          
+          <div className="conversion-form-group">
+            <label className='text-gray-700 mb-1 block'>From</label>
+            <div className="conversion-input-group">
+              <input 
+                className='fromConvert w-full' 
+                type="text" 
+                placeholder="0.00001-0.54" 
+                value={fromAmount}
+                onChange={handleFromAmountChange}
               />
-              <button className="currency-btn">
-                {toCurrency.symbol}
-              </button>
-              <div className={`dropdown-icon ${isToDropdownOpen ? 'open' : ''}`}>▼</div>
+              <div className='conversion-coin-dropdown p-2' onClick={openFromModal}>
+                <img 
+                  className='conversion-coin-img mr-2' 
+                  src={fromCurrency.icon || TetherLogo}
+                  alt={fromCurrency.symbol} 
+                  style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'contain' }}
+                />
+                <button className="conversion-currency-btn">
+                  {fromCurrency.symbol}
+                </button>
+                <span className={`conversion-dropdown-icon ${isFromDropdownOpen ? 'open' : ''} ml-1 text-gray-600`}>▼</span>
+              </div>
             </div>
           </div>
+          
+          <div className="conversion-balance-info">
+              {balance.loading ? (
+                <span>Loading balance...</span>
+              ) : balance.error ? (
+                <span className="text-red-500">{balance.error}</span>
+              ) : (
+                <>
+                  Available: {formatNumber(balance.spotWallet)} {fromCurrency.symbol} <a href="#" className="text-blue-600 hover:underline">Deposit</a>
+                </>
+              )}
+          </div>
+
+          <div className="conversion-form-group">
+            <label className='text-gray-700 mb-1 block'>To</label>
+            <div className="conversion-input-group">
+              <input 
+                className='toConvert w-full' 
+                type="text" 
+                placeholder="0.92116-50,000" 
+                value={toAmount}
+                onChange={handleToAmountChange}
+              />
+              <div className='conversion-coin-dropdown p-2' onClick={openToModal}>
+                <img 
+                  className='conversion-coin-img mr-2' 
+                  src={toCurrency.icon || Coin} 
+                  alt={toCurrency.symbol} 
+                  style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'contain' }}
+                />
+                <button className="conversion-currency-btn">
+                  {toCurrency.symbol}
+                </button>
+                <div className={`conversion-dropdown-icon ${isToDropdownOpen ? 'open' : ''} ml-1 text-gray-600`}>▼</div>
+              </div>
+            </div>
+          </div>
+
+          {/* <div className="conversion-exchange-rate">
+            1 {fromCurrency.symbol} ≈ {formatNumber(1/parseFloat(toCurrency.price), 8)} {toCurrency.symbol}
+          </div> */}
+
+          <button 
+            className="conversion-preview-btn" 
+            onClick={handleConvert}
+            disabled={isSubmitting || !fromAmount || !toAmount || !!conversionError}
+          >
+            {isSubmitting ? 'Converting...' : 'Convert'}
+          </button>
         </div>
 
-        {/* <div className="exchange-rate">
-          1 {fromCurrency.symbol} ≈ {formatNumber(1/parseFloat(toCurrency.price), 8)} {toCurrency.symbol}
+        {/* <div className="conversion-history-link">
+          <a href="#">Conversion history</a>
         </div> */}
+      </section>
 
-        <button 
-          className="preview-btn" 
-          onClick={handleConvert}
-          disabled={isSubmitting || !fromAmount || !toAmount}
-        >
-          {isSubmitting ? 'Converting...' : 'Convert'}
-        </button>
-      </div>
+      <section className="conversion-benefits-section">
+        <div className="conversion-benefit-item">
+          <img src={ZeroTradingFees} alt="Zero trading fees" />
+          <p>Zero trading fees</p>
+        </div>
+        <div className="conversion-benefit-item">
+          <img src={NoSlippage} alt="No slippage" />
+          <p>No slippage</p>
+        </div>
+        <div className="conversion-benefit-item">
+          <img src={MorePairs} alt="More pairs" />
+          <p>More pairs</p>
+        </div>
+      </section>
 
-      {/* <div className="conversion-history-link">
-        <a href="#">Conversion history</a>
-      </div> */}
-    </section>
+      <section className="conversion-faq-section">
+        <FAQAccordion />
+      </section>
 
-    <section className="convert-benefits">
-      <div className="benefit-item">
-        <img src={ZeroTradingFees} alt="Zero trading fees" />
-        <p>Zero trading fees</p>
-      </div>
-      <div className="benefit-item">
-        <img src={NoSlippage} alt="No slippage" />
-        <p>No slippage</p>
-      </div>
-      <div className="benefit-item">
-        <img src={MorePairs} alt="More pairs" />
-        <p>More pairs</p>
-      </div>
-    </section>
+      {isFromModalOpen && (
+        <FromCurrencyModal 
+          onClose={closeFromModal} 
+          onSelectCurrency={handleFromCurrencySelect}
+        />
+      )}
 
-    <section className="faq-section">
-      <FAQAccordion />
-    </section>
-
-    {/* Use FromCurrencyModal for "From" field - only shows USDT */}
-    {isFromModalOpen && (
-      <FromCurrencyModal 
-        onClose={closeFromModal} 
-        onSelectCurrency={handleFromCurrencySelect}
-      />
-    )}
-
-    {/* Currency Modal for "To" field - shows all currencies */}
-    {isToModalOpen && (
-      <CurrencyModal 
-        onClose={closeToModal} 
-        onSelectCurrency={handleToCurrencySelect}
-      />
-    )}
-  </div>
+      {isToModalOpen && (
+        <CurrencyModal 
+          onClose={closeToModal} 
+          onSelectCurrency={handleToCurrencySelect}
+        />
+      )}
+    </div>
   )
 }
 
-export default Conversion
+export default Conversion;

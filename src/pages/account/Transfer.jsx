@@ -109,7 +109,9 @@ const ImageWithFallback = ({ src, alt, className, symbol }) => {
 
 // Cache key for local storage
 const COINS_CACHE_KEY = 'transfer_coins_cache';
-const CACHE_EXPIRY_TIME = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+const CACHE_EXPIRY_TIME =  7 * 24 * 60 * 60 * 1000; 
+
+
 
 const Transfer = () => {
   // State variables

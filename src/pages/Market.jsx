@@ -68,7 +68,7 @@ const Market = () => {
   };
 
   return (
-    <div className="market-container">
+    <div className="market-container bg-white py-8">
       {/* Primary Navigation */}
       <NavigationTabs 
         tabs={mainTabs} 

@@ -26,7 +26,7 @@ const Hero = () => {
             </div>
             <button
               className={unverifiedStyles.verifyBtn}
-              onClick={() => { window.location.href = '/verify'; }}
+              onClick={() => { window.location.href = '/account/profile/verify'; }}
             >
               Verify now
             </button>

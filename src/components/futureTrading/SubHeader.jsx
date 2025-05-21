@@ -4,7 +4,6 @@ import { faStar as farStar } from '@fortawesome/free-regular-svg-icons';
 import { faExternalLinkAlt, faChartLine, faCog, faChevronDown, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faFileAlt } from '@fortawesome/free-regular-svg-icons';
 import defaultCoinLogo from '../../assets/coin/bitcoin-2136339_640.webp';
-import { fetchTradableCoins } from '../../services/futureTradingApi';
 import { useNavigate } from 'react-router-dom';
 import './SubHeader.css';
 
@@ -20,30 +19,23 @@ import './SubHeader.css';
  * @param {string} props.cryptoData.cryptoLogoPath - Coin logo path
  * @param {string} props.cryptoData.usdtSymbol - USDT symbol
  * @param {string} props.coinPairId - Coin pair ID
+ * @param {Array} props.tradableCoins - List of tradable coins passed from parent
  */
-const SubHeader = ({ cryptoData, coinPairId }) => {
+const SubHeader = ({ cryptoData, coinPairId, tradableCoins }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [coins, setCoins] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); 
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
-  // Fetch all available coins
   useEffect(() => {
-    const loadCoins = async () => {
-      setIsLoading(true);
-      const tradableCoins = await fetchTradableCoins();
-      if (tradableCoins && tradableCoins.length > 0) {
-        setCoins(tradableCoins);
-      }
+    if (tradableCoins && tradableCoins.length > 0) {
       setIsLoading(false);
-    };
-    
-    loadCoins();
-  }, []);
+    } else {
+      setIsLoading(true);
+    }
+  }, [tradableCoins]);
 
-  // Handle click outside to close dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -57,8 +49,7 @@ const SubHeader = ({ cryptoData, coinPairId }) => {
     };
   }, []);
 
-  // Filter coins based on search term
-  const filteredCoins = coins.filter(coin => {
+  const filteredCoins = (tradableCoins || []).filter(coin => {
     const searchLower = searchTerm.toLowerCase();
     return (
       coin.symbol.toLowerCase().includes(searchLower) ||
@@ -66,13 +57,11 @@ const SubHeader = ({ cryptoData, coinPairId }) => {
     );
   });
 
-  // Handle coin selection
   const handleCoinSelect = (coin) => {
     setIsDropdownOpen(false);
     navigate(`/future-trading?coin_pair_id=${coin.coin_pair}`);
   };
 
-  // Render skeleton loading items
   const renderSkeletonItems = () => {
     return Array(8).fill(0).map((_, index) => (
       <div 
@@ -141,7 +130,6 @@ const SubHeader = ({ cryptoData, coinPairId }) => {
     ));
   };
 
-  // Show loading state if no data is available
   if (!cryptoData) {
     return (
       <div className="sub-header skeleton-loading">
@@ -158,16 +146,13 @@ const SubHeader = ({ cryptoData, coinPairId }) => {
     usdtSymbol 
   } = cryptoData;
   
-  // Format the price for display
   const formattedPrice = parseFloat(cryptoPrice).toLocaleString(undefined, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   });
 
-  // Use the logo from API or default to the static image
   const logoSrc = cryptoLogoPath || defaultCoinLogo;
   
-  // Calculate derived values for 24h stats (placeholder data)
   const price = parseFloat(cryptoPrice) || 0;
   const low24h = (price * 0.97).toFixed(2);
   const high24h = (price * 1.03).toFixed(2);
@@ -190,7 +175,6 @@ const SubHeader = ({ cryptoData, coinPairId }) => {
               padding: '5px'
             }}
           >
-            {/* Completely restructured coin icon with direct styling */}
             <div 
               style={{
                 width: '24px',

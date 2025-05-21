@@ -12,8 +12,6 @@
     padding: 0 16px;
     font-size: 14px;
     border-radius: 16px;
-    background-color: #F2F2F2;
-    color: #5E5E5E;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -24,12 +22,6 @@
   
   .secondary-tabs .tab-item:hover {
     background-color: #EAEAEA;
-  }
-  
-  .secondary-tabs .tab-item.active {
-    background-color: #000000;
-    color: white;
-    font-weight: 500;
   }
   
   /* Responsive Adjustments */
