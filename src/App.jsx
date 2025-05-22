@@ -24,6 +24,8 @@ import Deposit from './pages/account/Deposit';
 import Withdraw from './pages/account/Withdraw';
 import Transfer from './pages/account/Transfer';
 import VerifyPage from './pages/account/VerifyPage';
+import ChangePassword from './pages/account/ChangePassword';
+import ChangeEmail from './pages/account/ChangeEmail';
 import { CryptoProvider } from './context/CryptoContext';
 import TradingChartWebView from './pages/trading_chartWebView';
 
@@ -158,7 +160,9 @@ function App() {
                         <>
                         <Navbar />
                           <main>
-                            {React.createElement(React.lazy(() => import('./pages/account/Security')))}
+                            <React.Suspense fallback={<div>Loading...</div>}>
+                              {React.createElement(React.lazy(() => import('./pages/account/Security')))}
+                            </React.Suspense>
                           </main>
                           <Footer />
                           <ChatBubble />
@@ -199,6 +203,26 @@ function App() {
                         <Navbar />
                           <main>
                             <ComingSoon title="Third-party Authorization" message="This feature is coming soon" />
+                          </main>
+                          <Footer />
+                          <ChatBubble />
+                        </>
+             } />
+             <Route path="/account/profile/security/change-password" element={
+                        <>
+                        <Navbar />
+                          <main>
+                            <ChangePassword />
+                          </main>
+                          <Footer />
+                          <ChatBubble />
+                        </>
+             } />
+             <Route path="/account/profile/security/change-email" element={
+                        <>
+                        <Navbar />
+                          <main>
+                            <ChangeEmail />
                           </main>
                           <Footer />
                           <ChatBubble />
