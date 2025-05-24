@@ -1,66 +1,63 @@
-import React, { useState } from 'react';
-import what1 from '../../assets/video/what1.mp4';
-import what2 from '../../assets/video/what2.mp4';
-import what3 from '../../assets/video/what3.mp4';
-import logo from '../../assets/logo/logo.png';
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+const ServiceCard = ({ title, description, link }) => (
+  <div className="bg-gray-900 p-6 rounded-xl hover:bg-gray-800 transition-colors">
+    <div className="w-12 h-12 bg-orange-500/10 rounded-lg flex items-center justify-center mb-4">
+      <div className="w-6 h-6 text-orange-500">
+        {/* Simple placeholder icon */}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </div>
+    </div>
+    <h3 className="text-xl font-semibold mb-2 text-white">{title}</h3>
+    <p className="text-gray-400 mb-4">{description}</p>
+    <Link
+      to={link}
+      className="text-orange-500 hover:text-orange-400 font-semibold transition-colors inline-flex items-center"
+    >
+      Learn more →
+    </Link>
+  </div>
+);
 
 const About = () => {
-  const [activeVideo, setActiveVideo] = useState(null);
-
-  const videos = [
+  const services = [
     {
-      id: 1,
-      src: what1,
-      title: 'Coach Pop Questions',
-      duration: '00:30'
+      title: 'Spot Trading',
+      description: 'Buy and sell cryptocurrencies instantly with competitive fees and deep liquidity.',
+      link: '/spot'
     },
     {
-      id: 2,
-      src: what2,
-      title: 'Rewire the system',
-      duration: '00:17:37'
+      title: 'Perpetual Futures',
+      description: 'Trade with up to 100x leverage on our advanced futures trading platform.',
+      link: '/futures'
     },
     {
-      id: 3,
-      src: what3,
-      title: 'Ambassador Story Series',
-      duration: '00:08:14'
+      title: 'Margin Trading',
+      description: 'Increase your trading power with flexible leverage options.',
+      link: '/margin'
+    },
+    {
+      title: 'Token Listing',
+      description: 'List your token on our exchange and reach millions of traders.',
+      link: '/token-listing'
     }
   ];
 
-  const togglePlay = (videoId) => {
-    setActiveVideo(activeVideo === videoId ? null : videoId);
-  };
-
   return (
-    <section className="about">
-      <h2>What is TradeX?</h2>
-      <p>Find out why we're your new favorite crypto app with some help from our world-class partners.</p>
-      <a href="#" className="find-out-btn">Find out</a>
-      <div className="logo-large">
-        <img src={logo} alt="TradeX Logo" />
+    <div className="bg-black py-16">
+      <div className="container mx-auto px-4">
+        <h2 className="text-2xl md:text-3xl font-bold mb-8 text-white">A variety of services for you to choose from</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {services.map((service, index) => (
+            <ServiceCard key={index} {...service} />
+          ))}
+        </div>
       </div>
-      <div className="video-gallery">
-        {videos.map((video) => (
-          <div className="video-card" key={video.id}>
-            <div className="video-thumbnail">
-              <video controls loop muted playsInline>
-                <source src={video.src} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-              <div className="video-controls">
-                <button className="play-btn" onClick={() => togglePlay(video.id)}>
-                  <i className={`fas fa-${activeVideo === video.id ? 'pause' : 'play'}`}></i>
-                </button>
-                <div className="video-time">{video.duration}</div>
-              </div>
-            </div>
-            <p>{video.title}</p>
-          </div>
-        ))}
-      </div>
-    </section>
+    </div>
   );
 };
 
-export default About; 
+export default About;
