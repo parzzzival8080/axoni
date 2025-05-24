@@ -392,7 +392,11 @@ const LoginForm = () => {
       </div>
       
       {/* Only show error message if not in forgot password mode */}
-      {error && !forgotPasswordMode && <div className="error-message">{error}</div>}
+      {error && !forgotPasswordMode && (
+        <div className="bg-red-900/20 border border-red-800 text-red-400 px-4 py-3 rounded-lg mb-4 text-sm">
+          {error}
+        </div>
+      )}
       
       {activeTab !== 'qr' ? (
         forgotPasswordMode ? (
@@ -407,11 +411,11 @@ const LoginForm = () => {
             
             {/* Only show one message at a time - prioritize error */}
             {error ? (
-              <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 mb-4 rounded">
+              <div className="bg-red-900/20 border border-red-800 text-red-400 px-4 py-3 rounded-lg mb-4 text-sm">
                 {error}
               </div>
             ) : success ? (
-              <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-3 mb-4 rounded">
+              <div className="bg-green-900/20 border border-green-800 text-green-400 px-4 py-3 rounded-lg mb-4 text-sm">
                 {success}
               </div>
             ) : null}
@@ -431,7 +435,7 @@ const LoginForm = () => {
                 
                 <button 
                   type="submit" 
-                  className="w-full bg-black text-white font-medium py-3 rounded-md hover:bg-gray-900 transition-colors" 
+                  className="w-full bg-[#FE7400] text-white font-medium py-3 rounded-md hover:bg-[#e66a00] transition-colors" 
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Send OTP'}
@@ -468,7 +472,7 @@ const LoginForm = () => {
                 
                 <button 
                   type="submit" 
-                  className="w-full bg-black text-white font-medium py-3 rounded-md hover:bg-gray-900 transition-colors" 
+                  className="w-full bg-[#FE7400] text-white font-medium py-3 rounded-md hover:bg-[#e66a00] transition-colors" 
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Verify OTP'}
@@ -480,7 +484,7 @@ const LoginForm = () => {
               <form onSubmit={handleResetPassword} className="space-y-4">
                 {/* Error message specifically for password validation */}
                 {newPassword.length > 0 && newPassword.length < 8 && (
-                  <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 mb-4 rounded">
+                  <div className="bg-red-900/20 border border-red-800 text-red-400 px-4 py-3 rounded-lg mb-4 text-sm">
                     Password must be at least 8 characters long
                   </div>
                 )}
@@ -509,7 +513,7 @@ const LoginForm = () => {
                 
                 <button 
                   type="submit" 
-                  className="w-full bg-black text-white font-medium py-3 rounded-md hover:bg-gray-900 transition-colors" 
+                  className="w-full bg-[#FE7400] text-white font-medium py-3 rounded-md hover:bg-[#e66a00] transition-colors" 
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Reset Password'}
@@ -553,7 +557,7 @@ const LoginForm = () => {
           
           <button 
             type="submit" 
-            className="next-btn" 
+            className="w-full bg-[#FE7400] text-white font-bold py-3 px-4 rounded-full hover:bg-[#e66a00] transition-colors" 
             disabled={loading}
           >
             {loading ? 'Processing...' : showPassword ? 'Log in' : 'Next'}
@@ -564,38 +568,51 @@ const LoginForm = () => {
               <a href="#" onClick={(e) => { e.preventDefault(); handleForgotPassword(); }}>Forgot password?</a>
             </div>
           )}
-          
+   
           <div className="signup-prompt">
+          <br />
             <p>Don't have an account? <a href="/signup">Sign up</a></p>
           </div>
               <div className="continue-text">
                 <p>or continue with</p>
               </div>
               
-              <div className="social-logins">
-                <div className="social-btn" onClick={() => handleSocialLogin('google')}>
-                  <div className="icon-circle">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" />
+              <div className="grid grid-cols-4 gap-4 mt-4">
+                <div 
+                  className="flex flex-col items-center justify-center p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors"
+                  onClick={() => handleSocialLogin('google')}
+                >
+                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-1">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
                   </div>
-                  <span>Google</span>
+                  <span className="text-xs text-gray-300">Google</span>
                 </div>
-                <div className="social-btn" onClick={() => handleSocialLogin('apple')}>
-                  <div className="icon-circle">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" />
+                <div 
+                  className="flex flex-col items-center justify-center p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors"
+                  onClick={() => handleSocialLogin('apple')}
+                >
+                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-1">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" className="w-5 h-5" />
                   </div>
-                  <span>Apple</span>
+                  <span className="text-xs text-gray-300">Apple</span>
                 </div>
-                <div className="social-btn" onClick={() => handleSocialLogin('telegram')}>
-                  <div className="icon-circle">
-                    <img src="https://telegram.org/img/t_logo.svg" alt="Telegram" />
+                <div 
+                  className="flex flex-col items-center justify-center p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors"
+                  onClick={() => handleSocialLogin('telegram')}
+                >
+                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-1">
+                    <img src="https://telegram.org/img/t_logo.svg" alt="Telegram" className="w-5 h-5" />
                   </div>
-                  <span>Telegram</span>
+                  <span className="text-xs text-gray-300">Telegram</span>
                 </div>
-                <div className="social-btn" onClick={() => handleSocialLogin('wallet')}>
-                  <div className="icon-circle">
-                    <img src="https://static.okx.com/cdn/assets/imgs/2210/620F94C9C684246B.png" alt="Wallet" />
+                <div 
+                  className="flex flex-col items-center justify-center p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors"
+                  onClick={() => handleSocialLogin('wallet')}
+                >
+                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-1">
+                    <img src="https://static.okx.com/cdn/assets/imgs/2210/620F94C9C684246B.png" alt="Wallet" className="w-5 h-5" />
                   </div>
-                  <span>Wallet</span>
+                  <span className="text-xs text-gray-300">Wallet</span>
                 </div>
               </div>
         </form>
@@ -606,7 +623,9 @@ const LoginForm = () => {
           <p>Scan with the TradeX App to log in</p>
         </div>
       )}
-      
+      <br />
+
+
       <div className="recaptcha-notice">
         <p>This site is protected by Google reCAPTCHA to ensure you're not a bot. <a href="#">Learn more</a></p>
       </div>

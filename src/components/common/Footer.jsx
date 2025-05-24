@@ -313,7 +313,7 @@ const Footer = () => {
             {/* Trade on the go - Desktop Only */}
             <div className="footer-column trade-on-go">
               <h3 className="column-title">Trade on the go with<br />TradeX</h3>
-              <button className="trade-button">Trade</button>
+              <button className="bg-[#F88726] hover:bg-[#e67615] text-white font-medium py-2 px-6 rounded-full transition-colors duration-200">Trade</button>
               <QRCodeSVG 
                 value={appDownloadUrl}
                 size={150}

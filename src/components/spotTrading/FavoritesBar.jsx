@@ -40,7 +40,7 @@ const FavoriteItem = ({ coin, isActive, onClick }) => {
       {/* Pair Name */}
       <div className="flex items-center text-sm font-medium text-white">
         {coin.symbol}/{coin.pair_name}
-        <span className="ml-1 text-xs py-0.5 px-1 bg-gray-700 rounded text-gray-300">10x</span>
+        <span className="ml-1 text-xs py-0.5 px-1 bg-[#F88726] rounded text-white font-medium">10x</span>
       </div>
       
       {/* Price Change */}

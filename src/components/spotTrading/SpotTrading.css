@@ -143,7 +143,7 @@ nav {
 }
 
 .green {
-    color: var(--buy-color);
+    color: #F88726;
 }
 
 .red {
@@ -258,7 +258,7 @@ nav {
   margin-left: 3px;
   font-weight: 500;
 }
-.fav-change.green { color: #00B574; }
+.fav-change.green { color: #F88726; }
 .fav-change.red { color: #F23645; }
 .fav-price {
   color: #8A8A8A;

@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './SignUp.css';
 import Navbar from '../components/common/Navbar';
 
 const SignUpPage = () => {
@@ -482,138 +481,288 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="layout">
+    <div className="min-h-screen flex flex-col bg-black">
       <Navbar />
-      <div className="split-container">
+      <div className="flex flex-1 overflow-hidden">
         {/* Left Section (Dark) */}
-        <div className="left-section">
-          <div className="content">
-            <h1>Trade with confidence</h1>
-            <p>Your funds are always backed 1:1 on TradeX with our regularly published audits on our Proof of Reserves</p>
-            <div className="chart-container">
-              <img src="/assets/login/login.webp" alt="BTC/USDT Chart" className="chart-img" />
-            </div>
-            <div className="telegram-box">
-              <h3>Join our Telegram group</h3>
-              <p>Ask questions, get answers, and chat with other traders to shape the crypto future together</p>
-            </div>
-          </div>
-        </div>
+        <div className="hidden md:flex md:w-2/5 bg-black p-0 justify-center items-center overflow-y-auto">
+  <img
+    src="/assets/login/signup.png"
+    alt="Sign up illustration"
+    className="mx-auto max-h-[65vh] max-w-[340px] w-auto object-contain"
+    draggable="false"
+  />
+</div>
 
         {/* Right Section (White) */}
-        <div className="right-section">
-          <div className="signup-container">
-            <h2>Let's get you started</h2>
-            <div className="progress-bar">
-              <div className={`step ${currentStep >= 1 ? 'active' : ''}`}><span className="step-text">Country</span></div>
-              <div className={`step ${currentStep >= 2 ? 'active' : ''}`}><span className="step-text">Credentials</span></div>
-              <div className={`step ${currentStep >= 3 ? 'active' : ''}`}><span className="step-text">Verification</span></div>
-              <div className={`step ${currentStep >= 4 ? 'active' : ''}`}><span className="step-text">Profile</span></div>
+        <div className="w-full md:w-3/5 bg-white text-black p-8 md:p-12 lg:p-16 overflow-y-auto">
+          <div className="max-w-md mx-auto w-full">
+            <h2 className="text-3xl font-medium mb-9">Let's get you started</h2>
+            
+            {/* Progress Bar */}
+            <div className="relative mb-9">
+              <div className="absolute top-1/2 left-0 w-full h-px bg-gray-200 -translate-y-1/2"></div>
+              <div className="flex justify-between relative z-10">
+                {[1, 2, 3, 4].map((step) => (
+                  <div key={step} className="flex flex-col items-center">
+                    <div 
+                      className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-medium
+                        ${currentStep >= step 
+                          ? 'bg-[#FE7400] text-white border-[#FE7400]' 
+                          : 'bg-white text-gray-400 border border-gray-300'}`}
+                    >
+                      {step}
+                    </div>
+                    <span 
+                      className={`text-xs mt-2 whitespace-nowrap ${currentStep >= step ? 'text-black font-medium' : 'text-gray-400'}`}
+                    >
+                      {step === 1 ? 'Country' : step === 2 ? 'Credentials' : step === 3 ? 'Verification' : 'Profile'}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
             
             {error && (
-                <div className="error-message" style={{
-                  backgroundColor: 'rgba(255, 59, 48, 0.15)', border: '1px solid rgba(255, 59, 48, 0.3)',
-                  borderRadius: '4px', padding: '12px 16px', marginBottom: '20px', color: '#ff3b30',
-                  fontSize: '14px', fontWeight: '500', display: 'flex', alignItems: 'center',
-                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
-                }}>
-                  <i className="fas fa-exclamation-circle" style={{ marginRight: '10px', fontSize: '16px' }}></i>
-                  {error}
-                </div>
-              )}
+              <div className="bg-red-50 border border-red-200 rounded px-4 py-3 mb-5 flex items-center">
+                <i className="fas fa-exclamation-circle text-red-500 mr-2"></i>
+                <span className="text-red-700 text-sm">{error}</span>
+              </div>
+            )}
             
             {/* Step 1: Country Selection */}
-            <div className={`form-step ${currentStep === 1 ? 'active' : ''}`}>
-              <h3>Select the country/region that exactly matches the one on your ID or proof of address.</h3>
-              <div className="form-group">
-                <label htmlFor="country">Country/region</label>
-                <select className="form-control" id="country" name="country" value={formData.country} onChange={handleChange}>
+            <div className={currentStep !== 1 ? 'hidden' : ''}>
+              <h3 className="text-gray-700 text-base mb-6 leading-relaxed">
+                Select the country/region that exactly matches the one on your ID or proof of address.
+              </h3>
+              <div className="mb-6">
+                <label htmlFor="country" className="block text-sm font-medium text-gray-600 mb-2">
+                  Country/region
+                </label>
+                <select 
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent"
+                  id="country" 
+                  name="country" 
+                  value={formData.country} 
+                  onChange={handleChange}
+                >
                   <option value="">Select country</option>
-                  <option value="AF">Afghanistan</option><option value="AL">Albania</option>
-                  <option value="AU">Australia</option><option value="CA">Canada</option>
-                  <option value="CN">China</option><option value="FR">France</option>
-                  <option value="DE">Germany</option><option value="IN">India</option>
-                  <option value="JP">Japan</option><option value="PH">Philippines</option>
-                  <option value="SG">Singapore</option><option value="KR">South Korea</option>
-                  <option value="UK">United Kingdom</option><option value="US">United States</option>
+                  <option value="AF">Afghanistan</option>
+                  <option value="AL">Albania</option>
+                  <option value="AU">Australia</option>
+                  <option value="CA">Canada</option>
+                  <option value="CN">China</option>
+                  <option value="FR">France</option>
+                  <option value="DE">Germany</option>
+                  <option value="IN">India</option>
+                  <option value="JP">Japan</option>
+                  <option value="PH">Philippines</option>
+                  <option value="SG">Singapore</option>
+                  <option value="KR">South Korea</option>
+                  <option value="UK">United Kingdom</option>
+                  <option value="US">United States</option>
                 </select>
               </div>
-              <div className="checkbox-group">
-                <input type="checkbox" id="terms" name="termsAccepted" checked={formData.termsAccepted} onChange={handleChange} />
-                <p>By creating an account, I agree to TradeX <a href="#">Terms of Service</a>, <a href="#">Risk and Compliance Disclosure</a>, and <a href="#">Privacy Notice</a>.</p>
+              <div className="flex items-start mb-6">
+                <input 
+                  type="checkbox" 
+                  id="terms" 
+                  name="termsAccepted" 
+                  checked={formData.termsAccepted} 
+                  onChange={handleChange}
+                  className="mt-1 mr-3"
+                />
+                <label htmlFor="terms" className="text-sm text-gray-600">
+                  By creating an account, I agree to TradeX{' '}
+                  <a href="#" className="text-[#FE7400] hover:underline">Terms of Service</a>,{' '}
+                  <a href="#" className="text-[#FE7400] hover:underline">Risk and Compliance Disclosure</a>, and{' '}
+                  <a href="#" className="text-[#FE7400] hover:underline">Privacy Notice</a>.
+                </label>
               </div>
-              <button className="btn btn-primary" onClick={() => goToNextStep(1)} disabled={loading}>
+              <button 
+                className="w-full py-3.5 px-6 rounded-full bg-[#FE7400] text-white font-medium hover:bg-[#e56700] transition-colors duration-200 mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={() => goToNextStep(1)} 
+                disabled={loading || !formData.country || !formData.termsAccepted}
+              >
                 {loading ? 'Processing...' : 'Next'}
               </button>
-              <div className="account-prompt">
-                <p>Already have an account? <Link to="/login">Log in</Link></p>
+              <div className="text-center text-sm text-gray-500 mt-6">
+                Already have an account?{' '}
+                <Link to="/login" className="text-[#FE7400] font-medium hover:underline">
+                  Log in
+                </Link>
               </div>
             </div>
             
             {/* Step 2: Email and Password */}
-            <div className={`form-step ${currentStep === 2 ? 'active' : ''}`}>
-              <h3>Tell us your email</h3>
-              <div className="form-group">
-                <label htmlFor="email">Email address</label>
-                <input type="email" className="form-control" id="email" name="email" placeholder="Enter your email" value={formData.email} onChange={handleChange} />
+            <div className={currentStep !== 2 ? 'hidden' : ''}>
+              <h3 className="text-gray-700 text-base mb-6">Tell us your email</h3>
+              <div className="mb-4">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-600 mb-2">
+                  Email address
+                </label>
+                <input 
+                  type="email" 
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent"
+                  id="email" 
+                  name="email" 
+                  placeholder="Enter your email" 
+                  value={formData.email} 
+                  onChange={handleChange} 
+                />
               </div>
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input type="password" className="form-control" id="password" name="password" placeholder="Create a password" value={formData.password} onChange={handleChange} />
+              <div className="mb-4">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-600 mb-2">
+                  Password
+                </label>
+                <input 
+                  type="password" 
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent"
+                  id="password" 
+                  name="password" 
+                  placeholder="Create a password" 
+                  value={formData.password} 
+                  onChange={handleChange} 
+                />
               </div>
-              <div className="form-group">
-                <label htmlFor="confirmPassword">Confirm password</label>
-                <input type="password" className="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" value={formData.confirmPassword} onChange={handleChange} />
+              <div className="mb-6">
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-600 mb-2">
+                  Confirm password
+                </label>
+                <input 
+                  type="password" 
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent"
+                  id="confirmPassword" 
+                  name="confirmPassword" 
+                  placeholder="Confirm your password" 
+                  value={formData.confirmPassword} 
+                  onChange={handleChange} 
+                />
               </div>
-              <button className="btn btn-primary" onClick={() => goToNextStep(2)} disabled={loading}>
+              <button 
+                className="w-full py-3.5 px-6 rounded-full bg-[#FE7400] text-white font-medium hover:bg-[#e56700] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={() => goToNextStep(2)} 
+                disabled={loading || !formData.email || !formData.password || !formData.confirmPassword}
+              >
                 {loading ? 'Processing...' : 'Next'}
               </button>
             </div>
             
             {/* Step 3: OTP Verification */}
-            <div className={`form-step ${currentStep === 3 ? 'active' : ''}`}>
-              <h3>Verify it's you</h3>
-              <p className="otp-instruction">Look out for the code we've sent to {formData.email}</p>
-              <div className="otp-container">
+            <div className={currentStep !== 3 ? 'hidden' : ''}>
+              <h3 className="text-gray-700 text-base mb-2">Verify it's you</h3>
+              <p className="text-gray-500 text-sm mb-6 text-center">
+                Look out for the code we've sent to {formData.email}
+              </p>
+              <div className="flex justify-between gap-2 mb-6">
                 {formData.otp.map((digit, index) => (
-                  <input key={index} type="text" maxLength="1" className="otp-input" value={digit}
+                  <input 
+                    key={index} 
+                    type="text" 
+                    maxLength="1" 
+                    className="w-12 h-14 text-center text-lg border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent" 
+                    value={digit}
                     onChange={(e) => handleOtpChange(index, e.target.value)}
                     onKeyDown={(e) => handleOtpKeyDown(index, e)}
                     onPaste={index === 0 ? handleOtpPaste : undefined}
                     ref={(el) => { otpRefs.current[index] = el }}
-                    autoFocus={index === 0 && currentStep === 3} />
+                    autoFocus={index === 0 && currentStep === 3}
+                  />
                 ))}
               </div>
-              <div className="resend-container">
-                <button className="resend-btn" onClick={handleResendOtp} disabled={!canResend || loading}>
+              <div className="text-center mb-6">
+                <button 
+                  className={`text-sm font-medium ${canResend ? 'text-[#FE7400] hover:underline' : 'text-gray-400'} transition-colors`}
+                  onClick={handleResendOtp} 
+                  disabled={!canResend || loading}
+                >
                   Resend {resendTimer > 0 && `(${resendTimer}s)`}
                 </button>
               </div>
-              <button className="btn btn-primary" onClick={() => goToNextStep(3)} disabled={loading || formData.otp.join('').length !== 6}>
+              <button 
+                className="w-full py-3.5 px-6 rounded-full bg-[#FE7400] text-white font-medium hover:bg-[#e56700] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={() => goToNextStep(3)} 
+                disabled={loading || formData.otp.join('').length !== 6}
+              >
                 {loading ? 'Verifying...' : 'Verify'}
               </button>
             </div>
             
             {/* Step 4: Profile Details */}
-            <div className={`form-step ${currentStep === 4 ? 'active' : ''}`}>
-              <h3>Complete your profile</h3>
-              <div className="profile-pic-container" onClick={() => fileInputRef.current.click()}>
-                <img id="profile-preview" src={formData.profilePic || "https://i.ibb.co/LSsXnHx/profile-placeholder.jpg"} alt="Profile Picture" />
-                <div className="upload-icon" title="Upload profile picture"><i className="fas fa-camera"></i></div>
-                <input type="file" id="profile-pic-upload" accept="image/*" ref={fileInputRef} onChange={handleProfileUpload} style={{ display: 'none' }} />
+            <div className={currentStep !== 4 ? 'hidden' : ''}>
+              <h3 className="text-gray-700 text-base mb-6">Complete your profile</h3>
+              <div className="w-28 h-28 rounded-full bg-gray-100 mx-auto mb-5 relative cursor-pointer overflow-hidden group hover:bg-gray-200 transition-colors duration-200">
+                <img 
+                  id="profile-preview" 
+                  src={formData.profilePic || "https://i.ibb.co/LSsXnHx/profile-placeholder.jpg"} 
+                  alt="Profile Preview"
+                  className="w-full h-full object-cover group-hover:opacity-80 transition-opacity duration-200"
+                />
+                <div className="absolute bottom-0 right-0 w-8 h-8 bg-[#FE7400] rounded-full flex items-center justify-center transform translate-x-1 -translate-y-1 group-hover:scale-110 transition-transform duration-200">
+                  <i className="fas fa-camera text-white text-sm"></i>
+                </div>
+                <input 
+                  type="file" 
+                  id="profile-pic-upload" 
+                  accept="image/*" 
+                  ref={fileInputRef} 
+                  onChange={handleProfileUpload} 
+                  className="hidden" 
+                />
               </div>
-              <p className="upload-instructions">Click on the image or camera icon to upload your profile picture</p>
-              <div className="form-group">
-                <label htmlFor="fullName">Full name</label>
-                <input type="text" className="form-control" id="fullName" name="fullName" placeholder="Enter your full name" value={formData.fullName} onChange={handleChange} />
+              <p className="text-center text-gray-500 text-sm mb-6">Click to upload a profile picture (optional)</p>
+              
+              <div className="mb-6">
+                <label htmlFor="fullName" className="block text-sm font-medium text-gray-600 mb-2">
+                  Full Name
+                </label>
+                <input 
+                  type="text" 
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent"
+                  id="fullName" 
+                  name="fullName" 
+                  placeholder="Enter your full name" 
+                  value={formData.fullName} 
+                  onChange={handleChange} 
+                />
               </div>
-              <div className="form-group">
-                <label htmlFor="phone">Phone number</label>
-                <input type="tel" className="form-control" id="phone" name="phone" placeholder="Enter your phone number" value={formData.phone} onChange={handleChange} />
+              
+              <div className="mb-8">
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-600 mb-2">
+                  Phone Number
+                </label>
+                <div className="flex">
+                  <select 
+                    className="w-24 px-3 py-3 border border-r-0 border-gray-300 rounded-l-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent text-sm"
+                    defaultValue="+1"
+                  >
+                    <option value="+1">+1 (US)</option>
+                    <option value="+44">+44 (UK)</option>
+                    <option value="+81">+81 (JP)</option>
+                    <option value="+86">+86 (CN)</option>
+                    <option value="+91">+91 (IN)</option>
+                    <option value="+63">+63 (PH)</option>
+                    <option value="+65">+65 (SG)</option>
+                    <option value="+82">+82 (KR)</option>
+                  </select>
+                  <input 
+                    type="tel" 
+                    className="flex-1 px-4 py-3 border border-l-0 border-gray-300 rounded-r-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent"
+                    id="phone" 
+                    name="phone" 
+                    placeholder="Enter your phone number" 
+                    value={formData.phone} 
+                    onChange={handleChange} 
+                  />
+                </div>
               </div>
-              <button className="btn btn-primary" onClick={handleSubmit} disabled={loading}>
-                {loading ? 'Processing...' : 'Sign up'}
+              
+              <button 
+                className="w-full py-3.5 px-6 rounded-full bg-[#FE7400] text-white font-medium hover:bg-[#e56700] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={handleSubmit} 
+                disabled={loading || !formData.fullName || !formData.phone}
+              >
+                {loading ? 'Creating Account...' : 'Complete Registration'}
               </button>
             </div>
           </div>

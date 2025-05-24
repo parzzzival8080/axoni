@@ -223,6 +223,7 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess, isBuy 
           <button
             className={`toggle-btn ${localIsBuy ? 'active' : ''}`}
             onClick={() => setLocalIsBuy(true)}
+            style={localIsBuy ? { backgroundColor: '#F88726', color: 'white', fontWeight: 'bold' } : {}}
           >
             Buy
           </button>
@@ -289,9 +290,9 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess, isBuy 
           step="1"
           value={sliderValue}
           onChange={handleSliderChange}
-          className="slider-range"
+          className={`slider-range appearance-none w-full h-2 rounded-lg outline-none ${effectiveIsBuy ? 'bg-[#F88726]' : 'bg-[#F23645]'}`}
           style={{
-            background: `linear-gradient(90deg, ${effectiveIsBuy ? '#00B574' : '#F23645'} ${sliderValue}%, #232323 ${sliderValue}%)`
+            background: `linear-gradient(90deg, ${effectiveIsBuy ? '#F88726' : '#F23645'} ${sliderValue}%, #232323 ${sliderValue}%) !important`
           }}
         />
         <div className="slider-labels">
@@ -333,7 +334,17 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess, isBuy 
           className={`buy-btn${effectiveIsBuy ? '' : ' sell-btn'}`}
           disabled={isLoading}
           onClick={handleTradeSubmit}
-          style={{marginTop: 10, width: '100%', fontWeight: 600, fontSize: 18, padding: '12px 0', borderRadius: '4px'}}
+          style={{
+            marginTop: 10, 
+            width: '100%', 
+            fontWeight: 600, 
+            fontSize: 18, 
+            padding: '12px 0', 
+            borderRadius: '4px',
+            background: effectiveIsBuy ? '#F88726 !important' : '#F23645 !important',
+            backgroundImage: effectiveIsBuy ? 'none !important' : 'none !important',
+            color: 'white !important'
+          }}
         >
           {isLoading ? (
             <>
