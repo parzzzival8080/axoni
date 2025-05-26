@@ -1,6 +1,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { FaWallet } from "react-icons/fa";
+
 
 const LoginForm = () => {
   const [activeTab, setActiveTab] = useState('email');
@@ -12,7 +14,7 @@ const LoginForm = () => {
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  
+
   // Forgot password states
   const [forgotPasswordMode, setForgotPasswordMode] = useState(false);
   const [forgotPasswordStep, setForgotPasswordStep] = useState('request'); // 'request', 'verify', 'reset'
@@ -36,7 +38,7 @@ const LoginForm = () => {
       [name]: value
     });
   };
-  
+
   // Timer for OTP resend
   useEffect(() => {
     let interval;
@@ -53,7 +55,7 @@ const LoginForm = () => {
     }
     return () => clearInterval(interval);
   }, [otpTimer]);
-  
+
   // Handle forgot password mode
   const handleForgotPassword = () => {
     setForgotPasswordMode(true);
@@ -62,21 +64,21 @@ const LoginForm = () => {
     setError('');
     setSuccess('');
   };
-  
+
   // Handle back button in forgot password flow
   const handleBackToLogin = () => {
     setForgotPasswordMode(false);
     setError('');
     setSuccess('');
   };
-  
+
   // Request password reset
   const handleRequestPasswordReset = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
     setLoading(true);
-    
+
     // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(resetEmail)) {
@@ -84,12 +86,12 @@ const LoginForm = () => {
       setLoading(false);
       return;
     }
-    
+
     try {
       const response = await axios.post('https://django.bhtokens.com/api/user_account/password_reset/request', {
         email: resetEmail
       });
-      
+
       // Check for Message field in the response which indicates success
       if (response.data.Message) {
         setSuccess(response.data.Message || 'OTP has been sent to your email');
@@ -111,33 +113,33 @@ const LoginForm = () => {
       setLoading(false);
     }
   };
-  
+
   // Verify OTP
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
     setLoading(true);
-    
+
     if (!otp || otp.length < 4) {
       setError('Please enter a valid OTP');
       setLoading(false);
       return;
     }
-    
+
     try {
       const response = await axios.post('https://django.bhtokens.com/api/user_account/password_reset/verify_otp', {
         email: resetEmail,
         otp: otp
       });
-      
+
       console.log('OTP verification response:', response.data);
-      
+
       // Handle success case with success and message fields
       if (response.data.success) {
         setSuccess(response.data.message || 'OTP verified successfully');
         setForgotPasswordStep('reset');
-      } 
+      }
       // Alternative format with Message field
       else if (response.data.Message) {
         setSuccess(response.data.Message);
@@ -152,22 +154,22 @@ const LoginForm = () => {
       setLoading(false);
     }
   };
-  
+
   // Resend OTP
   const handleResendOtp = async () => {
     if (!canResendOtp) return;
-    
+
     setError('');
     setSuccess('');
     setLoading(true);
-    
+
     try {
       const response = await axios.post('https://django.bhtokens.com/api/user_account/password_reset/resend-otp', {
         email: resetEmail
       });
-      
+
       console.log('Resend OTP response:', response.data);
-      
+
       // Check for message field which indicates success
       if (response.data.message) {
         setSuccess(response.data.message);
@@ -195,27 +197,27 @@ const LoginForm = () => {
       setLoading(false);
     }
   };
-  
+
   // Reset password
   const handleResetPassword = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
     setLoading(true);
-    
+
     // Validate passwords
     if (newPassword.length < 8) {
       setError('Password must be at least 8 characters long');
       setLoading(false);
       return;
     }
-    
+
     if (newPassword !== confirmPassword) {
       setError('Passwords do not match');
       setLoading(false);
       return;
     }
-    
+
     try {
       const response = await axios.post('https://django.bhtokens.com/api/user_account/password_reset/reset', {
         email: resetEmail,
@@ -223,9 +225,9 @@ const LoginForm = () => {
         new_password: newPassword,
         confirm_password: confirmPassword
       });
-      
+
       console.log('Password reset response:', response.data);
-      
+
       // Check for success with message format
       if (response.data.success && response.data.message) {
         setSuccess(response.data.message);
@@ -275,7 +277,7 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // If we're on the email step and no password is shown yet, show the password field
     if (activeTab === 'email' && !showPassword) {
       // Validate email format before proceeding
@@ -284,43 +286,43 @@ const LoginForm = () => {
         setError('Please enter a valid email address');
         return;
       }
-      
+
       setShowPassword(true);
       return;
     }
-    
+
     // Otherwise proceed with login
     setError('');
     setLoading(true);
-    
+
     try {
       // Replace with your actual API endpoint
       const response = await axios.post('https://django.bhtokens.com/api/user_account/login', credentials);
-      
+
       // Handle successful login based on your specific response format
-      const { success, user_id, email, uid, jwt_token} = response.data;
-      
+      const { success, user_id, email, uid, jwt_token } = response.data;
+
       if (success) {
         // Store the token in localStorage
         localStorage.setItem('authToken', jwt_token);
         localStorage.setItem('user_id', user_id);
-        
+
         // Store the uid specifically for the wallet API
         if (uid) {
           localStorage.setItem('uid', uid);
           console.log('Stored uid for wallet API:', uid);
         }
-        
+
         // Store user info as needed
         localStorage.setItem('user', JSON.stringify({
           user_id,
           email,
           uid,
         }));
-        
+
         // Set default authorization header for future requests
         axios.defaults.headers.common['Authorization'] = `Bearer ${jwt_token}`;
-        
+
         try {
           // Fetch user profile to get the full name using the getUserInformation API
           const profileResponse = await axios.get(
@@ -331,7 +333,7 @@ const LoginForm = () => {
               }
             }
           );
-          
+
           // Check if we got the user data and store full name
           if (profileResponse.data && profileResponse.data.user && profileResponse.data.user.name) {
             localStorage.setItem('fullName', profileResponse.data.user.name);
@@ -351,7 +353,7 @@ const LoginForm = () => {
           // Set a default name if profile fetch fails
           localStorage.setItem('fullName', 'User');
         }
-        
+
         // Redirect to dashboard or home page
         window.location.href = '/spot-trading';
       } else {
@@ -375,29 +377,29 @@ const LoginForm = () => {
   return (
     <div className="login-container">
       <h2>Log in</h2>
-      
+
       <div className="login-tabs">
-        <div 
+        <div
           className={`tab ${activeTab === 'email' ? 'active' : ''}`}
           onClick={() => handleTabChange('email')}
         >
           Email / Sub-account
         </div>
-        <div 
+        <div
           className={`tab ${activeTab === 'qr' ? 'active' : ''}`}
           onClick={() => handleTabChange('qr')}
         >
           QR code
         </div>
       </div>
-      
+
       {/* Only show error message if not in forgot password mode */}
       {error && !forgotPasswordMode && (
         <div className="bg-red-900/20 border border-red-800 text-red-400 px-4 py-3 rounded-lg mb-4 text-sm">
           {error}
         </div>
       )}
-      
+
       {activeTab !== 'qr' ? (
         forgotPasswordMode ? (
           <div className="w-full max-w-md mx-auto p-4">
@@ -406,9 +408,9 @@ const LoginForm = () => {
                 <span className="mr-1">&larr;</span> Back to login
               </a>
             </div>
-            
+
             <h3 className="text-xl font-medium text-white mb-4">Reset your password</h3>
-            
+
             {/* Only show one message at a time - prioritize error */}
             {error ? (
               <div className="bg-red-900/20 border border-red-800 text-red-400 px-4 py-3 rounded-lg mb-4 text-sm">
@@ -419,12 +421,12 @@ const LoginForm = () => {
                 {success}
               </div>
             ) : null}
-            
+
             {forgotPasswordStep === 'request' && (
               <form onSubmit={handleRequestPasswordReset} className="space-y-4">
                 <div className="w-full">
-                  <input 
-                    type="email" 
+                  <input
+                    type="email"
                     placeholder="Email address"
                     value={resetEmail}
                     onChange={(e) => setResetEmail(e.target.value)}
@@ -432,22 +434,22 @@ const LoginForm = () => {
                     className="w-full bg-gray-100 border border-gray-300 rounded-md p-3 text-black focus:outline-none focus:ring-2 focus:ring-gray-500"
                   />
                 </div>
-                
-                <button 
-                  type="submit" 
-                  className="w-full bg-[#FE7400] text-white font-medium py-3 rounded-md hover:bg-[#e66a00] transition-colors" 
+
+                <button
+                  type="submit"
+                  className="w-full bg-[#FE7400] text-white font-medium py-3 rounded-md hover:bg-[#e66a00] transition-colors"
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Send OTP'}
                 </button>
               </form>
             )}
-            
+
             {forgotPasswordStep === 'verify' && (
               <form onSubmit={handleVerifyOtp} className="space-y-4">
                 <div className="w-full">
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     placeholder="Enter OTP"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
@@ -455,13 +457,13 @@ const LoginForm = () => {
                     className="w-full bg-gray-100 border border-gray-300 rounded-md p-3 text-black focus:outline-none focus:ring-2 focus:ring-gray-500"
                   />
                 </div>
-                
+
                 <div className="text-center text-sm">
                   {otpTimer > 0 ? (
                     <p className="text-gray-400">Resend OTP in {otpTimer} seconds</p>
                   ) : (
-                    <a 
-                      href="#" 
+                    <a
+                      href="#"
                       onClick={(e) => { e.preventDefault(); handleResendOtp(); }}
                       className={`${canResendOtp ? 'text-blue-500 hover:text-blue-400' : 'text-gray-500 cursor-not-allowed'}`}
                     >
@@ -469,17 +471,17 @@ const LoginForm = () => {
                     </a>
                   )}
                 </div>
-                
-                <button 
-                  type="submit" 
-                  className="w-full bg-[#FE7400] text-white font-medium py-3 rounded-md hover:bg-[#e66a00] transition-colors" 
+
+                <button
+                  type="submit"
+                  className="w-full bg-[#FE7400] text-white font-medium py-3 rounded-md hover:bg-[#e66a00] transition-colors"
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Verify OTP'}
                 </button>
               </form>
             )}
-            
+
             {forgotPasswordStep === 'reset' && (
               <form onSubmit={handleResetPassword} className="space-y-4">
                 {/* Error message specifically for password validation */}
@@ -488,10 +490,10 @@ const LoginForm = () => {
                     Password must be at least 8 characters long
                   </div>
                 )}
-                
+
                 <div className="w-full">
-                  <input 
-                    type="password" 
+                  <input
+                    type="password"
                     placeholder="New password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
@@ -499,10 +501,10 @@ const LoginForm = () => {
                     className="w-full bg-gray-100 border border-gray-300 rounded-md p-3 text-black focus:outline-none focus:ring-2 focus:ring-gray-500"
                   />
                 </div>
-                
+
                 <div className="w-full">
-                  <input 
-                    type="password" 
+                  <input
+                    type="password"
                     placeholder="Confirm new password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -510,112 +512,112 @@ const LoginForm = () => {
                     className="w-full bg-gray-100 border border-gray-300 rounded-md p-3 text-black focus:outline-none focus:ring-2 focus:ring-gray-500"
                   />
                 </div>
-                
-                <button 
-                  type="submit" 
-                  className="w-full bg-[#FE7400] text-white font-medium py-3 rounded-md hover:bg-[#e66a00] transition-colors" 
+
+                <button
+                  type="submit"
+                  className="w-full bg-[#FE7400] text-white font-medium py-3 rounded-md hover:bg-[#e66a00] transition-colors"
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Reset Password'}
                 </button>
               </form>
             )}
-            
+
             <div className="text-xs text-center text-gray-400 mt-8">
               This site is protected by Google reCAPTCHA to ensure you're not a bot. <a href="#" className="text-blue-500 hover:text-blue-400">Learn more</a>
             </div>
           </div>
         ) : (
           <form onSubmit={handleSubmit}>
-          <div className="email-input">
-            <div className="email-field">
-              <input 
-                type="email" 
-                name="email"
-                placeholder="Email address"
-                value={credentials.email}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-          </div>
-          
-          {showPassword && (
-            <div className="password-input">
-              <div className="password-field">
-                <input 
-                  type="password" 
-                  name="password"
-                  placeholder="Password"
-                  value={credentials.password}
+            <div className="email-input">
+              <div className="email-field">
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email address"
+                  value={credentials.email}
                   onChange={handleInputChange}
                   required
                 />
               </div>
             </div>
-          )}
-          
-          <button 
-            type="submit" 
-            className="w-full bg-[#FE7400] text-white font-bold py-3 px-4 rounded-full hover:bg-[#e66a00] transition-colors" 
-            disabled={loading}
-          >
-            {loading ? 'Processing...' : showPassword ? 'Log in' : 'Next'}
-          </button>
-          
-          {showPassword && (
-            <div className="forgot-password">
-              <a href="#" onClick={(e) => { e.preventDefault(); handleForgotPassword(); }}>Forgot password?</a>
+
+            {showPassword && (
+              <div className="password-input">
+                <div className="password-field">
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    value={credentials.password}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="w-full bg-[#FE7400] text-white font-bold py-3 px-4 rounded-full hover:bg-[#e66a00] transition-colors"
+              disabled={loading}
+            >
+              {loading ? 'Processing...' : showPassword ? 'Log in' : 'Next'}
+            </button>
+
+            {showPassword && (
+              <div className="forgot-password">
+                <a href="#" onClick={(e) => { e.preventDefault(); handleForgotPassword(); }}>Forgot password?</a>
+              </div>
+            )}
+
+            <div className="signup-prompt">
+              <br />
+              <p>Don't have an account? <a href="/signup">Sign up</a></p>
             </div>
-          )}
-   
-          <div className="signup-prompt">
-          <br />
-            <p>Don't have an account? <a href="/signup">Sign up</a></p>
-          </div>
-              <div className="continue-text">
-                <p>or continue with</p>
+            <div className="continue-text">
+              <p>or continue with</p>
+            </div>
+
+            <div className="grid grid-cols-4 gap-4 mt-4">
+              <div
+                className="flex flex-col items-center justify-center p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors"
+                onClick={() => handleSocialLogin('google')}
+              >
+                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-1">
+                  <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
+                </div>
+                <span className="text-xs text-gray-300">Google</span>
               </div>
-              
-              <div className="grid grid-cols-4 gap-4 mt-4">
-                <div 
-                  className="flex flex-col items-center justify-center p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors"
-                  onClick={() => handleSocialLogin('google')}
-                >
-                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-1">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
-                  </div>
-                  <span className="text-xs text-gray-300">Google</span>
+              <div
+                className="flex flex-col items-center justify-center p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors"
+                onClick={() => handleSocialLogin('apple')}
+              >
+                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-1">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" className="w-5 h-5" />
                 </div>
-                <div 
-                  className="flex flex-col items-center justify-center p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors"
-                  onClick={() => handleSocialLogin('apple')}
-                >
-                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-1">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" className="w-5 h-5" />
-                  </div>
-                  <span className="text-xs text-gray-300">Apple</span>
-                </div>
-                <div 
-                  className="flex flex-col items-center justify-center p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors"
-                  onClick={() => handleSocialLogin('telegram')}
-                >
-                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-1">
-                    <img src="https://telegram.org/img/t_logo.svg" alt="Telegram" className="w-5 h-5" />
-                  </div>
-                  <span className="text-xs text-gray-300">Telegram</span>
-                </div>
-                <div 
-                  className="flex flex-col items-center justify-center p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors"
-                  onClick={() => handleSocialLogin('wallet')}
-                >
-                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-1">
-                    <img src="https://static.okx.com/cdn/assets/imgs/2210/620F94C9C684246B.png" alt="Wallet" className="w-5 h-5" />
-                  </div>
-                  <span className="text-xs text-gray-300">Wallet</span>
-                </div>
+                <span className="text-xs text-gray-300">Apple</span>
               </div>
-        </form>
+              <div
+                className="flex flex-col items-center justify-center p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors"
+                onClick={() => handleSocialLogin('telegram')}
+              >
+                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-1">
+                  <img src="https://telegram.org/img/t_logo.svg" alt="Telegram" className="w-5 h-5" />
+                </div>
+                <span className="text-xs text-gray-300">Telegram</span>
+              </div>
+              <div
+                className="flex flex-col items-center justify-center p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors"
+                onClick={() => handleSocialLogin('wallet')}
+              >
+           <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-1">
+  <FaWallet className="w-5 h-5 text-orange-500" />
+</div>
+                <span className="text-xs text-gray-300">Wallet</span>
+              </div>
+            </div>
+          </form>
         )
       ) : (
         <div className="qr-code-container">

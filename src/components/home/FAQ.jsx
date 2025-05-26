@@ -1,70 +1,85 @@
-import React from 'react';
-import svgIcon from '../../assets/homepage/faq.png';
+import React, { useState } from 'react';
 
-const ServiceItem = ({ title, description, isActive }) => (
-  <div className="flex items-start gap-4 mb-8">
-    <div className={`w-3 h-3 rounded-full mt-2 flex-shrink-0 ${
-      isActive ? 'bg-white' : 'bg-gray-500'
-    }`} />
-    <div>
-      <h3 className="text-white text-xl font-bold mb-2">{title}</h3>
-      <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
+const FAQItem = ({ question, answer, isOpen, onClick }) => (
+  <div className="border-b border-gray-700">
+    <button
+      className="w-full py-6 flex items-center justify-between text-left focus:outline-none group"
+      onClick={onClick}
+    >
+      <span className="text-white text-lg font-medium pr-8">{question}</span>
+      <div className="flex-shrink-0">
+        <div className={`w-6 h-6 rounded-full border-2 border-orange-500 flex items-center justify-center transition-transform ${
+          isOpen ? 'rotate-45' : ''
+        }`}>
+          <span className="text-orange-500 text-lg font-bold">+</span>
+        </div>
+      </div>
+    </button>
+    <div
+      className={`overflow-hidden transition-all duration-300 ease-in-out ${
+        isOpen ? 'max-h-96 pb-6' : 'max-h-0'
+      }`}
+    >
+      <p className="text-gray-400 text-sm leading-relaxed pr-8">{answer}</p>
     </div>
   </div>
 );
 
-const Services = () => {
-  const services = [
+const FAQ = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const faqs = [
     {
-      title: 'Spot Trading',
-      description: 'Buy, sell or trade crypto at the current market price.',
-      isActive: true
+      question: 'Does our company provide support post-launch of the product?',
+      answer: 'Definitely! We believe in providing support even after your app gets launched in the market by continuously updating the app according to the latest trends and providing security against unwanted threats and viruses for four months free of charge after the completion of the development process of your app.'
     },
     {
-      title: 'Perpetual Futures',
-      description: 'Get into a contract by buying long or selling short.',
-      isActive: false
+      question: 'What sets our company apart from our competitors?',
+      answer: 'Our company stands out through our commitment to innovation, customer-centric approach, and comprehensive post-launch support that ensures your success in the competitive market.'
     },
     {
-      title: 'Flux Earn',
-      description: 'One-click pledge for daily income increase.',
-      isActive: false
+      question: 'Does our company offer both native and cross-platform iPhone app development services?',
+      answer: 'Yes, we offer both native iOS development using Swift and cross-platform solutions using frameworks like React Native and Flutter to meet your specific business needs.'
     },
     {
-      title: 'New Listing',
-      description: 'Subscribe to high-quality new tokens.',
-      isActive: false
+      question: 'Does our company provide a testimony of previous clients?',
+      answer: 'Absolutely! We have a portfolio of successful projects and client testimonials that demonstrate our expertise and commitment to delivering high-quality solutions.'
+    },
+    {
+      question: 'How does billing work?',
+      answer: 'Our billing is transparent and flexible. We offer various payment models including fixed-price projects, hourly rates, and milestone-based payments to suit your budget and project requirements.'
+    },
+    {
+      question: 'How do I change my account email?',
+      answer: 'You can easily change your account email by going to your account settings, selecting the email section, and following the verification process to update your contact information.'
     }
   ];
 
-  return (
-    <div className="bg-black py-20">
-      <div className="container mx-auto px-8 md:px-16 lg:px-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          {/* Left side - Services list */}
-          <div className="pt-8">
-            <h2 className="text-3xl md:text-4xl font-bold mb-12 text-white leading-tight">
-              A variety of services for you to choose from
-            </h2>
-            <div>
-              {services.map((service, index) => (
-                <ServiceItem
-                  key={index}
-                  title={service.title}
-                  description={service.description}
-                  isActive={service.isActive}
-                />
-              ))}
-            </div>
-          </div>
+  const toggleAccordion = (index) => {
+    setActiveIndex(activeIndex === index ? null : index);
+  };
 
-          {/* Right side - Image */}
-          <div className="flex justify-center lg:justify-end">
-            <img
-              src={svgIcon}
-              alt="Services Illustration"
-              className="w-full max-w-lg h-auto"
-            />
+  return (
+    <div className="bg-black py-16">
+      <div className="container mx-auto px-8 md:px-16 lg:px-24">
+        <div className="max-w-4xl">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
+            Frequently asked questions
+          </h2>
+          <p className="text-gray-400 text-lg mb-12">
+            Everything you need to know about the product and billing.
+          </p>
+          
+          <div className="space-y-0">
+            {faqs.map((faq, index) => (
+              <FAQItem
+                key={index}
+                question={faq.question}
+                answer={faq.answer}
+                isOpen={activeIndex === index}
+                onClick={() => toggleAccordion(index)}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -72,4 +87,4 @@ const Services = () => {
   );
 };
 
-export default Services;
+export default FAQ;
