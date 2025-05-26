@@ -18,7 +18,7 @@ const SignUpPage = () => {
     confirmPassword: '',
     fullName: '',
     phone: '',
-    profilePic: null,
+    profilePic: "/assets/default-profile.png", // Set default profile image
     otp: ['', '', '', '', '', '']
   });
 
@@ -116,10 +116,19 @@ const SignUpPage = () => {
     }
   };
 
+  // Default profile image URL
+  const DEFAULT_PROFILE_IMAGE = "/assets/default-profile.png";
+
   // Handle profile picture upload
   const handleProfileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Validate file type
+      if (!file.type.match('image.*')) {
+        setError('Please select an image file');
+        return;
+      }
+      
       const reader = new FileReader();
       reader.onload = (event) => {
         setFormData({
@@ -127,8 +136,16 @@ const SignUpPage = () => {
           profilePic: event.target.result
         });
       };
+      reader.onerror = () => {
+        setError('Failed to read the image file');
+      };
       reader.readAsDataURL(file);
     }
+  };
+
+  // Trigger file input click
+  const triggerFileInput = () => {
+    fileInputRef.current.click();
   };
 
   // Step navigation functions
@@ -691,12 +708,19 @@ const SignUpPage = () => {
             {/* Step 4: Profile Details */}
             <div className={currentStep !== 4 ? 'hidden' : ''}>
               <h3 className="text-gray-700 text-base mb-6">Complete your profile</h3>
-              <div className="w-28 h-28 rounded-full bg-gray-100 mx-auto mb-5 relative cursor-pointer overflow-hidden group hover:bg-gray-200 transition-colors duration-200">
+              <div 
+                className="w-28 h-28 rounded-full bg-gray-100 mx-auto mb-5 relative cursor-pointer overflow-hidden group hover:bg-gray-200 transition-colors duration-200"
+                onClick={triggerFileInput}
+              >
                 <img 
                   id="profile-preview" 
-                  src={formData.profilePic || "https://i.ibb.co/LSsXnHx/profile-placeholder.jpg"} 
+                  src={formData.profilePic} 
                   alt="Profile Preview"
                   className="w-full h-full object-cover group-hover:opacity-80 transition-opacity duration-200"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "/assets/default-profile.png";
+                  }}
                 />
                 <div className="absolute bottom-0 right-0 w-8 h-8 bg-[#FE7400] rounded-full flex items-center justify-center transform translate-x-1 -translate-y-1 group-hover:scale-110 transition-transform duration-200">
                   <i className="fas fa-camera text-white text-sm"></i>

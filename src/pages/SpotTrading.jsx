@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import TradingChart from '../components/spotTrading/TradingChart';
@@ -12,7 +12,6 @@ import '../components/spotTrading/SpotTrading.css';
 
 const SpotTrading = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [cryptoData, setCryptoData] = useState(null);
   const [userBalance, setUserBalance] = useState({
     cryptoSpotBalance: 0,
     usdtSpotBalance: 0
@@ -20,258 +19,281 @@ const SpotTrading = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [availableCoins, setAvailableCoins] = useState([]);
-  const [lastFetchTimestamp, setLastFetchTimestamp] = useState(0);
-  const FETCH_COOLDOWN = 2000; // 2 seconds cooldown between fetches
   const [orderHistoryRefreshTrigger, setOrderHistoryRefreshTrigger] = useState(0);
-  const [mobileTradeTab, setMobileTradeTab] = useState(''); // '' | 'buy' | 'sell'
+  const [mobileTradeTab, setMobileTradeTab] = useState('');
+
+  // Refs for preventing multiple API calls
+  const lastFetchTimestamp = useRef(0);
+  const isInitialized = useRef(false);
+  const currentCoinPairId = useRef(null);
+  const fetchTimeoutRef = useRef(null);
+
+  // Constants
+  const FETCH_COOLDOWN = 1000; // Reduced cooldown for better responsiveness
 
   // Get coin_pair_id from URL params, default to 1 if not provided
-  const coinPairId = searchParams.get('coin_pair_id') || 1;
+  const coinPairId = searchParams.get('coin_pair_id') || '1';
 
-  // Effect to handle coin pair changes
+  // Initialize cryptoData with null - will be set from API data
+  const [cryptoData, setCryptoData] = useState(null);
+
+  // Fetch available coins only once on mount
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        // Find the selected coin from available coins
-        const selectedCoin = availableCoins.find(coin => coin.id.toString() === coinPairId.toString());
-        if (selectedCoin) {
-          const coinResponse = await fetchCoinDetails(selectedCoin.symbol);
-          if (coinResponse.success) {
-            setCryptoData(prevData => ({
-              ...prevData,
-              cryptoName: selectedCoin.name,
-              cryptoSymbol: selectedCoin.symbol,
-              cryptoPrice: parseFloat(coinResponse.data.price || 0),
-              cryptoLogoPath: selectedCoin.logo_path,
-              priceChange24h: parseFloat(coinResponse.data.price_change_24h || 0),
-            }));
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching coin data:', error);
-        setError('Failed to fetch coin data');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (availableCoins.length > 0) {
-      fetchData();
-    }
-  }, [coinPairId, availableCoins, fetchCoinDetails]); // Re-run when coinPairId or availableCoins change
-  
-  // Fetch all available coins on component mount
-  useEffect(() => {
-    const fetchAvailableCoinsData = async () => {
-      try {
-        // Use the fetchAllCoins function from spotTradingApi.js
-        const response = await fetchAllCoins();
-        
-        if (response.success && Array.isArray(response)) {
-          setAvailableCoins(response);
-          console.log('Available coins:', response);
-        }
-      } catch (error) {
-        console.error('Error fetching available coins:', error);
-      }
-    };
-    
-    fetchAvailableCoinsData();
-  }, []); // Re-run when component mounts
-  
-  // Cache configuration
-  const CACHE_KEY = 'spot_trading_data';
-  const CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes
-
-  // Memoize the default crypto data object
-  const defaultCryptoData = useMemo(() => ({
-    cryptoName: 'Bitcoin',
-    cryptoSymbol: 'BTC',
-    cryptoPrice: 0,
-    cryptoLogoPath: '',
-    priceChange24h: 0,
-    usdtName: 'USDT',
-    usdtSymbol: 'USDT',
-    usdtLogoPath: '',
-    '24_high': null,
-    '24_low': null,
-    '24_high_formatted': null,
-    '24_low_formatted': null,
-    'volume_24h': null
-  }), []);
-
-  // Periodic data refresh
-  const fetchCryptoData = useCallback(async () => {
-    // Check fetch cooldown
-    const now = Date.now();
-    if (now - lastFetchTimestamp < FETCH_COOLDOWN) {
-      return;
-    }
-    setLastFetchTimestamp(now);
-
+    let isMounted = true;
     setLoading(true);
     setError(null);
+    const fetchAvailableCoinsData = async () => {
+      try {
+        const response = await fetchAllCoins();
+        if (isMounted && response.success) {
+          setAvailableCoins(response.coins || []);
+        } else if (isMounted) {
+          setAvailableCoins([]);
+          setError(response.message || 'Failed to load coins');
+        }
+      } catch (error) {
+        if (isMounted) {
+          setAvailableCoins([]);
+          setError(error.message || 'Failed to load coins');
+        }
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+    fetchAvailableCoinsData();
+    return () => { isMounted = false; };
+  }, []);
 
+  // Memoized function to fetch coin details
+  const fetchCoinData = useCallback(async (selectedCoin) => {
+    if (!selectedCoin) return null;
+    
     try {
-      // Get the auth token and user ID from localStorage
-      const token = localStorage.getItem('authToken');
-      const userId = localStorage.getItem('user_id');
-      let uid = localStorage.getItem('uid');
+      console.log('Fetching coin details for:', selectedCoin.symbol);
+      const coinResponse = await fetchCoinDetails(selectedCoin.symbol);
       
-      // Check if user is logged in
-      const isLoggedIn = token && userId;
-
-      // Try to load from cache first
-      const cachedData = localStorage.getItem(CACHE_KEY);
-      if (cachedData) {
-        const { data, timestamp } = JSON.parse(cachedData);
-        // Ensure the cached data is for the current coinPairId or a default
-        const currentCoinSymbol = availableCoins.find(c => c.id.toString() === coinPairId.toString())?.symbol || 'BTC';
-        if (Date.now() - timestamp < CACHE_EXPIRY && data?.cryptoSymbol === currentCoinSymbol) {
-          setCryptoData(data);
-          setLoading(false);
-          return;
-        }
+      if (coinResponse.success && coinResponse.data) {
+        const coinData = coinResponse.data;
+        return {
+          cryptoName: selectedCoin.name,
+          cryptoSymbol: selectedCoin.symbol,
+          cryptoPrice: parseFloat(coinData.price || selectedCoin.price || 0),
+          cryptoLogoPath: selectedCoin.logo_path,
+          priceChange24h: parseFloat(coinData.price_change_24h || 0),
+          usdtName: 'USDT',
+          usdtSymbol: 'USDT',
+          usdtLogoPath: '',
+          '24_high': coinData['24_high'] || null,
+          '24_low': coinData['24_low'] || null,
+          '24_high_formatted': coinData['24_high_formatted'] || null,
+          '24_low_formatted': coinData['24_low_formatted'] || null,
+          'volume_24h': coinData.volume_24h || null
+        };
       }
+    } catch (error) {
+      console.error('Error fetching coin data:', error);
+    }
+    
+    // Return basic data from selectedCoin if API fails
+    return {
+      cryptoName: selectedCoin.name,
+      cryptoSymbol: selectedCoin.symbol,
+      cryptoPrice: parseFloat(selectedCoin.price || 0),
+      cryptoLogoPath: selectedCoin.logo_path,
+      priceChange24h: parseFloat(selectedCoin.price_change_24h || 0),
+      usdtName: 'USDT',
+      usdtSymbol: 'USDT',
+      usdtLogoPath: '',
+      '24_high': null,
+      '24_low': null,
+      '24_high_formatted': null,
+      '24_low_formatted': null,
+      'volume_24h': null
+    };
+  }, []);
 
-      // If user is not logged in, fetch only the crypto data without wallet info
-      if (!isLoggedIn) {
-        try {
-          // Use BTC as default symbol or the symbol of the current coinPairId
-          const targetSymbol = availableCoins.find(c => c.id.toString() === coinPairId.toString())?.symbol || 'BTC';
-          
-          // Use the fetchCoinDetails function from spotTradingApi.js
-          const coinResponse = await fetchCoinDetails(targetSymbol);
-          
-          if (coinResponse.success) {
-            const coinData = coinResponse.data;
-            const cryptoDataObj = {
-              ...defaultCryptoData,
-              cryptoName: coinData?.name || 'Bitcoin',
-              cryptoSymbol: coinData?.symbol || 'BTC',
-              cryptoPrice: coinData?.price || 0,
-              cryptoLogoPath: coinData?.logo_path || '',
-              priceChange24h: parseFloat(coinData?.price_change_24h || 0),
-              usdtName: 'USDT',
-              usdtSymbol: 'USDT',
-              usdtLogoPath: '',
-              '24_high': coinData?.['24_high'] || null,
-              '24_low': coinData?.['24_low'] || null,
-              '24_high_formatted': coinData?.['24_high_formatted'] || null,
-              '24_low_formatted': coinData?.['24_low_formatted'] || null,
-              'volume_24h': coinData?.volume_24h || null
-            };
-
-            // Update cache
-            localStorage.setItem(CACHE_KEY, JSON.stringify({
-              data: cryptoDataObj,
-              timestamp: Date.now()
-            }));
-
-            setCryptoData(cryptoDataObj);
-            
-            // Set empty balances for non-logged in users
-            setUserBalance({
-              cryptoSpotBalance: 0,
-              usdtSpotBalance: 0
-            });
-          } else {
-            // If we can't get coin details, set default values
-            setCryptoData({
-              cryptoName: 'Bitcoin',
-              cryptoSymbol: 'BTC',
-              cryptoPrice: 20000,
-              cryptoLogoPath: '',
-              usdtName: 'USDT',
-              usdtSymbol: 'USDT',
-              usdtLogoPath: '',
-              priceChange24h: 0,
-              '24_high': 20500,
-              '24_low': 19500,
-              'volume_24h': 1250.75
-            });
-            
-            setUserBalance({
-              cryptoSpotBalance: 0,
-              usdtSpotBalance: 0
-            });
-          }
-          setLoading(false);
-        } catch (err) {
-          console.error('Error fetching coin data:', err);
-          // Don't set error, just use default values
-          setCryptoData({
-            cryptoName: 'Bitcoin',
-            cryptoSymbol: 'BTC',
-            cryptoPrice: 20000,
-            cryptoLogoPath: '',
-            usdtName: 'USDT',
-            usdtSymbol: 'USDT',
-            usdtLogoPath: ''
-          });
-          
-          setUserBalance({
-            cryptoSpotBalance: 0,
-            usdtSpotBalance: 0
-          });
-          setLoading(false);
-        }
-        return;
-      }
-
-      // If we don't have a uid, try to fetch one
-      if (!uid) {
-        try {
-          const userInfoResponse = await axios.get(
-            `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${userId}`,
-            { headers: { 'Authorization': `Bearer ${token}` } }
-          );
-          uid = userInfoResponse.data?.user?.uid || 'yE8vKBNw';
-          localStorage.setItem('uid', uid);
-        } catch {
-          uid = 'yE8vKBNw';
-        }
-      }
-
-      // Use the new getSpotWallet function to fetch wallet data
-      const walletData = await getSpotWallet(uid, coinPairId);
+  // Memoized function to fetch wallet data
+  const fetchWalletData = useCallback(async (uid, coinId) => {
+    try {
+      const walletData = await getSpotWallet(uid, coinId);
       
       if (walletData.success) {
         const { cryptoWallet, usdtWallet } = walletData;
         
-        setCryptoData({
-          cryptoName: cryptoWallet?.crypto_name || '',
-          cryptoSymbol: cryptoWallet?.crypto_symbol || '',
-          cryptoPrice: cryptoWallet?.price || 0,
-          cryptoLogoPath: cryptoWallet?.logo_path || '',
-          usdtName: usdtWallet?.crypto_name || 'USDT',
-          usdtSymbol: usdtWallet?.crypto_symbol || 'USDT',
-          usdtLogoPath: usdtWallet?.logo_path || ''
-        });
+        return {
+          cryptoData: {
+            cryptoName: cryptoWallet?.crypto_name || '',
+            cryptoSymbol: cryptoWallet?.crypto_symbol || '',
+            cryptoPrice: cryptoWallet?.price || 0,
+            cryptoLogoPath: cryptoWallet?.logo_path || '',
+            usdtName: usdtWallet?.crypto_name || 'USDT',
+            usdtSymbol: usdtWallet?.crypto_symbol || 'USDT',
+            usdtLogoPath: usdtWallet?.logo_path || '',
+            priceChange24h: 0 // Will be updated by price fetch
+          },
+          balance: {
+            cryptoSpotBalance: cryptoWallet?.spot_wallet || 0,
+            usdtSpotBalance: usdtWallet?.spot_wallet || 0
+          }
+        };
+      }
+    } catch (error) {
+      console.error('Error fetching wallet data:', error);
+    }
+    return null;
+  }, []);
+
+  // Main data fetching function with proper debouncing
+  const fetchCryptoData = useCallback(async (forceFetch = false) => {
+    // Prevent multiple rapid calls
+    const now = Date.now();
+    if (!forceFetch && now - lastFetchTimestamp.current < FETCH_COOLDOWN) {
+      console.log('Skipping fetch due to cooldown');
+      return;
+    }
+    lastFetchTimestamp.current = now;
+
+    // Clear any existing timeout
+    if (fetchTimeoutRef.current) {
+      clearTimeout(fetchTimeoutRef.current);
+    }
+
+    // Check if coin pair actually changed
+    if (!forceFetch && currentCoinPairId.current === coinPairId && isInitialized.current) {
+      console.log('Skipping fetch - same coin pair');
+      return;
+    }
+
+    console.log('Fetching data for coin pair ID:', coinPairId);
+    currentCoinPairId.current = coinPairId;
+    setLoading(true);
+    setError(null);
+
+    try {
+      const token = localStorage.getItem('authToken');
+      const userId = localStorage.getItem('user_id');
+      let uid = localStorage.getItem('uid');
+      
+      const isLoggedIn = token && userId;
+
+      // Find the selected coin from available coins
+      const selectedCoin = availableCoins.find(coin => 
+        (coin.coin_pair && coin.coin_pair.toString() === coinPairId.toString()) ||
+        (coin.id && coin.id.toString() === coinPairId.toString())
+      );
+
+      console.log('Selected coin:', selectedCoin);
+
+      if (!selectedCoin && availableCoins.length > 0) {
+        console.log('Coin not found, using first available coin');
+        const fallbackCoin = availableCoins[0];
+        const fallbackId = fallbackCoin.coin_pair || fallbackCoin.id;
+        setSearchParams({ coin_pair_id: fallbackId.toString() });
+        return;
+      }
+
+      if (!selectedCoin) {
+        console.log('No coins available yet');
+        setLoading(false);
+        return;
+      }
+
+      if (!isLoggedIn) {
+        // For non-logged in users, just fetch coin data
+        const coinData = await fetchCoinData(selectedCoin);
+        if (coinData) {
+          setCryptoData(coinData);
+          console.log('Set crypto data for non-logged in user:', coinData.cryptoSymbol);
+        }
         
         setUserBalance({
-          cryptoSpotBalance: cryptoWallet?.spot_wallet || 0,
-          usdtSpotBalance: usdtWallet?.spot_wallet || 0
-        });
-        
-        console.log('Spot wallet data loaded:', {
-          cryptoSymbol: cryptoWallet?.crypto_symbol,
-          cryptoBalance: cryptoWallet?.spot_wallet,
-          usdtBalance: usdtWallet?.spot_wallet
+          cryptoSpotBalance: 0,
+          usdtSpotBalance: 0
         });
       } else {
-        throw new Error(walletData.message || 'Failed to fetch wallet data');
+        // For logged in users, fetch wallet data
+        if (!uid) {
+          try {
+            const userInfoResponse = await axios.get(
+              `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${userId}`,
+              { headers: { 'Authorization': `Bearer ${token}` } }
+            );
+            uid = userInfoResponse.data?.user?.uid || 'yE8vKBNw';
+            localStorage.setItem('uid', uid);
+          } catch {
+            uid = 'yE8vKBNw';
+          }
+        }
+
+        const walletData = await fetchWalletData(uid, coinPairId);
+        
+        if (walletData) {
+          // Merge wallet data with coin data
+          let finalCryptoData = walletData.cryptoData;
+          
+          // Get additional details from coin API
+          const coinDetails = await fetchCoinData(selectedCoin);
+          if (coinDetails) {
+            finalCryptoData = {
+              ...finalCryptoData,
+              ...coinDetails,
+              // Keep wallet-specific data if available
+              cryptoName: walletData.cryptoData.cryptoName || coinDetails.cryptoName,
+              cryptoSymbol: walletData.cryptoData.cryptoSymbol || coinDetails.cryptoSymbol,
+              cryptoPrice: coinDetails.cryptoPrice || walletData.cryptoData.cryptoPrice
+            };
+          }
+          
+          setCryptoData(finalCryptoData);
+          setUserBalance(walletData.balance);
+          
+          console.log('Set crypto data for logged in user:', finalCryptoData.cryptoSymbol);
+        } else {
+          // Fallback to coin data if wallet fetch fails
+          const coinData = await fetchCoinData(selectedCoin);
+          if (coinData) {
+            setCryptoData(coinData);
+            console.log('Set fallback crypto data:', coinData.cryptoSymbol);
+          }
+          setUserBalance({
+            cryptoSpotBalance: 0,
+            usdtSpotBalance: 0
+          });
+        }
       }
+
+      isInitialized.current = true;
     } catch (err) {
       console.error('Error fetching crypto data:', err);
       setError('Failed to load trading data. Please try again later.');
     } finally {
       setLoading(false);
     }
-  }, [coinPairId, lastFetchTimestamp, FETCH_COOLDOWN, availableCoins, defaultCryptoData, fetchCoinDetails]); // Adjusted dependencies
+  }, [
+    coinPairId, 
+    availableCoins, 
+    fetchCoinData, 
+    fetchWalletData,
+    setSearchParams
+  ]);
 
-  // Only update balance (not loading state) after a trade
+  // Effect to handle coin pair changes - only when necessary
+  useEffect(() => {
+    if (availableCoins.length > 0) {
+      // Use timeout to debounce rapid changes
+      fetchTimeoutRef.current = setTimeout(() => {
+        fetchCryptoData(false);
+      }, 100);
+    }
+
+    return () => {
+      if (fetchTimeoutRef.current) {
+        clearTimeout(fetchTimeoutRef.current);
+      }
+    };
+  }, [coinPairId, availableCoins.length]); // Only depend on coinPairId and availableCoins length
+
+  // Fetch user balance after trade (without affecting main data)
   const fetchUserBalance = useCallback(async () => {
     try {
       const token = localStorage.getItem('authToken');
@@ -293,7 +315,6 @@ const SpotTrading = () => {
         }
       }
       
-      // Use the new getSpotWallet function to fetch wallet data
       const walletData = await getSpotWallet(uid, coinPairId);
       
       if (walletData.success) {
@@ -304,96 +325,50 @@ const SpotTrading = () => {
           usdtSpotBalance: usdtWallet?.spot_wallet || 0
         });
         
-        console.log('Updated spot wallet balances:', {
-          cryptoSymbol: cryptoWallet?.crypto_symbol,
-          cryptoBalance: cryptoWallet?.spot_wallet,
-          usdtBalance: usdtWallet?.spot_wallet
+        console.log('Updated balances after trade:', {
+          crypto: cryptoWallet?.spot_wallet,
+          usdt: usdtWallet?.spot_wallet
         });
       }
       
-      // Trigger order history refresh without affecting the chart
       setOrderHistoryRefreshTrigger(prev => prev + 1);
     } catch (err) {
-      // Optionally handle error
       console.error('Error fetching user balance:', err);
     }
   }, [coinPairId]);
 
-  useEffect(() => {
-    fetchCryptoData();
-    
-    // Direct API call to fetch coin data with 24h high/low values
-    const fetchDirectCoinData = async () => {
-      try {
-        const response = await fetch('https://apiv2.bhtokens.com/api/v1/coins?apikey=A20RqFwVktRxxRqrKBtmi6ud');
-        const data = await response.json();
-        
-        // Find the current coin or use BTC as default
-        const symbol = cryptoData?.cryptoSymbol || 'BTC';
-        const coinData = data.find(coin => coin.symbol === symbol) || data.find(coin => coin.symbol === 'BTC');
-        
-        if (coinData) {
-          console.log('Direct API coin data:', coinData);
-          
-          // Update crypto data with the direct API response
-          const updatedData = {
-            ...cryptoData,
-            cryptoPrice: parseFloat(coinData.price || cryptoData.cryptoPrice),
-            priceChange24h: parseFloat(coinData.price_change_24h || 0),
-            '24_high': parseFloat(coinData['24_high']) || 20500,
-            '24_low': parseFloat(coinData['24_low']) || 19500,
-            'volume_24h': parseFloat(coinData.volume_24h || 1250.75)
-          };
-          
-          console.log('Updated crypto data:', updatedData); // Debug log
-
-          // Update cache with new data
-          localStorage.setItem(CACHE_KEY, JSON.stringify({
-            data: updatedData,
-            timestamp: Date.now()
-          }));
-
-          setCryptoData(updatedData);
-        }
-      } catch (error) {
-        console.error('Error fetching direct coin data:', error);
-      }
-    };
-    
-    fetchDirectCoinData();
-    
-    // Log when cryptoData changes for debugging
-    if (cryptoData?.cryptoSymbol) {
-      console.log('SpotTrading: Current crypto symbol:', cryptoData.cryptoSymbol);
-      console.log('SpotTrading: Full crypto data:', cryptoData);
-    }
-  }, [fetchCryptoData, cryptoData?.cryptoSymbol, lastFetchTimestamp, FETCH_COOLDOWN, availableCoins, coinPairId, defaultCryptoData, fetchCoinDetails]); // Adjusted dependencies
-
-  // Handle coin selection from FavoritesBar
+  // Handle coin selection from FavoritesBar with proper debouncing
   const handleCoinSelect = useCallback((selectedCoinPairId) => {
-    if (selectedCoinPairId.toString() !== coinPairId.toString()) {
-      console.log('SpotTrading: FavoritesBar selected new coin. Current coinPairId:', coinPairId, 'New coin_pair_id:', selectedCoinPairId);
-      setSearchParams({ coin_pair_id: selectedCoinPairId.toString() });
-      // The useEffect hook listening to `coinPairId` will handle fetching the new data.
+    const selectedId = selectedCoinPairId.toString();
+    const currentId = coinPairId.toString();
+    
+    if (selectedId !== currentId) {
+      console.log('Switching coin from', currentId, 'to', selectedId);
+      setSearchParams({ coin_pair_id: selectedId });
     }
   }, [coinPairId, setSearchParams]);
 
-  // Mobile app bar buy/sell buttons handler
-  const handleMobileTradeTab = (tab) => {
-    setMobileTradeTab(mobileTradeTab === tab ? '' : tab);
-  };
+  // Mobile trade tab handlers
+  const handleMobileTradeTab = useCallback((tab) => {
+    setMobileTradeTab(prev => prev === tab ? '' : tab);
+  }, []);
 
   // Mobile bottom sheet trade form
-  const renderMobileTradeForm = () => (
+  const renderMobileTradeForm = useCallback(() => (
     <>
-      <div className={`mobile-trade-overlay${mobileTradeTab ? ' open' : ''}`} 
-           onClick={() => setMobileTradeTab('')}></div>
+      <div 
+        className={`mobile-trade-overlay${mobileTradeTab ? ' open' : ''}`} 
+        onClick={() => setMobileTradeTab('')}
+      />
       <div className={`mobile-trade-form-sheet${mobileTradeTab ? ' open' : ''}`}>
         <div className="mobile-trade-form-header">
           <div className="mobile-trade-form-title">
             {mobileTradeTab === 'buy' ? 'Buy' : 'Sell'} {cryptoData?.cryptoSymbol}
           </div>
-          <button className="mobile-trade-form-close" onClick={() => setMobileTradeTab('')}>
+          <button 
+            className="mobile-trade-form-close" 
+            onClick={() => setMobileTradeTab('')}
+          >
             ×
           </button>
         </div>
@@ -408,7 +383,16 @@ const SpotTrading = () => {
         </div>
       </div>
     </>
-  );
+  ), [mobileTradeTab, cryptoData, userBalance, coinPairId, fetchUserBalance]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (fetchTimeoutRef.current) {
+        clearTimeout(fetchTimeoutRef.current);
+      }
+    };
+  }, []);
 
   if (error) {
     return <div className="error-message">{error}</div>;
@@ -419,11 +403,15 @@ const SpotTrading = () => {
       <SubHeader 
         cryptoData={cryptoData} 
         coinPairId={coinPairId}
+        availableCoins={availableCoins}
+        onCoinSelect={handleCoinSelect}
+        loading={loading}
+        error={error}
       />
       <FavoritesBar 
         activeCoinPairId={coinPairId} 
         availableCoins={availableCoins}
-        onCoinSelect={handleCoinSelect} // Pass the callback here
+        onCoinSelect={handleCoinSelect}
       />
       <div className="main-container">
         <div className="chart-section">
@@ -449,10 +437,19 @@ const SpotTrading = () => {
         <OrdersSection refreshTrigger={orderHistoryRefreshTrigger} />
       </div>
       
-      {/* Mobile app bar with buy/sell buttons */}
       <div className="mobile-trade-bar">
-        <button className="mobile-trade-btn buy" onClick={() => handleMobileTradeTab('buy')}>Buy</button>
-        <button className="mobile-trade-btn sell" onClick={() => handleMobileTradeTab('sell')}>Sell</button>
+        <button 
+          className="mobile-trade-btn buy" 
+          onClick={() => handleMobileTradeTab('buy')}
+        >
+          Buy
+        </button>
+        <button 
+          className="mobile-trade-btn sell" 
+          onClick={() => handleMobileTradeTab('sell')}
+        >
+          Sell
+        </button>
       </div>
       {renderMobileTradeForm()}
     </div>
