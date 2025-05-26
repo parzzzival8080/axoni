@@ -258,19 +258,7 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
                         <img 
                           src={coin.logo_path} 
                           alt={coin.symbol}
-                          style={{
-                            width: '32px',
-                            height: '32px',
-                            borderRadius: '50%',
-                            objectFit: 'contain',
-                            background: 'none',
-                            boxShadow: 'none',
-                            padding: 0
-                          }}
-                          onError={(e) => {
-                            e.target.onerror = null; 
-                            e.target.src = defaultCoinLogo;
-                          }}
+                          className="coin-icon"
                         />
                       </div>
                       <div style={{

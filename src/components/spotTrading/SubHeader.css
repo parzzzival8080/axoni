@@ -8,6 +8,10 @@
   border-bottom: 1px solid #232323;
   color: #fff;
 }
+.sub-header .coin-icon,
+.sub-header .coin-icon img {
+  border-radius: 50% !important;
+}
 
 .coin-info {
   display: flex;
@@ -453,4 +457,8 @@
   border-radius: 6px;
   background: linear-gradient(90deg, #23272f 25%, #18191d 50%, #23272f 75%);
   animation: skeleton-loading 1.2s infinite linear;
+}
+
+.coin-logo-round {
+  border-radius: 50% !important;
 }

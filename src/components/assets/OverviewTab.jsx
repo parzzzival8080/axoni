@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./OverviewTab.css";
+import { FaEye, FaArrowRight } from "react-icons/fa";
 import chartPlaceholder from "../../assets/assets/411B1865A7B26122.webp";
 import earnIcon from "../../assets/assets/earn-icon.svg";
 import axios from "axios";
@@ -19,19 +19,13 @@ const OverviewTab = () => {
     const fetchWalletData = async () => {
       try {
         setLoading(true);
-        // Get UID from localStorage (assuming it's stored there from login)
-        const uid = localStorage.getItem('uid') || 'QEaIjLlY'; // Fallback to example UID
-        
-        // API key from your image
+        const uid = localStorage.getItem('uid') || 'QEaIjLlY';
         const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
-        
-        // Construct the API URL
         const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
         
         const response = await axios.get(apiUrl);
         
         if (response.data) {
-          // Set overview data
           setOverviewData({
             overview: response.data.overview || 0,
             spot_wallet: response.data.spot_wallet || 0,
@@ -42,7 +36,6 @@ const OverviewTab = () => {
       } catch (err) {
         console.error("Error fetching wallet data:", err);
         setError("Failed to load wallet data.");
-        // Set default overview data
         setOverviewData({
           overview: 972990894,
           spot_wallet: 972950894,
@@ -57,134 +50,172 @@ const OverviewTab = () => {
     fetchWalletData();
   }, []);
   
-  // Format large numbers with commas
   const formatNumber = (num) => {
     return num.toLocaleString(undefined, { maximumFractionDigits: 2 });
   };
   
   return (
-    <div className="overview-content">
-      <div className="overview-breadcrumb">
-        <span>Overview</span>
-        <span className="breadcrumb-separator">/</span>
-        <span className="coin-name">USDT</span>
+    <div className="bg-gray-50 text-gray-900 p-6 min-h-screen">
+      {/* Breadcrumb */}
+      <div className="flex items-center text-gray-500 text-sm mb-6">
+        <span className="text-gray-900 font-medium">Overview</span>
+        <span className="mx-2">/</span>
+        <span>USDT</span>
       </div>
       
-      <div className="overview-main-container">
-        <div className="overview-left-section">
-          <div className="estimated-value-section">
-            <div className="value-header">
-              <span>Estimated total value</span>
-              <span className="eye-icon"><i className="fas fa-eye"></i></span>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left Section */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Estimated Value Section */}
+          <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-gray-600">Estimated total value</span>
+              <FaEye className="text-gray-400 cursor-pointer hover:text-gray-600 transition-colors" />
             </div>
             
             {loading ? (
-              <div className="loading-state">Loading...</div>
+              <div className="text-center py-4">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500 mx-auto"></div>
+                <p className="text-gray-500 mt-2">Loading...</p>
+              </div>
             ) : error ? (
-              <div className="error-state">{error}</div>
+              <div className="text-red-500 text-center py-4">{error}</div>
             ) : (
               <>
-                <div className="total-value">${formatNumber(overviewData.overview)}</div>
-                <div className="coin-amount">Total assets in your account</div>
+                <div className="text-3xl font-bold text-gray-900 mb-2">
+                  ${formatNumber(overviewData.overview)}
+                </div>
+                <div className="text-gray-500 mb-6">Total assets in your account</div>
               </>
             )}
             
-            <div className="action-buttons">
-              <button className="action-button deposit-btn">Deposit</button>
-              <button className="action-button convert-btn">Convert</button>
-              <button className="action-button withdraw-btn">Withdraw</button>
-              <button className="action-button transfer-btn">Transfer</button>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <button className="bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-lg font-medium transition-colors">
+                Deposit
+              </button>
+              <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg font-medium transition-colors border border-gray-300">
+                Convert
+              </button>
+              <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg font-medium transition-colors border border-gray-300">
+                Withdraw
+              </button>
+              <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg font-medium transition-colors border border-gray-300">
+                Transfer
+              </button>
             </div>
           </div>
           
-          <div className="chart-section">
-            <div className="timeframe-selector">
-              <button className={timeframe === "1D" ? "timeframe-btn active" : "timeframe-btn"} onClick={() => setTimeframe("1D")}>1D</button>
-              <button className={timeframe === "1W" ? "timeframe-btn active" : "timeframe-btn"} onClick={() => setTimeframe("1W")}>1W</button>
-              <button className={timeframe === "1M" ? "timeframe-btn active" : "timeframe-btn"} onClick={() => setTimeframe("1M")}>1M</button>
-              <button className={timeframe === "6M" ? "timeframe-btn active" : "timeframe-btn"} onClick={() => setTimeframe("6M")}>6M</button>
+          {/* Chart Section */}
+          <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+            <div className="flex space-x-2 mb-6">
+              {["1D", "1W", "1M", "6M"].map((period) => (
+                <button
+                  key={period}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    timeframe === period
+                      ? "bg-orange-500 text-white"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-800 border border-gray-300"
+                  }`}
+                  onClick={() => setTimeframe(period)}
+                >
+                  {period}
+                </button>
+              ))}
             </div>
             
-            <div className="empty-chart">
-              <div className="chart-placeholder">
-                <img src={chartPlaceholder} alt="Chart placeholder" className="chart-icon" />
-                <div className="chart-message">Unable to load data</div>
-                <div className="chart-submessage">We'll need more data to generate the chart for you</div>
-              </div>
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+              <img src={chartPlaceholder} alt="Chart placeholder" className="w-16 h-16 mb-4 opacity-50" />
+              <div className="text-gray-600 mb-2">Unable to load data</div>
+              <div className="text-gray-400 text-sm">We'll need more data to generate the chart for you</div>
             </div>
           </div>
         </div>
         
-        <div className="overview-right-section">
-          <div className="allocation-section">
-            <h3 className="section-title">Allocation</h3>
+        {/* Right Section */}
+        <div className="space-y-6">
+          {/* Allocation Section */}
+          <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+            <h3 className="text-lg font-semibold text-gray-900 mb-6">Allocation</h3>
             
-            <div className="allocation-chart">
-              <div className="donut-chart-container">
-                <div className="donut-chart">
-                  <div className="donut-inner">
-                    <span className="donut-percent">100%</span>
-                    <span className="donut-label">Trading</span>
+            <div className="flex flex-col items-center mb-6">
+              <div className="relative w-32 h-32 mb-4">
+                <div className="w-full h-full rounded-full border-8 border-orange-500 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="text-xl font-bold text-gray-900">100%</div>
+                    <div className="text-sm text-gray-500">Trading</div>
                   </div>
                 </div>
               </div>
-              
-              <div className="allocation-details">
-                <div className="allocation-item">
-                  <span className="allocation-label"><span className="color-indicator spot"></span>Spot Wallet:</span>
-                  <span className="allocation-amount">${formatNumber(overviewData.spot_wallet)}</span>
-                </div>
-                <div className="allocation-item">
-                  <span className="allocation-label"><span className="color-indicator future"></span>Future Wallet:</span>
-                  <span className="allocation-amount">${formatNumber(overviewData.future_wallet)}</span>
-                </div>
-                <div className="allocation-item">
-                  <span className="allocation-label"><span className="color-indicator funding"></span>Funding Wallet:</span>
-                  <span className="allocation-amount">${formatNumber(overviewData.funding_wallet)}</span>
-                </div>
-                <div className="allocation-item total">
-                  <span className="allocation-label">Total:</span>
-                  <span className="allocation-amount">${formatNumber(overviewData.overview)}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="earn-section">
-            <div className="earn-content">
-              <div className="earn-text">
-                <div className="earn-title">Earn POL for up to 3.92% APR!</div>
-              </div>
-              <div className="earn-icon">
-                <img src={earnIcon} alt="Earn" />
-              </div>
-            </div>
-            <div className="earn-action">
-              <button className="view-details">View details →</button>
-            </div>
-          </div>
-          
-          <div className="transactions-section">
-            <div className="transactions-header">
-              <h3 className="section-title">Recent transactions</h3>
-              <button className="view-more">View more →</button>
             </div>
             
-            <div className="transactions-list">
-              <div className="transaction-item">
-                <div className="transaction-details">
-                  <div className="transaction-type">To: Trading POL</div>
-                  <div className="transaction-date">04/28/2025, 18:53:34</div>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-3 h-3 bg-orange-500 rounded-full mr-2"></div>
+                  <span className="text-gray-600">Spot Wallet:</span>
                 </div>
-                <div className="transaction-amount negative">-1 POL</div>
+                <span className="text-gray-900 font-medium">${formatNumber(overviewData.spot_wallet)}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                  <span className="text-gray-600">Future Wallet:</span>
+                </div>
+                <span className="text-gray-900 font-medium">${formatNumber(overviewData.future_wallet)}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                  <span className="text-gray-600">Funding Wallet:</span>
+                </div>
+                <span className="text-gray-900 font-medium">${formatNumber(overviewData.funding_wallet)}</span>
+              </div>
+              <div className="flex items-center justify-between pt-3 border-t border-gray-200">
+                <span className="text-gray-900 font-medium">Total:</span>
+                <span className="text-gray-900 font-bold">${formatNumber(overviewData.overview)}</span>
+              </div>
+            </div>
+          </div>
+          
+          {/* Earn Section */}
+          <div className="bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-200 rounded-lg p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex-1">
+                <div className="text-gray-900 font-semibold mb-1">Earn POL for up to 3.92% APR!</div>
+              </div>
+              <div className="ml-4">
+                <img src={earnIcon} alt="Earn" className="w-8 h-8" />
+              </div>
+            </div>
+            <button className="flex items-center text-orange-600 hover:text-orange-700 font-medium transition-colors">
+              View details <FaArrowRight className="ml-2 text-sm" />
+            </button>
+          </div>
+          
+          {/* Transactions Section */}
+          <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-semibold text-gray-900">Recent transactions</h3>
+              <button className="flex items-center text-orange-600 hover:text-orange-700 font-medium transition-colors">
+                View more <FaArrowRight className="ml-2 text-sm" />
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="flex items-center justify-between py-3 border-b border-gray-100">
+                <div>
+                  <div className="text-gray-900 font-medium">To: Trading POL</div>
+                  <div className="text-gray-500 text-sm">04/28/2025, 18:53:34</div>
+                </div>
+                <div className="text-red-500 font-medium">-1 POL</div>
               </div>
               
-              <div className="transaction-item">
-                <div className="transaction-details">
-                  <div className="transaction-type">Deposit POL</div>
-                  <div className="transaction-date">04/28/2025, 18:53:34</div>
+              <div className="flex items-center justify-between py-3">
+                <div>
+                  <div className="text-gray-900 font-medium">Deposit POL</div>
+                  <div className="text-gray-500 text-sm">04/28/2025, 18:53:34</div>
                 </div>
-                <div className="transaction-amount positive">1 POL</div>
+                <div className="text-green-500 font-medium">+1 POL</div>
               </div>
             </div>
           </div>

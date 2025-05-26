@@ -7,7 +7,12 @@ import TradeForm from '../components/spotTrading/TradeForm';
 import SubHeader from '../components/spotTrading/SubHeader';
 import FavoritesBar from '../components/spotTrading/FavoritesBar';
 import OrdersSection from '../components/spotTrading/OrdersSection';
-import { getSpotWallet, fetchAllCoins, fetchCoinDetails } from '../services/spotTradingApi';
+import { 
+  getSpotWallet, 
+  fetchAllCoins, 
+  getCoinFromCache,
+  getCacheStats 
+} from '../services/spotTradingApi';
 import '../components/spotTrading/SpotTrading.css';
 
 const SpotTrading = () => {
@@ -21,6 +26,8 @@ const SpotTrading = () => {
   const [availableCoins, setAvailableCoins] = useState([]);
   const [orderHistoryRefreshTrigger, setOrderHistoryRefreshTrigger] = useState(0);
   const [mobileTradeTab, setMobileTradeTab] = useState('');
+  const [statsLoading, setStatsLoading] = useState(false);
+  const [coinsLoading, setCoinsLoading] = useState(true);
 
   // Refs for preventing multiple API calls
   const lastFetchTimestamp = useRef(0);
@@ -29,14 +36,14 @@ const SpotTrading = () => {
   const fetchTimeoutRef = useRef(null);
 
   // Constants
-  const FETCH_COOLDOWN = 1000; // Reduced cooldown for better responsiveness
+  const FETCH_COOLDOWN = 1000;
 
   // Get coin_pair_id from URL params, default to 1 if not provided
   const coinPairId = searchParams.get('coin_pair_id') || '1';
   
-  console.log('Current coinPairId from URL:', coinPairId, 'searchParams:', searchParams.toString());
+  console.log('Current coinPairId from URL:', coinPairId);
 
-  // Initialize cryptoData with null - will be set from API data
+  // Initialize cryptoData with null - will be set from cache/API data
   const [cryptoData, setCryptoData] = useState(null);
   
   // Wrapper function to log setCryptoData calls
@@ -49,93 +56,72 @@ const SpotTrading = () => {
     setCryptoData(data);
   }, []);
 
-  // Track stats loading state
-  const [statsLoading, setStatsLoading] = useState(false);
-
-  // Fetch available coins only once on mount
+  // Load coins from cache or API on mount
   useEffect(() => {
     let isMounted = true;
-    setLoading(true);
-    setError(null);
-    const fetchAvailableCoinsData = async () => {
+    
+    const loadCoins = async () => {
+      setCoinsLoading(true);
+      setError(null);
+      
       try {
+        console.log('Loading coins...');
         const response = await fetchAllCoins();
-        if (isMounted && response.success) {
-          setAvailableCoins(response.coins || []);
-        } else if (isMounted) {
-          setAvailableCoins([]);
-          setError(response.message || 'Failed to load coins');
+        
+        if (isMounted) {
+          if (response.success) {
+            setAvailableCoins(response.coins || []);
+            console.log(`Loaded ${response.coins?.length || 0} coins`, response.fromCache ? 'from cache' : 'from API');
+            
+            // Log cache stats
+            const stats = getCacheStats();
+            console.log('Cache stats:', stats);
+          } else {
+            setAvailableCoins([]);
+            setError(response.message || 'Failed to load coins');
+          }
         }
       } catch (error) {
         if (isMounted) {
+          console.error('Error loading coins:', error);
           setAvailableCoins([]);
           setError(error.message || 'Failed to load coins');
         }
       } finally {
-        if (isMounted) setLoading(false);
+        if (isMounted) {
+          setCoinsLoading(false);
+          setLoading(false);
+        }
       }
     };
-    fetchAvailableCoinsData();
+    
+    loadCoins();
     return () => { isMounted = false; };
   }, []);
 
-  // Memoized function to fetch coin details
-  const fetchCoinData = useCallback(async (selectedCoin) => {
-    if (!selectedCoin) return null;
+  // Memoized function to get coin data from cache
+  const getCoinDataFromCache = useCallback((coinIdentifier) => {
+    const coin = getCoinFromCache(coinIdentifier);
+    if (!coin) return null;
     
-    try {
-      console.log('Fetching coin details for:', selectedCoin.symbol);
-      const coinResponse = await fetchCoinDetails(selectedCoin.symbol);
-      
-      if (coinResponse.success && coinResponse.data) {
-        const coinData = coinResponse.data;
-        return {
-          cryptoName: selectedCoin.name,
-          cryptoSymbol: selectedCoin.symbol,
-          cryptoPrice: parseFloat(coinData.price || selectedCoin.price || 0),
-          cryptoLogoPath: selectedCoin.logo_path,
-          priceChange24h: parseFloat(coinData.price_change_24h || 0),
-          usdtName: 'USDT',
-          usdtSymbol: 'USDT',
-          usdtLogoPath: '',
-          '24_high': coinData['24_high'] || null,
-          '24_low': coinData['24_low'] || null,
-          '24_high_formatted': coinData['24_high_formatted'] || null,
-          '24_low_formatted': coinData['24_low_formatted'] || null,
-          'volume_24h': coinData.volume_24h || null,
-          // Additional properties for SubHeader compatibility
-          crypto_logo_path: selectedCoin.logo_path,
-          crypto_symbol: selectedCoin.symbol,
-          crypto_name: selectedCoin.name,
-          price: parseFloat(coinData.price || selectedCoin.price || 0),
-          usdt_symbol: 'USDT'
-        };
-      }
-    } catch (error) {
-      console.error('Error fetching coin data:', error);
-    }
-    
-    // Return basic data from selectedCoin if API fails
     return {
-      cryptoName: selectedCoin.name,
-      cryptoSymbol: selectedCoin.symbol,
-      cryptoPrice: parseFloat(selectedCoin.price || 0),
-      cryptoLogoPath: selectedCoin.logo_path,
-      priceChange24h: parseFloat(selectedCoin.price_change_24h || 0),
+      cryptoName: coin.name,
+      cryptoSymbol: coin.symbol,
+      cryptoPrice: coin.price,
+      cryptoLogoPath: coin.logo_path,
+      priceChange24h: coin.price_change_24h,
       usdtName: 'USDT',
-      usdtSymbol: 'USDT',
+      usdtSymbol: coin.pair_name || 'USDT',
       usdtLogoPath: '',
-      '24_high': null,
-      '24_low': null,
-      '24_high_formatted': null,
-      '24_low_formatted': null,
-      'volume_24h': null,
+      '24_high': coin['24_high'],
+      '24_low': coin['24_low'],
+      'volume_24h': coin.volume_24h,
       // Additional properties for SubHeader compatibility
-      crypto_logo_path: selectedCoin.logo_path,
-      crypto_symbol: selectedCoin.symbol,
-      crypto_name: selectedCoin.name,
-      price: parseFloat(selectedCoin.price || 0),
-      usdt_symbol: 'USDT'
+      crypto_logo_path: coin.logo_path,
+      crypto_symbol: coin.symbol,
+      crypto_name: coin.name,
+      price: coin.price,
+      usdt_symbol: coin.pair_name || 'USDT'
     };
   }, []);
 
@@ -156,7 +142,13 @@ const SpotTrading = () => {
             usdtName: usdtWallet?.crypto_name || 'USDT',
             usdtSymbol: usdtWallet?.crypto_symbol || 'USDT',
             usdtLogoPath: usdtWallet?.logo_path || '',
-            priceChange24h: 0 // Will be updated by price fetch
+            priceChange24h: 0, // Will be updated by cache data
+            // Additional properties for SubHeader compatibility
+            crypto_logo_path: cryptoWallet?.logo_path || '',
+            crypto_symbol: cryptoWallet?.crypto_symbol || '',
+            crypto_name: cryptoWallet?.crypto_name || '',
+            price: cryptoWallet?.price || 0,
+            usdt_symbol: usdtWallet?.crypto_symbol || 'USDT'
           },
           balance: {
             cryptoSpotBalance: cryptoWallet?.spot_wallet || 0,
@@ -170,7 +162,7 @@ const SpotTrading = () => {
     return null;
   }, []);
 
-  // Main data fetching function with proper debouncing
+  // Main data fetching function with cache integration
   const fetchCryptoData = useCallback(async (forceFetch = false) => {
     // Prevent multiple rapid calls
     const now = Date.now();
@@ -185,7 +177,7 @@ const SpotTrading = () => {
       clearTimeout(fetchTimeoutRef.current);
     }
 
-    // Check if coin pair actually changed (based on currentCoinPairId.current which is set after successful fetch)
+    // Check if coin pair actually changed
     if (!forceFetch && currentCoinPairId.current === coinPairId && isInitialized.current) {
       console.log('SpotTrading: Skipping fetch - same coin pair ID already processed');
       return;
@@ -194,107 +186,79 @@ const SpotTrading = () => {
     console.log('SpotTrading: Fetching data for coin pair ID from URL:', coinPairId);
     setLoading(true);
     setStatsLoading(true);
-    // Don't set error to null here, allow previous errors to persist until success
 
-    let SCM_selectedCoin = null; // SCM = Selected Coin Master
-    let SCM_coinPairIdForAPI = coinPairId; // This will be the ID used for API calls like wallet
+    let selectedCoin = null;
+    let coinPairIdForAPI = coinPairId;
 
+    // Find coin from available coins (which are now cached)
     if (availableCoins.length > 0) {
-      // Priority 1: If coinPairId from URL is '1' (conventional BTC), try to get BTC by symbol.
+      // Priority 1: If coinPairId from URL is '1', try to get BTC by symbol
       if (coinPairId === '1') {
-        const btcCoin = availableCoins.find(c => c.symbol === 'BTC');
-        if (btcCoin) {
-          SCM_selectedCoin = btcCoin;
-          SCM_coinPairIdForAPI = (btcCoin.coin_pair || btcCoin.id).toString();
-          console.log('SpotTrading: Found BTC by symbol:', SCM_selectedCoin);
-          // If BTC's actual ID from list is different from '1', normalize URL.
-          if (SCM_coinPairIdForAPI !== '1' && searchParams.get('coin_pair_id') === '1') {
-            console.log(`SpotTrading: Normalizing URL for BTC. Canonical ID from list: ${SCM_coinPairIdForAPI}`);
-            setSearchParams({ coin_pair_id: SCM_coinPairIdForAPI }, { replace: true });
-            // Data will be refetched due to searchParams change, set temp data for BTC.
-             const tempBtcData = {
-                cryptoName: SCM_selectedCoin.name,
-                cryptoSymbol: SCM_selectedCoin.symbol,
-                cryptoPrice: parseFloat(SCM_selectedCoin.price || 0),
-                cryptoLogoPath: SCM_selectedCoin.logo_path,
-                priceChange24h: parseFloat(SCM_selectedCoin.price_change_24h || 0),
-                usdtSymbol: SCM_selectedCoin.pair_name || 'USDT',
-                crypto_symbol: SCM_selectedCoin.symbol, // for setCryptoDataWithLog
-                crypto_name: SCM_selectedCoin.name,
-                crypto_logo_path: SCM_selectedCoin.logo_path,
-                price: parseFloat(SCM_selectedCoin.price || 0),
-                usdt_symbol: SCM_selectedCoin.pair_name || 'USDT'
-            };
-            setCryptoDataWithLog(tempBtcData);
-            // setLoading(false) //
-            return; // Exit because setSearchParams will trigger a new fetch.
+        selectedCoin = availableCoins.find(c => c.symbol === 'BTC');
+        if (selectedCoin) {
+          coinPairIdForAPI = (selectedCoin.coin_pair || selectedCoin.id).toString();
+          console.log('SpotTrading: Found BTC by symbol:', selectedCoin);
+          
+          if (coinPairIdForAPI !== '1' && searchParams.get('coin_pair_id') === '1') {
+            console.log(`SpotTrading: Normalizing URL for BTC. Canonical ID: ${coinPairIdForAPI}`);
+            setSearchParams({ coin_pair_id: coinPairIdForAPI }, { replace: true });
+            
+            const tempBtcData = getCoinDataFromCache('BTC');
+            if (tempBtcData) {
+              setCryptoDataWithLog(tempBtcData);
+            }
+            return;
           }
-        } else {
-          console.warn("SpotTrading: coinPairId is '1' but BTC not found by symbol in availableCoins.");
         }
       }
 
-      // Priority 2: If not resolved by BTC specific logic, try to find by coinPairId from URL.
-      if (!SCM_selectedCoin) {
-        SCM_selectedCoin = availableCoins.find(coin =>
+      // Priority 2: Find by coinPairId from URL
+      if (!selectedCoin) {
+        selectedCoin = availableCoins.find(coin =>
           (coin.coin_pair && coin.coin_pair.toString() === coinPairId) ||
           (coin.id && coin.id.toString() === coinPairId)
         );
-        if (SCM_selectedCoin) {
-          SCM_coinPairIdForAPI = (SCM_selectedCoin.coin_pair || SCM_selectedCoin.id).toString();
-           console.log('SpotTrading: Found coin by coinPairId from URL:', SCM_selectedCoin);
+        if (selectedCoin) {
+          coinPairIdForAPI = (selectedCoin.coin_pair || selectedCoin.id).toString();
+          console.log('SpotTrading: Found coin by coinPairId from URL:', selectedCoin);
         }
       }
 
-      // Priority 3: If still not found (coinPairId from URL is invalid).
-      // Default to BTC if available, else first coin from the list. Update URL.
-      if (!SCM_selectedCoin) {
+      // Priority 3: Default to BTC or first coin
+      if (!selectedCoin) {
         console.warn(`SpotTrading: Coin with ID [${coinPairId}] not found. Attempting to default.`);
         const defaultBtc = availableCoins.find(c => c.symbol === 'BTC');
-        SCM_selectedCoin = defaultBtc || availableCoins[0]; // Default to BTC, or first coin
+        selectedCoin = defaultBtc || availableCoins[0];
 
-        if (SCM_selectedCoin) {
-          SCM_coinPairIdForAPI = (SCM_selectedCoin.coin_pair || SCM_selectedCoin.id).toString();
-          console.log(`SpotTrading: Defaulting to coin: ${SCM_selectedCoin.symbol}, ID: ${SCM_coinPairIdForAPI}. Updating URL.`);
-          setSearchParams({ coin_pair_id: SCM_coinPairIdForAPI }, { replace: true });
-          // Set temporary data for the default coin and return, as setSearchParams will trigger a re-fetch.
-          const tempDefaultData = {
-            cryptoName: SCM_selectedCoin.name,
-            cryptoSymbol: SCM_selectedCoin.symbol,
-            cryptoPrice: parseFloat(SCM_selectedCoin.price || 0),
-            cryptoLogoPath: SCM_selectedCoin.logo_path,
-            priceChange24h: parseFloat(SCM_selectedCoin.price_change_24h || 0),
-            usdtSymbol: SCM_selectedCoin.pair_name || 'USDT',
-            crypto_symbol: SCM_selectedCoin.symbol, // for setCryptoDataWithLog
-            crypto_name: SCM_selectedCoin.name,
-            crypto_logo_path: SCM_selectedCoin.logo_path,
-            price: parseFloat(SCM_selectedCoin.price || 0),
-            usdt_symbol: SCM_selectedCoin.pair_name || 'USDT'
-          };
-          setCryptoDataWithLog(tempDefaultData);
-          // setLoading(false); //
-          return; // Exit because setSearchParams will trigger a new fetch.
+        if (selectedCoin) {
+          coinPairIdForAPI = (selectedCoin.coin_pair || selectedCoin.id).toString();
+          console.log(`SpotTrading: Defaulting to coin: ${selectedCoin.symbol}, ID: ${coinPairIdForAPI}`);
+          setSearchParams({ coin_pair_id: coinPairIdForAPI }, { replace: true });
+          
+          const tempDefaultData = getCoinDataFromCache(selectedCoin.symbol);
+          if (tempDefaultData) {
+            setCryptoDataWithLog(tempDefaultData);
+          }
+          return;
         }
       }
     }
 
-    // If, after all attempts, SCM_selectedCoin is still null (e.g., availableCoins is empty)
-    if (!SCM_selectedCoin) {
-      console.log('SpotTrading: No coin could be selected (availableCoins might be empty). Current coinPairId from URL:', coinPairId);
-      if (availableCoins.length === 0 && loading) { // Still waiting for available coins
-         console.log("SpotTrading: availableCoins is empty, likely still loading them.");
-      } else { // availableCoins is loaded, but still no coin found (should be rare with defaults)
-         setError(`Coin data for ID ${coinPairId} could not be loaded.`);
-         setCryptoData(null); // Clear any stale data
+    if (!selectedCoin) {
+      console.log('SpotTrading: No coin could be selected');
+      if (availableCoins.length === 0 && coinsLoading) {
+        console.log("SpotTrading: availableCoins is empty, likely still loading them.");
+      } else {
+        setError(`Coin data for ID ${coinPairId} could not be loaded.`);
+        setCryptoData(null);
       }
       setLoading(false);
       setStatsLoading(false);
       return;
     }
     
-    // Successfully identified a coin to process
-    console.log('SpotTrading: Processing selected coin:', SCM_selectedCoin.symbol, 'with API ID:', SCM_coinPairIdForAPI);
-    currentCoinPairId.current = SCM_coinPairIdForAPI; // Update ref to reflect the coin being processed
+    console.log('SpotTrading: Processing selected coin:', selectedCoin.symbol, 'with API ID:', coinPairIdForAPI);
+    currentCoinPairId.current = coinPairIdForAPI;
 
     try {
       const token = localStorage.getItem('authToken');
@@ -302,77 +266,72 @@ const SpotTrading = () => {
       let uid = localStorage.getItem('uid');
       const isLoggedIn = token && userId;
 
+      // Get coin data from cache first
+      const coinDataFromCache = getCoinDataFromCache(selectedCoin.symbol);
+
       if (!isLoggedIn) {
-        const coinData = await fetchCoinData(SCM_selectedCoin);
-        if (coinData) {
-          setCryptoDataWithLog(coinData);
-          setError(null); // Clear previous errors
+        if (coinDataFromCache) {
+          setCryptoDataWithLog(coinDataFromCache);
+          setError(null);
         } else {
-          setError(`Failed to load details for ${SCM_selectedCoin.symbol}`);
+          setError(`Failed to load details for ${selectedCoin.symbol}`);
         }
         setUserBalance({ cryptoSpotBalance: 0, usdtSpotBalance: 0 });
       } else {
-        if (!uid && userId) { // Fetch uid if missing
+        if (!uid && userId) {
           try {
             const userInfoResponse = await axios.get(
               `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${userId}`,
               { headers: { 'Authorization': `Bearer ${token}` } }
             );
-            uid = userInfoResponse.data?.user?.uid || 'yE8vKBNw'; // Use a fallback if needed
+            uid = userInfoResponse.data?.user?.uid || 'yE8vKBNw';
             localStorage.setItem('uid', uid);
           } catch (apiError) {
             console.error("SpotTrading: Error fetching UID", apiError);
-            uid = 'yE8vKBNw'; // Fallback UID
+            uid = 'yE8vKBNw';
           }
         }
 
-        const walletResponse = await fetchWalletData(uid, SCM_coinPairIdForAPI); // Use SCM_coinPairIdForAPI
+        const walletResponse = await fetchWalletData(uid, coinPairIdForAPI);
         let finalCryptoData;
 
-        const coinDetails = await fetchCoinData(SCM_selectedCoin);
-
         if (walletResponse && walletResponse.cryptoData) {
+          // Merge wallet data with cached coin data
           finalCryptoData = {
-            ...(coinDetails || {}), // Start with coinDetails, provides better price, 24h etc.
-            ...walletResponse.cryptoData, // Wallet data might have name/symbol from wallet's perspective
-             // Prioritize details from coinDetails if they exist
-            cryptoName: coinDetails?.cryptoName || walletResponse.cryptoData.cryptoName || SCM_selectedCoin.name,
-            cryptoSymbol: coinDetails?.cryptoSymbol || walletResponse.cryptoData.cryptoSymbol || SCM_selectedCoin.symbol,
-            cryptoPrice: coinDetails?.cryptoPrice ?? parseFloat(SCM_selectedCoin.price || 0), // Ensure price is number
-            cryptoLogoPath: coinDetails?.cryptoLogoPath || walletResponse.cryptoData.logo_path || SCM_selectedCoin.logo_path,
-            // Ensure SubHeader compatible fields are present from the most reliable source
-            crypto_name: coinDetails?.crypto_name || walletResponse.cryptoData.crypto_name || SCM_selectedCoin.name,
-            crypto_symbol: coinDetails?.crypto_symbol || walletResponse.cryptoData.crypto_symbol || SCM_selectedCoin.symbol,
-            price: coinDetails?.price ?? parseFloat(SCM_selectedCoin.price || 0),
-            crypto_logo_path: coinDetails?.crypto_logo_path || walletResponse.cryptoData.logo_path || SCM_selectedCoin.logo_path,
-            usdt_symbol: coinDetails?.usdt_symbol || walletResponse.cryptoData.usdt_symbol || 'USDT',
+            ...(coinDataFromCache || {}),
+            ...walletResponse.cryptoData,
+            // Prioritize cached data for price and market info
+            cryptoPrice: coinDataFromCache?.cryptoPrice ?? walletResponse.cryptoData.cryptoPrice,
+            priceChange24h: coinDataFromCache?.priceChange24h ?? 0,
+            '24_high': coinDataFromCache?.['24_high'],
+            '24_low': coinDataFromCache?.['24_low'],
+            'volume_24h': coinDataFromCache?.['volume_24h'],
+            // Ensure compatibility fields
+            price: coinDataFromCache?.price ?? walletResponse.cryptoData.price,
+            crypto_symbol: coinDataFromCache?.crypto_symbol || walletResponse.cryptoData.crypto_symbol,
+            crypto_name: coinDataFromCache?.crypto_name || walletResponse.cryptoData.crypto_name,
+            crypto_logo_path: coinDataFromCache?.crypto_logo_path || walletResponse.cryptoData.crypto_logo_path,
           };
-          if (coinDetails) { // If coinDetails were fetched, merge them carefully
-            finalCryptoData.priceChange24h = coinDetails.priceChange24h;
-            finalCryptoData['24_high'] = coinDetails['24_high'];
-            finalCryptoData['24_low'] = coinDetails['24_low'];
-            finalCryptoData['volume_24h'] = coinDetails['volume_24h'];
-          }
 
           setUserBalance(walletResponse.balance || { cryptoSpotBalance: 0, usdtSpotBalance: 0 });
-        } else if (coinDetails) { // Wallet fetch failed or no data, but coin details exist
-           console.warn("SpotTrading: Wallet data failed or empty, using coinDetails as primary source.");
-          finalCryptoData = coinDetails;
+        } else if (coinDataFromCache) {
+          console.warn("SpotTrading: Wallet data failed or empty, using cached coin data.");
+          finalCryptoData = coinDataFromCache;
           setUserBalance({ cryptoSpotBalance: 0, usdtSpotBalance: 0 });
-        } else { // Both wallet and coin details failed for SCM_selectedCoin
-          setError(`Failed to load data for ${SCM_selectedCoin.symbol}.`);
-          setCryptoData(null); // Clear data
+        } else {
+          setError(`Failed to load data for ${selectedCoin.symbol}.`);
+          setCryptoData(null);
           setLoading(false);
           setStatsLoading(false);
           return;
         }
         
         setCryptoDataWithLog(finalCryptoData);
-        setError(null); // Clear previous errors on successful data load
-        setStatsLoading(false); // Ensure statsLoading is cleared on success
+        setError(null);
+        setStatsLoading(false);
       }
 
-      isInitialized.current = true; // Mark as initialized after first successful load
+      isInitialized.current = true;
     } catch (err) {
       console.error('Error fetching crypto data:', err);
       setError('Failed to load trading data. Please try again later.');
@@ -383,15 +342,15 @@ const SpotTrading = () => {
   }, [
     coinPairId, 
     availableCoins, 
-    fetchCoinData, 
+    getCoinDataFromCache, 
     fetchWalletData,
-    setSearchParams
+    setSearchParams,
+    coinsLoading
   ]);
 
-  // Effect to handle coin pair changes - only when necessary
+  // Effect to handle coin pair changes
   useEffect(() => {
-    if (availableCoins.length > 0) {
-      // Use timeout to debounce rapid changes
+    if (availableCoins.length > 0 && !coinsLoading) {
       fetchTimeoutRef.current = setTimeout(() => {
         fetchCryptoData(false);
       }, 100);
@@ -402,9 +361,9 @@ const SpotTrading = () => {
         clearTimeout(fetchTimeoutRef.current);
       }
     };
-  }, [coinPairId, availableCoins.length, fetchCryptoData]); // Include fetchCryptoData to ensure updates
+  }, [coinPairId, availableCoins.length, fetchCryptoData, coinsLoading]);
 
-  // Fetch user balance after trade (without affecting main data)
+  // Fetch user balance after trade
   const fetchUserBalance = useCallback(async () => {
     try {
       const token = localStorage.getItem('authToken');
@@ -448,7 +407,7 @@ const SpotTrading = () => {
     }
   }, [coinPairId]);
 
-  // Handle coin selection from FavoritesBar with proper debouncing
+  // Handle coin selection from FavoritesBar
   const handleCoinSelect = useCallback((selectedCoinPairId) => {
     const selectedId = selectedCoinPairId.toString();
     const currentId = coinPairId.toString();
@@ -458,47 +417,23 @@ const SpotTrading = () => {
     if (selectedId !== currentId) {
       console.log('Switching coin from', currentId, 'to', selectedId);
       
-      // Immediately update the UI with basic coin data
+      // Get coin data from cache immediately for instant UI update
       const selectedCoin = availableCoins.find(coin => 
         (coin.coin_pair && coin.coin_pair.toString() === selectedId) ||
         (coin.id && coin.id.toString() === selectedId)
       );
       
-      console.log('Found selected coin for', selectedId, ':', selectedCoin);
-      
       if (selectedCoin) {
-        // Immediately set the basic crypto data for instant UI update
-        const basicCryptoData = {
-          cryptoName: selectedCoin.name,
-          cryptoSymbol: selectedCoin.symbol,
-          cryptoPrice: parseFloat(selectedCoin.price || 0),
-          cryptoLogoPath: selectedCoin.logo_path,
-          priceChange24h: parseFloat(selectedCoin.price_change_24h || 0),
-          usdtName: 'USDT',
-          usdtSymbol: selectedCoin.pair_name || 'USDT',
-          usdtLogoPath: '',
-          '24_high': selectedCoin['24_high'] || null,
-          '24_low': selectedCoin['24_low'] || null,
-          'volume_24h': selectedCoin.volume_24h || null,
-          // Keep price and other data from the coin list
-          price: parseFloat(selectedCoin.price || 0),
-          crypto_symbol: selectedCoin.symbol,
-          crypto_name: selectedCoin.name,
-          crypto_logo_path: selectedCoin.logo_path,
-          usdt_symbol: selectedCoin.pair_name || 'USDT'
-        };
-        
-        setCryptoDataWithLog(basicCryptoData);
-        console.log('Immediately updated UI with:', basicCryptoData.cryptoSymbol, basicCryptoData.cryptoLogoPath);
-      } else {
-        console.log('No coin found for selectedId:', selectedId);
+        const cachedCoinData = getCoinDataFromCache(selectedCoin.symbol);
+        if (cachedCoinData) {
+          setCryptoDataWithLog(cachedCoinData);
+          console.log('Immediately updated UI with cached data for:', selectedCoin.symbol);
+        }
       }
       
       setSearchParams({ coin_pair_id: selectedId });
-    } else {
-      console.log('Same coin selected, no change needed');
     }
-  }, [coinPairId, setSearchParams, availableCoins]);
+  }, [coinPairId, setSearchParams, availableCoins, getCoinDataFromCache]);
 
   // Mobile trade tab handlers
   const handleMobileTradeTab = useCallback((tab) => {
@@ -546,14 +481,31 @@ const SpotTrading = () => {
     };
   }, []);
 
+  // Format subHeaderData for consistency
+  const subHeaderData = useMemo(() => {
+    if (!cryptoData) return null;
+    
+    return {
+      crypto_symbol: cryptoData.crypto_symbol || cryptoData.cryptoSymbol,
+      crypto_name: cryptoData.crypto_name || cryptoData.cryptoName,
+      price: cryptoData.price || cryptoData.cryptoPrice,
+      crypto_logo_path: cryptoData.crypto_logo_path || cryptoData.cryptoLogoPath,
+      usdt_symbol: cryptoData.usdt_symbol || cryptoData.usdtSymbol || 'USDT',
+      priceChange24h: cryptoData.priceChange24h || cryptoData.price_change_24h || 0,
+      '24_high': cryptoData['24_high'],
+      '24_low': cryptoData['24_low'],
+      volume_24h: cryptoData.volume_24h
+    };
+  }, [cryptoData]);
+
   return (
     <div className="spot-trading-container">
       <SubHeader
-        cryptoData={cryptoData}
+        cryptoData={subHeaderData}
         coinPairId={coinPairId}
         availableCoins={availableCoins}
         onCoinSelect={handleCoinSelect}
-        loading={loading && !isInitialized.current}
+        loading={(loading && !isInitialized.current) || coinsLoading}
         error={error}
         statsLoading={statsLoading}
       />

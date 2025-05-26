@@ -343,48 +343,7 @@ const Navbar = () => {
           <img src="/assets/logo/tradex-icon.png" alt="Logo" />
         </Link>
         <nav className="desktop-nav">
-          <div className="nav-item">
-            crypto <i className="fas fa-chevron-down"></i>
-          </div>
-          <div className="nav-item">
-            Discover <i className="fas fa-chevron-down"></i>
-              <div className='dropdown-menu'>
-                <Link to="/market" className="dropdown-link">
-                  <div className="dropdown-item with-arrow">
-                      <div className="dropdown-icon">
-                        <i className="fas fa-coins"></i>
-                      </div>
-                      <div className="dropdown-content">
-                        <h3>Markets</h3>
-                        <p>View the latest crypto prices, volume, and data</p>
-                      </div>
-                      <i className="fas fa-chevron-right"></i>
-                  </div>
-                </Link>
-                
-                <div className="dropdown-item with-arrow">
-                    <div className="dropdown-icon">
-                      <i className="fas fa-coins"></i>
-                    </div>
-                    <div className="dropdown-content">
-                      <h3>Opportunities</h3>
-                      <p>Discover hot and new crypto</p>
-                    </div>
-                    <i className="fas fa-chevron-right"></i>
-                </div>
-                <div className="dropdown-item with-arrow">
-                    <div className="dropdown-icon">
-                      <i className="fas fa-coins"/>
-                    </div>
-                    <div className="dropdown-content">
-                      <h3>Marketplace</h3>
-                      <p>Reap high returns with a community of top traders</p>
-                    </div>
-                    <i className="fas fa-chevron-right"/>
-                </div>
-              </div>
-            </div>
-          <div className="nav-item">
+        <div className="nav-item">
             Trade <i className="fas fa-chevron-down"/>
             <div className="dropdown-menu">
               <h2>Trading instruments</h2>
@@ -496,6 +455,45 @@ const Navbar = () => {
             </div>
           </div>
           <div className="nav-item">
+            Discover <i className="fas fa-chevron-down"></i>
+              <div className='dropdown-menu'>
+                <Link to="/market" className="dropdown-link">
+                  <div className="dropdown-item with-arrow">
+                      <div className="dropdown-icon">
+                        <i className="fas fa-coins"></i>
+                      </div>
+                      <div className="dropdown-content">
+                        <h3>Markets</h3>
+                        <p>View the latest crypto prices, volume, and data</p>
+                      </div>
+                      <i className="fas fa-chevron-right"></i>
+                  </div>
+                </Link>
+                
+                <div className="dropdown-item with-arrow">
+                    <div className="dropdown-icon">
+                      <i className="fas fa-coins"></i>
+                    </div>
+                    <div className="dropdown-content">
+                      <h3>Opportunities</h3>
+                      <p>Discover hot and new crypto</p>
+                    </div>
+                    <i className="fas fa-chevron-right"></i>
+                </div>
+                <div className="dropdown-item with-arrow">
+                    <div className="dropdown-icon">
+                      <i className="fas fa-coins"/>
+                    </div>
+                    <div className="dropdown-content">
+                      <h3>Marketplace</h3>
+                      <p>Reap high returns with a community of top traders</p>
+                    </div>
+                    <i className="fas fa-chevron-right"/>
+                </div>
+              </div>
+            </div>
+          
+          <div className="nav-item">
             Grow <i className="fas fa-chevron-down"></i>
             <div className='dropdown-menu'>
               <div className="dropdown-section">
@@ -570,13 +568,8 @@ const Navbar = () => {
               </Link>
             </div>
         </div>
-          <div className="nav-item">
-            Build <i className="fas fa-chevron-down"></i>
-          </div>
-          <div className="nav-item">
-            Institutional <i className="fas fa-chevron-down"></i>
-          </div>
-          <div className="nav-item">Learn</div>
+       
+
           <div 
             className="nav-item"
             onMouseEnter={() => setShowMoreDropdown(true)}
@@ -865,18 +858,7 @@ const Navbar = () => {
                 <Link to="/transfer" className="menu-item">
                   <i className="fas fa-exchange-alt"></i> Transfer
                 </Link>
-                <Link to="/analysis" className="menu-item">
-                  <i className="fas fa-chart-line"></i> Analysis
-                </Link>
-                <Link to="/order-center" className="menu-item">
-                  <i className="fas fa-clipboard-list"></i> Order center
-                </Link>
-                <Link to="/trading-fees" className="menu-item">
-                  <i className="fas fa-tags"></i> My trading fees
-                </Link>
-                <Link to="/por-reports" className="menu-item">
-                  <i className="fas fa-file-alt"></i> PoR reports
-                </Link>
+               
               </div>
             </div>
 
@@ -907,24 +889,8 @@ const Navbar = () => {
                 <Link to="/security" className="menu-item">
                   <i className="fas fa-shield-alt"></i> Security
                 </Link>
-                <Link to="/account/profile/verify" className="menu-item">
-                  <i className="fas fa-id-card"></i> Verification
-                </Link>
-                <Link to="/country-region" className="menu-item">
-                  <i className="fas fa-globe"></i> Country/Region
-                </Link>
-                <Link to="/preferences" className="menu-item">
-                  <i className="fas fa-cog"></i> Preferences
-                </Link>
-                <Link to="/sub-accounts" className="menu-item">
-                  <i className="fas fa-users"></i> Sub-accounts
-                </Link>
-                <Link to="/api" className="menu-item">
-                  <i className="fas fa-code"></i> API
-                </Link>
-                <Link to="/third-party" className="menu-item">
-                  <i className="fas fa-plug"></i> Third-party authorization
-                </Link>
+      
+                
                 <div className="menu-item logout" onClick={handleLogout}>
                   <i className="fas fa-sign-out-alt"></i> Log out
                 </div>

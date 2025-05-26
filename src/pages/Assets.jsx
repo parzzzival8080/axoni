@@ -137,24 +137,14 @@ export default function Assets() {
           >
             Overview
           </div>
-          <div 
-            className={activeTab === "funding" ? "header-tab active" : "header-tab"}
-            onClick={() => setActiveTab("funding")}
-          >
-            Funding
-          </div>
+      
           <div 
             className={activeTab === "trading" ? "header-tab active" : "header-tab"}
             onClick={() => setActiveTab("trading")}
           >
             Trading
           </div>
-          <div className="header-tab">Grow</div>
-          <div className="header-tab">Analysis</div>
-          <div className="header-tab">Order center</div>
-          <div className="header-tab">Fees</div>
-          <div className="header-tab">Account statement</div>
-          <div className="header-tab">P&L reports</div>
+  
         </div>
       </div>
       
