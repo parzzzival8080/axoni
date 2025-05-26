@@ -1,72 +1,75 @@
-import React, { useState } from 'react';
+import React from 'react';
+import svgIcon from '../../assets/homepage/faq.png';
 
-const FAQItem = ({ question, answer, isOpen, onClick }) => (
-  <div className="border-b border-gray-800">
-    <button
-      className="w-full py-4 flex items-center justify-between text-left focus:outline-none"
-      onClick={onClick}
-    >
-      <span className="text-lg font-semibold text-white">{question}</span>
-      <span className={`transform transition-transform ${isOpen ? 'rotate-180' : ''}`}>
-        ▼
-      </span>
-    </button>
-    <div
-      className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-48' : 'max-h-0'}`}
-    >
-      <p className="pb-4 text-gray-400">{answer}</p>
+const ServiceItem = ({ title, description, isActive }) => (
+  <div className="flex items-start gap-4 mb-8">
+    <div className={`w-3 h-3 rounded-full mt-2 flex-shrink-0 ${
+      isActive ? 'bg-white' : 'bg-gray-500'
+    }`} />
+    <div>
+      <h3 className="text-white text-xl font-bold mb-2">{title}</h3>
+      <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
     </div>
   </div>
 );
 
-const FAQ = () => {
-  const [activeIndex, setActiveIndex] = useState(null);
-
-  const faqs = [
+const Services = () => {
+  const services = [
     {
-      question: 'What is cryptocurrency and how does it work?',
-      answer: 'Cryptocurrency is a digital or virtual form of currency that uses cryptography for security. It operates on decentralized networks based on blockchain technology.'
+      title: 'Spot Trading',
+      description: 'Buy, sell or trade crypto at the current market price.',
+      isActive: true
     },
     {
-      question: 'How do I create an account?',
-      answer: 'Creating an account is simple. Click the Sign Up button, provide your email, create a password, and follow the verification steps. The process takes just a few minutes.'
+      title: 'Perpetual Futures',
+      description: 'Get into a contract by buying long or selling short.',
+      isActive: false
     },
     {
-      question: 'What payment methods do you accept?',
-      answer: 'We accept various payment methods including bank transfers, credit/debit cards, and cryptocurrency deposits. Available methods may vary by region.'
+      title: 'Flux Earn',
+      description: 'One-click pledge for daily income increase.',
+      isActive: false
     },
     {
-      question: 'Is my crypto secure with you?',
-      answer: 'Yes, we employ industry-leading security measures including cold storage, two-factor authentication, and regular security audits to protect your assets.'
-    },
-    {
-      question: 'What are the trading fees?',
-      answer: 'Our trading fees are competitive and vary based on your trading volume. View our fee schedule for detailed information about maker and taker fees.'
+      title: 'New Listing',
+      description: 'Subscribe to high-quality new tokens.',
+      isActive: false
     }
   ];
 
-  const toggleAccordion = (index) => {
-    setActiveIndex(activeIndex === index ? null : index);
-  };
-
   return (
-    <div className="bg-black py-16">
-      <div className="container mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-bold mb-8 text-white">Frequently Asked Questions</h2>
-        <div className="max-w-3xl mx-auto">
-          {faqs.map((faq, index) => (
-            <FAQItem
-              key={index}
-              question={faq.question}
-              answer={faq.answer}
-              isOpen={activeIndex === index}
-              onClick={() => toggleAccordion(index)}
+    <div className="bg-black py-20">
+      <div className="container mx-auto px-8 md:px-16 lg:px-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          {/* Left side - Services list */}
+          <div className="pt-8">
+            <h2 className="text-3xl md:text-4xl font-bold mb-12 text-white leading-tight">
+              A variety of services for you to choose from
+            </h2>
+            <div>
+              {services.map((service, index) => (
+                <ServiceItem
+                  key={index}
+                  title={service.title}
+                  description={service.description}
+                  isActive={service.isActive}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Right side - Image */}
+          <div className="flex justify-center lg:justify-end">
+            <img
+              src={svgIcon}
+              alt="Services Illustration"
+              className="w-full max-w-lg h-auto"
             />
-          ))}
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default FAQ;
+export default Services;

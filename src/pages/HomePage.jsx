@@ -14,9 +14,8 @@ const HomePage = () => {
       <TradingGame />
       <Trading />
       <Journey />
-      <About />
-      <News />
       <FAQ />
+      <News />
     </div>
   );
 };

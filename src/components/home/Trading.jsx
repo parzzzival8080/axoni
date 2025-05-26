@@ -1,73 +1,162 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const TrendingCoin = ({ symbol, name, price, change, chartData }) => (
-  <Link to={`/spot/${symbol}`} className="flex items-center justify-between p-4 hover:bg-gray-900 rounded-lg transition-colors">
-    <div className="flex items-center gap-4">
-      <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center">
-        {symbol.slice(0, 1)}
+const TrendingCoin = ({ symbol, price, change, high, volume, chart }) => (
+  <div className="flex items-center justify-between py-3 hover:bg-gray-900/50 transition-colors">
+    <div className="flex items-center gap-3 flex-1">
+      <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
+        <span className="text-xs font-semibold text-white">
+          {symbol.split('/')[0].slice(0, 1)}
+        </span>
       </div>
-      <div>
-        <h3 className="font-semibold">{name}</h3>
-        <p className="text-sm text-gray-400">{symbol}</p>
-      </div>
+      <span className="text-white font-medium">{symbol}</span>
     </div>
-    <div className="flex items-center gap-8">
-      <div className="text-right">
-        <p className="font-semibold">${price}</p>
-        <p className={`text-sm ${change >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-          {change >= 0 ? '+' : ''}{change}%
-        </p>
-      </div>
-      <div className="w-24 h-12">
-        <svg viewBox="0 0 100 40" className={`w-full h-full ${change >= 0 ? 'text-green-500' : 'text-red-500'} opacity-50`}>
-          <path d={chartData} fill="none" stroke="currentColor" strokeWidth="2" />
-        </svg>
-      </div>
+    
+    <div className="text-white font-medium w-24 text-right">
+      ${price}
     </div>
-  </Link>
+    
+    <div className="w-20 text-right">
+      <span className={`text-sm font-medium ${
+        change >= 0 ? 'text-green-500' : 'text-red-500'
+      }`}>
+        {change >= 0 ? '+' : ''}{change}%
+      </span>
+    </div>
+    
+    <div className="text-white font-medium w-24 text-right">
+      {high}
+    </div>
+    
+    <div className="text-white font-medium w-20 text-right">
+      {volume}
+    </div>
+    
+    <div className="w-24 h-8 flex items-center justify-center">
+      <svg viewBox="0 0 80 20" className="w-full h-full">
+        <path 
+          d={chart} 
+          fill="none" 
+          stroke={change >= 0 ? '#10b981' : '#ef4444'} 
+          strokeWidth="1.5"
+          className="opacity-80"
+        />
+      </svg>
+    </div>
+    
+    <div className="w-16 text-right">
+      <button className="text-orange-500 text-sm font-medium hover:text-orange-400 transition-colors">
+        Trade
+      </button>
+    </div>
+  </div>
 );
 
 const Trading = () => {
-  // Sample data - in real app, this would come from an API
+  const [activeTab, setActiveTab] = useState('Popular Futures');
+  
+  const tabs = ['Popular Futures', 'Popular Spot', 'Gainers'];
+  
   const trendingCoins = [
     {
-      symbol: 'BTC/USDT',
-      name: 'Bitcoin',
-      price: '43,680.21',
-      change: 2.34,
-      chartData: 'M0,20 Q25,25 50,15 T100,20' // Sample SVG path
+      symbol: 'BTCUSDT',
+      price: '104,569.0',
+      change: 1.20,
+      high: '106,108.8',
+      volume: '7.44B',
+      chart: 'M5,15 Q20,10 35,12 Q50,8 65,11 Q75,9 75,9'
     },
     {
-      symbol: 'ETH/USDT',
-      name: 'Ethereum',
-      price: '2,280.15',
-      change: -1.2,
-      chartData: 'M0,15 Q25,25 50,10 T100,25' // Sample SVG path
+      symbol: 'BTCUSDT',
+      price: '104,569.0',
+      change: 1.20,
+      high: '106,108.8',
+      volume: '7.44B',
+      chart: 'M5,15 Q20,10 35,12 Q50,8 65,11 Q75,9 75,9'
     },
     {
-      symbol: 'SOL/USDT',
-      name: 'Solana',
-      price: '98.45',
-      change: 5.67,
-      chartData: 'M0,20 Q25,10 50,25 T100,15' // Sample SVG path
+      symbol: 'BTCUSDT',
+      price: '104,569.0',
+      change: 1.20,
+      high: '106,108.8',
+      volume: '7.44B',
+      chart: 'M5,15 Q20,10 35,12 Q50,8 65,11 Q75,9 75,9'
     },
     {
-      symbol: 'XRP/USDT',
-      name: 'Ripple',
-      price: '0.6234',
-      change: -0.89,
-      chartData: 'M0,15 Q25,20 50,15 T100,20' // Sample SVG path
+      symbol: 'BTCUSDT',
+      price: '104,569.0',
+      change: 1.20,
+      high: '106,108.8',
+      volume: '7.44B',
+      chart: 'M5,15 Q20,10 35,12 Q50,8 65,11 Q75,9 75,9'
+    },
+    {
+      symbol: 'BTCUSDT',
+      price: '104,569.0',
+      change: 1.20,
+      high: '106,108.8',
+      volume: '7.44B',
+      chart: 'M5,15 Q20,10 35,12 Q50,8 65,11 Q75,9 75,9'
     },
   ];
 
   return (
     <div className="bg-black py-16">
-      <div className="container mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-bold mb-8 text-white">Trending Cryptocurrencies</h2>
-        <div className="grid gap-4">
-          {trendingCoins.map((coin) => (
-            <TrendingCoin key={coin.symbol} {...coin} />
+      <div className="container mx-auto px-8 md:px-16 lg:px-24">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-white">
+            Trending Cryptocurrencies
+          </h2>
+          <button className="text-gray-400 text-sm hover:text-white transition-colors">
+            View More
+          </button>
+        </div>
+
+        {/* Tabs */}
+        <div className="flex gap-8 mb-6">
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`text-sm font-medium transition-colors ${
+                activeTab === tab
+                  ? 'text-white border-b-2 border-orange-500 pb-2'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* Table Header */}
+        <div className="flex items-center justify-between py-3 border-b border-gray-800 mb-4">
+          <div className="flex items-center gap-3 flex-1">
+            <span className="text-gray-400 text-sm">Trading Pairs</span>
+          </div>
+          <div className="w-24 text-right">
+            <span className="text-gray-400 text-sm">Last Traded Price</span>
+          </div>
+          <div className="w-20 text-right">
+            <span className="text-gray-400 text-sm">24H Change</span>
+          </div>
+          <div className="w-24 text-right">
+            <span className="text-gray-400 text-sm">24H High</span>
+          </div>
+          <div className="w-20 text-right">
+            <span className="text-gray-400 text-sm">24H Trading Volume</span>
+          </div>
+          <div className="w-24 text-center">
+            <span className="text-gray-400 text-sm">Chart</span>
+          </div>
+          <div className="w-16"></div>
+        </div>
+
+        {/* Coin List */}
+        <div className="space-y-1">
+          {trendingCoins.map((coin, index) => (
+            <TrendingCoin key={index} {...coin} />
           ))}
         </div>
       </div>
