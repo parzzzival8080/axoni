@@ -4,7 +4,7 @@ import axios from 'axios';
 import {QRCodeSVG} from 'qrcode.react';
 import './Navbar.css';
 import { fetchAllCoins } from '../../services/spotTradingApi';
-import defaultCoinLogo from '../../assets/coin/bitcoin-2136339_640.webp';
+import defaultCoinLogo from '../../assets/coin/btc.webp';
 import ComingSoon from '../../components/common/ComingSoon';
 import LanguageModal from './LanguageModal';
 

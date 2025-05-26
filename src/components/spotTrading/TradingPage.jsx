@@ -27,6 +27,7 @@ const TradingPage = () => {
     usdtBalance: 10000
   });
   const [mobileTradeTab, setMobileTradeTab] = useState(''); // '' | 'buy' | 'sell'
+  const [statsLoading, setStatsLoading] = useState(false);
 
   // Load coins from cache or API
   const loadCoins = useCallback(async () => {

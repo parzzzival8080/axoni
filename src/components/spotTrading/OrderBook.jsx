@@ -6,6 +6,55 @@ import { faSpinner, faExclamationTriangle, faSync } from '@fortawesome/free-soli
 import { formatNumber } from '../../utils/numberFormatter'; // Assuming you have this utility
 import axios from 'axios';
 
+// Styled components moved outside
+const spin = keyframes`0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); }`;
+const shake = keyframes`0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-3px); } 40%, 80% { transform: translateX(3px); }`;
+
+const SpinnerIcon = styled(FontAwesomeIcon)`
+  animation: ${spin} 1s linear infinite;
+  color: #fff;
+`;
+
+const LoadingText = styled.div`
+  color: #aaa;
+  margin-top: 8px;
+  font-size: 1rem;
+`;
+
+const ErrorIconStyled = styled(FontAwesomeIcon)`
+  color: #ff5b5b;
+  animation: ${shake} 0.6s;
+`;
+
+const ErrorText = styled.div`
+  color: #ff5b5b;
+  margin: 8px 0;
+  font-size: 1rem;
+`;
+
+const LoadingSpinner = () => (
+  <div className="order-book-loading" style={{ textAlign: 'center', padding: '20px' }}>
+    <SpinnerIcon icon={faSpinner} size="2x" />
+    <LoadingText>Loading OKX order book data...</LoadingText>
+  </div>
+);
+
+const ConnectionError = ({ connectionStatus, reconnectAttempts, maxReconnectAttempts, handleManualReconnect }) => (
+  <div className="order-book-error" style={{ textAlign: 'center', padding: '20px' }}>
+    <ErrorIconStyled icon={faExclamationTriangle} size="2x" />
+    <ErrorText>
+      Connection to OKX failed.
+      {connectionStatus === 'error' ? ' An error occurred.' : ''}
+      <br />
+      {reconnectAttempts >= maxReconnectAttempts && connectionStatus !== 'fallback' ? 'Max retries reached. ' : ''}
+      Attempting to use fallback or try reconnecting.
+    </ErrorText>
+    <button className="reconnect-button" onClick={handleManualReconnect} style={{ padding: '8px 15px', background: '#5841d8', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+      <FontAwesomeIcon icon={faSync} /> Retry Connection
+    </button>
+  </div>
+);
+
 const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   const supportsWebSocket = typeof window !== 'undefined' && 'WebSocket' in window;
   const canUseWebSocket = supportsWebSocket; // Simplified, assuming fetch is generally available with WebSocket
@@ -432,35 +481,6 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   const cryptoSymbol = cryptoData?.cryptoSymbol || 'BTC';
   const usdtSymbol = 'USDT'; // Typically USDT for OKX pairs like BTC-USDT
 
-  const spin = keyframes`0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); }`;
-  const SpinnerIcon = styled(FontAwesomeIcon)`animation: ${spin} 1s linear infinite; color: #fff;`;
-  const LoadingText = styled.div`color: #aaa; margin-top: 8px; font-size: 1rem;`;
-  const LoadingSpinner = () => (
-    <div className="order-book-loading" style={{ textAlign: 'center', padding: '20px' }}>
-      <SpinnerIcon icon={faSpinner} size="2x" />
-      <LoadingText>Loading OKX order book data...</LoadingText>
-    </div>
-  );
-
-  const shake = keyframes`0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-3px); } 40%, 80% { transform: translateX(3px); }`;
-  const ErrorIconStyled = styled(FontAwesomeIcon)`color: #ff5b5b; animation: ${shake} 0.6s;`;
-  const ErrorText = styled.div`color: #ff5b5b; margin: 8px 0; font-size: 1rem;`;
-  const ConnectionError = () => (
-    <div className="order-book-error" style={{ textAlign: 'center', padding: '20px' }}>
-      <ErrorIconStyled icon={faExclamationTriangle} size="2x" />
-      <ErrorText>
-        Connection to OKX failed.
-        {connectionStatus === 'error' ? ' An error occurred.' : ''}
-        <br />
-        {reconnectAttempts >= maxReconnectAttempts && connectionStatus !== 'fallback' ? 'Max retries reached. ' : ''}
-        Attempting to use fallback or try reconnecting.
-      </ErrorText>
-      <button className="reconnect-button" onClick={handleManualReconnect} style={{ padding: '8px 15px', background: '#5841d8', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-        <FontAwesomeIcon icon={faSync} /> Retry Connection
-      </button>
-    </div>
-  );
-
   // Ensure we always display exactly 8 rows each for asks and bids
   const ensureExactRows = useCallback((data, count, isAsk) => {
     if (!data || data.length === 0) return Array(count).fill(null);
@@ -545,7 +565,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
               </div>
             </>
           ) : (connectionStatus === 'error' || connectionStatus === 'failed') && orderBook.asks.length === 0 ? (
-            <ConnectionError />
+            <ConnectionError connectionStatus={connectionStatus} reconnectAttempts={reconnectAttempts} maxReconnectAttempts={maxReconnectAttempts} handleManualReconnect={handleManualReconnect} />
           ) : (
             <>
               <div className="sell-orders">

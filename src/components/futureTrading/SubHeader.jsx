@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as farStar } from '@fortawesome/free-regular-svg-icons';
 import { faExternalLinkAlt, faChartLine, faCog, faChevronDown, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faFileAlt } from '@fortawesome/free-regular-svg-icons';
-import defaultCoinLogo from '../../assets/coin/bitcoin-2136339_640.webp';
+import defaultCoinLogo from '../../assets/coin/btc.webp';
 import { useNavigate } from 'react-router-dom';
 import './SubHeader.css';
 

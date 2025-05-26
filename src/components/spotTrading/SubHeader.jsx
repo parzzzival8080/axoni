@@ -9,10 +9,10 @@ import {
   faSearch 
 } from '@fortawesome/free-solid-svg-icons';
 import { faFileAlt } from '@fortawesome/free-regular-svg-icons';
-import defaultCoinLogo from '../../assets/coin/bitcoin-2136339_640.webp';
+import defaultCoinLogo from '../../assets/coin/btc.webp';
 import './SubHeader.css';
 
-const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loading, error }) => {
+const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loading, error, statsLoading }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -125,8 +125,9 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
   }
   if (error) {
     return (
-      <div className="sub-header error">
-        <div className="error-message">{error}</div>
+      <div className="sub-header-error-card">
+        <div className="sub-header-error-title">Error</div>
+        <div className="sub-header-error-message">{error}</div>
       </div>
     );
   }
@@ -165,10 +166,11 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
             className="selected-coin" 
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
-            <div className="coin-icon">
+            <div className="coin-icon" style={{background: 'none', boxShadow: 'none', borderRadius: '50%', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0}}>
               <img 
                 src={logoSrc} 
                 alt={cryptoSymbol} 
+                style={{width: 32, height: 32, objectFit: 'contain', background: 'none', boxShadow: 'none', borderRadius: '50%', padding: 0}}
                 onError={(e) => {
                   e.target.onerror = null; 
                   e.target.src = defaultCoinLogo;
@@ -257,10 +259,13 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
                           src={coin.logo_path} 
                           alt={coin.symbol}
                           style={{
-                            width: '100%',
-                            height: '100%',
+                            width: '32px',
+                            height: '32px',
                             borderRadius: '50%',
-                            objectFit: 'cover'
+                            objectFit: 'contain',
+                            background: 'none',
+                            boxShadow: 'none',
+                            padding: 0
                           }}
                           onError={(e) => {
                             e.target.onerror = null; 
@@ -332,6 +337,16 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
       </div>
       
       <div className="price-stats">
+        {statsLoading ? (
+          <div className="price-stats-skeleton">
+            <div className="skeleton-stat" />
+            <div className="skeleton-stat" />
+            <div className="skeleton-stat" />
+            <div className="skeleton-stat" />
+            <div className="skeleton-stat" />
+          </div>
+        ) : (
+        <>
         <div className="stat">
           <div className="value">
             <div className="flex items-center">
@@ -347,16 +362,14 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
             {cryptoName} price <FontAwesomeIcon icon={faExternalLinkAlt} className="ml-1" />
           </div>
         </div>
-
         <div className="stat">
           <div className="value">
-            <span className={`text ${priceChange24h >= 0 ? 'text-[#00b574]' : 'text-[#f23645]'}`}>
+            <span className={`text ${priceChange24h >= 0 ? 'text-[#00b574]' : 'text-[#f23645]'}`}> 
               {priceChange24h >= 0 ? '+' : ''}{priceChange24h?.toFixed(2)}%
             </span>
           </div>
           <div className="label">24h change</div>
         </div>
-
         <div className="stat">
           <div className="value blue">
             {parseFloat(low24h).toLocaleString(undefined, {
@@ -366,7 +379,6 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
           </div>
           <div className="label">24h low</div>
         </div>
-        
         <div className="stat">
           <div className="value green">
             {parseFloat(high24h).toLocaleString(undefined, {
@@ -376,7 +388,6 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
           </div>
           <div className="label">24h high</div>
         </div>
-        
         <div className="stat">
           <div className="value">
             {parseFloat(volume24h).toLocaleString(undefined, {
@@ -386,6 +397,8 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
           </div>
           <div className="label">24h volume ({cryptoSymbol})</div>
         </div>
+        </>
+        )}
       </div>
       
       <div className="leverage">10x</div>

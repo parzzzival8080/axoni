@@ -521,5 +521,21 @@ export const getCacheStats = () => {
     };
 };
 
+/**
+ * Get a coin from the all_coins cache by coin_pair or symbol
+ * @param {string|number} coinPairIdOrSymbol
+ * @returns {object|null}
+ */
+export function getCoinFromCache(coinPairIdOrSymbol) {
+  const cache = apiCache.get('all_coins');
+  if (!cache || !cache.data || !Array.isArray(cache.data.coins)) return null;
+  const coins = cache.data.coins;
+  if (!coinPairIdOrSymbol) return null;
+  return coins.find(
+    c => c.coin_pair?.toString() === coinPairIdOrSymbol.toString() ||
+         c.symbol?.toUpperCase() === coinPairIdOrSymbol.toString().toUpperCase()
+  ) || null;
+}
+
 // Export the formatPrice function as well
 export { formatPrice };

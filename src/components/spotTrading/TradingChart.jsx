@@ -20,7 +20,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
   const [shouldReinitialize, setShouldReinitialize] = useState(false);
   const [chartType, setChartType] = useState("candles");
   const [timeframe, setTimeframe] = useState("1");
-  const [timeframes, setTimeframes] = useState(["1", "5", "1", "4"]);
+  const [timeframes, setTimeframes] = useState(["1m", "5m", "15m", "4h"]);
 
   // Format the symbol for TradingView (use just the base symbol without USDT suffix)
   const formatSymbolForChart = (sym) => {
