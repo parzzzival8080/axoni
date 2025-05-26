@@ -765,3 +765,12 @@
     margin-bottom: var(--spacing-sm);
   }
 }
+
+/* Pill-shaped buttons for spot trading */
+.spot-trading-container .trade-form button,
+.spot-trading-container .trade-form .buy-btn,
+.spot-trading-container .trade-form .sell-btn,
+.spot-trading-container .trade-form .tab-btn,
+.spot-trading-container .trade-form .toggle-btn {
+  border-radius: 9999px !important;
+}

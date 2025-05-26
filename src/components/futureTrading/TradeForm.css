@@ -1,5 +1,5 @@
 .future-trading-container .trade-form {
-  --buy-color: #00B574;
+  --buy-color: #FF6901;
   --sell-color: #F23645;
   --primary-bg: #000000;
   --secondary-bg: #1A1A1A;
@@ -482,11 +482,16 @@
 }
 
 /* Action Button */
+.future-trading-container .trade-form .action-btn,
+.future-trading-container .trade-form button,
+.future-trading-container .future-login-pill-btn {
+  border-radius: 999px !important;
+}
+
 .future-trading-container .trade-form .action-btn {
   width: 100%;
   height: var(--button-height);
   border: none;
-  border-radius: 50px; /* Pill shape */
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
@@ -502,7 +507,7 @@
 }
 
 .future-trading-container .trade-form .action-btn.buy-more {
-  background: linear-gradient(135deg, #00B07C, #00D67F);
+  background: linear-gradient(135deg, #FF6901, #FF8C42);
 }
 
 .future-trading-container .trade-form .action-btn.sell {
@@ -534,7 +539,6 @@
   background-color: #ffffff !important;
   color: #000000 !important;
   border: none !important;
-  border-radius: 50px !important; /* Pill shape */
   cursor: pointer;
   transition: all 0.2s;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
