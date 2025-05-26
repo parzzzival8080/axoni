@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import mobileApp from '../../assets/homepage/mobile-app.png';
+import { FaGoogle, FaApple, FaTelegramPlane, FaWallet } from "react-icons/fa";
 
 const Hero = () => {
   return (
@@ -29,10 +30,18 @@ const Hero = () => {
             <p className="text-gray-400 mt-2">Sign up now to win rewards</p>
             <p className="text-gray-400">Or continue with</p>
             <div className="flex gap-2">
-              <div className="w-10 h-10 bg-gray-700 rounded-full"></div>
-              <div className="w-10 h-10 bg-gray-700 rounded-full"></div>
-              <div className="w-10 h-10 bg-gray-700 rounded-full"></div>
-              <div className="w-10 h-10 bg-gray-700 rounded-full"></div>
+              <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center text-white text-xl">
+                <FaGoogle />
+              </div>
+              <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center text-white text-xl">
+                <FaApple />
+              </div>
+              <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center text-white text-xl">
+                <FaTelegramPlane />
+              </div>
+              <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center text-white text-xl">
+                <FaWallet />
+              </div>
             </div>
           </div>
           <div className="flex-1 relative">

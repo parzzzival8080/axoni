@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FaSearch } from "react-icons/fa";
 import assetIcon from "../../assets/assets/411B1865A7B26122.webp";
 
 const TradingTab = ({ 
@@ -39,174 +40,205 @@ const TradingTab = ({
   const endIndex = startIndex + coinsPerPage;
   const paginatedCoins = filteredCoins.slice(startIndex, endIndex);
 
+  const formatNumber = (num) => {
+    return num.toLocaleString(undefined, { maximumFractionDigits: 2 });
+  };
+
   return (
-    <>
+    <div className="bg-gray-50 text-gray-900 p-6 min-h-screen">
+      {/* Breadcrumb */}
+      <div className="flex items-center text-gray-500 text-sm mb-6">
+        <span className="text-gray-900 font-medium">Trading</span>
+        <span className="mx-2">/</span>
+        <span>Assets</span>
+      </div>
+
+      {/* Assets Cards */}
       {coins.length > 0 ? (
-        <>
-          <div className="assets-cards">
-            <div className="asset-card">
-              <div className="card-content">
-                <div className="asset-value-container">
-                  <div className="asset-title">Assets value</div>
-                  <div className="asset-value">${overviewData.overview.toLocaleString()}</div>
-                  <div className="asset-description">
-                    Total assets value in account
-                  </div>
-                </div>
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+            <div className="text-gray-600 mb-2">Assets value</div>
+            <div className="text-3xl font-bold text-gray-900 mb-2">
+              ${formatNumber(overviewData.overview)}
             </div>
-            <div className="asset-card">
-              <div className="card-content">
-                <div className="asset-title">Recent transactions</div>
-                <div className="asset-description">No recent transactions</div>
-              </div>
-            </div>
+            <div className="text-gray-500">Total assets value in account</div>
           </div>
-        </>
+          
+          <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+            <div className="text-gray-600 mb-2">Recent transactions</div>
+            <div className="text-gray-500">No recent transactions</div>
+          </div>
+        </div>
       ) : (
-        <div className="assets-cards">
-          <div className="asset-card">
-            <div className="card-content">
-              <div className="asset-center">
-                <img src={assetIcon} alt="Assets icon" className="card-icon" />
-                <h3 className="card-heading">Add assets to start trading</h3>
-                <p className="card-subtext">Your assets will appear once you make a deposit or buy crypto with cash.</p>
-                <button className="deposit-button">Deposit</button>
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+            <div className="flex flex-col items-center text-center py-8">
+              <img src={assetIcon} alt="Assets icon" className="w-16 h-16 mb-4 opacity-50" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Add assets to start trading</h3>
+              <p className="text-gray-500 mb-4">Your assets will appear once you make a deposit or buy crypto with cash.</p>
+              <button className="bg-orange-500 hover:bg-orange-600 text-white py-2 px-6 rounded-lg font-medium transition-colors">
+                Deposit
+              </button>
             </div>
           </div>
-          <div className="asset-card">
-            <div className="card-content">
-              <div className="asset-center">
-                <img src={assetIcon} alt="Assets icon" className="card-icon" />
-                <h3 className="card-heading">Recent transactions</h3>
-                <p className="card-subtext">Your recent transactions will appear here.</p>
-              </div>
+          
+          <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+            <div className="flex flex-col items-center text-center py-8">
+              <img src={assetIcon} alt="Assets icon" className="w-16 h-16 mb-4 opacity-50" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Recent transactions</h3>
+              <p className="text-gray-500">Your recent transactions will appear here.</p>
             </div>
           </div>
         </div>
       )}
       
-      <div className="assets-tabs">
-        <div 
-          className={activeSubTab === "coins" ? "tab active" : "tab"}
-          onClick={() => setActiveSubTab("coins")}
-        >
-          Coins
+      {/* Tabs */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+        <div className="flex border-b border-gray-200">
+          <button 
+            className={`px-6 py-3 font-medium transition-colors ${
+              activeSubTab === "coins" 
+                ? "text-orange-500 border-b-2 border-orange-500" 
+                : "text-gray-600 hover:text-gray-800"
+            }`}
+            onClick={() => setActiveSubTab("coins")}
+          >
+            Coins
+          </button>
+          <button 
+            className={`px-6 py-3 font-medium transition-colors ${
+              activeSubTab === "earn" 
+                ? "text-orange-500 border-b-2 border-orange-500" 
+                : "text-gray-600 hover:text-gray-800"
+            }`}
+            onClick={() => setActiveSubTab("earn")}
+          >
+            Earn
+          </button>
         </div>
-        <div 
-          className={activeSubTab === "earn" ? "tab active" : "tab"}
-          onClick={() => setActiveSubTab("earn")}
-        >
-          Earn
-        </div>
-      </div>
-      
-      {activeSubTab === "coins" && (
-        <>
-          <div className="assets-filters">
-            <div className="assets-search-box">
-              <input 
-                type="text" 
-                placeholder="Search coin" 
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="search-input-white"
-              />
-            </div>
-            <div className="filter-buttons">
-              <button 
-                className="filter-button"
-                onClick={() => setShowZeroBalance(true)}
-              >
-                All assets
-              </button>
-              <button 
-                className="filter-button"
-                onClick={() => setShowZeroBalance(false)}
-              >
-                Hide zero balance
-              </button>
-            </div>
-          </div>
-          
-          <div className="assets-table">
-            {loading ? (
-              <p>Loading assets...</p>
-            ) : error ? (
-              <p>{error}</p>
-            ) : (
-              <table>
-                <thead>
-                  <tr>
-                    <th className="coin-header">Coin</th>
-                    <th>Full Name</th>
-                    <th className="right-align">Last Price</th>
-                    <th className="right-align">Balance</th>
-                    <th className="right-align">Value</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {paginatedCoins.map((coin) => (
-                    <tr key={coin.symbol}>
-                      <td className="coin-cell">
-                        {coin.logo ? (
-                          <img src={coin.logo} alt={coin.symbol} className="coin-logo" />
-                        ) : (
-                          <div className="coin-icon">{coin.symbol.charAt(0)}</div>
-                        )}
-                        <span>{coin.symbol}</span>
-                      </td>
-                      <td>{coin.name}</td>
-                      <td className="right-align">${coin.price}</td>
-                      <td className="right-align">{coin.balance}</td>
-                      <td className="right-align">${coin.value}</td>
-                    </tr>
-                  ))}
-                  {filteredCoins.length === 0 && (
-                    <tr>
-                      <td colSpan="5" className="empty-message">No coins found</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            )}
-          </div>
-          
-          <div className="pagination">
-            {totalPages > 0 && (
-              <>
-                {/* Previous page button */}
+        
+        {activeSubTab === "coins" && (
+          <div className="p-6">
+            {/* Filters */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+            <div className="relative flex-1">
+  <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+  <input 
+    type="text" 
+    placeholder="Search coin" 
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    className="w-full pl-10 pr-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-colors"
+  />
+</div>
+              <div className="flex gap-2">
                 <button 
-                  className="page-button nav-button" 
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors border ${
+                    showZeroBalance 
+                      ? "bg-orange-500 text-white border-orange-500" 
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200 border-gray-300"
+                  }`}
+                  onClick={() => setShowZeroBalance(true)}
+                >
+                  All assets
+                </button>
+                <button 
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors border ${
+                    !showZeroBalance 
+                      ? "bg-orange-500 text-white border-orange-500" 
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200 border-gray-300"
+                  }`}
+                  onClick={() => setShowZeroBalance(false)}
+                >
+                  Hide zero balance
+                </button>
+              </div>
+            </div>
+            
+            {/* Table */}
+            <div className="overflow-x-auto">
+              {loading ? (
+                <div className="text-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500 mx-auto"></div>
+                  <p className="text-gray-500 mt-2">Loading assets...</p>
+                </div>
+              ) : error ? (
+                <div className="text-red-500 text-center py-8">{error}</div>
+              ) : (
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-gray-200">
+                      <th className="text-left py-3 px-4 font-medium text-gray-600">Coin</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-600">Full Name</th>
+                      <th className="text-right py-3 px-4 font-medium text-gray-600">Last Price</th>
+                      <th className="text-right py-3 px-4 font-medium text-gray-600">Balance</th>
+                      <th className="text-right py-3 px-4 font-medium text-gray-600">Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {paginatedCoins.map((coin) => (
+                      <tr key={coin.symbol} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td className="py-3 px-4">
+                          <div className="flex items-center">
+                            {coin.logo ? (
+                              <img src={coin.logo} alt={coin.symbol} className="w-8 h-8 rounded-full mr-3" />
+                            ) : (
+                              <div className="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-medium mr-3">
+                                {coin.symbol.charAt(0)}
+                              </div>
+                            )}
+                            <span className="font-medium text-gray-900">{coin.symbol}</span>
+                          </div>
+                        </td>
+                        <td className="py-3 px-4 text-gray-600">{coin.name}</td>
+                        <td className="py-3 px-4 text-right text-gray-900">${coin.price}</td>
+                        <td className="py-3 px-4 text-right text-gray-900">{coin.balance}</td>
+                        <td className="py-3 px-4 text-right font-medium text-gray-900">${coin.value}</td>
+                      </tr>
+                    ))}
+                    {filteredCoins.length === 0 && (
+                      <tr>
+                        <td colSpan="5" className="py-8 text-center text-gray-500">
+                          No coins found
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              )}
+            </div>
+            
+            {/* Pagination */}
+            {totalPages > 0 && (
+              <div className="flex justify-center items-center gap-2 mt-6">
+                <button 
+                  className="px-3 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   onClick={() => setPage(Math.max(1, page - 1))}
                   disabled={page === 1}
                 >
                   &lt;
                 </button>
                 
-                {/* Generate page buttons dynamically */}
                 {[...Array(Math.min(totalPages, 5)).keys()].map(i => {
-                  // Show pages around the current page
                   let pageNum;
                   if (totalPages <= 5) {
-                    // If 5 or fewer pages, show all pages
                     pageNum = i + 1;
                   } else if (page <= 3) {
-                    // If near the start, show first 5 pages
                     pageNum = i + 1;
                   } else if (page >= totalPages - 2) {
-                    // If near the end, show last 5 pages
                     pageNum = totalPages - 4 + i;
                   } else {
-                    // Otherwise show 2 pages before and 2 after current page
                     pageNum = page - 2 + i;
                   }
                   
                   return (
                     <button 
                       key={pageNum} 
-                      className={page === pageNum ? "page-button active" : "page-button"} 
+                      className={`px-3 py-2 rounded-lg border transition-colors ${
+                        page === pageNum 
+                          ? "bg-orange-500 text-white border-orange-500" 
+                          : "border-gray-300 text-gray-600 hover:bg-gray-50"
+                      }`}
                       onClick={() => setPage(pageNum)}
                     >
                       {pageNum}
@@ -214,20 +246,28 @@ const TradingTab = ({
                   );
                 })}
                 
-                {/* Next page button */}
                 <button 
-                  className="page-button nav-button" 
+                  className="px-3 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   onClick={() => setPage(Math.min(totalPages, page + 1))}
                   disabled={page === totalPages}
                 >
                   &gt;
                 </button>
-              </>
+              </div>
             )}
           </div>
-        </>
-      )}
-    </>
+        )}
+
+        {activeSubTab === "earn" && (
+          <div className="p-6">
+            <div className="text-center py-12">
+              <div className="text-gray-500 mb-2">Earn features</div>
+              <div className="text-gray-400">Coming soon...</div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 
