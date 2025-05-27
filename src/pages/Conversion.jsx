@@ -11,9 +11,13 @@ import TetherLogo from '../assets/coin/usdt.png';
 const Conversion = () => {
     const [isFromModalOpen, setIsFromModalOpen] = useState(false);
     const [isToModalOpen, setIsToModalOpen] = useState(false);
+    const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [conversionError, setConversionError] = useState(null);
     const [conversionSuccess, setConversionSuccess] = useState(false);
+    const [conversionHistory, setConversionHistory] = useState([]);
+    const [historyLoading, setHistoryLoading] = useState(false);
+    const [historyError, setHistoryError] = useState(null);
     
     const [fromCurrency, setFromCurrency] = useState({
       id: 'usdt',
@@ -159,13 +163,63 @@ const Conversion = () => {
     const closeFromModal = () => setIsFromModalOpen(false);
     const openToModal = () => setIsToModalOpen(true);
     const closeToModal = () => setIsToModalOpen(false);
+    
+    const openHistoryModal = () => {
+      setIsHistoryModalOpen(true);
+      fetchConversionHistory();
+    };
+    
+    const closeHistoryModal = () => {
+      setIsHistoryModalOpen(false);
+    };
+    
+    const fetchConversionHistory = async () => {
+      if (!isAuthenticated) return;
+      
+      setHistoryLoading(true);
+      setHistoryError(null);
+      
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+        
+        // Use the same API endpoint but with GET method to fetch history
+        const url = `https://apiv2.bhtokens.com/api/v1/conversions?apikey=${apiKey}&uid=${uid}`;
+        
+        console.log('Fetching conversion history:', url);
+        
+        const response = await fetch(url, {
+          method: 'GET',
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch conversion history');
+        }
+        
+        const data = await response.json();
+        console.log('Conversion history response:', data);
+        
+        if (Array.isArray(data)) {
+          // Sort by ID in descending order (newest first)
+          const sortedHistory = [...data].sort((a, b) => b.id - a.id);
+          setConversionHistory(sortedHistory);
+        } else {
+          setConversionHistory([]);
+        }
+      } catch (error) {
+        console.error('Error fetching conversion history:', error);
+        setHistoryError(error.message || 'Failed to load conversion history');
+      } finally {
+        setHistoryLoading(false);
+      }
+    };
 
     const handleFromCurrencySelect = (currency) => {
       setFromCurrency(currency);
-      setFromAmount(''); 
-      setToAmount('');
       setIsFromModalOpen(false);
-      fetchBalance(); // Re-fetch balance for the new currency if needed, assuming USDT is the only 'from'
     };
 
     const handleToCurrencySelect = (currency) => {
@@ -400,7 +454,10 @@ const Conversion = () => {
         
         {/* Conversion history link */}
         <div className="mt-4 text-center">
-          <button className="flex items-center justify-center mx-auto text-sm text-gray-400 hover:text-gray-300">
+          <button 
+            className="flex items-center justify-center mx-auto text-sm text-gray-400 hover:text-gray-300"
+            onClick={openHistoryModal}
+          >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -525,6 +582,77 @@ const Conversion = () => {
           onClose={closeToModal} 
           onSelectCurrency={handleToCurrencySelect}
         />
+      )}
+      
+      {/* Conversion History Modal */}
+      {isHistoryModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
+          <div className="relative bg-[#1A1A1A] rounded-lg w-full max-w-2xl max-h-[80vh] overflow-hidden">
+            {/* Modal Header */}
+            <div className="flex justify-between items-center p-4 border-b border-gray-800">
+              <h3 className="text-xl font-semibold text-white">Conversion History</h3>
+              <button 
+                onClick={closeHistoryModal}
+                className="text-gray-400 hover:text-white"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            {/* Modal Body */}
+            <div className="p-4 overflow-y-auto max-h-[calc(80vh-120px)]">
+              {historyLoading ? (
+                <div className="flex justify-center items-center py-10">
+                  <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#FE7400]"></div>
+                </div>
+              ) : historyError ? (
+                <div className="text-red-500 text-center py-6">{historyError}</div>
+              ) : conversionHistory.length === 0 ? (
+                <div className="text-gray-400 text-center py-6">No conversion history found</div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-5 gap-2 text-sm text-gray-400 border-b border-gray-800 pb-2">
+                    <div>Date</div>
+                    <div>From</div>
+                    <div>To</div>
+                    <div>Amount</div>
+                    <div>Status</div>
+                  </div>
+                  
+                  {conversionHistory.map((item) => (
+                    <div key={item.id} className="grid grid-cols-5 gap-2 py-3 border-b border-gray-800 text-sm">
+                      <div className="text-gray-300">
+                        {new Date(item.created_at || Date.now()).toLocaleDateString()}
+                      </div>
+                      <div className="text-white font-medium">{item.convert_from}</div>
+                      <div className="text-white font-medium">{item.convert_to}</div>
+                      <div className="text-white font-medium">
+                        {parseFloat(item.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 8 })}
+                      </div>
+                      <div>
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-900 text-green-300">
+                          Completed
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            
+            {/* Modal Footer */}
+            <div className="border-t border-gray-800 p-4 flex justify-end">
+              <button
+                onClick={closeHistoryModal}
+                className="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )
