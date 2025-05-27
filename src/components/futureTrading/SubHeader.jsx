@@ -66,74 +66,49 @@ const SubHeader = ({ cryptoData, coinPairId, tradableCoins }) => {
     return Array(8).fill(0).map((_, index) => (
       <div 
         key={`skeleton-${index}`} 
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          padding: '16px 20px',
-          borderBottom: index < 7 ? '1px solid #1a1a1a' : 'none'
-        }}
+        className="flex items-center p-4 md:p-5 border-b border-okx-border last:border-b-0"
       >
-        <div style={{
-          width: '32px',
-          height: '32px',
-          marginRight: '16px',
-          borderRadius: '50%',
-          backgroundColor: '#1a1a1a',
-          animation: 'pulse 1.5s infinite ease-in-out'
-        }}></div>
-        <div style={{
-          flex: 1,
-          minWidth: 0,
-          paddingRight: '16px'
-        }}>
-          <div style={{
-            height: '16px',
-            width: '80px',
-            backgroundColor: '#1a1a1a',
-            marginBottom: '8px',
-            borderRadius: '2px',
-            animation: 'pulse 1.5s infinite ease-in-out'
-          }}></div>
-          <div style={{
-            height: '12px',
-            width: '120px',
-            backgroundColor: '#1a1a1a',
-            borderRadius: '2px',
-            animation: 'pulse 1.5s infinite ease-in-out'
-          }}></div>
+        <div className="w-8 h-8 md:w-8 md:h-8 mr-4 rounded-full bg-okx-secondary animate-pulse-slow flex-shrink-0"></div>
+        <div className="flex-1 min-w-0 pr-4">
+          <div className="h-4 w-20 bg-okx-secondary rounded mb-2 animate-pulse-slow"></div>
+          <div className="h-3 w-28 bg-okx-secondary rounded animate-pulse-slow"></div>
         </div>
-        <div style={{
-          textAlign: 'right',
-          marginLeft: '16px',
-          flexShrink: 0,
-          minWidth: '100px'
-        }}>
-          <div style={{
-            height: '16px',
-            width: '60px',
-            backgroundColor: '#1a1a1a',
-            marginBottom: '8px',
-            borderRadius: '2px',
-            marginLeft: 'auto',
-            animation: 'pulse 1.5s infinite ease-in-out'
-          }}></div>
-          <div style={{
-            height: '12px',
-            width: '40px',
-            backgroundColor: '#1a1a1a',
-            borderRadius: '2px',
-            marginLeft: 'auto',
-            animation: 'pulse 1.5s infinite ease-in-out'
-          }}></div>
+        <div className="text-right ml-4 flex-shrink-0 min-w-[100px]">
+          <div className="h-4 w-14 bg-okx-secondary rounded mb-2 ml-auto animate-pulse-slow"></div>
+          <div className="h-3 w-10 bg-okx-secondary rounded ml-auto animate-pulse-slow"></div>
         </div>
       </div>
     ));
   };
+  
+  if (isLoading) {
+    return (
+      <div className="sub-header flex flex-col md:flex-row items-center justify-center p-4 bg-okx-primary border-b border-okx-border">
+        <div className="w-full max-w-md">
+          <div className="flex items-center mb-4">
+            <div className="w-8 h-8 rounded-full bg-okx-secondary animate-pulse-slow mr-3"></div>
+            <div className="h-5 w-28 bg-okx-secondary rounded animate-pulse-slow"></div>
+            <div className="ml-auto h-6 w-16 bg-okx-secondary rounded animate-pulse-slow"></div>
+          </div>
+          <div className="flex overflow-x-auto pb-2 gap-4 scrollbar-hide">
+            {Array(5).fill(0).map((_, i) => (
+              <div key={i} className="flex-shrink-0 w-20">
+                <div className="h-4 w-16 bg-okx-secondary rounded mb-2 animate-pulse-slow"></div>
+                <div className="h-3 w-12 bg-okx-secondary rounded animate-pulse-slow"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!cryptoData) {
     return (
-      <div className="sub-header skeleton-loading">
-        <div className="loading-message">Loading coin data...</div>
+      <div className="sub-header bg-okx-primary border-b border-okx-border">
+        <div className="skeleton-loading">
+          <div className="loading-message">Loading...</div>
+        </div>
       </div>
     );
   }
@@ -160,35 +135,14 @@ const SubHeader = ({ cryptoData, coinPairId, tradableCoins }) => {
   const turnoverM = ((price * (Math.random() * 100) + 50) / 1000).toFixed(2);
 
   return (
-    <div className="sub-header">
-      <div className="coin-info">
+    <div className="sub-header md:flex md:justify-between md:items-center md:flex-nowrap flex-wrap bg-okx-primary border-b border-okx-border">
+      <div className="coin-info md:w-auto w-full flex items-center justify-between">
         <div className="coin-selector" ref={dropdownRef}>
           <div 
-            className="selected-coin" 
+            className="selected-coin flex items-center bg-transparent border-0 rounded-none p-1 cursor-pointer" 
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              background: 'transparent',
-              border: 'none',
-              borderRadius: '0',
-              padding: '5px'
-            }}
           >
-            <div 
-              style={{
-                width: '24px',
-                height: '24px',
-                marginRight: '8px',
-                borderRadius: '50%',
-                overflow: 'hidden',
-                flexShrink: 0,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: 'transparent'
-              }}
-            >
+            <div className="w-6 h-6 md:w-6 md:h-6 mr-2 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center bg-transparent">
               <img 
                 src={logoSrc} 
                 alt={cryptoSymbol} 
@@ -196,13 +150,7 @@ const SubHeader = ({ cryptoData, coinPairId, tradableCoins }) => {
                   e.target.onerror = null; 
                   e.target.src = defaultCoinLogo;
                 }}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  borderRadius: '50%',
-                  objectFit: 'cover',
-                  backgroundColor: 'transparent'
-                }}
+                className="w-full h-full rounded-full object-cover bg-transparent"
               />
             </div>
             <span className="coin-pair">
@@ -368,39 +316,39 @@ const SubHeader = ({ cryptoData, coinPairId, tradableCoins }) => {
           <FontAwesomeIcon icon={farStar} />
         </div>
       </div>
-      <div className="price-stats">
-        <div className="stat">
-          <div className="value green">{formattedPrice}</div>
-          <div className="label">
-            {cryptoName || cryptoSymbol} price <FontAwesomeIcon icon={faExternalLinkAlt} />
+      <div className="price-stats w-full md:w-auto overflow-x-auto md:overflow-visible scrollbar-hide flex md:justify-center justify-start pb-2 md:pb-0 pt-2 md:pt-0 gap-5 md:gap-8">
+        <div className="stat flex-shrink-0 min-w-[80px] md:min-w-0 md:text-center text-left">
+          <div className="value green text-sm md:text-base font-semibold">{formattedPrice}</div>
+          <div className="label text-xs md:text-xs text-gray-400 whitespace-nowrap flex md:justify-center justify-start items-center">
+            {cryptoName || cryptoSymbol} price <FontAwesomeIcon icon={faExternalLinkAlt} className="ml-1 text-[10px]" />
           </div>
-          <div className="sub-value">${formattedPrice}</div>
+          <div className="sub-value text-xs text-gray-500">${formattedPrice}</div>
         </div>
-        <div className="stat">
-          <div className="value">{low24h}</div>
-          <div className="label">24h low</div>
+        <div className="stat flex-shrink-0 min-w-[80px] md:min-w-0 md:text-center text-left">
+          <div className="value text-sm md:text-base font-semibold">{low24h}</div>
+          <div className="label text-xs md:text-xs text-gray-400 whitespace-nowrap">24h low</div>
         </div>
-        <div className="stat">
-          <div className="value">{high24h}</div>
-          <div className="label">24h high</div>
+        <div className="stat flex-shrink-0 min-w-[80px] md:min-w-0 md:text-center text-left">
+          <div className="value text-sm md:text-base font-semibold">{high24h}</div>
+          <div className="label text-xs md:text-xs text-gray-400 whitespace-nowrap">24h high</div>
         </div>
-        <div className="stat">
-          <div className="value">{volumeK}K</div>
-          <div className="label">24h volume ({cryptoSymbol})</div>
+        <div className="stat flex-shrink-0 min-w-[80px] md:min-w-0 md:text-center text-left">
+          <div className="value text-sm md:text-base font-semibold">{volumeK}K</div>
+          <div className="label text-xs md:text-xs text-gray-400 whitespace-nowrap">24h volume ({cryptoSymbol})</div>
         </div>
-        <div className="stat">
-          <div className="value">{turnoverM}M</div>
-          <div className="label">24h turnover ({usdtSymbol || 'USDT'})</div>
+        <div className="stat flex-shrink-0 min-w-[80px] md:min-w-0 md:text-center text-left">
+          <div className="value text-sm md:text-base font-semibold">{turnoverM}M</div>
+          <div className="label text-xs md:text-xs text-gray-400 whitespace-nowrap">24h turnover ({usdtSymbol || 'USDT'})</div>
         </div>
       </div>
-      <div className="trading-actions">
-        <button className="data-btn">
-          <FontAwesomeIcon icon={faChartLine} /> Trading data
+      <div className="trading-actions w-full md:w-auto flex items-center justify-start md:justify-end gap-2 mt-2 md:mt-0 pb-1 md:pb-0">
+        <button className="data-btn text-xs md:text-sm px-3 py-1.5 md:px-4 md:py-2 bg-okx-secondary hover:bg-okx-secondary-hover rounded flex items-center">
+          <FontAwesomeIcon icon={faChartLine} className="mr-1.5" /> <span className="whitespace-nowrap">Trading data</span>
         </button>
-        <button className="info-btn">
-          <FontAwesomeIcon icon={faFileAlt} /> Information
+        <button className="info-btn text-xs md:text-sm px-3 py-1.5 md:px-4 md:py-2 bg-okx-secondary hover:bg-okx-secondary-hover rounded flex items-center">
+          <FontAwesomeIcon icon={faFileAlt} className="mr-1.5" /> <span className="whitespace-nowrap">Information</span>
         </button>
-        <div className="settings">
+        <div className="settings w-8 h-8 flex items-center justify-center bg-okx-secondary hover:bg-okx-secondary-hover rounded cursor-pointer ml-1">
           <FontAwesomeIcon icon={faCog} />
         </div>
       </div>

@@ -515,7 +515,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   );
 
   return (
-    <div className="order-book-container">
+    <div className="order-book-container md:relative md:z-auto z-10 bg-okx-primary border-t border-okx-border md:border-t-0">
       <div className="order-book-header">
         <div className="order-book-tabs">
           <div 
