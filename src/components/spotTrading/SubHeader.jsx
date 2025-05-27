@@ -56,70 +56,39 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
     return Array(8).fill(0).map((_, index) => (
       <div 
         key={`skeleton-${index}`} 
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          padding: '16px 20px',
-          borderBottom: index < 7 ? '1px solid #1a1a1a' : 'none'
-        }}
+        className="flex items-center p-4 md:p-5 border-b border-okx-border last:border-b-0"
       >
-        <div style={{
-          width: '32px',
-          height: '32px',
-          marginRight: '16px',
-          borderRadius: '50%',
-          backgroundColor: '#1a1a1a',
-          animation: 'pulse 1.5s infinite ease-in-out'
-        }}></div>
-        <div style={{ flex: 1, minWidth: 0, paddingRight: '16px' }}>
-          <div style={{
-            height: '16px',
-            width: '80px',
-            backgroundColor: '#1a1a1a',
-            marginBottom: '8px',
-            borderRadius: '2px',
-            animation: 'pulse 1.5s infinite ease-in-out'
-          }}></div>
-          <div style={{
-            height: '12px',
-            width: '120px',
-            backgroundColor: '#1a1a1a',
-            borderRadius: '2px',
-            animation: 'pulse 1.5s infinite ease-in-out'
-          }}></div>
+        <div className="w-8 h-8 md:w-8 md:h-8 mr-4 rounded-full bg-okx-secondary animate-pulse-slow flex-shrink-0"></div>
+        <div className="flex-1 min-w-0 pr-4">
+          <div className="h-4 w-20 bg-okx-secondary rounded mb-2 animate-pulse-slow"></div>
+          <div className="h-3 w-28 bg-okx-secondary rounded animate-pulse-slow"></div>
         </div>
-        <div style={{
-          textAlign: 'right',
-          marginLeft: '16px',
-          flexShrink: 0,
-          minWidth: '100px'
-        }}>
-          <div style={{
-            height: '16px',
-            width: '60px',
-            backgroundColor: '#1a1a1a',
-            marginBottom: '8px',
-            borderRadius: '2px',
-            marginLeft: 'auto',
-            animation: 'pulse 1.5s infinite ease-in-out'
-          }}></div>
-          <div style={{
-            height: '12px',
-            width: '40px',
-            backgroundColor: '#1a1a1a',
-            borderRadius: '2px',
-            marginLeft: 'auto',
-            animation: 'pulse 1.5s infinite ease-in-out'
-          }}></div>
+        <div className="text-right ml-4 flex-shrink-0 min-w-[100px]">
+          <div className="h-4 w-14 bg-okx-secondary rounded mb-2 ml-auto animate-pulse-slow"></div>
+          <div className="h-3 w-10 bg-okx-secondary rounded ml-auto animate-pulse-slow"></div>
         </div>
       </div>
     ));
   }, []);
-
+  
   if (loading) {
     return (
-      <div className="sub-header skeleton-loading">
-        <div className="loading-message">Loading coin data...</div>
+      <div className="sub-header flex flex-col md:flex-row items-center justify-center p-4 bg-okx-primary border-b border-okx-border">
+        <div className="w-full max-w-md">
+          <div className="flex items-center mb-4">
+            <div className="w-8 h-8 rounded-full bg-okx-secondary animate-pulse-slow mr-3"></div>
+            <div className="h-5 w-28 bg-okx-secondary rounded animate-pulse-slow"></div>
+            <div className="ml-auto h-6 w-16 bg-okx-secondary rounded animate-pulse-slow"></div>
+          </div>
+          <div className="flex overflow-x-auto pb-2 gap-4 scrollbar-hide">
+            {Array(5).fill(0).map((_, i) => (
+              <div key={i} className="flex-shrink-0 w-20">
+                <div className="h-4 w-16 bg-okx-secondary rounded mb-2 animate-pulse-slow"></div>
+                <div className="h-3 w-12 bg-okx-secondary rounded animate-pulse-slow"></div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     );
   }

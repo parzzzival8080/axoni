@@ -514,19 +514,21 @@ const SpotTrading = () => {
         availableCoins={availableCoins}
         onCoinSelect={handleCoinSelect}
       />
-      <div className="main-container">
+      <div className="main-container flex flex-col md:grid">
         <TradingChart
           selectedSymbol={cryptoData?.crypto_symbol || cryptoData?.cryptoSymbol || 'BTC'}
         />
         <OrderBook
           cryptoData={cryptoData}
         />
-        <TradeForm
-          cryptoData={cryptoData}
-          userBalance={userBalance}
-          coinPairId={coinPairId}
-          onTradeSuccess={fetchUserBalance}
-        />
+        <div className="hidden md:block">
+          <TradeForm
+            cryptoData={cryptoData}
+            userBalance={userBalance}
+            coinPairId={coinPairId}
+            onTradeSuccess={fetchUserBalance}
+          />
+        </div>
       </div>
       <div className="orders-container">
         <OrdersSection refreshTrigger={orderHistoryRefreshTrigger} />

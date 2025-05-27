@@ -421,7 +421,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
   }, [symbol, timeframe, chartType, shouldReinitialize]);
 
   return (
-    <div className="trading-chart-container">
+    <div className="trading-chart-container md:relative md:z-auto z-0 overflow-hidden">
       <div className="chart-header">
         <div className="chart-controls">
           <div className="chart-type-selector">

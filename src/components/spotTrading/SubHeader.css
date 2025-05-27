@@ -393,25 +393,99 @@
 
 @media (max-width: 768px) {
   .sub-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-    padding: 12px;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px 16px;
+    background-color: #000000;
+  }
+  
+  .coin-info {
+    order: 1;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+  
+  .coin-icon {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .coin-pair {
+    font-size: 15px;
   }
   
   .price-stats {
+    order: 2;
     width: 100%;
     overflow-x: auto;
-    padding-bottom: 8px;
+    padding: 8px 0;
+    margin: 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+  }
+  
+  .price-stats::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .stat {
+    flex-shrink: 0;
+    min-width: 80px;
+    text-align: left;
+  }
+  
+  .value {
+    font-size: 14px;
+  }
+  
+  .label {
+    font-size: 11px;
+    white-space: nowrap;
   }
   
   .trading-actions {
+    order: 3;
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  
+  .trading-actions button {
+    padding: 6px 10px;
+    font-size: 11px;
   }
   
   .spot-coin-dropdown {
-    width: 280px;
+    width: 100%;
+    left: 0;
+    max-width: 100%;
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.5);
+    max-height: 80vh;
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  
+  .leverage {
+    order: 2;
+    margin-left: auto;
+    margin-right: 8px;
+  }
+  
+  .favorite {
+    order: 3;
   }
 }
 
