@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import CurrencyModal from '../components/conversion/CurrencyModal';
 import FromCurrencyModal from '../components/conversion/FromCurrencyModal';
 import FAQAccordion from '../components/conversion/FAQAccordion';
@@ -43,16 +43,29 @@ const Conversion = () => {
 
     const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
     const uid = localStorage.getItem('uid');
+    const isAuthenticated = !!uid;
 
     useEffect(() => {
-      fetchBtcPrice();
-    }, []);
+      if (isAuthenticated) {
+        fetchBtcPrice();
+      } else {
+        // Use a fallback price for non-authenticated users
+        setToCurrency(prev => ({ ...prev, price: 65000 })); // Example fallback price
+      }
+    }, [isAuthenticated]);
 
-    const fetchBtcPrice = async () => {
+    const fetchBtcPrice = useCallback(async () => {
       try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
+        
         const response = await fetch(
-          `https://apiv2.bhtokens.com/api/v1/coin-balance/${uid}?apikey=${apiKey}&symbol=BTC`
+          `https://apiv2.bhtokens.com/api/v1/coin-balance/${uid}?apikey=${apiKey}&symbol=BTC`,
+          { signal: controller.signal }
         );
+        
+        clearTimeout(timeoutId);
+        
         if (!response.ok) throw new Error(`API error: ${response.status}`);
         const data = await response.json();
         if (data && data.price) {
@@ -60,19 +73,35 @@ const Conversion = () => {
           setToCurrency(prev => ({ ...prev, price: btcPrice }));
         }
       } catch (error) {
-        console.error('Failed to fetch BTC price:', error);
+        if (error.name === 'AbortError') {
+          console.error('BTC price fetch timeout');
+        } else {
+          console.error('Failed to fetch BTC price:', error);
+        }
+        // Use a fallback price if fetch fails
+        setToCurrency(prev => prev.price === 0 ? { ...prev, price: 65000 } : prev);
       }
-    };
+    }, [uid, apiKey]);
 
     useEffect(() => {
-      fetchBalance();
-    }, []);
+      if (isAuthenticated) {
+        fetchBalance();
+      }
+    }, [isAuthenticated]);
 
-    const fetchBalance = async () => {
+    const fetchBalance = useCallback(async () => {
+      if (!isAuthenticated) return;
+      
       setBalance(prev => ({ ...prev, loading: true, error: null }));
       try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
+        
         const url = `https://apiv2.bhtokens.com/api/v1/user-wallet/${uid}/1?apikey=${apiKey}`;
-        const response = await fetch(url);
+        const response = await fetch(url, { signal: controller.signal });
+        
+        clearTimeout(timeoutId);
+        
         if (!response.ok) throw new Error(`API error: ${response.status}`);
         const data = await response.json();
         setBalance({
@@ -81,10 +110,14 @@ const Conversion = () => {
           spotWallet: data.usdtWallet?.spot_wallet || '0'
         });
       } catch (error) {
-        console.error('Failed to load balance:', error);
+        if (error.name === 'AbortError') {
+          console.error('Balance fetch timeout');
+        } else {
+          console.error('Failed to load balance:', error);
+        }
         setBalance(prev => ({ ...prev, loading: false, error: 'Failed to load balance', spotWallet: '0' }));
       }
-    };
+    }, [isAuthenticated, uid, apiKey]);
 
     const handleFromAmountChange = (e) => {
       const amount = e.target.value;
@@ -149,6 +182,11 @@ const Conversion = () => {
     };
 
     const handleConvert = async () => {
+      if (!isAuthenticated) {
+        window.location.href = '/login';
+        return;
+      }
+      
       if (parseFloat(fromAmount) > parseFloat(balance.spotWallet)) {
         setConversionError('Insufficient balance to make this conversion.');
         return;
@@ -163,38 +201,80 @@ const Conversion = () => {
       setConversionSuccess(false);
 
       try {
-        const response = await fetch('https://apiv2.bhtokens.com/api/v1/coin-convert', {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout for conversion
+        
+        // Use the URL format from the image but with POST method
+        const url = 'https://apiv2.bhtokens.com/api/v1/conversions';
+        
+        const params = {
+          apikey: apiKey,
+          uid: uid,
+          convert_from: fromCurrency.symbol,
+          convert_to: toCurrency.symbol,
+          amount: parseFloat(fromAmount),
+          converted_amount: parseFloat(toAmount)
+        };
+        
+        console.log('Converting with params:', params);
+        
+        const response = await fetch(url, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            uid: uid,
-            apikey: apiKey,
-            from_coin: fromCurrency.symbol,
-            to_coin: toCurrency.symbol,
-            from_amount: parseFloat(fromAmount),
-            to_amount: parseFloat(toAmount) 
-          }),
+          body: JSON.stringify(params),
+          signal: controller.signal
         });
+        
+        clearTimeout(timeoutId);
 
+        // The API returns "conversion submitted" when successful
         const responseData = await response.json();
-
-        if (!response.ok || responseData.code !== "200") {
-          throw new Error(responseData.msg || 'Conversion failed. Please try again.');
+        console.log('Conversion response:', responseData);
+        
+        // Check if we have a valid response
+        if (!response.ok) {
+          throw new Error('Conversion failed. Please try again.');
         }
         
-        setConversionSuccess(true);
-        setFromAmount('');
-        setToAmount('');
-        fetchBalance(); // Refresh balance after successful conversion
-
-        setTimeout(() => {
-          setConversionSuccess(false);
-        }, 5000); 
+        // Check if the response contains the success message
+        if (responseData === "conversion submitted" || 
+            (responseData.message && responseData.message.includes("submitted")) ||
+            (responseData.msg && responseData.msg.includes("submitted"))) {
+          
+          // Calculate the new balance (subtract the converted amount from current balance)
+          const currentBalance = parseFloat(balance.spotWallet) || 0;
+          const convertedAmount = parseFloat(fromAmount) || 0;
+          const newBalance = Math.max(0, currentBalance - convertedAmount);
+          
+          // Update the balance immediately in the UI
+          setBalance(prev => ({
+            ...prev,
+            spotWallet: newBalance.toString()
+          }));
+          
+          // Show success message
+          setConversionSuccess(true);
+          setFromAmount('');
+          setToAmount('');
+          
+          // Also fetch the latest balance from the server
+          fetchBalance();
+          
+          setTimeout(() => {
+            setConversionSuccess(false);
+          }, 5000);
+        } else {
+          throw new Error('Conversion failed. Unexpected response format.');
+        }
 
       } catch (error) {
-        setConversionError(error.message || 'An unexpected error occurred.');
+        if (error.name === 'AbortError') {
+          setConversionError('Conversion request timed out. Please try again.');
+        } else {
+          setConversionError(error.message || 'An unexpected error occurred.');
+        }
       } finally {
         setIsSubmitting(false);
       }
@@ -311,11 +391,11 @@ const Conversion = () => {
         
         {/* Convert button */}
         <button 
-          className={`w-full py-3.5 px-6 rounded-full font-medium text-white transition-colors duration-200 ${isSubmitting || !fromAmount || !toAmount || !!conversionError ? 'bg-gray-700 cursor-not-allowed' : 'bg-[#FE7400] hover:bg-[#e56700]'}`}
+          className={`w-full py-3.5 px-6 rounded-full font-medium text-white transition-colors duration-200 ${isSubmitting || (!isAuthenticated ? '' : (!fromAmount || !toAmount || !!conversionError)) ? 'bg-gray-700 cursor-not-allowed' : 'bg-[#FE7400] hover:bg-[#e56700]'}`}
           onClick={handleConvert}
-          disabled={isSubmitting || !fromAmount || !toAmount || !!conversionError}
+          disabled={isSubmitting || (!isAuthenticated ? false : (!fromAmount || !toAmount || !!conversionError))}
         >
-          {isSubmitting ? 'Converting...' : 'Complete verification'}
+          {isSubmitting ? 'Converting...' : (!isAuthenticated ? 'Login to Convert' : 'Convert')}
         </button>
         
         {/* Conversion history link */}
