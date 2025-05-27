@@ -569,6 +569,11 @@ export const executeSpotTradeOrder = async (params) => {
         if (!response.ok && !data?.success) {
             throw new Error(data?.message || `Trade execution failed: ${response.status}`);
         }
+        
+        // Clear the wallet cache for this user and coin pair to ensure fresh data on next fetch
+        const walletCacheKey = `wallet_${uid}_${coin_pair_id}`;
+        apiCache.delete(walletCacheKey);
+        console.log(`Cleared wallet cache for ${uid}/${coin_pair_id} after successful trade`);
 
         return {
             success: true,
