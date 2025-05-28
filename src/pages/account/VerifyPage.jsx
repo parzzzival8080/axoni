@@ -14,6 +14,7 @@ import {
   Loader2
 } from "lucide-react";
 import ProfileNavBar from "../../components/profile/ProfileNavBar";
+import { Link } from "react-router-dom";
 
 // Original VerifyIllustration
 const InitialVerifyIllustration = () => (
@@ -52,7 +53,8 @@ const FileUploadButton = ({ label, onFileChange, fileName, icon, subtext, disabl
         type="button"
         onClick={() => inputRef.current?.click()}
         disabled={disabled}
-        className="w-full flex flex-col items-center justify-center p-6 border-2 border-dashed border-gray-300 rounded-lg hover:border-black transition-colors bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed"
+        className="w-full flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-lg transition-colors bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed"
+        style={{ borderColor: '#FE7400' }}
       >
         {icon || <UploadCloud size={32} className="mb-2 text-gray-400" />}
         <span className="text-sm font-medium text-black">{label}</span>
@@ -81,6 +83,7 @@ const VerifyPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [submissionError, setSubmissionError] = useState("");
   const [currentUserId, setCurrentUserId] = useState(null);
+  const [alreadyVerified, setAlreadyVerified] = useState(false);
 
   useEffect(() => {
     const storedUserId = localStorage.getItem('user_id');
@@ -89,6 +92,10 @@ const VerifyPage = () => {
     } else {
       console.error("User ID not found in localStorage. Verification may fail.");
       setSubmissionError("User ID not found. Please log in again.");
+    }
+    // Check verification status
+    if (localStorage.getItem('is_verified') === 'true') {
+      setAlreadyVerified(true);
     }
   }, []);
 
@@ -248,7 +255,8 @@ const VerifyPage = () => {
             <button
               onClick={handleNextStep}
               disabled={!currentUserId && currentStep === 1}
-              className="w-full bg-black text-white font-semibold rounded-lg py-3 text-sm shadow-md hover:bg-gray-800 transition duration-150 flex items-center justify-center disabled:opacity-50"
+              className="w-full font-semibold rounded-lg py-3 text-sm shadow-md transition duration-150 flex items-center justify-center disabled:opacity-50"
+              style={{ background: '#FE7400', color: 'white' }}
             >
               Start Verification <ChevronRight size={18} className="ml-1" />
             </button>
@@ -420,7 +428,8 @@ const VerifyPage = () => {
                 setSelfie(null);
                 setSubmissionError("");
               }}
-              className="px-8 py-2.5 bg-black text-white font-semibold rounded-lg text-sm shadow-md hover:bg-gray-800 transition"
+              className="px-8 py-2.5 font-semibold rounded-lg text-sm shadow-md transition"
+              style={{ background: '#FE7400', color: 'white' }}
             >
               Done
             </button>
@@ -441,6 +450,22 @@ const VerifyPage = () => {
     if (currentStep === 5 && !selfie) return true;
     return false;
   };
+
+  if (alreadyVerified) {
+    return (
+      <div className="min-h-screen bg-white flex flex-col items-center py-8 px-4 font-sans">
+        <div className="w-full max-w-4xl mb-6">
+          <ProfileNavBar />
+        </div>
+        <div className="w-full max-w-md flex flex-col items-center justify-center bg-white rounded-xl p-8 mt-12 shadow">
+          <CheckCircle2 size={72} className="text-green-500 mb-4" strokeWidth={1.5} />
+          <h2 className="text-2xl font-bold mb-2 text-black">You are already verified!</h2>
+          <p className="text-gray-600 mb-6 text-center">Thank you for verifying your identity. Your account is fully verified and you have access to all features.</p>
+          <Link to="/account/profile" className="px-6 py-2 rounded-lg bg-[#FE7400] text-white font-semibold text-sm hover:bg-orange-600 transition">Go to Profile</Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center py-8 px-4 font-sans">
@@ -475,14 +500,16 @@ const VerifyPage = () => {
               <button
                 onClick={handlePrevStep}
                 disabled={isLoading || !currentUserId}
-                className="px-5 py-2.5 text-sm font-medium text-black border border-gray-300 rounded-lg hover:bg-gray-100 transition duration-150 flex items-center disabled:opacity-70"
+                className="px-5 py-2.5 text-sm font-medium border rounded-lg transition duration-150 flex items-center disabled:opacity-70"
+                style={{ borderColor: '#FE7400', color: '#FE7400', background: 'white' }}
               >
                 <ChevronLeft size={16} className="mr-1" /> Back
               </button>
               <button
                 onClick={currentStep === 5 ? handleSubmitVerification : handleNextStep}
                 disabled={isNextDisabled()}
-                className="px-5 py-2.5 bg-black text-white font-semibold rounded-lg text-sm shadow-md hover:bg-gray-800 transition duration-150 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[100px]"
+                className="px-5 py-2.5 font-semibold rounded-lg text-sm shadow-md transition duration-150 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[100px]"
+                style={{ background: '#FE7400', color: 'white' }}
               >
                 {isLoading && currentStep === 5 ? (
                   <Loader2 size={18} className="animate-spin" />

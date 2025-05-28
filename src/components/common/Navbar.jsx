@@ -892,9 +892,7 @@ const Navbar = () => {
                     <p className="user-id">UID: {localStorage.getItem('uid') || 'N/A'}</p>
                   </div>
                 </div>
-                <div className="switch-account-button">
-                  <button>Switch sub-account</button>
-                </div>
+            
                 <Link to="/account/overview" className="menu-item">
                   <i className="fas fa-clock"></i> Overview
                 </Link>

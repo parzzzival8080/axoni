@@ -385,12 +385,12 @@ const LoginForm = () => {
         >
           Email / Sub-account
         </div>
-        <div
+        {/* <div
           className={`tab ${activeTab === 'qr' ? 'active' : ''}`}
           onClick={() => handleTabChange('qr')}
         >
           QR code
-        </div>
+        </div> */}
       </div>
 
       {/* Only show error message if not in forgot password mode */}
@@ -575,48 +575,9 @@ const LoginForm = () => {
               <br />
               <p>Don't have an account? <a href="/signup">Sign up</a></p>
             </div>
-            <div className="continue-text">
-              <p>or continue with</p>
-            </div>
+         
 
-            <div className="grid grid-cols-4 gap-4 mt-4">
-              <div
-                className="flex flex-col items-center justify-center p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors"
-                onClick={() => handleSocialLogin('google')}
-              >
-                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-1">
-                  <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
-                </div>
-                <span className="text-xs text-gray-300">Google</span>
-              </div>
-              <div
-                className="flex flex-col items-center justify-center p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors"
-                onClick={() => handleSocialLogin('apple')}
-              >
-                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-1">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" className="w-5 h-5" />
-                </div>
-                <span className="text-xs text-gray-300">Apple</span>
-              </div>
-              <div
-                className="flex flex-col items-center justify-center p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors"
-                onClick={() => handleSocialLogin('telegram')}
-              >
-                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-1">
-                  <img src="https://telegram.org/img/t_logo.svg" alt="Telegram" className="w-5 h-5" />
-                </div>
-                <span className="text-xs text-gray-300">Telegram</span>
-              </div>
-              <div
-                className="flex flex-col items-center justify-center p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors"
-                onClick={() => handleSocialLogin('wallet')}
-              >
-           <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-1">
-  <FaWallet className="w-5 h-5 text-orange-500" />
-</div>
-                <span className="text-xs text-gray-300">Wallet</span>
-              </div>
-            </div>
+          
           </form>
         )
       ) : (

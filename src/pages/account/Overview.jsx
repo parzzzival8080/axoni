@@ -1,68 +1,445 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import axios from 'axios'
 import ProfileNavBar from '../../components/profile/ProfileNavBar'
-import ProfileSection from '../../components/profile/overview/ProfileSection'
-import PortfolioOverview from '../../components/profile/overview/PortfolioOverview'
-import ReigniteBanner from '../../components/profile/overview/ReigniteBanner'
-import Announcements from '../../components/profile/overview/Announcement'
-import DownloadApp from '../../components/profile/overview/Download'
-import CryptoPrices from '../../components/profile/overview/CryptoPrices'
-import './Overview.css'
+import { FiEye, FiEyeOff, FiTrendingUp, FiTrendingDown, FiArrowRight, FiCopy, FiCheck, FiShield } from 'react-icons/fi'
 
 const Overview = () => {
-  const [showDownloadModal, setShowDownloadModal] = React.useState(false);
+  const [profileData, setProfileData] = useState(null);
+  const [walletData, setWalletData] = useState([]);
+  const [overviewData, setOverviewData] = useState({
+    overview: 0,
+    spot_wallet: 0,
+    future_wallet: 0,
+    funding_wallet: 0
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showBalance, setShowBalance] = useState(true);
 
-  return (
-    <div className="overview-page">
-      <ProfileNavBar currentPath="/profile/overview" />
-      
-      <div className="overview-container">
-        <div className="main-content">
-          <ProfileSection />
-          <PortfolioOverview />
-          
-          {/* Mobile-only ReigniteBanner */}
-          <div className="mobile-reignite">
-            <ReigniteBanner />
-          </div>
-          
-          <CryptoPrices />
-        </div>
+  // Fetch user profile data
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
         
-        <div className="sidebar-content">
-          {/* Desktop-only ReigniteBanner */}
-          <div className="desktop-reignite">
-            <ReigniteBanner />
+        const userId = localStorage.getItem('user_id') || localStorage.getItem('uid');
+        
+        if (!userId) {
+          setError('User ID not found. Please log in again.');
+          setIsLoading(false);
+          return;
+        }
+
+        console.log('Fetching data for userId:', userId);
+
+        // Fetch profile data with better error handling
+        try {
+          console.log('Fetching profile data...');
+          const profileResponse = await axios.get(`https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${userId}`);
+          console.log('Profile response:', profileResponse.data);
+          
+          if (profileResponse.data && profileResponse.data.user && profileResponse.data.user_detail) {
+            setProfileData(profileResponse.data);
+            console.log('Profile data set successfully');
+          } else {
+            console.warn('Profile data format unexpected:', profileResponse.data);
+          }
+        } catch (profileError) {
+          console.error('Profile API error:', profileError);
+          console.error('Profile error response:', profileError.response?.data);
+          console.error('Profile error status:', profileError.response?.status);
+          // Don't fail the entire page for profile errors
+        }
+
+        // Fetch wallet data with better error handling
+        try {
+          console.log('Fetching wallet data...');
+          const walletResponse = await axios.get(`https://apiv2.bhtokens.com/api/v1/user-wallets/${userId}?apikey=A20RqFwVktRxxRqrKBtmi6ud`);
+          console.log('Wallet response:', walletResponse.data);
+          
+          if (walletResponse.data && walletResponse.data["0"]) {
+            const formattedCoins = walletResponse.data["0"].map(coin => ({
+              id: coin.coin_id,
+              symbol: coin.crypto_symbol,
+              name: coin.crypto_name,
+              logo: coin.logo_path,
+              price: parseFloat(coin.price),
+              spot_balance: parseFloat(coin.spot_wallet),
+              future_balance: parseFloat(coin.future_wallet),
+              funding_balance: parseFloat(coin.funding_wallet),
+              spot_value: parseFloat(coin.price) * parseFloat(coin.spot_wallet),
+              future_value: parseFloat(coin.price) * parseFloat(coin.future_wallet),
+              funding_value: parseFloat(coin.price) * parseFloat(coin.funding_wallet)
+            }));
+            
+            setWalletData(formattedCoins);
+            console.log('Wallet data set successfully, coins:', formattedCoins.length);
+            
+            // Calculate totals
+            const totals = formattedCoins.reduce((acc, coin) => ({
+              spot_wallet: acc.spot_wallet + coin.spot_value,
+              future_wallet: acc.future_wallet + coin.future_value,
+              funding_wallet: acc.funding_wallet + coin.funding_value
+            }), { spot_wallet: 0, future_wallet: 0, funding_wallet: 0 });
+            
+            setOverviewData({
+              overview: totals.spot_wallet + totals.future_wallet + totals.funding_wallet,
+              spot_wallet: totals.spot_wallet,
+              future_wallet: totals.future_wallet,
+              funding_wallet: totals.funding_wallet
+            });
+            console.log('Overview totals calculated:', totals);
+          } else {
+            console.warn('Wallet data format unexpected:', walletResponse.data);
+          }
+        } catch (walletError) {
+          console.error('Wallet API error:', walletError);
+          console.error('Wallet error response:', walletError.response?.data);
+          console.error('Wallet error status:', walletError.response?.status);
+          
+          // Check if it's a specific wallet error we can handle
+          if (walletError.response?.data && walletError.response.data.message === "Something went wrong") {
+            console.log('Wallet API returned "Something went wrong" - treating as no wallet data');
+            // Set empty wallet data instead of erroring
+            setWalletData([]);
+            setOverviewData({
+              overview: 0,
+              spot_wallet: 0,
+              future_wallet: 0,
+              funding_wallet: 0
+            });
+          } else {
+            throw walletError; // Re-throw if it's a different error
+          }
+        }
+        
+        console.log('Data fetching completed successfully');
+      } catch (err) {
+        console.error('Error fetching data:', err);
+        console.error('Error details:', {
+          message: err.message,
+          response: err.response?.data,
+          status: err.response?.status,
+          stack: err.stack
+        });
+        setError(`Failed to load data: ${err.message}. Please try again later.`);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  // Extract user data
+  const user = profileData?.user || {};
+  const userDetail = profileData?.user_detail || {};
+  const isVerified = (userDetail.is_verified === true) || (localStorage.getItem('is_verified') === 'true');
+
+  // Get top assets by value
+  const topAssets = walletData
+    .filter(coin => (coin.spot_value + coin.future_value + coin.funding_value) > 0)
+    .sort((a, b) => (b.spot_value + b.future_value + b.funding_value) - (a.spot_value + a.future_value + a.funding_value))
+    .slice(0, 5);
+
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(value);
+  };
+
+  const formatNumber = (value, decimals = 8) => {
+    if (value === 0) return '0.00';
+    if (value < 0.01) return value.toFixed(decimals);
+    return value.toFixed(2);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <ProfileNavBar currentPath="/profile/overview" />
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <div className="flex justify-center items-center py-16">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FE7400]"></div>
+            <span className="ml-3 text-gray-600 dark:text-gray-300">Loading overview...</span>
           </div>
-          
-          <Announcements />
-          
-          {/* Download App Section */}
-          <div className="download-app-section">
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <ProfileNavBar currentPath="/profile/overview" />
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <div className="flex flex-col items-center justify-center py-16">
+            <div className="text-red-500 mb-2">
+              <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">Error loading overview</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{error}</p>
             <button 
-              className="download-app-button"
-              onClick={() => setShowDownloadModal(true)}
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-[#FE7400] text-white rounded-md hover:bg-orange-600 transition-colors"
             >
-              <span className="download-app-text">Download app and trade on the go</span>
-              <div className="qr-code-preview">
-                <div className="qr-code-small">
-                  <div className="qr-pattern-small"></div>
-                  <div className="qr-pattern-small"></div>
-                  <div className="qr-pattern-small"></div>
-                  <div className="qr-pattern-small"></div>
-                </div>
-              </div>
-              <div className="download-app-info">
-                <span className="app-name-small">OKX App</span>
-                <span className="scan-text">Scan to download</span>
-              </div>
+              Try Again
             </button>
           </div>
         </div>
       </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <ProfileNavBar currentPath="/profile/overview" />
       
-      {showDownloadModal && (
-        <DownloadApp onClose={() => setShowDownloadModal(false)} />
-      )}
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Overview</h1>
+            <p className="text-gray-600 dark:text-gray-400">Welcome back, {user.name || 'User'}!</p>
+          </div>
+          {!isVerified && (
+            <Link 
+              to="/account/verify" 
+              className="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 bg-[#FE7400] text-white rounded-lg hover:bg-orange-600 transition-colors font-medium"
+            >
+              <FiShield className="mr-2" />
+              Verify Account
+            </Link>
+          )}
+        </div>
+        
+        {/* Main Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Left Column - 2/3 width */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Portfolio Overview */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Portfolio Overview</h2>
+                <button
+                  onClick={() => setShowBalance(!showBalance)}
+                  className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+                >
+                  {showBalance ? <FiEye /> : <FiEyeOff />}
+                </button>
+              </div>
+              
+              <div className="mb-6">
+                <div className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                  {showBalance ? formatCurrency(overviewData.overview) : '••••••'}
+                </div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">Total Portfolio Value</div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                  <div className="flex items-center mb-2">
+                    <div className="w-3 h-3 bg-[#FE7400] rounded-full mr-2"></div>
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Spot Wallet</span>
+                  </div>
+                  <div className="text-lg font-semibold text-gray-900 dark:text-white">
+                    {showBalance ? formatCurrency(overviewData.spot_wallet) : '••••••'}
+                  </div>
+                </div>
+                
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                  <div className="flex items-center mb-2">
+                    <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Future Wallet</span>
+                  </div>
+                  <div className="text-lg font-semibold text-gray-900 dark:text-white">
+                    {showBalance ? formatCurrency(overviewData.future_wallet) : '••••••'}
+                  </div>
+                </div>
+                
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                  <div className="flex items-center mb-2">
+                    <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Funding Wallet</span>
+                  </div>
+                  <div className="text-lg font-semibold text-gray-900 dark:text-white">
+                    {showBalance ? formatCurrency(overviewData.funding_wallet) : '••••••'}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <Link to="/deposit" className="flex flex-col items-center p-4 bg-[#FE7400] text-white rounded-lg hover:bg-orange-600 transition-colors">
+                  <svg className="w-6 h-6 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                  </svg>
+                  <span className="text-sm font-medium">Deposit</span>
+                </Link>
+                
+                <Link to="/withdraw" className="flex flex-col items-center p-4 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                  <svg className="w-6 h-6 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 12H4"></path>
+                  </svg>
+                  <span className="text-sm font-medium">Withdraw</span>
+                </Link>
+                
+                <Link to="/account/transfer" className="flex flex-col items-center p-4 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                  <svg className="w-6 h-6 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                  </svg>
+                  <span className="text-sm font-medium">Transfer</span>
+                </Link>
+                
+                <Link to="/trading" className="flex flex-col items-center p-4 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                  <svg className="w-6 h-6 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                  </svg>
+                  <span className="text-sm font-medium">Trade</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* Top Assets */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Top Assets</h2>
+                <Link to="/assets" className="text-[#FE7400] hover:text-orange-600 text-sm font-medium flex items-center">
+                  View All <FiArrowRight className="ml-1" />
+                </Link>
+              </div>
+              
+              {topAssets.length > 0 ? (
+                <div className="space-y-3">
+                  {topAssets.map((asset) => (
+                    <div key={asset.id} className="flex items-center justify-between py-2">
+                      <div className="flex items-center">
+                        {asset.logo ? (
+                          <img src={asset.logo} alt={asset.symbol} className="w-8 h-8 rounded-full mr-3" />
+                        ) : (
+                          <div className="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded-full mr-3 flex items-center justify-center">
+                            <span className="text-xs font-bold">{asset.symbol.charAt(0)}</span>
+                          </div>
+                        )}
+                        <div>
+                          <div className="font-medium text-gray-900 dark:text-white">{asset.symbol}</div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400">{asset.name}</div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-medium text-gray-900 dark:text-white">
+                          {showBalance ? formatNumber(asset.spot_balance + asset.future_balance + asset.funding_balance) : '••••••'}
+                        </div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                          {showBalance ? formatCurrency(asset.spot_value + asset.future_value + asset.funding_value) : '••••••'}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  <div className="text-4xl mb-2">🪙</div>
+                  <p>No assets found</p>
+                  <p className="text-sm">Start by depositing some crypto</p>
+                </div>
+              )}
+            </div>
+          </div>
+          
+          {/* Right Column - 1/3 width */}
+          <div className="space-y-6">
+            {/* Profile Card */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <div className="flex items-center mb-4">
+                <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mr-4">
+                  {userDetail.user_profile ? (
+                    <img 
+                      src={userDetail.user_profile} 
+                      alt="Profile" 
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <span className="text-gray-400 text-xl">👤</span>
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <div className="font-semibold text-gray-900 dark:text-white">{user.name || 'User'}</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">ID: {user.uid}</div>
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Status</span>
+                  {isVerified ? (
+                    <span className="inline-flex items-center px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                      <FiCheck className="mr-1" /> Verified
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">
+                      Unverified
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Email</span>
+                  <span className="text-sm text-gray-900 dark:text-white">{user.email}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Role</span>
+                  <span className="text-sm text-gray-900 dark:text-white capitalize">{user.role || 'Client'}</span>
+                </div>
+              </div>
+              
+              <Link 
+                to="/account/profile" 
+                className="mt-4 w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              >
+                View Profile
+              </Link>
+            </div>
+
+            {/* Recent Activity */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Recent Activity</h3>
+              <div className="space-y-3">
+                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  <div className="text-4xl mb-2">📊</div>
+                  <p>No recent activity</p>
+                  <p className="text-sm">Your transactions will appear here</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Announcements */}
+            <div className="bg-gradient-to-r from-[#FE7400] to-orange-500 rounded-xl p-6 text-white">
+              <h3 className="text-lg font-semibold mb-2">🎉 Welcome to Trading</h3>
+              <p className="text-sm opacity-90 mb-4">
+                Start your crypto journey today. Deposit funds and begin trading with low fees.
+              </p>
+              <Link 
+                to="/deposit" 
+                className="inline-flex items-center px-4 py-2 bg-white text-[#FE7400] rounded-lg font-medium text-sm hover:bg-gray-100 transition-colors"
+              >
+                Get Started
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

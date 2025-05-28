@@ -258,22 +258,60 @@ const Transfer = () => {
         setIsHistoryLoading(false);
         return;
       }
+      
+      console.log('Fetching transfer history for uid:', uid);
+      
       // Fetch transfer history from API
       const response = await axios.get(`https://apiv2.bhtokens.com/api/v1/transfer-history/${uid}?apikey=A20RqFwVktRxxRqrKBtmi6ud`);
       
+      console.log('Transfer history response status:', response.status);
       console.log('Transfer history response:', response.data);
+      console.log('Is response.data an array?', Array.isArray(response.data));
+      console.log('Response data length:', response.data?.length);
       
-      if (response.data && Array.isArray(response.data)) {
-        // Use the API response directly for transfer history
+      // Clear any previous errors since the API call was successful
+      setHistoryError(null);
+      
+      // Handle the response - API returns an array (could be empty)
+      if (Array.isArray(response.data)) {
+        // Use the API response directly for transfer history (empty array is valid)
         setTransferHistory(response.data);
+        console.log('Transfer history set to:', response.data);
+      } else if (response.data && response.data.message === "Something went wrong") {
+        // API returns this specific message when there's no transfer history
+        console.log('API returned "Something went wrong" - treating as empty transfer history');
+        setTransferHistory([]);
+        setHistoryError(null);
       } else {
-        // If API returns unexpected format, set empty array
+        // If API returns unexpected format (not an array), set empty array
+        console.log('Unexpected response format, setting empty array');
         setTransferHistory([]);
       }
     } catch (error) {
       console.error('Error fetching transfer history:', error);
-      setHistoryError('Failed to load transfer history. Please try again later.');
-      setTransferHistory([]);
+      console.error('Error response:', error.response);
+      console.error('Error status:', error.response?.status);
+      console.error('Error data:', error.response?.data);
+      
+      // Check if the error response contains the "Something went wrong" message
+      if (error.response?.data && error.response.data.message === "Something went wrong") {
+        // This is the API's way of saying no transfer history exists
+        console.log('API error response indicates no transfer history - treating as empty array');
+        setTransferHistory([]);
+        setHistoryError(null);
+      } else if (error.response?.status === 404 || 
+          error.response?.status === 204 ||
+          (error.response?.data && typeof error.response.data === 'string' && error.response.data.toLowerCase().includes('no data')) ||
+          (error.response?.data && typeof error.response.data === 'string' && error.response.data.toLowerCase().includes('not found'))) {
+        // Treat 404 or "no data" responses as valid empty results
+        console.log('API returned no data (404 or similar), treating as empty array');
+        setTransferHistory([]);
+        setHistoryError(null);
+      } else {
+        // Only set error for actual network/server errors
+        setHistoryError('Failed to load transfer history. Please try again later.');
+        setTransferHistory([]);
+      }
     } finally {
       setIsHistoryLoading(false);
     }
@@ -281,6 +319,8 @@ const Transfer = () => {
   
   // Fetch transfer history on component mount and when selected asset changes
   useEffect(() => {
+    // Clear any existing error state when asset changes
+    setHistoryError(null);
     fetchTransferHistory();
   }, [selectedAsset]);
   
