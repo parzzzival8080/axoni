@@ -17,28 +17,28 @@ const Overview = () => {
   const [error, setError] = useState(null);
   const [showBalance, setShowBalance] = useState(true);
 
-  // Fetch user profile data
+  // Fetch user data
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         setIsLoading(true);
         setError(null);
         
-        const userId = localStorage.getItem('user_id') || localStorage.getItem('uid');
+        // Get user ID from localStorage
+        const uid = localStorage.getItem('uid') || localStorage.getItem('user_id');
         
-        if (!userId) {
+        if (!uid) {
           setError('User ID not found. Please log in again.');
           setIsLoading(false);
           return;
         }
 
-        console.log('Fetching data for userId:', userId);
+        console.log('Fetching data for userId:', uid);
 
         // Fetch profile data with better error handling
         try {
           console.log('Fetching profile data...');
-          const profileResponse = await axios.get(`https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${userId}`);
-          console.log('Profile response:', profileResponse.data);
+          const profileResponse = await axios.get(`https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${uid}`);
           
           if (profileResponse.data && profileResponse.data.user && profileResponse.data.user_detail) {
             setProfileData(profileResponse.data);
@@ -48,18 +48,21 @@ const Overview = () => {
           }
         } catch (profileError) {
           console.error('Profile API error:', profileError);
-          console.error('Profile error response:', profileError.response?.data);
-          console.error('Profile error status:', profileError.response?.status);
           // Don't fail the entire page for profile errors
         }
 
-        // Fetch wallet data with better error handling
+        // Fetch wallet data - using the same approach as Assets.jsx
         try {
-          console.log('Fetching wallet data...');
-          const walletResponse = await axios.get(`https://apiv2.bhtokens.com/api/v1/user-wallets/${userId}?apikey=A20RqFwVktRxxRqrKBtmi6ud`);
-          console.log('Wallet response:', walletResponse.data);
+          // API key - same as used in Assets.jsx
+          const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
+          const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
           
+          console.log('Fetching wallet data from:', apiUrl);
+          const walletResponse = await axios.get(apiUrl);
+          
+          // Process wallet data in the same way as Assets.jsx
           if (walletResponse.data && walletResponse.data["0"]) {
+            // Format the coin data consistently with Assets.jsx
             const formattedCoins = walletResponse.data["0"].map(coin => ({
               id: coin.coin_id,
               symbol: coin.crypto_symbol,
@@ -71,7 +74,13 @@ const Overview = () => {
               funding_balance: parseFloat(coin.funding_wallet),
               spot_value: parseFloat(coin.price) * parseFloat(coin.spot_wallet),
               future_value: parseFloat(coin.price) * parseFloat(coin.future_wallet),
-              funding_value: parseFloat(coin.price) * parseFloat(coin.funding_wallet)
+              funding_value: parseFloat(coin.price) * parseFloat(coin.funding_wallet),
+              // Format as in Assets.jsx for consistency
+              price_formatted: parseFloat(coin.price).toLocaleString(),
+              balance: parseFloat(coin.spot_wallet).toLocaleString(),
+              value: (parseFloat(coin.price) * parseFloat(coin.spot_wallet)).toLocaleString(),
+              raw_balance: parseFloat(coin.spot_wallet),
+              raw_value: parseFloat(coin.price) * parseFloat(coin.spot_wallet)
             }));
             
             setWalletData(formattedCoins);
@@ -84,25 +93,28 @@ const Overview = () => {
               funding_wallet: acc.funding_wallet + coin.funding_value
             }), { spot_wallet: 0, future_wallet: 0, funding_wallet: 0 });
             
+            // Set overview data - with the same structure as in Assets.jsx
+            const overview = totals.spot_wallet + totals.future_wallet + totals.funding_wallet;
             setOverviewData({
-              overview: totals.spot_wallet + totals.future_wallet + totals.funding_wallet,
+              overview: overview,
               spot_wallet: totals.spot_wallet,
               future_wallet: totals.future_wallet,
               funding_wallet: totals.funding_wallet
             });
-            console.log('Overview totals calculated:', totals);
+            
+            // Handle overview data from API response as well (as a fallback)
+            if (walletResponse.data.overview) {
+              console.log('Using overview data from API response');
+              // Overwrite with API values if present
+              setOverviewData({
+                overview: walletResponse.data.overview || overview,
+                spot_wallet: walletResponse.data.spot_wallet || totals.spot_wallet,
+                future_wallet: walletResponse.data.future_wallet || totals.future_wallet,
+                funding_wallet: walletResponse.data.funding_wallet || totals.funding_wallet
+              });
+            }
           } else {
-            console.warn('Wallet data format unexpected:', walletResponse.data);
-          }
-        } catch (walletError) {
-          console.error('Wallet API error:', walletError);
-          console.error('Wallet error response:', walletError.response?.data);
-          console.error('Wallet error status:', walletError.response?.status);
-          
-          // Check if it's a specific wallet error we can handle
-          if (walletError.response?.data && walletError.response.data.message === "Something went wrong") {
-            console.log('Wallet API returned "Something went wrong" - treating as no wallet data');
-            // Set empty wallet data instead of erroring
+            console.log('No wallet data found in response');
             setWalletData([]);
             setOverviewData({
               overview: 0,
@@ -110,26 +122,34 @@ const Overview = () => {
               future_wallet: 0,
               funding_wallet: 0
             });
-          } else {
-            throw walletError; // Re-throw if it's a different error
+          }
+        } catch (walletError) {
+          console.error('Wallet API error:', walletError);
+          
+          // Handle API errors gracefully - empty data instead of error
+          setWalletData([]);
+          setOverviewData({
+            overview: 0,
+            spot_wallet: 0,
+            future_wallet: 0,
+            funding_wallet: 0
+          });
+          
+          // Only set error if we have no profile data either
+          if (!profileData) {
+            setError('Failed to load wallet data. Please try again later.');
           }
         }
         
         console.log('Data fetching completed successfully');
       } catch (err) {
         console.error('Error fetching data:', err);
-        console.error('Error details:', {
-          message: err.message,
-          response: err.response?.data,
-          status: err.response?.status,
-          stack: err.stack
-        });
-        setError(`Failed to load data: ${err.message}. Please try again later.`);
+        setError(`Failed to load data. Please try again later.`);
       } finally {
         setIsLoading(false);
       }
     };
-
+    
     fetchUserData();
   }, []);
 
