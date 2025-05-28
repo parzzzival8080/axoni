@@ -115,245 +115,201 @@ const Profile = () => {
   };
 
   // Determine verification status
-  const isVerified = (userDetail.is_verified === true) || (localStorage.getItem('is_verified') === 'true');
+  const isVerified = userDetail.is_verified === true;
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white relative">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 relative">
       <ProfileNavBar />
       
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-semibold">Profile</h1>
+        <div className="flex flex-col sm:flex-row items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-0">Profile</h1>
           {isVerified ? (
             <span className="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-700 font-semibold text-sm border border-green-300">
-              <FiCheck className="mr-2 text-green-500" /> Verified
+              <FiCheck className="mr-2 text-green-500" /> Verified Account
             </span>
           ) : (
-            <Link to="/account/verify" className="inline-flex items-center px-4 py-2 rounded-full bg-[#FE7400] text-white font-semibold text-sm hover:bg-orange-600 transition">
+            <Link 
+              to="/account/profile/verify" 
+              className="inline-flex items-center px-4 py-2 rounded-full bg-[#FE7400] text-white font-semibold text-sm hover:bg-orange-600 transition-colors"
+            >
               <FiShield className="mr-2" /> Verify Now
             </Link>
           )}
         </div>
         
         {/* Profile Avatar Section */}
-        <div className="mb-10">
-          <div className="flex items-start gap-8">
-            <div className="relative">
-              <div className="w-24 h-24 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center overflow-hidden">
+        <div className="mb-10 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <div className="flex flex-col sm:flex-row items-start gap-8">
+            <div className="relative self-center sm:self-start">
+              <div className="w-24 h-24 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center overflow-hidden">
                 {displayData.profileImage ? (
                   <img 
                     src={displayData.profileImage} 
                     alt="Profile" 
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      e.target.style.display = 'none';
-                      e.target.nextSibling.style.display = 'flex';
+                      e.target.onerror = null; // Prevents looping if fallback also fails
+                      e.target.src = "/assets/default-profile.png"; // Fallback image
+                      e.target.nextSibling.style.display = 'none'; // Hide the text avatar if image loads
                     }}
                   />
-                ) : null}
-                <span className={`text-gray-400 text-4xl ${displayData.profileImage ? 'hidden' : 'block'}`}>👤</span>
+                ) : (
+                  <span className="text-gray-400 dark:text-gray-500 text-4xl">👤</span>
+                )}
               </div>
-              <button className="absolute bottom-0 right-0 bg-white dark:bg-gray-800 rounded-full p-2 shadow-md">
-                <FiEdit className="text-gray-500" />
+              <button 
+                className="absolute bottom-0 right-0 bg-white dark:bg-gray-700 rounded-full p-2 shadow-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                title="Change profile picture"
+              >
+                <FiEdit className="text-gray-600 dark:text-gray-300" />
               </button>
             </div>
             
-            <div className="flex-1">
-              <h2 className="text-xl font-semibold mb-4">Personal info</h2>
+            <div className="flex-1 w-full">
+              <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Personal Info</h2>
               
-              <div className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
-                <div className="w-1/3">
-                  <span className="text-gray-500 dark:text-gray-400">Full Name</span>
+              {[{
+                label: 'Full Name',
+                value: displayData.username,
+                link: '/account/profile/change-nickname',
+                buttonText: 'Change'
+              }, {
+                label: 'User ID',
+                value: displayData.userId,
+                isCopyable: true
+              }, {
+                label: 'UID',
+                value: displayData.uid,
+                isCopyable: true
+              }, {
+                label: 'Referral Code',
+                value: displayData.referralCode,
+                isCopyable: true
+              }].map((item, index) => (
+                <div key={index} className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
+                  <div className="w-1/3">
+                    <span className="text-gray-500 dark:text-gray-400 text-sm">{item.label}</span>
+                  </div>
+                  <div className="w-1/3">
+                    <span className="text-gray-800 dark:text-gray-200 font-medium text-sm">{item.value}</span>
+                  </div>
+                  <div className="w-1/3 text-right">
+                    {item.link && (
+                      <Link 
+                        to={item.link}
+                        className="text-sm py-1.5 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300"
+                      >
+                        {item.buttonText}
+                      </Link>
+                    )}
+                    {item.isCopyable && (
+                      <button 
+                        onClick={() => handleCopy(item.value)}
+                        className="text-sm py-1.5 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300"
+                      >
+                        <FiCopy className="inline mr-1" /> Copy
+                      </button>
+                    )}
+                  </div>
                 </div>
-                <div className="w-1/3">
-                  <span>{displayData.username}</span>
-                </div>
-                <div className="w-1/3 text-right">
-                  <Link 
-                    to="/account/profile/change-nickname"
-                    className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                  >
-                    Change
-                  </Link>
-                </div>
-              </div>
-              
-              <div className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
-                <div className="w-1/3">
-                  <span className="text-gray-500 dark:text-gray-400">User ID</span>
-                </div>
-                <div className="w-1/3">
-                  <span>{displayData.userId}</span>
-                </div>
-                <div className="w-1/3 text-right">
-                  <button 
-                    onClick={() => handleCopy(displayData.userId)}
-                    className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                  >
-                    Copy
-                  </button>
-                </div>
-              </div>
-
-              <div className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
-                <div className="w-1/3">
-                  <span className="text-gray-500 dark:text-gray-400">UID</span>
-                </div>
-                <div className="w-1/3">
-                  <span>{displayData.uid}</span>
-                </div>
-                <div className="w-1/3 text-right">
-                  <button 
-                    onClick={() => handleCopy(displayData.uid)}
-                    className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                  >
-                    Copy
-                  </button>
-                </div>
-              </div>
-
-              <div className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
-                <div className="w-1/3">
-                  <span className="text-gray-500 dark:text-gray-400">Referral Code</span>
-                </div>
-                <div className="w-1/3">
-                  <span>{displayData.referralCode}</span>
-                </div>
-                <div className="w-1/3 text-right">
-                  <button 
-                    onClick={() => handleCopy(displayData.referralCode)}
-                    className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                  >
-                    Copy
-                  </button>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
         
         {/* Verification Info Section */}
-        <div className="mb-10">
-          <h2 className="text-xl font-semibold mb-4">Verification info</h2>
+        <div className="mb-10 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Verification Info</h2>
           
           <div className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
             <div className="w-1/3">
-              <span className="text-gray-500 dark:text-gray-400">Identity verification</span>
+              <span className="text-gray-500 dark:text-gray-400 text-sm">Identity Verification</span>
             </div>
             <div className="w-1/3 flex items-center">
               {displayData.isVerified ? (
                 <>
                   <FiCheck className="text-green-500 mr-2" />
-                  <span className="text-green-500">Verified</span>
+                  <span className="text-green-500 font-medium text-sm">Verified</span>
                 </>
               ) : (
-                <span className="text-yellow-500">Pending verification</span>
+                <span className="text-yellow-500 font-medium text-sm">Pending Verification</span>
               )}
             </div>
             <div className="w-1/3 text-right">
-              <button className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                View details
+              <button className="text-sm py-1.5 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300">
+                View Details
               </button>
             </div>
           </div>
           
           <div className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
             <div className="w-1/3">
-              <span className="text-gray-500 dark:text-gray-400">Country/Region</span>
+              <span className="text-gray-500 dark:text-gray-400 text-sm">Country/Region</span>
             </div>
             <div className="w-1/3">
-              <span>{displayData.country}</span>
+              <span className="text-gray-800 dark:text-gray-200 font-medium text-sm">{displayData.country}</span>
             </div>
             <div className="w-1/3 text-right">
-              <button className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                View details
+              <button className="text-sm py-1.5 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300">
+                View Details
               </button>
             </div>
           </div>
         </div>
         
         {/* Account Details Section */}
-        <div className="mb-10">
-          <h2 className="text-xl font-semibold mb-4">Account details</h2>
+        <div className="mb-10 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Account Details</h2>
           
-          {/* Password Field */}
-          <div className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
-            <div className="w-1/3">
-              <span className="text-gray-500 dark:text-gray-400">Password</span>
+          {[{
+            label: 'Password',
+            value: '••••••••',
+            link: '/account/profile/security/change-password',
+            buttonText: 'Change'
+          }, {
+            label: 'Email',
+            value: displayData.email,
+            link: '/account/profile/security/change-email',
+            buttonText: 'Change'
+          }, {
+            label: 'Phone',
+            value: displayData.phone,
+            link: '/account/profile/security/change-phone', // Example link, adjust as needed
+            buttonText: 'Change'
+          }, {
+            label: 'Account Role',
+            value: displayData.role,
+            isCapitalized: true,
+            buttonText: 'View Details'
+          }, {
+            label: 'Trading Fee Tier',
+            value: displayData.tradingLevel,
+            buttonText: 'View Details'
+          }].map((item, index) => (
+            <div key={index} className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
+              <div className="w-1/3">
+                <span className="text-gray-500 dark:text-gray-400 text-sm">{item.label}</span>
+              </div>
+              <div className="w-1/3">
+                <span className={`text-gray-800 dark:text-gray-200 font-medium text-sm ${item.isCapitalized ? 'capitalize' : ''}`}>{item.value}</span>
+              </div>
+              <div className="w-1/3 text-right">
+                {item.link ? (
+                  <Link 
+                    to={item.link}
+                    className="text-sm py-1.5 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300"
+                  >
+                    {item.buttonText}
+                  </Link>
+                ) : (
+                  <button className="text-sm py-1.5 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300">
+                    {item.buttonText}
+                  </button>
+                )}
+              </div>
             </div>
-            <div className="w-1/3">
-              <span>••••••••</span>
-            </div>
-            <div className="w-1/3 text-right">
-              <Link 
-                to="/account/profile/security/change-password"
-                className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              >
-                Change
-              </Link>
-            </div>
-          </div>
-          
-          <div className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
-            <div className="w-1/3">
-              <span className="text-gray-500 dark:text-gray-400">Email</span>
-            </div>
-            <div className="w-1/3">
-              <span>{displayData.email}</span>
-            </div>
-            <div className="w-1/3 text-right">
-              <Link 
-                to="/account/profile/security/change-email"
-                className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              >
-                Change
-              </Link>
-            </div>
-          </div>
-          
-          <div className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
-            <div className="w-1/3">
-              <span className="text-gray-500 dark:text-gray-400">Phone</span>
-            </div>
-            <div className="w-1/3">
-              <span>{displayData.phone}</span>
-            </div>
-            <div className="w-1/3 text-right">
-              <button 
-                className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              >
-                Change
-              </button>
-            </div>
-          </div>
-          
-          <div className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
-            <div className="w-1/3">
-              <span className="text-gray-500 dark:text-gray-400">Account Role</span>
-            </div>
-            <div className="w-1/3">
-              <span className="capitalize">{displayData.role}</span>
-            </div>
-            <div className="w-1/3 text-right">
-              <button className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                View details
-              </button>
-            </div>
-          </div>
-          
-          <div className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
-            <div className="w-1/3">
-              <span className="text-gray-500 dark:text-gray-400">Trading fee tier</span>
-            </div>
-            <div className="w-1/3">
-              <span>{displayData.tradingLevel}</span>
-            </div>
-            <div className="w-1/3 text-right">
-              <button className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                View details
-              </button>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>

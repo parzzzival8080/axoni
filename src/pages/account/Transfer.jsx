@@ -483,8 +483,8 @@ const Transfer = () => {
 
     const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
     const uid = localStorage.getItem('uid');
-    const transfer_from = fromAccount.toLowerCase();
-    const transfer_to = toAccount.toLowerCase();
+    const transfer_from = fromAccount.toLowerCase() === 'future' ? 'futures' : fromAccount.toLowerCase();
+    const transfer_to = toAccount.toLowerCase() === 'future' ? 'futures' : toAccount.toLowerCase();
     const symbol = selectedAsset;
     const amount = parseFloat(transferAmount);
     const url = `https://apiv2.bhtokens.com/api/v1/transfers`;
