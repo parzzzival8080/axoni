@@ -1,10 +1,12 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaWallet } from "react-icons/fa";
 
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('email');
   const [credentials, setCredentials] = useState({
     email: '',
@@ -347,15 +349,23 @@ const LoginForm = () => {
             console.log('is_verified saved to localStorage:', profileResponse.data.user_detail.is_verified);
           } else {
             console.warn('is_verified not found in user_detail');
+            localStorage.setItem('is_verified', 'false');
           }
         } catch (profileErr) {
           console.error('Error fetching user information:', profileErr);
           // Set a default name if profile fetch fails
           localStorage.setItem('fullName', 'User');
+          // Set verification as false if profile fetch fails
+          localStorage.setItem('is_verified', 'false');
         }
 
-        // Redirect to dashboard or home page
-        window.location.href = '/spot-trading';
+        // Redirect based on verification status
+        const isVerified = localStorage.getItem('is_verified') === 'true';
+        if (isVerified) {
+          window.location.href = '/spot-trading';
+        } else {
+          window.location.href = '/';
+        }
       } else {
         // In case 'success' is false but no error was thrown
         setError('Login failed. Please check your credentials and try again.');
@@ -373,6 +383,21 @@ const LoginForm = () => {
     // Implement social login logic here
     // This would typically redirect to OAuth provider
   };
+
+  // Check if user is already logged in on component mount
+  useEffect(() => {
+    const authToken = localStorage.getItem('authToken');
+    const isVerified = localStorage.getItem('is_verified') === 'true';
+    
+    if (authToken) {
+      // User is already logged in, redirect based on verification status
+      if (isVerified) {
+        navigate('/spot-trading');
+      } else {
+        navigate('/account/profile/verify');
+      }
+    }
+  }, [navigate]);
 
   return (
     <div className="login-container">

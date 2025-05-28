@@ -88,7 +88,7 @@ const Hero = () => {
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
           <Link 
-            to="account/profile/verify"
+            to="/account/profile/verify"
             className="bg-[#FE7400] text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors text-center"
           >
             Verify Account
@@ -218,7 +218,7 @@ const Hero = () => {
             higher withdrawal limits!
           </p>
           <Link 
-            to="/account/verify"
+            to="/account/profile/verify"
             className="bg-[#FE7400] text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-orange-600 transition-colors whitespace-nowrap w-full sm:w-auto"
           >
             Verify Now
