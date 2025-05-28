@@ -243,11 +243,26 @@ const Navbar = () => {
   }, [searchRef]);
 
   const handleLogout = () => {
+    // Clear user-related cache from localStorage
     localStorage.removeItem('authToken');
     localStorage.removeItem('user_id');
     localStorage.removeItem('fullName');
     localStorage.removeItem('user');
-    
+    localStorage.removeItem('uid');
+    // Add any other user-related keys here if needed
+
+    // Also clear from sessionStorage (if you store user data there)
+    sessionStorage.removeItem('authToken');
+    sessionStorage.removeItem('user_id');
+    sessionStorage.removeItem('fullName');
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('uid');
+    // Add any other user-related keys here if needed
+
+    // If you use a caching library (e.g., React Query, SWR, Redux), reset its cache here
+    // Example for React Query:
+    // queryClient.clear();
+
     setIsAuthenticated(false);
     setUserName('');
     setShowUserMenu(false);
