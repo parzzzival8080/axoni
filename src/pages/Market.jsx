@@ -3,7 +3,7 @@ import NavigationTabs from '../components/Market/NavigationTabs';
 import SecondaryTabs from '../components/Market/SecondaryTabs';
 import CryptoPriceSection from '../components/Market/CryptoPriceSection';
 import FaqSection from '../components/Market/FaqSection';
-import '../components/Market/Market.css';
+// No need to import CSS file as we'll use Tailwind
 
 const Market = () => {
   // Primary navigation tabs
@@ -68,29 +68,31 @@ const Market = () => {
   };
 
   return (
-    <div className="market-container bg-white py-8">
-      {/* Primary Navigation */}
-      <NavigationTabs 
-        tabs={mainTabs} 
-        activeTab={activeMainTab} 
-        onTabClick={handleMainTabClick} 
-      />
-      
-      {/* Secondary Navigation */}
-      <SecondaryTabs 
-        tabs={secondaryTabs} 
-        activeTab={activeSecondaryTab} 
-        onTabClick={handleSecondaryTabClick} 
-      />
-      
-      {/* Cryptocurrency Price Section */}
-      <CryptoPriceSection 
-        cryptoData={cryptoData} 
-        isLoading={isLoading} 
-      />
-      
-      {/* FAQ Section */}
-      <FaqSection />
+    <div className="w-full min-h-screen bg-gray-900 text-white pb-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Primary Navigation */}
+        <NavigationTabs 
+          tabs={mainTabs} 
+          activeTab={activeMainTab} 
+          onTabClick={handleMainTabClick} 
+        />
+        
+        {/* Secondary Navigation */}
+        <SecondaryTabs 
+          tabs={secondaryTabs} 
+          activeTab={activeSecondaryTab} 
+          onTabClick={handleSecondaryTabClick} 
+        />
+        
+        {/* Cryptocurrency Price Section */}
+        <CryptoPriceSection 
+          cryptoData={cryptoData} 
+          isLoading={isLoading} 
+        />
+        
+        {/* FAQ Section */}
+        <FaqSection />
+      </div>
     </div>
   );
 };
