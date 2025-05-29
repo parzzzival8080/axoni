@@ -476,16 +476,53 @@ const SignUpPage = () => {
               localStorage.setItem('authToken', jwt_token);
               axios.defaults.headers.common['Authorization'] = `Bearer ${jwt_token}`;
             }
+
+            // Fetch user profile to get verification status
+            try {
+              const profileResponse = await axios.get(
+                `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${user_id || uid}`,
+                {
+                  headers: {
+                    'Authorization': `Bearer ${jwt_token || storedToken}`
+                  }
+                }
+              );
+
+              // Save is_verified to localStorage and log it for debugging
+              if (profileResponse.data && profileResponse.data.user_detail && typeof profileResponse.data.user_detail.is_verified !== 'undefined') {
+                localStorage.setItem('is_verified', profileResponse.data.user_detail.is_verified);
+                console.log('is_verified saved to localStorage after signup:', profileResponse.data.user_detail.is_verified);
+              } else {
+                console.warn('is_verified not found in user_detail after signup');
+                // Set as false by default for new accounts
+                localStorage.setItem('is_verified', 'false');
+              }
+            } catch (profileErr) {
+              console.error('Error fetching user information after signup:', profileErr);
+              // Set as false by default if profile fetch fails
+              localStorage.setItem('is_verified', 'false');
+            }
           } else {
             console.warn('Login API called but no UID returned');
+            // Set as false by default if login fails
+            localStorage.setItem('is_verified', 'false');
           }
         } catch (loginErr) {
           console.error('Error getting true UID from login API:', loginErr);
           // Continue with registration process even if getting the true UID fails
+          // Set as false by default
+          localStorage.setItem('is_verified', 'false');
         }
         
         alert('Registration successful! You are now signed in.');
-        navigate('/spot-trading');
+        
+        // Check verification status and redirect accordingly
+        const isVerified = localStorage.getItem('is_verified') === 'true';
+        if (isVerified) {
+          navigate('/spot-trading');
+        } else {
+          navigate('/');
+        }
       } else {
         setError(response.data.message || 'Failed to update profile. Please try again.');
       }

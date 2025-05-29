@@ -1,10 +1,12 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaWallet } from "react-icons/fa";
 
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('email');
   const [credentials, setCredentials] = useState({
     email: '',
@@ -347,15 +349,23 @@ const LoginForm = () => {
             console.log('is_verified saved to localStorage:', profileResponse.data.user_detail.is_verified);
           } else {
             console.warn('is_verified not found in user_detail');
+            localStorage.setItem('is_verified', 'false');
           }
         } catch (profileErr) {
           console.error('Error fetching user information:', profileErr);
           // Set a default name if profile fetch fails
           localStorage.setItem('fullName', 'User');
+          // Set verification as false if profile fetch fails
+          localStorage.setItem('is_verified', 'false');
         }
 
-        // Redirect to dashboard or home page
-        window.location.href = '/spot-trading';
+        // Redirect based on verification status
+        const isVerified = localStorage.getItem('is_verified') === 'true';
+        if (isVerified) {
+          window.location.href = '/spot-trading';
+        } else {
+          window.location.href = '/';
+        }
       } else {
         // In case 'success' is false but no error was thrown
         setError('Login failed. Please check your credentials and try again.');
@@ -374,6 +384,21 @@ const LoginForm = () => {
     // This would typically redirect to OAuth provider
   };
 
+  // Check if user is already logged in on component mount
+  useEffect(() => {
+    const authToken = localStorage.getItem('authToken');
+    const isVerified = localStorage.getItem('is_verified') === 'true';
+    
+    if (authToken) {
+      // User is already logged in, redirect based on verification status
+      if (isVerified) {
+        navigate('/spot-trading');
+      } else {
+        navigate('/account/profile/verify');
+      }
+    }
+  }, [navigate]);
+
   return (
     <div className="login-container">
       <h2>Log in</h2>
@@ -385,12 +410,12 @@ const LoginForm = () => {
         >
           Email / Sub-account
         </div>
-        <div
+        {/* <div
           className={`tab ${activeTab === 'qr' ? 'active' : ''}`}
           onClick={() => handleTabChange('qr')}
         >
           QR code
-        </div>
+        </div> */}
       </div>
 
       {/* Only show error message if not in forgot password mode */}
@@ -575,48 +600,9 @@ const LoginForm = () => {
               <br />
               <p>Don't have an account? <a href="/signup">Sign up</a></p>
             </div>
-            <div className="continue-text">
-              <p>or continue with</p>
-            </div>
+         
 
-            <div className="grid grid-cols-4 gap-4 mt-4">
-              <div
-                className="flex flex-col items-center justify-center p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors"
-                onClick={() => handleSocialLogin('google')}
-              >
-                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-1">
-                  <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
-                </div>
-                <span className="text-xs text-gray-300">Google</span>
-              </div>
-              <div
-                className="flex flex-col items-center justify-center p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors"
-                onClick={() => handleSocialLogin('apple')}
-              >
-                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-1">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" className="w-5 h-5" />
-                </div>
-                <span className="text-xs text-gray-300">Apple</span>
-              </div>
-              <div
-                className="flex flex-col items-center justify-center p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors"
-                onClick={() => handleSocialLogin('telegram')}
-              >
-                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-1">
-                  <img src="https://telegram.org/img/t_logo.svg" alt="Telegram" className="w-5 h-5" />
-                </div>
-                <span className="text-xs text-gray-300">Telegram</span>
-              </div>
-              <div
-                className="flex flex-col items-center justify-center p-2 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors"
-                onClick={() => handleSocialLogin('wallet')}
-              >
-           <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-1">
-  <FaWallet className="w-5 h-5 text-orange-500" />
-</div>
-                <span className="text-xs text-gray-300">Wallet</span>
-              </div>
-            </div>
+          
           </form>
         )
       ) : (

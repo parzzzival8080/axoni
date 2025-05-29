@@ -60,31 +60,6 @@ const Market = () => {
   };
 
   return (
-<<<<<<< Updated upstream
-    <div className="market-container bg-white py-8">
-      {/* Primary Navigation */}
-      <NavigationTabs 
-        tabs={mainTabs} 
-        activeTab={activeMainTab} 
-        onTabClick={handleMainTabClick} 
-      />
-      
-      {/* Secondary Navigation */}
-      <SecondaryTabs 
-        tabs={secondaryTabs} 
-        activeTab={activeSecondaryTab} 
-        onTabClick={handleSecondaryTabClick} 
-      />
-      
-      {/* Cryptocurrency Price Section */}
-      <CryptoPriceSection 
-        cryptoData={cryptoData} 
-        isLoading={isLoading} 
-      />
-      
-      {/* FAQ Section */}
-      <FaqSection />
-=======
     <div className="w-full min-h-screen bg-gray-900 text-white pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Title and Subtitle */}
@@ -169,7 +144,6 @@ const Market = () => {
           </table>
         </div>
       </div>
->>>>>>> Stashed changes
     </div>
   );
 

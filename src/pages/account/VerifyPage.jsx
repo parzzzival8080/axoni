@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { Link } from 'react-router-dom';
 import {
   ShieldCheck,
   ChevronRight,
@@ -72,6 +73,11 @@ const FileUploadButton = ({ label, onFileChange, fileName, icon, subtext, disabl
 };
 
 const VerifyPage = () => {
+  // Check verification status from localStorage or user data
+  const isVerified = localStorage.getItem('is_verified') === 'true';
+  // If you use a user object, you can also check userDetail.is_verified
+  const alreadyVerified = isVerified; // or set from user data if available
+
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedCountry, setSelectedCountry] = useState("PH");
   const [selectedIdInfo, setSelectedIdInfo] = useState(null);
@@ -421,12 +427,8 @@ const VerifyPage = () => {
               onClick={() => {
                 window.location.href = "/";
               }}
-<<<<<<< Updated upstream
               className="px-8 py-2.5 bg-black text-white font-semibold rounded-lg text-sm shadow-md hover:bg-gray-800 transition"
-=======
-              className="px-8 py-2.5 font-bold rounded-full text-sm shadow-lg transition bg-[#FE7400] text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:bg-[#FE7400] dark:hover:bg-orange-600"
               style={{ borderRadius: 9999 }}
->>>>>>> Stashed changes
             >
               Done
             </button>
@@ -448,8 +450,6 @@ const VerifyPage = () => {
     return false;
   };
 
-<<<<<<< Updated upstream
-=======
   const localStatus = typeof window !== 'undefined' ? localStorage.getItem('is_verified') : null;
 if (alreadyVerified || localStatus === 'pending') {
   if (localStatus === 'pending' && !alreadyVerified) {
@@ -487,7 +487,6 @@ if (alreadyVerified || localStatus === 'pending') {
 }
 
 
->>>>>>> Stashed changes
   return (
     <div className="min-h-screen bg-white flex flex-col items-center py-8 px-4 font-sans">
       <div className="w-full max-w-4xl mb-6">

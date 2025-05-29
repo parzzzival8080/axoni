@@ -498,6 +498,7 @@ const Conversion = () => {
         </div>
       </div>
       
+      
       {/* FAQ section */}
       <div className="max-w-3xl mx-auto px-4 pb-16">
         <h2 className="text-2xl font-bold text-center mb-8">FAQ</h2>

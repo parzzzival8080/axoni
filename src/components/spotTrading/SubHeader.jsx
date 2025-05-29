@@ -73,14 +73,63 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
   
   if (loading) {
     return (
-      <div className="sub-header flex flex-col md:flex-row items-center justify-center p-4 bg-okx-primary border-b border-okx-border">
-        <div className="w-full max-w-md">
-          <div className="flex items-center mb-4">
+      <div className="sub-header bg-okx-primary border-b border-okx-border">
+        {/* Desktop Skeleton */}
+        <div className="hidden md:flex desktop-skeleton">
+          <div className="desktop-skeleton-left">
+            <div className="desktop-skeleton-coin">
+              <div className="desktop-skeleton-logo"></div>
+              <div className="desktop-skeleton-name"></div>
+            </div>
+            
+            <div className="desktop-skeleton-stats">
+              {/* Price */}
+              <div className="desktop-skeleton-stat">
+                <div className="desktop-skeleton-value" style={{ width: '120px' }}></div>
+                <div className="desktop-skeleton-label" style={{ width: '80px' }}></div>
+              </div>
+              
+              {/* 24h Change */}
+              <div className="desktop-skeleton-stat">
+                <div className="desktop-skeleton-value"></div>
+                <div className="desktop-skeleton-label"></div>
+              </div>
+              
+              {/* 24h Low */}
+              <div className="desktop-skeleton-stat">
+                <div className="desktop-skeleton-value"></div>
+                <div className="desktop-skeleton-label"></div>
+              </div>
+              
+              {/* 24h High */}
+              <div className="desktop-skeleton-stat">
+                <div className="desktop-skeleton-value"></div>
+                <div className="desktop-skeleton-label"></div>
+              </div>
+              
+              {/* 24h Volume */}
+              <div className="desktop-skeleton-stat">
+                <div className="desktop-skeleton-value" style={{ width: '100px' }}></div>
+                <div className="desktop-skeleton-label" style={{ width: '90px' }}></div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="desktop-skeleton-actions">
+            <div className="desktop-skeleton-button"></div>
+            <div className="desktop-skeleton-button"></div>
+            <div className="desktop-skeleton-logo" style={{ width: '28px', height: '28px', marginLeft: '8px' }}></div>
+          </div>
+        </div>
+        
+        {/* Mobile Skeleton */}
+        <div className="md:hidden w-full">
+          <div className="flex items-center mb-4 p-4">
             <div className="w-8 h-8 rounded-full bg-okx-secondary animate-pulse-slow mr-3"></div>
             <div className="h-5 w-28 bg-okx-secondary rounded animate-pulse-slow"></div>
             <div className="ml-auto h-6 w-16 bg-okx-secondary rounded animate-pulse-slow"></div>
           </div>
-          <div className="flex overflow-x-auto pb-2 gap-4 scrollbar-hide">
+          <div className="flex overflow-x-auto pb-2 px-4 gap-4 scrollbar-hide">
             {Array(5).fill(0).map((_, i) => (
               <div key={i} className="flex-shrink-0 w-20">
                 <div className="h-4 w-16 bg-okx-secondary rounded mb-2 animate-pulse-slow"></div>

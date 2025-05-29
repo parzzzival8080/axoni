@@ -355,7 +355,7 @@
 }
 
 /* Skeleton loading animation */
-@keyframes pulse {
+@keyframes pulse-slow {
   0% {
     opacity: 0.6;
   }
@@ -364,6 +364,15 @@
   }
   100% {
     opacity: 0.6;
+  }
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
   }
 }
 
@@ -524,13 +533,103 @@
   gap: 24px;
   align-items: center;
   min-height: 48px;
+  width: 100%;
 }
+
 .skeleton-stat {
   width: 80px;
   height: 32px;
   border-radius: 6px;
   background: linear-gradient(90deg, #23272f 25%, #18191d 50%, #23272f 75%);
-  animation: skeleton-loading 1.2s infinite linear;
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite linear;
+}
+
+/* Desktop skeleton loading */
+.desktop-skeleton {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  height: 80px;
+}
+
+.desktop-skeleton-left {
+  display: flex;
+  align-items: center;
+  width: 70%;
+}
+
+.desktop-skeleton-coin {
+  display: flex;
+  align-items: center;
+  margin-right: 60px;
+}
+
+.desktop-skeleton-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #23272f 25%, #18191d 50%, #23272f 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite linear;
+  margin-right: 16px;
+}
+
+.desktop-skeleton-name {
+  width: 140px;
+  height: 24px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #23272f 25%, #18191d 50%, #23272f 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite linear;
+}
+
+.desktop-skeleton-stats {
+  display: flex;
+  gap: 40px;
+  margin-left: 20px;
+}
+
+.desktop-skeleton-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.desktop-skeleton-value {
+  width: 90px;
+  height: 24px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #23272f 25%, #18191d 50%, #23272f 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite linear;
+}
+
+.desktop-skeleton-label {
+  width: 70px;
+  height: 16px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #23272f 25%, #18191d 50%, #23272f 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite linear;
+}
+
+.desktop-skeleton-actions {
+  display: flex;
+  gap: 16px;
+  margin-left: auto;
+}
+
+.desktop-skeleton-button {
+  width: 110px;
+  height: 36px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #23272f 25%, #18191d 50%, #23272f 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite linear;
 }
 
 .coin-logo-round {
