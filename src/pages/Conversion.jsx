@@ -506,7 +506,7 @@ const Conversion = () => {
           {/* FAQ items */}
           <div className="border-b border-gray-800 pb-4">
             <button className="flex justify-between items-center w-full text-left">
-              <span className="text-base font-medium">How do I convert crypto on OKX?</span>
+              <span className="text-base font-medium">How do I convert crypto on FLUX?</span>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
@@ -515,7 +515,7 @@ const Conversion = () => {
           
           <div className="border-b border-gray-800 pb-4">
             <button className="flex justify-between items-center w-full text-left">
-              <span className="text-base font-medium">Which crypto can I convert on OKX?</span>
+              <span className="text-base font-medium">Which crypto can I convert on FLUX?</span>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>

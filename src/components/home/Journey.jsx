@@ -1,16 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+
+const buttonRoutes = {
+  'Sign Up': '/login',
+  'Deposit Now': '/deposit',
+  'Trading': '/spot-trading',
+};
+
 const JourneyStep = ({ number, title, description, buttonText }) => (
-  <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-6 hover:bg-gray-900/70 transition-colors">
+  <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-6 hover:bg-gray-900/70 transition-colors flex flex-col h-full">
     <div className="mb-4">
       <span className="text-gray-400 text-sm font-medium">{number}</span>
       <h3 className="text-white text-lg font-semibold mt-1">{title}</h3>
     </div>
-    <p className="text-gray-400 text-sm mb-6 leading-relaxed">{description}</p>
-    <button className="bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-md transition-colors">
-      {buttonText}
-    </button>
+    <p className="text-gray-400 text-sm mb-6 leading-relaxed flex-1">{description}</p>
+    <div className="mt-auto pt-2">
+      <Link
+        to={buttonRoutes[buttonText] || '/'}
+        className="w-full block text-center bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold px-4 py-2 rounded-md transition-colors shadow-md uppercase tracking-wide"
+      >
+        {buttonText}
+      </Link>
+    </div>
   </div>
 );
 

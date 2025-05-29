@@ -1,104 +1,90 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const TrendingCoin = ({ symbol, price, change, high, volume, chart }) => (
-  <div className="flex items-center justify-between py-3 hover:bg-gray-900/50 transition-colors">
-    <div className="flex items-center gap-3 flex-1">
-      <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
-        <span className="text-xs font-semibold text-white">
-          {symbol.split('/')[0].slice(0, 1)}
+import { useNavigate } from 'react-router-dom';
+
+const TrendingCoin = ({ symbol, price, change, logo }) => {
+  const navigate = useNavigate();
+  return (
+    <div className="flex items-center justify-between py-3 hover:bg-gray-900/50 transition-colors">
+      {/* Logo + Pair */}
+      <div className="flex items-center gap-3 flex-1 min-w-0">
+        {logo ? (
+          <img
+            src={logo}
+            alt={symbol}
+            className="w-8 h-8 rounded-full bg-gray-800 object-contain shadow-md"
+            onError={e => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/32/222/fff?text=?'; }}
+          />
+        ) : (
+          <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
+            <span className="text-xs font-semibold text-white">
+              {symbol.split('/')[0].slice(0, 1)}
+            </span>
+          </div>
+        )}
+        <span className="text-white font-medium truncate max-w-[110px]">{symbol}</span>
+      </div>
+      {/* Price */}
+      <div className="text-white font-medium w-32 text-right">
+        ${price}
+      </div>
+      {/* 24h Change */}
+      <div className="w-24 text-right">
+        <span className={`text-sm font-medium ${parseFloat(change) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+          {parseFloat(change) >= 0 ? '+' : ''}{change}%
         </span>
       </div>
-      <span className="text-white font-medium">{symbol}</span>
+      {/* Trade Button */}
+      <div className="w-20 text-right">
+        <button
+          className="text-orange-500 text-sm font-medium hover:text-orange-400 transition-colors px-3 py-1 rounded-full bg-white/5 border border-orange-500/20 shadow-sm"
+          onClick={() => navigate('/spot-trading')}
+        >
+          Trade
+        </button>
+      </div>
     </div>
-    
-    <div className="text-white font-medium w-24 text-right">
-      ${price}
-    </div>
-    
-    <div className="w-20 text-right">
-      <span className={`text-sm font-medium ${
-        change >= 0 ? 'text-green-500' : 'text-red-500'
-      }`}>
-        {change >= 0 ? '+' : ''}{change}%
-      </span>
-    </div>
-    
-    <div className="text-white font-medium w-24 text-right">
-      {high}
-    </div>
-    
-    <div className="text-white font-medium w-20 text-right">
-      {volume}
-    </div>
-    
-    <div className="w-24 h-8 flex items-center justify-center">
-      <svg viewBox="0 0 80 20" className="w-full h-full">
-        <path 
-          d={chart} 
-          fill="none" 
-          stroke={change >= 0 ? '#10b981' : '#ef4444'} 
-          strokeWidth="1.5"
-          className="opacity-80"
-        />
-      </svg>
-    </div>
-    
-    <div className="w-16 text-right">
-      <button className="text-orange-500 text-sm font-medium hover:text-orange-400 transition-colors">
-        Trade
-      </button>
-    </div>
-  </div>
-);
+  );
+};
 
 const Trading = () => {
   const [activeTab, setActiveTab] = useState('Popular Futures');
-  
-  const tabs = ['Popular Futures', 'Popular Spot', 'Gainers'];
-  
-  const trendingCoins = [
-    {
-      symbol: 'BTCUSDT',
-      price: '104,569.0',
-      change: 1.20,
-      high: '106,108.8',
-      volume: '7.44B',
-      chart: 'M5,15 Q20,10 35,12 Q50,8 65,11 Q75,9 75,9'
-    },
-    {
-      symbol: 'BTCUSDT',
-      price: '104,569.0',
-      change: 1.20,
-      high: '106,108.8',
-      volume: '7.44B',
-      chart: 'M5,15 Q20,10 35,12 Q50,8 65,11 Q75,9 75,9'
-    },
-    {
-      symbol: 'BTCUSDT',
-      price: '104,569.0',
-      change: 1.20,
-      high: '106,108.8',
-      volume: '7.44B',
-      chart: 'M5,15 Q20,10 35,12 Q50,8 65,11 Q75,9 75,9'
-    },
-    {
-      symbol: 'BTCUSDT',
-      price: '104,569.0',
-      change: 1.20,
-      high: '106,108.8',
-      volume: '7.44B',
-      chart: 'M5,15 Q20,10 35,12 Q50,8 65,11 Q75,9 75,9'
-    },
-    {
-      symbol: 'BTCUSDT',
-      price: '104,569.0',
-      change: 1.20,
-      high: '106,108.8',
-      volume: '7.44B',
-      chart: 'M5,15 Q20,10 35,12 Q50,8 65,11 Q75,9 75,9'
-    },
-  ];
+  const [coins, setCoins] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const tabs = ['Popular Futures'];
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchCoins = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetch('https://apiv2.bhtokens.com/api/v1/coins?apikey=A20RqFwVktRxxRqrKBtmi6ud');
+        const data = await res.json();
+        if (!isMounted) return;
+        if (Array.isArray(data)) {
+          setCoins(data);
+        } else if (Array.isArray(data.data)) {
+          setCoins(data.data);
+        } else {
+          setCoins([]);
+        }
+      } catch (err) {
+        if (isMounted) setError('Failed to fetch coin data.');
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    fetchCoins();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <div className="bg-black py-16">
@@ -133,30 +119,42 @@ const Trading = () => {
         {/* Table Header */}
         <div className="flex items-center justify-between py-3 border-b border-gray-800 mb-4">
           <div className="flex items-center gap-3 flex-1">
-            <span className="text-gray-400 text-sm">Trading Pairs</span>
+            <span className="text-gray-400 text-sm">Pair</span>
+          </div>
+          <div className="w-32 text-right">
+            <span className="text-gray-400 text-sm">Last Price</span>
           </div>
           <div className="w-24 text-right">
-            <span className="text-gray-400 text-sm">Last Traded Price</span>
-          </div>
-          <div className="w-20 text-right">
             <span className="text-gray-400 text-sm">24H Change</span>
           </div>
-          <div className="w-24 text-right">
-            <span className="text-gray-400 text-sm">24H High</span>
-          </div>
           <div className="w-20 text-right">
-            <span className="text-gray-400 text-sm">24H Trading Volume</span>
+            <span className="text-gray-400 text-sm">Trade</span>
           </div>
-          <div className="w-24 text-center">
-            <span className="text-gray-400 text-sm">Chart</span>
-          </div>
-          <div className="w-16"></div>
         </div>
 
         {/* Coin List */}
-        <div className="space-y-1">
-          {trendingCoins.map((coin, index) => (
-            <TrendingCoin key={index} {...coin} />
+        <div className="space-y-1 min-h-[120px]">
+          {loading && (
+            <div className="text-gray-400 py-8 text-center animate-pulse">Loading coins...</div>
+          )}
+          {error && (
+            <div className="text-red-500 py-8 text-center">{error}</div>
+          )}
+          {!loading && !error && coins.length === 0 && (
+            <div className="text-gray-400 py-8 text-center">No coins found.</div>
+          )}
+          {!loading && !error && coins.slice(0, 10).map((coin, index) => (
+            <TrendingCoin
+              key={coin.symbol + (coin.pair_name || '') || index}
+              symbol={coin.symbol && coin.pair_name ? `${coin.symbol}/${coin.pair_name}` : coin.symbol || coin.name || '-'}
+              price={coin.price ? parseFloat(coin.price).toLocaleString(undefined, { maximumFractionDigits: 8 }) : '-'}
+              change={coin.price_change_24h !== undefined && coin.price_change_24h !== null ? parseFloat(coin.price_change_24h).toFixed(2) : '0.00'}
+              high={coin['24_high'] ? parseFloat(coin['24_high']).toLocaleString(undefined, { maximumFractionDigits: 8 }) : '-'}
+              low={coin['24_low'] ? parseFloat(coin['24_low']).toLocaleString(undefined, { maximumFractionDigits: 8 }) : '-'}
+              volume={coin.volume_24h ? Number(coin.volume_24h).toLocaleString() : '-'}
+              logo={coin.logo_path}
+              chart={'M5,15 Q20,10 35,12 Q50,8 65,11 Q75,9 75,9'} // Placeholder chart
+            />
           ))}
         </div>
       </div>

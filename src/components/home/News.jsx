@@ -4,7 +4,7 @@ import news1 from '../../assets/homepage/news1.png';
 import news2 from '../../assets/homepage/news2.png';
 import news3 from '../../assets/homepage/news3.png';
 
-const NewsCard = ({ title, date, category, link, image }) => (
+const NewsCard = ({ title, date, category, link, image, description }) => (
   <Link to={link} className="bg-gray-900/50 rounded-lg overflow-hidden hover:bg-gray-900/70 transition-colors group">
     <div className="aspect-video overflow-hidden">
       <img 
@@ -19,10 +19,8 @@ const NewsCard = ({ title, date, category, link, image }) => (
         <span>•</span>
         <span>{category}</span>
       </div>
-      <h3 className="text-white font-semibold text-sm mb-3 leading-relaxed">{title}</h3>
-      <button className="text-orange-500 text-xs font-medium hover:text-orange-400 transition-colors">
-        Read article
-      </button>
+      <h3 className="text-white font-semibold text-sm mb-1 leading-relaxed">{title}</h3>
+      <p className="text-gray-400 text-xs mb-1">{description}</p>
     </div>
   </Link>
 );
@@ -30,24 +28,24 @@ const NewsCard = ({ title, date, category, link, image }) => (
 const News = () => {
   const newsArticles = [
     {
-      title: 'Mastering Risk Management',
-      date: '09 Aug 2024',
-      category: 'Global',
-      link: '/blog/risk-management',
+      title: 'Bitcoin ETF: The Next Big Wave?',
+      description: 'Analysts discuss the potential impact of Bitcoin ETFs on the global crypto market and what investors should expect in 2025.',
+      date: '29 May 2025',
+      category: 'Markets',
       image: news1
     },
     {
-      title: 'Mastering Risk Management',
-      date: '09 Aug 2024',
-      category: 'Global',
-      link: '/blog/risk-management-2',
+      title: 'DeFi Security: Staying Safe in 2025',
+      description: 'Explore the latest DeFi security trends and learn practical tips to keep your assets secure in the evolving landscape.',
+      date: '27 May 2025',
+      category: 'DeFi',
       image: news2
     },
     {
-      title: 'Mastering Risk Management',
-      date: '09 Aug 2024',
-      category: 'Global',
-      link: '/blog/risk-management-3',
+      title: 'FLUX Launches New Trading Tools',
+      description: 'FLUX introduces advanced analytics and automation features to help traders maximize performance and efficiency.',
+      date: '25 May 2025',
+      category: 'Platform',
       image: news3
     }
   ];

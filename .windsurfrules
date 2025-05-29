@@ -6,7 +6,7 @@ Core Rules
 4.Keep bundle size minimal by avoiding unnecessary dependencies
 5.Implement proper error handling for all API interactions
 6.Ensure authentication flows are secure and intuitive
-7.Use CSS modules or styled-components for styling components
+7.Use tailwind or styled-components for styling components
 8.Follow atomic design principles for component organization
 9.Include subtle animations for interactive elements (trading charts, buttons)
 10.Implement proper loading states for async operations

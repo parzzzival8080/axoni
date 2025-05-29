@@ -208,7 +208,8 @@ const VerifyPage = () => {
         throw new Error(errorData.message || `API request failed. See console for details.`);
       }
       
-      localStorage.setItem('is_verified', 'true');
+      // localStorage.setItem('is_verified', 'true'); // Do not auto-verify, keep status pending
+      localStorage.setItem('is_verified', 'pending'); // Optionally mark as pending for client logic
       setCurrentStep(6);
 
     } catch (error) {
@@ -404,23 +405,28 @@ const VerifyPage = () => {
 
       case 6: // Submitted / Thank you
         return (
-          <div className="w-full text-center py-8">
-            <CheckCircle2 size={56} className="mx-auto mb-4 text-green-500" strokeWidth={1.5}/>
-            <h2 className="text-2xl font-semibold mb-2 text-black">Verification Submitted</h2>
-            <p className="text-sm text-gray-600 mb-6 max-w-md mx-auto">
-              Thank you! Your information has been submitted for review. We'll notify you via email once the verification process is complete.
+          <div className="w-full text-center py-12 flex flex-col items-center">
+            <div className="flex items-center justify-center mb-4">
+              <span className="inline-flex items-center px-6 py-2 rounded-full bg-orange-100 text-orange-700 font-semibold text-lg border border-orange-300 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-700 animate-pulse">
+                <CheckCircle2 size={32} className="mr-2 text-orange-500" strokeWidth={2}/>
+                Pending Review
+              </span>
+            </div>
+            <h2 className="text-2xl font-bold mb-2 text-black dark:text-white">Verification Submitted</h2>
+            <p className="text-base text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto">
+              Thank you! Your information has been submitted and is now <span className='font-semibold text-orange-500 dark:text-orange-400'>pending review</span>.<br/>
+              You will receive an email once your verification has been processed. This may take up to 24 hours.
             </p>
             <button
               onClick={() => {
-                setCurrentStep(1);
-                setSelectedCountry("PH");
-                setSelectedIdInfo(null);
-                setIdFront(null);
-                setIdBack(null);
-                setSelfie(null);
-                setSubmissionError("");
+                window.location.href = "/";
               }}
+<<<<<<< Updated upstream
               className="px-8 py-2.5 bg-black text-white font-semibold rounded-lg text-sm shadow-md hover:bg-gray-800 transition"
+=======
+              className="px-8 py-2.5 font-bold rounded-full text-sm shadow-lg transition bg-[#FE7400] text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:bg-[#FE7400] dark:hover:bg-orange-600"
+              style={{ borderRadius: 9999 }}
+>>>>>>> Stashed changes
             >
               Done
             </button>
@@ -442,6 +448,46 @@ const VerifyPage = () => {
     return false;
   };
 
+<<<<<<< Updated upstream
+=======
+  const localStatus = typeof window !== 'undefined' ? localStorage.getItem('is_verified') : null;
+if (alreadyVerified || localStatus === 'pending') {
+  if (localStatus === 'pending' && !alreadyVerified) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col items-center py-8 px-4 font-sans">
+        <div className="w-full max-w-4xl mb-6">
+          <ProfileNavBar />
+        </div>
+        <div className="w-full max-w-md flex flex-col items-center justify-center bg-white dark:bg-gray-800 rounded-xl p-8 mt-12 shadow">
+          <span className="inline-flex items-center px-6 py-2 rounded-full bg-orange-100 text-orange-700 font-semibold text-lg border border-orange-300 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-700 animate-pulse mb-4">
+            <CheckCircle2 size={28} className="mr-2 text-orange-500" strokeWidth={2}/>
+            Verification Pending
+          </span>
+          <h2 className="text-2xl font-bold mb-2 text-black dark:text-white">Your Verification is Under Review</h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-6 text-center">Your information has been submitted and is currently under review. You will be notified by email once your account is verified. This may take up to 24 hours.</p>
+          <Link to="/" className="px-6 py-2 rounded-full bg-[#FE7400] text-white font-semibold text-sm hover:bg-orange-600 transition shadow-lg" style={{ borderRadius: 9999 }}>Go to Home</Link>
+        </div>
+      </div>
+    );
+  }
+  // alreadyVerified true
+  return (
+    <div className="min-h-screen bg-white flex flex-col items-center py-8 px-4 font-sans">
+      <div className="w-full max-w-4xl mb-6">
+        <ProfileNavBar />
+      </div>
+      <div className="w-full max-w-md flex flex-col items-center justify-center bg-white rounded-xl p-8 mt-12 shadow">
+        <CheckCircle2 size={72} className="text-green-500 mb-4" strokeWidth={1.5} />
+        <h2 className="text-2xl font-bold mb-2 text-black">You are already verified!</h2>
+        <p className="text-gray-600 mb-6 text-center">Thank you for verifying your identity. Your account is fully verified and you have access to all features.</p>
+        <Link to="/account/profile" className="px-6 py-2 rounded-lg bg-[#FE7400] text-white font-semibold text-sm hover:bg-orange-600 transition">Go to Profile</Link>
+      </div>
+    </div>
+  );
+}
+
+
+>>>>>>> Stashed changes
   return (
     <div className="min-h-screen bg-white flex flex-col items-center py-8 px-4 font-sans">
       <div className="w-full max-w-4xl mb-6">

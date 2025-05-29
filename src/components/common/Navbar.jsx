@@ -67,13 +67,6 @@ const mobileMenuItems = [
       { name: 'Convert', path: '/conversion' },
       { name: 'Spot', path: '/spot-trading' },
       { name: 'Future', path: '/future-trading' },
-      { name: 'Options', path: '/options' },
-      { name: 'Pre-markets Futures', path: '/pre-market-futures'},
-      { name: 'Trading bots', path: '/trading-bots'},
-      { name: 'Marketplace', path: '/marketplace' },
-      { name: 'Nitro Spreads', path: '/nitro-spreads' },
-      { name: 'RFQ', path: '/rfq' },
-      { name: 'Demo trading', path: '/demo-trading' },
     ]
   },
   { 
@@ -387,71 +380,7 @@ const Navbar = () => {
                 </div>
               </Link>
               
-              <div className="dropdown-item with-arrow">
-                <div className="dropdown-icon">
-                  <i className="fas fa-layer-group"></i>
-                </div>
-                <div className="dropdown-content">
-                  <h3>Options</h3>
-                  <p>Capitalize on market volatility with options</p>
-                </div>
-                <i className="fas fa-chevron-right"></i>
-              </div>
-              
-              <div className="dropdown-item with-arrow">
-                <div className="dropdown-icon">
-                  <i className="fas fa-calendar-alt"></i>
-                </div>
-                <div className="dropdown-content">
-                  <h3>Pre-market Futures</h3>
-                  <p>Get early access and trade upcoming crypto</p>
-                </div>
-                <i className="fas fa-chevron-right"></i>
-              </div>
-              
-              <h2>Powerful tools</h2>
-              
-              <div className="dropdown-item with-arrow">
-                <div className="dropdown-icon">
-                  <i className="fas fa-robot"></i>
-                </div>
-                <div className="dropdown-content">
-                  <h3>Trading bots</h3>
-                  <p>Multiple strategies to help you trade with ease</p>
-                </div>
-                <i className="fas fa-chevron-right"></i>
-              </div>
-              
-              <div className="dropdown-item with-arrow">
-                <div className="dropdown-icon">
-                  <i className="fas fa-store"></i>
-                </div>
-                <div className="dropdown-content">
-                  <h3>Marketplace</h3>
-                  <p>Reap high returns with a community of top traders</p>
-                </div>
-                <i className="fas fa-chevron-right"></i>
-              </div>
-              
-              <div className="dropdown-item">
-                <div className="dropdown-icon">
-                  <i className="fas fa-bolt"></i>
-                </div>
-                <div className="dropdown-content">
-                  <h3>Nitro Spreads</h3>
-                  <p>Deep liquidity for futures spreads</p>
-                </div>
-              </div>
-              
-              <div className="dropdown-item">
-                <div className="dropdown-icon">
-                  <i className="fas fa-sliders-h"></i>
-                </div>
-                <div className="dropdown-content">
-                  <h3>RFQ</h3>
-                  <p>Custom multi-leg strategies and block trades</p>
-                </div>
-              </div>
+             
             </div>
           </div>
           <div className="nav-item">
@@ -470,26 +399,7 @@ const Navbar = () => {
                   </div>
                 </Link>
                 
-                <div className="dropdown-item with-arrow">
-                    <div className="dropdown-icon">
-                      <i className="fas fa-coins"></i>
-                    </div>
-                    <div className="dropdown-content">
-                      <h3>Opportunities</h3>
-                      <p>Discover hot and new crypto</p>
-                    </div>
-                    <i className="fas fa-chevron-right"></i>
-                </div>
-                <div className="dropdown-item with-arrow">
-                    <div className="dropdown-icon">
-                      <i className="fas fa-coins"/>
-                    </div>
-                    <div className="dropdown-content">
-                      <h3>Marketplace</h3>
-                      <p>Reap high returns with a community of top traders</p>
-                    </div>
-                    <i className="fas fa-chevron-right"/>
-                </div>
+               
               </div>
             </div>
           
@@ -521,57 +431,16 @@ const Navbar = () => {
                     </div>
                   </Link>
                   
-                  <Link to="/earn/on-chain" className="dropdown-link">
-                    <div className="dropdown-sub-item">
-                      <div className="dropdown-icon-small">
-                        <i className="fas fa-circle"></i>
-                      </div>
-                      <span>On-chain Earn</span>
-                    </div>
-                  </Link>
-                  
-                  <Link to="/earn/structured" className="dropdown-link">
-                    <div className="dropdown-sub-item">
-                      <div className="dropdown-icon-small">
-                        <i className="fas fa-circle"></i>
-                      </div>
-                      <span>Structured Products</span>
-                    </div>
-                  </Link>
                 </div>
               </div>
               
-              <Link to="/loan" className="dropdown-link">
-                <div className="dropdown-item with-arrow">
-                  <div className="dropdown-icon">
-                    <i className="fa-solid fa-hand-holding-dollar"></i>
-                  </div>
-                  <div className="dropdown-content">
-                    <h3>Loan</h3>
-                    <p>Borrow to earn, borrow to spend</p>
-                  </div>
-                  <i className="fas fa-chevron-right"></i>
-                </div>
-              </Link>
-              
-              <Link to="/jumpstart" className="dropdown-link">
-                <div className="dropdown-item with-arrow">
-                  <div className="dropdown-icon">
-                    <i className="fas fa-coins"></i>
-                  </div>
-                  <div className="dropdown-content">
-                    <h3>Jumpstart</h3>
-                    <p>Discover new, high-quality projects around the world</p>
-                  </div>
-                  <i className="fas fa-chevron-right"></i>
-                </div>
-              </Link>
+         
             </div>
         </div>
        
 
           <div 
-            className="nav-item"
+            className="nav-item hidden"
             onMouseEnter={() => setShowMoreDropdown(true)}
             onMouseLeave={() => setShowMoreDropdown(false)}
             style={{position: 'relative'}}
@@ -938,7 +807,7 @@ const Navbar = () => {
           </div>
           
             {/* Notifications Icon with announcements dropdown */}
-              <div className="right-nav-item">
+              <div className="right-nav-item hidden">
                 <button 
                   className="navbar-icon-link" 
                   type="button" 

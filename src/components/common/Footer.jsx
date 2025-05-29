@@ -49,36 +49,13 @@ const Footer = () => {
         {/* Logo and Copyright */}
         <div className="footer-logo">
           <div className="logo-container">
-            <img src={Logo} alt="tradex-logo" />
+            <img src={Logo} alt="tradex-logo" className="h-12 w-auto object-contain" />
           </div>
-          <p className="copyright">©2017 - 2025 TradeX.COM</p>
+          <p className="copyright">©2025 FLUX.COM</p>
         </div>
         
         {/* Language Selector */}
-        <div className="language-selector">
-          <button 
-            className="language-button"
-            onClick={() => setIsLanguageOpen(!isLanguageOpen)}
-          >
-            <FaGlobe className="globe-icon" />
-            <span>English/USD</span>
-            {isLanguageOpen ? 
-              <div className="chevron-up-circle">
-                <FaChevronUp className="chevron-icon" />
-              </div> : 
-              <div className="chevron-down-circle">
-                <FaChevronDown className="chevron-icon" />
-              </div>
-            }
-          </button>
-          {isLanguageOpen && (
-            <div className="language-dropdown">
-              <div className="language-option">English/USD</div>
-              <div className="language-option">Spanish/EUR</div>
-              <div className="language-option">Chinese/CNY</div>
-            </div>
-          )}
-        </div>
+       
         
         {/* Conditional rendering based on viewport */}
         {isMobile ? (
@@ -94,16 +71,8 @@ const Footer = () => {
               </h3>
               <ul className={`column-links ${activeSections.includes(0) ? 'active' : ''}`}>
                 <li><a href="#about">About us</a></li>
-                <li><a href="#privacy">Candidate privacy notice</a></li>
-                <li><a href="#careers">Careers</a></li>
-                <li><a href="#contact">Contact us</a></li>
+                <li><a href="#contact">Contact</a></li>
                 <li><a href="#terms">Terms of service</a></li>
-                <li><a href="#privacy-notice">Privacy notice</a></li>
-                <li><a href="#disclosures">Disclosures</a></li>
-                <li><a href="#whistleblower">Whistleblower notice</a></li>
-                <li><a href="#law">Law enforcement</a></li>
-                <li><a href="#app">TradeX app</a></li>
-                <li><a href="#okx-tr">TradeX TR</a></li>
               </ul>
             </div>
             
@@ -238,16 +207,8 @@ const Footer = () => {
             <div className="footer-column">
               <h3 className="column-title">Products</h3>
               <ul className="column-links">
-                <li><a href="#buy-crypto">Buy crypto</a></li>
-                <li><a href="#p2p-trading">P2P trading</a></li>
-                <li><a href="#convert">Convert</a></li>
-                <li><a href="#trade">Trade</a></li>
-                <li><a href="#earn">Earn</a></li>
-                <li><a href="#oktc">OKTC</a></li>
-                <li><a href="#trading-bots">Trading bots</a></li>
-                <li><a href="#all-cryptocurrencies">All cryptocurrencies</a></li>
-                <li><a href="#learn">Learn</a></li>
-                <li><a href="#tradingview">TradingView</a></li>
+                <li><a href="#spot">Spot trading</a></li>
+                <li><a href="#futures">Futures trading</a></li>
               </ul>
             </div>
             
@@ -266,9 +227,7 @@ const Footer = () => {
               <h3 className="column-title support-title">Support</h3>
               <ul className="column-links">
                 <li><a href="#support-center">Support center</a></li>
-                <li><a href="#channel-verification">Channel verification</a></li>
                 <li><a href="#announcements">Announcements</a></li>
-                <li><a href="#connect-with-okx">Connect with TradeX</a></li>
               </ul>
             </div>
             
@@ -278,9 +237,6 @@ const Footer = () => {
               <ul className="column-links">
                 <li><a href="#btc-usd">BTC to USD</a></li>
                 <li><a href="#eth-usd">ETH to USD</a></li>
-                <li><a href="#usdt-usd">USDT to USD</a></li>
-                <li><a href="#sol-usd">SOL to USD</a></li>
-                <li><a href="#xrp-usd">XRP to USD</a></li>
               </ul>
             </div>
             
@@ -288,25 +244,8 @@ const Footer = () => {
             <div className="footer-column">
               <h3 className="column-title">Trade</h3>
               <ul className="column-links">
-                <li><a href="#btc-usdc">BTC USDC</a></li>
-                <li><a href="#eth-usdc">ETH USDC</a></li>
                 <li><a href="#btc-usdt">BTC USDT</a></li>
                 <li><a href="#eth-usdt">ETH USDT</a></li>
-                <li><a href="#ltc-usdt">LTC USDT</a></li>
-                <li><a href="#sol-usdt">SOL USDT</a></li>
-                <li><a href="#xrp-usdt">XRP USDT</a></li>
-                <li><a href="#bitcoin-price">Bitcoin price</a></li>
-                <li><a href="#ethereum-price">Ethereum price</a></li>
-                <li><a href="#cardano-price">Cardano price</a></li>
-                <li><a href="#solana-price">Solana price</a></li>
-                <li><a href="#xrp-price">XRP price</a></li>
-                <li><a href="#bitcoin-prediction">Bitcoin price prediction</a></li>
-                <li><a href="#ethereum-prediction">Ethereum price prediction</a></li>
-                <li><a href="#xrp-prediction">XRP price prediction</a></li>
-                <li><a href="#how-to-buy-crypto">How to buy crypto</a></li>
-                <li><a href="#how-to-buy-bitcoin">How to buy Bitcoin</a></li>
-                <li><a href="#how-to-buy-ethereum">How to buy Ethereum</a></li>
-                <li><a href="#how-to-buy-solana">How to buy Solana</a></li>
               </ul>
             </div>
             
@@ -326,21 +265,7 @@ const Footer = () => {
           </div>
         )}
         
-        {/* Social Media Section */}
-        <div className="social-section">
-          <h3 className="social-title">Community</h3>
-          <div className="social-icons">
-            <a href="#twitter" className="social-icon"><FaTwitter /></a>
-            <a href="#tiktok" className="social-icon"><FaTiktok /></a>
-            <a href="#instagram" className="social-icon"><FaInstagram /></a>
-            <a href="#discord" className="social-icon"><FaDiscord /></a>
-            <a href="#telegram" className="social-icon"><FaTelegram /></a>
-            <a href="#facebook" className="social-icon"><FaFacebook /></a>
-            <a href="#youtube" className="social-icon"><FaYoutube /></a>
-            <a href="#linkedin" className="social-icon"><FaLinkedin /></a>
-            <a href="#more" className="social-icon"><FaEllipsisH /></a>
-          </div>
-        </div>
+
       </div>
     </footer>
   );

@@ -21,6 +21,82 @@ const Profile = () => {
     alert('Copied to clipboard!');
   };
 
+<<<<<<< Updated upstream
+=======
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white relative">
+        <ProfileNavBar />
+        <div className="max-w-4xl mx-auto px-4 py-8">
+          <div className="flex justify-center items-center py-16">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 dark:border-blue-400"></div>
+            <span className="ml-3">Loading profile...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white relative">
+        <ProfileNavBar />
+        <div className="max-w-4xl mx-auto px-4 py-8">
+          <div className="flex flex-col items-center justify-center py-16">
+            <div className="text-red-500 dark:text-red-400 mb-2">
+              <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 className="text-base font-medium text-gray-900 dark:text-gray-100 mb-1">Error loading profile</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{error}</p>
+            <button 
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors dark:bg-blue-600 dark:hover:bg-blue-700"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Extract data from API response
+  const user = profileData?.user || {};
+  const userDetail = profileData?.user_detail || {};
+  
+  // Get user_id from localStorage for display
+  const userIdFromStorage = localStorage.getItem('user_id') || localStorage.getItem('uid');
+  
+  const displayData = {
+    username: user.name || "Not provided",
+    userId: userIdFromStorage || "Not provided", // User ID from localStorage
+    uid: user.uid || "Not provided", // UID from API response
+    email: user.email || "Not provided",
+    phone: userDetail.phone_number || "Not provided",
+    country: userDetail.user_country || "Not specified",
+    tradingLevel: userDetail.tier ? "Premium Tier" : "Level 1",
+    isVerified: userDetail.is_verified || false,
+    profileImage: userDetail.user_profile || null,
+    referralCode: user.referral_code || "Not available",
+    role: user.role || "client"
+  };
+
+  // Determine verification status
+  let isVerified = userDetail.is_verified === true;
+  let isPending = false;
+  // Check localStorage for pending status (set by VerifyPage)
+  if (!isVerified) {
+    const localStatus = localStorage.getItem('is_verified');
+    if (localStatus === 'pending') {
+      isPending = true;
+    }
+  }
+
+>>>>>>> Stashed changes
   return (
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white relative">
       <ProfileNavBar />
@@ -89,6 +165,7 @@ const Profile = () => {
               <span className="text-gray-500 dark:text-gray-400">Identity verification</span>
             </div>
             <div className="w-1/3 flex items-center">
+<<<<<<< Updated upstream
               <FiCheck className="text-green-500 mr-2" />
               <span className="text-green-500">Verified</span>
             </div>
@@ -96,6 +173,32 @@ const Profile = () => {
               <button className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                 View details
               </button>
+=======
+              {isVerified ? (
+                <span className="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-700 font-semibold text-sm border border-green-300 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700">
+                  <FiCheck className="mr-2 text-green-500" /> Verified
+                </span>
+              ) : isPending ? (
+                <span className="inline-flex items-center px-4 py-2 rounded-full bg-orange-100 text-orange-700 font-semibold text-sm border border-orange-300 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-700">
+                  <FiShield className="mr-2 text-orange-500" /> Pending Review
+                </span>
+              ) : (
+                <span className="inline-flex items-center px-4 py-2 rounded-full bg-yellow-100 text-yellow-700 font-semibold text-sm border border-yellow-300 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-700">
+                  <FiShield className="mr-2 text-yellow-500" /> Not Verified
+                </span>
+              )}
+            </div>
+            <div className="w-1/3 text-right">
+              <Link to="/account/profile/verify" className="text-sm py-1.5 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300">
+                View Details
+              </Link>
+              {isPending && (
+                <div className="mt-2 text-xs text-orange-600 dark:text-orange-400 text-right">
+                  Your verification is under review. Please wait for an email update.
+                </div>
+              )}
+
+>>>>>>> Stashed changes
             </div>
           </div>
           

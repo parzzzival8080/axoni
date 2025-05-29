@@ -4,18 +4,13 @@ import './okx-translate-spinner.css';
 
 const languageMap = {
   English: 'en',
-  '简体中文': 'zh-CN',
-  '繁體中文': 'zh-TW',
-  'Tiếng Việt': 'vi',
-  Русский: 'ru',
   Español: 'es',
-  'Bahasa Indonesia': 'id',
   Français: 'fr',
-  Українська: 'uk',
-  العربية: 'ar',
+  '简体中文': 'zh-CN', // Simplified Chinese
 };
 
 function injectGoogleTranslateScript() {
+  console.log('[Translate] injectGoogleTranslateScript called');
   // Inject CSS to hide Google Translate banner and UI
   if (!window.googleTranslateStyleInjected) {
     const style = document.createElement('style');
@@ -43,32 +38,68 @@ function injectGoogleTranslateScript() {
   }
   if (!window.googleTranslateElementInit) {
     window.googleTranslateElementInit = function() {
+      console.log('[Translate] googleTranslateElementInit CALLED');
+      const targetDiv = document.getElementById('google_translate_element');
+      if (!targetDiv) {
+          console.error('[Translate] Target div "google_translate_element" NOT FOUND in DOM at init time.');
+          return;
+      }
+
       if (!window.googleTranslateElement) {
-        window.googleTranslateElement = new window.google.translate.TranslateElement({
-          pageLanguage: 'en',
-          autoDisplay: false,
-        }, 'google_translate_element');
+        console.log('[Translate] Attempting to create TranslateElement...');
+        if (window.google && window.google.translate && window.google.translate.TranslateElement) {
+            window.googleTranslateElement = new window.google.translate.TranslateElement({
+              pageLanguage: 'en',
+              includedLanguages: 'en,es,fr,zh-CN',
+              autoDisplay: false,
+            }, 'google_translate_element');
+            console.log('[Translate] TranslateElement CREATED:', window.googleTranslateElement);
+        } else {
+            console.error('[Translate] window.google.translate.TranslateElement is NOT AVAILABLE at init time.');
+        }
+      } else {
+        console.log('[Translate] googleTranslateElement already exists.');
       }
     };
   }
 }
 
 function setGoogleTranslateLang(langCode, callback) {
-  // Poll for the select element in case it's not ready
+  console.log(`[Translate] setGoogleTranslateLang called with langCode: ${langCode}`);
   const trySetLang = (attempts = 0) => {
+    console.log(`[Translate] trySetLang attempt: ${attempts}, looking for select.goog-te-combo`);
     const select = document.querySelector('select.goog-te-combo');
     if (select) {
+      console.log('[Translate] select.goog-te-combo FOUND:', select);
+      if (select.value === langCode) {
+        // If the language is already selected, no change needed, just run callback
+        if (typeof callback === 'function') callback();
+        return;
+      }
+      console.log(`[Translate] Setting select.value to: ${langCode}`);
       select.value = langCode;
-      select.dispatchEvent(new Event('change'));
-      // Wait for translation to finish, then call callback
+      // Ensure the change event is properly caught by Google's script
+      if ("createEvent" in document) {
+        var evt = document.createEvent("HTMLEvents");
+        evt.initEvent("change", false, true);
+        select.dispatchEvent(evt);
+      } else {
+        select.fireEvent("onchange"); // For older IE
+      }
+      console.log('[Translate] Change event dispatched.');
+
+      // The timeout is a practical way to wait for DOM changes by Google Translate.
+      // It's hard to get a direct signal of completion.
+      // Increased slightly for more complex pages or slower connections.
       setTimeout(() => {
         if (typeof callback === 'function') callback();
-      }, 1500);
-    } else if (attempts < 10) {
-      setTimeout(() => trySetLang(attempts + 1), 200);
+      }, 1800); 
+    } else if (attempts < 15) {
+      console.log('[Translate] select.goog-te-combo NOT FOUND. Retrying...');
+      setTimeout(() => trySetLang(attempts + 1), 250); // Slightly longer interval
     } else {
-      // If not found after several attempts, just call callback
-      if (typeof callback === 'function') callback();
+      console.error('Google Translate select element not found after multiple attempts.');
+      if (typeof callback === 'function') callback(); // Still call callback to stop loading spinner
     }
   };
   trySetLang();
@@ -76,9 +107,11 @@ function setGoogleTranslateLang(langCode, callback) {
 
 // Handles language click and shows loading spinner
 function handleLanguageClick(lang, setLoading) {
+  console.log(`[Translate] handleLanguageClick called with lang: ${lang}`);
   const langCode = languageMap[lang];
   setLoading(true);
   injectGoogleTranslateScript();
+  console.log('[Translate] injectGoogleTranslateScript finished in handleLanguageClick.');
   // Wait for the widget to load, then set language
   setTimeout(() => {
     setGoogleTranslateLang(langCode, () => setLoading(false));
@@ -90,12 +123,11 @@ const LanguageModal = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
   
   const onLanguageClick = (lang) => {
-  if (lang === 'English') {
-    window.location.reload();
-    return;
-  }
-  handleLanguageClick(lang, setLoading);
-};
+    // All languages, including English, will now go through handleLanguageClick
+    // This allows Google Translate to revert the page to its original state
+    // without a full page reload.
+    handleLanguageClick(lang, setLoading);
+  };
 
   if (!isOpen) return null;
   

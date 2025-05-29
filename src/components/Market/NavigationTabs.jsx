@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import '../Market/NavigationTabs.css';
 
-const NavigationTabs = ({ tabs, activeTab, onTabClick }) => {
+const NavigationTabs = ({ activeTab, onTabClick }) => {
+  const tabs = [{ id: 'crypto', label: 'Crypto' }];
   const [searchVisible, setSearchVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 

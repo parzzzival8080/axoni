@@ -3,6 +3,7 @@ import { FaEye, FaArrowRight } from "react-icons/fa";
 import chartPlaceholder from "../../assets/assets/411B1865A7B26122.webp";
 import earnIcon from "../../assets/assets/earn-icon.svg";
 import axios from "axios";
+import RecentTransactions from "./RecentTransactions";
 
 const OverviewTab = () => {
   const [timeframe, setTimeframe] = useState("1D");
@@ -176,49 +177,9 @@ const OverviewTab = () => {
               </div>
             </div>
           </div>
-          
-          {/* Earn Section */}
-          <div className="bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-200 rounded-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex-1">
-                <div className="text-gray-900 font-semibold mb-1">Earn POL for up to 3.92% APR!</div>
-              </div>
-              <div className="ml-4">
-                <img src={earnIcon} alt="Earn" className="w-8 h-8" />
-              </div>
-            </div>
-            <button className="flex items-center text-orange-600 hover:text-orange-700 font-medium transition-colors">
-              View details <FaArrowRight className="ml-2 text-sm" />
-            </button>
-          </div>
-          
-          {/* Transactions Section */}
-          <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-semibold text-gray-900">Recent transactions</h3>
-              <button className="flex items-center text-orange-600 hover:text-orange-700 font-medium transition-colors">
-                View more <FaArrowRight className="ml-2 text-sm" />
-              </button>
-            </div>
-            
-            <div className="space-y-4">
-              <div className="flex items-center justify-between py-3 border-b border-gray-100">
-                <div>
-                  <div className="text-gray-900 font-medium">To: Trading POL</div>
-                  <div className="text-gray-500 text-sm">04/28/2025, 18:53:34</div>
-                </div>
-                <div className="text-red-500 font-medium">-1 POL</div>
-              </div>
-              
-              <div className="flex items-center justify-between py-3">
-                <div>
-                  <div className="text-gray-900 font-medium">Deposit POL</div>
-                  <div className="text-gray-500 text-sm">04/28/2025, 18:53:34</div>
-                </div>
-                <div className="text-green-500 font-medium">+1 POL</div>
-              </div>
-            </div>
-          </div>
+
+          {/* Recent Transactions Section */}
+          <RecentTransactions />
         </div>
       </div>
     </div>
