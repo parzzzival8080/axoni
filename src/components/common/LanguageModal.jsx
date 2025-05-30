@@ -87,10 +87,11 @@ const LanguageModal = ({ isOpen, onClose }) => {
         widgetElement.style.top = 'auto';
         widgetElement.style.width = 'auto';
         widgetElement.style.height = 'auto';
+        widgetElement.style.overflow = 'visible';
         
-        // Move the widget to the modal content area
+        // Move the widget to the modal content area only if it's not already there
         const modalContent = document.getElementById('language-modal-content');
-        if (modalContent && !modalContent.contains(widgetElement)) {
+        if (modalContent && widgetElement.parentNode !== modalContent) {
           modalContent.appendChild(widgetElement);
         }
         
@@ -103,21 +104,15 @@ const LanguageModal = ({ isOpen, onClose }) => {
         
       } else {
         // Hide the widget when modal is closed or not on language tab
+        // Don't move it, just hide it in place
         widgetElement.style.display = 'none';
-        widgetElement.style.position = 'absolute';
         widgetElement.style.visibility = 'hidden';
+        widgetElement.style.position = 'absolute';
         widgetElement.style.left = '-9999px';
         widgetElement.style.top = '-9999px';
         widgetElement.style.width = '0px';
         widgetElement.style.height = '0px';
-        
-        // Move it back to body if it's in the modal
-        if (document.body && !document.body.contains(widgetElement)) {
-          const modalContent = document.getElementById('language-modal-content');
-          if (modalContent && modalContent.contains(widgetElement)) {
-            document.body.appendChild(widgetElement);
-          }
-        }
+        widgetElement.style.overflow = 'hidden';
       }
     }
   }, [isOpen, activeTab]);
