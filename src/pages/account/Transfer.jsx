@@ -867,35 +867,51 @@ const Transfer = () => {
             {/* Transfer History List */}
             {!isHistoryLoading && !historyError && transferHistory.length > 0 && (
               <div className="overflow-hidden">
-                {transferHistory.map((transfer, index) => (
-                  <div 
-                    key={index} 
-                    className="grid grid-cols-5 gap-4 py-4 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
-                  >
-                    {/* Asset */}
-                    <div className="flex items-center">
-                      <span className="font-medium text-gray-900 dark:text-gray-100">{selectedAsset || 'USDT'}</span>
+                {transferHistory.map((transfer, index) => {
+                  // Find coin details for the symbol
+                  const coin = coins.find(c => c.symbol === transfer.symbol);
+                  return (
+                    <div 
+                      key={index} 
+                      className="grid grid-cols-5 gap-4 py-4 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
+                    >
+                      {/* Asset */}
+                      <div className="flex items-center">
+                        {coin?.logo_path ? (
+                          <ImageWithFallback 
+                            src={coin.logo_path} 
+                            alt={transfer.symbol}
+                            className="w-6 h-6 rounded-full mr-2"
+                            symbol={transfer.symbol}
+                          />
+                        ) : (
+                          <span className="w-6 h-6 rounded-full bg-gray-300 flex items-center justify-center mr-2">
+                            {transfer.symbol?.substring(0, 1) || '?'}
+                          </span>
+                        )}
+                        <span className="font-medium text-gray-900 dark:text-gray-100">{transfer.symbol || '—'}</span>
+                      </div>
+                      {/* Amount */}
+                      <div className="text-gray-900 dark:text-gray-100 font-medium">
+                        {parseFloat(transfer.amount).toFixed(8)}
+                      </div>
+                      {/* From */}
+                      <div className="text-gray-700 dark:text-gray-300 capitalize">
+                        {transfer.transfer_from || '—'}
+                      </div>
+                      {/* To */}
+                      <div className="text-gray-700 dark:text-gray-300 capitalize">
+                        {transfer.transfer_to || '—'}
+                      </div>
+                      {/* Status */}
+                      <div>
+                        <span className={`px-2 py-1 text-xs rounded-full ${transfer.status === 'completed' || transfer.status === 'success' || transfer.status === 'approved' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : transfer.status === 'pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'}`}>
+                          {(transfer.status || 'completed').charAt(0).toUpperCase() + (transfer.status || 'completed').slice(1)}
+                        </span>
+                      </div>
                     </div>
-                    {/* Amount */}
-                    <div className="text-gray-900 dark:text-gray-100 font-medium">
-                      {parseFloat(transfer.amount).toFixed(8)}
-                    </div>
-                    {/* From */}
-                    <div className="text-gray-700 dark:text-gray-300 capitalize">
-                      {transfer.transfer_from || '—'}
-                    </div>
-                    {/* To */}
-                    <div className="text-gray-700 dark:text-gray-300 capitalize">
-                      {transfer.transfer_to || '—'}
-                    </div>
-                    {/* Status */}
-                    <div>
-                      <span className={`px-2 py-1 text-xs rounded-full ${transfer.status === 'completed' || transfer.status === 'success' || transfer.status === 'approved' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : transfer.status === 'pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'}`}>
-                        {(transfer.status || 'completed').charAt(0).toUpperCase() + (transfer.status || 'completed').slice(1)}
-                      </span>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
