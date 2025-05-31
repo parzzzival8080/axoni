@@ -48,7 +48,7 @@ const LanguageModal = ({ isOpen, onClose }) => {
           font-size: 14px !important;
           color: #333 !important;
         }
-        
+
         /* Ensure flag images load properly */
         img[src*="conveythis"] {
           display: inline-block !important;
@@ -70,6 +70,16 @@ const LanguageModal = ({ isOpen, onClose }) => {
           border: 1px solid #e0e0e0 !important;
           border-radius: 2px !important;
         }
+
+        /* Hide widget when modal is closed - using transform instead of display */
+        .conveythis-widget-hidden {
+          transform: translateX(-10000px) !important;
+          visibility: hidden !important;
+          opacity: 0 !important;
+          pointer-events: none !important;
+          position: absolute !important;
+          z-index: -1 !important;
+        }
       `;
       document.head.appendChild(style);
     }
@@ -77,25 +87,32 @@ const LanguageModal = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     const widgetElement = document.getElementById('conveythis_widget');
+    const modalContent = document.getElementById('language-modal-content');
+    
     if (widgetElement) {
-      if (isOpen && activeTab === 'language') {
-        // Show the widget inside the modal
-        widgetElement.style.display = 'block';
-        widgetElement.style.position = 'static';
-        widgetElement.style.visibility = 'visible';
-        widgetElement.style.left = 'auto';
-        widgetElement.style.top = 'auto';
-        widgetElement.style.width = 'auto';
+      if (isOpen && activeTab === 'language' && modalContent) {
+        // Remove hidden class and show the widget
+        widgetElement.classList.remove('conveythis-widget-hidden');
+        
+        // Get the position of the modal content
+        const modalRect = modalContent.getBoundingClientRect();
+        
+        // Position the widget over the modal content with some top spacing
+        widgetElement.style.position = 'fixed';
+        widgetElement.style.left = modalRect.left + 'px';
+        widgetElement.style.top = (modalRect.top + 20) + 'px';
+        widgetElement.style.width = modalRect.width + 'px';
         widgetElement.style.height = 'auto';
+        widgetElement.style.visibility = 'visible';
+        widgetElement.style.opacity = '1';
+        widgetElement.style.zIndex = '10001';
         widgetElement.style.overflow = 'visible';
+        widgetElement.style.backgroundColor = 'transparent';
+        widgetElement.style.padding = '10px';
+        widgetElement.style.pointerEvents = 'auto';
+        widgetElement.style.transform = 'none';
         
-        // Move the widget to the modal content area only if it's not already there
-        const modalContent = document.getElementById('language-modal-content');
-        if (modalContent && widgetElement.parentNode !== modalContent) {
-          modalContent.appendChild(widgetElement);
-        }
-        
-        // Force refresh ConveyThis after moving
+        // Force refresh ConveyThis
         setTimeout(() => {
           if (window.ConveyThis && typeof window.ConveyThis.refresh === 'function') {
             window.ConveyThis.refresh();
@@ -104,18 +121,29 @@ const LanguageModal = ({ isOpen, onClose }) => {
         
       } else {
         // Hide the widget when modal is closed or not on language tab
-        // Don't move it, just hide it in place
-        widgetElement.style.display = 'none';
+        // Use transform instead of display to preserve DOM structure
+        widgetElement.classList.add('conveythis-widget-hidden');
+        widgetElement.style.transform = 'translateX(-10000px)';
         widgetElement.style.visibility = 'hidden';
+        widgetElement.style.opacity = '0';
         widgetElement.style.position = 'absolute';
-        widgetElement.style.left = '-9999px';
-        widgetElement.style.top = '-9999px';
-        widgetElement.style.width = '0px';
-        widgetElement.style.height = '0px';
-        widgetElement.style.overflow = 'hidden';
+        widgetElement.style.zIndex = '-1';
+        widgetElement.style.pointerEvents = 'none';
+        
+        // Don't modify child elements - let ConveyThis manage them
       }
     }
   }, [isOpen, activeTab]);
+
+  // Cleanup when component unmounts
+  useEffect(() => {
+    return () => {
+      const widgetElement = document.getElementById('conveythis_widget');
+      if (widgetElement) {
+        widgetElement.classList.add('conveythis-widget-hidden');
+      }
+    };
+  }, []);
 
   if (!isOpen) return null;
   
@@ -144,13 +172,32 @@ const LanguageModal = ({ isOpen, onClose }) => {
         </div>
         
         {activeTab === 'language' && (
-          <div className="language-modal-content" id="language-modal-content">
-            {/* ConveyThis widget will be moved here when modal is open */}
+          <div 
+            className="language-modal-content" 
+            id="language-modal-content"
+            style={{
+              minHeight: '120px',
+              maxHeight: '250px',
+              height: 'auto',
+              padding: '20px 16px 16px 16px',
+              overflow: 'auto'
+            }}
+          >
+            {/* ConveyThis widget will be positioned over this area */}
           </div>
         )}
         
         {activeTab === 'currency' && (
-          <div className="language-modal-content">
+          <div 
+            className="language-modal-content"
+            style={{
+              minHeight: '120px',
+              maxHeight: '250px', 
+              height: 'auto',
+              padding: '20px 16px 16px 16px',
+              overflow: 'auto'
+            }}
+          >
             <div className="language-option selected">
               USD
             </div>
@@ -187,13 +234,13 @@ const LanguageModal = ({ isOpen, onClose }) => {
 if (typeof window !== 'undefined' && !document.getElementById('conveythis_widget')) {
   const widgetDiv = document.createElement('div');
   widgetDiv.id = 'conveythis_widget';
-  widgetDiv.style.display = 'none';
+  widgetDiv.className = 'conveythis-widget-hidden'; // Start hidden
   widgetDiv.style.position = 'absolute';
-  widgetDiv.style.left = '-9999px';
-  widgetDiv.style.top = '-9999px';
+  widgetDiv.style.transform = 'translateX(-10000px)';
   widgetDiv.style.visibility = 'hidden';
-  widgetDiv.style.width = '0px';
-  widgetDiv.style.height = '0px';
+  widgetDiv.style.opacity = '0';
+  widgetDiv.style.pointerEvents = 'none';
+  widgetDiv.style.zIndex = '-1';
   document.body.appendChild(widgetDiv);
 }
 
