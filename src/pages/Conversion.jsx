@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import CurrencyModal from '../components/conversion/CurrencyModal';
 import FromCurrencyModal from '../components/conversion/FromCurrencyModal';
 import FAQAccordion from '../components/conversion/FAQAccordion';
+import ConversionWalkthroughTrigger from '../components/conversion/ConversionWalkthroughTrigger';
 import Coin from '../assets/img/BitCoin.png';
 import ZeroTradingFees from '../assets/img/Convert_1-removebg-preview.png'
 import NoSlippage from '../assets/img/convert-2-removebg-preview.png'
@@ -453,7 +454,7 @@ const Conversion = () => {
         </button>
         
         {/* Conversion history link */}
-        <div className="mt-4 text-center">
+        <div className="conversion-history-section mt-4 text-center">
           <button 
             className="flex items-center justify-center mx-auto text-sm text-gray-400 hover:text-gray-300"
             onClick={openHistoryModal}
@@ -655,6 +656,9 @@ const Conversion = () => {
           </div>
         </div>
       )}
+      
+      {/* Walkthrough Trigger */}
+      <ConversionWalkthroughTrigger />
     </div>
   )
 }

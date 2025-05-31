@@ -6,6 +6,7 @@ import TradingChartDynamic from '../components/futureTrading/TradingChartDynamic
 import OrderBook from '../components/futureTrading/OrderBook';
 import TradeForm from '../components/futureTrading/TradeForm';
 import OrdersSection from '../components/futureTrading/OrdersSection';
+import FutureTradingWalkthroughTrigger from '../components/futureTrading/FutureTradingWalkthroughTrigger';
 import { fetchTradableCoins, fetchWalletData } from '../services/futureTradingApi';
 import '../components/futureTrading/FutureTrading.css';
 import '../components/futureTrading/FutureNotification.css';
@@ -261,6 +262,9 @@ const FutureTrading = () => {
         {renderMobileTradeForm()}
         {renderNotification()}
       </>
+      
+      {/* Walkthrough Trigger */}
+      <FutureTradingWalkthroughTrigger />
     </div>
   );
 };

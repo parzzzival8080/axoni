@@ -46,7 +46,6 @@ function App() {
                 <main>
                   <SpotTrading />
                 </main>
-                <ChatBubble />
               </>
             } />
             <Route path="/future-trading" element={
@@ -55,7 +54,6 @@ function App() {
                 <main>
                   <FutureTrading/>
                 </main>
-                <ChatBubble />
               </>
             } />
             <Route path="/deposit" element={
@@ -65,7 +63,6 @@ function App() {
                   <Deposit />
                 </main>
                 <Footer />
-                <ChatBubble />
               </>
             } />
             <Route path="/withdraw" element={
@@ -75,7 +72,6 @@ function App() {
                   <Withdraw />
                 </main>
                 <Footer />
-                <ChatBubble />
               </>
             } />
             <Route path="/transfer" element={
@@ -85,7 +81,6 @@ function App() {
                   <Transfer />
                 </main>
                 <Footer />
-                <ChatBubble />
               </>
             } />
               <Route path="/conversion" element={
@@ -95,7 +90,7 @@ function App() {
                             <Conversion/>
                           </main>
                           <Footer />
-                          <ChatBubble />
+                     
                         </>
               } />
             <Route path="/earn" element={

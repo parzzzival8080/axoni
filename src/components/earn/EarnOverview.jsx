@@ -141,8 +141,8 @@ const EarnOverview = () => {
               <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-4 rounded-lg transition-colors duration-200 shadow-lg">
                 Activate Auto-earn
               </button>
-            </div>
-            
+          </div>
+          
             <div className="flex justify-center lg:justify-end">
               <img 
                 src={EarnOverviewImg} 
@@ -158,7 +158,7 @@ const EarnOverview = () => {
       <section className="px-4 sm:px-6 lg:px-8 py-12">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {earnOptions.map((option, index) => (
+          {earnOptions.map((option, index) => (
               <div 
                 key={index} 
                 className="bg-gray-800/50 rounded-xl p-6 text-center hover:bg-gray-800/70 transition-colors border border-gray-700 cursor-pointer"
@@ -167,8 +167,8 @@ const EarnOverview = () => {
                   <i className={`${option.icon} text-xl text-orange-500`}></i>
                 </div>
                 <span className="text-white font-medium">{option.label}</span>
-              </div>
-            ))}
+            </div>
+          ))}
           </div>
         </div>
       </section>
@@ -177,7 +177,7 @@ const EarnOverview = () => {
       <section className="px-4 sm:px-6 lg:px-8 py-12">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-white mb-8">Products</h2>
-          
+        
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
             <div className="flex flex-col sm:flex-row gap-4">
               <select 
@@ -185,45 +185,45 @@ const EarnOverview = () => {
                 onChange={(e) => setSelectedProduct(e.target.value)}
                 className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-4 focus:outline-none focus:ring-1 focus:ring-orange-500"
               >
-                <option value="All products">All products</option>
-                <option value="USDT">USDT</option>
-                <option value="BTC">BTC</option>
-                <option value="ETH">ETH</option>
-              </select>
-              
+              <option value="All products">All products</option>
+              <option value="USDT">USDT</option>
+              <option value="BTC">BTC</option>
+              <option value="ETH">ETH</option>
+            </select>
+            
               <select 
                 value={selectedTerm} 
                 onChange={(e) => setSelectedTerm(e.target.value)}
                 className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-4 focus:outline-none focus:ring-1 focus:ring-orange-500"
               >
-                <option value="All terms">All terms</option>
-                <option value="3 days">3 days</option>
-                <option value="7 days">7 days</option>
-                <option value="30 days">30 days</option>
-                <option value="Flexible">Flexible</option>
-              </select>
-            </div>
-            
+              <option value="All terms">All terms</option>
+              <option value="3 days">3 days</option>
+              <option value="7 days">7 days</option>
+              <option value="30 days">30 days</option>
+              <option value="Flexible">Flexible</option>
+            </select>
+          </div>
+          
             <div className="relative w-full lg:w-80">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
               </div>
-              <input 
-                type="text" 
-                placeholder="Search crypto"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+            <input 
+              type="text" 
+              placeholder="Search crypto"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
                 className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 pl-10 pr-4 w-full focus:outline-none focus:ring-1 focus:ring-orange-500 placeholder-gray-400"
-              />
-            </div>
+            />
           </div>
+        </div>
 
           <div className="overflow-x-auto rounded-lg shadow-md bg-black/70">
             <table className="min-w-full divide-y divide-gray-800">
-              <thead>
-                <tr>
+          <thead>
+            <tr>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Token</th>
                   <th className="px-6 py-4 text-right text-xs font-semibold text-gray-400 uppercase tracking-wider">
                     Market APR 
@@ -233,8 +233,8 @@ const EarnOverview = () => {
                   </th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Term</th>
                   <th className="px-6 py-4 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider">Action</th>
-                </tr>
-              </thead>
+            </tr>
+          </thead>
               <tbody className="divide-y divide-gray-800">
                 {loading && (
                   <tr>
@@ -288,8 +288,8 @@ const EarnOverview = () => {
                             )}
                           </div>
                         </div>
-                      </div>
-                    </td>
+                  </div>
+                </td>
                     <td className="px-6 py-4 text-right">
                       <span className="text-green-400 font-semibold">{coin.marketApr}</span>
                     </td>
@@ -301,18 +301,18 @@ const EarnOverview = () => {
                         <button className="bg-orange-500 hover:bg-orange-600 text-white font-medium px-4 py-2 rounded-lg transition-colors">
                           {coin.action}
                         </button>
-                      ) : (
+                  ) : (
                         <button className="text-gray-400 hover:text-white transition-colors p-2">
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
                           </svg>
                         </button>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
             {!loading && !error && filteredCoins.length > 0 && (
               <div className="px-6 py-4 border-t border-gray-800 text-center">
@@ -330,12 +330,12 @@ const EarnOverview = () => {
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-white mb-8">FAQ</h2>
           <div className="space-y-4">
-            {faqItems.map((item, index) => (
+          {faqItems.map((item, index) => (
               <div key={index} className="bg-gray-800/50 rounded-xl border border-gray-700 overflow-hidden">
                 <button 
                   className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-800/70 transition-colors"
-                  onClick={() => toggleFaqItem(index)}
-                >
+                onClick={() => toggleFaqItem(index)}
+              >
                   <span className="text-white font-medium text-lg">{item.question}</span>
                   <svg 
                     className={`w-5 h-5 text-gray-400 transition-transform ${item.isExpanded ? 'rotate-180' : ''}`} 
@@ -346,13 +346,13 @@ const EarnOverview = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
                   </svg>
                 </button>
-                {item.isExpanded && item.answer && (
+              {item.isExpanded && item.answer && (
                   <div className="px-6 pb-6">
                     <p className="text-gray-300 leading-relaxed">{item.answer}</p>
-                  </div>
-                )}
-              </div>
-            ))}
+                </div>
+              )}
+            </div>
+          ))}
           </div>
         </div>
       </section>

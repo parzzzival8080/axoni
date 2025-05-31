@@ -7,6 +7,7 @@ import TradeForm from '../components/spotTrading/TradeForm';
 import SubHeader from '../components/spotTrading/SubHeader';
 import FavoritesBar from '../components/spotTrading/FavoritesBar';
 import OrdersSection from '../components/spotTrading/OrdersSection';
+import WalkthroughTrigger from '../components/spotTrading/WalkthroughTrigger';
 import { 
   getSpotWallet, 
   fetchAllCoins, 
@@ -549,6 +550,9 @@ const SpotTrading = () => {
         </button>
       </div>
       {renderMobileTradeForm()}
+      
+      {/* Walkthrough Trigger */}
+      <WalkthroughTrigger />
     </div>
   );
 };

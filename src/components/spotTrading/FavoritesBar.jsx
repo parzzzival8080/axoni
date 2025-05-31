@@ -166,7 +166,7 @@ const FavoritesBar = ({ activeCoinPairId }) => {
   if (loading) return <FavoritesSkeleton />;
 
   return (
-    <div className="flex items-center space-x-4 py-2 px-4 bg-black overflow-x-auto scrollbar-hide relative">
+    <div className="favorites-bar-container flex items-center space-x-4 py-2 px-4 bg-black overflow-x-auto scrollbar-hide relative">
       <span className="text-sm font-medium text-gray-300 whitespace-nowrap">Favorites:</span>
       
       {favorites.length === 0 ? (

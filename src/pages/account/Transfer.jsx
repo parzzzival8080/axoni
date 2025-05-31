@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import axios from 'axios';
+import TransferWalkthroughTrigger from '../../components/transfer/TransferWalkthroughTrigger';
 
 // Custom scrollbar styles
 const scrollbarStyles = `
@@ -551,7 +552,7 @@ const Transfer = () => {
             {/* Transfer Form - Half Width */}
             <div className="max-w-md">
               {/* Asset Dropdown */}
-              <div className="mb-6">
+              <div className="transfer-asset-section mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Asset</label>
                 <div className="relative" ref={assetDropdownRef}>
                   <button
@@ -662,7 +663,7 @@ const Transfer = () => {
               </div>
 
               {/* From/To Accounts */}
-              <div className="flex items-center mb-6">
+              <div className="transfer-accounts-section flex items-center mb-6">
                 {/* From Account */}
                 <div className="flex-1">
                   <label className="block text-sm font-medium text-gray-700 mb-2">From</label>
@@ -736,7 +737,7 @@ const Transfer = () => {
               </div>
 
               {/* Amount Input */}
-              <div className="mb-6">
+              <div className="transfer-amount-section mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Amount</label>
                 <div className="relative">
                   <input
@@ -760,7 +761,7 @@ const Transfer = () => {
                     </button>
                   </div>
                 </div>
-                <div className="flex flex-row gap-4 mt-2">
+                <div className="transfer-balance-display flex flex-row gap-4 mt-2">
                   <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-full px-4 py-2 shadow-sm border border-gray-200 dark:border-gray-700 min-w-[150px]">
                     <svg className="w-4 h-4 mr-2 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" strokeWidth="2"/><path d="M8 12h8" strokeWidth="2"/></svg>
                     <span className="text-xs text-gray-600 dark:text-gray-300 font-semibold mr-1">Spot</span>
@@ -778,7 +779,7 @@ const Transfer = () => {
 
               {/* Transfer Button */}
               <button
-                className={`w-full py-3 rounded-lg font-medium transition-colors ${
+                className={`transfer-execute-button w-full py-3 rounded-lg font-medium transition-colors ${
                   isSubmitting || !selectedAsset || !transferAmount || parseFloat(transferAmount) <= 0 || parseFloat(transferAmount) > availableBalance
                     ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
                     : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
@@ -806,7 +807,7 @@ const Transfer = () => {
           </div>
 
           {/* Transfer History */}
-          <div className="mt-12">
+          <div className="transfer-history-section mt-12">
             <div className="flex border-b border-gray-200 dark:border-gray-700 mb-6">
               <button
                 className={`py-4 mr-6 text-sm font-medium border-b-2 border-blue-500 text-blue-500 dark:text-blue-400`}
@@ -917,6 +918,9 @@ const Transfer = () => {
           </div>
         </div>
       </div>
+      
+      {/* Walkthrough Trigger */}
+      <TransferWalkthroughTrigger />
     </>
   );
 };
