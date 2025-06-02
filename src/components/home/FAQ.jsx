@@ -6,7 +6,7 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => (
       className="w-full py-6 flex items-center justify-between text-left focus:outline-none group"
       onClick={onClick}
     >
-      <span className="text-white text-lg font-medium pr-8">{question}</span>
+      <span className="text-white text-base sm:text-lg font-medium pr-8">{question}</span>
       <div className="flex-shrink-0">
         <div className={`w-6 h-6 rounded-full border-2 border-orange-500 flex items-center justify-center transition-transform ${
           isOpen ? 'rotate-45' : ''
@@ -61,12 +61,12 @@ const FAQ = () => {
 
   return (
     <div className="bg-black py-16">
-      <div className="container mx-auto px-8 md:px-16 lg:px-24">
+      <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
         <div className="max-w-4xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-white">
             Frequently asked questions
           </h2>
-          <p className="text-gray-400 text-lg mb-12">
+          <p className="text-gray-400 text-base sm:text-lg mb-8 sm:mb-12">
             Everything you need to know about the product and billing.
           </p>
           

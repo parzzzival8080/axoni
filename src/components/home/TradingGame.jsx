@@ -4,7 +4,7 @@ import styles from './TradingGame.module.css';
 
 const TradingGame = () => {
   return (
-    <div className="relative min-h-[75vh] bg-black overflow-hidden">
+    <div className="relative z-0 min-h-[75vh] bg-black overflow-hidden">
       {/* Blurry Orange Background Effect */}
       <div className="absolute inset-0">
         {/* Main orange blur in the center-right */}
@@ -18,11 +18,11 @@ const TradingGame = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-8 md:px-16 lg:px-24 py-4 h-[70vh] flex flex-col justify-center pb-32 lg:pb-40">        <div className="text-center">
+      <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-4 h-[70vh] flex flex-col justify-center pb-32 lg:pb-40">        <div className="text-center">
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
             Level up your trading game
           </h2>
-          <p className="text-gray-300 text-lg mb-16 max-w-2xl mx-auto">
+          <p className="text-gray-300 text-base md:text-lg mb-12 md:mb-16 max-w-2xl mx-auto">
             Access low costs, high-speed transactions, powerful developer tools,
             and more.
           </p>
@@ -46,54 +46,54 @@ const TradingGame = () => {
           <div className={styles.tickerScroll}>
             <div className={styles.tickerContent}>
               <div className="flex items-center space-x-2 whitespace-nowrap">
-                <span className="text-gray-400">BTC</span>
-                <span className="text-white font-medium">$103,655.35</span>
+                <span className="text-xs sm:text-sm text-gray-400">BTC</span>
+                <span className="text-xs sm:text-sm text-white font-medium">$103,655.35</span>
                 <span className="text-green-400 text-xs">(+1.00%)</span>
               </div>
               <div className="flex items-center space-x-2 whitespace-nowrap">
-                <span className="text-gray-400">ETH</span>
-                <span className="text-white font-medium">$3,456.78</span>
+                <span className="text-xs sm:text-sm text-gray-400">ETH</span>
+                <span className="text-xs sm:text-sm text-white font-medium">$3,456.78</span>
                 <span className="text-red-400 text-xs">(-2.34%)</span>
               </div>
               <div className="flex items-center space-x-2 whitespace-nowrap">
-                <span className="text-gray-400">BNB</span>
-                <span className="text-white font-medium">$645.23</span>
+                <span className="text-xs sm:text-sm text-gray-400">BNB</span>
+                <span className="text-xs sm:text-sm text-white font-medium">$645.23</span>
                 <span className="text-green-400 text-xs">(+0.87%)</span>
               </div>
               <div className="flex items-center space-x-2 whitespace-nowrap">
-                <span className="text-gray-400">ADA</span>
-                <span className="text-white font-medium">$1.23</span>
+                <span className="text-xs sm:text-sm text-gray-400">ADA</span>
+                <span className="text-xs sm:text-sm text-white font-medium">$1.23</span>
                 <span className="text-green-400 text-xs">(+3.45%)</span>
               </div>
               <div className="flex items-center space-x-2 whitespace-nowrap">
-                <span className="text-gray-400">SOL</span>
-                <span className="text-white font-medium">$234.56</span>
+                <span className="text-xs sm:text-sm text-gray-400">SOL</span>
+                <span className="text-xs sm:text-sm text-white font-medium">$234.56</span>
                 <span className="text-red-400 text-xs">(-1.23%)</span>
               </div>
               {/* Duplicate items for continuous scrolling effect */}
               <div className="flex items-center space-x-2 whitespace-nowrap">
-                <span className="text-gray-400">BTC</span>
-                <span className="text-white font-medium">$103,655.35</span>
+                <span className="text-xs sm:text-sm text-gray-400">BTC</span>
+                <span className="text-xs sm:text-sm text-white font-medium">$103,655.35</span>
                 <span className="text-green-400 text-xs">(+1.00%)</span>
               </div>
               <div className="flex items-center space-x-2 whitespace-nowrap">
-                <span className="text-gray-400">ETH</span>
-                <span className="text-white font-medium">$3,456.78</span>
+                <span className="text-xs sm:text-sm text-gray-400">ETH</span>
+                <span className="text-xs sm:text-sm text-white font-medium">$3,456.78</span>
                 <span className="text-red-400 text-xs">(-2.34%)</span>
               </div>
               <div className="flex items-center space-x-2 whitespace-nowrap">
-                <span className="text-gray-400">BNB</span>
-                <span className="text-white font-medium">$645.23</span>
+                <span className="text-xs sm:text-sm text-gray-400">BNB</span>
+                <span className="text-xs sm:text-sm text-white font-medium">$645.23</span>
                 <span className="text-green-400 text-xs">(+0.87%)</span>
               </div>
               <div className="flex items-center space-x-2 whitespace-nowrap">
-                <span className="text-gray-400">ADA</span>
-                <span className="text-white font-medium">$1.23</span>
+                <span className="text-xs sm:text-sm text-gray-400">ADA</span>
+                <span className="text-xs sm:text-sm text-white font-medium">$1.23</span>
                 <span className="text-green-400 text-xs">(+3.45%)</span>
               </div>
               <div className="flex items-center space-x-2 whitespace-nowrap">
-                <span className="text-gray-400">SOL</span>
-                <span className="text-white font-medium">$234.56</span>
+                <span className="text-xs sm:text-sm text-gray-400">SOL</span>
+                <span className="text-xs sm:text-sm text-white font-medium">$234.56</span>
                 <span className="text-red-400 text-xs">(-1.23%)</span>
               </div>
             </div>

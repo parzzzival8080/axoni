@@ -30,20 +30,20 @@ const Hero = () => {
       <p className="text-orange-500 font-semibold">
         Better Liquidity, Better Trading
       </p>
-      <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+      <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-tight">
         Global Crypto
         <br />
         Derivatives Exchange
       </h1>
-      <div className="flex items-center gap-4 mt-4">
+      <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
         <input
           type="text"
           placeholder="Email / Mobile"
-          className="bg-gray-800 text-white p-3 rounded-full focus:outline-none flex-1 max-w-xs"
+          className="bg-gray-800 text-white p-3 rounded-full focus:outline-none w-full sm:flex-1 sm:max-w-xs"
         />
         <Link 
           to="/signup"
-          className="bg-[#FE7400] text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-600 transition-colors"
+          className="bg-[#FE7400] text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-600 transition-colors w-full sm:w-auto"
         >
           Sign up now
         </Link>
@@ -76,7 +76,7 @@ const Hero = () => {
           Account Verification Required
         </p>
       </div>
-      <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+      <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-tight">
         Welcome back,
         <br />
         <span className="text-[#FE7400]">{userName}!</span>
@@ -128,7 +128,7 @@ const Hero = () => {
           Account Verified
         </p>
       </div>
-      <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+      <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-tight">
         Ready to Trade,
         <br />
         <span className="text-[#FE7400]">{userName}!</span>
@@ -246,7 +246,7 @@ const Hero = () => {
 
   return (
     <div className="bg-black text-white relative z-0 pt-16 pb-20 md:pb-24 overflow-hidden">
-      <div className="container mx-auto px-8 md:px-16 lg:px-24 py-8 md:py-12">
+      <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-8 md:py-12">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Render content based on user status */}
           {!isLoggedIn && renderGuestContent()}
@@ -257,7 +257,7 @@ const Hero = () => {
             <img
               src={mobileApp}
               alt="Mobile Trading App"
-              className="w-full max-w-[250px] mx-auto md:max-w-[530px] animate-float"
+              className="w-full max-w-xs mx-auto md:max-w-[530px] animate-float"
             />
           </div>
         </div>

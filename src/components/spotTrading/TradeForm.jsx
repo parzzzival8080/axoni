@@ -341,7 +341,7 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess, isBuy 
             fontSize: 18, 
             padding: '12px 0', 
             borderRadius: '4px',
-            background: effectiveIsBuy ? '#F88726 !important' : '#F23645 !important',
+            backgroundColor: effectiveIsBuy ? '#F88726 !important' : '#F23645 !important',
             backgroundImage: effectiveIsBuy ? 'none !important' : 'none !important',
             color: 'white !important'
           }}

@@ -6,9 +6,9 @@ import { useNavigate } from 'react-router-dom';
 const TrendingCoin = ({ symbol, price, change, logo }) => {
   const navigate = useNavigate();
   return (
-    <div className="flex items-center justify-between py-3 hover:bg-gray-900/50 transition-colors">
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-4 sm:py-3 hover:bg-gray-900/50 transition-colors border-b border-gray-800 last:border-b-0 sm:border-none">
       {/* Logo + Pair */}
-      <div className="flex items-center gap-3 flex-1 min-w-0">
+      <div className="flex items-center gap-3 w-full mb-2 sm:mb-0 sm:flex-1 sm:min-w-0">
         {logo ? (
           <img
             src={logo}
@@ -23,22 +23,22 @@ const TrendingCoin = ({ symbol, price, change, logo }) => {
             </span>
           </div>
         )}
-        <span className="text-white font-medium truncate max-w-[110px]">{symbol}</span>
+        <span className="text-white font-medium truncate">{symbol}</span>
       </div>
       {/* Price */}
-      <div className="text-white font-medium w-32 text-right">
+      <div className="text-white font-medium w-full text-left sm:w-32 sm:text-right mb-2 sm:mb-0">
         ${price}
       </div>
       {/* 24h Change */}
-      <div className="w-24 text-right">
+      <div className="w-full text-left sm:w-24 sm:text-right mb-2 sm:mb-0">
         <span className={`text-sm font-medium ${parseFloat(change) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
           {parseFloat(change) >= 0 ? '+' : ''}{change}%
         </span>
       </div>
       {/* Trade Button */}
-      <div className="w-20 text-right">
+      <div className="w-full mt-2 sm:mt-0 sm:w-20 sm:text-right">
         <button
-          className="text-orange-500 text-sm font-medium hover:text-orange-400 transition-colors px-3 py-1 rounded-full bg-white/5 border border-orange-500/20 shadow-sm"
+          className="w-full sm:w-auto text-orange-500 text-base sm:text-sm font-medium hover:text-orange-400 transition-colors px-4 py-2 sm:px-3 sm:py-1 rounded-lg sm:rounded-full bg-orange-500/10 sm:bg-white/5 border border-orange-500/30 sm:border-orange-500/20 shadow-sm"
           onClick={() => navigate('/spot-trading')}
         >
           Trade
@@ -88,10 +88,10 @@ const Trading = () => {
 
   return (
     <div className="bg-black py-16">
-      <div className="container mx-auto px-8 md:px-16 lg:px-24">
+      <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-white">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">
             Trending Cryptocurrencies
           </h2>
           <button className="text-gray-400 text-sm hover:text-white transition-colors">
@@ -117,17 +117,17 @@ const Trading = () => {
         </div>
 
         {/* Table Header */}
-        <div className="flex items-center justify-between py-3 border-b border-gray-800 mb-4">
+        <div className="hidden sm:flex items-center justify-between py-3 border-b border-gray-800 mb-4">
           <div className="flex items-center gap-3 flex-1">
             <span className="text-gray-400 text-sm">Pair</span>
           </div>
-          <div className="w-32 text-right">
+          <div className="w-24 sm:w-32 text-right">
             <span className="text-gray-400 text-sm">Last Price</span>
           </div>
-          <div className="w-24 text-right">
+          <div className="hidden sm:block w-24 text-right">
             <span className="text-gray-400 text-sm">24H Change</span>
           </div>
-          <div className="w-20 text-right">
+          <div className="hidden sm:block w-20 text-right">
             <span className="text-gray-400 text-sm">Trade</span>
           </div>
         </div>

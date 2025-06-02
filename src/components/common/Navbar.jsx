@@ -45,22 +45,6 @@ const notifications = [
 // Mobile menu items
 const mobileMenuItems = [
   { 
-    name: 'Buy crypto', 
-    hasDropdown: true,
-    subItems: [
-      { name: 'P2P trading', path: '/p2p-trading' },
-    ]
-  },
-  { 
-    name: 'Discover', 
-    hasDropdown: true,
-    subItems: [
-      { name: 'Markets', path: '/market' },
-      { name: 'Opportunities', path: '/opportunities' },
-      { name: 'Marketplace', path: '/marketplace' },
-    ]
-  },
-  { 
     name: 'Trade', 
     hasDropdown: true,
     subItems: [
@@ -70,63 +54,29 @@ const mobileMenuItems = [
     ]
   },
   { 
+    name: 'Discover', 
+    hasDropdown: true,
+    subItems: [
+      { name: 'Markets', path: '/market' },
+    ]
+  },
+  { 
     name: 'Grow', 
     hasDropdown: true,
     subItems: [
-      { name: 'Earn', path: '/earn' },
-      { name: 'Loan', path: '/loan' },
-      { name: 'Jumpstart', path: '/jumpstart' }
+      { 
+        id: 'earn_mobile_expand', // Unique ID for state management
+        name: 'Earn', 
+        path: '/earn', 
+        hasSubDropdown: true, 
+        subSubItems: [ 
+          { name: 'Simple Earn', path: '/earn/simple-earn' }
+        ]
+      },
+      // TODO: Add Loan, Jumpstart if they are primary desktop Grow items
     ]
   },
-  { 
-    name: 'Build', 
-    hasDropdown: true,
-    subItems: [
-      { name: 'X Layer network', path: '/earn' },
-    ]
-  },
-  { 
-    name: 'Institutional', 
-    hasDropdown: true,
-    subItems: [
-      { name: 'Institutional home', path: '/institutional/home' },
-      { name: 'Liquid Marketplace', path: '/institutional/marketplace' },
-      { name: 'APIs', path: '/institutional/apis' },
-      { name: 'Broker Program', path: '/institutional/broker-program' },
-      { name: 'Managed Trading Sub-accounts', path: '/institutional/trading-sub-accounts' },
-      { name: 'Historical market data', path: '/institutional/market-data' },
-    ]
-  },
-  { name: 'Learn', path: '/learn', hasDropdown: false },
-  { 
-    name: 'More', 
-    hasDropdown: true,
-    subItems: [
-      { name: 'OKB', path: '/okb' },
-      { name: 'Security of funds', path: '/security-of-funds' },
-      { name: 'Status', path: '/status' },
-      { name: 'Proof of Reserves', path: '/proof-of-reserves'},
-      { name: 'TradeX Protect', path: '/tradex-protect' },
-      { name: 'Web3', path: '/web3' },
-      { name: 'Campaign center', path: '/campaign-center' },
-      { name: 'My rewards', path: '/my-rewards' },
-      { name: 'Referral', path: '/referral' },
-      { name: 'Affiliates', path: '/affiliates' },
-      { name: 'TradeX Ventures', path: '/tradex-ventures' },
-      { name: 'Trade on TradingView', path: '/trade-on-tradingview' },
-      { name: 'Listing application', path: '/listing-application' },
-    ]
-  },
-  { 
-    name: 'Support', 
-    hasDropdown: true,
-    subItems: [
-      { name: 'Support center', path: '/support-center' },
-      { name: 'My tickets', path: '/my-tickets' },
-      { name: 'Connect with TradeX', path: '/connect-with-tradex' },
-    ]
-  },
-  ];
+];
 
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -137,6 +87,7 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isComingSoonOpen, setIsComingSoonOpen] = useState(false);
   const [expandedMenus, setExpandedMenus] = useState([]);
+  const [expandedSubSubMenus, setExpandedSubSubMenus] = useState([]); // State for sub-sub-menus
   const [coins, setCoins] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -270,12 +221,46 @@ const Navbar = () => {
   const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
   
   const toggleSubmenu = (index) => {
+    // If the item itself is a link (e.g., 'Earn' main item), clicking it should also navigate
+    // For now, let's assume clicking the parent always toggles. Navigation can be handled by sub-items.
     if (expandedMenus.includes(index)) {
-      setExpandedMenus(expandedMenus.filter(item => item !== index));
+      setExpandedMenus(expandedMenus.filter((i) => i !== index));
+      // Collapse any open sub-sub-menus when collapsing the parent
+      const item = mobileMenuItems[index];
+      if (item && item.subItems) {
+        item.subItems.forEach(subItem => {
+          if (subItem.id && expandedSubSubMenus.includes(subItem.id)) {
+            setExpandedSubSubMenus(prev => prev.filter(id => id !== subItem.id));
+          }
+        });
+      }
     } else {
       setExpandedMenus([...expandedMenus, index]);
     }
   };
+
+  const toggleSubSubmenu = (id) => {
+    setExpandedSubSubMenus(prev => 
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    );
+  };
+
+  // Original toggleSubmenu function content starts here, ensure it's correctly placed or integrated.
+  // For this replacement, I am providing a new toggleSubmenu that also handles collapsing sub-sub-menus.
+  // The original function was: 
+  // if (expandedMenus.includes(index)) {
+  //   setExpandedMenus(expandedMenus.filter((i) => i !== index));
+  // } else {
+  //   setExpandedMenus([...expandedMenus, index]);
+  // }
+  // };
+  // The new version above replaces this. Ensure this is the intended logic.
+
+  // The actual function to be replaced is the simple toggle, so the replacement should be: 
+  // const toggleSubmenu = (index) => { ... new logic ... }; 
+  // And then, separately, add toggleSubSubmenu. 
+  // Correcting the replacement for toggleSubmenu:
+
 
   // Handle coin selection
   const handleCoinSelect = (coin) => {
@@ -781,8 +766,8 @@ const Navbar = () => {
           </div>
         ) : (
           <div className="auth-buttons">
-            <Link to="/login" className="login-link">Log in</Link>
-            <Link to="/signup" style={signupButtonStyle}>Sign up</Link>
+            <Link to="/login" className="navbar-link login-button hidden sm:inline-block">Log in</Link>
+            <Link to="/signup" style={signupButtonStyle} className="navbar-link hidden sm:inline-block">Sign up</Link>
           </div>
         )}
         
@@ -903,6 +888,16 @@ const Navbar = () => {
                 <i className="fas fa-times"></i>
               </div>
             </div>
+            {!isAuthenticated && (
+              <div className="mobile-auth-links p-4 border-b border-gray-700">
+                <Link to="/login" className="block text-center py-3 px-4 mb-2 text-white bg-orange-500 hover:bg-orange-600 rounded-md text-sm font-medium transition-colors" onClick={toggleMobileMenu}>
+                  Log In
+                </Link>
+                <Link to="/signup" className="block text-center py-3 px-4 text-white bg-gray-700 hover:bg-gray-600 rounded-md text-sm font-medium transition-colors" onClick={toggleMobileMenu}>
+                  Sign Up
+                </Link>
+              </div>
+            )}
             <div className="mobile-menu-items">
               {mobileMenuItems.map((item, index) => (
                 <div key={index} className="mobile-menu-item-container">
@@ -922,11 +917,36 @@ const Navbar = () => {
                   
                   {item.hasDropdown && item.subItems && item.subItems.length > 0 && expandedMenus.includes(index) && (
                     <div className="mobile-submenu">
-                      {item.subItems.map((subItem, subIndex) => (
-                        <a key={subIndex} href={subItem.path} className="mobile-submenu-item">
-                          {subItem.name}
-                        </a>
-                      ))}
+                      {item.subItems.map((subItem, subIndex) => {
+                        if (subItem.hasSubDropdown) {
+                          return (
+                            <div key={subIndex} className="mobile-submenu-item-container">
+                              <div 
+                                className="mobile-submenu-item as-header" 
+                                onClick={() => subItem.id && toggleSubSubmenu(subItem.id)}
+                              >
+                                <span>{subItem.name}</span>
+                                <i className={`fas fa-chevron-down ${subItem.id && expandedSubSubMenus.includes(subItem.id) ? 'rotated' : ''}`}></i>
+                              </div>
+                              {subItem.id && expandedSubSubMenus.includes(subItem.id) && subItem.subSubItems && (
+                                <div className="mobile-sub-submenu">
+                                  {subItem.subSubItems.map((subSubItem, subSubIndex) => (
+                                    <a key={subSubIndex} href={subSubItem.path} className="mobile-sub-submenu-item">
+                                      {subSubItem.name}
+                                    </a>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        } else {
+                          return (
+                            <a key={subIndex} href={subItem.path} className="mobile-submenu-item">
+                              {subItem.name}
+                            </a>
+                          );
+                        }
+                      })}
                     </div>
                   )}
                 </div>

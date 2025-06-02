@@ -617,16 +617,16 @@ const SignUpPage = () => {
                   <option value="US">United States</option>
                 </select>
               </div>
-              <div className="flex items-start mb-6">
+              <div className="flex items-center mb-6">
                 <input 
                   type="checkbox" 
                   id="terms" 
                   name="termsAccepted" 
                   checked={formData.termsAccepted} 
                   onChange={handleChange}
-                  className="mt-1 mr-3"
+                  className="flex-shrink-0 mr-3"
                 />
-                <label htmlFor="terms" className="text-sm text-gray-600">
+                <label htmlFor="terms" className="text-sm text-gray-600 min-w-0">
                   By creating an account, I agree to TradeX{' '}
                   <a href="#" className="text-[#FE7400] hover:underline">Terms of Service</a>,{' '}
                   <a href="#" className="text-[#FE7400] hover:underline">Risk and Compliance Disclosure</a>, and{' '}

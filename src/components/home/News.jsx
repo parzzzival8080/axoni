@@ -19,7 +19,7 @@ const NewsCard = ({ title, date, category, link, image, description }) => (
         <span>•</span>
         <span>{category}</span>
       </div>
-      <h3 className="text-white font-semibold text-sm mb-1 leading-relaxed">{title}</h3>
+      <h3 className="text-white font-semibold text-base sm:text-sm mb-1 leading-relaxed">{title}</h3>
       <p className="text-gray-400 text-xs mb-1">{description}</p>
     </div>
   </Link>
@@ -52,8 +52,8 @@ const News = () => {
 
   return (
     <div className="bg-black py-16">
-      <div className="container mx-auto px-8 md:px-16 lg:px-24">
-        <h2 className="text-2xl md:text-3xl font-bold mb-8 text-white">Flux News</h2>
+      <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-8 text-white">Flux News</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {newsArticles.map((article, index) => (
             <NewsCard key={index} {...article} />

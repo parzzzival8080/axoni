@@ -50,8 +50,8 @@ const Journey = () => {
 
   return (
     <div className="bg-black py-16">
-      <div className="container mx-auto px-8 md:px-16 lg:px-24">
-        <h2 className="text-2xl md:text-3xl font-bold mb-12 text-left text-white">
+      <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-10 sm:mb-12 text-left text-white">
           How to Get Started
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
