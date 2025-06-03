@@ -82,7 +82,7 @@ const RecentTransactions = () => {
       ) : transactions.length === 0 ? (
         <div className="text-gray-400 text-center py-4">No recent transactions found.</div>
       ) : (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto hide-scrollbar" style={{ maxHeight: '400px' }}>
           <table className="min-w-full text-sm">
             <thead>
               <tr className="bg-gray-50">

@@ -19,6 +19,7 @@ const Conversion = () => {
     const [conversionHistory, setConversionHistory] = useState([]);
     const [historyLoading, setHistoryLoading] = useState(false);
     const [historyError, setHistoryError] = useState(null);
+    const [openFAQIndex, setOpenFAQIndex] = useState(null);
     
     const [fromCurrency, setFromCurrency] = useState({
       id: 'usdt',
@@ -507,66 +508,122 @@ const Conversion = () => {
         <div className="space-y-4">
           {/* FAQ items */}
           <div className="border-b border-gray-800 pb-4">
-            <button className="flex justify-between items-center w-full text-left">
+            <button 
+              className="flex justify-between items-center w-full text-left py-2"
+              onClick={() => setOpenFAQIndex(openFAQIndex === 0 ? null : 0)}
+            >
               <span className="text-base font-medium">How do I convert crypto on FLUX?</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-gray-500 transform ${openFAQIndex === 0 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
+            {openFAQIndex === 0 && (
+              <div className="pt-2 pb-4 text-gray-300 text-sm">
+                <p>To convert crypto on Flux, navigate to the 'Convert' page. Select the cryptocurrency you want to convert from (e.g., USDT) and the cryptocurrency you want to convert to (e.g., BTC). Enter the amount you wish to convert, review the exchange rate, and confirm the transaction. Conversion on Flux is designed to be quick and straightforward, with zero trading fees.</p>
+              </div>
+            )}
           </div>
           
           <div className="border-b border-gray-800 pb-4">
-            <button className="flex justify-between items-center w-full text-left">
+            <button 
+              className="flex justify-between items-center w-full text-left py-2"
+              onClick={() => setOpenFAQIndex(openFAQIndex === 1 ? null : 1)}
+            >
               <span className="text-base font-medium">Which crypto can I convert on FLUX?</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-gray-500 transform ${openFAQIndex === 1 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
+            {openFAQIndex === 1 && (
+              <div className="pt-2 pb-4 text-gray-300 text-sm">
+                <p>Flux supports a wide range of cryptocurrencies for conversion, including major assets like BTC, ETH, USDT, and many altcoins. Our platform continuously updates its supported list, so you can check the 'From' and 'To' currency selectors on the Convert page for the most current options available for your region.</p>
+              </div>
+            )}
           </div>
           
           <div className="border-b border-gray-800 pb-4">
-            <button className="flex justify-between items-center w-full text-left">
+            <button 
+              className="flex justify-between items-center w-full text-left py-2"
+              onClick={() => setOpenFAQIndex(openFAQIndex === 2 ? null : 2)}
+            >
               <span className="text-base font-medium">How is crypto conversion different from trading?</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-gray-500 transform ${openFAQIndex === 2 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
+            {openFAQIndex === 2 && (
+              <div className="pt-2 pb-4 text-gray-300 text-sm">
+                <p>Crypto conversion on Flux offers a simpler, more direct way to exchange one cryptocurrency for another, typically at a fixed rate with zero trading fees and no slippage. It's ideal for users who want to quickly swap assets without engaging in complex order book trading. Trading, on the other hand, involves buying and selling assets on a spot or futures market, where prices fluctuate based on supply and demand, and may involve various order types and fees.</p>
+              </div>
+            )}
           </div>
           
           <div className="border-b border-gray-800 pb-4">
-            <button className="flex justify-between items-center w-full text-left">
+            <button 
+              className="flex justify-between items-center w-full text-left py-2"
+              onClick={() => setOpenFAQIndex(openFAQIndex === 3 ? null : 3)}
+            >
               <span className="text-base font-medium">What are the conditions of crypto converter?</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-gray-500 transform ${openFAQIndex === 3 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
+            {openFAQIndex === 3 && (
+              <div className="pt-2 pb-4 text-gray-300 text-sm">
+                <p>The Flux crypto converter is designed for ease of use. Key conditions include: zero trading fees, no slippage (you get exactly the quoted amount), and lower limits for smaller transactions. While there are minimum and maximum conversion amounts per transaction, these are clearly displayed on the conversion interface. Ensure you have sufficient balance in your spot wallet for the conversion.</p>
+              </div>
+            )}
           </div>
           
           <div className="border-b border-gray-800 pb-4">
-            <button className="flex justify-between items-center w-full text-left">
+            <button 
+              className="flex justify-between items-center w-full text-left py-2"
+              onClick={() => setOpenFAQIndex(openFAQIndex === 4 ? null : 4)}
+            >
               <span className="text-base font-medium">Where can I find my converted crypto?</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-gray-500 transform ${openFAQIndex === 4 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
+            {openFAQIndex === 4 && (
+              <div className="pt-2 pb-4 text-gray-300 text-sm">
+                <p>After a successful conversion on Flux, the converted cryptocurrency will be immediately credited to your Spot Wallet. You can view your updated balances and transaction history in the 'Assets' section of your account. The conversion history also provides a detailed record of all your past conversions.</p>
+              </div>
+            )}
           </div>
           
           <div className="border-b border-gray-800 pb-4">
-            <button className="flex justify-between items-center w-full text-left">
+            <button 
+              className="flex justify-between items-center w-full text-left py-2"
+              onClick={() => setOpenFAQIndex(openFAQIndex === 5 ? null : 5)}
+            >
               <span className="text-base font-medium">How do I check my conversion orders?</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-gray-500 transform ${openFAQIndex === 5 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
+            {openFAQIndex === 5 && (
+              <div className="pt-2 pb-4 text-gray-300 text-sm">
+                <p>You can check your conversion orders by clicking on the 'Conversion history' link located below the 'Convert' button on the main Convert page. This will open a modal displaying a list of your past conversions, including the date, cryptocurrencies involved, amount, and status.</p>
+              </div>
+            )}
           </div>
           
           <div className="border-b border-gray-800 pb-4">
-            <button className="flex justify-between items-center w-full text-left">
+            <button 
+              className="flex justify-between items-center w-full text-left py-2"
+              onClick={() => setOpenFAQIndex(openFAQIndex === 6 ? null : 6)}
+            >
               <span className="text-base font-medium">How can I deposit/withdraw the crypto converted?</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-gray-500 transform ${openFAQIndex === 6 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
+            {openFAQIndex === 6 && (
+              <div className="pt-2 pb-4 text-gray-300 text-sm">
+                <p>Once your crypto is converted and credited to your Spot Wallet, you can easily deposit or withdraw it from the 'Assets' section of your Flux account. Navigate to 'Assets', select the cryptocurrency, and choose between 'Deposit' or 'Withdraw' to proceed with your transaction. Follow the on-screen instructions, ensuring all details are correct for secure transfers.</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -34,6 +34,23 @@ const countries = [
   { code: "PH", name: "Philippines", flag: "🇵🇭" },
   { code: "SG", name: "Singapore", flag: "🇸🇬" },
   { code: "DE", name: "Germany", flag: "🇩🇪" },
+  { code: "FR", name: "France", flag: "🇫🇷" },
+  { code: "IT", name: "Italy", flag: "🇮🇹" },
+  { code: "ES", name: "Spain", flag: "🇪🇸" },
+  { code: "NL", name: "Netherlands", flag: "🇳🇱" },
+  { code: "BE", name: "Belgium", flag: "🇧🇪" },
+  { code: "AT", name: "Austria", flag: "🇦🇹" },
+  { code: "CH", name: "Switzerland", flag: "🇨🇭" },
+  { code: "SE", name: "Sweden", flag: "🇸🇪" },
+  { code: "NO", name: "Norway", flag: "🇳🇴" },
+  { code: "DK", name: "Denmark", flag: "🇩🇰" },
+  { code: "FI", name: "Finland", flag: "🇫🇮" },
+  { code: "IE", name: "Ireland", flag: "🇮🇪" },
+  { code: "PL", name: "Poland", flag: "🇵🇱" },
+  { code: "CZ", name: "Czech Republic", flag: "🇨🇿" },
+  { code: "HU", name: "Hungary", flag: "🇭🇺" },
+  { code: "PT", name: "Portugal", flag: "🇵🇹" },
+  { code: "GR", name: "Greece", flag: "🇬🇷" },
 ];
 
 const idTypes = [

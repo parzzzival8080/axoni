@@ -753,7 +753,7 @@ const Navbar = () => {
                 <Link to="/account/profile" className="menu-item">
                   <i className="fas fa-user"></i> Profile
                 </Link>
-                <Link to="/security" className="menu-item">
+                <Link to="/account/profile/security" className="menu-item">
                   <i className="fas fa-shield-alt"></i> Security
                 </Link>
       
@@ -831,30 +831,6 @@ const Navbar = () => {
               </div>
             </div>
           
-          {/* Help Icon with support dropdown */}
-          <div className="right-nav-item">
-            <button 
-              className="navbar-icon-link" 
-              type="button" 
-              aria-label="Help" 
-              style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
-            >
-              <i className="far fa-question-circle"></i>
-            </button>
-            
-            <div className="right-dropdown-menu help-menu">
-              <Link to="/support" className="dropdown-menu-item">
-                Support center
-              </Link>
-              <Link to="/support-center/history" className="dropdown-menu-item">
-                My tickets
-              </Link>
-              <Link to="/connect" className="dropdown-menu-item">
-                Connect with TradeX
-              </Link>
-            </div>
-          </div>
-
           {/* Language icon with support dropdown */}
           <div className="right-nav-item">
             <button 

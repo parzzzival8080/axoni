@@ -4,6 +4,8 @@ import chartPlaceholder from "../../assets/assets/411B1865A7B26122.webp";
 import earnIcon from "../../assets/assets/earn-icon.svg";
 import axios from "axios";
 import RecentTransactions from "./RecentTransactions";
+import { useNavigate } from "react-router-dom";
+import './OverviewTab.css';
 
 const OverviewTab = () => {
   const [timeframe, setTimeframe] = useState("1D");
@@ -15,6 +17,8 @@ const OverviewTab = () => {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
   
   useEffect(() => {
     const fetchWalletData = async () => {
@@ -91,45 +95,38 @@ const OverviewTab = () => {
             )}
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <button className="bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-lg font-medium transition-colors">
+              <button 
+                className="bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-lg font-medium transition-colors"
+                onClick={() => navigate('/deposit')}
+              >
                 Deposit
               </button>
-              <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg font-medium transition-colors border border-gray-300">
+              <button 
+                className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg font-medium transition-colors border border-gray-300"
+                onClick={() => navigate('/conversion')}
+              >
                 Convert
               </button>
-              <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg font-medium transition-colors border border-gray-300">
+              <button 
+                className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg font-medium transition-colors border border-gray-300"
+                onClick={() => navigate('/withdraw')}
+              >
                 Withdraw
               </button>
-              <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg font-medium transition-colors border border-gray-300">
+              <button 
+                className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg font-medium transition-colors border border-gray-300"
+                onClick={() => navigate('/transfer')}
+              >
                 Transfer
               </button>
             </div>
           </div>
           
-          {/* Chart Section */}
-          <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-            <div className="flex space-x-2 mb-6">
-              {["1D", "1W", "1M", "6M"].map((period) => (
-                <button
-                  key={period}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    timeframe === period
-                      ? "bg-orange-500 text-white"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-800 border border-gray-300"
-                  }`}
-                  onClick={() => setTimeframe(period)}
-                >
-                  {period}
-                </button>
-              ))}
-            </div>
-            
-            <div className="flex flex-col items-center justify-center py-12 text-center">
-              <img src={chartPlaceholder} alt="Chart placeholder" className="w-16 h-16 mb-4 opacity-50" />
-              <div className="text-gray-600 mb-2">Unable to load data</div>
-              <div className="text-gray-400 text-sm">We'll need more data to generate the chart for you</div>
-            </div>
-          </div>
+          {/* Chart Section - REMOVED */}
+          {/* Original Chart Section was here */}
+          
+          {/* Recent Transactions Section */}
+            <RecentTransactions />
         </div>
         
         {/* Right Section */}
@@ -178,8 +175,8 @@ const OverviewTab = () => {
             </div>
           </div>
 
-          {/* Recent Transactions Section */}
-          <RecentTransactions />
+          {/* Original Recent Transactions Section - REMOVED */}
+          {/* Was here: <RecentTransactions /> */}
         </div>
       </div>
     </div>

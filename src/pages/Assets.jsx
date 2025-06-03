@@ -5,30 +5,6 @@ import OverviewTab from "../components/assets/OverviewTab";
 import FundingTab from "../components/assets/FundingTab";
 import TradingTab from "../components/assets/TradingTab";
 
-// Mock data as fallback
-const mockCoins = [
-  { symbol: "BTC", name: "Bitcoin", price: "64,000.00", balance: "0.00", value: "0.00" },
-  { symbol: "ETH", name: "Ethereum", price: "3,200.00", balance: "0.00", value: "0.00" },
-  { symbol: "XRP", name: "XRP", price: "0.60", balance: "0.00", value: "0.00" },
-  { symbol: "DOGE", name: "Dogecoin", price: "0.12", balance: "0.00", value: "0.00" },
-  { symbol: "DOT", name: "Polkadot", price: "6.50", balance: "0.00", value: "0.00" },
-  { symbol: "SOL", name: "Solana", price: "120.00", balance: "0.00", value: "0.00" },
-  { symbol: "ADA", name: "Cardano", price: "0.50", balance: "0.00", value: "0.00" },
-  { symbol: "AVAX", name: "Avalanche", price: "35.00", balance: "0.00", value: "0.00" },
-  { symbol: "LINK", name: "Chainlink", price: "15.00", balance: "0.00", value: "0.00" },
-  { symbol: "MATIC", name: "Polygon", price: "0.80", balance: "0.00", value: "0.00" },
-  { symbol: "UNI", name: "Uniswap", price: "8.00", balance: "0.00", value: "0.00" },
-  { symbol: "LTC", name: "Litecoin", price: "80.00", balance: "0.00", value: "0.00" },
-  { symbol: "ATOM", name: "Cosmos", price: "10.00", balance: "0.00", value: "0.00" },
-  { symbol: "AAVE", name: "Aave", price: "90.00", balance: "0.00", value: "0.00" },
-  { symbol: "SHIB", name: "Shiba Inu", price: "0.00002", balance: "0.00", value: "0.00" },
-  { symbol: "FIL", name: "Filecoin", price: "5.00", balance: "0.00", value: "0.00" },
-  { symbol: "ALGO", name: "Algorand", price: "0.15", balance: "0.00", value: "0.00" },
-  { symbol: "BCH", name: "Bitcoin Cash", price: "300.00", balance: "0.00", value: "0.00" },
-  { symbol: "XLM", name: "Stellar", price: "0.12", balance: "0.00", value: "0.00" },
-  { symbol: "NEAR", name: "NEAR Protocol", price: "5.50", balance: "0.00", value: "0.00" },
-];
-
 export default function Assets() {
   const [page, setPage] = useState(1);
   const [activeTab, setActiveTab] = useState("trading");
@@ -49,10 +25,18 @@ export default function Assets() {
     const fetchWalletData = async () => {
       try {
         setLoading(true);
-        // Get UID from localStorage (assuming it's stored there from login)
-        const uid = localStorage.getItem('uid'); // Fallback to example UID
+        setError(null);
         
-        // API key from your image
+        // Get UID from localStorage
+        const uid = localStorage.getItem('uid') || localStorage.getItem('user_id');
+        
+        if (!uid) {
+          setError("User ID not found. Please log in again.");
+          setLoading(false);
+          return;
+        }
+        
+        // API key
         const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
         
         // Construct the API URL
@@ -61,37 +45,51 @@ export default function Assets() {
         const response = await axios.get(apiUrl);
         
         if (response.data && response.data["0"]) {
-          // Format the coin data
-          const formattedCoins = response.data["0"].map(coin => ({
-            id: coin.coin_id,
-            symbol: coin.crypto_symbol,
-            name: coin.crypto_name,
-            logo: coin.logo_path,
-            price: parseFloat(coin.price).toLocaleString(),
-            balance: parseFloat(coin.spot_wallet).toLocaleString(),
-            value: (parseFloat(coin.price) * parseFloat(coin.spot_wallet)).toLocaleString(),
-            raw_balance: parseFloat(coin.spot_wallet),
-            raw_value: parseFloat(coin.price) * parseFloat(coin.spot_wallet),
-            future_wallet: parseFloat(coin.future_wallet),
-            funding_wallet: parseFloat(coin.funding_wallet)
-          }));
+          // Format the coin data with proper value calculations
+          const formattedCoins = response.data["0"].map(coin => {
+            const price = parseFloat(coin.price) || 0;
+            const spotWallet = parseFloat(coin.spot_wallet) || 0;
+            const futureWallet = parseFloat(coin.future_wallet) || 0;
+            const fundingWallet = parseFloat(coin.funding_wallet) || 0;
+            const totalValue = price * spotWallet;
+            
+            return {
+              id: coin.coin_id,
+              symbol: coin.crypto_symbol,
+              name: coin.crypto_name,
+              logo: coin.logo_path,
+              price: price,
+              balance: spotWallet,
+              value: totalValue,
+              raw_balance: spotWallet,
+              raw_value: totalValue,
+              future_wallet: futureWallet,
+              funding_wallet: fundingWallet,
+              formatted_price: price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 8 }),
+              formatted_balance: spotWallet.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 8 }),
+              formatted_value: totalValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+            };
+          });
           
           setCoins(formattedCoins);
           
           // Set overview data
-          if (response.data.overview) {
+          if (response.data.overview !== undefined) {
             setOverviewData({
-              overview: response.data.overview,
-              spot_wallet: response.data.spot_wallet || 0,
-              future_wallet: response.data.future_wallet || 0,
-              funding_wallet: response.data.funding_wallet || 0
+              overview: parseFloat(response.data.overview) || 0,
+              spot_wallet: parseFloat(response.data.spot_wallet) || 0,
+              future_wallet: parseFloat(response.data.future_wallet) || 0,
+              funding_wallet: parseFloat(response.data.funding_wallet) || 0
             });
           }
+        } else {
+          setCoins([]);
+          console.warn("No wallet data found in response");
         }
       } catch (err) {
         console.error("Error fetching wallet data:", err);
-        setError("Failed to load wallet data. Using mock data instead.");
-        setCoins(mockCoins);
+        setError("Failed to load wallet data. Please try refreshing the page.");
+        setCoins([]);
       } finally {
         setLoading(false);
       }

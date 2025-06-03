@@ -9,6 +9,7 @@ const Profile = () => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
   const [profileData, setProfileData] = React.useState(null);
+  const [showTradingFeeModal, setShowTradingFeeModal] = React.useState(false);
 
   // Get user ID from localStorage
   const storedUser = localStorage.getItem('user');
@@ -373,13 +374,51 @@ const Profile = () => {
               <span>{displayData.tradingLevel}</span>
             </div>
             <div className="w-1/3 text-right">
-              <button className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+              <button 
+                onClick={() => setShowTradingFeeModal(true)}
+                className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              >
                 View details
               </button>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Trading Fee Tier Modal */}
+      {showTradingFeeModal && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl max-w-lg w-full relative">
+            <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Trading Fee Tier Details</h3>
+            <p className="text-gray-700 dark:text-gray-300 mb-4">
+              Your current trading fee tier is <strong>{displayData.tradingLevel}</strong>.
+            </p>
+            <p className="text-gray-700 dark:text-gray-300 mb-4">
+              <strong>Level 1:</strong> Enjoy standard trading fees. Typically, this tier applies to users with a 30-day trading volume below $5,000,000 USDT or total assets below $100,000 USDT.
+            </p>
+            <p className="text-gray-700 dark:text-gray-300 mb-4">
+              <strong>Premium Tier:</strong> Benefit from reduced trading fees. This tier is for users with a 30-day trading volume exceeding $5,000,000 USDT or total assets above $100,000 USDT.
+            </p>
+            <p className="text-gray-700 dark:text-gray-300 mb-6">
+              Fees are calculated daily based on your 30-day trading volume and daily asset balance. Trade more to unlock better rates!
+            </p>
+            <button
+              onClick={() => setShowTradingFeeModal(false)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+            <button
+              onClick={() => setShowTradingFeeModal(false)}
+              className="mt-4 px-6 py-2 bg-[#FE7400] text-white rounded-md hover:bg-orange-600 transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

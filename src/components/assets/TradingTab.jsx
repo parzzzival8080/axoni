@@ -54,7 +54,7 @@ const TradingTab = ({
       </div>
 
       {/* Assets Cards */}
-      {coins.length > 0 ? (
+      {!loading && !error && coins.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
             <div className="text-gray-600 mb-2">Assets value</div>
@@ -69,7 +69,7 @@ const TradingTab = ({
             <div className="text-gray-500">No recent transactions</div>
           </div>
         </div>
-      ) : (
+      ) : !loading && !error ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
             <div className="flex flex-col items-center text-center py-8">
@@ -90,7 +90,7 @@ const TradingTab = ({
             </div>
           </div>
         </div>
-      )}
+      ) : null}
       
       {/* Tabs */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
@@ -191,15 +191,21 @@ const TradingTab = ({
                           </div>
                         </td>
                         <td className="py-3 px-4 text-gray-600">{coin.name}</td>
-                        <td className="py-3 px-4 text-right text-gray-900">${coin.price}</td>
-                        <td className="py-3 px-4 text-right text-gray-900">{coin.balance}</td>
-                        <td className="py-3 px-4 text-right font-medium text-gray-900">${coin.value}</td>
+                        <td className="py-3 px-4 text-right text-gray-900">
+                          ${coin.formatted_price || coin.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 8 })}
+                        </td>
+                        <td className="py-3 px-4 text-right text-gray-900">
+                          {coin.formatted_balance || coin.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 8 })}
+                        </td>
+                        <td className="py-3 px-4 text-right font-medium text-gray-900">
+                          ${coin.formatted_value || coin.value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        </td>
                       </tr>
                     ))}
-                    {filteredCoins.length === 0 && (
+                    {filteredCoins.length === 0 && !loading && (
                       <tr>
                         <td colSpan="5" className="py-8 text-center text-gray-500">
-                          No coins found
+                          {searchTerm ? `No coins found matching "${searchTerm}"` : 'No assets found'}
                         </td>
                       </tr>
                     )}

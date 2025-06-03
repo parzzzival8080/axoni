@@ -407,3 +407,21 @@
 .transaction-amount.negative {
   color: #ff4d4f;
 }
+
+.hide-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.hide-scrollbar::-webkit-scrollbar-track {
+  background: #E0E0E0; /* Light gray for the track */
+  border-radius: 10px;
+}
+
+.hide-scrollbar::-webkit-scrollbar-thumb {
+  background: #FFFFFF; /* White for the thumb */
+  border-radius: 10px;
+}
+
+.hide-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #F0F0F0; /* Even lighter gray on hover */
+}
