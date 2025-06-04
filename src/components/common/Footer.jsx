@@ -8,7 +8,7 @@ const Footer = () => {
   const [activeSections, setActiveSections] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
   
-  const appDownloadUrl = "https://drive.google.com/file/d/1FeM7hUwGLu1ac_boBGX-_TyVp3d2_F6V/view?usp=sharing";
+  const appDownloadUrl = "https://drive.google.com/file/d/1yNzNw27NxkK-xapsdZnwfXWeWcjF-RVv/view?usp=drive_link";
 
   // Check if viewport is mobile
   useEffect(() => {
@@ -35,7 +35,7 @@ const Footer = () => {
 
   // Section titles for mobile accordion
   const sectionTitles = [
-    "More about TradeX",
+    "More about FLUX",
     "Products",
     "Services",
     "Support",
@@ -61,7 +61,7 @@ const Footer = () => {
         {isMobile ? (
           // Mobile Accordion Layout
           <div className="footer-accordion">
-            {/* More about TradeX */}
+            {/* More about FLUX */}
             <div className="footer-column">
               <h3 
                 className={`column-title ${activeSections.includes(0) ? 'active' : ''}`}
@@ -128,7 +128,7 @@ const Footer = () => {
                 <li><a href="#support-center">Support center</a></li>
                 <li><a href="#channel-verification">Channel verification</a></li>
                 <li><a href="#announcements">Announcements</a></li>
-                <li><a href="#connect-with-okx">Connect with TradeX</a></li>
+                <li><a href="#connect-with-okx">Connect with FLUX</a></li>
               </ul>
             </div>
             
@@ -185,9 +185,9 @@ const Footer = () => {
         ) : (
           // Desktop Layout
           <div className="footer-columns">
-            {/* More about TradeX */}
+            {/* More about FLUX */}
             <div className="footer-column">
-              <h3 className="column-title">More about TradeX</h3>
+              <h3 className="column-title">More about FLUX</h3>
               <ul className="column-links">
                 <li><a href="#about">About us</a></li>
                 <li><a href="#privacy">Candidate privacy notice</a></li>
@@ -198,8 +198,8 @@ const Footer = () => {
                 <li><a href="#disclosures">Disclosures</a></li>
                 <li><a href="#whistleblower">Whistleblower notice</a></li>
                 <li><a href="#law">Law enforcement</a></li>
-                <li><a href="#app">TradeX app</a></li>
-                <li><a href="#okx-tr">TradeX TR</a></li>
+                <li><a href="#app">FLUX app</a></li>
+                <li><a href="#okx-tr">FLUX TR</a></li>
               </ul>
             </div>
             
@@ -251,8 +251,8 @@ const Footer = () => {
             
             {/* Trade on the go - Desktop Only */}
             <div className="footer-column trade-on-go">
-              <h3 className="column-title">Trade on the go with<br />TradeX</h3>
-              <button className="bg-[#F88726] hover:bg-[#e67615] text-white font-medium py-2 px-6 rounded-full transition-colors duration-200">Trade</button>
+              <h3 className="column-title">Trade on the go with<br />FLUX</h3>
+              <button className="bg-[#F88726] hover:bg-[#e67615] text-white font-medium py-2 px-6 rounded-full transition-colors duration-200 mb-2">Trade</button>
               <QRCodeSVG 
                 value={appDownloadUrl}
                 size={150}
@@ -260,7 +260,7 @@ const Footer = () => {
                 includeMargin={true}
                 className="qr-code-image"
               />
-              <p className="qr-text">Scan to download TradeX app</p>
+              <p className="qr-text">Scan to download FLUX app</p>
             </div>
           </div>
         )}

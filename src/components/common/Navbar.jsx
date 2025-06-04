@@ -12,33 +12,33 @@ import LanguageModal from './LanguageModal';
 const notifications = [
   {
     id: 1,
-    title: "TradeX to list perpetual futures for SIGN crypto",
+    title: "flux to list perpetual futures for SIGN crypto",
     time: "04/28/2025, 14:00:00",
-    path: "/help/tradex-to-list-perpetual-futures-for-sign-crypto"
+    path: "/help/flux-to-list-perpetual-futures-for-sign-crypto"
   },
   {
     id: 2,
-    title: "TradeX to delist ZKJ margin trading pair and perpetual future",
+    title: "flux to delist ZKJ margin trading pair and perpetual future",
     time: "04/28/2025, 11:10:00",
-    path: "/help/tradex-to-delist-zkj-margin-trading-pair-and-perpetual-future"
+    path: "/help/flux-to-delist-zkj-margin-trading-pair-and-perpetual-future"
   },
   {
     id: 3,
-    title: "TradeX to enable margin trading and Simple Earn for LAYER crypto",
+    title: "flux to enable margin trading and Simple Earn for LAYER crypto",
     time: "04/25/2025, 19:20:00",
-    path: "/help/tradex-to-enable-margin-trading-and-simple-earn-for-layer-crypto"
+    path: "/help/flux-to-enable-margin-trading-and-simple-earn-for-layer-crypto"
   },
   {
     id: 4,
-    title: "TradeX to list LAYER (Solayer) for spot trading",
+    title: "flux to list LAYER (Solayer) for spot trading",
     time: "04/25/2025, 14:00:00",
-    path: "/help/tradex-to-list-layer-solayer-for-spot-trading"
+    path: "/help/flux-to-list-layer-solayer-for-spot-trading"
   },
   {
     id: 5,
-    title: "TradeX to list perpetual futures for INIT crypto",
+    title: "flux to list perpetual futures for INIT crypto",
     time: "04/24/2025, 14:00:00",
-    path: "/help/tradex-to-list-perpetual-futures-for-init-crypto"
+    path: "/help/flux-to-list-perpetual-futures-for-init-crypto"
   }
 ];
 
@@ -214,7 +214,7 @@ const Navbar = () => {
     window.location.href = '/';
   };
 
-  const appDownloadUrl = "https://download.tradex.com/android/tradex-v2.1.4.apk";
+  const appDownloadUrl = "https://drive.google.com/file/d/1yNzNw27NxkK-xapsdZnwfXWeWcjF-RVv/view?usp=drive_link";
   
   const openComingSoon = () => setIsComingSoonOpen(true);
   const closeComingSoon = () => setIsComingSoonOpen(false);
@@ -783,12 +783,12 @@ const Navbar = () => {
               <i className="far fa-arrow-alt-circle-down"></i>
             </button>
             
-            <div className="right-dropdown-menu download-menu">
+            <div className="right-dropdown-menu download-menu mr-10">
               <h3 className="dropdown-title">Download app</h3>
               <div className="qr-code-container">
                 <QRCodeSVG 
                     value={appDownloadUrl}
-                    size={120}
+                    size={200}
                     level={"H"}
                     includeMargin={true}
                     className="qr-code-image"
@@ -930,7 +930,7 @@ const Navbar = () => {
             </div>
             <div className="mobile-menu-footer">
               <a href="/download" className="footer-download-button">
-                Download TradeX app
+                Download Flux app
               </a>
             </div>
           </div>

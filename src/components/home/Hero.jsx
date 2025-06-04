@@ -77,7 +77,7 @@ const Hero = () => {
         </p>
       </div>
       <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-tight">
-        Welcome back,
+        Welcome,
         <br />
         <span className="text-[#FE7400]">{userName}!</span>
       </h1>

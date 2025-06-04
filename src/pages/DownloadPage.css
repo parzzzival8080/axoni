@@ -53,7 +53,7 @@
 }
 
 .landing__highlight {
-  color: #ACFF00;
+  color: #ff6901;
 }
 
 .landing__tagline {
@@ -93,7 +93,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background-color: #FFFFFF;
+  background-color: #ff6901;
   color: #000000;
   border: none;
   border-radius: 50px;
@@ -126,6 +126,7 @@
 
 .landing__button-icon {
   font-size: 18px;
+  color: white;
 }
 
 /* Hero section */

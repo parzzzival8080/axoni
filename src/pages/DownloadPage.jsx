@@ -18,7 +18,7 @@ const DownloadPage = () => {
     setIsComingSoonOpen(false);
   };
 
-  const appDownloadUrl = "https://drive.google.com/file/d/1FeM7hUwGLu1ac_boBGX-_TyVp3d2_F6V/view?usp=sharing";
+  const appDownloadUrl = "https://drive.google.com/file/d/1yNzNw27NxkK-xapsdZnwfXWeWcjF-RVv/view?usp=sharing";
   const handleAppDownload = () => {
     // For Google Drive links, we need to convert the sharing URL to a direct download URL
     // This works for public Google Drive files
@@ -28,7 +28,7 @@ const DownloadPage = () => {
     // Create a temporary anchor element to trigger the download
     const downloadLink = document.createElement('a');
     downloadLink.href = directDownloadUrl;
-    downloadLink.setAttribute('download', 'TradeX.apk');
+    downloadLink.setAttribute('download', 'flux.apk');
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
@@ -46,7 +46,7 @@ const DownloadPage = () => {
             </h1>
             <p className="landing__tagline">Crypto trading — made easy for you</p>
             <div className="landing__buttons">
-              <button className="landing__button" onClick={handleAppDownload}>
+              <button className="landing__button text-white" onClick={handleAppDownload}>
                 <FaMobile className="landing__button-icon" />
                 Download app
               </button>
@@ -75,9 +75,9 @@ const DownloadPage = () => {
           </div>
           <div className="landing__features-content">
             <h2 className="landing__section-title">One app</h2>
-            <h3 className="landing__section-subtitle">Unlimited possibilities</h3>
+            <h3 className="landing__section-subtitle"><span className='text-[#ff6901]'>Unlimited</span> possibilities</h3>
             <p className="landing__description">
-              Download the TradeX app to trade crypto on the go. Gain access to diverse tokens and trading pairs, advanced market data and more!
+              Download the FLUX app to trade crypto on the go. Gain access to diverse tokens and trading pairs, advanced market data and more!
             </p>
           </div>
         </div>
@@ -87,8 +87,8 @@ const DownloadPage = () => {
       <section className="landing__platform">
         <div className="landing__container">
           <div className="landing__platform-content">
-            <h2 className="landing__section-title">Powerful platform</h2>
-            <h3 className="landing__section-subtitle">Trade like a pro</h3>
+            <h2 className="landing__section-title"><span className='text-[#ff6901]'>Powerful</span> platform</h2>
+            <h3 className="landing__section-subtitle">Trade like a <span className='text-[#ff6901]'>pro</span></h3>
             <p className="landing__description">
               Trade crypto like a pro with our crypto trading platform on your desktop. Experience the fastest transactions and our powerful API on Window or MacOS today.
             </p>
@@ -105,8 +105,8 @@ const DownloadPage = () => {
         <div className="landing__container landing__container--footer">
             <div className="landing__footer-brand">
             <div className="landing__logo">
-                <img src={logo} alt="logo" />
-                <h3 className="landing__logo-text">TradeX APP</h3>
+                <img src={logo} alt="logo" className='object-contain' />
+                <h3 className="landing__logo-text">FLUX APP</h3>
             </div>
             <p className="landing__footer-tagline">Crypto exchange on the go</p>
             </div>
