@@ -116,7 +116,6 @@ const CACHE_EXPIRY_TIME =  7 * 24 * 60 * 60 * 1000;
 
 const Transfer = () => {
   // State variables
-  const [activeHeaderTab, setActiveHeaderTab] = useState('Funding');
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [isAssetDropdownOpen, setIsAssetDropdownOpen] = useState(false);
   const [fromAccount, setFromAccount] = useState('Spot');
@@ -525,24 +524,7 @@ const Transfer = () => {
     <>
       <style dangerouslySetInnerHTML={{ __html: scrollbarStyles }} />
       <div className="min-h-screen bg-white text-gray-900 font-sans">
-        {/* Header Navigation */}
-        <header className="bg-white border-b border-gray-200 relative z-0">
-          <div className="flex overflow-x-auto scrollbar-hide">
-            {['Overview', 'Funding', 'Trading', 'Grow', 'Analysis', 'Order center', 'Fees', 'Account statement', 'PoR reports'].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveHeaderTab(tab)}
-                className={`px-4 py-4 text-sm font-medium focus:outline-none border-b-2 ${
-                  activeHeaderTab === tab
-                    ? 'border-black text-black'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
-        </header>
+
 
         {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 py-8">
@@ -589,7 +571,7 @@ const Transfer = () => {
                         <input
                           type="text"
                           placeholder="Search assets..."
-                          className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
+                          className="w-full h-11 flex items-center justify-center px-4 py-2 bg-[#F88726] text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F88726] hover:bg-[#ff9c44] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                           value={searchTerm}
                           onChange={(e) => setSearchTerm(e.target.value)}
                           onClick={(e) => e.stopPropagation()} // Prevent dropdown from closing
@@ -782,7 +764,7 @@ const Transfer = () => {
                 className={`transfer-execute-button w-full py-3 rounded-lg font-medium transition-colors ${
                   isSubmitting || !selectedAsset || !transferAmount || parseFloat(transferAmount) <= 0 || parseFloat(transferAmount) > availableBalance
                     ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                    : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
+                    : 'bg-[#F88726] text-white hover:bg-[#ff9c44]'
                 }`}
                 onClick={handleTransfer}
                 disabled={isSubmitting || !selectedAsset || !transferAmount || parseFloat(transferAmount) <= 0 || parseFloat(transferAmount) > availableBalance}

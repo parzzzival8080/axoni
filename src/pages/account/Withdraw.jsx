@@ -74,7 +74,7 @@ const ImageWithFallback = ({ src, alt, className, symbol }) => {
 function withdraw() { // Using App as the main exportable component name
 
   // --- State Variables ---
-  const [activeHeaderTab, setActiveHeaderTab] = useState('Funding'); // Default to Funding
+
   const [coins, setCoins] = useState([]);
   const [isLoadingCoins, setIsLoadingCoins] = useState(true);
   const [coinsError, setCoinsError] = useState(null);
@@ -419,26 +419,7 @@ const WithdrawalHistoryTable = () => {
     <>
       <style dangerouslySetInnerHTML={{ __html: scrollbarStyles }} />
       <div className="min-h-screen bg-white text-gray-900 font-sans">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 relative z-0">
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center h-16 space-x-4 sm:space-x-8 overflow-x-auto whitespace-nowrap scrollbar-hide">
-            {headerTabs.map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveHeaderTab(tab)}
-                className={`py-4 text-sm font-medium focus:outline-none border-b-2 ${
-                  activeHeaderTab === tab
-                    ? 'border-gray-900 text-gray-900'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
-        </nav>
-      </header>
+
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -689,7 +670,7 @@ const WithdrawalHistoryTable = () => {
                    <button
                        onClick={handleSubmitWithdrawal}
                        disabled={isSubmitting || !withdrawalAmount || parseFloat(withdrawalAmount) <= 0 || parseFloat(withdrawalAmount) > availableBalance || parseFloat(withdrawalAmount) < networkFee}
-                       className="w-full h-11 flex items-center justify-center px-4 py-2 bg-gray-800 text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                       className="w-full h-11 flex items-center justify-center px-4 py-2 bg-[#F88726] text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F88726] hover:bg-[#ff9c44] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                    >
                        {isSubmitting ? <Spinner /> : 'Next'}
                    </button>
