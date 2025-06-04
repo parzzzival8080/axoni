@@ -12,7 +12,7 @@ const ComingSoon = ({ isOpen, onClose }) => {
           <div className="hourglass-container">
             <img src={ComingSoonImg} alt="hour-glass" />
           </div>
-          <h1 className='heading'>COMING SOON</h1>
+          <h1 className='heading text-[#ff6901]'>COMING SOON</h1>
           <p className="subtext">
             We're working hard to bring you this<br />
             feature. Stay tuned!

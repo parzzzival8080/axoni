@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { FaMobile, FaDesktop } from 'react-icons/fa';
 import './DownloadPage.css';
-import DownloadImage1 from '../assets/img/download-img-1.png';
-import DownloadImage2 from '../assets/img/download-img-2-removebg-preview.png';
-import DownloadImage3 from '../assets/img/download-img-3.png';
+import DownloadImage1 from '../assets/assets/asset1.png';
+import DownloadImage2 from '../assets/assets/asset2.png';
+import DownloadImage3 from '../assets/assets/Asset 3.png';
 import logo from '../assets/logo/logo.png';
 import ComingSoon from '../components/common/ComingSoon';
 
@@ -18,7 +18,7 @@ const DownloadPage = () => {
     setIsComingSoonOpen(false);
   };
 
-  const appDownloadUrl = "https://drive.google.com/file/d/1yNzNw27NxkK-xapsdZnwfXWeWcjF-RVv/view?usp=sharing";
+  const appDownloadUrl = "https://drive.google.com/file/d/18e68fWr9CRKiRW1GnQq0qujk2UjsiHhk/view?usp=drive_link";
   const handleAppDownload = () => {
     // For Google Drive links, we need to convert the sharing URL to a direct download URL
     // This works for public Google Drive files
