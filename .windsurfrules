@@ -1,24 +1,40 @@
-Core Rules
+#  Agent Rules - React + Vite
+# Zero-Error Development Workflow
 
-1.Always maintain a dark mode aesthetic consistent with OKX's branding
-2.Prioritize responsive design that works across all device sizes
-3.Follow React best practices with functional components and hooks
-4.Keep bundle size minimal by avoiding unnecessary dependencies
-5.Implement proper error handling for all API interactions
-6.Ensure authentication flows are secure and intuitive
-7.Use tailwind or styled-components for styling components
-8.Follow atomic design principles for component organization
-9.Include subtle animations for interactive elements (trading charts, buttons)
-10.Implement proper loading states for async operations
+# INTRODUCTION
+# This ruleset implements a bulletproof development workflow for React + Vite projects.
+# Every error triggers our chain of thought process to ensure zero tolerance for bugs.
+# We prioritize prevention over fixing, defensive coding over assumptions.
+# When you encounter ANY error, follow the workflow chain religiously.
 
-Generate [component/feature description] for my OKX crypto trading platform clone using React and Vite.
+# CORE ERROR WORKFLOW
+error_chain:
+  1. STOP - Take a breath
+  2. IDENTIFY - What's the actual error?
+  3. PROPOSE - Suggest a solution
+  4. FIX - Implement the fix
+  5. VERIFY - Does it work?
+  6. REFLECT - Will this prevent future errors?
 
-Requirements:
-- Follow dark mode UI aesthetic matching the provided screenshots
-- Implement responsive design with mobile-first approach
-- Use functional components with proper React hooks
-- Optimize for performance (memoization where appropriate)
-- Include proper loading/error states
-- Match OKX's interaction patterns and animations
+# REACT + VITE STANDARDS
+structure:
+  components: "PascalCase.tsx"
+  hooks: "useCamelCase.ts" 
+  utils: "camelCase.ts"
+  types: "TypeName.ts"
 
-The component should interact with [describe API endpoint or data source] and handle [specific functionality].
+code_rules:
+  - Always use TypeScript strict mode
+  - Add proper error boundaries
+  - Validate props with interfaces
+  - Handle async errors with try-catch
+  - Use optional chaining (?.) everywhere
+  - No console.log in production
+
+# ERROR PREVENTION
+defensive_code:
+  - Validate all inputs
+  - Handle loading/error states
+  - Use proper dependency arrays
+  - Add null checks
+  - Implement proper cleanup

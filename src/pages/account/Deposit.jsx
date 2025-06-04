@@ -71,7 +71,7 @@ const ImageWithFallback = ({ src, alt, className, symbol }) => {
 function App() { // Renamed to App for standard React export
 
   // --- State Variables ---
-  const [activeHeaderTab, setActiveHeaderTab] = useState('Funding');
+
   const [coins, setCoins] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -246,27 +246,8 @@ function App() { // Renamed to App for standard React export
   const activeStep = selectedNetwork ? 3 : (selectedCryptoSymbol ? 2 : 1);
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 font-sans"> {/* White background, dark text, removed relative positioning */}
-      {/* Header Navigation */}
-      <header className="bg-white border-b border-gray-200 relative z-0"> {/* White header background with low z-index */}
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center h-16 space-x-4 sm:space-x-8 overflow-x-auto whitespace-nowrap scrollbar-hide">
-            {headerTabs.map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveHeaderTab(tab)}
-                className={`py-4 text-sm font-medium focus:outline-none border-b-2 ${
-                  activeHeaderTab === tab
-                    ? 'border-gray-900 text-gray-900' // Black text/border for active
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' // Gray text for inactive
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
-        </nav>
-      </header>
+    <div className="min-h-screen bg-white text-gray-900 font-sans"> 
+
 
       {/* Main Content Area */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

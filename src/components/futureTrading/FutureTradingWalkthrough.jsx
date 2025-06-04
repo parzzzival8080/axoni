@@ -6,7 +6,16 @@ const FutureTradingWalkthrough = ({ onClose, isOpen }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
+  const [showFloatingCard, setShowFloatingCard] = useState(true);
   const overlayRef = useRef(null);
+
+  useEffect(() => {
+    // Check if user has seen the walkthrough before
+    const hasSeenWalkthrough = localStorage.getItem('hasSeenFutureTradingWalkthrough') === 'true';
+    if (hasSeenWalkthrough) {
+      setShowFloatingCard(false);
+    }
+  }, []);
 
   const walkthroughSteps = [
     {
