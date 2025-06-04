@@ -86,7 +86,7 @@ const SimpleEarn = () => {
       <EarnNavBar/>
       
       {/* Hero Section */}
-      <section className="relative px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+      <section className="relative px-4 sm:px-6 lg:px-8 py-12 lg:py-20 bg-[#000000]">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -115,7 +115,7 @@ const SimpleEarn = () => {
       </section>
 
       {/* Products Section */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12">
+      <section className="px-4 sm:px-6 lg:px-8 py-12 bg-[#000000]">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
             <h2 className="text-3xl font-bold text-white">Products</h2>
@@ -226,7 +226,7 @@ const SimpleEarn = () => {
       </section>
 
       {/* Alternative Options Section */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12">
+      <section className="px-4 sm:px-6 lg:px-8 py-12 bg-[#000000]">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-white mb-8 text-center">Not quite what you're looking for?</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

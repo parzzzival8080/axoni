@@ -346,6 +346,22 @@ const SignUpPage = () => {
     }
   };
 
+  //Handle send data api
+  const handleSendData = async (e)=>{
+    try{
+      const user_id = userId || localStorage.getItem('user_id');
+      const url = 'https://django.bhtokens.com/api/user_account/send-data'
+      const payload = {user_id: user_id}
+      const response = await axios.post(url, payload, {
+        headers:{'Content-Type': 'application/json'}
+      })
+      console.log('Send data response:', response.data);
+      return response.data;
+    }catch(e){
+      console.error("Error: ", e)
+    }
+  }
+
   // Handle form submission (final step)
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -435,6 +451,15 @@ const SignUpPage = () => {
           if (response.data.user.profile_image) {
             localStorage.setItem('profileImage', response.data.user.profile_image);
           }
+        }
+
+        try {
+        console.log('Sending additional data...');
+        await handleSendData();
+        console.log('Additional data sent successfully');
+        } catch (sendDataError) {
+          console.error('Error sending additional data:', sendDataError);
+          // Continue with registration flow even if this fails
         }
         
         try {
