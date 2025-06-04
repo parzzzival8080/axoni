@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaMobile, FaDesktop } from 'react-icons/fa';
+import { FaMobile, FaDesktop, FaDownload, FaShieldAlt, FaRocket } from 'react-icons/fa';
 import './DownloadPage.css';
 import DownloadImage1 from '../assets/img/download-img-1.png';
 import DownloadImage2 from '../assets/img/download-img-2-removebg-preview.png';
@@ -39,6 +39,7 @@ const DownloadPage = () => {
       <section className="landing__hero">
         <div className="landing__container">
           <div className="landing__hero-content">
+            <p className="landing__pre-title">Better Trading Experience</p>
             <h1 className="landing__title">
               A new alternative<br />
               to <span className="landing__highlight">your crypto</span><br />
@@ -58,6 +59,20 @@ const DownloadPage = () => {
                 Download Desktop
               </button>
             </div>
+            <div className="landing__features-list">
+              <div className="landing__feature-item">
+                <FaShieldAlt className="landing__feature-icon" />
+                <span>Secure Trading</span>
+              </div>
+              <div className="landing__feature-item">
+                <FaRocket className="landing__feature-icon" />
+                <span>Fast Execution</span>
+              </div>
+              <div className="landing__feature-item">
+                <FaDownload className="landing__feature-icon" />
+                <span>Easy Setup</span>
+              </div>
+            </div>
           </div>
           <div className="landing__hero-image">
             {/* Placeholder for phone mockups */}
@@ -75,7 +90,7 @@ const DownloadPage = () => {
           </div>
           <div className="landing__features-content">
             <h2 className="landing__section-title">One app</h2>
-            <h3 className="landing__section-subtitle">Unlimited possibilities</h3>
+            <h3 className="landing__section-subtitle">Unlimited <span className="landing__highlight">possibilities</span></h3>
             <p className="landing__description">
               Download the TradeX app to trade crypto on the go. Gain access to diverse tokens and trading pairs, advanced market data and more!
             </p>
@@ -88,7 +103,7 @@ const DownloadPage = () => {
         <div className="landing__container">
           <div className="landing__platform-content">
             <h2 className="landing__section-title">Powerful platform</h2>
-            <h3 className="landing__section-subtitle">Trade like a pro</h3>
+            <h3 className="landing__section-subtitle">Trade like a <span className="landing__highlight">pro</span></h3>
             <p className="landing__description">
               Trade crypto like a pro with our crypto trading platform on your desktop. Experience the fastest transactions and our powerful API on Window or MacOS today.
             </p>
@@ -106,7 +121,7 @@ const DownloadPage = () => {
             <div className="landing__footer-brand">
             <div className="landing__logo">
                 <img src={logo} alt="logo" />
-                <h3 className="landing__logo-text">TradeX APP</h3>
+                <h3 className="landing__logo-text">TradeX <span className="landing__highlight">APP</span></h3>
             </div>
             <p className="landing__footer-tagline">Crypto exchange on the go</p>
             </div>
