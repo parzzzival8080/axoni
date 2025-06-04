@@ -214,7 +214,7 @@ const Navbar = () => {
     window.location.href = '/';
   };
 
-  const appDownloadUrl = "https://drive.google.com/file/d/1yNzNw27NxkK-xapsdZnwfXWeWcjF-RVv/view?usp=drive_link";
+  const appDownloadUrl = "https://drive.google.com/file/d/18e68fWr9CRKiRW1GnQq0qujk2UjsiHhk/view?usp=drive_link";
   
   const openComingSoon = () => setIsComingSoonOpen(true);
   const closeComingSoon = () => setIsComingSoonOpen(false);
