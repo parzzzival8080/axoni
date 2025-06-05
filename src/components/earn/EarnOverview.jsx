@@ -128,7 +128,7 @@ const EarnOverview = () => {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Hero Section */}
-      <section className="relative px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+      <section className="relative px-4 sm:px-6 lg:px-8 py-12 lg:py-20 bg-[#000000]">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -155,7 +155,7 @@ const EarnOverview = () => {
       </section>
 
       {/* Earn Options Section */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12">
+      <section className="px-4 sm:px-6 lg:px-8 py-12 bg-[#000000]">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {earnOptions.map((option, index) => (
@@ -174,7 +174,7 @@ const EarnOverview = () => {
       </section>
 
       {/* Products Section */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12">
+      <section className="px-4 sm:px-6 lg:px-8 py-12 bg-[#000000]">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-white mb-8">Products</h2>
         
@@ -326,7 +326,7 @@ const EarnOverview = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12">
+      <section className="px-4 sm:px-6 lg:px-8 py-12 bg-[#000000]">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-white mb-8">FAQ</h2>
           <div className="space-y-4">
