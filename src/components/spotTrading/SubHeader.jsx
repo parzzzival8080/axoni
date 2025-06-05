@@ -12,7 +12,7 @@ import { faFileAlt } from '@fortawesome/free-regular-svg-icons';
 import defaultCoinLogo from '../../assets/coin/btc.webp';
 import './SubHeader.css';
 
-const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loading, error, statsLoading }) => {
+const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loading, error, statsLoading, pricePollingError, isPolling }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -50,6 +50,10 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
     setSearchTerm(''); // Reset search term
     onCoinSelect(coin.coin_pair);
   }, [onCoinSelect]);
+
+  // Defensive: extract live price and price change from cryptoData
+  const livePrice = cryptoData?.price ?? cryptoData?.cryptoPrice ?? 0;
+  const liveChange = cryptoData?.price_change_24h ?? cryptoData?.priceChange24h ?? 0;
 
   // Render skeleton loading items
   const renderSkeletonItems = useCallback(() => {
@@ -360,8 +364,19 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
                 className={priceChange24h >= 0 ? 'text-[#00b574]' : 'text-[#f23645]'} 
                 style={{ fontSize: '24px', fontWeight: '500' }}
               >
-                {formattedPrice}
+                {livePrice?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 8 })}
               </span>
+              {/* Price polling status indicator */}
+              {isPolling && !pricePollingError && (
+                <span style={{marginLeft:8}} title="Live price updating">
+                  <i className="fas fa-sync fa-spin" style={{color:'#aaa', fontSize:'16px'}}></i>
+                </span>
+              )}
+              {pricePollingError && (
+                <span style={{marginLeft:8}} title={pricePollingError}>
+                  <i className="fas fa-exclamation-triangle" style={{color:'#f23645', fontSize:'16px'}}></i>
+                </span>
+              )}
             </div>
           </div>
           <div className="label">
@@ -371,7 +386,7 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
         <div className="stat">
           <div className="value">
             <span className={`text ${priceChange24h >= 0 ? 'text-[#00b574]' : 'text-[#f23645]'}`}> 
-              {priceChange24h >= 0 ? '+' : ''}{priceChange24h?.toFixed(2)}%
+              {liveChange >= 0 ? '+' : ''}{liveChange?.toFixed(2)}%
             </span>
           </div>
           <div className="label">24h change</div>

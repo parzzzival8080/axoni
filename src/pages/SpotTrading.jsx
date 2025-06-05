@@ -46,6 +46,10 @@ const SpotTrading = () => {
 
   // Initialize cryptoData with null - will be set from cache/API data
   const [cryptoData, setCryptoData] = useState(null);
+  // For polling price/price_change_24h
+  const pollingRef = useRef(null);
+  const [pricePollingError, setPricePollingError] = useState(null);
+  const [isPolling, setIsPolling] = useState(false);
   
   // Wrapper function to log setCryptoData calls
   const setCryptoDataWithLog = useCallback((data) => {
@@ -473,11 +477,67 @@ const SpotTrading = () => {
     </>
   ), [mobileTradeTab, cryptoData, userBalance, coinPairId, fetchUserBalance]);
 
+  // Poll for price and price_change_24h every second (optimized)
+  useEffect(() => {
+    if (!cryptoData?.cryptoSymbol) return;
+    let isMounted = true;
+    setIsPolling(true);
+    setPricePollingError(null);
+
+    // Always fetch the freshest price directly from the API (bypass cache)
+    const pollPrice = async () => {
+      try {
+        const response = await fetchAllCoins(true); // forceRefresh=true
+        if (!isMounted) return;
+        if (response.success && Array.isArray(response.coins)) {
+          const coin = response.coins.find(c => c.symbol === cryptoData.cryptoSymbol);
+          if (coin) {
+            const { price, price_change_24h } = coin;
+            setCryptoData(prev => {
+              if (!prev) return prev;
+              if (
+                prev.cryptoPrice !== price ||
+                prev.priceChange24h !== price_change_24h ||
+                prev.price !== price ||
+                prev.price_change_24h !== price_change_24h
+              ) {
+                return {
+                  ...prev,
+                  cryptoPrice: price,
+                  priceChange24h: price_change_24h,
+                  price,
+                  price_change_24h
+                };
+              }
+              return prev;
+            });
+          }
+        } else if (response.message) {
+          setPricePollingError(response.message);
+        }
+      } catch (err) {
+        if (isMounted) setPricePollingError(err?.message || 'Error updating price');
+      }
+    };
+    pollingRef.current = setInterval(pollPrice, 1000);
+    // Initial call for immediate UI update
+    pollPrice();
+    return () => {
+      isMounted = false;
+      setIsPolling(false);
+      setPricePollingError(null);
+      if (pollingRef.current) clearInterval(pollingRef.current);
+    };
+  }, [cryptoData?.cryptoSymbol]);
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (fetchTimeoutRef.current) {
         clearTimeout(fetchTimeoutRef.current);
+      }
+      if (pollingRef.current) {
+        clearInterval(pollingRef.current);
       }
     };
   }, []);
@@ -489,10 +549,12 @@ const SpotTrading = () => {
     return {
       crypto_symbol: cryptoData.crypto_symbol || cryptoData.cryptoSymbol,
       crypto_name: cryptoData.crypto_name || cryptoData.cryptoName,
-      price: cryptoData.price || cryptoData.cryptoPrice,
+      price: cryptoData.price ?? cryptoData.cryptoPrice ?? 0,
+      cryptoPrice: cryptoData.cryptoPrice ?? cryptoData.price ?? 0,
       crypto_logo_path: cryptoData.crypto_logo_path || cryptoData.cryptoLogoPath,
       usdt_symbol: cryptoData.usdt_symbol || cryptoData.usdtSymbol || 'USDT',
-      priceChange24h: cryptoData.priceChange24h || cryptoData.price_change_24h || 0,
+      priceChange24h: cryptoData.priceChange24h ?? cryptoData.price_change_24h ?? 0,
+      price_change_24h: cryptoData.price_change_24h ?? cryptoData.priceChange24h ?? 0,
       '24_high': cryptoData['24_high'],
       '24_low': cryptoData['24_low'],
       volume_24h: cryptoData.volume_24h
@@ -509,6 +571,8 @@ const SpotTrading = () => {
         loading={(loading && !isInitialized.current) || coinsLoading}
         error={error}
         statsLoading={statsLoading}
+        pricePollingError={pricePollingError}
+        isPolling={isPolling}
       />
       <FavoritesBar
         activeCoinPairId={coinPairId}

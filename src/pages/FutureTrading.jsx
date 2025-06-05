@@ -81,6 +81,47 @@ const FutureTrading = () => {
     loadInitialWalletData();
   }, [coinPairId, uid]);
 
+  // --- Real-time polling for live futures price and 24h change ---
+  useEffect(() => {
+    if (!walletData?.symbol) return;
+    let isMounted = true;
+    let pollingRef = { current: null };
+
+    const pollPrice = async () => {
+      try {
+        // Always fetch the freshest tradable coins (bypass cache)
+        const coins = await fetchTradableCoins(true); // forceRefresh=true
+        if (!isMounted || !Array.isArray(coins)) return;
+        const coin = coins.find(c => c.symbol === walletData.symbol);
+        if (coin) {
+          const { price, price_change_24h } = coin;
+          setWalletData(prev => {
+            if (!prev) return prev;
+            if (
+              prev.price !== price ||
+              prev.price_change_24h !== price_change_24h
+            ) {
+              return {
+                ...prev,
+                price,
+                price_change_24h
+              };
+            }
+            return prev;
+          });
+        }
+      } catch (err) {
+        // Optionally handle polling error
+      }
+    };
+    pollingRef.current = setInterval(pollPrice, 1000);
+    pollPrice(); // Initial call
+    return () => {
+      isMounted = false;
+      if (pollingRef.current) clearInterval(pollingRef.current);
+    };
+  }, [walletData?.symbol]);
+
   // Refresh wallet data function, memoized with useCallback
   const refreshWalletData = useCallback(async () => {
     if (!uid) return;
