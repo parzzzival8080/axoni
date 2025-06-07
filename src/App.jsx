@@ -273,7 +273,7 @@ function App() {
                  
                 </>
               } />
-              <Route path="/help/withdrawal/:withdrawGuideSlug" element={
+              <Route path="/help/withdrawal/:withdrawalGuideSlug" element={
                 <>
                   <Navbar />
                   <main>
