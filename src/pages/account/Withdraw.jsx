@@ -968,21 +968,7 @@ function withdraw() { // Using App as the main exportable component name
            )}
 
           {/* Right Column: FAQ & Limits */}
-          <aside className="lg:col-span-1 space-y-6">
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 sticky top-8">
-              <h2 className="text-base font-semibold mb-4 text-gray-900">FAQ</h2>
-              <ul className="space-y-3">
-                {faqQuestions.map((faq) => (
-                  <li key={faq.id}>
-                    <a href={`/help/withdrawal/${faq.slug}`} target="_blank" rel="noopener noreferrer" className="text-sm text-gray-700 hover:text-gray-900 hover:underline">
-                      {faq.question}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            
-          </aside>
+          
          </div>
 
          {/* Right Column: FAQ & Limits */}
