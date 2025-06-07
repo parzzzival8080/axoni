@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './SimpleEarn.css';
 import EarnNavBar from './EarnNavBar';
-import SimpleEarnImg from '../../assets/img/simple-earn-img.png';
+import SimpleEarnImg from '../../assets/assets/Simple Earn Asset.png';
 
 const SimpleEarn = () => {
   const [coins, setCoins] = useState([]);

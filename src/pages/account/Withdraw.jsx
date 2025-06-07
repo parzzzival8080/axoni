@@ -110,12 +110,16 @@ function withdraw() { // Using App as the main exportable component name
   const headerTabs = [
     'Overview', 'Funding', 'Trading', 'Grow', 'Analysis', 'Order center', 'Fees', 'Account statement', 'PoR reports'
   ];
+
   const faqQuestions = [
-    { id: 1, question: "How do I make a withdrawal?" },
-    { id: 2, question: "Why have I still not received my withdrawal?" },
-    { id: 3, question: "How do I select the correct network for my crypto withdrawals and deposits?" },
-    { id: 4, question: "Do I need to pay fees for deposit and withdrawal?" },
+    { id: 1, question: "How do I make a withdrawal?", slug: "how-to-make-withdrawal" },
+    { id: 2, question: "Why have I still not received my withdrawal?", slug: "withdrawal-not-received" },
+    { id: 3, question: "How do I select the correct network for my crypto withdrawals and deposits?", slug: "select-correct-network" },
+    { id: 4, question: "Do I need to pay fees for deposit and withdrawal?", slug: "withdrawal-deposit-fees" },
   ];
+
+  
+
   // Placeholder account options
   const accountOptions = ['Funding', 'Trading'];
   // Placeholder address book entries
@@ -689,7 +693,7 @@ const WithdrawalHistoryTable = () => {
               <ul className="space-y-3">
                 {faqQuestions.map((faq) => (
                   <li key={faq.id}>
-                    <a href="#" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-700 hover:text-gray-900 hover:underline">
+                    <a href={`/help/withdrawal/${faq.slug}`} target="_blank" rel="noopener noreferrer" className="text-sm text-gray-700 hover:text-gray-900 hover:underline">
                       {faq.question}
                     </a>
                   </li>

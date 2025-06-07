@@ -28,7 +28,8 @@ import ChangePassword from './pages/account/ChangePassword';
 import ChangeEmail from './pages/account/ChangeEmail';
 import { CryptoProvider } from './context/CryptoContext';
 import TradingChartWebView from './pages/trading_chartWebView';
-
+import DepositGuide from './components/faq/depositGuide';
+import WithdrawalGuide from './components/faq/withdrawGuide';
 function App() {
   return (
     <CryptoProvider>
@@ -252,7 +253,7 @@ function App() {
                 <ChatBubble />
               </>
             } />
-             <Route path="/help/:articleSlug" element={
+             <Route path="/help/announcements/:articleSlug" element={
                 <>
                   <Navbar />
                   <main>
@@ -260,6 +261,26 @@ function App() {
                   </main>
                   <Footer />
                   <ChatBubble />
+                </>
+              } />
+              <Route path="/help/deposit/:depositGuideSlug" element={
+                <>
+                  <Navbar />
+                  <main>
+                    <DepositGuide />
+                  </main>
+                  <Footer />
+                 
+                </>
+              } />
+              <Route path="/help/withdrawal/:withdrawGuideSlug" element={
+                <>
+                  <Navbar />
+                  <main>
+                    <WithdrawalGuide />
+                  </main>
+                  <Footer />
+                 
                 </>
               } />
             <Route path="/pages/morePages/CampaignCenter" element={

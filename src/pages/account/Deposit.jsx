@@ -92,12 +92,16 @@ function App() { // Renamed to App for standard React export
   const headerTabs = [
     'Overview', 'Funding', 'Trading', 'Grow', 'Analysis', 'Order center', 'Fees', 'Account statement', 'PoR reports'
   ];
+  
   const faqQuestions = [
-    { id: 1, question: "How do I make a deposit?" },
-    { id: 2, question: "Why have I still not received my deposit?" },
-    { id: 3, question: "How do I find my deposit address and tag/memos?" },
-    { id: 4, question: "How to check the deposit progress?" },
+    { id: 1, question: "How do I make a deposit?", slug: "how-to-make-deposit" },
+    { id: 2, question: "Why have I still not received my deposit?", slug: "deposit-not-received" },
+    { id: 3, question: "How do I find my deposit address and tag/memos?", slug: "find-deposit-address-tag-memos" },
+    { id: 4, question: "How to check the deposit progress?", slug: "check-deposit-progress" },
   ];
+
+
+
   // Popular coins for quick selection (based on screenshot)
   const popularCoins = ['USDT', 'BTC', 'ETH', 'PI', 'SOL'];
 
@@ -495,7 +499,7 @@ function App() { // Renamed to App for standard React export
               <ul className="space-y-3">
                 {faqQuestions.map((faq) => (
                   <li key={faq.id}>
-                    <a href="#" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-700 hover:text-gray-900 hover:underline">
+                    <a href={`/help/deposit/${faq.slug}`} target="_blank" rel="noopener noreferrer" className="text-sm text-gray-700 hover:text-gray-900 hover:underline">
                       {faq.question}
                     </a>
                   </li>

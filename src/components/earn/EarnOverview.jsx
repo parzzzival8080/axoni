@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import EarnOverviewImg from '../../assets/img/earn-overview-img.png';
+import EarnOverviewImg from '../../assets/assets/Earn overview asset.png';
 
 const EarnOverview = () => {
   const [selectedProduct, setSelectedProduct] = useState('All products');
