@@ -433,7 +433,7 @@ const Navbar = () => {
               </div>
             </div>
           
-          <div className="nav-item">
+          {/* <div className="nav-item">
             Grow <i className="fas fa-chevron-down"></i>
             <div className='dropdown-menu'>
               <div className="dropdown-section">
@@ -450,7 +450,7 @@ const Navbar = () => {
                 </div>
                 </Link>
                 
-                {/* Sub-items for Earn */}
+                
                 <div className="dropdown-sub-items">
                   <Link to="/earn/simple-earn" className="dropdown-link">
                     <div className="dropdown-sub-item">
@@ -466,7 +466,7 @@ const Navbar = () => {
               
          
             </div>
-        </div>
+        </div> */}
        
 
           <div 
