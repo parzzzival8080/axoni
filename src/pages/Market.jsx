@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import NavigationTabs from '../components/Market/NavigationTabs';
 import SecondaryTabs from '../components/Market/SecondaryTabs';
 import CryptoPriceSection from '../components/Market/CryptoPriceSection';
@@ -14,30 +14,66 @@ const Market = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch coins on mount
+  // --- Caching logic ---
+  const CACHE_KEY = 'market_coins';
+  const CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes
   const isFirstLoad = React.useRef(true);
+  const lastCacheUpdate = useRef(Date.now());
+
+  // Load from cache on mount
+  useEffect(() => {
+    let isMounted = true;
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (cached) {
+      try {
+        const { data, timestamp } = JSON.parse(cached);
+        if (Array.isArray(data) && Date.now() - timestamp < CACHE_EXPIRY) {
+          setCoins(data);
+          setLoading(false);
+        }
+      } catch {}
+    }
+  }, []);
+
+  // Fetch and update coins every second, update only price and 24h change
   useEffect(() => {
     let isMounted = true;
     let intervalId;
     const fetchCoins = async () => {
-      if (isFirstLoad.current) setLoading(true);
       setError(null);
       try {
         const res = await fetch('https://apiv2.bhtokens.com/api/v1/coins?apikey=A20RqFwVktRxxRqrKBtmi6ud');
         const data = await res.json();
         if (!isMounted) return;
-        if (Array.isArray(data)) {
-          setCoins(data);
-        } else if (Array.isArray(data.data)) {
-          setCoins(data.data);
-        } else {
-          setCoins([]);
+        let newCoins = Array.isArray(data) ? data : Array.isArray(data.data) ? data.data : [];
+        setCoins(prev => {
+          // If prev is empty or first load, just set
+          if (!prev || prev.length === 0 || isFirstLoad.current) {
+            isFirstLoad.current = false;
+            return newCoins;
+          }
+          // Otherwise, update only price and 24h change
+          return prev.map(oldCoin => {
+            const fresh = newCoins.find(c => c.coin_pair === oldCoin.coin_pair);
+            if (fresh) {
+              return {
+                ...oldCoin,
+                price: fresh.price,
+                price_change_24h: fresh.price_change_24h
+              };
+            }
+            return oldCoin;
+          });
+        });
+        // Every 5 minutes, update cache
+        if (Date.now() - lastCacheUpdate.current > CACHE_EXPIRY) {
+          localStorage.setItem(CACHE_KEY, JSON.stringify({ data: newCoins, timestamp: Date.now() }));
+          lastCacheUpdate.current = Date.now();
         }
-        if (isFirstLoad.current) isFirstLoad.current = false;
       } catch (err) {
         if (isMounted) setError('Failed to fetch coin data.');
       } finally {
-        if (isMounted) setLoading(false);
+        setLoading(false);
       }
     };
     fetchCoins();
@@ -58,6 +94,8 @@ const Market = () => {
   const navigate = (url) => {
     window.location.href = url;
   };
+
+
 
   return (
     <div className="w-full min-h-screen bg-gray-900 text-white pb-16">
@@ -127,7 +165,13 @@ const Market = () => {
                   <td className="text-center px-4">
                     <button
                       className="text-orange-500 text-xs font-semibold hover:text-orange-400 transition-colors px-3 py-1 rounded-full bg-white/5 border border-orange-500/20 shadow-sm mr-2"
-                      onClick={() => navigate('/spot-trading')}
+                      onClick={() => {
+  if (coin.coin_pair) {
+    navigate(`/spot-trading?coin_pair_id=${coin.coin_pair}`);
+  } else {
+    alert('Trading pair ID not found for this coin.');
+  }
+}}
                     >
                       Trade
                     </button>

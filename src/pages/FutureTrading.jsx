@@ -247,10 +247,8 @@ const FutureTrading = () => {
     );
   };
   
-  // Error state
-  if (error && !walletData) {
-    return <div className="error-message">{error}</div>;
-  }
+  // Optionally: show a non-blocking inline warning (never block the UI)
+  // Example: {error && !walletData && <div className="inline-warning">{error}</div>}
 
   return (
     <div className="future-trading-container">
