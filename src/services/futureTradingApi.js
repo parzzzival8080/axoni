@@ -9,20 +9,22 @@ const TRADABLE_COINS_CACHE_EXPIRY = 15 * 60 * 1000; // 15 minutes
  * Fetch all available tradable coins
  * @returns {Promise<Array>} List of available coins with trading information
  */
-export const fetchTradableCoins = async () => {
-  // Check cache first
-  try {
-    const cachedData = localStorage.getItem(TRADABLE_COINS_CACHE_KEY);
-    if (cachedData) {
-      const { timestamp, data } = JSON.parse(cachedData);
-      if (Date.now() - timestamp < TRADABLE_COINS_CACHE_EXPIRY) {
-        console.log('Returning cached tradable coins (futures)');
-        return data;
+export const fetchTradableCoins = async (forceRefresh = false) => {
+  if (!forceRefresh) {
+    // Check cache first
+    try {
+      const cachedData = localStorage.getItem(TRADABLE_COINS_CACHE_KEY);
+      if (cachedData) {
+        const { timestamp, data } = JSON.parse(cachedData);
+        if (Date.now() - timestamp < TRADABLE_COINS_CACHE_EXPIRY) {
+          console.log('Returning cached tradable coins (futures)');
+          return data;
+        }
       }
+    } catch (error) {
+      console.error('Error reading tradable coins from cache (futures):', error);
+      // Proceed to fetch from API if cache read fails
     }
-  } catch (error) {
-    console.error('Error reading tradable coins from cache (futures):', error);
-    // Proceed to fetch from API if cache read fails
   }
 
   try {

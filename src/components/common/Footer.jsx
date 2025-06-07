@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { FaGlobe, FaChevronDown, FaChevronUp, FaTwitter, FaTiktok, FaInstagram, FaDiscord, FaTelegram, FaFacebook, FaYoutube, FaLinkedin, FaEllipsisH } from 'react-icons/fa';
 import Logo from '../../assets/logo/logo.png';
 import {QRCodeSVG} from 'qrcode.react';
@@ -37,9 +38,9 @@ const Footer = () => {
   const sectionTitles = [
     "More about FLUX",
     "Products",
-    "Services",
-    "Support",
-    "Crypto calculator",
+    "Markets",
+    "Account",
+    "Resources",
     "Trade"
   ];
 
@@ -51,7 +52,7 @@ const Footer = () => {
           <div className="logo-container">
             <img src={Logo} alt="tradex-logo" className="h-12 w-auto object-contain" />
           </div>
-          <p className="copyright">©2025 FLUX.COM</p>
+          <p className="copyright">©2025 FLUX.COM | All Rights Reserved</p>
         </div>
         
         {/* Language Selector */}
@@ -70,9 +71,8 @@ const Footer = () => {
                 {sectionTitles[0]}
               </h3>
               <ul className={`column-links ${activeSections.includes(0) ? 'active' : ''}`}>
-                <li><a href="#about">About us</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="#terms">Terms of service</a></li>
+                <li><Link to="/about-us">About us</Link></li>
+                <li><Link to="/download">Download App</Link></li>
               </ul>
             </div>
             
@@ -85,16 +85,12 @@ const Footer = () => {
                 {sectionTitles[1]}
               </h3>
               <ul className={`column-links ${activeSections.includes(1) ? 'active' : ''}`}>
-                <li><a href="#buy-crypto">Buy crypto</a></li>
-                <li><a href="#p2p-trading">P2P trading</a></li>
-                <li><a href="#convert">Convert</a></li>
-                <li><a href="#trade">Trade</a></li>
-                <li><a href="#earn">Earn</a></li>
-                <li><a href="#oktc">OKTC</a></li>
-                <li><a href="#trading-bots">Trading bots</a></li>
-                <li><a href="#all-cryptocurrencies">All cryptocurrencies</a></li>
-                <li><a href="#learn">Learn</a></li>
-                <li><a href="#tradingview">TradingView</a></li>
+                <li><Link to="/conversion">Convert</Link></li>
+                <li><Link to="/spot-trading">Spot Trading</Link></li>
+                <li><Link to="/future-trading">Future Trading</Link></li>
+                <li><Link to="/earn">Earn</Link></li>
+                <li><Link to="/market">Markets</Link></li>
+                <li><Link to="/assets">Assets</Link></li>
               </ul>
             </div>
             
@@ -189,17 +185,8 @@ const Footer = () => {
             <div className="footer-column">
               <h3 className="column-title">More about FLUX</h3>
               <ul className="column-links">
-                <li><a href="#about">About us</a></li>
-                <li><a href="#privacy">Candidate privacy notice</a></li>
-                <li><a href="#careers">Careers</a></li>
-                <li><a href="#contact">Contact us</a></li>
-                <li><a href="#terms">Terms of service</a></li>
-                <li><a href="#privacy-notice">Privacy notice</a></li>
-                <li><a href="#disclosures">Disclosures</a></li>
-                <li><a href="#whistleblower">Whistleblower notice</a></li>
-                <li><a href="#law">Law enforcement</a></li>
-                <li><a href="#app">FLUX app</a></li>
-                <li><a href="#okx-tr">FLUX TR</a></li>
+                <li><Link to="/about-us">About us</Link></li>
+                <li><Link to="/download">Download App</Link></li>
               </ul>
             </div>
             
@@ -207,36 +194,34 @@ const Footer = () => {
             <div className="footer-column">
               <h3 className="column-title">Products</h3>
               <ul className="column-links">
-                <li><a href="#spot">Spot trading</a></li>
-                <li><a href="#futures">Futures trading</a></li>
+                <li><Link to="/spot-trading">Spot Trading</Link></li>
+                <li><Link to="/future-trading">Futures Trading</Link></li>
+                <li><Link to="/conversion">Conversion</Link></li>
+                <li><Link to="/earn">Earn</Link></li>
               </ul>
             </div>
             
             {/* Services */}
             <div className="footer-column">
-              <h3 className="column-title">Services</h3>
+              <h3 className="column-title">Markets</h3>
               <ul className="column-links">
-                <li><a href="#affiliate">Affiliate</a></li>
-                <li><a href="#v5-api">V5 API</a></li>
-                <li><a href="#historical-data">Historical market data</a></li>
-                <li><a href="#fee-schedule">CEX fee schedule</a></li>
-                <li><a href="#listing">Listing application</a></li>
-                <li><a href="#p2p-merchant">P2P Merchant application</a></li>
+                <li><Link to="/market">Market Overview</Link></li>
+                <li><Link to="/assets">Assets</Link></li>
               </ul>
               
-              <h3 className="column-title support-title">Support</h3>
+              <h3 className="column-title support-title">Account</h3>
               <ul className="column-links">
-                <li><a href="#support-center">Support center</a></li>
-                <li><a href="#announcements">Announcements</a></li>
+                <li><Link to="/signup">Sign Up</Link></li>
+                <li><Link to="/login">Login</Link></li>
               </ul>
             </div>
             
             {/* Crypto calculator */}
             <div className="footer-column">
-              <h3 className="column-title">Crypto calculator</h3>
+              <h3 className="column-title">Resources</h3>
               <ul className="column-links">
-                <li><a href="#btc-usd">BTC to USD</a></li>
-                <li><a href="#eth-usd">ETH to USD</a></li>
+                <li><Link to="/about-us">About Us</Link></li>
+                <li><Link to="/download">Download App</Link></li>
               </ul>
             </div>
             
@@ -244,8 +229,8 @@ const Footer = () => {
             <div className="footer-column">
               <h3 className="column-title">Trade</h3>
               <ul className="column-links">
-                <li><a href="#btc-usdt">BTC USDT</a></li>
-                <li><a href="#eth-usdt">ETH USDT</a></li>
+                <li><Link to="/spot-trading">Spot Trading</Link></li>
+                <li><Link to="/future-trading">Futures Trading</Link></li>
               </ul>
             </div>
             

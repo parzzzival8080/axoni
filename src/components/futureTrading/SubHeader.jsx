@@ -83,21 +83,27 @@ const SubHeader = ({ cryptoData, coinPairId, tradableCoins }) => {
   
   if (isLoading) {
     return (
-      <div className="sub-header flex flex-col md:flex-row items-center justify-center p-4 bg-okx-primary border-b border-okx-border">
-        <div className="w-full max-w-md">
-          <div className="flex items-center mb-4">
-            <div className="w-8 h-8 rounded-full bg-okx-secondary animate-pulse-slow mr-3"></div>
-            <div className="h-5 w-28 bg-okx-secondary rounded animate-pulse-slow"></div>
-            <div className="ml-auto h-6 w-16 bg-okx-secondary rounded animate-pulse-slow"></div>
-          </div>
-          <div className="flex overflow-x-auto pb-2 gap-4 scrollbar-hide">
-            {Array(5).fill(0).map((_, i) => (
-              <div key={i} className="flex-shrink-0 w-20">
-                <div className="h-4 w-16 bg-okx-secondary rounded mb-2 animate-pulse-slow"></div>
-                <div className="h-3 w-12 bg-okx-secondary rounded animate-pulse-slow"></div>
-              </div>
-            ))}
-          </div>
+      <div className="sub-header flex flex-col md:flex-row items-center md:items-stretch justify-center md:justify-between p-4 bg-okx-primary border-b border-okx-border w-full">
+        {/* Left: Coin info skeleton */}
+        <div className="flex items-center mb-4 md:mb-0 md:mr-8">
+          <div className="w-8 h-8 rounded-full bg-okx-secondary animate-pulse-slow mr-3"></div>
+          <div className="h-5 w-28 bg-okx-secondary rounded animate-pulse-slow"></div>
+          <div className="ml-4 h-6 w-16 bg-okx-secondary rounded animate-pulse-slow"></div>
+        </div>
+        {/* Center: Price stats skeletons */}
+        <div className="flex flex-1 justify-center gap-5 md:gap-8 w-full max-w-3xl">
+          {Array(5).fill(0).map((_, i) => (
+            <div key={i} className="flex flex-col items-center w-20 md:w-28">
+              <div className="h-4 w-16 md:w-20 bg-okx-secondary rounded mb-2 animate-pulse-slow"></div>
+              <div className="h-3 w-12 md:w-16 bg-okx-secondary rounded animate-pulse-slow"></div>
+            </div>
+          ))}
+        </div>
+        {/* Right: Actions skeleton */}
+        <div className="flex items-center gap-2 ml-4">
+          <div className="w-20 h-8 bg-okx-secondary rounded animate-pulse-slow"></div>
+          <div className="w-20 h-8 bg-okx-secondary rounded animate-pulse-slow"></div>
+          <div className="w-8 h-8 bg-okx-secondary rounded animate-pulse-slow"></div>
         </div>
       </div>
     );

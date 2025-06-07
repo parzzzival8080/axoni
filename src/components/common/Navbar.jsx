@@ -58,6 +58,7 @@ const mobileMenuItems = [
     hasDropdown: true,
     subItems: [
       { name: 'Markets', path: '/market' },
+      { name: 'About Us', path: '/about-us' },
     ]
   },
   { 
@@ -75,6 +76,11 @@ const mobileMenuItems = [
       },
       // TODO: Add Loan, Jumpstart if they are primary desktop Grow items
     ]
+  },
+  {
+    name: 'Download App',
+    path: '/download',
+    hasDropdown: false
   },
 ];
 
@@ -399,7 +405,31 @@ const Navbar = () => {
                   </div>
                 </Link>
                 
-               
+                <Link to="/about-us" className="dropdown-link">
+                  <div className="dropdown-item with-arrow">
+                      <div className="dropdown-icon">
+                        <i className="fas fa-info-circle"></i>
+                      </div>
+                      <div className="dropdown-content">
+                        <h3>About Us</h3>
+                        <p>Learn more about FLUX and our mission</p>
+                      </div>
+                      <i className="fas fa-chevron-right"></i>
+                  </div>
+                </Link>
+
+                <Link to="/download" className="dropdown-link">
+                  <div className="dropdown-item with-arrow">
+                      <div className="dropdown-icon">
+                        <i className="fas fa-download"></i>
+                      </div>
+                      <div className="dropdown-content">
+                        <h3>Download App</h3>
+                        <p>Get the FLUX app for desktop and mobile</p>
+                      </div>
+                      <i className="fas fa-chevron-right"></i>
+                  </div>
+                </Link>
               </div>
             </div>
           
@@ -929,9 +959,9 @@ const Navbar = () => {
               ))}
             </div>
             <div className="mobile-menu-footer">
-              <a href="/download" className="footer-download-button">
+              <Link to="/download" className="footer-download-button">
                 Download Flux app
-              </a>
+              </Link>
             </div>
           </div>
         </div>

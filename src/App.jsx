@@ -18,6 +18,7 @@ import Overview from './pages/account/Overview';
 import Profile from './pages/account/Profile';
 import Market from './pages/Market';
 import DownloadPage from './pages/DownloadPage';
+import AboutUs from './pages/AboutUs';
 import Announcement from './pages/supportCenter/announcement/Announcement';
 import Article from './pages/supportCenter/announcement/Article';
 import Deposit from './pages/account/Deposit';
@@ -239,6 +240,15 @@ function App() {
                 <Navbar />
                 <main>
                   <DownloadPage/>
+                </main>
+                <Footer />
+              </>
+            } />
+            <Route path="/about-us" element={
+              <>
+                <Navbar />
+                <main>
+                  <AboutUs/>
                 </main>
                 <Footer />
               </>

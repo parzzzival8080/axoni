@@ -29,12 +29,15 @@ const TradeForm = ({ cryptoData, userBalance, coinPairId, onTradeSuccess, isBuy 
     setUid(localStorage.getItem('uid') || '');
   }, []);
 
-  // Update price when cryptoData changes
+  // Update price when cryptoData changes (defensive: use price or cryptoPrice)
   useEffect(() => {
-    if (cryptoData && cryptoData.cryptoPrice) {
-      setPrice(parseFloat(cryptoData.cryptoPrice));
+    if (cryptoData) {
+      const livePrice = cryptoData.price ?? cryptoData.cryptoPrice;
+      if (livePrice !== undefined && livePrice !== null && !isNaN(Number(livePrice))) {
+        setPrice(parseFloat(livePrice));
+      }
     }
-  }, [cryptoData]);
+  }, [cryptoData?.price, cryptoData?.cryptoPrice]);
 
   // Format price for display
   const formatPrice = (value) => {
