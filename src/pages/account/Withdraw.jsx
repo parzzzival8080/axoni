@@ -978,7 +978,7 @@ function withdraw() { // Using App as the main exportable component name
              <ul className="space-y-3">
                {faqQuestions.map((faq) => (
                  <li key={faq.id}>
-                   <a href="#" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-700 hover:text-gray-900 hover:underline">
+                   <a href={`/help/withdrawal/${faq.slug}`} target="_blank" rel="noopener noreferrer" className="text-sm text-gray-700 hover:text-gray-900 hover:underline">
                      {faq.question}
                    </a>
                  </li>

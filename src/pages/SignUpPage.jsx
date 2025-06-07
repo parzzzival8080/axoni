@@ -546,7 +546,7 @@ const SignUpPage = () => {
         if (isVerified) {
           navigate('/spot-trading');
         } else {
-          navigate('/');
+          navigate('/get-started');
         }
       } else {
         setError(response.data.message || 'Failed to update profile. Please try again.');
