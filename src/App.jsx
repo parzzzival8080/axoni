@@ -31,6 +31,7 @@ import { CryptoProvider } from './context/CryptoContext';
 import TradingChartWebView from './pages/trading_chartWebView';
 import DepositGuide from './components/faq/depositGuide';
 import WithdrawalGuide from './components/faq/withdrawGuide';
+import GetStarted from './components/common/GetStarted';
 function App() {
   return (
     <CryptoProvider>
@@ -261,6 +262,15 @@ function App() {
                 </main>
                 <Footer />
                 <ChatBubble />
+              </>
+            } />
+            <Route path="/get-started" element={
+              <>
+                <Navbar />
+                <main>
+                  <GetStarted/>
+                </main>
+                <Footer />
               </>
             } />
              <Route path="/help/announcements/:articleSlug" element={
