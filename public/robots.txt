@@ -1,3 +1,11 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
+Allow: /
+
+# Disallow sensitive or admin paths if any (uncomment as needed)
+# Disallow: /admin/
+# Disallow: /private/
+
+Sitemap: https://fluxcoin.tech/sitemap.xml
+er-agent: *
 Disallow:
