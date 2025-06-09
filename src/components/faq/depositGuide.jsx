@@ -354,61 +354,61 @@ const DepositGuide = () => {
   };
 
   // Share functionality
-  const handleShare = async (platform) => {
-    const url = window.location.href;
-    const title = article.title;
-    const text = `Check out this helpful guide: ${title}`;
+  // const handleShare = async (platform) => {
+  //   const url = window.location.href;
+  //   const title = article.title;
+  //   const text = `Check out this helpful guide: ${title}`;
 
-    switch (platform) {
-      case 'native':
-        if (navigator.share) {
-          try {
-            await navigator.share({
-              title: title,
-              text: text,
-              url: url
-            });
-          } catch (err) {
-            // Fallback to copy URL
-            await copyToClipboard(url);
-          }
-        } else {
-          await copyToClipboard(url);
-        }
-        break;
-      case 'facebook':
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank', 'width=600,height=400');
-        break;
-      case 'linkedin':
-        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank', 'width=600,height=400');
-        break;
-      case 'twitter':
-        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank', 'width=600,height=400');
-        break;
-      case 'copy':
-        await copyToClipboard(url);
-        break;
-      default:
-        await copyToClipboard(url);
-    }
-  };
+  //   switch (platform) {
+  //     case 'native':
+  //       if (navigator.share) {
+  //         try {
+  //           await navigator.share({
+  //             title: title,
+  //             text: text,
+  //             url: url
+  //           });
+  //         } catch (err) {
+  //           // Fallback to copy URL
+  //           await copyToClipboard(url);
+  //         }
+  //       } else {
+  //         await copyToClipboard(url);
+  //       }
+  //       break;
+  //     case 'facebook':
+  //       window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank', 'width=600,height=400');
+  //       break;
+  //     case 'linkedin':
+  //       window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank', 'width=600,height=400');
+  //       break;
+  //     case 'twitter':
+  //       window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank', 'width=600,height=400');
+  //       break;
+  //     case 'copy':
+  //       await copyToClipboard(url);
+  //       break;
+  //     default:
+  //       await copyToClipboard(url);
+  //   }
+  // };
 
-  const copyToClipboard = async (text) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      // You could show a toast notification here
-      console.log('Link copied to clipboard');
-    } catch (err) {
-      // Fallback for older browsers
-      const textArea = document.createElement('textarea');
-      textArea.value = text;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-      console.log('Link copied to clipboard (fallback)');
-    }
-  };
+  // const copyToClipboard = async (text) => {
+  //   try {
+  //     await navigator.clipboard.writeText(text);
+  //     // You could show a toast notification here
+  //     console.log('Link copied to clipboard');
+  //   } catch (err) {
+  //     // Fallback for older browsers
+  //     const textArea = document.createElement('textarea');
+  //     textArea.value = text;
+  //     document.body.appendChild(textArea);
+  //     textArea.select();
+  //     document.execCommand('copy');
+  //     document.body.removeChild(textArea);
+  //     console.log('Link copied to clipboard (fallback)');
+  //   }
+  // };
 
   const formatViews = (views) => {
     if (views >= 1000000) {
@@ -470,7 +470,7 @@ const DepositGuide = () => {
           </div>
 
           {/* Social Share */}
-          <div className="flex items-center gap-3">
+          {/* <div className="flex items-center gap-3">
             <span className="text-sm font-medium text-gray-600">Share:</span>
             <div className="flex gap-2">
               <button
@@ -509,7 +509,7 @@ const DepositGuide = () => {
                 <Link2 className="w-4 h-4 text-gray-500 hover:text-gray-700" />
               </button>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 

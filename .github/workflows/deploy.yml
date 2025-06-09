@@ -25,7 +25,9 @@ jobs:
           send "${{ secrets.SSH_PASSWORD }}\r"
           expect "# "
 
-          send "cd .. && cd /var/www/main && git config --system --add safe.directory /var/www/html && git stash && git pull https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_TOKEN }}@github.com//parzzzival8080/tx-web.git ${{ env.GIT_BRANCH }}  && npm install && npm run build && echo '<IfModule mod_negotiation.c>\n  Options -MultiViews\n</IfModule>\n<IfModule mod_rewrite.c>\n  RewriteEngine On\n  RewriteBase /\n  RewriteRule ^index\\.html$ - \\[L\\]\n  RewriteCond %{REQUEST_FILENAME} !-f\n  RewriteCond %{REQUEST_FILENAME} !-d\n  RewriteRule . /index.html \\[L\\]\n</IfModule>' > dist/.htaccess \r"
+          send "cd .. && cd /var/www/html && git config --system --add safe.directory /var/www/html && git stash && git pull https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_TOKEN }}@github.com//parzzzival8080/tx-web.git ${{ env.GIT_BRANCH }}  && npm install && npm run build \r"
+          expect "# "
+          send "echo '<IfModule mod_negotiation.c>\n  Options -MultiViews\n</IfModule>\n<IfModule mod_rewrite.c>\n  RewriteEngine On\n  RewriteBase /\n  RewriteRule ^index\\.html$ - \\[L\\]\n  RewriteCond %{REQUEST_FILENAME} !-f\n  RewriteCond %{REQUEST_FILENAME} !-d\n  RewriteRule . /index.html \\[L\\]\n</IfModule>' > dist/.htaccess \r"
           expect "# "
           send "exit\r"
           expect eof
