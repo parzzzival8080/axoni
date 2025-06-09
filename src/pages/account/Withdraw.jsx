@@ -103,6 +103,7 @@ function withdraw() { // Using App as the main exportable component name
   const [submitSuccess, setSubmitSuccess] = useState(false); // Success state for withdrawal
   const [availableLimit] = useState(9999200.06); // Placeholder 24h limit
   const [isAddressBookOpen, setIsAddressBookOpen] = useState(false); // For address book modal
+  const [isSendingOtp, setIsSendingOtp] = useState(false); // Loading state for OTP sending
 
   // --- OTP State Variables ---
   const [showOtpStep, setShowOtpStep] = useState(false); // Controls whether to show OTP step
@@ -318,37 +319,100 @@ function withdraw() { // Using App as the main exportable component name
   }, [networkOptions]);
 
   // Handle proceeding to OTP step
-  const handleProceedToOtp = useCallback(() => {
+  const handleProceedToOtp = useCallback(async () => {
+    console.log('handleProceedToOtp called - starting validation');
+    
     // Basic Validation
     if (!selectedCryptoSymbol || !selectedNetwork || !withdrawalAddress || !withdrawalAmount) {
+      console.log('Validation failed: missing required fields');
       setSubmitError("Please complete all required fields.");
       return;
     }
     const amountNum = parseFloat(withdrawalAmount);
     if (isNaN(amountNum) || amountNum <= 0) {
+      console.log('Validation failed: invalid amount');
       setSubmitError("Please enter a valid withdrawal amount.");
       return;
     }
     if (amountNum < networkFee) {
+      console.log('Validation failed: amount less than network fee');
       setSubmitError(`Withdrawal amount must be greater than the network fee (${networkFee} ${selectedCryptoSymbol}).`);
       return;
     }
     if (amountNum > availableBalance) {
+      console.log('Validation failed: insufficient balance');
       setSubmitError("Insufficient balance.");
       return;
     }
 
-    // Clear any previous errors and proceed to OTP
-    setSubmitError(null);
-    setSubmitSuccess(false);
-    setShowOtpStep(true);
-    setOtpTimer(60); // Start 60-second countdown for resend
-    setCanResendOtp(false);
-    setOtpError(null);
-    setOtpCode('');
-    
-    // TODO: Here you would typically call an API to send OTP to user's email/phone
-    console.log('Sending OTP to user...');
+    console.log('Validation passed, proceeding with OTP send');
+
+    setIsSendingOtp(true); // Start loading state
+    setSubmitError(null); // Clear previous errors
+
+    try {
+      const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
+      const uid = localStorage.getItem('uid');
+      if (!uid) {
+        console.log('Error: UID not found in localStorage');
+        throw new Error('User ID not found. Please log in again.');
+      }
+
+      console.log('Sending OTP request with UID:', uid);
+      // Send OTP first
+      const response = await axios({
+        method: 'post',
+        url: `https://apiv2.bhtokens.com/api/v1/send-otp`,
+        params: {
+          apikey: apiKey
+        },
+        data: {
+          uid: uid
+        },
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      console.log('OTP API Response:', response.data);
+
+      // Handle the specific API response format
+      if (response.data.status === 400 || response.data.error) {
+        let errorMessage = 'Failed to send verification code.';
+        
+        if (response.data.error === "Failed to send email.") {
+          errorMessage = 'Failed to send verification code to your email. Please check your email address and try again.';
+        } else if (response.data.data && response.data.data.Messages && response.data.data.Messages.length > 0) {
+          const messageStatus = response.data.data.Messages[0].Status;
+          if (messageStatus === 'error') {
+            errorMessage = 'Email service error. Please contact support or try again later.';
+          }
+        } else if (response.data.error) {
+          errorMessage = response.data.error;
+        }
+        
+        throw new Error(errorMessage);
+      }
+
+      if (!response.data.success && response.data.status !== 200) {
+        throw new Error(response.data.message || 'Failed to send OTP');
+      }
+
+      // Only proceed to OTP step if OTP was sent successfully
+      setSubmitSuccess(false);
+      setShowOtpStep(true);
+      setOtpTimer(60); // Start 60-second countdown for resend
+      setCanResendOtp(false);
+      setOtpError(null);
+      setOtpCode('');
+      
+      console.log('OTP sent successfully, showing OTP step');
+    } catch (error) {
+      console.error('Error sending OTP:', error);
+      setSubmitError(error.message || 'Failed to send verification code. Please try again.');
+    } finally {
+      setIsSendingOtp(false); // Stop loading state
+    }
   }, [
     selectedCryptoSymbol, selectedNetwork, withdrawalAddress, withdrawalAmount,
     availableBalance, networkFee
@@ -405,12 +469,50 @@ function withdraw() { // Using App as the main exportable component name
     setOtpCode(''); // Clear current OTP
 
     try {
-      // TODO: Replace with actual resend OTP API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      console.log('Resending OTP...');
+      const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
+      const uid = localStorage.getItem('uid');
+      if (!uid) {
+        throw new Error('User ID not found');
+      }
+
+      console.log('Resending OTP request...');
+      const response = await axios({
+        method: 'post',
+        url: `https://apiv2.bhtokens.com/api/v1/send-otp`,
+        params: {
+          apikey: apiKey
+        },
+        data: {
+          uid: uid
+        },
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      console.log('OTP Resend API Response:', response.data);
+
+      // Handle the specific API response format for resend
+      if (response.data.status === 400 || response.data.error) {
+        let errorMessage = 'Failed to resend verification code.';
+        
+        if (response.data.error === "Failed to send email.") {
+          errorMessage = 'Failed to resend verification code to your email. Please try again later.';
+        } else if (response.data.error) {
+          errorMessage = response.data.error;
+        }
+        
+        throw new Error(errorMessage);
+      }
+
+      if (!response.data.success && response.data.status !== 200) {
+        throw new Error(response.data.message || 'Failed to resend OTP');
+      }
+
+      console.log('OTP resent successfully');
     } catch (error) {
       console.error('Error resending OTP:', error);
-      setOtpError('Failed to resend verification code. Please try again.');
+      setOtpError(error.message || 'Failed to resend verification code. Please try again.');
       setCanResendOtp(true);
     }
   }, [canResendOtp]);
@@ -435,15 +537,15 @@ function withdraw() { // Using App as the main exportable component name
     const wallet_id = selectedCoinDetails?.balance?.id;
     const initial_amount = parseFloat(withdrawalAmount);
     const network_id = selectedNetwork?.id;
-    const apiUrl = `https://apiv2.bhtokens.com/api/v1/submit-withdrawal?wallet_id=${wallet_id}&initial_amount=${initial_amount}&apikey=${apiKey}&network_id=${network_id}`;
+    const apiUrl = `https://apiv2.bhtokens.com/api/v1/submit-withdrawal?wallet_id=${wallet_id}&initial_amount=${initial_amount}&apikey=${apiKey}&network_id=${network_id}&otp=${otpCode}`;
 
-    console.log("Submitting withdrawal with:", { wallet_id, initial_amount, network_id, apiKey });
+    console.log("Submitting withdrawal with:", { wallet_id, initial_amount, network_id, apiKey, otp: otpCode });
 
     try {
         // Use POST as required by backend
         const response = await axios.post(
           apiUrl,
-          {}, // If your backend expects data in the body, put it here; otherwise, keep it empty
+          {}, // Empty body as parameters are in URL
           { headers: { 'Content-Type': 'application/json' } }
         );
         const result = response.data;
@@ -452,13 +554,13 @@ function withdraw() { // Using App as the main exportable component name
         setShowOtpStep(false); // Hide OTP step on success
     } catch (err) {
         console.error('Withdrawal submission error:', err);
-        setSubmitError(err.message || 'An unexpected error occurred during withdrawal.');
+        setSubmitError(err.response?.data?.message || err.message || 'An unexpected error occurred during withdrawal.');
     } finally {
         setIsSubmitting(false);
     }
   }, [
       selectedCryptoSymbol, selectedNetwork, withdrawalAddress, withdrawalAmount,
-      comment, availableBalance, networkFee, selectedCoinDetails
+      comment, availableBalance, networkFee, selectedCoinDetails, otpCode
   ]);
 
   // --- Withdrawal History Table Component ---
@@ -847,10 +949,10 @@ function withdraw() { // Using App as the main exportable component name
                   {!showOtpStep && (
                     <button
                         onClick={handleProceedToOtp}
-                        disabled={isSubmitting || !withdrawalAmount || parseFloat(withdrawalAmount) <= 0 || parseFloat(withdrawalAmount) > availableBalance || parseFloat(withdrawalAmount) < networkFee}
+                        disabled={isSubmitting || isSendingOtp || !withdrawalAmount || parseFloat(withdrawalAmount) <= 0 || parseFloat(withdrawalAmount) > availableBalance || parseFloat(withdrawalAmount) < networkFee}
                         className="w-full h-11 flex items-center justify-center px-4 py-2 bg-[#F88726] text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F88726] hover:bg-[#ff9c44] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
-                        {isSubmitting ? <Spinner /> : 'Next'}
+                        {(isSubmitting || isSendingOtp) ? <Spinner /> : 'Next'}
                     </button>
                   )}
 

@@ -33,7 +33,7 @@ import DepositGuide from './components/faq/depositGuide';
 import WithdrawalGuide from './components/faq/withdrawGuide';
 import GetStarted from './components/common/GetStarted';
 import TermsAndConditions from './components/common/footerContent/TermsAndConditions';
-import PrivacyPolicy from './components/common/footerContent/PrivacyPolicy';
+import PrivacyPolicy from './components/common/footerContent/PolicyContent';
 
 function App() {
   return (
