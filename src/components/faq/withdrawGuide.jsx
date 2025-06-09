@@ -518,7 +518,7 @@ const WithdrawalGuide = () => {
           </div>
 
           {/* Social Share */}
-          <div className="flex items-center gap-3">
+          {/* <div className="flex items-center gap-3">
             <span className="text-sm font-medium text-gray-600">Share:</span>
             <div className="flex gap-2">
               <button
@@ -557,7 +557,7 @@ const WithdrawalGuide = () => {
                 <Link2 className="w-4 h-4 text-gray-500 hover:text-gray-700" />
               </button>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 

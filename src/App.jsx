@@ -32,6 +32,9 @@ import TradingChartWebView from './pages/trading_chartWebView';
 import DepositGuide from './components/faq/depositGuide';
 import WithdrawalGuide from './components/faq/withdrawGuide';
 import GetStarted from './components/common/GetStarted';
+import TermsAndConditions from './components/common/footerContent/TermsAndConditions';
+import PrivacyPolicy from './components/common/footerContent/PrivacyPolicy';
+
 function App() {
   return (
     <CryptoProvider>
@@ -269,6 +272,24 @@ function App() {
                 <Navbar />
                 <main>
                   <GetStarted/>
+                </main>
+                <Footer />
+              </>
+            } />
+             <Route path="/terms-condtions" element={
+              <>
+                <Navbar />
+                <main>
+                  <TermsAndConditions/>
+                </main>
+                <Footer />
+              </>
+            } />
+              <Route path="/privacy-policy" element={
+              <>
+                <Navbar />
+                <main>
+                  <PrivacyPolicy/>
                 </main>
                 <Footer />
               </>
