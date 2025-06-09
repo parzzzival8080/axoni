@@ -31,7 +31,7 @@ const Hero = () => {
         Better Liquidity, Better Trading
       </p>
       <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-tight">
-        Global Crypto
+        Global Cryptocurrency
         <br />
         Derivatives Exchange
       </h1>
