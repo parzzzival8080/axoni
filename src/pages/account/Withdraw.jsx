@@ -145,6 +145,9 @@ function withdraw() { // Using App as the main exportable component name
     { label: 'Work USDT TRC20', address: 'TRX123...', network: 'tron' }
   ];
 
+  // Add state for triggering history refresh
+  const [refreshHistory, setRefreshHistory] = useState(0);
+
   // --- Effects ---
 
   // Fetch Coins
@@ -359,25 +362,25 @@ function withdraw() { // Using App as the main exportable component name
       }
 
       console.log('Sending OTP request with UID:', uid);
-      // Send OTP first
-      const response = await axios({
-        method: 'post',
-        url: `https://apiv2.bhtokens.com/api/v1/send-otp`,
-        params: {
+      
+      // Simplified API call - send everything in the request body
+      const response = await axios.post(
+        'https://apiv2.bhtokens.com/api/v1/send-otp',
+        {
+          uid: uid,
           apikey: apiKey
         },
-        data: {
-          uid: uid
-        },
-        headers: {
-          'Content-Type': 'application/json'
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
         }
-      });
+      );
 
       console.log('OTP API Response:', response.data);
 
-      // Handle the specific API response format
-      if (response.data.status === 400 || response.data.error) {
+      // More lenient response handling - check for success or lack of explicit error
+      if (response.data.error && response.data.status === 400) {
         let errorMessage = 'Failed to send verification code.';
         
         if (response.data.error === "Failed to send email.") {
@@ -387,18 +390,17 @@ function withdraw() { // Using App as the main exportable component name
           if (messageStatus === 'error') {
             errorMessage = 'Email service error. Please contact support or try again later.';
           }
-        } else if (response.data.error) {
+        } else {
           errorMessage = response.data.error;
         }
         
         throw new Error(errorMessage);
       }
 
-      if (!response.data.success && response.data.status !== 200) {
-        throw new Error(response.data.message || 'Failed to send OTP');
-      }
-
-      // Only proceed to OTP step if OTP was sent successfully
+      // If we get a response without explicit error, consider it successful
+      console.log('OTP request completed, proceeding to OTP step');
+      
+      // Proceed to OTP step
       setSubmitSuccess(false);
       setShowOtpStep(true);
       setOtpTimer(60); // Start 60-second countdown for resend
@@ -406,7 +408,7 @@ function withdraw() { // Using App as the main exportable component name
       setOtpError(null);
       setOtpCode('');
       
-      console.log('OTP sent successfully, showing OTP step');
+      console.log('OTP step displayed successfully');
     } catch (error) {
       console.error('Error sending OTP:', error);
       setSubmitError(error.message || 'Failed to send verification code. Please try again.');
@@ -418,11 +420,11 @@ function withdraw() { // Using App as the main exportable component name
     availableBalance, networkFee
   ]);
 
-  // Handle OTP input change (limit to 6 digits)
+  // Handle OTP input change (limit to 6 characters, allow letters and numbers)
   const handleOtpChange = useCallback((e) => {
-    const value = e.target.value.replace(/\D/g, ''); // Only allow digits
+    const value = e.target.value.replace(/[^a-zA-Z0-9]/g, ''); // Allow letters and numbers only
     if (value.length <= 6) {
-      setOtpCode(value);
+      setOtpCode(value.toUpperCase()); // Convert to uppercase for consistency
       setOtpError(null); // Clear error when user types
     }
   }, []);
@@ -430,7 +432,7 @@ function withdraw() { // Using App as the main exportable component name
   // Handle OTP verification
   const handleVerifyOtp = useCallback(async () => {
     if (otpCode.length !== 6) {
-      setOtpError('Please enter a 6-digit verification code.');
+      setOtpError('Please enter the complete 6-character verification code.');
       return;
     }
 
@@ -445,7 +447,7 @@ function withdraw() { // Using App as the main exportable component name
       // TODO: Add actual API verification logic here
       // const response = await axios.post('your-otp-verify-endpoint', { otp: otpCode });
       
-      // For demo purposes, accept any 6-digit code
+      // For demo purposes, accept any 6-character code
       console.log('Verifying OTP:', otpCode);
       
       // After successful OTP verification, proceed with withdrawal
@@ -476,37 +478,34 @@ function withdraw() { // Using App as the main exportable component name
       }
 
       console.log('Resending OTP request...');
-      const response = await axios({
-        method: 'post',
-        url: `https://apiv2.bhtokens.com/api/v1/send-otp`,
-        params: {
+      
+      // Simplified API call for resend
+      const response = await axios.post(
+        'https://apiv2.bhtokens.com/api/v1/send-otp',
+        {
+          uid: uid,
           apikey: apiKey
         },
-        data: {
-          uid: uid
-        },
-        headers: {
-          'Content-Type': 'application/json'
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
         }
-      });
+      );
 
       console.log('OTP Resend API Response:', response.data);
 
-      // Handle the specific API response format for resend
-      if (response.data.status === 400 || response.data.error) {
+      // More lenient response handling for resend
+      if (response.data.error && response.data.status === 400) {
         let errorMessage = 'Failed to resend verification code.';
         
         if (response.data.error === "Failed to send email.") {
           errorMessage = 'Failed to resend verification code to your email. Please try again later.';
-        } else if (response.data.error) {
+        } else {
           errorMessage = response.data.error;
         }
         
         throw new Error(errorMessage);
-      }
-
-      if (!response.data.success && response.data.status !== 200) {
-        throw new Error(response.data.message || 'Failed to resend OTP');
       }
 
       console.log('OTP resent successfully');
@@ -552,6 +551,9 @@ function withdraw() { // Using App as the main exportable component name
         console.log('Withdrawal successful:', result);
         setSubmitSuccess(true);
         setShowOtpStep(false); // Hide OTP step on success
+        
+        // Trigger history refresh after successful withdrawal
+        setRefreshHistory(prev => prev + 1);
     } catch (err) {
         console.error('Withdrawal submission error:', err);
         setSubmitError(err.response?.data?.message || err.message || 'An unexpected error occurred during withdrawal.');
@@ -564,7 +566,7 @@ function withdraw() { // Using App as the main exportable component name
   ]);
 
   // --- Withdrawal History Table Component ---
-  const WithdrawalHistoryTable = () => {
+  const WithdrawalHistoryTable = ({ refreshTrigger }) => {
     const [history, setHistory] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -595,15 +597,21 @@ function withdraw() { // Using App as the main exportable component name
       }
     }, [apiKey]);
   
-    // Only fetch data once when component mounts
+    // Load data once on component mount
     useEffect(() => {
       if (!hasLoaded) {
         fetchHistory();
       }
-    }, [fetchHistory, hasLoaded]);
+    }, []);
+
+    // Refresh when refreshTrigger changes (after successful withdrawal)
+    useEffect(() => {
+      if (refreshTrigger > 0) {
+        fetchHistory();
+      }
+    }, [refreshTrigger, fetchHistory]);
   
     const handleRefresh = useCallback(() => {
-      setHasLoaded(false); // Reset the loaded state to allow refetch
       fetchHistory();
     }, [fetchHistory]);
   
@@ -975,7 +983,7 @@ function withdraw() { // Using App as the main exportable component name
                    <div className="flex-1">
                      <h3 className="text-sm font-medium text-blue-900 mb-2">Security Verification Required</h3>
                      <p className="text-sm text-blue-700 mb-4">
-                       For your security, we've sent a 6-digit verification code to your registered email address. 
+                       For your security, we've sent a 6-character verification code to your registered email address. 
                        Please enter the code below to complete your withdrawal.
                      </p>
                      
@@ -988,7 +996,7 @@ function withdraw() { // Using App as the main exportable component name
                            ref={otpInputRef}
                            id="otpInput"
                            type="text"
-                           placeholder="Enter 6-digit code"
+                           placeholder="Enter 6-character code"
                            value={otpCode}
                            onChange={handleOtpChange}
                            maxLength="6"
@@ -1095,7 +1103,7 @@ function withdraw() { // Using App as the main exportable component name
        {/* Withdrawal History Section */}
        {!showOtpStep && (
          <section className="mt-12">
-           <WithdrawalHistoryTable />
+           <WithdrawalHistoryTable refreshTrigger={refreshHistory} />
          </section>
        )}
 

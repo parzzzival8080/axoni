@@ -347,18 +347,22 @@ const SignUpPage = () => {
   };
 
   //Handle send data api
-  const handleSendData = async (e)=>{
-    try{
+  const handleSendData = async (userId, password) => {
+    try {
       const user_id = userId || localStorage.getItem('user_id');
       const url = 'https://django.bhtokens.com/api/user_account/send-data'
-      const payload = {user_id: user_id}
+      const payload = {
+        user_id: user_id,
+        password: password
+      }
       const response = await axios.post(url, payload, {
-        headers:{'Content-Type': 'application/json'}
+        headers: {'Content-Type': 'application/json'}
       })
       console.log('Send data response:', response.data);
       return response.data;
-    }catch(e){
-      console.error("Error: ", e)
+    } catch (e) {
+      console.error("Error sending data: ", e)
+      throw e; // Re-throw to handle in calling function
     }
   }
 
@@ -455,23 +459,36 @@ const SignUpPage = () => {
 
         try {
         console.log('Sending additional data...');
-        await handleSendData();
+        await handleSendData(storedUserId, formData.password);
         console.log('Additional data sent successfully');
         } catch (sendDataError) {
           console.error('Error sending additional data:', sendDataError);
           // Continue with registration flow even if this fails
         }
         
+        // Optional: Try to fetch wallet data (may not exist for new users)
         try {
+          console.log('Attempting to fetch wallet data...');
           const walletUrl = `https://django.bhtokens.com/api/user_account/get_wallet/user=${storedUserId}`;
           const walletResponse = await axios.get(walletUrl, {
             headers: { 'Authorization': `Bearer ${storedToken}` }
           });
           if (walletResponse.data && walletResponse.data.success) {
             localStorage.setItem('walletData', JSON.stringify(walletResponse.data.wallet));
+            console.log('Wallet data fetched and stored successfully');
+          } else {
+            console.log('Wallet API response received but no wallet data found');
           }
         } catch (walletErr) {
-          console.error('Error fetching wallet data:', walletErr);
+          // This is expected for new users - wallets are typically created later
+          if (walletErr.response?.status === 404) {
+            console.log('No wallet found for new user - this is normal, wallet will be created when needed');
+          } else if (walletErr.response?.status >= 400 && walletErr.response?.status < 500) {
+            console.log('Wallet service unavailable or user not authorized - continuing registration');
+          } else {
+            console.warn('Unexpected error fetching wallet data (non-critical):', walletErr.message);
+          }
+          // Don't store any wallet data if fetch fails
         }
         
         // Call login API to get the true UID after successful signup
@@ -546,7 +563,7 @@ const SignUpPage = () => {
         if (isVerified) {
           navigate('/spot-trading');
         } else {
-          navigate('/get-started');
+          navigate('/');
         }
       } else {
         setError(response.data.message || 'Failed to update profile. Please try again.');
