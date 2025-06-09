@@ -188,8 +188,8 @@ const Footer = () => {
               <h3 className="column-title">More about FLUX</h3>
               <ul className="column-links">
                 <li><Link to="/about-us">About us</Link></li>
-                <li><Link to="/terms-condtions">Terms of Use</Link></li>
-                <li><Link to="/privacy-policy">Privacy and Cookie Policy</Link></li>
+                <li><a href="/terms-condtions" onClick={() => window.location.reload()}>Terms of Use</a></li>
+                <li><a href="/privacy-policy" onClick={() => window.location.reload()}>Privacy and Cookie Policy</a></li>
                 <li><Link to="/download">Download App</Link></li>
               </ul>
             </div>
