@@ -571,8 +571,7 @@ function withdraw() { // Using App as the main exportable component name
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [hasLoaded, setHasLoaded] = useState(false); // Track if data has been loaded
-  
-    const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
+    const [lastRefreshTrigger, setLastRefreshTrigger] = useState(0); // Track last processed refresh trigger
   
     const fetchHistory = useCallback(async () => {
       setIsLoading(true);
@@ -584,6 +583,7 @@ function withdraw() { // Using App as the main exportable component name
           setHistory([]);
           return;
         }
+        const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
         const url = `https://apiv2.bhtokens.com/api/v1/transaction-history/${uid}?apikey=${apiKey}&transaction_type=withdraw`;
         const response = await axios.get(url);
         setHistory(Array.isArray(response.data) ? response.data : []);
@@ -595,25 +595,26 @@ function withdraw() { // Using App as the main exportable component name
       } finally {
         setIsLoading(false);
       }
-    }, [apiKey]);
+    }, []); // No dependencies to prevent recreation
   
-    // Load data once on component mount
+    // Load data once on component mount only
     useEffect(() => {
       if (!hasLoaded) {
         fetchHistory();
       }
-    }, []);
+    }, []); // Remove fetchHistory and hasLoaded dependencies
 
-    // Refresh when refreshTrigger changes (after successful withdrawal)
+    // Refresh only when refreshTrigger changes after successful withdrawal
     useEffect(() => {
-      if (refreshTrigger > 0) {
+      if (refreshTrigger > 0 && refreshTrigger !== lastRefreshTrigger && hasLoaded) {
+        setLastRefreshTrigger(refreshTrigger);
         fetchHistory();
       }
-    }, [refreshTrigger, fetchHistory]);
+    }, [refreshTrigger]); // Only refreshTrigger as dependency
   
     const handleRefresh = useCallback(() => {
       fetchHistory();
-    }, [fetchHistory]);
+    }, []); // No dependencies
   
     return (
       <section className="w-full">

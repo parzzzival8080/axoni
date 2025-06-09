@@ -15,6 +15,7 @@ import {
   Loader2
 } from "lucide-react";
 import ProfileNavBar from "../../components/profile/ProfileNavBar";
+import axios from "axios";
 
 // Configuration constants
 const API_CONFIG = {
@@ -121,12 +122,12 @@ const VerifyPage = () => {
 
   /**
    * Fetches the current KYC verification status for the user
-   * @param {string} userId - The user ID to check status for
+   * @param {string} uid - The user UID to check status for
    * @returns {Promise<string>} - Returns the verification status
    */
-  const fetchVerificationStatus = async (userId) => {
+  const fetchVerificationStatus = async (uid) => {
     try {
-      const response = await fetch(`${API_CONFIG.KYC_STATUS_BASE_URL}/${userId}?apikey=${API_CONFIG.API_KEY}`, {
+      const response = await fetch(`${API_CONFIG.KYC_STATUS_BASE_URL}/${uid}?apikey=${API_CONFIG.API_KEY}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -247,19 +248,19 @@ const VerifyPage = () => {
   // Initialize user ID and check verification status on component mount
   useEffect(() => {
     const initializeVerificationCheck = async () => {
-      const storedUserId = localStorage.getItem('user_id');
+      const storedUid = localStorage.getItem('uid');
       
-      if (!storedUserId) {
-        console.error("User ID not found in localStorage");
-        setSubmissionError("User ID not found. Please log in again.");
+      if (!storedUid) {
+        console.error("UID not found in localStorage");
+        setSubmissionError("UID not found. Please log in again.");
         setIsCheckingStatus(false);
         return;
       }
 
-      setCurrentUserId(storedUserId);
+      setCurrentUserId(storedUid);
 
       // Check current verification status
-      const status = await fetchVerificationStatus(storedUserId);
+      const status = await fetchVerificationStatus(storedUid);
       setVerificationStatus(status);
       setIsCheckingStatus(false);
 
@@ -295,7 +296,7 @@ const VerifyPage = () => {
    */
   const validateSubmissionData = () => {
     if (!currentUserId) {
-      setSubmissionError("User ID is missing. Cannot submit verification.");
+      setSubmissionError("UID is missing. Cannot submit verification.");
       return false;
     }
 
@@ -318,18 +319,115 @@ const VerifyPage = () => {
   };
 
   /**
+   * Compresses an image file to reduce size
+   * @param {File} file - The image file to compress
+   * @param {number} maxWidth - Maximum width for the compressed image
+   * @param {number} quality - Compression quality (0-1)
+   * @returns {Promise<File>} - Compressed image file
+   */
+  const compressImage = async (file, maxWidth = 1200, quality = 0.8) => {
+    return new Promise((resolve) => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      
+      img.onload = () => {
+        // Calculate new dimensions
+        const ratio = Math.min(maxWidth / img.width, maxWidth / img.height);
+        canvas.width = img.width * ratio;
+        canvas.height = img.height * ratio;
+        
+        // Draw and compress
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        
+        canvas.toBlob((blob) => {
+          const compressedFile = new File([blob], file.name, {
+            type: file.type,
+            lastModified: Date.now(),
+          });
+          resolve(compressedFile);
+        }, file.type, quality);
+      };
+      
+      img.src = URL.createObjectURL(file);
+    });
+  };
+
+  /**
+   * Fallback upload method using fetch API
+   * @param {string} apiUrl - The upload URL
+   * @param {FormData} formData - The form data to upload
+   * @returns {Promise<boolean>} - Returns true if upload successful
+   */
+  const uploadWithFetch = async (apiUrl, formData) => {
+    console.log("Trying fallback upload with fetch API...");
+    
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        body: formData,
+        mode: 'cors',
+      });
+
+      if (!response.ok) {
+        const responseText = await response.text();
+        console.error("Fetch upload error:", {
+          status: response.status,
+          statusText: response.statusText,
+          body: responseText
+        });
+        throw new Error(`Upload failed with status ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log("Fetch upload successful:", result);
+      return true;
+    } catch (error) {
+      console.error("Fetch upload also failed:", error);
+      throw error;
+    }
+  };
+
+  /**
    * Uploads KYC documents to the server
    * @returns {Promise<boolean>} - Returns true if upload successful
    */
   const uploadKycDocuments = async () => {
+    console.log("Starting document upload process...");
+    
+    // Compress images before upload
+    let compressedSelfie = selfie;
+    let compressedIdFront = idFront;
+    let compressedIdBack = idBack;
+    
+    try {
+      console.log("Compressing images...");
+      if (selfie.size > 2 * 1024 * 1024) { // 2MB threshold
+        compressedSelfie = await compressImage(selfie);
+        console.log(`Selfie compressed: ${selfie.size} -> ${compressedSelfie.size} bytes`);
+      }
+      
+      if (idFront.size > 2 * 1024 * 1024) {
+        compressedIdFront = await compressImage(idFront);
+        console.log(`ID Front compressed: ${idFront.size} -> ${compressedIdFront.size} bytes`);
+      }
+      
+      if (selectedIdInfo.needsBack && idBack && idBack.size > 2 * 1024 * 1024) {
+        compressedIdBack = await compressImage(idBack);
+        console.log(`ID Back compressed: ${idBack.size} -> ${compressedIdBack.size} bytes`);
+      }
+    } catch (compressionError) {
+      console.warn("Image compression failed, using original images:", compressionError);
+    }
+
     const formData = new FormData();
     formData.append('document_type', selectedIdInfo.apiValue);
-    formData.append('captured_selfie', selfie, selfie.name);
-    formData.append('front_captured_image', idFront, idFront.name);
+    formData.append('captured_selfie', compressedSelfie, compressedSelfie.name);
+    formData.append('front_captured_image', compressedIdFront, compressedIdFront.name);
     
     // Only append back image if required and present
-    if (selectedIdInfo.needsBack && idBack) {
-      formData.append('back_captured_image', idBack, idBack.name);
+    if (selectedIdInfo.needsBack && compressedIdBack) {
+      formData.append('back_captured_image', compressedIdBack, compressedIdBack.name);
     }
 
     // CORRECTED: Using 'user_id' parameter name for upload endpoint
@@ -346,37 +444,78 @@ const VerifyPage = () => {
     }
 
     try {
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        let errorMessage;
-        const responseText = await response.text();
-        
-        try {
-          const errorData = JSON.parse(responseText);
-          errorMessage = errorData.message || `Upload failed with status ${response.status}`;
-        } catch (e) {
-          errorMessage = `Upload failed: ${response.status} ${response.statusText}`;
-        }
-        
-        console.error("Document upload error:", {
-          status: response.status,
-          statusText: response.statusText,
-          body: responseText
-        });
-        throw new Error(errorMessage);
+      // Check file sizes before upload
+      const maxFileSize = 10 * 1024 * 1024; // 10MB limit
+      const files = [compressedSelfie, compressedIdFront];
+      if (selectedIdInfo.needsBack && compressedIdBack) {
+        files.push(compressedIdBack);
       }
 
-      const result = await response.json();
-      console.log("Document upload successful:", result);
-      return true;
+      for (const file of files) {
+        if (file && file.size > maxFileSize) {
+          throw new Error(`File ${file.name} is too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Please use files smaller than 10MB.`);
+        }
+      }
+
+      console.log("File size check passed, starting upload...");
+
+      // Try axios first
+      try {
+        const response = await axios.post(apiUrl, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Accept': 'application/json',
+          },
+          timeout: 30000, // Reduced to 30 seconds
+          maxContentLength: 20 * 1024 * 1024, // 20MB max
+          maxBodyLength: 20 * 1024 * 1024, // 20MB max
+          withCredentials: false, // Explicitly set for CORS
+          onUploadProgress: (progressEvent) => {
+            const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+            console.log(`Upload progress: ${percentCompleted}%`);
+          },
+        });
+
+        console.log("Document upload successful with axios:", response.data);
+        return true;
+      } catch (axiosError) {
+        console.warn("Axios upload failed, trying fetch fallback:", axiosError);
+        
+        // Try fetch as fallback
+        return await uploadWithFetch(apiUrl, formData);
+      }
 
     } catch (error) {
       console.error("Document upload failed:", error);
-      throw error;
+      
+      // Enhanced error handling
+      if (error.code === 'ECONNABORTED') {
+        throw new Error("Upload timeout. Please try again with smaller images or check your internet connection.");
+      } else if (error.code === 'ERR_NETWORK') {
+        throw new Error("Network connection error. Please check your internet connection and try again. If the problem persists, try using smaller image files.");
+      } else if (error.response) {
+        // Server responded with error status
+        const status = error.response.status;
+        const data = error.response.data;
+        
+        console.log("Server error response:", { status, data });
+        
+        let errorMessage = `Upload failed with status ${status}`;
+        if (data && typeof data === 'object' && data.message) {
+          errorMessage = data.message;
+        } else if (data && typeof data === 'string') {
+          errorMessage = data;
+        }
+        
+        throw new Error(errorMessage);
+      } else if (error.request) {
+        // Network error - the request was made but no response received
+        console.log("Network error details:", error.request);
+        throw new Error("Unable to connect to the server. Please check your internet connection and try again.");
+      } else {
+        // Other error
+        throw new Error(error.message || "An unexpected error occurred during upload.");
+      }
     }
   };
 
