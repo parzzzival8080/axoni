@@ -63,6 +63,23 @@ const Profile = () => {
     },
   };
 
+  const maskEmail = (email) => {
+  if (!email || email === 'Not provided') {
+    return email;
+  }
+  
+  const [username, domain] = email.split('@');
+  
+  if (!username || !domain) {
+    return email;
+  }
+  
+  const visiblePart = username.substring(0, 3);
+  const maskedPart = '***'; // Always exactly 3 asterisks
+  
+  return `${visiblePart}${maskedPart}@${domain}`;
+};
+
   // Use API data or fallback
   const user = profileData?.user || fallbackData.user;
   const userDetail = profileData?.user_detail || fallbackData.user_detail;
@@ -319,7 +336,7 @@ const Profile = () => {
               <span className="text-gray-500 dark:text-gray-400">Email</span>
             </div>
             <div className="w-1/3">
-              <span>{displayData.email}</span>
+              <span>{maskEmail(displayData.email)}</span>
             </div>
             <div className="w-1/3 text-right">
               <Link
