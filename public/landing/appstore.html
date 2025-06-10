@@ -236,14 +236,90 @@
                         <span>Offers In-App Purchases</span>
                     </div>
                     
-                    <!-- Download Button -->
+                    <!-- Download Button with App Store-style Animation -->
                     <div class="mb-4">
                         <button 
-                            onclick="window.location.href='https://apiv2.bhtokens.com/api/v1/download-ios'"
-                            class="bg-apple-blue text-white font-semibold px-8 py-3 rounded-full text-base hover:bg-blue-600 transition-colors w-full sm:w-auto">
-                            Get
+                            id="downloadButton"
+                            class="bg-apple-blue text-white font-semibold px-8 py-3 rounded-full text-base hover:bg-blue-600 transition-all duration-300 w-full sm:w-auto relative overflow-hidden"
+                            style="min-width: 100px;"
+                            onclick="startDownload()">
+                            <span id="buttonText" class="relative z-10 transition-opacity duration-200">GET</span>
+                            <div id="progressContainer" class="absolute inset-0 flex items-center justify-center hidden">
+                                <svg id="progressCircle" class="w-6 h-6" viewBox="0 0 44 44">
+                                    <circle class="text-white opacity-20" stroke-width="4" stroke="currentColor" fill="transparent" r="20" cx="22" cy="22" />
+                                    <circle id="progressBar" class="text-white" stroke-width="4" stroke-linecap="round" stroke="currentColor" fill="transparent" 
+                                        r="20" cx="22" cy="22" stroke-dasharray="125.6" stroke-dashoffset="125.6" transform="rotate(-90 22 22)" />
+                                </svg>
+                            </div>
                         </button>
                     </div>
+
+                    <style>
+                        #downloadButton {
+                            transition: all 0.3s ease;
+                        }
+                        #downloadButton:active {
+                            transform: scale(0.97);
+                        }
+                        @keyframes fillProgress {
+                            0% { stroke-dashoffset: 125.6; }
+                            100% { stroke-dashoffset: 0; }
+                        }
+                        .progress-animation {
+                            animation: fillProgress 1s linear forwards;
+                        }
+                        .checkmark {
+                            stroke-dasharray: 50;
+                            stroke-dashoffset: 50;
+                            animation: draw 0.5s ease-out forwards 1s;
+                        }
+                        @keyframes draw {
+                            to { stroke-dashoffset: 0; }
+                        }
+                    </style>
+
+                    <script>
+                        function startDownload() {
+                            const button = document.getElementById('downloadButton');
+                            const buttonText = document.getElementById('buttonText');
+                            const progressContainer = document.getElementById('progressContainer');
+                            const progressBar = document.getElementById('progressBar');
+                            
+                            // Initial state
+                            button.style.width = button.offsetWidth + 'px';
+                            button.style.height = button.offsetHeight + 'px';
+                            button.style.borderRadius = '9999px';
+                            
+                            // Show loading animation
+                            buttonText.style.opacity = '0';
+                            progressContainer.classList.remove('hidden');
+                            button.disabled = true;
+                            
+                            // Start progress animation
+                            progressBar.classList.add('progress-animation');
+                            
+                            // Start download after animation completes
+                            setTimeout(() => {
+                                window.location.href = 'https://apiv2.bhtokens.com/api/v1/download-ios';
+                                
+                                // In case the download doesn't trigger navigation
+                                setTimeout(() => {
+                                    resetButton(button, buttonText, progressContainer, progressBar);
+                                }, 3000);
+                            }, 1000);
+                            
+                            return false;
+                        }
+                        
+                        function resetButton(button, buttonText, progressContainer, progressBar) {
+                            // Reset animations and states
+                            progressBar.classList.remove('progress-animation');
+                            void progressBar.offsetWidth; // Trigger reflow
+                            buttonText.style.opacity = '1';
+                            progressContainer.classList.add('hidden');
+                            button.disabled = false;
+                        }
+                    </script>
                 </div>
             </div>
         </section>
@@ -253,21 +329,21 @@
             <h2 class="text-xl lg:text-2xl font-semibold text-apple-text mb-4 lg:mb-6">iPhone Screenshots</h2>
 
             <div class="flex gap-3 lg:gap-4 overflow-x-auto pb-4 -mx-4 px-4 lg:mx-0 lg:px-0">
-                <div class="flex-shrink-0">
+                <div class="flex-shrink-0 flex items-center" style="height: 500px;">
                     <img src="/assets/appstore/1.png" alt="App Screenshot 1"
-                        class="mobile-screenshot w-auto h-[500px] lg:w-64 lg:h-96 rounded-xl lg:rounded-2xl screenshot-shadow object-cover">
+                        class="mobile-screenshot max-h-full w-auto rounded-xl lg:rounded-2xl screenshot-shadow object-contain">
                 </div>
-                <div class="flex-shrink-0">
+                <div class="flex-shrink-0 flex items-center" style="height: 500px;">
                     <img src="/assets/appstore/2.png" alt="App Screenshot 2"
-                        class="mobile-screenshot w-auto h-[500px] lg:w-64 lg:h-96 rounded-xl lg:rounded-2xl screenshot-shadow object-cover">
+                        class="mobile-screenshot max-h-full w-auto rounded-xl lg:rounded-2xl screenshot-shadow object-contain">
                 </div>
-                <div class="flex-shrink-0">
+                <div class="flex-shrink-0 flex items-center" style="height: 500px;">
                     <img src="/assets/appstore/3.png" alt="App Screenshot 3"
-                        class="mobile-screenshot w-auto h-[500px] lg:w-64 lg:h-96 rounded-xl lg:rounded-2xl screenshot-shadow object-cover">
+                        class="mobile-screenshot max-h-full w-auto rounded-xl lg:rounded-2xl screenshot-shadow object-contain">
                 </div>
-                <div class="flex-shrink-0">
+                <div class="flex-shrink-0 flex items-center" style="height: 500px;">
                     <img src="/assets/appstore/4.png" alt="App Screenshot 4"
-                        class="mobile-screenshot w-auto h-[500px] lg:w-64 lg:h-96 rounded-xl lg:rounded-2xl screenshot-shadow object-cover">
+                        class="mobile-screenshot max-h-full w-auto rounded-xl lg:rounded-2xl screenshot-shadow object-contain">
                 </div>
             </div>
         </section>
