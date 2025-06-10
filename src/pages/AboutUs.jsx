@@ -30,7 +30,7 @@ const AboutUs = () => {
             </div>
             <div className="flex-1 flex items-center justify-center">
               <div className="bg-gradient-to-br from-[#ff6901] to-[#ff9f01] p-1 rounded-full">
-                <div className="bg-gray-900 rounded-full p-8">
+                <div className="bg-black rounded-full p-8">
                   <FaChartLine className="text-[#ff6901] w-32 h-32" />
                 </div>
               </div>
@@ -40,7 +40,7 @@ const AboutUs = () => {
       </section>
       
       {/* Values Section */}
-      <section className="py-16 bg-gray-900">
+      <section className="py-16 bg-black">
         <div className="container mx-auto max-w-6xl px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Our <span className="text-[#ff6901]">Values</span></h2>
           
@@ -84,7 +84,7 @@ const AboutUs = () => {
 
       
       {/* Global Presence */}
-      <section className="py-16 bg-gray-900">
+      <section className="py-16 bg-black">
         <div className="container mx-auto max-w-6xl px-4">
           <div className="flex flex-col md:flex-row items-center gap-12">
             <div className="flex-1">
