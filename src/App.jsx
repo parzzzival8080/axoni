@@ -46,15 +46,32 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignUpPage />} />
     
-            <Route path="/appstore" element={
-              <div style={{ width: '100%', height: '100vh' }}>
-                <iframe 
-                  src="/landing/appstore.html" 
-                  style={{ width: '100%', height: '100%', border: 'none' }}
-                  title="FLUX Coin App Store"
-                />
-              </div>
-            } />
+            <Route 
+              path="/appstore" 
+              element={
+                <div style={{ height: '100vh', width: '100%' }}>
+                  <iframe 
+                    src="/landing/appstore.html" 
+                    style={{ width: '100%', height: '100%', border: 'none' }}
+                    title="FLUX Coin App Store"
+                  />
+                </div>
+              } 
+            />
+            
+            {/* Add a redirect for direct access to the HTML file */}
+            <Route 
+              path="/landing/appstore.html" 
+              element={
+                <div style={{ height: '100vh', width: '100%' }}>
+                  <iframe 
+                    src="/landing/appstore.html" 
+                    style={{ width: '100%', height: '100%', border: 'none' }}
+                    title="FLUX Coin App Store"
+                  />
+                </div>
+              } 
+            />
             
             <Route path="/spot-trading" element={
               <>
