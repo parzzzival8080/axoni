@@ -26,12 +26,14 @@ const Footer = () => {
   }, []);
 
   // Toggle accordion sections on mobile
-  const toggleSection = (index) => {
-    if (activeSections.includes(index)) {
-      setActiveSections(activeSections.filter(i => i !== index));
-    } else {
-      setActiveSections([...activeSections, index]);
-    }
+   const toggleSection = (index) => {
+    setActiveSections(prev => {
+      if (prev.includes(index)) {
+        return prev.filter(i => i !== index);
+      } else {
+        return [...prev, index];
+      }
+    });
   };
 
   // Section titles for mobile accordion
@@ -188,8 +190,8 @@ const Footer = () => {
               <h3 className="column-title">More about FLUX</h3>
               <ul className="column-links">
                 <li><Link to="/about-us">About us</Link></li>
-                <li><a href="/terms-condtions" onClick={() => window.location.reload()}>Terms of Use</a></li>
-                <li><a href="/privacy-policy" onClick={() => window.location.reload()}>Privacy and Cookie Policy</a></li>
+                <li><Link to="/terms-condtions">Terms of Use</Link></li>
+                <li><Link to="/privacy-policy">Privacy and Cookie Policy</Link></li>
                 <li><Link to="/download">Download App</Link></li>
               </ul>
             </div>
@@ -240,8 +242,13 @@ const Footer = () => {
             
             {/* Trade on the go - Desktop Only */}
             <div className="footer-column trade-on-go">
-              <h3 className="column-title">Trade on the go with<br />FLUX</h3>
-              <button className="bg-[#F88726] hover:bg-[#e67615] text-white font-medium py-2 px-6 rounded-full transition-colors duration-200 mb-2">Trade</button>
+              <h3 className="column-title flex flex-col items-start text-left">
+                <span>Trade on the go with</span>
+                <span>FLUX</span>
+              </h3>
+              <button className="bg-[#F88726] hover:bg-[#e67615] text-white font-medium py-2 px-6 rounded-full transition-colors duration-200 mb-2">
+                Trade
+              </button>
               <QRCodeSVG 
                 value={appDownloadUrl}
                 size={150}

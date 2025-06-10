@@ -34,12 +34,13 @@ import WithdrawalGuide from './components/faq/withdrawGuide';
 import GetStarted from './components/common/GetStarted';
 import TermsAndConditions from './components/common/footerContent/TermsAndConditions';
 import PrivacyPolicy from './components/common/footerContent/PolicyContent';
-
+import ScrollToTop from './services/userWindowsSize';
 function App() {
   return (
     <CryptoProvider>
       <Router>
         <div className="App">
+          <ScrollToTop/>
           <Routes>
             {/* Fullscreen TradingView chart page, no layout wrappers */}
             <Route path="/tradingviewEmbed" element={<TradingChartWebView />} />
