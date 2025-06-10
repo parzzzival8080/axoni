@@ -9,7 +9,7 @@ const Footer = () => {
   const [activeSections, setActiveSections] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
   
-  const appDownloadUrl = "https://drive.google.com/file/d/140Yf_WnliXAqNHi0Iccz4B-C3q3Dnlx8/view?usp=sharing";
+  const appDownloadUrl = "https://drive.google.com/file/d/1MS5XuyVHl8QfcaIFejp4rtiiK-ocd7jx/view?usp=sharing";
 
   // Check if viewport is mobile
   useEffect(() => {
