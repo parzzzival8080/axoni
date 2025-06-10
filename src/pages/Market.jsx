@@ -98,7 +98,7 @@ const Market = () => {
 
 
   return (
-    <div className="w-full min-h-screen bg-gray-900 text-white pb-16">
+    <div className="w-full min-h-screen bg-black text-white pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Title and Subtitle */}
         <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Markets</h1>

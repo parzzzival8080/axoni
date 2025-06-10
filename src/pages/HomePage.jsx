@@ -9,7 +9,7 @@ import TradingGame from '../components/home/TradingGame';
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black" >
       <Hero />
       <TradingGame />
       <Trading />
