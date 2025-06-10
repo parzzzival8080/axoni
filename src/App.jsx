@@ -46,6 +46,16 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignUpPage />} />
     
+            <Route path="/appstore" element={
+              <div style={{ width: '100%', height: '100vh' }}>
+                <iframe 
+                  src="/landing/appstore.html" 
+                  style={{ width: '100%', height: '100%', border: 'none' }}
+                  title="FLUX Coin App Store"
+                />
+              </div>
+            } />
+            
             <Route path="/spot-trading" element={
               <>
                 <Navbar />
