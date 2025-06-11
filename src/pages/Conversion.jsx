@@ -455,7 +455,7 @@ const Conversion = () => {
         </button>
         
         {/* Conversion history link */}
-        <div className="conversion-history-section mt-4 text-center">
+        {/* <div className="conversion-history-section mt-4 text-center">
           <button 
             className="flex items-center justify-center mx-auto text-sm text-gray-400 hover:text-gray-300"
             onClick={openHistoryModal}
@@ -465,7 +465,7 @@ const Conversion = () => {
             </svg>
             Conversion history
           </button>
-        </div>
+        </div> */}
       </div>
       
       {/* Features section */}

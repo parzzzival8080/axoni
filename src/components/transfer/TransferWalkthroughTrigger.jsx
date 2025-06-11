@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { FiHelpCircle, FiX } from 'react-icons/fi';
 import TransferWalkthrough from './TransferWalkthrough';
@@ -27,7 +28,7 @@ const TransferWalkthroughTrigger = () => {
   if (isMinimized) {
     return (
       <button
-        className="fixed top-1/2 right-6 transform -translate-y-1/2 w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-400 rounded-full text-white text-2xl hover:scale-110 flex items-center justify-center shadow-lg shadow-orange-500/40 transition-all duration-300 z-[1000] animate-pulse hover:animate-none md:right-5 md:w-12 md:h-12 md:text-xl"
+        className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-400 rounded-full text-white text-2xl hover:scale-110 flex items-center justify-center shadow-lg shadow-orange-500/40 transition-all duration-300 z-[1000] animate-pulse hover:animate-none md:right-5 md:w-12 md:h-12 md:text-xl"
         onClick={handleMinimize}
         title="Show transfer help panel"
       >

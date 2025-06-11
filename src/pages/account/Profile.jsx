@@ -64,21 +64,21 @@ const Profile = () => {
   };
 
   const maskEmail = (email) => {
-  if (!email || email === 'Not provided') {
-    return email;
-  }
-  
-  const [username, domain] = email.split('@');
-  
-  if (!username || !domain) {
-    return email;
-  }
-  
-  const visiblePart = username.substring(0, 3);
-  const maskedPart = '***'; // Always exactly 3 asterisks
-  
-  return `${visiblePart}${maskedPart}@${domain}`;
-};
+    if (!email || email === 'Not provided') {
+      return email;
+    }
+    
+    const [username, domain] = email.split('@');
+    
+    if (!username || !domain) {
+      return email;
+    }
+    
+    const visiblePart = username.substring(0, 3);
+    const maskedPart = '***'; // Always exactly 3 asterisks
+    
+    return `${visiblePart}${maskedPart}@${domain}`;
+  };
 
   // Use API data or fallback
   const user = profileData?.user || fallbackData.user;
@@ -113,10 +113,10 @@ const Profile = () => {
     return (
       <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white relative">
         <ProfileNavBar />
-        <div className="max-w-4xl mx-auto px-4 py-8">
-          <div className="flex justify-center items-center py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+          <div className="flex justify-center items-center py-12 sm:py-16">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 dark:border-blue-400"></div>
-            <span className="ml-3">Loading profile...</span>
+            <span className="ml-3 text-sm sm:text-base">Loading profile...</span>
           </div>
         </div>
       </div>
@@ -128,11 +128,11 @@ const Profile = () => {
     return (
       <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white relative">
         <ProfileNavBar />
-        <div className="max-w-4xl mx-auto px-4 py-8">
-          <div className="flex flex-col items-center justify-center py-16">
-            <div className="text-red-500 mb-2">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+          <div className="flex flex-col items-center justify-center py-12 sm:py-16">
+            <div className="text-red-500 mb-4">
               <svg
-                className="w-12 h-12"
+                className="w-10 h-10 sm:w-12 sm:h-12"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -145,15 +145,15 @@ const Profile = () => {
                 ></path>
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">
+            <h3 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-gray-100 mb-2 text-center">
               Error loading profile
             </h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-6 text-center px-4">
               {error}
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="px-4 py-2 bg-[#FE7400] text-white rounded-md hover:bg-orange-600 transition-colors"
+              className="px-4 py-2 sm:px-6 sm:py-3 bg-[#FE7400] text-white rounded-md hover:bg-orange-600 transition-colors text-sm sm:text-base"
             >
               Try Again
             </button>
@@ -167,14 +167,14 @@ const Profile = () => {
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white relative">
       <ProfileNavBar />
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <h1 className="text-2xl font-semibold mb-8">Profile</h1>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+        <h1 className="text-xl sm:text-2xl font-semibold mb-6 sm:mb-8">Profile</h1>
 
         {/* Profile Avatar Section */}
-        <div className="mb-10">
-          <div className="flex items-start gap-8">
-            <div className="relative">
-              <div className="w-24 h-24 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">
+        <div className="mb-8 sm:mb-10">
+          <div className="flex flex-col sm:flex-row sm:items-start gap-6 sm:gap-8">
+            <div className="relative flex justify-center sm:justify-start">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">
                 {displayData.profileImage ? (
                   <img
                     src={displayData.profileImage}
@@ -182,69 +182,98 @@ const Profile = () => {
                     className="w-full h-full rounded-full object-cover"
                   />
                 ) : (
-                  <span className="text-gray-400 text-4xl">👤</span>
+                  <span className="text-gray-400 text-3xl sm:text-4xl">👤</span>
                 )}
               </div>
-              <button className="absolute bottom-0 right-0 bg-white dark:bg-gray-800 rounded-full p-2 shadow-md">
-                <FiEdit className="text-gray-500" />
+              <button className="absolute bottom-0 right-0 sm:right-0 bg-white dark:bg-gray-800 rounded-full p-1.5 sm:p-2 shadow-md">
+                <FiEdit className="text-gray-500 w-3 h-3 sm:w-4 sm:h-4" />
               </button>
             </div>
 
             <div className="flex-1">
-              <h2 className="text-xl font-semibold mb-4">Personal info</h2>
+              <h2 className="text-lg sm:text-xl font-semibold mb-4 text-center sm:text-left">Personal info</h2>
 
-              <div className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
-                <div className="w-1/3">
-                  <span className="text-gray-500 dark:text-gray-400">
-                    Nickname
-                  </span>
-                </div>
-                <div className="w-1/3">
-                  <span>{displayData.username}</span>
-                </div>
-                <div className="w-1/3 text-right">
-                  <Link
-                    to="/account/profile/change-nickname"
-                    className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                  >
-                    Change
-                  </Link>
+              {/* Nickname */}
+                            {/* Nickname */}
+              <div className="border-b border-gray-200 dark:border-gray-700 py-3 sm:py-4">
+                <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
+                  <div className="sm:w-1/3">
+                    <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">
+                      Nickname
+                    </span>
+                  </div>
+                  <div className="flex-1 sm:w-1/3 flex justify-between items-center">
+                    <span className="text-sm sm:text-base font-medium sm:font-normal">{displayData.username}</span>
+                    {/* <Link
+                      to="/account/profile/change-nickname"
+                      className="inline-block text-sm py-1.5 px-3 sm:py-1 sm:px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-2 sm:hidden"
+                    >
+                      Change
+                    </Link> */}
+                  </div>
+                  {/* <div className="hidden sm:block sm:w-1/3 sm:text-right">
+                    <Link
+                      to="/account/profile/change-nickname"
+                      className="inline-block text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    >
+                      Change
+                    </Link>
+                  </div> */}
                 </div>
               </div>
 
-              <div className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
-                <div className="w-1/3">
-                  <span className="text-gray-500 dark:text-gray-400">
-                    User ID
-                  </span>
-                </div>
-                <div className="w-1/3">
-                  <span>{displayData.userId}</span>
-                </div>
-                <div className="w-1/3 text-right">
-                  <button
-                    onClick={() => handleCopy(displayData.userId)}
-                    className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                  >
-                    Copy
-                  </button>
+
+              {/* User ID */}
+              <div className="border-b border-gray-200 dark:border-gray-700 py-3 sm:py-4">
+                <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
+                  <div className="sm:w-1/3">
+                    <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">
+                      User ID
+                    </span>
+                  </div>
+                  <div className="flex-1 sm:w-1/3 flex justify-between items-center">
+                    <span className="text-sm sm:text-base font-medium sm:font-normal break-all">{displayData.userId}</span>
+                    <button
+                      onClick={() => handleCopy(displayData.userId)}
+                      className="inline-block text-sm py-1.5 px-3 sm:py-1 sm:px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-2 sm:hidden"
+                    >
+                      Copy
+                    </button>
+                  </div>
+                  <div className="hidden sm:block sm:w-1/3 sm:text-right">
+                    <button
+                      onClick={() => handleCopy(displayData.userId)}
+                      className="inline-block text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    >
+                      Copy
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              <div className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
-                <div className="w-1/3">
-                  <span className="text-gray-500 dark:text-gray-400">UID</span>
-                </div>
-                <div className="w-1/3">
-                  <span>{displayData.uid}</span>
-                </div>
-                <div className="w-1/3 text-right">
-                  <button
-                    onClick={() => handleCopy(displayData.uid)}
-                    className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                  >
-                    Copy
-                  </button>
+              {/* UID */}
+              <div className="border-b border-gray-200 dark:border-gray-700 py-3 sm:py-4">
+                <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
+                  <div className="sm:w-1/3">
+                    <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">UID</span>
+                  </div>
+                  <div className="flex-1 sm:w-1/3 flex justify-between items-center">
+                    <span className="text-sm sm:text-base font-medium sm:font-normal break-all">{displayData.uid}</span>
+                    <button
+                      onClick={() => handleCopy(displayData.uid)}
+                      className="inline-block text-sm py-1.5 px-3 sm:py-1 sm:px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-2 sm:hidden"
+                    >
+                      Copy
+                    </button>
+                  </div>
+                  <div className="hidden sm:block sm:w-1/3 sm:text-right">
+                    <button
+                      onClick={() => handleCopy(displayData.uid)}
+                      className="inline-block text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    >
+                      Copy
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -252,151 +281,161 @@ const Profile = () => {
         </div>
 
         {/* Verification Info Section */}
-        <div className="mb-10">
-          <h2 className="text-xl font-semibold mb-4">Verification info</h2>
+        <div className="mb-8 sm:mb-10">
+          <h2 className="text-lg sm:text-xl font-semibold mb-4">Verification info</h2>
 
-          {/* <div className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
-            <div className="w-1/3">
-              <span className="text-gray-500 dark:text-gray-400">
-                Identity verification
-              </span>
-            </div>
-            <div className="w-1/3 flex items-center">
-              {isVerified ? (
-                <span className="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-700 font-semibold text-sm border border-green-300 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700">
-                  <FiCheck className="mr-2 text-green-500" /> Verified
+          {/* Country/Region */}
+          <div className="border-b border-gray-200 dark:border-gray-700 py-3 sm:py-4">
+            <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
+              <div className="sm:w-1/3">
+                <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">
+                  Country/Region
                 </span>
-              ) : isPending ? (
-                <span className="inline-flex items-center px-4 py-2 rounded-full bg-orange-100 text-orange-700 font-semibold text-sm border border-orange-300 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-700">
-                  <FiShield className="mr-2 text-orange-500" /> Pending Review
-                </span>
-              ) : (
-                <span className="inline-flex items-center px-4 py-2 rounded-full bg-yellow-100 text-yellow-700 font-semibold text-sm border border-yellow-300 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-700">
-                  <FiShield className="mr-2 text-yellow-500" /> Not Verified
-                </span>
-              )}
-            </div>
-            <div className="w-1/3 text-right">
-              <Link
-                to="/account/profile/verify"
-                className="text-sm py-1.5 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300"
-              >
-                View Details
-              </Link>
-              {isPending && (
-                <div className="mt-2 text-xs text-orange-600 dark:text-orange-400 text-right">
-                  Your verification is under review. Please wait for an email
-                  update.
-                </div>
-              )}
-            </div>
-          </div> */}
-
-          <div className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
-            <div className="w-1/3">
-              <span className="text-gray-500 dark:text-gray-400">
-                Country/Region
-              </span>
-            </div>
-            <div className="w-1/3">
-              <span>{displayData.country}</span>
-            </div>
-            <div className="w-1/3 text-right">
-              <button className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                View details
-              </button>
+              </div>
+              <div className="flex-1 sm:w-1/3 flex justify-between items-center">
+                <span className="text-sm sm:text-base font-medium sm:font-normal">{displayData.country}</span>
+                <button className="inline-block text-sm py-1.5 px-3 sm:py-1 sm:px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-2 sm:hidden">
+                  View details
+                </button>
+              </div>
+              <div className="hidden sm:block sm:w-1/3 sm:text-right">
+                <button className="inline-block text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                  View details
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Account Details Section */}
-        <div className="mb-10">
-          <h2 className="text-xl font-semibold mb-4">Account details</h2>
+        <div className="mb-8 sm:mb-10">
+          <h2 className="text-lg sm:text-xl font-semibold mb-4">Account details</h2>
 
-          {/* Password Field */}
-          <div className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
-            <div className="w-1/3">
-              <span className="text-gray-500 dark:text-gray-400">Password</span>
-            </div>
-            <div className="w-1/3">
-              <span>••••••••</span>
-            </div>
-            <div className="w-1/3 text-right">
-              <Link
-                to="/account/profile/security/change-password"
-                className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              >
-                Change
-              </Link>
+           {/* Password Field */}
+          <div className="border-b border-gray-200 dark:border-gray-700 py-3 sm:py-4">
+            <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
+              <div className="sm:w-1/3">
+                <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">Password</span>
+              </div>
+              <div className="flex-1 sm:w-1/3 flex justify-between items-center">
+                <span className="text-sm sm:text-base font-medium sm:font-normal">••••••••</span>
+                <Link
+                  to="/account/profile/security/change-password"
+                  className="inline-block text-sm py-1.5 px-3 sm:py-1 sm:px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-2 sm:hidden"
+                >
+                  Change
+                </Link>
+              </div>
+              <div className="hidden sm:block sm:w-1/3 sm:text-right">
+                <Link
+                  to="/account/profile/security/change-password"
+                  className="inline-block text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                >
+                  Change
+                </Link>
+              </div>
             </div>
           </div>
 
-          <div className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
-            <div className="w-1/3">
-              <span className="text-gray-500 dark:text-gray-400">Email</span>
-            </div>
-            <div className="w-1/3">
-              <span>{maskEmail(displayData.email)}</span>
-            </div>
-            <div className="w-1/3 text-right">
-              <Link
-                to="/account/profile/security/change-email"
-                className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              >
-                Change
-              </Link>
-            </div>
-          </div>
-
-          <div className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
-            <div className="w-1/3">
-              <span className="text-gray-500 dark:text-gray-400">Phone</span>
-            </div>
-            <div className="w-1/3">
-              <span>{displayData.phone}</span>
-            </div>
-            <div className="w-1/3 text-right">
-              <button className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                Change
-              </button>
+         {/* Email */}
+          <div className="border-b border-gray-200 dark:border-gray-700 py-3 sm:py-4">
+            <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
+              <div className="sm:w-1/3">
+                <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">Email</span>
+              </div>
+              <div className="flex-1 sm:w-1/3 flex justify-between items-center">
+                <span className="text-sm sm:text-base font-medium sm:font-normal break-all">{maskEmail(displayData.email)}</span>
+                <Link
+                  to="/account/profile/security/change-email"
+                  className="inline-block text-sm py-1.5 px-3 sm:py-1 sm:px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-2 sm:hidden"
+                >
+                  Change
+                </Link>
+              </div>
+              <div className="hidden sm:block sm:w-1/3 sm:text-right">
+                <Link
+                  to="/account/profile/security/change-email"
+                  className="inline-block text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                >
+                  Change
+                </Link>
+              </div>
             </div>
           </div>
 
-          <div className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
-            <div className="w-1/3">
-              <span className="text-gray-500 dark:text-gray-400">
-                Referral Code
-              </span>
-            </div>
-            <div className="w-1/3">
-              <span>{displayData.referralCode}</span>
-            </div>
-            <div className="w-1/3 text-right">
-              <button
-                onClick={() => handleCopy(displayData.referralCode)}
-                className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              >
-                Copy
-              </button>
+           {/* Phone */}
+          <div className="border-b border-gray-200 dark:border-gray-700 py-3 sm:py-4">
+            <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
+              <div className="sm:w-1/3">
+                <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">Phone</span>
+              </div>
+              <div className="flex-1 sm:w-1/3 flex justify-between items-center">
+                <span className="text-sm sm:text-base font-medium sm:font-normal break-all">{displayData.phone}</span>
+                <button className="inline-block text-sm py-1.5 px-3 sm:py-1 sm:px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-2 sm:hidden">
+                  Change
+                </button>
+              </div>
+              <div className="hidden sm:block sm:w-1/3 sm:text-right">
+                <button className="inline-block text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                  Change
+                </button>
+              </div>
             </div>
           </div>
 
-          <div className="border-b border-gray-200 dark:border-gray-700 py-4 flex items-center">
-            <div className="w-1/3">
-              <span className="text-gray-500 dark:text-gray-400">
-                Trading fee tier
-              </span>
+         {/* Referral Code */}
+          <div className="border-b border-gray-200 dark:border-gray-700 py-3 sm:py-4">
+            <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
+              <div className="sm:w-1/3">
+                <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">
+                  Referral Code
+                </span>
+              </div>
+              <div className="flex-1 sm:w-1/3 flex justify-between items-center">
+                <span className="text-sm sm:text-base font-medium sm:font-normal break-all">{displayData.referralCode}</span>
+                <button
+                  onClick={() => handleCopy(displayData.referralCode)}
+                  className="inline-block text-sm py-1.5 px-3 sm:py-1 sm:px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-2 sm:hidden"
+                >
+                  Copy
+                </button>
+              </div>
+              <div className="hidden sm:block sm:w-1/3 sm:text-right">
+                <button
+                  onClick={() => handleCopy(displayData.referralCode)}
+                  className="inline-block text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                >
+                  Copy
+                </button>
+              </div>
             </div>
-            <div className="w-1/3">
-              <span>{displayData.tradingLevel}</span>
-            </div>
-            <div className="w-1/3 text-right">
-              <button 
-                onClick={() => setShowTradingFeeModal(true)}
-                className="text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              >
-                View details
-              </button>
+          </div>
+
+          {/* Trading Fee Tier */}
+          <div className="border-b border-gray-200 dark:border-gray-700 py-3 sm:py-4">
+            <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
+              <div className="sm:w-1/3">
+                <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">
+                  Trading fee tier
+                </span>
+              </div>
+              <div className="flex-1 sm:w-1/3 flex justify-between items-center">
+                <span className="text-sm sm:text-base font-medium sm:font-normal">{displayData.tradingLevel}</span>
+                <button 
+                  onClick={() => setShowTradingFeeModal(true)}
+                  className="inline-block text-sm py-1.5 px-3 sm:py-1 sm:px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-2 sm:hidden"
+                >
+                  View details
+                </button>
+              </div>
+              <div className="hidden sm:block sm:w-1/3 sm:text-right">
+                <button 
+                  onClick={() => setShowTradingFeeModal(true)}
+                  className="inline-block text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                >
+                  View details
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -404,35 +443,70 @@ const Profile = () => {
 
       {/* Trading Fee Tier Modal */}
       {showTradingFeeModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl max-w-lg w-full relative">
-            <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Trading Fee Tier Details</h3>
-            <p className="text-gray-700 dark:text-gray-300 mb-4">
-              Your current trading fee tier is <strong>{displayData.tradingLevel}</strong>.
-            </p>
-            <p className="text-gray-700 dark:text-gray-300 mb-4">
-              <strong>Level 1:</strong> Enjoy standard trading fees. Typically, this tier applies to users with a 30-day trading volume below $5,000,000 USDT or total assets below $100,000 USDT.
-            </p>
-            <p className="text-gray-700 dark:text-gray-300 mb-4">
-              <strong>Premium Tier:</strong> Benefit from reduced trading fees. This tier is for users with a 30-day trading volume exceeding $5,000,000 USDT or total assets above $100,000 USDT.
-            </p>
-            <p className="text-gray-700 dark:text-gray-300 mb-6">
-              Fees are calculated daily based on your 30-day trading volume and daily asset balance. Trade more to unlock better rates!
-            </p>
-            <button
-              onClick={() => setShowTradingFeeModal(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
-            </button>
-            <button
-              onClick={() => setShowTradingFeeModal(false)}
-              className="mt-4 px-6 py-2 bg-[#FE7400] text-white rounded-md hover:bg-orange-600 transition-colors"
-            >
-              Close
-            </button>
+        <div className="fixed inset-0 bg-black bg-opacity-50 sm:bg-gray-600 sm:bg-opacity-50 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
+          <div className="bg-white dark:bg-gray-800 w-full sm:max-w-lg sm:w-full rounded-t-2xl sm:rounded-lg shadow-xl max-h-[85vh] sm:max-h-[90vh] overflow-y-auto relative">
+            {/* Mobile handle bar */}
+            <div className="sm:hidden flex justify-center pt-2 pb-1">
+              <div className="w-10 h-1 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+            </div>
+            
+            <div className="p-4 sm:p-6 lg:p-8">
+              <div className="flex justify-between items-start mb-4 sm:mb-6">
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white pr-4 leading-tight">
+                  Trading Fee Tier Details
+                </h3>
+                <button
+                  onClick={() => setShowTradingFeeModal(false)}
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1 sm:p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                </button>
+              </div>
+              
+              <div className="space-y-3 sm:space-y-4 text-sm sm:text-base leading-relaxed">
+                <p className="text-gray-700 dark:text-gray-300">
+                  Your current trading fee tier is <strong className="text-gray-900 dark:text-white">{displayData.tradingLevel}</strong>.
+                </p>
+                <div className="bg-gray-50 dark:bg-gray-700/50 p-3 sm:p-4 rounded-lg">
+                  <p className="text-gray-700 dark:text-gray-300 mb-2">
+                    <strong className="text-gray-900 dark:text-white">Level 1:</strong> Enjoy standard trading fees.
+                  </p>
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                    This tier applies to users with a 30-day trading volume below $5,000,000 USDT or total assets below $100,000 USDT.
+                  </p>
+                </div>
+                <div className="bg-orange-50 dark:bg-orange-900/20 p-3 sm:p-4 rounded-lg border border-orange-200 dark:border-orange-800">
+                  <p className="text-gray-700 dark:text-gray-300 mb-2">
+                    <strong className="text-orange-600 dark:text-orange-400">Premium Tier:</strong> Benefit from reduced trading fees.
+                  </p>
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                    This tier is for users with a 30-day trading volume exceeding $5,000,000 USDT or total assets above $100,000 USDT.
+                  </p>
+                </div>
+                <div className="bg-blue-50 dark:bg-blue-900/20 p-3 sm:p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <p className="text-sm text-blue-700 dark:text-blue-300 font-medium">
+                    💡 Pro Tip
+                  </p>
+                  <p className="text-xs sm:text-sm text-blue-600 dark:text-blue-400 mt-1">
+                    Fees are calculated daily based on your 30-day trading volume and daily asset balance. Trade more to unlock better rates!
+                  </p>
+                </div>
+              </div>
+              
+              <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-0 sm:justify-end">
+                <button
+                  onClick={() => setShowTradingFeeModal(false)}
+                  className="w-full sm:w-auto px-6 py-3 sm:px-6 sm:py-2 bg-[#FE7400] text-white rounded-lg sm:rounded-md hover:bg-orange-600 active:bg-orange-700 transition-colors text-sm sm:text-base font-medium"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+            
+            {/* Safe area padding for mobile */}
+            <div className="sm:hidden h-safe-area-inset-bottom"></div>
           </div>
         </div>
       )}
