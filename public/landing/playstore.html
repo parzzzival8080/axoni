@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLUX COIN : Trading app - Apps on Google Play</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'google': ['Google Sans', 'Roboto', 'Arial', 'sans-serif'],
+                    },
+                    colors: {
+                        'google-blue': '#1a73e8',
+                        'google-green': '#137333',
+                        'google-dark': '#202124',
+                        'google-gray': '#5f6368',
+                        'google-light-gray': '#f8f9fa',
+                        'google-border': '#dadce0',
+                        'rating-green': '#0d7377',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
+        }
+        
+        .star-filled {
+            color: #fbbc04;
+        }
+        
+        .star-empty {
+            color: #dadce0;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+        
+        .rating-bar {
+            background: #e8eaed;
+            height: 8px;
+            border-radius: 4px;
+        }
+        
+        .rating-fill {
+            background: #137333;
+            height: 100%;
+            border-radius: 4px;
+        }
+        
+        .screenshot-shadow {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        }
+        
+        .app-card {
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+        }
+        
+        .install-button {
+            background: #137333;
+            transition: all 0.2s ease;
+        }
+        
+        .install-button:hover {
+            background: #0d7377;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .chip {
+            background: #e8f0fe;
+            color: #1a73e8;
+        }
+        
+        .review-helpful {
+            color: #5f6368;
+            font-size: 14px;
+        }
+
+        .app-icon-hero {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body class="bg-white font-google">
+    <!-- Google Play Header -->
+    <header class="bg-white border-b border-google-border">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <!-- Left side -->
+                <div class="flex items-center space-x-6">
+                    <!-- Google Play Logo -->
+                    <div class="flex items-center space-x-2">
+                        <img src="/assets/playstore/googleplay.png" alt="Google Play" class="h-8 w-auto">
+                        <span class="text-xl font-medium text-google-dark">Google Play</span>
+                    </div>
+                    
+                    <!-- Navigation -->
+                    <nav class="hidden md:flex space-x-6">
+                        <a href="#" class="text-google-gray hover:text-google-dark">Games</a>
+                        <a href="#" class="text-google-dark font-medium">Apps</a>
+                        <a href="#" class="text-google-gray hover:text-google-dark">Books</a>
+                        <a href="#" class="text-google-gray hover:text-google-dark">Kids</a>
+                    </nav>
+                </div>
+                
+                <!-- Right side -->
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 hover:bg-google-light-gray rounded-full">
+                        <span class="material-icons text-google-gray">search</span>
+                    </button>
+                    <button class="p-2 hover:bg-google-light-gray rounded-full">
+                        <span class="material-icons text-google-gray">help_outline</span>
+                    </button>
+                    <button class="w-8 h-8 bg-google-blue rounded-full flex items-center justify-center">
+                        <span class="text-white text-sm font-medium">A</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative h-96 overflow-hidden">
+        <!-- Banner Background -->
+        <div class="absolute inset-0">
+            <img src="/assets/playstore/banner.png" alt="FluxCoin Banner" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70"></div>
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto h-full px-4 flex items-center">
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-6 w-full">
+                <!-- App Icon -->
+                <div class="flex-shrink-0">
+                    <img src="/assets/playstore/icon.png" alt="App Icon" class="w-24 h-24 md:w-32 md:h-32 rounded-2xl app-icon-hero border-4 border-white/20">
+                </div>
+                
+                <!-- App Info -->
+                <div class="text-white">
+                    <h1 class="text-3xl md:text-4xl font-bold mb-1">FLUX COIN - Trading app</h1>
+                    <p class="text-blue-100 mb-4">FluxCoin Investments LLC</p>
+                    
+                    <!-- Rating and Stats -->
+                    <div class="flex flex-wrap items-center gap-4 md:gap-6 mb-4">
+                        <div class="flex items-center">
+                            <div class="flex items-center bg-black/30 rounded-full px-3 py-1">
+                                <span class="font-medium mr-1">4.3</span>
+                                <span class="star-filled text-yellow-400">★</span>
+                                <span class="ml-1 text-sm">80.7K</span>
+                            </div>
+                        </div>
+                        <div class="text-sm">
+                            <div>10M+ downloads</div>
+                        </div>
+                        <div class="flex items-center text-sm">
+                            <div class="bg-white/20 px-2 py-0.5 rounded">3+</div>
+                            <span class="ml-2">Rated for 3+</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Buttons -->
+                    <div class="flex flex-wrap items-center gap-4 mt-6">
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2.5 rounded-full font-medium flex items-center">
+                            <span class="material-icons mr-2 text-xl">install_mobile</span>
+                            Install
+                        </button>
+                        <button class="text-white/90 hover:bg-white/10 p-2.5 rounded-full">
+                            <span class="material-icons text-2xl">share</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-8">
+            <!-- Left Column -->
+            <div class="lg:col-span-2">
+                <!-- Screenshots Section -->
+                <section class="pb-8">
+            <div class="flex gap-4 overflow-x-auto pb-4">
+                <div class="flex-shrink-0">
+                    <img src="/assets/playstore/1.png" alt="Screenshot 1" class="w-48 h-85 object-cover rounded-lg screenshot-shadow">
+                </div>
+                <div class="flex-shrink-0">
+                    <img src="/assets/playstore/2.png" alt="Screenshot 2" class="w-48 h-85 object-cover rounded-lg screenshot-shadow">
+                </div>
+                <div class="flex-shrink-0">
+                    <img src="/assets/playstore/3.png" alt="Screenshot 3" class="w-48 h-85 object-cover rounded-lg screenshot-shadow">
+                </div>
+                <div class="flex-shrink-0">
+                    <img src="/assets/playstore/4.png" alt="Screenshot 4" class="w-48 h-85 object-cover rounded-lg screenshot-shadow">
+                </div>
+            </div>
+                </section>
+                <div class="space-y-8">
+                <!-- What's new -->
+                <section>
+                    <h2 class="text-2xl font-medium text-google-dark mb-4">What's new</h2>
+                    <p class="text-google-gray">Bug fixes</p>
+                </section>
+
+                <!-- Data safety -->
+                <section>
+                    <h2 class="text-2xl font-medium text-google-dark mb-4">Data safety</h2>
+                    <p class="text-google-gray mb-6">
+                        Safety starts with understanding how developers collect and share your data. Data privacy and security practices may vary based on your use, region, and age. The developer provided this information and may update it over time.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <span class="material-icons text-google-green mt-1">check_circle</span>
+                            <div>
+                                <div class="font-medium text-google-dark">No data shared with third parties</div>
+                                <div class="text-sm text-google-gray">Learn more about how developers declare sharing</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3">
+                            <span class="material-icons text-google-green mt-1">check_circle</span>
+                            <div>
+                                <div class="font-medium text-google-dark">This app may collect these data types</div>
+                                <div class="text-sm text-google-gray">Personal info, Financial info, and 3 others</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3">
+                            <span class="material-icons text-google-green mt-1">security</span>
+                            <div>
+                                <div class="font-medium text-google-dark">Data is encrypted in transit</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3">
+                            <span class="material-icons text-google-green mt-1">delete</span>
+                            <div>
+                                <div class="font-medium text-google-dark">You can request that data be deleted</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="text-google-blue font-medium mt-4">See details</button>
+                </section>
+
+                <!-- Rate this app -->
+                <section>
+                    <h2 class="text-2xl font-medium text-google-dark mb-4">Rate this app</h2>
+                    <p class="text-google-gray mb-4">Tell others what you think</p>
+                    
+                    <div class="flex items-center space-x-4 mb-6">
+                        <div class="flex space-x-1">
+                            <span class="star-empty text-2xl cursor-pointer hover:text-yellow-400">★</span>
+                            <span class="star-empty text-2xl cursor-pointer hover:text-yellow-400">★</span>
+                            <span class="star-empty text-2xl cursor-pointer hover:text-yellow-400">★</span>
+                            <span class="star-empty text-2xl cursor-pointer hover:text-yellow-400">★</span>
+                            <span class="star-empty text-2xl cursor-pointer hover:text-yellow-400">★</span>
+                        </div>
+                        <button class="text-google-blue font-medium">Phone</button>
+                        <button class="text-google-gray">Tablet</button>
+                    </div>
+                    
+                    <button class="bg-google-green text-white px-6 py-2 rounded font-medium">
+                        Write a review
+                    </button>
+                </section>
+
+                <!-- Ratings and reviews -->
+                <section>
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-medium text-google-dark">Ratings and reviews</h2>
+                        <span class="material-icons text-google-gray">info_outline</span>
+                    </div>
+                    
+                    <p class="text-sm text-google-gray mb-6">Ratings and reviews are verified</p>
+                    
+                    <!-- Rating filter tabs -->
+                    <div class="flex space-x-4 mb-6">
+                        <button class="chip px-4 py-2 rounded-full font-medium">Phone</button>
+                        <button class="text-google-gray px-4 py-2">Chromebook</button>
+                        <button class="text-google-gray px-4 py-2">Tablet</button>
+                    </div>
+                    
+                    <!-- Rating overview -->
+                    <div class="flex items-center space-x-8 mb-8">
+                        <div class="text-center">
+                            <div class="text-5xl font-light text-google-dark mb-2">4.3</div>
+                            <div class="flex justify-center mb-2">
+                                <span class="star-filled text-lg">★</span>
+                                <span class="star-filled text-lg">★</span>
+                                <span class="star-filled text-lg">★</span>
+                                <span class="star-filled text-lg">★</span>
+                                <span class="star-empty text-lg">★</span>
+                            </div>
+                            <div class="text-sm text-google-gray">80.7K reviews</div>
+                        </div>
+                        
+                        <div class="flex-1 max-w-xs space-y-2">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm text-google-gray w-2">5</span>
+                                <div class="rating-bar flex-1">
+                                    <div class="rating-fill" style="width: 70%"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm text-google-gray w-2">4</span>
+                                <div class="rating-bar flex-1">
+                                    <div class="rating-fill" style="width: 15%"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm text-google-gray w-2">3</span>
+                                <div class="rating-bar flex-1">
+                                    <div class="rating-fill" style="width: 8%"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm text-google-gray w-2">2</span>
+                                <div class="rating-bar flex-1">
+                                    <div class="rating-fill" style="width: 4%"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm text-google-gray w-2">1</span>
+                                <div class="rating-bar flex-1">
+                                    <div class="rating-fill" style="width: 3%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reviews -->
+                    <div class="space-y-6">
+                        <!-- Review 1 -->
+                        <div class="border-t border-google-border pt-6">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-10 h-10 bg-google-blue rounded-full flex items-center justify-center">
+                                    <span class="text-white text-sm font-medium">B</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="font-medium text-google-dark">Brandon Walker</div>
+                                        <button class="text-google-gray">
+                                            <span class="material-icons">more_vert</span>
+                                        </button>
+                                    </div>
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <div class="flex">
+                                            <span class="star-filled">★</span>
+                                            <span class="star-filled">★</span>
+                                            <span class="star-filled">★</span>
+                                            <span class="star-filled">★</span>
+                                            <span class="star-filled">★</span>
+                                        </div>
+                                        <span class="text-sm text-google-gray">March 17, 2024</span>
+                                    </div>
+                                    <p class="text-google-dark mb-4">
+                                        I liked precise layout and expert quotes and all the other opinions actively. Any news, for The very first that your app are the most unfavourable situation of these user people people. It also A1 every moments before arranging, terrible arranging, terrible platform, just navigating this information on. Thanks for...
+                                    </p>
+                                    <div class="flex items-center space-x-4 text-sm">
+                                        <span class="review-helpful">6,060 people found this review helpful</span>
+                                        <button class="text-google-gray">Did you find this helpful?</button>
+                                        <button class="text-google-gray">Yes</button>
+                                        <button class="text-google-gray">No</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Review 2 -->
+                        <div class="border-t border-google-border pt-6">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
+                                    <span class="text-white text-sm font-medium">F</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="font-medium text-google-dark">FluxCoin Investments LLC</div>
+                                        <button class="text-google-gray">
+                                            <span class="material-icons">more_vert</span>
+                                        </button>
+                                    </div>
+                                    <div class="text-sm text-google-gray mb-2">May 23, 2024</div>
+                                    <p class="text-google-dark mb-4">
+                                        Thank you for taking the time to review our app. We appreciate your expectations with our app. We understand that you like developing trading applications and we are working on improving the all experience. If you have any specific concerns or suggestions, please contact our support team at support@fluxcoin.com. Best Regards, FluxCoin Broker Team!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Review 3 -->
+                        <div class="border-t border-google-border pt-6">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                                    <span class="text-white text-sm font-medium">P</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="font-medium text-google-dark">Paul Kaplan</div>
+                                        <button class="text-google-gray">
+                                            <span class="material-icons">more_vert</span>
+                                        </button>
+                                    </div>
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <div class="flex">
+                                            <span class="star-filled">★</span>
+                                            <span class="star-filled">★</span>
+                                            <span class="star-filled">★</span>
+                                            <span class="star-filled">★</span>
+                                            <span class="star-filled">★</span>
+                                        </div>
+                                        <span class="text-sm text-google-gray">April 15, 2024</span>
+                                    </div>
+                                    <p class="text-google-dark mb-4">
+                                        I would appreciate this mobile trading App. I was using their web version when I got, other mobile app. The stocks are real. Not fiat/fake currencies than the usual. Please fix the opposite direction and I love, that also goes both ways. play smart, and not money when you can, learn on the house with them when rich but more clear money and, will see actually see anything.
+                                    </p>
+                                    <div class="flex items-center space-x-4 text-sm">
+                                        <span class="review-helpful">1,731 people found this review helpful</span>
+                                        <button class="text-google-gray">Did you find this helpful?</button>
+                                        <button class="text-google-gray">Yes</button>
+                                        <button class="text-google-gray">No</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Review 4 -->
+                        <div class="border-t border-google-border pt-6">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
+                                    <span class="text-white text-sm font-medium">M</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="font-medium text-google-dark">Michael Hayes</div>
+                                        <button class="text-google-gray">
+                                            <span class="material-icons">more_vert</span>
+                                        </button>
+                                    </div>
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <div class="flex">
+                                            <span class="star-filled">★</span>
+                                            <span class="star-filled">★</span>
+                                            <span class="star-filled">★</span>
+                                            <span class="star-filled">★</span>
+                                            <span class="star-empty">★</span>
+                                        </div>
+                                        <span class="text-sm text-google-gray">June 22, 2024</span>
+                                    </div>
+                                    <p class="text-google-dark mb-4">
+                                        Love this app and everything the, utilities are very cool, they not updating properly in rest time while you are trading...and that they give you a deposit. After things to get that you will have to get level people, now start the platform to the platform. While working the diverse reviews I submitted a formal complaint on their platform. They cancelled my withdrawal and setting to buy based crypto from through 1 was able to get a settlement sum once day ago and it provided all free of charge.
+                                    </p>
+                                    <div class="flex items-center space-x-4 text-sm">
+                                        <span class="review-helpful">4,648 people found this review helpful</span>
+                                        <button class="text-google-gray">Did you find this helpful?</button>
+                                        <button class="text-google-gray">Yes</button>
+                                        <button class="text-google-gray">No</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="text-google-blue font-medium mt-6">See all reviews</button>
+                </section>
+
+                <!-- About this app -->
+                <section>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <h2 class="text-2xl font-medium text-google-dark">About this app</h2>
+                        <span class="material-icons text-google-gray">arrow_forward</span>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <p class="text-google-gray">
+                            Get instant access to global financial markets and start trading from A to Z.
+                        </p>
+                        <p class="text-google-gray mt-2">
+                            Choose from 100+ financial instruments and professional tools for in-depth analysis. Join one of the fastest growing trading communities worldwide.
+                        </p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h3 class="font-medium text-google-dark mb-4">Why choose FluxCoin Broker?</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-4">
+                                <div>
+                                    <h4 class="text-sm font-medium text-google-dark">Updated on</h4>
+                                    <p class="text-sm text-google-gray">Jun 16, 2024</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-google-dark">Size</h4>
+                                    <p class="text-sm text-google-gray">74.25 MB</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-google-dark">Installs</h4>
+                                    <p class="text-sm text-google-gray">10M+</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-google-dark">Current Version</h4>
+                                    <p class="text-sm text-google-gray">3.4.2</p>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <div>
+                                    <h4 class="text-sm font-medium text-google-dark">Requires Android</h4>
+                                    <p class="text-sm text-google-gray">5.0 and up</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-google-dark">Content Rating</h4>
+                                    <p class="text-sm text-google-gray">Everyone</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-google-dark">Interactive Elements</h4>
+                                    <p class="text-sm text-google-gray">Users Interact Online</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <button class="text-sm text-google-blue">View permissions</button>
+                        <button class="text-sm text-google-blue">Report app</button>
+                    </div>
+                </section>
+            </div>
+
+            </div>
+            <!-- Right Sidebar -->
+            <div class="lg:col-span-1 space-y-8">
+                <!-- App support -->
+                <section class="mb-8">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-medium text-google-dark">App support</h3>
+                        <span class="material-icons text-google-gray">keyboard_arrow_down</span>
+                    </div>
+                </section>
+
+                <!-- More apps to try -->
+                <section>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-medium text-google-dark">More apps to try</h3>
+                        <span class="material-icons text-google-gray">arrow_forward</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <!-- App 1 -->
+                        <div class="flex items-center space-x-3">
+                            <img src="/assets/playstore/simlarApps/1.webp" alt="AI Home Design" class="w-12 h-12 rounded-lg flex-shrink-0 object-cover">
+                            <div class="flex-1 min-w-0">
+                                <div class="font-medium text-google-dark truncate">AI Home Design: Interior Decor</div>
+                                <div class="text-sm text-google-gray">Home & Garden</div>
+                                <div class="flex items-center">
+                                    <span class="text-sm text-google-gray">4.3</span>
+                                    <span class="star-filled ml-1">★</span>
+                                </div>
+                            </div>
+                        </div>
+ 
+                        <!-- App 2 -->
+                        <div class="flex items-center space-x-3">
+                            <img src="/assets/playstore/simlarApps/2.webp" alt="Photo & Video Editor" class="w-12 h-12 rounded-lg flex-shrink-0 object-cover">
+                            <div class="flex-1 min-w-0">
+                                <div class="font-medium text-google-dark truncate">Editor de Photo & Video Editor</div>
+                                <div class="text-sm text-google-gray">Photo & Video</div>
+                                <div class="flex items-center">
+                                    <span class="text-sm text-google-gray">4.2</span>
+                                    <span class="star-filled ml-1">★</span>
+                                </div>
+                            </div>
+                        </div>
+ 
+                        <!-- App 3 -->
+                        <div class="flex items-center space-x-3">
+                            <img src="/assets/playstore/simlarApps/3.webp" alt="Prime Video" class="w-12 h-12 rounded-lg flex-shrink-0 object-cover">
+                            <div class="flex-1 min-w-0">
+                                <div class="font-medium text-google-dark truncate">Prime Video</div>
+                                <div class="text-sm text-google-gray">Amazon Mobile LLC</div>
+                                <div class="flex items-center">
+                                    <span class="text-sm text-google-gray">4.1</span>
+                                    <span class="star-filled ml-1">★</span>
+                                </div>
+                            </div>
+                        </div>
+ 
+                        <!-- App 4 -->
+                        <div class="flex items-center space-x-3">
+                            <img src="/assets/playstore/simlarApps/4.webp" alt="Inshot AI" class="w-12 h-12 rounded-lg flex-shrink-0 object-cover">
+                            <div class="flex-1 min-w-0">
+                                <div class="font-medium text-google-dark truncate">Inshot AI: Video Generator</div>
+                                <div class="text-sm text-google-gray">InShot Inc.</div>
+                                <div class="flex items-center">
+                                    <span class="text-sm text-google-gray">4.5</span>
+                                    <span class="star-filled ml-1">★</span>
+                                </div>
+                            </div>
+                        </div>
+ 
+                        <!-- App 5 -->
+                        <div class="flex items-center space-x-3">
+                            <img src="/assets/playstore/simlarApps/7.webp" alt="Leonardo AI" class="w-12 h-12 rounded-lg flex-shrink-0 object-cover">
+                            <div class="flex-1 min-w-0">
+                                <div class="font-medium text-google-dark truncate">Leonardo AI - Image Generator</div>
+                                <div class="text-sm text-google-gray">Leonardo AI</div>
+                                <div class="flex items-center">
+                                    <span class="text-sm text-google-gray">4.4</span>
+                                    <span class="star-filled ml-1">★</span>
+                                </div>
+                            </div>
+                        </div>
+ 
+                        <!-- App 6 -->
+                        <div class="flex items-center space-x-3">
+                            <img src="/assets/playstore/simlarApps/6.webp" alt="Microsoft Outlook" class="w-12 h-12 rounded-lg flex-shrink-0 object-cover">
+                            <div class="flex-1 min-w-0">
+                                <div class="font-medium text-google-dark truncate">Microsoft Outlook</div>
+                                <div class="text-sm text-google-gray">Microsoft Corporation</div>
+                                <div class="flex items-center">
+                                    <span class="text-sm text-google-gray">4.2</span>
+                                    <span class="star-filled ml-1">★</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+ 
+    <!-- Footer -->
+    <footer class="bg-google-light-gray mt-16">
+        <div class="max-w-7xl mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="font-medium text-google-dark mb-4">Google Play</h4>
+                    <ul class="space-y-2 text-sm text-google-gray">
+                        <li><a href="#" class="hover:text-google-dark">Play Pass</a></li>
+                        <li><a href="#" class="hover:text-google-dark">Play Points</a></li>
+                        <li><a href="#" class="hover:text-google-dark">Gift cards</a></li>
+                        <li><a href="#" class="hover:text-google-dark">Redeem</a></li>
+                        <li><a href="#" class="hover:text-google-dark">Refund policy</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-medium text-google-dark mb-4">Kids & family</h4>
+                    <ul class="space-y-2 text-sm text-google-gray">
+                        <li><a href="#" class="hover:text-google-dark">Parent Guide</a></li>
+                        <li><a href="#" class="hover:text-google-dark">Family sharing</a></li>
+                    </ul>
+                </div>
+                
+                <div class="md:col-span-2">
+                    <div class="flex items-center space-x-4">
+                        <select class="bg-white border border-google-border rounded px-3 py-2 text-sm">
+                            <option>🇺🇸 United States (English)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-google-border mt-8 pt-8">
+                <div class="flex flex-wrap items-center justify-between text-sm text-google-gray">
+                    <div class="flex flex-wrap items-center space-x-6">
+                        <a href="#" class="hover:text-google-dark">Terms of Service</a>
+                        <a href="#" class="hover:text-google-dark">Privacy</a>
+                        <a href="#" class="hover:text-google-dark">About Google Play</a>
+                        <a href="#" class="hover:text-google-dark">Developers</a>
+                        <a href="#" class="hover:text-google-dark">Google Store</a>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span>🇺🇸</span>
+                        <span>Philippines (English)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+ </body>
+ </html>

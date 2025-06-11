@@ -59,6 +59,19 @@ function App() {
                 </div>
               } 
             />
+
+            <Route 
+              path="/playstore" 
+              element={
+                <div style={{ height: '100vh', width: '100%' }}>
+                  <iframe 
+                    src="/landing/playstore.html" 
+                    style={{ width: '100%', height: '100%', border: 'none' }}
+                    title="FLUX Coin Play Store"
+                  />
+                </div>
+              } 
+            />
             
             {/* Add a redirect for direct access to the HTML file */}
             <Route 
