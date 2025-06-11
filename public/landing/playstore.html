@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FLUX COIN : Trading app - Apps on Google Play</title>
+    <title>FLUX COIN </title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script>
@@ -128,7 +128,7 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="relative h-[39rem] overflow-hidden">
+    <section class="relative h-[38rem] overflow-hidden">
         <!-- Banner Background -->
         <div class="absolute inset-0">
             <img src="/assets/playstore/banner.png" alt="FluxCoin Banner" class="w-full h-full object-cover">
@@ -167,7 +167,7 @@
                     
                     <!-- Buttons -->
                     <div class="flex flex-wrap items-center gap-4 mt-6">
-                        <button class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2.5 rounded-full font-medium flex items-center">
+                        <button id="installButton" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2.5 rounded-full font-medium flex items-center">
                             <span class="material-icons mr-2 text-xl">install_mobile</span>
                             Install
                         </button>
@@ -175,6 +175,33 @@
                             <span class="material-icons text-2xl">share</span>
                         </button>
                     </div>
+                    
+                    <script>
+                        document.getElementById('installButton').addEventListener('click', function() {
+                            const appDownloadUrl = "https://drive.google.com/file/d/1MS5XuyVHl8QfcaIFejp4rtiiK-ocd7jx/view?usp=sharing";
+                            const fileId = appDownloadUrl.split('/')[5];
+                            const directDownloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+                            
+                            // Create a temporary anchor element to trigger the download
+                            const downloadLink = document.createElement('a');
+                            downloadLink.href = directDownloadUrl;
+                            downloadLink.setAttribute('download', 'flux.apk');
+                            document.body.appendChild(downloadLink);
+                            downloadLink.click();
+                            document.body.removeChild(downloadLink);
+                            
+                            // Update button text and style after download starts
+                            const button = document.getElementById('installButton');
+                            button.innerHTML = '<span class="material-icons mr-2 text-xl">check_circle</span>Installing...';
+                            button.classList.remove('bg-blue-500', 'hover:bg-blue-600');
+                            button.classList.add('bg-green-500');
+                            
+                            // Reset button after a short delay
+                            setTimeout(() => {
+                                button.innerHTML = '<span class="material-icons mr-2 text-xl">check_circle</span>Installed';
+                            }, 2000);
+                        });
+                    </script>
                 </div>
             </div>
         </div>
@@ -211,7 +238,7 @@
 
                 <!-- Data safety -->
                 <section>
-                    <h2 class="text-2xl font-medium text-google-dark mb-4">Data safety</h2>
+                    <h2 class="text-2xl font-medium text-google-dark mb-4">Data safety </h2>
                     <p class="text-google-gray mb-6">
                         Safety starts with understanding how developers collect and share your data. Data privacy and security practices may vary based on your use, region, and age. The developer provided this information and may update it over time.
                     </p>

@@ -354,7 +354,6 @@ const VerifyPage = () => {
   };
 
   /**
-   * Fallback upload method using fetch API
    * @param {string} apiUrl - The upload URL
    * @param {FormData} formData - The form data to upload
    * @returns {Promise<boolean>} - Returns true if upload successful
