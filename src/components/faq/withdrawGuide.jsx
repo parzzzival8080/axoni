@@ -477,13 +477,41 @@ const WithdrawalGuide = () => {
       <div className="bg-gradient-to-r from-gray-50 to-orange-50 border-b border-orange-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           {/* Breadcrumb Navigation */}
-          <nav className="flex items-center space-x-2 text-gray-500 text-sm mb-4">
-            {article.breadcrumbs.map((crumb, idx) => (
-              <React.Fragment key={idx}>
-                {idx > 0 && <ChevronRight className="w-4 h-4 text-gray-400" />}
-                <span className="hover:text-orange-600 cursor-pointer transition-colors">{crumb}</span>
-              </React.Fragment>
-            ))}
+          <nav className="mb-3 sm:mb-4">
+            {/* Mobile: Show only last 2 breadcrumbs */}
+            <div className="flex items-center space-x-1 text-gray-500 text-xs sm:hidden overflow-hidden">
+              {article.breadcrumbs.length > 2 && (
+                <>
+                  <span className="text-gray-400">...</span>
+                  <ChevronRight className="w-3 h-3 text-gray-400 flex-shrink-0" />
+                </>
+              )}
+              {article.breadcrumbs.slice(-2).map((crumb, idx, arr) => (
+                <React.Fragment key={idx}>
+                  {idx > 0 && <ChevronRight className="w-3 h-3 text-gray-400 flex-shrink-0" />}
+                  <span 
+                    className={`hover:text-orange-600 cursor-pointer transition-colors truncate ${
+                      idx === arr.length - 1 ? 'max-w-[120px]' : 'max-w-[80px]'
+                    }`}
+                    title={crumb}
+                  >
+                    {crumb}
+                  </span>
+                </React.Fragment>
+              ))}
+            </div>
+            
+            {/* Desktop: Show all breadcrumbs with horizontal scroll */}
+            <div className="hidden sm:flex items-center space-x-2 text-gray-500 text-sm overflow-x-auto pb-1 scrollbar-hide">
+              <div className="flex items-center space-x-2 whitespace-nowrap">
+                {article.breadcrumbs.map((crumb, idx) => (
+                  <React.Fragment key={idx}>
+                    {idx > 0 && <ChevronRight className="w-4 h-4 text-gray-400" />}
+                    <span className="hover:text-orange-600 cursor-pointer transition-colors">{crumb}</span>
+                  </React.Fragment>
+                ))}
+              </div>
+            </div>
           </nav>
           
           {/* Category and Difficulty Tags */}

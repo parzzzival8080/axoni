@@ -51,6 +51,7 @@ const mobileMenuItems = [
       { name: 'Convert', path: '/conversion' },
       { name: 'Spot', path: '/spot-trading' },
       { name: 'Future', path: '/future-trading' },
+      {name: 'Transfer', path: '/transfer'},
     ]
   },
   { 
@@ -61,27 +62,27 @@ const mobileMenuItems = [
       { name: 'About Us', path: '/about-us' },
     ]
   },
-  { 
-    name: 'Grow', 
-    hasDropdown: true,
-    subItems: [
-      { 
-        id: 'earn_mobile_expand', // Unique ID for state management
-        name: 'Earn', 
-        path: '/earn', 
-        hasSubDropdown: true, 
-        subSubItems: [ 
-          { name: 'Simple Earn', path: '/earn/simple-earn' }
-        ]
-      },
-      // TODO: Add Loan, Jumpstart if they are primary desktop Grow items
-    ]
-  },
-  {
-    name: 'Download App',
-    path: '/download',
-    hasDropdown: false
-  },
+  // { 
+  //   name: 'Grow', 
+  //   hasDropdown: true,
+  //   subItems: [
+  //     { 
+  //       id: 'earn_mobile_expand', // Unique ID for state management
+  //       name: 'Earn', 
+  //       path: '/earn', 
+  //       hasSubDropdown: true, 
+  //       subSubItems: [ 
+  //         { name: 'Simple Earn', path: '/earn/simple-earn' }
+  //       ]
+  //     },
+  //     // TODO: Add Loan, Jumpstart if they are primary desktop Grow items
+  //   ]
+  // },
+  // {
+  //   name: 'Download App',
+  //   path: '/download',
+  //   hasDropdown: false
+  // },
 ];
 
 const Navbar = () => {

@@ -8,20 +8,23 @@ const Footer = () => {
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const [activeSections, setActiveSections] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
+  const [showTradeOnGo, setShowTradeOnGo] = useState(true);
   
   const appDownloadUrl = "https://drive.google.com/file/d/1MS5XuyVHl8QfcaIFejp4rtiiK-ocd7jx/view?usp=sharing";
 
   // Check if viewport is mobile
   useEffect(() => {
-    const checkIfMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+    const checkViewport = () => {
+      const width = window.innerWidth;
+      setIsMobile(width <= 768);
+      setShowTradeOnGo(width > 917);
     };
     
-    checkIfMobile();
-    window.addEventListener('resize', checkIfMobile);
+    checkViewport();
+    window.addEventListener('resize', checkViewport);
     
     return () => {
-      window.removeEventListener('resize', checkIfMobile);
+      window.removeEventListener('resize', checkViewport);
     };
   }, []);
 
@@ -240,24 +243,26 @@ const Footer = () => {
               </ul>
             </div>
             
-            {/* Trade on the go - Desktop Only */}
-            <div className="footer-column trade-on-go">
-              <h3 className="column-title flex flex-col items-start text-left">
-                <span>Trade on the go with</span>
-                <span>FLUX</span>
-              </h3>
-              <button className="bg-[#F88726] hover:bg-[#e67615] text-white font-medium py-2 px-6 rounded-full transition-colors duration-200 mb-2">
-                Trade
-              </button>
-              <QRCodeSVG 
-                value={appDownloadUrl}
-                size={150}
-                level={"H"}
-                includeMargin={true}
-                className="qr-code-image"
-              />
-              <p className="qr-text">Scan to download FLUX app</p>
-            </div>
+            {/* Trade on the go - Desktop Only - Hidden when width < 806px */}
+            {showTradeOnGo && (
+              <div className="footer-column trade-on-go">
+                <h3 className="column-title flex flex-col items-start text-left">
+                  <span>Trade on the go with</span>
+                  <span>FLUX</span>
+                </h3>
+                <button className="bg-[#F88726] hover:bg-[#e67615] text-white font-medium py-2 px-6 rounded-full transition-colors duration-200 mb-2">
+                  Trade
+                </button>
+                <QRCodeSVG 
+                  value={appDownloadUrl}
+                  size={150}
+                  level={"H"}
+                  includeMargin={true}
+                  className="qr-code-image"
+                />
+                <p className="qr-text">Scan to download FLUX app</p>
+              </div>
+            )}
           </div>
         )}
         
