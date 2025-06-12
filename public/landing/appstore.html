@@ -289,8 +289,22 @@
                     <script>
                         function isInAppBrowser() {
                             const ua = navigator.userAgent.toLowerCase();
-                            console.log("User Agent:", ua);
-                            return ua.includes("telegram") || ua.includes("instagram") || ua.includes("fbav") || ua.includes("tg");
+
+                            // Common in-app browser identifiers
+                            const inAppPatterns = [
+                                "fbav", // Facebook
+                                "instagram", // Instagram
+                                "twitter", // Twitter
+                                "linkedin", // LinkedIn
+                                "pinterest", // Pinterest
+                                "snapchat", // Snapchat
+                                "line", // LINE
+                                "telegram", // Telegram
+                                "tiktok", // TikTok
+                                "webview" // Generic
+                            ];
+
+                            return inAppPatterns.some(pattern => ua.includes(pattern));
                         }
 
                         function showInAppPrompt() {
@@ -311,7 +325,7 @@ To download, please open this page in Safari:
                                 return false;
                             }
 
-                            // your existing download logic here
+                            // Your download logic here
                             window.open('https://apiv2.bhtokens.com/api/v1/download-ios', '_blank', 'noopener,noreferrer');
                             return false;
                         }
