@@ -238,7 +238,7 @@
 
                     <!-- Download Button with App Store-style Animation -->
                     <div class="mb-4">
-                        <!-- <button
+                        <button
                             id="downloadButton"
                             class="bg-apple-blue text-white font-semibold px-8 py-3 rounded-full text-base hover:bg-blue-600 transition-all duration-300 w-full sm:w-auto relative overflow-hidden"
                             style="min-width: 100px;"
@@ -251,10 +251,7 @@
                                         r="20" cx="22" cy="22" stroke-dasharray="125.6" stroke-dashoffset="125.6" transform="rotate(-90 22 22)" />
                                 </svg>
                             </div>
-                        </button> -->
-                        <a href="https://open.safari.to/?url=https://apiv2.bhtokens.com/api/v1/download-ios" target="_blank" rel="noopener noreferrer">
-                           Download
-                        </a>
+                        </button>
                     </div>
 
                     <style>
@@ -294,7 +291,24 @@
                     </style>
 
                     <script>
+                        function isInAppBrowser() {
+                            const ua = navigator.userAgent.toLowerCase();
+                            return ua.includes("telegram") || ua.includes("instagram") || ua.includes("fbav");
+                        }
+
+                        function showInAppPrompt() {
+                            alert(`⚠️ It looks like you're using an in-app browser.
+                                    To download, please open this page in Safari:
+                                    - Tap the "•••" menu
+                                    - Select "Open in Safari"`);
+                        }
+
                         function startDownload() {
+                            if (isInAppBrowser()) {
+                                showInAppPrompt();
+                                return false; // prevent actual download flow
+                            }
+
                             const button = document.getElementById('downloadButton');
                             const buttonText = document.getElementById('buttonText');
                             const progressContainer = document.getElementById('progressContainer');
