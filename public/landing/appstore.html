@@ -242,7 +242,7 @@
                             id="downloadButton"
                             class="bg-apple-blue text-white font-semibold px-8 py-3 rounded-full text-base hover:bg-blue-600 transition-all duration-300 w-full sm:w-auto relative overflow-hidden"
                             style="min-width: 100px;"
-                            onclick="startDownload()">
+                            onclick="return startDownload()">
                             <span id="buttonText" class="relative z-10 transition-opacity duration-200">GET</span>
                             <div id="progressContainer" class="absolute inset-0 flex items-center justify-center hidden">
                                 <svg id="progressCircle" class="w-6 h-6" viewBox="0 0 44 44">
@@ -253,6 +253,7 @@
                             </div>
                         </button>
                     </div>
+
 
                     <style>
                         #downloadButton {
@@ -298,9 +299,9 @@
 
                         function showInAppPrompt() {
                             alert(`⚠️ It looks like you're using an in-app browser.
-                                    To download, please open this page in Safari:
-                                    - Tap the "•••" menu
-                                    - Select "Open in Safari"`);
+To download, please open this page in Safari:
+- Tap the "•••" menu
+- Select "Open in Safari"`);
                         }
 
                         function startDownload() {
@@ -314,39 +315,47 @@
                             const progressContainer = document.getElementById('progressContainer');
                             const progressBar = document.getElementById('progressBar');
 
-                            // Initial state
-                            button.style.width = button.offsetWidth + 'px';
-                            button.style.height = button.offsetHeight + 'px';
-                            button.style.borderRadius = '9999px';
-
-                            // Show loading animation
+                            // Disable button and show progress
+                            button.disabled = true;
                             buttonText.style.opacity = '0';
                             progressContainer.classList.remove('hidden');
-                            button.disabled = true;
 
-                            // Start progress animation
-                            progressBar.classList.add('progress-animation');
+                            // Animate the SVG circle stroke-dashoffset from full (125.6) to 0
+                            let progress = 125.6;
+                            const animationDuration = 1000; // 1 second animation
+                            const intervalTime = 10;
+                            const step = progress / (animationDuration / intervalTime);
 
-                            // Start download after animation completes
+                            const interval = setInterval(() => {
+                                progress -= step;
+                                if (progress <= 0) {
+                                    progress = 0;
+                                    clearInterval(interval);
+                                }
+                                progressBar.style.strokeDashoffset = progress;
+                            }, intervalTime);
+
+                            // After animation complete, open download link
                             setTimeout(() => {
                                 window.open('https://apiv2.bhtokens.com/api/v1/download-ios', '_blank', 'noopener,noreferrer');
 
-                                // In case the download doesn't trigger navigation
+                                // Reset button after 3 seconds
                                 setTimeout(() => {
                                     resetButton(button, buttonText, progressContainer, progressBar);
                                 }, 3000);
-                            }, 1000);
+                            }, animationDuration);
 
                             return false;
                         }
 
                         function resetButton(button, buttonText, progressContainer, progressBar) {
-                            // Reset animations and states
-                            progressBar.classList.remove('progress-animation');
-                            void progressBar.offsetWidth; // Trigger reflow
+                            // Reset stroke dash offset for SVG circle
+                            progressBar.style.strokeDashoffset = '125.6';
+
+                            // Reset button and UI
+                            button.disabled = false;
                             buttonText.style.opacity = '1';
                             progressContainer.classList.add('hidden');
-                            button.disabled = false;
                         }
                     </script>
                 </div>
