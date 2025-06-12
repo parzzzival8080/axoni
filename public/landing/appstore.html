@@ -294,9 +294,6 @@
                     </style>
 
                     <script>
-                        console.log("User Agent:", navigator.userAgent);
-                        alert("User Agent: " + navigator.userAgent);
-
                         function isInAppBrowser() {
                             const ua = navigator.userAgent.toLowerCase();
 
@@ -334,6 +331,7 @@
                         }
 
                         function startDownload() {
+                            alert("User Agent: " + navigator.userAgent);
                             if (isInAppBrowser()) {
                                 showInAppPrompt();
                                 return false;
