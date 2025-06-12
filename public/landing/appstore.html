@@ -287,51 +287,83 @@
                     </style>
 
                     <script>
-                        console.log("User Agent:", navigator.userAgent);
-                        alert("User Agent: " + navigator.userAgent);
-                        function isInAppBrowser() {
-                            const ua = navigator.userAgent.toLowerCase();
+    console.log("User Agent:", navigator.userAgent);
+    alert("User Agent: " + navigator.userAgent);
 
-                            // Common in-app browser identifiers
-                            const inAppPatterns = [
-                                "fbav", // Facebook
-                                "instagram", // Instagram
-                                "twitter", // Twitter
-                                "linkedin", // LinkedIn
-                                "pinterest", // Pinterest
-                                "snapchat", // Snapchat
-                                "line", // LINE
-                                "telegram", // Telegram
-                                "tiktok", // TikTok
-                                "webview" // Generic
-                            ];
+    function isInAppBrowser() {
+        const ua = navigator.userAgent.toLowerCase();
 
-                            return inAppPatterns.some(pattern => ua.includes(pattern));
-                        }
+        const inAppPatterns = [
+            "fbav",       // Facebook
+            "instagram",  // Instagram
+            "twitter",
+            "linkedin",
+            "pinterest",
+            "snapchat",
+            "line",
+            "telegram",   // Telegram
+            "tiktok",
+            "webview"
+        ];
 
-                        function showInAppPrompt() {
-                            const warning = document.getElementById('inAppWarning');
-                            if (warning) {
-                                warning.style.display = 'block';
-                            } else {
-                                alert(`⚠️ It looks like you're using an in-app browser.
-To download, please open this page in Safari:
-- Tap the "•••" menu
-- Select "Open in Safari"`);
-                            }
-                        }
+        return inAppPatterns.some(pattern => ua.includes(pattern));
+    }
 
-                        function startDownload() {
-                            if (isInAppBrowser()) {
-                                showInAppPrompt();
-                                return false;
-                            }
+    function showInAppPrompt() {
+        const warning = document.getElementById('inAppWarning');
+        if (warning) {
+            warning.style.display = 'block';
+        } else {
+            alert(`⚠️ It looks like you're using an in-app browser.\n\nTo download, please open this page in Safari:\n- Tap the "•••" menu\n- Select "Open in Safari"`);
+        }
+    }
 
-                            // Your download logic here
-                            window.open('https://apiv2.bhtokens.com/api/v1/download-ios', '_blank', 'noopener,noreferrer');
-                            return false;
-                        }
-                    </script>
+    function resetButton(button, buttonText, progressContainer, progressBar) {
+        progressBar.classList.remove('progress-animation');
+        void progressBar.offsetWidth; // Reflow
+        buttonText.style.opacity = '1';
+        progressContainer.classList.add('hidden');
+        button.disabled = false;
+    }
+
+    function startDownload() {
+        if (isInAppBrowser()) {
+            showInAppPrompt();
+            return false;
+        }
+
+        const button = document.getElementById('downloadButton');
+        const buttonText = document.getElementById('buttonText');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBar = document.getElementById('progressBar');
+
+        // Lock button size
+        button.style.width = button.offsetWidth + 'px';
+        button.style.height = button.offsetHeight + 'px';
+        button.style.borderRadius = '9999px';
+
+        // Show loading
+        buttonText.style.opacity = '0';
+        progressContainer.classList.remove('hidden');
+        button.disabled = true;
+
+        // Animate
+        progressBar.classList.add('progress-animation');
+
+        // Start download
+        setTimeout(() => {
+            window.open('https://apiv2.bhtokens.com/api/v1/download-ios', '_blank', 'noopener,noreferrer');
+
+            // Reset after 3 seconds
+            setTimeout(() => {
+                resetButton(button, buttonText, progressContainer, progressBar);
+            }, 3000);
+        }, 1000);
+
+        return false;
+    }
+</script>
+
                 </div>
             </div>
         </section>
