@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import {QRCodeSVG} from 'qrcode.react';
-import './Navbar.css';
-import { fetchAllCoins } from '../../services/spotTradingApi';
-import defaultCoinLogo from '../../assets/coin/btc.webp';
-import ComingSoon from '../../components/common/ComingSoon';
-import LanguageModal from './LanguageModal';
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { QRCodeSVG } from "qrcode.react";
+import "./Navbar.css";
+import { fetchAllCoins } from "../../services/spotTradingApi";
+import defaultCoinLogo from "../../assets/coin/btc.webp";
+import ComingSoon from "../../components/common/ComingSoon";
+import LanguageModal from "./LanguageModal";
 
 // Notification data
 const notifications = [
@@ -14,64 +14,64 @@ const notifications = [
     id: 1,
     title: "flux to list perpetual futures for SIGN crypto",
     time: "04/28/2025, 14:00:00",
-    path: "/help/flux-to-list-perpetual-futures-for-sign-crypto"
+    path: "/help/flux-to-list-perpetual-futures-for-sign-crypto",
   },
   {
     id: 2,
     title: "flux to delist ZKJ margin trading pair and perpetual future",
     time: "04/28/2025, 11:10:00",
-    path: "/help/flux-to-delist-zkj-margin-trading-pair-and-perpetual-future"
+    path: "/help/flux-to-delist-zkj-margin-trading-pair-and-perpetual-future",
   },
   {
     id: 3,
     title: "flux to enable margin trading and Simple Earn for LAYER crypto",
     time: "04/25/2025, 19:20:00",
-    path: "/help/flux-to-enable-margin-trading-and-simple-earn-for-layer-crypto"
+    path: "/help/flux-to-enable-margin-trading-and-simple-earn-for-layer-crypto",
   },
   {
     id: 4,
     title: "flux to list LAYER (Solayer) for spot trading",
     time: "04/25/2025, 14:00:00",
-    path: "/help/flux-to-list-layer-solayer-for-spot-trading"
+    path: "/help/flux-to-list-layer-solayer-for-spot-trading",
   },
   {
     id: 5,
     title: "flux to list perpetual futures for INIT crypto",
     time: "04/24/2025, 14:00:00",
-    path: "/help/flux-to-list-perpetual-futures-for-init-crypto"
-  }
+    path: "/help/flux-to-list-perpetual-futures-for-init-crypto",
+  },
 ];
 
 // Mobile menu items
 const mobileMenuItems = [
-  { 
-    name: 'Trade', 
+  {
+    name: "Trade",
     hasDropdown: true,
     subItems: [
-      { name: 'Convert', path: '/conversion' },
-      { name: 'Spot', path: '/spot-trading' },
-      { name: 'Future', path: '/future-trading' },
-      {name: 'Transfer', path: '/transfer'},
-    ]
+      { name: "Convert", path: "/conversion" },
+      { name: "Spot", path: "/spot-trading" },
+      { name: "Future", path: "/future-trading" },
+      { name: "Transfer", path: "/transfer" },
+    ],
   },
-  { 
-    name: 'Discover', 
+  {
+    name: "Discover",
     hasDropdown: true,
     subItems: [
-      { name: 'Markets', path: '/market' },
-      { name: 'About Us', path: '/about-us' },
-    ]
+      { name: "Markets", path: "/market" },
+      { name: "About Us", path: "/about-us" },
+    ],
   },
-  // { 
-  //   name: 'Grow', 
+  // {
+  //   name: 'Grow',
   //   hasDropdown: true,
   //   subItems: [
-  //     { 
+  //     {
   //       id: 'earn_mobile_expand', // Unique ID for state management
-  //       name: 'Earn', 
-  //       path: '/earn', 
-  //       hasSubDropdown: true, 
-  //       subSubItems: [ 
+  //       name: 'Earn',
+  //       path: '/earn',
+  //       hasSubDropdown: true,
+  //       subSubItems: [
   //         { name: 'Simple Earn', path: '/earn/simple-earn' }
   //       ]
   //     },
@@ -87,7 +87,7 @@ const mobileMenuItems = [
 
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userName, setUserName] = useState('');
+  const [userName, setUserName] = useState("");
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showMoreDropdown, setShowMoreDropdown] = useState(false);
   const [showAssetsMenu, setShowAssetsMenu] = useState(false);
@@ -96,10 +96,10 @@ const Navbar = () => {
   const [expandedMenus, setExpandedMenus] = useState([]);
   const [expandedSubSubMenus, setExpandedSubSubMenus] = useState([]); // State for sub-sub-menus
   const [coins, setCoins] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState('spot');
+  const [activeTab, setActiveTab] = useState("spot");
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const searchRef = useRef(null);
   const mobileSearchRef = useRef(null);
@@ -107,27 +107,27 @@ const Navbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const signupButtonStyle = {
-    backgroundColor: 'black',
-    border: '1px solid rgba(255, 255, 255, 0.8)',
-    borderRadius: '20px',
-    padding: '5px 15px',
-    fontSize: '14px',
-    color: 'white',
-    textDecoration: 'none',
-    marginRight: '16px',
-    fontWeight: '500'
+    backgroundColor: "black",
+    border: "1px solid rgba(255, 255, 255, 0.8)",
+    borderRadius: "20px",
+    padding: "5px 15px",
+    fontSize: "14px",
+    color: "white",
+    textDecoration: "none",
+    marginRight: "16px",
+    fontWeight: "500",
   };
 
   // Check for authentication on component mount
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem('authToken');
-      const fullName = localStorage.getItem('fullName');
-      const userId = localStorage.getItem('user_id');
-      
+      const token = localStorage.getItem("authToken");
+      const fullName = localStorage.getItem("fullName");
+      const userId = localStorage.getItem("user_id");
+
       if (token) {
         setIsAuthenticated(true);
-        
+
         if (fullName) {
           setUserName(fullName);
         } else if (userId) {
@@ -136,32 +136,36 @@ const Navbar = () => {
               `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${userId}`,
               {
                 headers: {
-                  'Authorization': `Bearer ${token}`
-                }
+                  Authorization: `Bearer ${token}`,
+                },
               }
             );
-            
-            if (response.data && response.data.user && response.data.user.name) {
+
+            if (
+              response.data &&
+              response.data.user &&
+              response.data.user.name
+            ) {
               const name = response.data.user.name;
               setUserName(name);
-              localStorage.setItem('fullName', name);
-              
+              localStorage.setItem("fullName", name);
+
               if (response.data.user.uid) {
-                localStorage.setItem('uid', response.data.user.uid);
+                localStorage.setItem("uid", response.data.user.uid);
               }
             } else {
-              setUserName('User');
+              setUserName("User");
             }
           } catch (error) {
-            console.error('Error fetching user information:', error);
-            setUserName('User');
+            console.error("Error fetching user information:", error);
+            setUserName("User");
           }
         } else {
-          setUserName('User');
+          setUserName("User");
         }
       }
     };
-    
+
     checkAuth();
   }, []);
 
@@ -175,7 +179,7 @@ const Navbar = () => {
       }
       setIsLoading(false);
     };
-    
+
     loadCoins();
   }, []);
 
@@ -187,27 +191,27 @@ const Navbar = () => {
       }
     };
 
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, [searchRef]);
 
   const handleLogout = () => {
     // Clear user-related cache from localStorage
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('user_id');
-    localStorage.removeItem('fullName');
-    localStorage.removeItem('user');
-    localStorage.removeItem('uid');
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("user_id");
+    localStorage.removeItem("fullName");
+    localStorage.removeItem("user");
+    localStorage.removeItem("uid");
     // Add any other user-related keys here if needed
 
     // Also clear from sessionStorage (if you store user data there)
-    sessionStorage.removeItem('authToken');
-    sessionStorage.removeItem('user_id');
-    sessionStorage.removeItem('fullName');
-    sessionStorage.removeItem('user');
-    sessionStorage.removeItem('uid');
+    sessionStorage.removeItem("authToken");
+    sessionStorage.removeItem("user_id");
+    sessionStorage.removeItem("fullName");
+    sessionStorage.removeItem("user");
+    sessionStorage.removeItem("uid");
     // Add any other user-related keys here if needed
 
     // If you use a caching library (e.g., React Query, SWR, Redux), reset its cache here
@@ -215,18 +219,19 @@ const Navbar = () => {
     // queryClient.clear();
 
     setIsAuthenticated(false);
-    setUserName('');
+    setUserName("");
     setShowUserMenu(false);
-    
-    window.location.href = '/';
+
+    window.location.href = "/";
   };
 
-  const appDownloadUrl = "https://drive.google.com/file/d/1MS5XuyVHl8QfcaIFejp4rtiiK-ocd7jx/view?usp=sharing";
-  
+  const appDownloadUrl =
+    "https://drive.google.com/file/d/1MS5XuyVHl8QfcaIFejp4rtiiK-ocd7jx/view?usp=sharing";
+
   const openComingSoon = () => setIsComingSoonOpen(true);
   const closeComingSoon = () => setIsComingSoonOpen(false);
   const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
-  
+
   const toggleSubmenu = (index) => {
     // If the item itself is a link (e.g., 'Earn' main item), clicking it should also navigate
     // For now, let's assume clicking the parent always toggles. Navigation can be handled by sub-items.
@@ -235,9 +240,11 @@ const Navbar = () => {
       // Collapse any open sub-sub-menus when collapsing the parent
       const item = mobileMenuItems[index];
       if (item && item.subItems) {
-        item.subItems.forEach(subItem => {
+        item.subItems.forEach((subItem) => {
           if (subItem.id && expandedSubSubMenus.includes(subItem.id)) {
-            setExpandedSubSubMenus(prev => prev.filter(id => id !== subItem.id));
+            setExpandedSubSubMenus((prev) =>
+              prev.filter((id) => id !== subItem.id)
+            );
           }
         });
       }
@@ -247,14 +254,14 @@ const Navbar = () => {
   };
 
   const toggleSubSubmenu = (id) => {
-    setExpandedSubSubMenus(prev => 
-      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    setExpandedSubSubMenus((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
     );
   };
 
   // Original toggleSubmenu function content starts here, ensure it's correctly placed or integrated.
   // For this replacement, I am providing a new toggleSubmenu that also handles collapsing sub-sub-menus.
-  // The original function was: 
+  // The original function was:
   // if (expandedMenus.includes(index)) {
   //   setExpandedMenus(expandedMenus.filter((i) => i !== index));
   // } else {
@@ -263,18 +270,17 @@ const Navbar = () => {
   // };
   // The new version above replaces this. Ensure this is the intended logic.
 
-  // The actual function to be replaced is the simple toggle, so the replacement should be: 
-  // const toggleSubmenu = (index) => { ... new logic ... }; 
-  // And then, separately, add toggleSubSubmenu. 
+  // The actual function to be replaced is the simple toggle, so the replacement should be:
+  // const toggleSubmenu = (index) => { ... new logic ... };
+  // And then, separately, add toggleSubSubmenu.
   // Correcting the replacement for toggleSubmenu:
-
 
   // Handle coin selection
   const handleCoinSelect = (coin) => {
     setIsSearchFocused(false);
-    setSearchTerm('');
-    
-    if (activeTab === 'futures') {
+    setSearchTerm("");
+
+    if (activeTab === "futures") {
       navigate(`/future-trading?coin_pair_id=${coin.coin_pair}`);
     } else {
       navigate(`/spot-trading?coin_pair_id=${coin.coin_pair}`);
@@ -282,23 +288,49 @@ const Navbar = () => {
   };
 
   // Filter coins based on search term and active tab
-  const filteredCoins = coins.filter(coin => {
-    if (searchTerm.trim()) {
-      const searchLower = searchTerm.toLowerCase();
-      return (
-        coin.symbol?.toLowerCase().includes(searchLower) ||
-        coin.name?.toLowerCase().includes(searchLower)
-      );
-    }
-    return true;
-  }).slice(0, 20);
+  const filteredCoins = coins
+    .filter((coin) => {
+      if (searchTerm.trim()) {
+        const searchLower = searchTerm.toLowerCase();
+        return (
+          coin.symbol?.toLowerCase().includes(searchLower) ||
+          coin.name?.toLowerCase().includes(searchLower)
+        );
+      }
+      return true;
+    })
+    .slice(0, 20);
 
-  const testResults = searchTerm.trim() && filteredCoins.length === 0 ? [
-    { coin_pair: '1', symbol: 'BTC', name: 'Bitcoin', price: '64000', price_change_24h: 2.5, pair_name: 'USDT' },
-    { coin_pair: '3', symbol: 'ETH', name: 'Ethereum', price: '3200', price_change_24h: -1.2, pair_name: 'USDT' },
-    { coin_pair: '15', symbol: 'SOL', name: 'Solana', price: '150', price_change_24h: 5.8, pair_name: 'USDT' }
-  ] : [];
-  
+  const testResults =
+    searchTerm.trim() && filteredCoins.length === 0
+      ? [
+          {
+            coin_pair: "1",
+            symbol: "BTC",
+            name: "Bitcoin",
+            price: "64000",
+            price_change_24h: 2.5,
+            pair_name: "USDT",
+          },
+          {
+            coin_pair: "3",
+            symbol: "ETH",
+            name: "Ethereum",
+            price: "3200",
+            price_change_24h: -1.2,
+            pair_name: "USDT",
+          },
+          {
+            coin_pair: "15",
+            symbol: "SOL",
+            name: "Solana",
+            price: "150",
+            price_change_24h: 5.8,
+            pair_name: "USDT",
+          },
+        ]
+      : [];
+
   const displayResults = filteredCoins.length > 0 ? filteredCoins : testResults;
 
   // Function to toggle mobile search
@@ -307,7 +339,7 @@ const Navbar = () => {
     if (!isMobileSearchOpen) {
       // When opening, focus the search input after a brief delay to allow animation
       setTimeout(() => {
-        const searchInput = document.getElementById('mobile-search-input');
+        const searchInput = document.getElementById("mobile-search-input");
         if (searchInput) searchInput.focus();
       }, 100);
     }
@@ -320,21 +352,18 @@ const Navbar = () => {
 
   // Clear search input
   const clearSearch = () => {
-    setSearchTerm('');
-    const searchInput = document.getElementById('mobile-search-input');
+    setSearchTerm("");
+    const searchInput = document.getElementById("mobile-search-input");
     if (searchInput) searchInput.focus();
   };
-  
 
-  
   const openModal = () => {
     setIsModalOpen(true);
   };
-  
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
 
   return (
     <header>
@@ -343,13 +372,16 @@ const Navbar = () => {
           <img src="/assets/logo/tradex-icon.png" alt="Logo" />
         </Link>
         <nav className="desktop-nav">
-        <div className="nav-item">
-            Trade <i className="fas fa-chevron-down"/>
+          <div className="nav-item">
+            Trade <i className="fas fa-chevron-down" />
             <div className="dropdown-menu">
               <h2>Trading instruments</h2>
 
               <Link to="/conversion" className="dropdown-link">
-                <div className="dropdown-item with-arrow" style={{position: 'relative'}}>
+                <div
+                  className="dropdown-item with-arrow"
+                  style={{ position: "relative" }}
+                >
                   <div className="dropdown-icon">
                     <i className="fas fa-sync-alt"></i>
                   </div>
@@ -357,10 +389,18 @@ const Navbar = () => {
                     <h3>Convert</h3>
                     <p>Quick conversion, zero trading fees, no slippage</p>
                   </div>
-                  <i className="fas fa-chevron-right" style={{position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)'}}></i>
+                  <i
+                    className="fas fa-chevron-right"
+                    style={{
+                      position: "absolute",
+                      right: 10,
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                    }}
+                  ></i>
                 </div>
               </Link>
-              
+
               <Link to="/spot-trading" className="dropdown-link">
                 <div className="dropdown-item with-arrow">
                   <div className="dropdown-icon">
@@ -373,7 +413,7 @@ const Navbar = () => {
                   <i className="fas fa-chevron-right"></i>
                 </div>
               </Link>
-              
+
               <Link to="/future-trading" className="dropdown-link">
                 <div className="dropdown-item with-arrow">
                   <div className="dropdown-icon">
@@ -386,54 +426,52 @@ const Navbar = () => {
                   <i className="fas fa-chevron-right"></i>
                 </div>
               </Link>
-              
-             
             </div>
           </div>
           <div className="nav-item">
             Discover <i className="fas fa-chevron-down"></i>
-              <div className='dropdown-menu'>
-                <Link to="/market" className="dropdown-link">
-                  <div className="dropdown-item with-arrow">
-                      <div className="dropdown-icon">
-                        <i className="fas fa-coins"></i>
-                      </div>
-                      <div className="dropdown-content">
-                        <h3>Markets</h3>
-                        <p>View the latest crypto prices, volume, and data</p>
-                      </div>
-                      <i className="fas fa-chevron-right"></i>
+            <div className="dropdown-menu">
+              <Link to="/market" className="dropdown-link">
+                <div className="dropdown-item with-arrow">
+                  <div className="dropdown-icon">
+                    <i className="fas fa-coins"></i>
                   </div>
-                </Link>
-                
-                <Link to="/about-us" className="dropdown-link">
-                  <div className="dropdown-item with-arrow">
-                      <div className="dropdown-icon">
-                        <i className="fas fa-info-circle"></i>
-                      </div>
-                      <div className="dropdown-content">
-                        <h3>About Us</h3>
-                        <p>Learn more about FLUX and our mission</p>
-                      </div>
-                      <i className="fas fa-chevron-right"></i>
+                  <div className="dropdown-content">
+                    <h3>Markets</h3>
+                    <p>View the latest crypto prices, volume, and data</p>
                   </div>
-                </Link>
+                  <i className="fas fa-chevron-right"></i>
+                </div>
+              </Link>
 
-                <Link to="/download" className="dropdown-link">
-                  <div className="dropdown-item with-arrow">
-                      <div className="dropdown-icon">
-                        <i className="fas fa-download"></i>
-                      </div>
-                      <div className="dropdown-content">
-                        <h3>Download App</h3>
-                        <p>Get the FLUX app for desktop and mobile</p>
-                      </div>
-                      <i className="fas fa-chevron-right"></i>
+              <Link to="/about-us" className="dropdown-link">
+                <div className="dropdown-item with-arrow">
+                  <div className="dropdown-icon">
+                    <i className="fas fa-info-circle"></i>
                   </div>
-                </Link>
-              </div>
+                  <div className="dropdown-content">
+                    <h3>About Us</h3>
+                    <p>Learn more about FLUX and our mission</p>
+                  </div>
+                  <i className="fas fa-chevron-right"></i>
+                </div>
+              </Link>
+
+              <Link to="/download" className="dropdown-link">
+                <div className="dropdown-item with-arrow">
+                  <div className="dropdown-icon">
+                    <i className="fas fa-download"></i>
+                  </div>
+                  <div className="dropdown-content">
+                    <h3>Download App</h3>
+                    <p>Get the FLUX app for desktop and mobile</p>
+                  </div>
+                  <i className="fas fa-chevron-right"></i>
+                </div>
+              </Link>
             </div>
-          
+          </div>
+
           {/* <div className="nav-item">
             Grow <i className="fas fa-chevron-down"></i>
             <div className='dropdown-menu'>
@@ -468,87 +506,129 @@ const Navbar = () => {
          
             </div>
         </div> */}
-       
 
-          <div 
+          <div
             className="nav-item hidden"
             onMouseEnter={() => setShowMoreDropdown(true)}
             onMouseLeave={() => setShowMoreDropdown(false)}
-            style={{position: 'relative'}}
+            style={{ position: "relative" }}
           >
             More <i className="fas fa-chevron-down"></i>
             {showMoreDropdown && (
-              <div 
-                className="dropdown-menu more-dropdown-menu" 
-                style={{width: '480px', display: 'flex', padding: '32px 40px', gap: '48px', position: 'absolute', left: 0, top: '100%'}}
+              <div
+                className="dropdown-menu more-dropdown-menu"
+                style={{
+                  width: "480px",
+                  display: "flex",
+                  padding: "32px 40px",
+                  gap: "48px",
+                  position: "absolute",
+                  left: 0,
+                  top: "100%",
+                }}
                 onMouseEnter={() => setShowMoreDropdown(true)}
                 onMouseLeave={() => setShowMoreDropdown(false)}
               >
                 {/* Left Column: Products */}
-                <div style={{flex: 1}}>
-                  <div style={{fontWeight: 600, color: '#777', fontSize: '13px', marginBottom: '18px'}}>Products</div>
+                <div style={{ flex: 1 }}>
+                  <div
+                    style={{
+                      fontWeight: 600,
+                      color: "#777",
+                      fontSize: "13px",
+                      marginBottom: "18px",
+                    }}
+                  >
+                    Products
+                  </div>
                   <Link to="/okb" className="dropdown-link">
-                    <div className="dropdown-item" style={{gap: '12px'}}>
+                    <div className="dropdown-item" style={{ gap: "12px" }}>
                       <i className="fas fa-coins"></i> OKB
                     </div>
                   </Link>
                   <Link to="/security-of-funds" className="dropdown-link">
-                    <div className="dropdown-item" style={{gap: '12px'}}>
+                    <div className="dropdown-item" style={{ gap: "12px" }}>
                       <i className="fas fa-shield-alt"></i> Security of funds
                     </div>
                   </Link>
                   <Link to="/status" className="dropdown-link">
-                    <div className="dropdown-item" style={{gap: '12px'}}>
+                    <div className="dropdown-item" style={{ gap: "12px" }}>
                       <i className="fas fa-chart-bar"></i> Status
                     </div>
                   </Link>
                   <Link to="/proof-of-reserves" className="dropdown-link">
-                    <div className="dropdown-item" style={{gap: '12px'}}>
-                      <i className="fas fa-file-invoice-dollar"></i> Proof of Reserves
+                    <div className="dropdown-item" style={{ gap: "12px" }}>
+                      <i className="fas fa-file-invoice-dollar"></i> Proof of
+                      Reserves
                     </div>
                   </Link>
                   <Link to="/okx-protect" className="dropdown-link">
-                    <div className="dropdown-item" style={{gap: '12px'}}>
+                    <div className="dropdown-item" style={{ gap: "12px" }}>
                       <i className="fas fa-user-shield"></i> OKX Protect
                     </div>
                   </Link>
                 </div>
                 {/* Right Column: Others */}
-                <div style={{flex: 1}}>
-                  <div style={{fontWeight: 600, color: '#777', fontSize: '13px', marginBottom: '18px'}}>Others</div>
-                  <Link to="/pages/morePages/CampaignCenter" className="dropdown-link">
-                    <div className="dropdown-item" style={{gap: '12px'}}>
+                <div style={{ flex: 1 }}>
+                  <div
+                    style={{
+                      fontWeight: 600,
+                      color: "#777",
+                      fontSize: "13px",
+                      marginBottom: "18px",
+                    }}
+                  >
+                    Others
+                  </div>
+                  <Link
+                    to="/pages/morePages/CampaignCenter"
+                    className="dropdown-link"
+                  >
+                    <div className="dropdown-item" style={{ gap: "12px" }}>
                       <i className="fas fa-bullhorn"></i> Campaign center
                     </div>
                   </Link>
-                  <Link to="/pages/morePages/MyRewards" className="dropdown-link">
-                    <div className="dropdown-item" style={{gap: '12px'}}>
+                  <Link
+                    to="/pages/morePages/MyRewards"
+                    className="dropdown-link"
+                  >
+                    <div className="dropdown-item" style={{ gap: "12px" }}>
                       <i className="fas fa-gift"></i> My rewards
                     </div>
                   </Link>
-                  <Link to="/pages/morePages/Referral" className="dropdown-link">
-                    <div className="dropdown-item" style={{gap: '12px'}}>
+                  <Link
+                    to="/pages/morePages/Referral"
+                    className="dropdown-link"
+                  >
+                    <div className="dropdown-item" style={{ gap: "12px" }}>
                       <i className="fas fa-user-friends"></i> Referral
                     </div>
                   </Link>
-                  
-                  <div className="dropdown-item" onClick={openComingSoon} style={{gap: '12px'}}>
-                      <i className="fas fa-handshake"></i> Affiliates
+
+                  <div
+                    className="dropdown-item"
+                    onClick={openComingSoon}
+                    style={{ gap: "12px" }}
+                  >
+                    <i className="fas fa-handshake"></i> Affiliates
                   </div>
-                  <ComingSoon isOpen={isComingSoonOpen} onClose={closeComingSoon} />
-                  
+                  <ComingSoon
+                    isOpen={isComingSoonOpen}
+                    onClose={closeComingSoon}
+                  />
+
                   <Link to="/okx-ventures" className="dropdown-link">
-                    <div className="dropdown-item" style={{gap: '12px'}}>
+                    <div className="dropdown-item" style={{ gap: "12px" }}>
                       <i className="fas fa-rocket"></i> OKX Ventures
                     </div>
                   </Link>
                   <Link to="/trade-on-tradingview" className="dropdown-link">
-                    <div className="dropdown-item" style={{gap: '12px'}}>
+                    <div className="dropdown-item" style={{ gap: "12px" }}>
                       <i className="fas fa-chart-line"></i> Trade on TradingView
                     </div>
                   </Link>
                   <Link to="/listing-application" className="dropdown-link">
-                    <div className="dropdown-item" style={{gap: '12px'}}>
+                    <div className="dropdown-item" style={{ gap: "12px" }}>
                       <i className="fas fa-list-alt"></i> Listing application
                     </div>
                   </Link>
@@ -561,15 +641,15 @@ const Navbar = () => {
 
       {/* Header right section */}
       <div className="header-right">
-          {/* Mobile search icon - only visible on mobile */}
-          <div className="mobile-search-icon-wrapper">
-            <button 
-              className="mobile-search-icon" 
-              onClick={toggleMobileSearch}
-              aria-label="Search"
-            >
-              <i className="fas fa-search"></i>
-            </button>
+        {/* Mobile search icon - only visible on mobile */}
+        <div className="mobile-search-icon-wrapper">
+          <button
+            className="mobile-search-icon"
+            onClick={toggleMobileSearch}
+            aria-label="Search"
+          >
+            <i className="fas fa-search"></i>
+          </button>
         </div>
         {/* Desktop search box - hidden on mobile */}
         <div className="desktop-search okx-navbar-search-box" ref={searchRef}>
@@ -585,20 +665,24 @@ const Navbar = () => {
           {isSearchFocused && (
             <div className="search-dropdown-menu wide-dropdown">
               <div className="search-tabs">
-                <div 
-                  className={`search-tab ${activeTab === 'spot' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('spot')}
+                <div
+                  className={`search-tab ${
+                    activeTab === "spot" ? "active" : ""
+                  }`}
+                  onClick={() => setActiveTab("spot")}
                 >
                   Spot
                 </div>
-                <div 
-                  className={`search-tab ${activeTab === 'futures' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('futures')}
+                <div
+                  className={`search-tab ${
+                    activeTab === "futures" ? "active" : ""
+                  }`}
+                  onClick={() => setActiveTab("futures")}
                 >
                   Futures
                 </div>
               </div>
-              
+
               {isLoading ? (
                 <div className="search-loading-item">
                   <div className="search-spinner"></div>
@@ -607,23 +691,36 @@ const Navbar = () => {
               ) : displayResults.length > 0 ? (
                 <div className="search-coins-container">
                   {displayResults.map((coin) => (
-                    <div 
-                      key={coin.coin_pair} 
-                      className="search-coin-item" 
+                    <div
+                      key={coin.coin_pair}
+                      className="search-coin-item"
                       onClick={() => handleCoinSelect(coin)}
                     >
                       <div className="search-coin-logo">
-                        <img src={coin.logo_path || defaultCoinLogo} alt={coin.symbol} />
+                        <img
+                          src={coin.logo_path || defaultCoinLogo}
+                          alt={coin.symbol}
+                        />
                       </div>
                       <div className="search-coin-info">
-                        <div className="search-coin-name">{coin.symbol}/{coin.pair_name || 'USDT'}</div>
+                        <div className="search-coin-name">
+                          {coin.symbol}/{coin.pair_name || "USDT"}
+                        </div>
                         <div className="search-coin-price">
-                          ${parseFloat(coin.price).toLocaleString(undefined, {
+                          $
+                          {parseFloat(coin.price).toLocaleString(undefined, {
                             minimumFractionDigits: 2,
-                            maximumFractionDigits: 8
+                            maximumFractionDigits: 8,
                           })}
-                          <span className={coin.price_change_24h >= 0 ? 'positive-change' : 'negative-change'}>
-                            {coin.price_change_24h >= 0 ? '+' : ''}{(coin.price_change_24h || 0).toFixed(2)}%
+                          <span
+                            className={
+                              coin.price_change_24h >= 0
+                                ? "positive-change"
+                                : "negative-change"
+                            }
+                          >
+                            {coin.price_change_24h >= 0 ? "+" : ""}
+                            {(coin.price_change_24h || 0).toFixed(2)}%
                           </span>
                         </div>
                       </div>
@@ -659,8 +756,8 @@ const Navbar = () => {
                   autoFocus
                 />
                 {searchTerm && (
-                  <button 
-                    className="mobile-search-clear" 
+                  <button
+                    className="mobile-search-clear"
                     onClick={clearSearch}
                     aria-label="Clear search"
                   >
@@ -668,31 +765,35 @@ const Navbar = () => {
                   </button>
                 )}
               </div>
-              <button 
-                className="mobile-search-close" 
+              <button
+                className="mobile-search-close"
                 onClick={toggleMobileSearch}
                 aria-label="Close search"
               >
                 Cancel
               </button>
             </div>
-            
+
             <div className="mobile-search-content">
               <div className="search-tabs">
-                <div 
-                  className={`search-tab ${activeTab === 'spot' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('spot')}
+                <div
+                  className={`search-tab ${
+                    activeTab === "spot" ? "active" : ""
+                  }`}
+                  onClick={() => setActiveTab("spot")}
                 >
                   Spot
                 </div>
-                <div 
-                  className={`search-tab ${activeTab === 'futures' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('futures')}
+                <div
+                  className={`search-tab ${
+                    activeTab === "futures" ? "active" : ""
+                  }`}
+                  onClick={() => setActiveTab("futures")}
                 >
                   Futures
                 </div>
               </div>
-              
+
               {isLoading ? (
                 <div className="search-loading-item">
                   <div className="search-spinner"></div>
@@ -701,23 +802,36 @@ const Navbar = () => {
               ) : displayResults.length > 0 ? (
                 <div className="search-coins-container">
                   {displayResults.map((coin) => (
-                    <div 
-                      key={coin.coin_pair} 
-                      className="search-coin-item" 
+                    <div
+                      key={coin.coin_pair}
+                      className="search-coin-item"
                       onClick={() => handleCoinSelect(coin)}
                     >
                       <div className="search-coin-logo">
-                        <img src={coin.logo_path || defaultCoinLogo} alt={coin.symbol} />
+                        <img
+                          src={coin.logo_path || defaultCoinLogo}
+                          alt={coin.symbol}
+                        />
                       </div>
                       <div className="search-coin-info">
-                        <div className="search-coin-name">{coin.symbol}/{coin.pair_name || 'USDT'}</div>
+                        <div className="search-coin-name">
+                          {coin.symbol}/{coin.pair_name || "USDT"}
+                        </div>
                         <div className="search-coin-price">
-                          ${parseFloat(coin.price).toLocaleString(undefined, {
+                          $
+                          {parseFloat(coin.price).toLocaleString(undefined, {
                             minimumFractionDigits: 2,
-                            maximumFractionDigits: 8
+                            maximumFractionDigits: 8,
                           })}
-                          <span className={coin.price_change_24h >= 0 ? 'positive-change' : 'negative-change'}>
-                            {coin.price_change_24h >= 0 ? '+' : ''}{(coin.price_change_24h || 0).toFixed(2)}%
+                          <span
+                            className={
+                              coin.price_change_24h >= 0
+                                ? "positive-change"
+                                : "negative-change"
+                            }
+                          >
+                            {coin.price_change_24h >= 0 ? "+" : ""}
+                            {(coin.price_change_24h || 0).toFixed(2)}%
                           </span>
                         </div>
                       </div>
@@ -736,7 +850,7 @@ const Navbar = () => {
             </div>
           </div>
         )}
-                      
+
         {isAuthenticated ? (
           <div className="auth-menu-container">
             {/* Assets Dropdown - hidden on mobile */}
@@ -758,7 +872,6 @@ const Navbar = () => {
                 <Link to="/transfer" className="menu-item">
                   <i className="fas fa-exchange-alt"></i> Transfer
                 </Link>
-               
               </div>
             </div>
 
@@ -774,10 +887,12 @@ const Navbar = () => {
                   </div>
                   <div className="user-details">
                     <p className="user-email">{userName}</p>
-                    <p className="user-id">UID: {localStorage.getItem('uid') || 'N/A'}</p>
+                    <p className="user-id">
+                      UID: {localStorage.getItem("uid") || "N/A"}
+                    </p>
                   </div>
                 </div>
-            
+
                 <Link to="/account/overview" className="menu-item">
                   <i className="fas fa-clock"></i> Overview
                 </Link>
@@ -787,8 +902,7 @@ const Navbar = () => {
                 <Link to="/account/profile/security" className="menu-item">
                   <i className="fas fa-shield-alt"></i> Security
                 </Link>
-      
-                
+
                 <div className="menu-item logout" onClick={handleLogout}>
                   <i className="fas fa-sign-out-alt"></i> Log out
                 </div>
@@ -797,95 +911,121 @@ const Navbar = () => {
           </div>
         ) : (
           <div className="auth-buttons">
-            <Link to="/login" className="navbar-link login-button hidden sm:inline-block">Log in</Link>
-            <Link to="/signup" style={signupButtonStyle} className="navbar-link hidden sm:inline-block">Sign up</Link>
+            <Link
+              to="/login"
+              className="navbar-link login-button hidden sm:inline-block"
+            >
+              Log in
+            </Link>
+            <Link
+              to="/signup"
+              style={signupButtonStyle}
+              className="navbar-link hidden sm:inline-block"
+            >
+              Sign up
+            </Link>
           </div>
         )}
-        
+
         <div className="icon-group desktop-only">
           {/* Download App Icon with QR code dropdown */}
           <div className="right-nav-item">
-            <button 
-              className="navbar-icon-link" 
-              type="button" 
-              aria-label="Download app" 
-              style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
+            <button
+              className="navbar-icon-link"
+              type="button"
+              aria-label="Download app"
+              style={{
+                background: "none",
+                border: "none",
+                padding: 0,
+                margin: 0,
+                cursor: "pointer",
+              }}
             >
               <i className="far fa-arrow-alt-circle-down"></i>
             </button>
-            
+
             <div className="right-dropdown-menu download-menu mr-10">
               <h3 className="dropdown-title">Download app</h3>
               <div className="qr-code-container">
-                <QRCodeSVG 
-                    value={appDownloadUrl}
-                    size={200}
-                    level={"H"}
-                    includeMargin={true}
-                    className="qr-code-image"
-                  />
+                <QRCodeSVG
+                  value={appDownloadUrl}
+                  size={200}
+                  level={"H"}
+                  includeMargin={true}
+                  className="qr-code-image"
+                />
               </div>
-              <div className='download-qr-code-container'>
+              <div className="download-qr-code-container">
                 <Link to="/download">
                   <button className="dropdown-button">More options</button>
                 </Link>
-                
+
                 <p className="dropdown-subtitle">For mobile and desktop</p>
               </div>
             </div>
           </div>
-          
-            {/* Notifications Icon with announcements dropdown */}
-              <div className="right-nav-item hidden">
-                <button 
-                  className="navbar-icon-link" 
-                  type="button" 
-                  aria-label="Notifications" 
-                  style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
-                >
-                  <i className="far fa-bell"></i>
-                </button>
-                
-              <div className="right-dropdown-menu notifications-menu">
-                {notifications.map(notification => (
-                  <Link to={notification.path} key={notification.id}>
-                    <div className="notification-item">
-                      <h4 className="notification-title">{notification.title}</h4>
-                      <p className="notification-time">{notification.time}</p>
-                    </div>
-                  </Link>
-                ))}
-                
-                <Link to="/help/category/announcements" className="more-link">
-                  More announcements
+
+          {/* Notifications Icon with announcements dropdown */}
+          <div className="right-nav-item hidden">
+            <button
+              className="navbar-icon-link"
+              type="button"
+              aria-label="Notifications"
+              style={{
+                background: "none",
+                border: "none",
+                padding: 0,
+                margin: 0,
+                cursor: "pointer",
+              }}
+            >
+              <i className="far fa-bell"></i>
+            </button>
+
+            <div className="right-dropdown-menu notifications-menu">
+              {notifications.map((notification) => (
+                <Link to={notification.path} key={notification.id}>
+                  <div className="notification-item">
+                    <h4 className="notification-title">{notification.title}</h4>
+                    <p className="notification-time">{notification.time}</p>
+                  </div>
                 </Link>
-              </div>
+              ))}
+
+              <Link to="/help/category/announcements" className="more-link">
+                More announcements
+              </Link>
             </div>
-          
+          </div>
+
           {/* Language icon with support dropdown */}
           <div className="right-nav-item">
-            <button 
-              className="navbar-icon-link" 
-              type="button" 
-              aria-label="Language" 
-              style={{background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer'}}
+            <button
+              className="navbar-icon-link"
+              type="button"
+              aria-label="Language"
+              style={{
+                background: "none",
+                border: "none",
+                padding: 0,
+                margin: 0,
+                cursor: "pointer",
+              }}
               onClick={openModal}
             >
               <i className="fas fa-globe"></i>
             </button>
           </div>
         </div>
-        
+
         {/* Mobile-only hamburger menu button */}
         <div className="mobile-menu-toggle" onClick={toggleMobileMenu}>
           <i className="fas fa-bars"></i>
         </div>
       </div>
       {/* Language Modal */}
-      <LanguageModal 
-        isOpen={isModalOpen} 
-        onClose={closeModal} 
-      />
+      <LanguageModal isOpen={isModalOpen} onClose={closeModal} />
       {/* Mobile menu overlay */}
       {isMobileMenuOpen && (
         <div className="mobile-menu-overlay">
@@ -897,10 +1037,18 @@ const Navbar = () => {
             </div>
             {!isAuthenticated && (
               <div className="mobile-auth-links p-4 border-b border-gray-700">
-                <Link to="/login" className="block text-center py-3 px-4 mb-2 text-white bg-orange-500 hover:bg-orange-600 rounded-md text-sm font-medium transition-colors" onClick={toggleMobileMenu}>
+                <Link
+                  to="/login"
+                  className="block text-center py-3 px-4 mb-2 text-white bg-orange-500 hover:bg-orange-600 rounded-md text-sm font-medium transition-colors"
+                  onClick={toggleMobileMenu}
+                >
                   Log In
                 </Link>
-                <Link to="/signup" className="block text-center py-3 px-4 text-white bg-gray-700 hover:bg-gray-600 rounded-md text-sm font-medium transition-colors" onClick={toggleMobileMenu}>
+                <Link
+                  to="/signup"
+                  className="block text-center py-3 px-4 text-white bg-gray-700 hover:bg-gray-600 rounded-md text-sm font-medium transition-colors"
+                  onClick={toggleMobileMenu}
+                >
                   Sign Up
                 </Link>
               </div>
@@ -909,58 +1057,93 @@ const Navbar = () => {
               {mobileMenuItems.map((item, index) => (
                 <div key={index} className="mobile-menu-item-container">
                   {item.hasDropdown ? (
-                    <div 
+                    <div
                       className="mobile-menu-item"
                       onClick={() => toggleSubmenu(index)}
                     >
                       <span>{item.name}</span>
-                      <i className={`fas fa-chevron-down ${expandedMenus.includes(index) ? 'rotated' : ''}`}></i>
+                      <i
+                        className={`fas fa-chevron-down ${
+                          expandedMenus.includes(index) ? "rotated" : ""
+                        }`}
+                      ></i>
                     </div>
                   ) : (
                     <a href={item.path} className="mobile-menu-item">
                       <span>{item.name}</span>
                     </a>
                   )}
-                  
-                  {item.hasDropdown && item.subItems && item.subItems.length > 0 && expandedMenus.includes(index) && (
-                    <div className="mobile-submenu">
-                      {item.subItems.map((subItem, subIndex) => {
-                        if (subItem.hasSubDropdown) {
-                          return (
-                            <div key={subIndex} className="mobile-submenu-item-container">
-                              <div 
-                                className="mobile-submenu-item as-header" 
-                                onClick={() => subItem.id && toggleSubSubmenu(subItem.id)}
+
+                  {item.hasDropdown &&
+                    item.subItems &&
+                    item.subItems.length > 0 &&
+                    expandedMenus.includes(index) && (
+                      <div className="mobile-submenu">
+                        {item.subItems.map((subItem, subIndex) => {
+                          if (subItem.hasSubDropdown) {
+                            return (
+                              <div
+                                key={subIndex}
+                                className="mobile-submenu-item-container"
                               >
-                                <span>{subItem.name}</span>
-                                <i className={`fas fa-chevron-down ${subItem.id && expandedSubSubMenus.includes(subItem.id) ? 'rotated' : ''}`}></i>
-                              </div>
-                              {subItem.id && expandedSubSubMenus.includes(subItem.id) && subItem.subSubItems && (
-                                <div className="mobile-sub-submenu">
-                                  {subItem.subSubItems.map((subSubItem, subSubIndex) => (
-                                    <a key={subSubIndex} href={subSubItem.path} className="mobile-sub-submenu-item">
-                                      {subSubItem.name}
-                                    </a>
-                                  ))}
+                                <div
+                                  className="mobile-submenu-item as-header"
+                                  onClick={() =>
+                                    subItem.id && toggleSubSubmenu(subItem.id)
+                                  }
+                                >
+                                  <span>{subItem.name}</span>
+                                  <i
+                                    className={`fas fa-chevron-down ${
+                                      subItem.id &&
+                                      expandedSubSubMenus.includes(subItem.id)
+                                        ? "rotated"
+                                        : ""
+                                    }`}
+                                  ></i>
                                 </div>
-                              )}
-                            </div>
-                          );
-                        } else {
-                          return (
-                            <a key={subIndex} href={subItem.path} className="mobile-submenu-item">
-                              {subItem.name}
-                            </a>
-                          );
-                        }
-                      })}
-                    </div>
-                  )}
+                                {subItem.id &&
+                                  expandedSubSubMenus.includes(subItem.id) &&
+                                  subItem.subSubItems && (
+                                    <div className="mobile-sub-submenu">
+                                      {subItem.subSubItems.map(
+                                        (subSubItem, subSubIndex) => (
+                                          <a
+                                            key={subSubIndex}
+                                            href={subSubItem.path}
+                                            className="mobile-sub-submenu-item"
+                                          >
+                                            {subSubItem.name}
+                                          </a>
+                                        )
+                                      )}
+                                    </div>
+                                  )}
+                              </div>
+                            );
+                          } else {
+                            return (
+                              <a
+                                key={subIndex}
+                                href={subItem.path}
+                                className="mobile-submenu-item"
+                              >
+                                {subItem.name}
+                              </a>
+                            );
+                          }
+                        })}
+                      </div>
+                    )}
                 </div>
               ))}
             </div>
             <div className="mobile-menu-footer">
-              <Link to="/download" className="footer-download-button">
+              <Link
+                to="/download"
+                className="footer-download-button"
+                onClick={toggleMobileMenu}
+              >
                 Download Flux app
               </Link>
             </div>
