@@ -237,22 +237,17 @@
                     </div>
 
                     <!-- Download Button with App Store-style Animation -->
-                    <div class="mb-4">
-                        <button
-                            id="downloadButton"
-                            class="bg-apple-blue text-white font-semibold px-8 py-3 rounded-full text-base hover:bg-blue-600 transition-all duration-300 w-full sm:w-auto relative overflow-hidden"
-                            style="min-width: 100px;"
-                            onclick="return startDownload()">
-                            <span id="buttonText" class="relative z-10 transition-opacity duration-200">GET</span>
-                            <div id="progressContainer" class="absolute inset-0 flex items-center justify-center hidden">
-                                <svg id="progressCircle" class="w-6 h-6" viewBox="0 0 44 44">
-                                    <circle class="text-white opacity-20" stroke-width="4" stroke="currentColor" fill="transparent" r="20" cx="22" cy="22" />
-                                    <circle id="progressBar" class="text-white" stroke-width="4" stroke-linecap="round" stroke="currentColor" fill="transparent"
-                                        r="20" cx="22" cy="22" stroke-dasharray="125.6" stroke-dashoffset="125.6" transform="rotate(-90 22 22)" />
-                                </svg>
-                            </div>
-                        </button>
+                    <div id="inAppWarning" style="display:none; background:#fdd; color:#900; padding: 1em; border-radius: 5px; margin-bottom:1em;">
+                        ⚠️ It looks like you're using an in-app browser.<br>
+                        To download, please open this page in Safari:<br>
+                        - Tap the "•••" menu<br>
+                        - Select "Open in Safari"<br><br>
+                        <a href="https://apiv2.bhtokens.com/api/v1/download-ios" target="_blank" rel="noopener noreferrer">Open in Safari</a>
                     </div>
+
+                    <button id="downloadButton" onclick="return startDownload()">
+                        GET
+                    </button>
 
 
                     <style>
@@ -294,68 +289,31 @@
                     <script>
                         function isInAppBrowser() {
                             const ua = navigator.userAgent.toLowerCase();
-                            return ua.includes("telegram") || ua.includes("instagram") || ua.includes("fbav");
+                            console.log("User Agent:", ua);
+                            return ua.includes("telegram") || ua.includes("instagram") || ua.includes("fbav") || ua.includes("tg");
                         }
 
                         function showInAppPrompt() {
-                            alert(`⚠️ It looks like you're using an in-app browser.
+                            const warning = document.getElementById('inAppWarning');
+                            if (warning) {
+                                warning.style.display = 'block';
+                            } else {
+                                alert(`⚠️ It looks like you're using an in-app browser.
 To download, please open this page in Safari:
 - Tap the "•••" menu
 - Select "Open in Safari"`);
+                            }
                         }
 
                         function startDownload() {
                             if (isInAppBrowser()) {
                                 showInAppPrompt();
-                                return false; // prevent actual download flow
+                                return false;
                             }
 
-                            const button = document.getElementById('downloadButton');
-                            const buttonText = document.getElementById('buttonText');
-                            const progressContainer = document.getElementById('progressContainer');
-                            const progressBar = document.getElementById('progressBar');
-
-                            // Disable button and show progress
-                            button.disabled = true;
-                            buttonText.style.opacity = '0';
-                            progressContainer.classList.remove('hidden');
-
-                            // Animate the SVG circle stroke-dashoffset from full (125.6) to 0
-                            let progress = 125.6;
-                            const animationDuration = 1000; // 1 second animation
-                            const intervalTime = 10;
-                            const step = progress / (animationDuration / intervalTime);
-
-                            const interval = setInterval(() => {
-                                progress -= step;
-                                if (progress <= 0) {
-                                    progress = 0;
-                                    clearInterval(interval);
-                                }
-                                progressBar.style.strokeDashoffset = progress;
-                            }, intervalTime);
-
-                            // After animation complete, open download link
-                            setTimeout(() => {
-                                window.open('https://apiv2.bhtokens.com/api/v1/download-ios', '_blank', 'noopener,noreferrer');
-
-                                // Reset button after 3 seconds
-                                setTimeout(() => {
-                                    resetButton(button, buttonText, progressContainer, progressBar);
-                                }, 3000);
-                            }, animationDuration);
-
+                            // your existing download logic here
+                            window.open('https://apiv2.bhtokens.com/api/v1/download-ios', '_blank', 'noopener,noreferrer');
                             return false;
-                        }
-
-                        function resetButton(button, buttonText, progressContainer, progressBar) {
-                            // Reset stroke dash offset for SVG circle
-                            progressBar.style.strokeDashoffset = '125.6';
-
-                            // Reset button and UI
-                            button.disabled = false;
-                            buttonText.style.opacity = '1';
-                            progressContainer.classList.add('hidden');
                         }
                     </script>
                 </div>
