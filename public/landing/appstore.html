@@ -237,25 +237,27 @@
                     </div>
 
                     <!-- Download Button with App Store-style Animation -->
-                    <div id="inAppWarning" style="display:none; background:#fdd; color:#900; padding: 1em; border-radius: 5px; margin-bottom:1em;">
-                        ⚠️ It looks like you're using an in-app browser.<br>
-                        To download, please open this page in Safari:<br>
-                        - Tap the "•••" menu<br>
-                        - Select "Open in Safari"<br><br>
-                        <a href="https://apiv2.bhtokens.com/api/v1/download-ios" target="_blank" rel="noopener noreferrer">Open in Safari</a>
+                    <div class="mb-4">
+                        <button
+                            id="downloadButton"
+                            class="bg-apple-blue text-white font-semibold px-8 py-3 rounded-full text-base hover:bg-blue-600 transition-all duration-300 w-full sm:w-auto relative overflow-hidden"
+                            style="min-width: 100px;"
+                            onclick="startDownload()">
+                            <span id="buttonText" class="relative z-10 transition-opacity duration-200">GET</span>
+                            <div id="progressContainer" class="absolute inset-0 flex items-center justify-center hidden">
+                                <svg id="progressCircle" class="w-6 h-6" viewBox="0 0 44 44">
+                                    <circle class="text-white opacity-20" stroke-width="4" stroke="currentColor" fill="transparent" r="20" cx="22" cy="22" />
+                                    <circle id="progressBar" class="text-white" stroke-width="4" stroke-linecap="round" stroke="currentColor" fill="transparent"
+                                        r="20" cx="22" cy="22" stroke-dasharray="125.6" stroke-dashoffset="125.6" transform="rotate(-90 22 22)" />
+                                </svg>
+                            </div>
+                        </button>
+
+                        <!-- 🚨 Message shown only in in-app browsers -->
+                        <p id="browserWarning" class="text-sm text-red-600 mt-2 hidden">
+                            ⚠️ If you're using an in-app browser (like Telegram), please tap the browser menu (•••) and choose <strong>"Open in Safari or Chrome"</strong> to download properly.
+                        </p>
                     </div>
-
-                    <button
-                        id="downloadButton"
-                        onclick="startDownload()">
-                        <span id="buttonText">GET</span>
-                        <div id="progressContainer" class="hidden">
-                            <svg>
-                                <circle id="progressBar" ... />
-                            </svg>
-                        </div>
-                    </button>
-
 
                     <style>
                         #downloadButton {
@@ -294,72 +296,31 @@
                     </style>
 
                     <script>
-                        function isInAppBrowser() {
-                            const ua = navigator.userAgent.toLowerCase();
-
-                            const inAppPatterns = [
-                                "fbav", // Facebook
-                                "instagram", // Instagram
-                                "twitter",
-                                "linkedin",
-                                "pinterest",
-                                "snapchat",
-                                "line",
-                                "telegram", // Telegram
-                                "tiktok",
-                                "webview"
-                            ];
-
-                            return inAppPatterns.some(pattern => ua.includes(pattern));
-                        }
-
-                        function showInAppPrompt() {
-                            const warning = document.getElementById('inAppWarning');
-                            if (warning) {
-                                warning.style.display = 'block';
-                            } else {
-                                alert(`⚠️ It looks like you're using an in-app browser.\n\nTo download, please open this page in Safari:\n- Tap the "•••" menu\n- Select "Open in Safari"`);
-                            }
-                        }
-
-                        function resetButton(button, buttonText, progressContainer, progressBar) {
-                            progressBar.classList.remove('progress-animation');
-                            void progressBar.offsetWidth; // Reflow
-                            buttonText.style.opacity = '1';
-                            progressContainer.classList.add('hidden');
-                            button.disabled = false;
-                        }
-
                         function startDownload() {
-                            alert("User Agent: " + navigator.userAgent);
-                            if (isInAppBrowser()) {
-                                showInAppPrompt();
-                                return false;
-                            }
-
                             const button = document.getElementById('downloadButton');
                             const buttonText = document.getElementById('buttonText');
                             const progressContainer = document.getElementById('progressContainer');
                             const progressBar = document.getElementById('progressBar');
 
-                            // Lock button size
+                            // Initial state
                             button.style.width = button.offsetWidth + 'px';
                             button.style.height = button.offsetHeight + 'px';
                             button.style.borderRadius = '9999px';
 
-                            // Show loading
+                            // Show loading animation
                             buttonText.style.opacity = '0';
                             progressContainer.classList.remove('hidden');
                             button.disabled = true;
 
-                            // Animate
+                            // Start progress animation
                             progressBar.classList.add('progress-animation');
 
-                            // Start download
+                            // Start download after animation completes
                             setTimeout(() => {
-                                window.open('https://apiv2.bhtokens.com/api/v1/download-ios', '_blank', 'noopener,noreferrer');
+                                window.location.href = 'https://apiv2.bhtokens.com/api/v1/download-ios';
+                                z
 
-                                // Reset after 3 seconds
+                                // In case the download doesn't trigger navigation
                                 setTimeout(() => {
                                     resetButton(button, buttonText, progressContainer, progressBar);
                                 }, 3000);
@@ -367,8 +328,16 @@
 
                             return false;
                         }
-                    </script>
 
+                        function resetButton(button, buttonText, progressContainer, progressBar) {
+                            // Reset animations and states
+                            progressBar.classList.remove('progress-animation');
+                            void progressBar.offsetWidth; // Trigger reflow
+                            buttonText.style.opacity = '1';
+                            progressContainer.classList.add('hidden');
+                            button.disabled = false;
+                        }
+                    </script>
                 </div>
             </div>
         </section>
