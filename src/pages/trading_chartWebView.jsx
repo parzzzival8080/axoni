@@ -199,8 +199,11 @@ const TradingChartWebView = () => {
 
   // Mobile detection
   const isMobile = () => {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-           window.innerWidth <= 768;
+    return (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) || window.innerWidth <= 768
+    );
   };
 
   // Format the symbol for TradingView (use just the base symbol without USDT suffix)
@@ -255,10 +258,11 @@ const TradingChartWebView = () => {
   useEffect(() => {
     const viewport = document.querySelector('meta[name="viewport"]');
     if (!viewport && isMobile()) {
-      const meta = document.createElement('meta');
-      meta.name = 'viewport';
-      meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover';
-      document.getElementsByTagName('head')[0].appendChild(meta);
+      const meta = document.createElement("meta");
+      meta.name = "viewport";
+      meta.content =
+        "width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover";
+      document.getElementsByTagName("head")[0].appendChild(meta);
     }
   }, []);
 
@@ -418,28 +422,40 @@ const TradingChartWebView = () => {
           "paneProperties.background": "#000000",
           "paneProperties.backgroundType": "solid",
         });
-        
+
         // Enable mobile touch interactions
         const chartContainer = chartContainerRef.current;
         if (chartContainer) {
           // Prevent default touch behaviors that might interfere
-          chartContainer.style.touchAction = 'manipulation';
-          chartContainer.style.userSelect = 'none';
-          chartContainer.style.webkitUserSelect = 'none';
-          chartContainer.style.webkitTouchCallout = 'none';
-          
+          chartContainer.style.touchAction = "manipulation";
+          chartContainer.style.userSelect = "none";
+          chartContainer.style.webkitUserSelect = "none";
+          chartContainer.style.webkitTouchCallout = "none";
+
           // Add event listeners for better mobile interaction
-          chartContainer.addEventListener('touchstart', (e) => {
-            e.stopPropagation();
-          }, { passive: true });
-          
-          chartContainer.addEventListener('touchmove', (e) => {
-            e.stopPropagation();
-          }, { passive: true });
-          
-          chartContainer.addEventListener('touchend', (e) => {
-            e.stopPropagation();
-          }, { passive: true });
+          chartContainer.addEventListener(
+            "touchstart",
+            (e) => {
+              e.stopPropagation();
+            },
+            { passive: true }
+          );
+
+          chartContainer.addEventListener(
+            "touchmove",
+            (e) => {
+              e.stopPropagation();
+            },
+            { passive: true }
+          );
+
+          chartContainer.addEventListener(
+            "touchend",
+            (e) => {
+              e.stopPropagation();
+            },
+            { passive: true }
+          );
         }
       });
     } catch (error) {
