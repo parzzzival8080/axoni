@@ -88,9 +88,17 @@ const SignUpPage = () => {
   // Handle input changes
   const handleChange = useCallback((e) => {
     const { name, value, type, checked } = e.target;
+    
+    let processedValue = value;
+    
+    // Only allow numbers for phone field
+    if (name === 'phone') {
+      processedValue = value.replace(/\D/g, ''); // Remove all non-digit characters
+    }
+    
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : processedValue
     }));
     
     // Clear error when user starts typing
@@ -1005,6 +1013,8 @@ const SignUpPage = () => {
                    value={formData.phone} 
                    onChange={handleChange}
                    autoComplete="tel"
+                   inputMode="numeric"
+                   pattern="[0-9]*"
                    required
                  />
                </div>

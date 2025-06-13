@@ -128,7 +128,7 @@ const TradingChartWebView = () => {
         autosize: true,
         studiesOverrides: getChartConfig(symbol).studiesOverrides,
         theme: "dark",
-        custom_css_url: "",
+        custom_css_url: "/chart_styles.css",
         loading_screen: { backgroundColor: "#000000" },
         toolbar_bg: "#000000",
         overrides: {
@@ -198,24 +198,9 @@ const TradingChartWebView = () => {
           "paneProperties.background": "#000000",
           "paneProperties.backgroundType": "solid",
         });
-        setTimeout(() => {
-          const style = document.createElement("style");
-          style.textContent = `
-            .tv-chart-container, .chart-container, .chart-markup-table, .chart-page, .layout__area--center {
-              background-color: #000000 !important;
-            }
-            [style*="background-color: rgb(19, 23, 34)"],
-            [style*="background-color: #131722"],
-            [style*="background-color: rgb(27, 32, 48)"],
-            [style*="background-color: #1b2030"] {
-              background-color: #000000 !important;
-            }
-          `;
-          document.head.appendChild(style);
-        }, 1000);
       });
     } catch (error) {
-      // ignore
+      console.error("TradingView Widget Error:", error);
     }
     return () => {
       if (tvWidgetRef.current) {

@@ -1,0 +1,24 @@
+/* 
+  Custom CSS for TradingView Chart to ensure a consistent dark theme.
+  This helps override default styles that might be loaded from the charting library,
+  preventing any unwanted background colors or layout shifts.
+*/
+
+.tv-chart-container, 
+.chart-container, 
+.chart-markup-table, 
+.chart-page, 
+.layout__area--center {
+  background-color: #000000 !important;
+}
+
+/* 
+  These selectors target elements that might have inline styles with specific
+  background colors from the library, forcing them to match our dark theme.
+*/
+[style*="background-color: rgb(19, 23, 34)"],
+[style*="background-color: #131722"],
+[style*="background-color: rgb(27, 32, 48)"],
+[style*="background-color: #1b2030"] {
+  background-color: #000000 !important;
+} 
