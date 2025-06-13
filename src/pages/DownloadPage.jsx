@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaMobile, FaDesktop } from 'react-icons/fa';
+
 import './DownloadPage.css';
 import DownloadImage1 from '../assets/assets/asset1.png';
 import DownloadImage2 from '../assets/assets/asset2.png';
@@ -45,18 +45,33 @@ const DownloadPage = () => {
               <span className="landing__highlight">journey</span>
             </h1>
             <p className="landing__tagline">Crypto trading — made easy for you</p>
-            <div className="landing__buttons">
-              <button className="landing__button text-white" onClick={handleAppDownload}>
-                <FaMobile className="landing__button-icon" />
-                Download app
-              </button>
-              <button 
-                className="landing__button landing__button--outline"
-                onClick={openComingSoonModal}
-              >
-                <FaDesktop className="landing__button-icon" />
-                Download Desktop
-              </button>
+            <div className="landing__buttons" style={{ display: 'flex', gap: '20px', marginTop: '20px' }}>
+              <a href="/landing/playstore.html" style={{ display: 'inline-block' }}>
+                <img 
+                  src="/assets/img/playstore.webp" 
+                  alt="Get it on Google Play" 
+                  style={{ 
+                    height: '50px', 
+                    cursor: 'pointer', 
+                    borderRadius: '8px',
+                    border: '1px solid rgba(255, 255, 255, 0.8)',
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+                  }}
+                />
+              </a>
+              <a href="/landing/appstore.html" style={{ display: 'inline-block' }}>
+                <img 
+                  src="/assets/img/appstore.png" 
+                  alt="Download on the App Store" 
+                  style={{ 
+                    height: '50px', 
+                    cursor: 'pointer', 
+                    borderRadius: '8px',
+                    border: '1px solid rgba(255, 255, 255, 0.8)',
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+                  }}
+                />
+              </a>
             </div>
           </div>
           <div className="landing__hero-image">
