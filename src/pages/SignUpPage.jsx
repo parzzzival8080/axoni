@@ -715,7 +715,7 @@ const SignUpPage = () => {
             {/* Progress Bar */}
             <div className="relative mb-9">
               <div className="absolute top-1/2 left-0 w-full h-px bg-gray-200 -translate-y-1/2"></div>
-              <div className="flex justify-between relative z-10">
+              <div className="flex justify-between relative z-0">
                 {[1, 2, 3, 4].map((step) => (
                   <div key={step} className="flex flex-col items-center">
                     <div 
