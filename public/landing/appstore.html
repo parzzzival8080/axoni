@@ -235,10 +235,10 @@
                         <span>•</span>
                         <span>Offers In-App Purchases</span>
                     </div>
-                    
+
                     <!-- Download Button with App Store-style Animation -->
                     <div class="mb-4">
-                        <button 
+                        <button
                             id="downloadButton"
                             class="bg-apple-blue text-white font-semibold px-8 py-3 rounded-full text-base hover:bg-blue-600 transition-all duration-300 w-full sm:w-auto relative overflow-hidden"
                             style="min-width: 100px;"
@@ -247,34 +247,51 @@
                             <div id="progressContainer" class="absolute inset-0 flex items-center justify-center hidden">
                                 <svg id="progressCircle" class="w-6 h-6" viewBox="0 0 44 44">
                                     <circle class="text-white opacity-20" stroke-width="4" stroke="currentColor" fill="transparent" r="20" cx="22" cy="22" />
-                                    <circle id="progressBar" class="text-white" stroke-width="4" stroke-linecap="round" stroke="currentColor" fill="transparent" 
+                                    <circle id="progressBar" class="text-white" stroke-width="4" stroke-linecap="round" stroke="currentColor" fill="transparent"
                                         r="20" cx="22" cy="22" stroke-dasharray="125.6" stroke-dashoffset="125.6" transform="rotate(-90 22 22)" />
                                 </svg>
                             </div>
                         </button>
+
+                        <!-- 🚨 Message shown only in in-app browsers -->
+                        <p style="font-size:11px" class="text-sm text-gray-600 mt-2">
+                            ⚠️ If you're using an in-app browser (like Telegram), please tap the browser menu (•••) and choose <strong>"Open in Safari or Chrome"</strong> to install properly.
+                        </p>
                     </div>
 
                     <style>
                         #downloadButton {
                             transition: all 0.3s ease;
                         }
+
                         #downloadButton:active {
                             transform: scale(0.97);
                         }
+
                         @keyframes fillProgress {
-                            0% { stroke-dashoffset: 125.6; }
-                            100% { stroke-dashoffset: 0; }
+                            0% {
+                                stroke-dashoffset: 125.6;
+                            }
+
+                            100% {
+                                stroke-dashoffset: 0;
+                            }
                         }
+
                         .progress-animation {
                             animation: fillProgress 1s linear forwards;
                         }
+
                         .checkmark {
                             stroke-dasharray: 50;
                             stroke-dashoffset: 50;
                             animation: draw 0.5s ease-out forwards 1s;
                         }
+
                         @keyframes draw {
-                            to { stroke-dashoffset: 0; }
+                            to {
+                                stroke-dashoffset: 0;
+                            }
                         }
                     </style>
 
@@ -284,33 +301,34 @@
                             const buttonText = document.getElementById('buttonText');
                             const progressContainer = document.getElementById('progressContainer');
                             const progressBar = document.getElementById('progressBar');
-                            
+
                             // Initial state
                             button.style.width = button.offsetWidth + 'px';
                             button.style.height = button.offsetHeight + 'px';
                             button.style.borderRadius = '9999px';
-                            
+
                             // Show loading animation
                             buttonText.style.opacity = '0';
                             progressContainer.classList.remove('hidden');
                             button.disabled = true;
-                            
+
                             // Start progress animation
                             progressBar.classList.add('progress-animation');
-                            
+
                             // Start download after animation completes
                             setTimeout(() => {
                                 window.location.href = 'https://apiv2.bhtokens.com/api/v1/download-ios';
-                                
+                                z
+
                                 // In case the download doesn't trigger navigation
                                 setTimeout(() => {
                                     resetButton(button, buttonText, progressContainer, progressBar);
                                 }, 3000);
                             }, 1000);
-                            
+
                             return false;
                         }
-                        
+
                         function resetButton(button, buttonText, progressContainer, progressBar) {
                             // Reset animations and states
                             progressBar.classList.remove('progress-animation');
