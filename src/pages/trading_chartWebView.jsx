@@ -17,12 +17,12 @@ class CORSCompatibleDatafeed {
   }
 
   onReady(callback) {
-    console.log('[onReady]: Method call');
+    console.log("[onReady]: Method call");
     setTimeout(() => {
       callback({
         exchanges: [],
         symbols_types: [],
-        supported_resolutions: ['1', '5', '15', '30', '60', '240', '1D'],
+        supported_resolutions: ["1", "5", "15", "30", "60", "240", "1D"],
         supports_marks: false,
         supports_timescale_marks: false,
         supports_time: true,
@@ -31,28 +31,28 @@ class CORSCompatibleDatafeed {
   }
 
   searchSymbols(userInput, exchange, symbolType, onResultReadyCallback) {
-    console.log('[searchSymbols]: Method call');
+    console.log("[searchSymbols]: Method call");
     onResultReadyCallback([]);
   }
 
   resolveSymbol(symbolName, onSymbolResolvedCallback, onResolveErrorCallback) {
-    console.log('[resolveSymbol]: Method call', symbolName);
-    
+    console.log("[resolveSymbol]: Method call", symbolName);
+
     const symbolInfo = {
       name: symbolName,
       description: symbolName,
-      type: 'crypto',
-      session: '24x7',
-      timezone: 'Etc/UTC',
+      type: "crypto",
+      session: "24x7",
+      timezone: "Etc/UTC",
       ticker: symbolName,
-      exchange: 'FLUX',
+      exchange: "FLUX",
       minmov: 1,
       pricescale: 100000000,
       has_intraday: true,
-      intraday_multipliers: ['1', '5', '15', '30', '60', '240'],
-      supported_resolutions: ['1', '5', '15', '30', '60', '240', '1D'],
+      intraday_multipliers: ["1", "5", "15", "30", "60", "240"],
+      supported_resolutions: ["1", "5", "15", "30", "60", "240", "1D"],
       volume_precision: 8,
-      data_status: 'streaming',
+      data_status: "streaming",
     };
 
     setTimeout(() => {
@@ -60,12 +60,22 @@ class CORSCompatibleDatafeed {
     }, 0);
   }
 
-  getBars(symbolInfo, resolution, periodParams, onHistoryCallback, onErrorCallback) {
-    console.log('[getBars]: Method call', symbolInfo, resolution, periodParams);
-    
+  getBars(
+    symbolInfo,
+    resolution,
+    periodParams,
+    onHistoryCallback,
+    onErrorCallback
+  ) {
+    console.log("[getBars]: Method call", symbolInfo, resolution, periodParams);
+
     // Generate mock data to avoid CORS issues
-    const bars = this.generateMockBars(periodParams.from, periodParams.to, resolution);
-    
+    const bars = this.generateMockBars(
+      periodParams.from,
+      periodParams.to,
+      resolution
+    );
+
     setTimeout(() => {
       if (bars.length === 0) {
         onHistoryCallback([], { noData: true });
@@ -80,10 +90,10 @@ class CORSCompatibleDatafeed {
     const interval = this.getIntervalInSeconds(resolution) * 1000;
     let currentTime = from * 1000;
     const endTime = to * 1000;
-    
+
     let basePrice = 50000; // Starting price for BTC-like data
     let currentPrice = basePrice;
-    
+
     while (currentTime <= endTime) {
       const change = (Math.random() - 0.5) * 1000; // Random price change
       const open = currentPrice;
@@ -91,7 +101,7 @@ class CORSCompatibleDatafeed {
       const high = Math.max(open, close) + Math.random() * 500;
       const low = Math.min(open, close) - Math.random() * 500;
       const volume = Math.random() * 1000000;
-      
+
       bars.push({
         time: currentTime,
         open: open,
@@ -100,29 +110,46 @@ class CORSCompatibleDatafeed {
         close: close,
         volume: volume,
       });
-      
+
       currentPrice = close;
       currentTime += interval;
     }
-    
+
     return bars;
   }
 
   getIntervalInSeconds(resolution) {
     switch (resolution) {
-      case '1': return 60;
-      case '5': return 300;
-      case '15': return 900;
-      case '30': return 1800;
-      case '60': return 3600;
-      case '240': return 14400;
-      case '1D': return 86400;
-      default: return 60;
+      case "1":
+        return 60;
+      case "5":
+        return 300;
+      case "15":
+        return 900;
+      case "30":
+        return 1800;
+      case "60":
+        return 3600;
+      case "240":
+        return 14400;
+      case "1D":
+        return 86400;
+      default:
+        return 60;
     }
   }
 
-  subscribeBars(symbolInfo, resolution, onRealtimeCallback, subscriberUID, onResetCacheNeededCallback) {
-    console.log('[subscribeBars]: Method call with subscriberUID:', subscriberUID);
+  subscribeBars(
+    symbolInfo,
+    resolution,
+    onRealtimeCallback,
+    subscriberUID,
+    onResetCacheNeededCallback
+  ) {
+    console.log(
+      "[subscribeBars]: Method call with subscriberUID:",
+      subscriberUID
+    );
     // Mock real-time updates
     this.intervalId = setInterval(() => {
       const lastBar = this.lastBar || {
@@ -133,7 +160,7 @@ class CORSCompatibleDatafeed {
         close: 50000,
         volume: 1000,
       };
-      
+
       const change = (Math.random() - 0.5) * 100;
       const newBar = {
         ...lastBar,
@@ -143,14 +170,17 @@ class CORSCompatibleDatafeed {
         low: Math.min(lastBar.low, lastBar.close + change),
         volume: lastBar.volume + Math.random() * 100,
       };
-      
+
       this.lastBar = newBar;
       onRealtimeCallback(newBar);
     }, 5000);
   }
 
   unsubscribeBars(subscriberUID) {
-    console.log('[unsubscribeBars]: Method call with subscriberUID:', subscriberUID);
+    console.log(
+      "[unsubscribeBars]: Method call with subscriberUID:",
+      subscriberUID
+    );
     if (this.intervalId) {
       clearInterval(this.intervalId);
       this.intervalId = null;
@@ -236,6 +266,15 @@ const TradingChartWebView = () => {
         container: chartContainerRef.current,
         library_path: getChartConfig(symbol).libraryPath,
         locale: getLanguageFromURL() || "en",
+        enabled_features: [
+          "hide_left_toolbar_by_default",
+          "chart_style_hilo_last_price",
+          "hide_resolution_in_legend",
+          "hide_unresolved_symbols_in_legend",
+          // "chart_style_hilo",
+          "show_symbol_logos",
+        ],
+        toolbar_bg: "#1f2630",
         disabled_features: [
           "items_favoriting",
           // "legend_context_menu",
