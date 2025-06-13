@@ -113,6 +113,7 @@ const FileUploadButton = ({ label, onFileChange, fileName, icon, subtext, disabl
           inputRef.current.click();
         }
       }
+    } else {
       // No camera available, use file upload
       if (inputRef.current) {
         inputRef.current.click();
