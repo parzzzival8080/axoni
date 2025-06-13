@@ -96,12 +96,28 @@ const idTypes = [
   { name: "PRC ID", apiValue: "prc_id", icon: <FileText size={20} className="mr-2 text-gray-700" />, needsBack: true },
 ];
 
-const FileUploadButton = ({ label, onFileChange, fileName, icon, subtext, disabled }) => {
+const FileUploadButton = ({ label, onFileChange, fileName, icon, subtext, disabled, isCameraAvailable, onCameraClick, isCameraLoading }) => {
   const inputRef = useRef(null);
   
-  const handleClick = () => {
-    if (!disabled && inputRef.current) {
-      inputRef.current.click();
+  const handleClick = async () => {
+    if (disabled) return;
+    
+    // If camera is available, try to use it first
+    if (isCameraAvailable && onCameraClick) {
+      try {
+        await onCameraClick();
+      } catch (error) {
+        console.log("Camera failed, falling back to file upload:", error);
+        // If camera fails, fall back to file upload
+        if (inputRef.current) {
+          inputRef.current.click();
+        }
+      }
+    } else {
+      // No camera available, use file upload
+      if (inputRef.current) {
+        inputRef.current.click();
+      }
     }
   };
 
@@ -113,11 +129,23 @@ const FileUploadButton = ({ label, onFileChange, fileName, icon, subtext, disabl
         disabled={disabled}
         className="w-full flex flex-col items-center justify-center p-6 border-2 border-dashed border-gray-300 rounded-lg hover:border-black transition-colors bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed"
       >
-        {icon || <UploadCloud size={32} className="mb-2 text-gray-400" />}
-        <span className="text-sm font-medium text-black">{label}</span>
+        {isCameraLoading ? (
+          <Loader2 size={32} className="mb-2 text-gray-400 animate-spin" />
+        ) : (
+          icon || <UploadCloud size={32} className="mb-2 text-gray-400" />
+        )}
+        <span className="text-sm font-medium text-black">
+          {isCameraLoading ? "Starting Camera..." : label}
+        </span>
         {fileName && <span className="text-xs text-green-600 mt-1 break-all">{fileName}</span>}
-        {!fileName && subtext && <span className="text-xs text-gray-500 mt-1">{subtext}</span>}
+        {!fileName && !isCameraLoading && subtext && (
+          <span className="text-xs text-gray-500 mt-1">{subtext}</span>
+        )}
+        {!fileName && !isCameraLoading && isCameraAvailable && (
+          <span className="text-xs text-blue-600 mt-1">Camera will open first, or choose file</span>
+        )}
       </button>
+      
       <input
         type="file"
         ref={inputRef}
@@ -150,6 +178,7 @@ const VerifyPage = () => {
   const [isCameraLoading, setIsCameraLoading] = useState(false);
   const [cameraError, setCameraError] = useState("");
   const [stream, setStream] = useState(null);
+  const [isCameraAvailable, setIsCameraAvailable] = useState(false);
 
   // Refs for cleanup
   const imagePreviewUrls = useRef([]);
@@ -684,12 +713,31 @@ const uploadKycDocuments = useCallback(async () => {
     setSubmissionError("");
   }, []);
 
+  // Check camera availability
+  const checkCameraAvailability = useCallback(async () => {
+    try {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        setIsCameraAvailable(false);
+        return;
+      }
+      
+      // Try to enumerate devices to check if camera exists
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const hasCamera = devices.some(device => device.kind === 'videoinput');
+      setIsCameraAvailable(hasCamera);
+    } catch (error) {
+      console.log("Camera availability check failed:", error);
+      setIsCameraAvailable(false);
+    }
+  }, []);
+
   // Camera functions
   const startCamera = useCallback(async () => {
     setIsCameraLoading(true);
     setCameraError("");
     
     try {
+      console.log("Requesting camera access...");
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: "user", // Front-facing camera for selfie
@@ -698,19 +746,28 @@ const uploadKycDocuments = useCallback(async () => {
         }
       });
       
+      console.log("Camera access granted, setting stream...");
       setStream(mediaStream);
-      
-      if (videoRef.current) {
-        videoRef.current.srcObject = mediaStream;
-        videoRef.current.play();
-      }
-      
       setIsCameraMode(true);
+      
+      // Wait for next render cycle to ensure video element is available
+      setTimeout(() => {
+        if (videoRef.current && mediaStream) {
+          console.log("Setting video source...");
+          videoRef.current.srcObject = mediaStream;
+          videoRef.current.play().catch(e => {
+            console.error("Error playing video:", e);
+          });
+        }
+      }, 100);
+      
+      setIsCameraLoading(false);
+      return true; // Success
     } catch (error) {
       console.error("Error accessing camera:", error);
       setCameraError("Camera access denied or not available. Please check your browser permissions.");
-    } finally {
       setIsCameraLoading(false);
+      throw error; // Re-throw so FileUploadButton can catch and fallback
     }
   }, []);
 
@@ -762,6 +819,17 @@ const uploadKycDocuments = useCallback(async () => {
     return false;
   }, [isLoading, currentUserId, currentStep, selectedCountry, idFront, selectedIdInfo, idBack, selfie]);
 
+  // useEffect for video stream connection
+  useEffect(() => {
+    if (isCameraMode && stream && videoRef.current) {
+      console.log("Connecting stream to video element...");
+      videoRef.current.srcObject = stream;
+      videoRef.current.play().catch(e => {
+        console.error("Error playing video:", e);
+      });
+    }
+  }, [isCameraMode, stream]);
+
   // useEffect - must be at the top level, no conditional effects
   useEffect(() => {
     const initializeVerificationCheck = async () => {
@@ -789,6 +857,9 @@ const uploadKycDocuments = useCallback(async () => {
       }
     };
 
+    // Check camera availability
+    checkCameraAvailability();
+
     initializeVerificationCheck();
 
     return () => {
@@ -801,7 +872,7 @@ const uploadKycDocuments = useCallback(async () => {
         stream.getTracks().forEach(track => track.stop());
       }
     };
-  }, [fetchVerificationStatus, cleanupImageUrls]);
+  }, [fetchVerificationStatus, cleanupImageUrls, checkCameraAvailability]);
 
   // Show loading state while checking verification status
   if (isCheckingStatus) {
@@ -1044,6 +1115,7 @@ const uploadKycDocuments = useCallback(async () => {
                  icon={<ImagePlus size={32} className="mb-2 text-gray-400" />}
                  subtext="Tap to upload front of ID"
                  disabled={isLoading}
+                 isCameraAvailable={false}
                />
                {idFront && (
                  <div className="mt-3 text-center">
@@ -1076,6 +1148,7 @@ const uploadKycDocuments = useCallback(async () => {
                    icon={<ImagePlus size={32} className="mb-2 text-gray-400" />}
                    subtext="Tap to upload back of ID"
                    disabled={isLoading}
+                   isCameraAvailable={false}
                  />
                  {idBack && (
                    <div className="mt-3 text-center">
@@ -1123,6 +1196,9 @@ const uploadKycDocuments = useCallback(async () => {
                  autoPlay
                  playsInline
                  muted
+                 onLoadedMetadata={() => console.log("Video metadata loaded")}
+                 onCanPlay={() => console.log("Video can play")}
+                 onError={(e) => console.error("Video error:", e)}
                />
              ) : selfie ? (
                <img 
@@ -1155,31 +1231,17 @@ const uploadKycDocuments = useCallback(async () => {
 
            {/* Action Buttons */}
            {!selfie && !isCameraMode && (
-             <div className="space-y-3">
-               <button
-                 onClick={startCamera}
-                 disabled={isLoading || isCameraLoading}
-                 className="w-full flex items-center justify-center p-4 border-2 border-dashed border-blue-300 rounded-lg hover:border-blue-500 transition-colors bg-blue-50 text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed"
-               >
-                 {isCameraLoading ? (
-                   <Loader2 size={24} className="animate-spin mr-2" />
-                 ) : (
-                   <Camera size={24} className="mr-2" />
-                 )}
-                 <span className="font-medium">
-                   {isCameraLoading ? "Starting Camera..." : "Use Camera"}
-                 </span>
-               </button>
-               
-               <FileUploadButton
-                 label="Upload from Gallery"
-                 onFileChange={(e) => handleFileChange(e, "selfie")}
-                 fileName={selfie?.name}
-                 icon={<ImagePlus size={24} className="mb-1 text-gray-400" />}
-                 subtext="Choose from your device"
-                 disabled={isLoading}
-               />
-             </div>
+             <FileUploadButton
+               label="Upload Photo"
+               onFileChange={(e) => handleFileChange(e, "selfie")}
+               fileName={selfie?.name}
+               icon={<ImagePlus size={32} className="mb-2 text-gray-400" />}
+               subtext="Choose from your device"
+               disabled={isLoading}
+               isCameraAvailable={isCameraAvailable}
+               onCameraClick={startCamera}
+               isCameraLoading={isCameraLoading}
+             />
            )}
 
            {/* Camera Controls */}

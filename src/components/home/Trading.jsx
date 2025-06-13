@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { useNavigate } from 'react-router-dom';
 
-const TrendingCoin = ({ symbol, price, change, logo }) => {
+const TrendingCoin = ({ symbol, price, change, logo, coinPair }) => {
   const navigate = useNavigate();
   return (
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-4 sm:py-3 hover:bg-gray-900/50 transition-colors border-b border-gray-800 last:border-b-0 sm:border-none">
@@ -39,7 +39,17 @@ const TrendingCoin = ({ symbol, price, change, logo }) => {
       <div className="w-full mt-2 sm:mt-0 sm:w-20 sm:text-right">
         <button
           className="w-full sm:w-auto text-orange-500 text-base sm:text-sm font-medium hover:text-orange-400 transition-colors px-4 py-2 sm:px-3 sm:py-1 rounded-lg sm:rounded-full bg-orange-500/10 sm:bg-white/5 border border-orange-500/30 sm:border-orange-500/20 shadow-sm"
-          onClick={() => navigate('/spot-trading')}
+          onClick={() => {
+            if (coinPair) {
+              // Navigate to spot-trading with the specific coin pair ID
+              const params = new URLSearchParams();
+              params.set('coin_pair_id', coinPair);
+              navigate(`/spot-trading?${params.toString()}`);
+            } else {
+              // Fallback to general spot-trading page
+              navigate('/spot-trading');
+            }
+          }}
         >
           Trade
         </button>
@@ -153,6 +163,7 @@ const Trading = () => {
               low={coin['24_low'] ? parseFloat(coin['24_low']).toLocaleString(undefined, { maximumFractionDigits: 8 }) : '-'}
               volume={coin.volume_24h ? Number(coin.volume_24h).toLocaleString() : '-'}
               logo={coin.logo_path}
+              coinPair={coin.coin_pair}
               chart={'M5,15 Q20,10 35,12 Q50,8 65,11 Q75,9 75,9'} // Placeholder chart
             />
           ))}
