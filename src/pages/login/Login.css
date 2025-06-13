@@ -592,7 +592,14 @@ nav {
     }
     
     .right-section {
-        min-height: 100vh;
+        min-height: auto; /* Remove fixed height on mobile */
+        order: -1; /* Move login form to the top on mobile */
+        padding: 20px 30px 40px; /* Reduce top padding on mobile */
+    }
+    
+    .left-section {
+        order: 1; /* Move left panel content below login form */
+        padding: 40px 30px 60px; /* Adjust padding for mobile */
     }
     
     nav {
@@ -614,5 +621,17 @@ nav {
     .content h1,
     .login-container h2 {
         font-size: 28px;
+    }
+    
+    .right-section {
+        padding: 15px 20px 30px; /* Further reduce padding on small screens */
+    }
+    
+    .left-section {
+        padding: 30px 20px 50px; /* Adjust padding for small screens */
+    }
+    
+    .login-container {
+        padding: 20px; /* Reduce login container padding */
     }
 } 

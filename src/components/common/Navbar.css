@@ -8,7 +8,7 @@ header {
     background-color: #000;
     border-bottom: 1px solid #1a1a1a;
     position: relative;
-    z-index: 10;
+    z-index: 1000;
 }
 
 .header-left, .header-right {
@@ -102,7 +102,7 @@ header {
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
+    z-index: 1500;
     margin-top: 12px;
     margin-right: 16px;
     overflow: hidden;
@@ -202,7 +202,7 @@ header {
     border-radius: 8px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     padding: 16px;
-    z-index: 99999;
+    z-index: 1500;
     color: #000;
     display: none;
     margin-top: 0;
@@ -603,7 +603,7 @@ header {
   height: 36px !important;
   min-width: 280px !important;
   transition: box-shadow 0.2s !important;
-  z-index: 99999 !important;
+  z-index: 1200;
 }
 
 .okx-navbar-search-box:focus-within {
@@ -649,7 +649,7 @@ header {
   border-radius: 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
   padding: 0;
-  z-index: 99999 !important;
+  z-index: 1500;
   border: 1px solid #2a2a2a;
   max-height: 500px;
   overflow: hidden;
@@ -1082,7 +1082,7 @@ header {
   left: 0;
   right: 0;
   background-color: #000;
-  z-index: 100000; /* Increased z-index */
+  z-index: 9000;
   display: flex;
   flex-direction: column;
   animation: slideDown 0.2s ease;
@@ -1151,7 +1151,7 @@ header {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 2000 !important;
+  z-index: 9998 !important;
   overflow: hidden;
 }
 
@@ -1165,7 +1165,7 @@ header {
   max-width: 400px;
   height: 100%;
   background-color: #000;
-  z-index: 2100 !important;
+  z-index: 9999 !important;
   overflow-y: auto;
   animation: slideIn 0.3s ease;
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
