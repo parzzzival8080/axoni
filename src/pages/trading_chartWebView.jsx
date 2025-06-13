@@ -5,7 +5,9 @@ import { widget } from "../charting_library/charting_library.esm.js";
 function getLanguageFromURL() {
   const regex = new RegExp("[\\?&]lang=([^&#]*)");
   const results = regex.exec(window.location.search);
-  return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, " "));
+  return results === null
+    ? null
+    : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
 // Custom datafeed implementation to handle CORS issues
@@ -227,15 +229,18 @@ const TradingChartWebView = () => {
       const formattedSymbol = formatSymbolForChart(symbol);
       const widgetOptions = {
         symbol: formattedSymbol,
-        // Use custom CORS-compatible datafeed instead of UDFCompatibleDatafeed
-        datafeed: new CORSCompatibleDatafeed(getChartConfig(symbol).datafeedUrl),
+        datafeed: new window.Datafeeds.UDFCompatibleDatafeed(
+          getChartConfig(symbol).datafeedUrl
+        ),
         interval: getChartConfig(symbol).interval,
         container: chartContainerRef.current,
         library_path: getChartConfig(symbol).libraryPath,
         locale: getLanguageFromURL() || "en",
         disabled_features: [
-          "use_localstorage_for_settings",
           "items_favoriting",
+          // "legend_context_menu",
+          // "hide_main_series_symbol_from_indicator_legend",
+          // "symbol_info",
           "header_compare",
           "header_fullscreen_button",
           "header_settings",
@@ -244,33 +249,26 @@ const TradingChartWebView = () => {
           "show_hide_button_in_legend",
           "format_button_in_legend",
           "header_symbol_search",
+          // "show_object_tree",
           "header_saveload",
           "compare_symbol_search_spread_operators",
+          // "legend_widget",
+          "format_button_in_legend",
           "delete_button_in_legend",
+          "show_hide_button_in_legend",
           "create_volume_indicator_by_default",
+          "show_chart_property_page",
+          // "control_bar",
           "always_show_legend_values_on_mobile",
           "adaptive_logo",
+          // "header_widget",
           "header_resolutions",
+          // "main_series_scale_menu",
           "timeframes_toolbar",
         ],
-        enabled_features: [
-          "study_templates",
-          "chart_style_hilo_last_price",
-          "hide_resolution_in_legend",
-          "hide_unresolved_symbols_in_legend",
-          "chart_style_hilo",
-          "show_symbol_logos",
-          "left_toolbar",
-          "show_object_tree",
-          "control_bar",
-          "legend_widget",
-          "main_series_scale_menu",
-          "drawing_tools",
-          "show_chart_property_page",
-          "volume_force_overlay",
-        ],
         charts_storage_url: getChartConfig(symbol).chartsStorageUrl,
-        charts_storage_api_version: getChartConfig(symbol).chartsStorageApiVersion,
+        charts_storage_api_version:
+          getChartConfig(symbol).chartsStorageApiVersion,
         client_id: getChartConfig(symbol).clientId,
         user_id: getChartConfig(symbol).userId,
         fullscreen: getChartConfig(symbol).fullscreen,
@@ -306,8 +304,10 @@ const TradingChartWebView = () => {
           "paneProperties.crossHairProperties.borderVisible": false,
           "paneProperties.crossHairProperties.backgroundColor": "#000000",
           "paneProperties.crossHairProperties.backgroundType": "solid",
-          "paneProperties.crossHairProperties.backgroundGradientStartColor": "#000000",
-          "paneProperties.crossHairProperties.backgroundGradientEndColor": "#000000",
+          "paneProperties.crossHairProperties.backgroundGradientStartColor":
+            "#000000",
+          "paneProperties.crossHairProperties.backgroundGradientEndColor":
+            "#000000",
           editorFontsList: "'Trebuchet MS', Verdana, Arial, sans-serif",
           "paneProperties.topMargin": 15,
           "paneProperties.bottomMargin": 10,
@@ -377,7 +377,7 @@ const TradingChartWebView = () => {
         position: "relative",
         zIndex: 1000,
         display: "flex",
-        flexDirection: "column"
+        flexDirection: "column",
       }}
     >
       <div
