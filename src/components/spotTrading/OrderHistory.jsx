@@ -16,6 +16,7 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const itemsPerPage = 10;
   
   // Check if user is authenticated
@@ -23,6 +24,16 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
     const token = localStorage.getItem('authToken');
     const userId = localStorage.getItem('user_id');
     setIsAuthenticated(!!token && !!userId);
+  }, []);
+
+  // Handle window resize for mobile detection
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
   
   const fetchOrderHistory = async () => {
@@ -248,7 +259,19 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
               {currentItems.length > 0 ? (
                 currentItems.map(order => (
                   <tr key={order.id}>
-                    <td>{new Date(order.date).toLocaleString()}</td>
+                    <td>
+                      <span className="mobile-date">
+                        {isMobile 
+                          ? new Date(order.date).toLocaleDateString('en-US', { 
+                              month: 'short', 
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })
+                          : new Date(order.date).toLocaleString()
+                        }
+                      </span>
+                    </td>
                     <td>{order.pair}</td>
                     <td className={order.side === 'buy' ? 'buy-color' : 'sell-color'}>{order.type}</td>
                     <td>{order.excecution_type} ({order.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})</td>

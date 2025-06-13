@@ -1,0 +1,229 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# SignUp Flow Debugging Guidelines
+
+## Critical Logic Errors Found in SignUpPage.jsx
+
+### 1. Profile Upload Logic Issue (Line ~398)
+**Problem**: The if-else block for profile upload has a logical flaw where both branches set the same URL.
+
+```javascript
+// ❌ Current problematic logic
+if (formData.profilePic && formData.profilePic.startsWith('data:image')) {
+  profileDataPayload = new FormData();
+  // ... FormData setup ...
+  profileUpdateUrl = `https://django.bhtokens.com/api/user_account/edit_profile/user=${storedUserId}`;
+} else {
+  // This else block sets the same URL - no differentiation
+  profileDataPayload = commonProfileData;
+  profileUpdateUrl = `https://django.bhtokens.com/api/user_account/edit_profile/user=${storedUserId}`;
+}
+```
+
+**Fix**: The logic should differentiate between FormData and JSON payloads properly.
+
+### 2. Inconsistent HTTP Client Usage
+**Problem**: Mixed usage of `axios` and `fetch` APIs throughout the signup flow:
+- Registration: `axios.post()`
+- OTP verification: `fetch()`
+- Profile update: `axios.post()`
+
+**Fix**: Use `axios` consistently for better error handling and HTTP2 support.
+
+### 3. Missing Error Handling in Nested Try-Catch Blocks
+**Problem**: Some try-catch blocks are properly structured but others have incomplete error handling.
+
+```javascript
+// ✅ Good pattern
+try {
+  const response = await axios.post(url, data);
+  // Handle success
+} catch (error) {
+  console.error('Specific error context:', error);
+  // Handle error appropriately
+}
+```
+
+### 4. LocalStorage Data Consistency Issues
+**Problem**: Inconsistent storage and retrieval of user data across the signup flow.
+
+**Issues Found**:
+- `user_id` vs `uid` confusion
+- Missing validation before localStorage operations
+- Potential race conditions in data storage
+
+## Signup Flow Validation Checklist
+
+### Step 1: Country Selection
+- ✅ Validates country selection
+- ✅ Validates terms acceptance
+- ✅ Proper error messaging
+
+### Step 2: Registration
+- ✅ Email format validation
+- ✅ Password confirmation matching
+- ⚠️ **Issue**: Complex error handling in axios.catch() chain
+- ⚠️ **Issue**: Duplicate error checking logic
+
+### Step 3: OTP Verification
+- ✅ OTP length validation (6 digits)
+- ⚠️ **Issue**: Uses `fetch` instead of `axios`
+- ✅ Proper resend timer logic
+
+### Step 4: Profile Completion
+- ⚠️ **Issue**: Profile upload logic doesn't differentiate between image and non-image cases
+- ⚠️ **Issue**: Complex nested try-catch blocks
+- ⚠️ **Issue**: Missing validation for profile image size/format
+
+## Recommended Fixes
+
+### 1. Standardize HTTP Client
+```javascript
+// Replace fetch with axios for OTP verification
+const response = await axios.post(verifyUrl, payload, {
+  headers: { 'Content-Type': 'application/json' }
+});
+
+if (response.data.success) {
+  console.log('OTP verification successful:', response.data);
+  setCurrentStep(4);
+} else {
+  setError(response.data.message || 'Invalid verification code. Please try again.');
+}
+```
+
+### 2. Fix Profile Upload Logic
+```javascript
+// Proper profile upload differentiation
+if (formData.profilePic && formData.profilePic.startsWith('data:image')) {
+  // Use FormData for image upload
+  profileDataPayload = new FormData();
+  Object.keys(commonProfileData).forEach(key => {
+    profileDataPayload.append(key, commonProfileData[key]);
+  });
+  
+  const fetchResponse = await fetch(formData.profilePic);
+  const blob = await fetchResponse.blob();
+  const profileImageFile = new File([blob], 'profile.jpg', { type: 'image/jpeg' });
+  profileDataPayload.append('user_profile', profileImageFile);
+  
+  profileUpdateUrl = `https://django.bhtokens.com/api/user_account/edit_profile/user=${storedUserId}`;
+} else {
+  // Use JSON for text-only data
+  profileDataPayload = commonProfileData;
+  profileUpdateUrl = `https://django.bhtokens.com/api/user_account/edit_profile/user=${storedUserId}`;
+}
+```
+
+### 3. Simplify Error Handling
+```javascript
+// Simplified registration error handling
+try {
+  const response = await axios.post(baseUrl, payload, {
+    headers: { 'Content-Type': 'application/json' }
+  });
+  
+  const data = response.data;
+  
+  // Check for application-level errors
+  if (data.error === "Email already in use" || 
+      (data.email && data.email.includes && data.email.includes('already exists'))) {
+    setError('This email is already registered. Please use a different email or login.');
+    return;
+  }
+  
+  if (!data.user_id) {
+    setError(data.message || data.error || 'Registration failed: Unexpected response from server.');
+    return;
+  }
+  
+  // Success handling
+  setUserId(data.user_id);
+  if (data.token) setToken(data.token);
+  setCurrentStep(3);
+  
+} catch (error) {
+  console.error('Registration error:', error);
+  if (error.response?.data) {
+    const data = error.response.data;
+    setError(data.message || data.error || 'Registration failed. Please try again.');
+  } else {
+    setError('Network error. Please check your connection and try again.');
+  }
+}
+```
+
+### 4. LocalStorage Data Management
+```javascript
+// Consistent localStorage operations
+const storeUserData = (userData) => {
+  try {
+    localStorage.setItem('user_id', userData.user_id);
+    localStorage.setItem('uid', userData.uid);
+    localStorage.setItem('email', userData.email);
+    localStorage.setItem('authToken', userData.token);
+    localStorage.setItem('isAuthenticated', 'true');
+    
+    // Store complete user object
+    localStorage.setItem('user', JSON.stringify({
+      user_id: userData.user_id,
+      uid: userData.uid,
+      email: userData.email
+    }));
+  } catch (error) {
+    console.error('Error storing user data:', error);
+  }
+};
+```
+
+## Testing Recommendations
+
+### Unit Tests for Each Step
+```javascript
+// Test country selection
+test('should validate country selection', () => {
+  // Test implementation
+});
+
+// Test registration flow
+test('should handle registration errors gracefully', async () => {
+  // Mock axios to return error
+  // Verify error handling
+});
+
+// Test OTP verification
+test('should validate OTP format', () => {
+  // Test 6-digit validation
+});
+
+// Test profile completion
+test('should handle profile upload correctly', async () => {
+  // Test both image and non-image cases
+});
+```
+
+### Integration Tests
+```javascript
+// Test complete signup flow
+test('should complete full signup process', async () => {
+  // Step through entire flow
+  // Verify localStorage state
+  // Verify navigation
+});
+```
+
+## Common Pitfalls to Avoid
+
+1. **Mixed HTTP Clients**: Stick to axios for consistency
+2. **Complex Error Handling**: Simplify error handling logic
+3. **LocalStorage Race Conditions**: Ensure proper sequencing of storage operations
+4. **Missing Validation**: Validate all user inputs before API calls
+5. **Inconsistent State Management**: Use consistent patterns for state updates
+
+## Key Files Referenced
+- [SignUpPage.jsx](mdc:src/pages/SignUpPage.jsx) - Main signup component
+- [LoginForm.jsx](mdc:src/components/login/LoginForm.jsx) - Login flow for comparison
+- [api-integration.mdc](mdc:.cursor/rules/api-integration.mdc) - API integration guidelines

@@ -1,0 +1,288 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Debugging & Troubleshooting Guidelines
+
+## Common Logic Errors to Check
+
+### Variable Declaration Issues
+- **Always declare loop counters**: `let attempts = 0;` before using in while loops
+- **Initialize variables before use**: Check that all variables are declared in their proper scope
+- **Avoid undefined variable references**: Use linting tools to catch undeclared variables
+
+```javascript
+// ❌ Wrong - attempts is undefined
+while (attempts < maxAttempts) {
+  // attempts is not declared
+}
+
+// ✅ Correct - declare before use
+let attempts = 0;
+const maxAttempts = 3;
+while (attempts < maxAttempts) {
+  // attempts is properly declared
+}
+```
+
+### Try-Catch Block Structure
+- **Always wrap async operations** in try-catch blocks
+- **Include proper error handling** for all API calls
+- **Log errors with context** for debugging
+
+```javascript
+// ❌ Wrong - missing try-catch wrapper
+const fetchData = async (id) => {
+  const response = await fetch(`/api/data/${id}`);
+  return response.json();
+};
+
+// ✅ Correct - proper error handling
+const fetchData = async (id) => {
+  try {
+    const response = await fetch(`/api/data/${id}`);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error; // Re-throw or handle appropriately
+  }
+};
+```
+
+### Loop Logic Validation
+- **Check loop termination conditions** carefully
+- **Validate array bounds** and counter increments
+- **Use proper comparison operators** (`<` vs `<=`, `===` vs `==`)
+
+```javascript
+// ❌ Wrong - off-by-one error
+if (attempts === maxAttempts) {
+  // This triggers after maxAttempts, not at maxAttempts-1
+}
+
+// ✅ Correct - proper boundary check
+if (attempts === maxAttempts - 1) {
+  // This is the last attempt
+}
+```
+
+## API Integration Debugging
+
+### URL Construction Validation
+- **Verify parameter names** match API documentation
+- **Check URL format** and encoding
+- **Validate endpoint paths** and query parameters
+
+```javascript
+// ❌ Potential issue - parameter name mismatch
+const apiUrl = `${BASE_URL}/user=${userId}`; // API might expect 'user_id'
+
+// ✅ Better - verify parameter names with API docs
+const apiUrl = `${BASE_URL}/user_id=${userId}`;
+// or use URLSearchParams for complex queries
+const url = new URL(BASE_URL);
+url.searchParams.set('user_id', userId);
+```
+
+### Response Handling Patterns
+- **Check response status** before processing data
+- **Handle different response formats** (JSON, text, blob)
+- **Validate response structure** before accessing properties
+
+```javascript
+// ❌ Wrong - assumes response is always JSON
+const data = await response.json();
+if (data.status) { /* ... */ }
+
+// ✅ Correct - validate response first
+if (!response.ok) {
+  const errorText = await response.text();
+  throw new Error(`HTTP ${response.status}: ${errorText}`);
+}
+
+const data = await response.json();
+if (data && typeof data === 'object' && data.status) {
+  // Safe to access data.status
+}
+```
+
+## State Management Debugging
+
+### React State Updates
+- **Check state dependencies** in useEffect hooks
+- **Validate state initialization** values
+- **Ensure proper state cleanup** on component unmount
+
+```javascript
+// ❌ Wrong - missing dependency
+useEffect(() => {
+  fetchUserData(userId);
+}, []); // userId should be in dependency array
+
+// ✅ Correct - include all dependencies
+useEffect(() => {
+  if (userId) {
+    fetchUserData(userId);
+  }
+}, [userId]);
+```
+
+### LocalStorage Consistency
+- **Validate localStorage keys** across components
+- **Handle missing localStorage values** gracefully
+- **Use consistent data types** when storing/retrieving
+
+```javascript
+// ❌ Wrong - assumes localStorage value exists
+const uid = localStorage.getItem('uid');
+apiCall(uid); // uid might be null
+
+// ✅ Correct - validate before use
+const uid = localStorage.getItem('uid');
+if (!uid) {
+  throw new Error('User ID not found. Please log in again.');
+}
+```
+
+## File Upload Debugging
+
+### FormData Construction
+- **Verify FormData field names** match API expectations
+- **Check file size limits** before upload
+- **Validate file types** and formats
+
+```javascript
+// ❌ Wrong - field name mismatch
+formData.append('image', file); // API expects 'captured_image'
+
+// ✅ Correct - match API field names
+formData.append('captured_selfie', selfieFile);
+formData.append('front_captured_image', frontFile);
+```
+
+### Upload Error Handling
+- **Implement timeout handling** for large uploads
+- **Provide fallback upload methods** (axios + fetch)
+- **Handle network errors** gracefully
+
+```javascript
+// ✅ Comprehensive upload error handling
+try {
+  const response = await axios.post(url, formData, {
+    timeout: 30000,
+    onUploadProgress: (progress) => {
+      console.log(`Upload: ${Math.round(progress.loaded * 100 / progress.total)}%`);
+    }
+  });
+  return response.data;
+} catch (error) {
+  if (error.code === 'ECONNABORTED') {
+    throw new Error('Upload timeout. Please try with smaller files.');
+  } else if (error.code === 'ERR_NETWORK') {
+    throw new Error('Network error. Please check your connection.');
+  } else if (error.response) {
+    throw new Error(`Upload failed: ${error.response.status}`);
+  } else {
+    throw new Error('Upload failed. Please try again.');
+  }
+}
+```
+
+## Debugging Tools & Techniques
+
+### Console Logging Best Practices
+- **Use descriptive log messages** with context
+- **Include relevant data** in log statements
+- **Use different log levels** (info, warn, error)
+
+```javascript
+// ✅ Good logging practices
+console.log('Starting KYC verification process', { userId, step: currentStep });
+console.warn('Retrying API call', { attempt: attempts + 1, maxAttempts });
+console.error('Verification failed', { error: error.message, stack: error.stack });
+```
+
+### Error Boundary Implementation
+- **Wrap components** in error boundaries
+- **Provide fallback UI** for errors
+- **Log errors** for monitoring
+
+### Network Request Debugging
+- **Use browser DevTools** Network tab
+- **Check request/response headers**
+- **Verify payload structure** and encoding
+- **Monitor CORS issues** and preflight requests
+
+## Testing & Validation
+
+### Unit Test Patterns
+```javascript
+// Test error conditions
+test('should handle missing UID gracefully', async () => {
+  localStorage.removeItem('uid');
+  
+  await expect(sendKycDataNotification()).rejects.toThrow(
+    'UID not found in localStorage'
+  );
+});
+
+// Test retry logic
+test('should retry failed requests', async () => {
+  const mockFetch = jest.fn()
+    .mockRejectedValueOnce(new Error('Network error'))
+    .mockResolvedValueOnce({ ok: true, json: () => ({ success: true }) });
+  
+  global.fetch = mockFetch;
+  
+  const result = await sendKycDataNotification('test-uid');
+  expect(mockFetch).toHaveBeenCalledTimes(2);
+  expect(result).toBe(true);
+});
+```
+
+### Integration Testing
+- **Test complete user flows** end-to-end
+- **Validate API integrations** with mock servers
+- **Check error handling** in realistic scenarios
+
+## Performance Debugging
+
+### Memory Leaks
+- **Clean up event listeners** and subscriptions
+- **Dispose of object URLs** after use
+- **Cancel pending requests** on component unmount
+
+```javascript
+// ✅ Proper cleanup
+useEffect(() => {
+  const objectUrl = URL.createObjectURL(file);
+  
+  return () => {
+    URL.revokeObjectURL(objectUrl); // Cleanup
+  };
+}, [file]);
+```
+
+### Bundle Analysis
+- **Use webpack-bundle-analyzer** to identify large dependencies
+- **Implement code splitting** for large components
+- **Optimize image sizes** and formats
+
+## Key Components for Debugging
+
+### Critical Files to Monitor
+- [VerifyPage.jsx](mdc:src/pages/account/VerifyPage.jsx) - KYC verification logic
+- [Withdraw.jsx](mdc:src/pages/account/Withdraw.jsx) - Withdrawal and OTP flow
+- [SignUpPage.jsx](mdc:src/pages/SignUpPage.jsx) - Registration process
+- [App.jsx](mdc:src/App.jsx) - Main application routing
+
+### Common Error Patterns
+1. **Undefined variable references** in async functions
+2. **Missing try-catch blocks** around API calls
+3. **Incorrect loop termination** conditions
+4. **Parameter name mismatches** in API calls
+5. **State update timing** issues in React components

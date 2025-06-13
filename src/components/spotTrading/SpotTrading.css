@@ -731,34 +731,123 @@ iframe.chart-iframe {
         font-size: 11px;
     }
     
-    .order-history-filters {
+        .order-history-filters {
         flex-wrap: wrap;
         height: auto;
         padding: 8px;
     }
-    
-    .filter-date {
-        margin-left: 0;
-        margin-top: 8px;
-        width: 100%;
+
+    /* Hide filter date and refresh button on mobile */
+    .filter-date,
+    .refresh-button {
+        display: none;
     }
-    
+
     .order-history-table {
         max-height: 250px;
     }
-    
+
     .order-history-table th,
     .order-history-table td {
-        font-size: 12px;
-        padding: 0 8px;
-        height: 36px;
+        font-size: 11px;
+        padding: 8px 2px;
+        height: 40px;
+        vertical-align: middle;
     }
-    
+
+    .order-history-table th {
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--secondary-text);
+    }
+
+    /* Hide less important columns on mobile */
+    .order-history-table th:nth-child(4), /* Price/Execution */
+    .order-history-table td:nth-child(4),
+    .order-history-table th:nth-child(5), /* Amount */
+    .order-history-table td:nth-child(5),
+    .order-history-table th:nth-child(6), /* Filled */
+    .order-history-table td:nth-child(6),
+    .order-history-table th:nth-child(9) { /* Actions */
+        display: none;
+    }
+
+    .order-history-table td:nth-child(9) {
+        display: none;
+    }
+
+    /* Adjust remaining column widths for mobile */
+    .order-history-table th:nth-child(1), /* Date */
+    .order-history-table td:nth-child(1) {
+        width: 20%;
+        font-size: 10px;
+        padding: 0 2px;
+    }
+
+    .order-history-table th:nth-child(2), /* Pair */
+    .order-history-table td:nth-child(2) {
+        width: 20%;
+        font-weight: 600;
+        padding: 0 2px;
+    }
+
+    .order-history-table th:nth-child(3), /* Type */
+    .order-history-table td:nth-child(3) {
+        width: 15%;
+        text-align: center;
+        padding: 0 2px;
+    }
+
+    .order-history-table th:nth-child(7), /* Total */
+    .order-history-table td:nth-child(7) {
+        width: 25%;
+        text-align: right;
+        padding: 0 2px;
+        font-size: 10px;
+    }
+
+    .order-history-table th:nth-child(8), /* Status */
+    .order-history-table td:nth-child(8) {
+        width: 20%;
+        text-align: center;
+        white-space: nowrap;
+        overflow: visible;
+        padding: 0 2px;
+    }
+
     .order-history-table .pending-status,
     .order-history-table .filled-status,
     .order-history-table .canceled-status {
-        padding: 2px 6px;
+        padding: 1px 4px;
+        font-size: 9px;
+        border-radius: 8px;
+        white-space: nowrap;
+        overflow: visible;
+        display: inline-block;
+        min-width: fit-content;
+    }
+
+    /* Compact pagination for mobile */
+    .order-history-pagination {
+        padding: 6px 0;
+    }
+
+    .order-history-page-numbers {
+        gap: 4px;
+        margin: 0 8px;
+    }
+
+    .order-history-page-numbers span {
+        padding: 1px 4px;
         font-size: 10px;
+    }
+
+    .order-history-page-info {
+        font-size: 10px;
+        padding: 4px 0;
+        color: var(--secondary-text);
     }
 }
 
@@ -779,15 +868,81 @@ iframe.chart-iframe {
     }
     
     .order-history-table {
-        max-height: 200px;
+        max-height: 180px;
     }
-    
-    /* Simplify order history table for very small screens */
-    .order-history-table th:nth-child(6),
-    .order-history-table td:nth-child(6),
-    .order-history-table th:nth-child(7),
+
+    .order-history-table th,
+    .order-history-table td {
+        font-size: 10px;
+        padding: 0 2px;
+        height: 28px;
+    }
+
+    /* Further optimize for very small screens */
+    .order-history-table th:nth-child(1), /* Date */
+    .order-history-table td:nth-child(1) {
+        width: 28%;
+        font-size: 9px;
+    }
+
+    .order-history-table th:nth-child(2), /* Pair */
+    .order-history-table td:nth-child(2) {
+        width: 20%;
+    }
+
+    .order-history-table th:nth-child(3), /* Type */
+    .order-history-table td:nth-child(3) {
+        width: 12%;
+    }
+
+    .order-history-table th:nth-child(7), /* Total */
     .order-history-table td:nth-child(7) {
-        display: none;
+        width: 20%;
+        font-size: 9px;
+    }
+
+    .order-history-table th:nth-child(8), /* Status */
+    .order-history-table td:nth-child(8) {
+        width: 20%;
+        white-space: nowrap;
+        overflow: visible;
+        text-align: center;
+    }
+
+    .order-history-table .pending-status,
+    .order-history-table .filled-status,
+    .order-history-table .canceled-status {
+        padding: 2px 4px;
+        font-size: 8px;
+        border-radius: 6px;
+        white-space: nowrap;
+        overflow: visible;
+        display: inline-block;
+        min-width: fit-content;
+        max-width: 100%;
+    }
+
+    .order-history-filters {
+        padding: 6px;
+    }
+
+    .filter-option {
+        padding: 0 8px;
+        font-size: 11px;
+        height: 20px;
+    }
+
+    .order-history-pagination {
+        padding: 4px 0;
+    }
+
+    .order-history-page-numbers span {
+        padding: 1px 3px;
+        font-size: 9px;
+    }
+
+    .order-history-page-info {
+        font-size: 9px;
     }
 }
 
@@ -1486,6 +1641,72 @@ body, html {
     font-size: 11px;
     color: var(--secondary-text);
     padding: 8px 0;
+}
+
+/* Additional mobile-specific improvements */
+@media (max-width: 768px) {
+    /* Make table rows more touch-friendly */
+    .order-history-table tr {
+        min-height: 32px;
+    }
+
+    /* Improve readability on mobile */
+    .order-history-table td:nth-child(1) {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Better status indicators for mobile */
+    .order-history-table .pending-status {
+        background-color: rgba(255, 193, 7, 0.2);
+        color: #ffc107;
+    }
+
+    .order-history-table .filled-status {
+        background-color: rgba(40, 167, 69, 0.2);
+        color: #28a745;
+    }
+
+    .order-history-table .canceled-status {
+        background-color: rgba(220, 53, 69, 0.2);
+        color: #dc3545;
+    }
+
+    /* Hide scrollbars on mobile for cleaner look */
+    .order-history-table::-webkit-scrollbar {
+        width: 2px;
+        height: 2px;
+    }
+
+    .order-history-table::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 1px;
+    }
+
+    /* Improve mobile table layout */
+    .order-history-table table {
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    /* Better mobile typography */
+    .order-history-table th {
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Mobile-friendly pagination */
+    .order-history-prev-page,
+    .order-history-next-page {
+        padding: 6px 10px;
+        min-width: 32px;
+        min-height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }
 
 /* CSS Variables for theming */

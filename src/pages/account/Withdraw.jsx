@@ -401,13 +401,13 @@ function withdraw() { // Using App as the main exportable component name
       console.log('OTP request completed, proceeding to OTP step');
       
       // Proceed to OTP step
-      setSubmitSuccess(false);
-      setShowOtpStep(true);
-      setOtpTimer(60); // Start 60-second countdown for resend
-      setCanResendOtp(false);
-      setOtpError(null);
-      setOtpCode('');
-      
+    setSubmitSuccess(false);
+    setShowOtpStep(true);
+    setOtpTimer(60); // Start 60-second countdown for resend
+    setCanResendOtp(false);
+    setOtpError(null);
+    setOtpCode('');
+    
       console.log('OTP step displayed successfully');
     } catch (error) {
       console.error('Error sending OTP:', error);

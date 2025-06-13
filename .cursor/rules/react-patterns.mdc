@@ -1,0 +1,311 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# React Component Patterns & Best Practices
+
+## Project Structure & Architecture
+
+### Technology Stack
+- **React 18.3.1** with functional components and hooks
+- **Vite** as build tool and development server
+- **React Router DOM 6.23.1** for routing
+- **Tailwind CSS 3.4.1** for styling
+- **Axios 1.9.0** for HTTP requests
+- **Socket.io-client 4.8.1** for real-time communication
+
+### Directory Structure
+```
+src/
+├── components/          # Reusable UI components
+│   ├── common/         # Shared components
+│   ├── assets/         # Asset-related components
+│   ├── profile/        # Profile-specific components
+│   ├── login/          # Authentication components
+│   └── [feature]/      # Feature-specific components
+├── pages/              # Page-level components
+│   ├── account/        # Account management pages
+│   ├── login/          # Authentication pages
+│   ├── supportCenter/  # Support-related pages
+│   └── morePages/      # Additional pages
+├── services/           # API service layers
+├── context/            # React context providers
+├── routes/             # Routing configuration
+├── utils/              # Utility functions
+└── assets/             # Static assets
+```
+
+## Component Development Standards
+
+### Functional Components with Hooks
+- **Use functional components exclusively** - no class components
+- **Leverage React hooks** for state management and side effects
+- **Custom hooks** for reusable logic across components
+
+### State Management Patterns
+```javascript
+// Preferred state management pattern
+const [state, setState] = useState(initialValue);
+const [loading, setLoading] = useState(false);
+const [error, setError] = useState(null);
+
+// For complex state, use useReducer
+const [state, dispatch] = useReducer(reducer, initialState);
+```
+
+### Effect Hook Best Practices
+```javascript
+// Correct useEffect patterns
+useEffect(() => {
+  // Mount-only effect
+  fetchInitialData();
+}, []); // Empty dependency array
+
+useEffect(() => {
+  // Effect with dependencies
+  if (userId) {
+    fetchUserData(userId);
+  }
+}, [userId]); // Specific dependencies
+
+// Cleanup pattern
+useEffect(() => {
+  const subscription = subscribeToData();
+  return () => subscription.unsubscribe();
+}, []);
+```
+
+## Form Handling & Validation
+
+### Form State Management
+- **Use controlled components** for form inputs
+- **Implement proper validation** before submission
+- **Handle loading states** during form submission
+
+```javascript
+const [formData, setFormData] = useState({
+  email: '',
+  password: '',
+  otp: ''
+});
+
+const handleInputChange = (e) => {
+  const { name, value } = e.target;
+  setFormData(prev => ({
+    ...prev,
+    [name]: value
+  }));
+};
+```
+
+### Input Validation Patterns
+```javascript
+// OTP validation (alphanumeric)
+const validateOTP = (otp) => {
+  return /^[a-zA-Z0-9]{4,8}$/.test(otp);
+};
+
+// Email validation
+const validateEmail = (email) => {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+};
+```
+
+## Error Handling & User Feedback
+
+### Error State Management
+```javascript
+const [error, setError] = useState(null);
+
+const handleError = (error) => {
+  console.error('Component Error:', error);
+  setError(error.message || 'An unexpected error occurred');
+};
+
+// Clear error on retry
+const clearError = () => setError(null);
+```
+
+### Loading States & User Feedback
+```javascript
+// Loading button pattern
+<button 
+  disabled={isLoading}
+  onClick={handleSubmit}
+  className={`btn ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+>
+  {isLoading ? (
+    <>
+      <Spinner className="mr-2" />
+      Processing...
+    </>
+  ) : (
+    'Submit'
+  )}
+</button>
+```
+
+## Component Communication
+
+### Props Patterns
+```javascript
+// Preferred prop destructuring
+const MyComponent = ({ 
+  title, 
+  onSubmit, 
+  isLoading = false, 
+  className = '' 
+}) => {
+  // Component logic
+};
+
+// PropTypes for type checking (if using)
+MyComponent.propTypes = {
+  title: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool,
+  className: PropTypes.string
+};
+```
+
+### Event Handling
+```javascript
+// Preferred event handler patterns
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  
+  try {
+    await onSubmit(formData);
+  } catch (error) {
+    handleError(error);
+  } finally {
+    setLoading(false);
+  }
+};
+```
+
+## Performance Optimization
+
+### Memoization Patterns
+```javascript
+// Memoize expensive calculations
+const expensiveValue = useMemo(() => {
+  return computeExpensiveValue(data);
+}, [data]);
+
+// Memoize callback functions
+const handleClick = useCallback((id) => {
+  onItemClick(id);
+}, [onItemClick]);
+
+// Memoize components
+const MemoizedComponent = React.memo(({ data }) => {
+  return <div>{data.title}</div>;
+});
+```
+
+### Conditional Rendering
+```javascript
+// Preferred conditional rendering patterns
+{isLoading && <LoadingSpinner />}
+{error && <ErrorMessage message={error} />}
+{data?.length > 0 ? (
+  <DataList items={data} />
+) : (
+  <EmptyState />
+)}
+```
+
+## Styling & CSS
+
+### Tailwind CSS Patterns
+- **Use Tailwind utility classes** for styling
+- **Create component-specific CSS modules** when needed
+- **Maintain consistent spacing and color schemes**
+
+```javascript
+// Preferred className patterns
+const buttonClasses = `
+  px-4 py-2 rounded-lg font-medium transition-colors
+  ${variant === 'primary' 
+    ? 'bg-blue-600 text-white hover:bg-blue-700' 
+    : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+  }
+  ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+`;
+```
+
+## File Naming & Organization
+
+### Naming Conventions
+- **PascalCase** for component files: `UserProfile.jsx`
+- **camelCase** for utility files: `apiHelpers.js`
+- **kebab-case** for CSS files: `user-profile.css`
+- **UPPER_CASE** for constants: `API_ENDPOINTS.js`
+
+### File Organization
+```
+components/
+├── UserProfile/
+│   ├── UserProfile.jsx      # Main component
+│   ├── UserProfile.module.css # Component styles
+│   ├── UserProfile.test.jsx  # Component tests
+│   └── index.js             # Export file
+```
+
+## Testing Patterns
+
+### Component Testing
+```javascript
+// Preferred testing patterns with React Testing Library
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
+test('should handle form submission', async () => {
+  const mockSubmit = jest.fn();
+  render(<MyForm onSubmit={mockSubmit} />);
+  
+  await userEvent.type(screen.getByLabelText(/email/i), 'test@example.com');
+  fireEvent.click(screen.getByRole('button', { name: /submit/i }));
+  
+  await waitFor(() => {
+    expect(mockSubmit).toHaveBeenCalledWith({
+      email: 'test@example.com'
+    });
+  });
+});
+```
+
+## Key Application Components
+
+### Critical Pages
+- [App.jsx](mdc:src/App.jsx) - Main application component with routing
+- [SignUpPage.jsx](mdc:src/pages/SignUpPage.jsx) - User registration flow
+- [VerifyPage.jsx](mdc:src/pages/account/VerifyPage.jsx) - KYC verification process
+- [Withdraw.jsx](mdc:src/pages/account/Withdraw.jsx) - Withdrawal functionality
+- [SpotTrading.jsx](mdc:src/pages/SpotTrading.jsx) - Trading interface
+- [Assets.jsx](mdc:src/pages/Assets.jsx) - Asset management
+
+### Service Layer
+- [spotTradingApi.js](mdc:src/services/spotTradingApi.js) - Trading API services
+- [futureTradingApi.js](mdc:src/services/futureTradingApi.js) - Futures trading services
+
+## Common Anti-Patterns to Avoid
+
+### State Management
+- ❌ **Don't mutate state directly**: `state.push(item)`
+- ✅ **Use immutable updates**: `setState([...state, item])`
+
+### Effect Dependencies
+- ❌ **Missing dependencies**: `useEffect(() => {}, [])`
+- ✅ **Include all dependencies**: `useEffect(() => {}, [dep1, dep2])`
+
+### Error Handling
+- ❌ **Silent failures**: `catch (error) {}`
+- ✅ **Proper error handling**: `catch (error) { handleError(error); }`
+
+### Performance
+- ❌ **Unnecessary re-renders**: Creating objects in render
+- ✅ **Memoized values**: Using useMemo and useCallback appropriately

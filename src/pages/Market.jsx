@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import NavigationTabs from '../components/Market/NavigationTabs';
 import SecondaryTabs from '../components/Market/SecondaryTabs';
 import CryptoPriceSection from '../components/Market/CryptoPriceSection';
@@ -6,6 +7,9 @@ import FaqSection from '../components/Market/FaqSection';
 import '../components/Market/Market.css';
 
 const Market = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  
   // Only show the Crypto tab
   const [activeMainTab, setActiveMainTab] = useState('crypto');
   // Live coin data
@@ -13,76 +17,132 @@ const Market = () => {
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   // --- Caching logic ---
   const CACHE_KEY = 'market_coins';
   const CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes
-  const isFirstLoad = React.useRef(true);
+  const FETCH_INTERVAL = 10 * 1000; // 10 seconds (more reasonable than 1 second)
+  const isFirstLoad = useRef(true);
   const lastCacheUpdate = useRef(Date.now());
+  const lastFetchRef = useRef(0);
 
-  // Load from cache on mount
-  useEffect(() => {
-    let isMounted = true;
-    const cached = localStorage.getItem(CACHE_KEY);
-    if (cached) {
+  // Improved fetch function with better caching and error handling
+  const fetchCoins = useCallback(async (forceRefresh = false) => {
+    const now = Date.now();
+    
+    // Try to get from cache first if not forcing refresh
+    if (!forceRefresh) {
       try {
-        const { data, timestamp } = JSON.parse(cached);
-        if (Array.isArray(data) && Date.now() - timestamp < CACHE_EXPIRY) {
-          setCoins(data);
-          setLoading(false);
-        }
-      } catch {}
-    }
-  }, []);
-
-  // Fetch and update coins every second, update only price and 24h change
-  useEffect(() => {
-    let isMounted = true;
-    let intervalId;
-    const fetchCoins = async () => {
-      setError(null);
-      try {
-        const res = await fetch('https://apiv2.bhtokens.com/api/v1/coins?apikey=A20RqFwVktRxxRqrKBtmi6ud');
-        const data = await res.json();
-        if (!isMounted) return;
-        let newCoins = Array.isArray(data) ? data : Array.isArray(data.data) ? data.data : [];
-        setCoins(prev => {
-          // If prev is empty or first load, just set
-          if (!prev || prev.length === 0 || isFirstLoad.current) {
-            isFirstLoad.current = false;
-            return newCoins;
-          }
-          // Otherwise, update only price and 24h change
-          return prev.map(oldCoin => {
-            const fresh = newCoins.find(c => c.coin_pair === oldCoin.coin_pair);
-            if (fresh) {
-              return {
-                ...oldCoin,
-                price: fresh.price,
-                price_change_24h: fresh.price_change_24h
-              };
+        const cachedData = localStorage.getItem(CACHE_KEY);
+        if (cachedData) {
+          const { data, timestamp } = JSON.parse(cachedData);
+          
+          // Use cache if it's less than 5 minutes old
+          if (now - timestamp < CACHE_EXPIRY && Array.isArray(data) && data.length > 0) {
+            console.log('Using cached market data');
+            setCoins(data);
+            setLoading(false);
+            
+            // If cache is getting old (>4 minutes), refresh in background
+            if (now - timestamp > CACHE_EXPIRY * 0.8 && now - lastFetchRef.current > CACHE_EXPIRY) {
+              console.log('Cache getting stale, refreshing in background');
+              lastFetchRef.current = now;
+              fetchCoins(true);
             }
-            return oldCoin;
-          });
-        });
-        // Every 5 minutes, update cache
-        if (Date.now() - lastCacheUpdate.current > CACHE_EXPIRY) {
-          localStorage.setItem(CACHE_KEY, JSON.stringify({ data: newCoins, timestamp: Date.now() }));
-          lastCacheUpdate.current = Date.now();
+            
+            return;
+          }
         }
-      } catch (err) {
-        if (isMounted) setError('Failed to fetch coin data.');
-      } finally {
-        setLoading(false);
+      } catch (e) {
+        console.error('Error reading market cache:', e);
       }
-    };
+    }
+    
+    // If we're here, we need to fetch fresh data
+    if (forceRefresh) {
+      setRefreshing(true);
+    } else {
+      setLoading(true);
+    }
+    
+    setError(null);
+    
+    try {
+      const response = await fetch('https://apiv2.bhtokens.com/api/v1/coins?apikey=A20RqFwVktRxxRqrKBtmi6ud');
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      // Handle different response structures
+      let newCoins = [];
+      if (Array.isArray(data)) {
+        newCoins = data;
+      } else if (data && Array.isArray(data.data)) {
+        newCoins = data.data;
+      } else if (data && data.coins && Array.isArray(data.coins)) {
+        newCoins = data.coins;
+      } else {
+        console.warn('Unexpected API response structure:', data);
+        throw new Error('Invalid API response structure');
+      }
+      
+      // Filter out any invalid entries
+      newCoins = newCoins.filter(coin => 
+        coin && 
+        coin.symbol && 
+        coin.price !== undefined && 
+        coin.coin_pair !== undefined
+      );
+      
+      if (newCoins.length === 0) {
+        throw new Error('No valid coins found in API response');
+      }
+      
+      // Save to cache
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({
+          data: newCoins,
+          timestamp: now
+        }));
+        lastCacheUpdate.current = now;
+      } catch (e) {
+        console.error('Error saving market cache:', e);
+      }
+      
+      setCoins(newCoins);
+      console.log(`Fetched ${newCoins.length} coins from API`);
+      
+    } catch (err) {
+      console.error('Error fetching market data:', err);
+      const errorMessage = err.message || 'Failed to fetch coin data. Please try again.';
+      setError(errorMessage);
+      
+      // Don't clear existing coins on refresh error
+      if (!forceRefresh && coins.length === 0) {
+        setCoins([]);
+      }
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+      lastFetchRef.current = now;
+    }
+  }, [coins.length]);
+
+  // Initial load and periodic refresh
+  useEffect(() => {
     fetchCoins();
-    intervalId = setInterval(fetchCoins, 1000);
-    return () => {
-      isMounted = false;
-      clearInterval(intervalId);
-    };
-  }, []);
+    
+    // Set up periodic refresh every 10 seconds
+    const refreshInterval = setInterval(() => {
+      fetchCoins(true);
+    }, FETCH_INTERVAL);
+    
+    return () => clearInterval(refreshInterval);
+  }, [fetchCoins]);
 
   // Filter coins by search
   const filteredCoins = coins.filter(
@@ -91,9 +151,7 @@ const Market = () => {
       coin.name?.toLowerCase().includes(search.toLowerCase())
   );
 
-  const navigate = (url) => {
-    window.location.href = url;
-  };
+
 
 
 
@@ -106,7 +164,7 @@ const Market = () => {
         {/* Primary Navigation (Crypto tab only) */}
         <NavigationTabs activeTab={activeMainTab} onTabClick={setActiveMainTab} />
 
-        {/* Search Bar */}
+        {/* Search Bar and Refresh */}
         <div className="mb-6 flex justify-between items-center">
           <input
             type="text"
@@ -115,6 +173,22 @@ const Market = () => {
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
+          <button 
+            onClick={() => fetchCoins(true)} 
+            disabled={refreshing}
+            className="ml-4 flex items-center space-x-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors disabled:opacity-50"
+            title="Refresh market data"
+          >
+            <svg 
+              className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            <span>{refreshing ? 'Refreshing...' : 'Refresh'}</span>
+          </button>
         </div>
 
         {/* Coin Table */}
@@ -130,18 +204,54 @@ const Market = () => {
             </thead>
             <tbody className="divide-y divide-gray-800">
               {loading && (
+                <>
+                  {/* Loading skeleton rows */}
+                  {Array.from({ length: 8 }).map((_, i) => (
+                    <tr key={`skeleton-${i}`} className="animate-pulse">
+                      <td className="flex items-center gap-3 py-3 px-4">
+                        <div className="w-7 h-7 bg-gray-700 rounded-full"></div>
+                        <div className="h-4 w-20 bg-gray-700 rounded"></div>
+                      </td>
+                      <td className="text-right px-4">
+                        <div className="h-4 w-16 bg-gray-700 rounded ml-auto"></div>
+                      </td>
+                      <td className="text-right px-4">
+                        <div className="h-4 w-12 bg-gray-700 rounded ml-auto"></div>
+                      </td>
+                      <td className="text-center px-4">
+                        <div className="h-6 w-20 bg-gray-700 rounded mx-auto"></div>
+                      </td>
+                    </tr>
+                  ))}
+                </>
+              )}
+              {error && !loading && (
                 <tr>
-                  <td colSpan={4} className="py-8 text-center text-gray-400 animate-pulse">Loading coins...</td>
+                  <td colSpan={4} className="py-12 text-center">
+                    <div className="flex flex-col items-center space-y-3">
+                      <div className="text-red-500 text-sm">{error}</div>
+                      <button 
+                        onClick={() => fetchCoins(true)}
+                        className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm transition-colors"
+                      >
+                        Try Again
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               )}
-              {error && (
+              {!loading && !error && filteredCoins.length === 0 && coins.length > 0 && (
                 <tr>
-                  <td colSpan={4} className="py-8 text-center text-red-500">{error}</td>
+                  <td colSpan={4} className="py-8 text-center text-gray-400">
+                    No coins match your search "{search}".
+                  </td>
                 </tr>
               )}
-              {!loading && !error && filteredCoins.length === 0 && (
+              {!loading && !error && coins.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="py-8 text-center text-gray-400">No coins found.</td>
+                  <td colSpan={4} className="py-8 text-center text-gray-400">
+                    No market data available.
+                  </td>
                 </tr>
               )}
               {!loading && !error && filteredCoins.map((coin, idx) => (
@@ -166,12 +276,15 @@ const Market = () => {
                     <button
                       className="text-orange-500 text-xs font-semibold hover:text-orange-400 transition-colors px-3 py-1 rounded-full bg-white/5 border border-orange-500/20 shadow-sm mr-2"
                       onClick={() => {
-  if (coin.coin_pair) {
-    navigate(`/spot-trading?coin_pair_id=${coin.coin_pair}`);
-  } else {
-    alert('Trading pair ID not found for this coin.');
-  }
-}}
+                        if (coin.coin_pair) {
+                          // Update URL param for coin_pair_id (preserve other params)
+                          const params = new URLSearchParams(location.search);
+                          params.set('coin_pair_id', coin.coin_pair);
+                          navigate(`/spot-trading?${params.toString()}`);
+                        } else {
+                          alert('Trading pair ID not found for this coin.');
+                        }
+                      }}
                     >
                       Trade
                     </button>
