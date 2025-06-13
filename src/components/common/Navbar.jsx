@@ -226,7 +226,7 @@ const Navbar = () => {
   };
 
   const appDownloadUrl =
-    "https://drive.google.com/file/d/10zcEPJheEG1PYjQr_qjuhHy2M_HHN-0D/view?usp=sharing";
+    "https://drive.google.com/file/d/197fKnptqA-z26IHuugZtpM5IGZ_WP5-c/view?usp=sharing";
 
   const openComingSoon = () => setIsComingSoonOpen(true);
   const closeComingSoon = () => setIsComingSoonOpen(false);
