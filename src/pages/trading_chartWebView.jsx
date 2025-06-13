@@ -5,7 +5,9 @@ import { widget } from "../charting_library/charting_library.esm.js";
 function getLanguageFromURL() {
   const regex = new RegExp("[\\?&]lang=([^&#]*)");
   const results = regex.exec(window.location.search);
-  return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, " "));
+  return results === null
+    ? null
+    : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
 // Custom datafeed implementation to handle CORS issues
@@ -15,12 +17,12 @@ class CORSCompatibleDatafeed {
   }
 
   onReady(callback) {
-    console.log('[onReady]: Method call');
+    console.log("[onReady]: Method call");
     setTimeout(() => {
       callback({
         exchanges: [],
         symbols_types: [],
-        supported_resolutions: ['1', '5', '15', '30', '60', '240', '1D'],
+        supported_resolutions: ["1", "5", "15", "30", "60", "240", "1D"],
         supports_marks: false,
         supports_timescale_marks: false,
         supports_time: true,
@@ -29,28 +31,28 @@ class CORSCompatibleDatafeed {
   }
 
   searchSymbols(userInput, exchange, symbolType, onResultReadyCallback) {
-    console.log('[searchSymbols]: Method call');
+    console.log("[searchSymbols]: Method call");
     onResultReadyCallback([]);
   }
 
   resolveSymbol(symbolName, onSymbolResolvedCallback, onResolveErrorCallback) {
-    console.log('[resolveSymbol]: Method call', symbolName);
-    
+    console.log("[resolveSymbol]: Method call", symbolName);
+
     const symbolInfo = {
       name: symbolName,
       description: symbolName,
-      type: 'crypto',
-      session: '24x7',
-      timezone: 'Etc/UTC',
+      type: "crypto",
+      session: "24x7",
+      timezone: "Etc/UTC",
       ticker: symbolName,
-      exchange: 'FLUX',
+      exchange: "FLUX",
       minmov: 1,
       pricescale: 100000000,
       has_intraday: true,
-      intraday_multipliers: ['1', '5', '15', '30', '60', '240'],
-      supported_resolutions: ['1', '5', '15', '30', '60', '240', '1D'],
+      intraday_multipliers: ["1", "5", "15", "30", "60", "240"],
+      supported_resolutions: ["1", "5", "15", "30", "60", "240", "1D"],
       volume_precision: 8,
-      data_status: 'streaming',
+      data_status: "streaming",
     };
 
     setTimeout(() => {
@@ -58,12 +60,22 @@ class CORSCompatibleDatafeed {
     }, 0);
   }
 
-  getBars(symbolInfo, resolution, periodParams, onHistoryCallback, onErrorCallback) {
-    console.log('[getBars]: Method call', symbolInfo, resolution, periodParams);
-    
+  getBars(
+    symbolInfo,
+    resolution,
+    periodParams,
+    onHistoryCallback,
+    onErrorCallback
+  ) {
+    console.log("[getBars]: Method call", symbolInfo, resolution, periodParams);
+
     // Generate mock data to avoid CORS issues
-    const bars = this.generateMockBars(periodParams.from, periodParams.to, resolution);
-    
+    const bars = this.generateMockBars(
+      periodParams.from,
+      periodParams.to,
+      resolution
+    );
+
     setTimeout(() => {
       if (bars.length === 0) {
         onHistoryCallback([], { noData: true });
@@ -78,10 +90,10 @@ class CORSCompatibleDatafeed {
     const interval = this.getIntervalInSeconds(resolution) * 1000;
     let currentTime = from * 1000;
     const endTime = to * 1000;
-    
+
     let basePrice = 50000; // Starting price for BTC-like data
     let currentPrice = basePrice;
-    
+
     while (currentTime <= endTime) {
       const change = (Math.random() - 0.5) * 1000; // Random price change
       const open = currentPrice;
@@ -89,7 +101,7 @@ class CORSCompatibleDatafeed {
       const high = Math.max(open, close) + Math.random() * 500;
       const low = Math.min(open, close) - Math.random() * 500;
       const volume = Math.random() * 1000000;
-      
+
       bars.push({
         time: currentTime,
         open: open,
@@ -98,29 +110,46 @@ class CORSCompatibleDatafeed {
         close: close,
         volume: volume,
       });
-      
+
       currentPrice = close;
       currentTime += interval;
     }
-    
+
     return bars;
   }
 
   getIntervalInSeconds(resolution) {
     switch (resolution) {
-      case '1': return 60;
-      case '5': return 300;
-      case '15': return 900;
-      case '30': return 1800;
-      case '60': return 3600;
-      case '240': return 14400;
-      case '1D': return 86400;
-      default: return 60;
+      case "1":
+        return 60;
+      case "5":
+        return 300;
+      case "15":
+        return 900;
+      case "30":
+        return 1800;
+      case "60":
+        return 3600;
+      case "240":
+        return 14400;
+      case "1D":
+        return 86400;
+      default:
+        return 60;
     }
   }
 
-  subscribeBars(symbolInfo, resolution, onRealtimeCallback, subscriberUID, onResetCacheNeededCallback) {
-    console.log('[subscribeBars]: Method call with subscriberUID:', subscriberUID);
+  subscribeBars(
+    symbolInfo,
+    resolution,
+    onRealtimeCallback,
+    subscriberUID,
+    onResetCacheNeededCallback
+  ) {
+    console.log(
+      "[subscribeBars]: Method call with subscriberUID:",
+      subscriberUID
+    );
     // Mock real-time updates
     this.intervalId = setInterval(() => {
       const lastBar = this.lastBar || {
@@ -131,7 +160,7 @@ class CORSCompatibleDatafeed {
         close: 50000,
         volume: 1000,
       };
-      
+
       const change = (Math.random() - 0.5) * 100;
       const newBar = {
         ...lastBar,
@@ -141,14 +170,17 @@ class CORSCompatibleDatafeed {
         low: Math.min(lastBar.low, lastBar.close + change),
         volume: lastBar.volume + Math.random() * 100,
       };
-      
+
       this.lastBar = newBar;
       onRealtimeCallback(newBar);
     }, 5000);
   }
 
   unsubscribeBars(subscriberUID) {
-    console.log('[unsubscribeBars]: Method call with subscriberUID:', subscriberUID);
+    console.log(
+      "[unsubscribeBars]: Method call with subscriberUID:",
+      subscriberUID
+    );
     if (this.intervalId) {
       clearInterval(this.intervalId);
       this.intervalId = null;
@@ -227,15 +259,27 @@ const TradingChartWebView = () => {
       const formattedSymbol = formatSymbolForChart(symbol);
       const widgetOptions = {
         symbol: formattedSymbol,
-        // Use custom CORS-compatible datafeed instead of UDFCompatibleDatafeed
-        datafeed: new CORSCompatibleDatafeed(getChartConfig(symbol).datafeedUrl),
+        datafeed: new window.Datafeeds.UDFCompatibleDatafeed(
+          getChartConfig(symbol).datafeedUrl
+        ),
         interval: getChartConfig(symbol).interval,
         container: chartContainerRef.current,
         library_path: getChartConfig(symbol).libraryPath,
         locale: getLanguageFromURL() || "en",
+        enabled_features: [
+          "hide_left_toolbar_by_default",
+          "chart_style_hilo_last_price",
+          "hide_resolution_in_legend",
+          "hide_unresolved_symbols_in_legend",
+          // "chart_style_hilo",
+          "show_symbol_logos",
+        ],
+        toolbar_bg: "#1f2630",
         disabled_features: [
-          "use_localstorage_for_settings",
           "items_favoriting",
+          // "legend_context_menu",
+          // "hide_main_series_symbol_from_indicator_legend",
+          // "symbol_info",
           "header_compare",
           "header_fullscreen_button",
           "header_settings",
@@ -244,33 +288,26 @@ const TradingChartWebView = () => {
           "show_hide_button_in_legend",
           "format_button_in_legend",
           "header_symbol_search",
+          // "show_object_tree",
           "header_saveload",
           "compare_symbol_search_spread_operators",
+          // "legend_widget",
+          "format_button_in_legend",
           "delete_button_in_legend",
+          "show_hide_button_in_legend",
           "create_volume_indicator_by_default",
+          "show_chart_property_page",
+          // "control_bar",
           "always_show_legend_values_on_mobile",
           "adaptive_logo",
+          // "header_widget",
           "header_resolutions",
+          // "main_series_scale_menu",
           "timeframes_toolbar",
         ],
-        enabled_features: [
-          "study_templates",
-          "chart_style_hilo_last_price",
-          "hide_resolution_in_legend",
-          "hide_unresolved_symbols_in_legend",
-          "chart_style_hilo",
-          "show_symbol_logos",
-          "left_toolbar",
-          "show_object_tree",
-          "control_bar",
-          "legend_widget",
-          "main_series_scale_menu",
-          "drawing_tools",
-          "show_chart_property_page",
-          "volume_force_overlay",
-        ],
         charts_storage_url: getChartConfig(symbol).chartsStorageUrl,
-        charts_storage_api_version: getChartConfig(symbol).chartsStorageApiVersion,
+        charts_storage_api_version:
+          getChartConfig(symbol).chartsStorageApiVersion,
         client_id: getChartConfig(symbol).clientId,
         user_id: getChartConfig(symbol).userId,
         fullscreen: getChartConfig(symbol).fullscreen,
@@ -306,8 +343,10 @@ const TradingChartWebView = () => {
           "paneProperties.crossHairProperties.borderVisible": false,
           "paneProperties.crossHairProperties.backgroundColor": "#000000",
           "paneProperties.crossHairProperties.backgroundType": "solid",
-          "paneProperties.crossHairProperties.backgroundGradientStartColor": "#000000",
-          "paneProperties.crossHairProperties.backgroundGradientEndColor": "#000000",
+          "paneProperties.crossHairProperties.backgroundGradientStartColor":
+            "#000000",
+          "paneProperties.crossHairProperties.backgroundGradientEndColor":
+            "#000000",
           editorFontsList: "'Trebuchet MS', Verdana, Arial, sans-serif",
           "paneProperties.topMargin": 15,
           "paneProperties.bottomMargin": 10,
@@ -377,7 +416,7 @@ const TradingChartWebView = () => {
         position: "relative",
         zIndex: 1000,
         display: "flex",
-        flexDirection: "column"
+        flexDirection: "column",
       }}
     >
       <div
