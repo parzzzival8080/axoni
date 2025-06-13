@@ -1,0 +1,159 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# API Integration Guidelines
+
+## HTTP Client Standards
+
+### Primary HTTP Client
+- **Use axios as the primary HTTP client** instead of fetch API for better HTTP2 protocol handling and error management
+- Fetch API can cause "Failed to fetch" and HTTP2 protocol errors, especially with file uploads
+- Import axios: `import axios from 'axios';`
+
+### Error Handling Patterns
+```javascript
+// Preferred error handling pattern
+try {
+  const response = await axios.post(endpoint, data, config);
+  return response.data;
+} catch (error) {
+  console.error('API Error:', error.response?.data || error.message);
+  throw new Error(error.response?.data?.message || 'Request failed');
+}
+```
+
+### File Upload Best Practices
+- **Implement image compression** for files larger than 2MB using HTML5 Canvas API
+- **Use FormData** for file uploads with proper content-type headers
+- **Add timeout handling** for upload operations (30-60 seconds)
+- **Implement fallback upload methods**: axios primary, fetch as backup
+
+```javascript
+// Image compression example
+const compressImage = (file, maxSizeMB = 2) => {
+  return new Promise((resolve) => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    
+    img.onload = () => {
+      // Compression logic here
+      canvas.toBlob(resolve, 'image/jpeg', 0.8);
+    };
+    img.src = URL.createObjectURL(file);
+  });
+};
+```
+
+## API Endpoint Patterns
+
+### Authentication & User Management
+- **Use `uid` from localStorage** instead of `user_id` parameter for API calls
+- **Store user credentials consistently**: `localStorage.getItem('uid')`, `localStorage.getItem('password')`
+- **KYC endpoints**: Use `/api/kyc-status?uid=${uid}` format
+- **OTP endpoints**: Use `/api/send-otp` with simplified request structure
+
+### Request Structure Standards
+```javascript
+// Preferred OTP request format (simplified)
+const otpData = {
+  uid: localStorage.getItem('uid'),
+  type: 'withdrawal' // or 'kyc', 'login', etc.
+};
+
+// Avoid complex nested structures unless required by API
+```
+
+### Parameter Naming Conventions
+- **Consistent parameter names**: Use `uid` consistently across all API calls
+- **OTP validation**: Accept alphanumeric characters (letters and numbers), not just digits
+- **API response handling**: Always check for both `response.data` and direct response formats
+
+## State Management & Loading States
+
+### Loading State Implementation
+- **Add loading states** for all async operations, especially OTP sending
+- **Use spinners on buttons** during API calls
+- **Disable form submission** during processing to prevent double-submissions
+
+```javascript
+const [isLoading, setIsLoading] = useState(false);
+
+const handleSubmit = async () => {
+  setIsLoading(true);
+  try {
+    await apiCall();
+  } finally {
+    setIsLoading(false);
+  }
+};
+```
+
+### Data Refresh Patterns
+- **Avoid constant refreshing loops** in useEffect hooks
+- **Implement proper refresh triggers**: only on page load and successful submissions
+- **Use dependency arrays carefully** to prevent infinite re-renders
+
+```javascript
+// Correct pattern for data fetching
+useEffect(() => {
+  fetchData();
+}, []); // Empty dependency array for mount-only
+
+// Refresh only on specific events
+const handleSuccessfulSubmission = () => {
+  fetchData(); // Explicit refresh trigger
+};
+```
+
+## Error Recovery & Retry Logic
+
+### Retry Implementation
+- **Implement progressive backoff** for failed API calls
+- **Use consistent variable naming**: `attempts` not `attempt`
+- **Add maximum retry limits** (typically 3-5 attempts)
+
+```javascript
+const retryWithBackoff = async (fn, maxAttempts = 3) => {
+  for (let attempts = 0; attempts < maxAttempts; attempts++) {
+    try {
+      return await fn();
+    } catch (error) {
+      if (attempts === maxAttempts - 1) throw error;
+      await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempts)));
+    }
+  }
+};
+```
+
+### Graceful Error Handling
+- **Handle 404 wallet API errors gracefully** without breaking user flow
+- **Provide specific error messages** for different failure scenarios
+- **Log errors for debugging** while showing user-friendly messages
+
+## Security & Validation
+
+### Input Validation
+- **OTP inputs**: Validate alphanumeric characters, not just digits
+- **File uploads**: Validate file types and sizes before upload
+- **Form data**: Sanitize and validate all user inputs
+
+### Sensitive Data Handling
+- **Store sensitive data in localStorage** only when necessary
+- **Clear sensitive data** on logout or session expiry
+- **Use HTTPS** for all API communications
+
+## Component Integration Patterns
+
+### Key Components Referenced
+- [VerifyPage.jsx](mdc:src/pages/account/VerifyPage.jsx) - KYC verification with document upload
+- [Withdraw.jsx](mdc:src/pages/account/Withdraw.jsx) - Withdrawal with OTP integration
+- [SignUpPage.jsx](mdc:src/pages/SignUpPage.jsx) - Registration with send-data API
+- [App.jsx](mdc:src/App.jsx) - Main application routing and error handling
+
+### Common Integration Points
+- **OTP functionality**: Consistent across withdrawal, KYC, and authentication flows
+- **File upload**: Used in KYC verification and profile management
+- **User session management**: Consistent uid/user_id handling across components
