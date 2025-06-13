@@ -23,8 +23,8 @@ const DownloadPage = () => {
   const handleAppDownload = () => {
     // For Google Drive links, we need to convert the sharing URL to a direct download URL
     // This works for public Google Drive files
-    const fileId = appDownloadUrl.split("/")[5]; // Extract the file ID from the URL
-    const directDownloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+    // const fileId = appDownloadUrl.split("/")[5]; // Extract the file ID from the URL
+    const directDownloadUrl = `https://apiv2.bhtokens.com/api/v1/download-apk`;
     window.open(directDownloadUrl, "_blank", "noopener,noreferrer");
 
     // Create a temporary anchor element to trigger the download
