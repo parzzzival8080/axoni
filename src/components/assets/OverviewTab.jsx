@@ -75,7 +75,6 @@ const OverviewTab = () => {
           <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
             <div className="flex items-center justify-between mb-4">
               <span className="text-gray-600">Estimated total value</span>
-              <FaEye className="text-gray-400 cursor-pointer hover:text-gray-600 transition-colors" />
             </div>
             
             {loading ? (
