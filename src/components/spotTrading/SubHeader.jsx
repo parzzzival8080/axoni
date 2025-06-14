@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar as farStar } from '@fortawesome/free-regular-svg-icons';
+import { faStar as farStar, faStar as fasStar } from '@fortawesome/free-regular-svg-icons';
+import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { 
   faExternalLinkAlt, 
   faChartLine, 
   faCog, 
   faChevronDown, 
-  faSearch 
+  faSearch,
+  faTimes 
 } from '@fortawesome/free-solid-svg-icons';
 import { faFileAlt } from '@fortawesome/free-regular-svg-icons';
 import defaultCoinLogo from '../../assets/coin/btc.webp';
@@ -16,13 +18,20 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showFavoriteModal, setShowFavoriteModal] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [isUpdatingFavorite, setIsUpdatingFavorite] = useState(false);
   const dropdownRef = useRef(null);
+  const modalRef = useRef(null);
 
-  // Handle click outside to close dropdown
+  // Handle click outside to close dropdown and modal
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDropdownOpen(false);
+      }
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setShowFavoriteModal(false);
       }
     };
 
@@ -50,6 +59,113 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
     setSearchTerm(''); // Reset search term
     onCoinSelect(coin.coin_pair);
   }, [onCoinSelect]);
+
+  // Check if coin is favorited
+  const checkCoinFavoriteStatus = useCallback(async () => {
+    try {
+      let uid = localStorage.getItem('uid') || localStorage.getItem('userId') || '1';
+      const coin_id = coinPairId || cryptoData?.coin_pair_id || cryptoData?.id;
+      
+      if (!coin_id) return;
+
+      // Get user wallets to check if current coin is in favorites
+      const response = await fetch(`https://apiv2.bhtokens.com/api/v1/user-wallets/${uid}?apikey=A20RqFwVktRxxRqrKBtmi6ud`, {
+        method: 'GET'
+      });
+
+      if (response.ok) {
+        const walletsData = await response.json();
+        const userWallets = walletsData["0"] || walletsData[0] || walletsData || [];
+        
+        // Find the current coin in the wallets and check if it's favorited
+        const currentCoinWallet = userWallets.find(wallet => wallet.coin_id == coin_id);
+        setIsFavorite(currentCoinWallet?.is_favorite || false);
+      }
+    } catch (error) {
+      console.error('Error checking favorite status:', error);
+    }
+  }, [coinPairId, cryptoData]);
+
+  // Handle favorite toggle
+  const handleFavoriteClick = useCallback((e) => {
+    e.stopPropagation(); // Prevent dropdown from opening
+    setShowFavoriteModal(true);
+  }, []);
+
+  // Handle add to favorites
+  const handleAddToFavorites = useCallback(async () => {
+    setIsUpdatingFavorite(true);
+    try {
+      let uid = localStorage.getItem('uid') || localStorage.getItem('userId') || '1';
+      const coin_id = coinPairId || cryptoData?.coin_pair_id || cryptoData?.id;
+      
+      if (!coin_id) {
+        console.error('No coin ID available for favorites');
+        setIsUpdatingFavorite(false);
+        return;
+      }
+
+            const response = await fetch('https://apiv2.bhtokens.com/api/v1/set-favorite?apikey=A20RqFwVktRxxRqrKBtmi6ud', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          uid: uid,
+          coin_id: coin_id
+        })
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Successfully added to favorites:', result);
+        setIsFavorite(true);
+        setShowFavoriteModal(false);
+        
+        // Notify other components about the favorite change
+        window.dispatchEvent(new CustomEvent('favoriteChanged', { 
+          detail: { action: 'add', coinId: coin_id } 
+        }));
+        localStorage.setItem('favoriteChanged', Date.now().toString());
+      } else {
+        console.error('Failed to add to favorites:', response.statusText);
+        // Still update UI optimistically
+        setIsFavorite(true);
+        setShowFavoriteModal(false);
+        
+        // Still notify in case of optimistic update
+        window.dispatchEvent(new CustomEvent('favoriteChanged', { 
+          detail: { action: 'add', coinId: coin_id } 
+        }));
+      }
+    } catch (error) {
+      console.error('Error adding to favorites:', error);
+      // Still update UI optimistically
+      setIsFavorite(true);
+      setShowFavoriteModal(false);
+    } finally {
+      setIsUpdatingFavorite(false);
+    }
+  }, [cryptoData, coinPairId]);
+
+  // Handle remove from favorites - Under Development
+  const handleRemoveFromFavorites = useCallback(async () => {
+    setIsUpdatingFavorite(true);
+    
+    // Show "Under Development" message
+    setTimeout(() => {
+      alert('Remove from favorites feature is under development.');
+      setIsUpdatingFavorite(false);
+      setShowFavoriteModal(false);
+    }, 500);
+  }, []);
+
+  // Check favorite status when coin changes
+  useEffect(() => {
+    if (cryptoData && coinPairId) {
+      checkCoinFavoriteStatus();
+    }
+  }, [cryptoData, coinPairId, checkCoinFavoriteStatus]);
 
   // Defensive: extract live price and price change from cryptoData
   const livePrice = cryptoData?.price ?? cryptoData?.cryptoPrice ?? 0;
@@ -187,6 +303,7 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
           <div 
             className="selected-coin" 
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            style={{display: 'flex', alignItems: 'center'}}
           >
             <div className="coin-icon" style={{background: 'none', boxShadow: 'none', borderRadius: '50%', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0}}>
               <img 
@@ -344,7 +461,245 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
             </div>
           )}
         </div>
+        
+        {/* Separate Star Icon */}
+        <div 
+          className="favorite-star" 
+          style={{
+            marginLeft: '12px', 
+            cursor: 'pointer',
+            padding: '8px',
+            borderRadius: '4px',
+            transition: 'background-color 0.2s, color 0.2s',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+          onClick={handleFavoriteClick}
+          onMouseOver={(e) => {
+            e.currentTarget.style.backgroundColor = '#1a1a1a';
+            e.currentTarget.style.color = '#00b574';
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.backgroundColor = 'transparent';
+            e.currentTarget.style.color = isFavorite ? '#ffd700' : '#666';
+          }}
+        >
+          <FontAwesomeIcon 
+            icon={isFavorite ? solidStar : farStar} 
+            style={{
+              fontSize: '18px',
+              color: isFavorite ? '#ffd700' : '#666'
+            }}
+          />
+        </div>
       </div>
+      
+      {/* Favorites Modal */}
+      {showFavoriteModal && (
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 10000
+          }}
+        >
+                     <div 
+             ref={modalRef}
+             className="favorites-modal"
+             style={{
+               backgroundColor: '#1a1a1a',
+               borderRadius: '8px',
+               padding: '24px',
+               minWidth: '400px',
+               maxWidth: '90vw',
+               border: '1px solid #333',
+               boxShadow: '0 20px 40px rgba(0, 0, 0, 0.8)'
+             }}
+           >
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '20px'
+            }}>
+              <h3 style={{
+                color: '#fff',
+                fontSize: '18px',
+                fontWeight: '600',
+                margin: 0
+              }}>
+                {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+              </h3>
+              <button
+                onClick={() => setShowFavoriteModal(false)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#666',
+                  cursor: 'pointer',
+                  padding: '4px',
+                  borderRadius: '4px',
+                  transition: 'color 0.2s'
+                }}
+                onMouseOver={(e) => e.target.style.color = '#fff'}
+                onMouseOut={(e) => e.target.style.color = '#666'}
+              >
+                <FontAwesomeIcon icon={faTimes} style={{fontSize: '16px'}} />
+              </button>
+            </div>
+            
+                         <div 
+               className="favorites-modal-coin"
+               style={{
+                 display: 'flex',
+                 alignItems: 'center',
+                 marginBottom: '24px'
+               }}
+             >
+                             <div 
+                 className="w-12 h-12 mr-4 flex items-center justify-center rounded-full overflow-hidden bg-gray-700 flex-shrink-0"
+                 style={{
+                   width: '48px !important',
+                   height: '48px !important',
+                   borderRadius: '50% !important',
+                   overflow: 'hidden !important',
+                   display: 'flex !important',
+                   alignItems: 'center !important',
+                   justifyContent: 'center !important'
+                 }}
+               >
+                 <img 
+                   src={logoSrc} 
+                   alt={cryptoSymbol} 
+                   className="w-full h-full object-cover rounded-full"
+                   style={{ 
+                     width: '48px !important',
+                     height: '48px !important',
+                     borderRadius: '50% !important',
+                     objectFit: 'cover !important',
+                     display: 'block !important'
+                   }}
+                   onError={(e) => {
+                     e.target.onerror = null; 
+                     e.target.src = defaultCoinLogo;
+                   }}
+                 />
+               </div>
+              <div>
+                <div style={{
+                  color: '#fff',
+                  fontSize: '20px',
+                  fontWeight: '600',
+                  marginBottom: '4px'
+                }}>
+                  {cryptoSymbol}/{usdtSymbol}
+                </div>
+                <div style={{
+                  color: '#666',
+                  fontSize: '14px'
+                }}>
+                  {cryptoName}
+                </div>
+              </div>
+            </div>
+            
+            <div style={{
+              color: '#ccc',
+              fontSize: '14px',
+              lineHeight: '1.5',
+              marginBottom: '24px'
+            }}>
+              {isFavorite 
+                ? `Remove ${cryptoSymbol}/${usdtSymbol} from your favorites list?`
+                : `Add ${cryptoSymbol}/${usdtSymbol} to your favorites for quick access.`
+              }
+            </div>
+            
+            <div style={{
+              display: 'flex',
+              gap: '12px',
+              justifyContent: 'flex-end'
+            }}>
+              <button
+                onClick={() => setShowFavoriteModal(false)}
+                style={{
+                  background: 'none',
+                  border: '1px solid #333',
+                  color: '#ccc',
+                  padding: '10px 20px',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  transition: 'all 0.2s'
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.borderColor = '#555';
+                  e.target.style.color = '#fff';
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.borderColor = '#333';
+                  e.target.style.color = '#ccc';
+                }}
+              >
+                Cancel
+              </button>
+                             <button
+                 onClick={isFavorite ? handleRemoveFromFavorites : handleAddToFavorites}
+                 disabled={isUpdatingFavorite}
+                 style={{
+                   background: isUpdatingFavorite ? '#666' : (isFavorite ? '#f23645' : '#00b574'),
+                   border: 'none',
+                   color: '#fff',
+                   padding: '10px 20px',
+                   borderRadius: '4px',
+                   cursor: isUpdatingFavorite ? 'not-allowed' : 'pointer',
+                   fontSize: '14px',
+                   fontWeight: '500',
+                   transition: 'background-color 0.2s',
+                   opacity: isUpdatingFavorite ? 0.7 : 1,
+                   display: 'flex',
+                   alignItems: 'center',
+                   gap: '8px'
+                 }}
+                 onMouseOver={(e) => {
+                   if (!isUpdatingFavorite) {
+                     e.target.style.backgroundColor = isFavorite ? '#d63031' : '#00a65a';
+                   }
+                 }}
+                 onMouseOut={(e) => {
+                   if (!isUpdatingFavorite) {
+                     e.target.style.backgroundColor = isFavorite ? '#f23645' : '#00b574';
+                   }
+                 }}
+               >
+                 {isUpdatingFavorite && (
+                   <div style={{
+                     width: '14px',
+                     height: '14px',
+                     border: '2px solid #fff',
+                     borderTop: '2px solid transparent',
+                     borderRadius: '50%',
+                     animation: 'spin 1s linear infinite'
+                   }}></div>
+                 )}
+                 {isUpdatingFavorite 
+                   ? (isFavorite ? 'Removing...' : 'Adding...') 
+                   : (isFavorite ? 'Remove' : 'Add to Favorites')
+                 }
+               </button>
+            </div>
+          </div>
+        </div>
+      )}
       
       <div className="price-stats">
         {statsLoading ? (
@@ -423,20 +778,10 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
       </div>
       
       <div className="leverage">10x</div>
-      <div className="favorite">
-        <FontAwesomeIcon icon={farStar} />
-      </div>
+    
       
       <div className="trading-actions">
-        <button className="data-btn">
-          <FontAwesomeIcon icon={faChartLine} /> Trading data
-        </button>
-        <button className="info-btn">
-          <FontAwesomeIcon icon={faFileAlt} /> Information
-        </button>
-        <div className="settings">
-          <FontAwesomeIcon icon={faCog} />
-        </div>
+       
       </div>
     </div>
   );

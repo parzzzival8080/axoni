@@ -298,11 +298,7 @@ const Profile = () => {
                   View details
                 </button>
               </div>
-              <div className="hidden sm:block sm:w-1/3 sm:text-right">
-                <button className="inline-block text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                  View details
-                </button>
-              </div>
+              
             </div>
           </div>
         </div>
@@ -429,12 +425,7 @@ const Profile = () => {
                 </button>
               </div>
               <div className="hidden sm:block sm:w-1/3 sm:text-right">
-                <button 
-                  onClick={() => setShowTradingFeeModal(true)}
-                  className="inline-block text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                >
-                  View details
-                </button>
+             
               </div>
             </div>
           </div>
