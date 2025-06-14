@@ -26,7 +26,6 @@ const SignUpPage = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState(null);
-  const [token, setToken] = useState(null);
   const [resendTimer, setResendTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
 
@@ -42,7 +41,7 @@ const SignUpPage = () => {
 
   // Timer for OTP resend with proper cleanup
   useEffect(() => {
-    if (currentStep === 3 && resendTimer > 0) {
+    if (currentStep === 3 && resendTimer > 0 && !canResend) {
       timerRef.current = setInterval(() => {
         setResendTimer(prev => {
           if (prev <= 1) {
@@ -66,12 +65,12 @@ const SignUpPage = () => {
         timerRef.current = null;
       }
     };
-  }, [currentStep, resendTimer]);
+  }, [currentStep, resendTimer, canResend]);
 
   // Email validation helper
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    return emailRegex.test(email.trim());
   };
 
   // Password validation helper
@@ -82,7 +81,7 @@ const SignUpPage = () => {
   // Phone validation helper
   const validatePhone = (phone) => {
     const phoneRegex = /^\+?[\d\s\-\(\)]{7,}$/;
-    return phoneRegex.test(phone);
+    return phoneRegex.test(phone.trim());
   };
 
   // Handle input changes
@@ -222,13 +221,16 @@ const SignUpPage = () => {
   // API call helper with better error handling
   const makeApiCall = async (url, payload, options = {}) => {
     try {
-      const response = await axios.post(url, payload, {
+      const config = {
+        timeout: 30000, // 30 second timeout
         headers: {
           'Content-Type': 'application/json',
           ...options.headers
         },
         ...options
-      });
+      };
+
+      const response = await axios.post(url, payload, config);
       return { success: true, data: response.data };
     } catch (error) {
       console.error(`API Error for ${url}:`, error);
@@ -238,27 +240,34 @@ const SignUpPage = () => {
       if (error.response) {
         const { data, status } = error.response;
         
-        // Handle specific error cases
-        if (data?.error === "Email already in use" || 
-            (data?.email && (Array.isArray(data.email) ? data.email[0] : data.email).includes('already exists'))) {
-          errorMessage = 'This email is already registered. Please use a different email or login.';
-        } else if (data?.message) {
-          errorMessage = data.message;
-        } else if (data?.error) {
-          errorMessage = data.error;
-        } else if (data?.detail) {
-          errorMessage = data.detail;
-        } else if (data?.email) {
-          errorMessage = `Email: ${Array.isArray(data.email) ? data.email[0] : data.email}`;
-        } else if (status >= 500) {
-          errorMessage = 'Server error. Please try again later.';
+        // Handle specific error cases based on Django API responses
+        if (status === 400) {
+          if (data?.error === "Email already in use") {
+            errorMessage = 'This email is already registered. Please use a different email or login.';
+          } else if (data?.error === "Passwords do not match!") {
+            errorMessage = 'Passwords do not match. Please check your password confirmation.';
+          } else if (data?.error === "Invalid email format") {
+            errorMessage = 'Please enter a valid email address.';
+          } else if (data?.error) {
+            errorMessage = data.error;
+          } else if (data?.message) {
+            errorMessage = data.message;
+          }
+        } else if (status === 401) {
+          errorMessage = 'Invalid credentials or session expired.';
+        } else if (status === 403) {
+          errorMessage = 'Access denied. Please try again.';
+        } else if (status === 404) {
+          errorMessage = 'Service not found. Please try again later.';
         } else if (status === 429) {
           errorMessage = 'Too many requests. Please wait a moment and try again.';
+        } else if (status >= 500) {
+          errorMessage = 'Server error. Please try again later.';
         }
       } else if (error.request) {
         errorMessage = 'Network error. Please check your connection and try again.';
-      } else {
-        errorMessage = error.message || errorMessage;
+      } else if (error.code === 'ECONNABORTED') {
+        errorMessage = 'Request timeout. Please try again.';
       }
       
       return { success: false, error: errorMessage };
@@ -311,13 +320,14 @@ const SignUpPage = () => {
       try {
         setLoading(true);
         
+        // Updated payload to match Django API expected fields
         const payload = {
           email: formData.email.trim().toLowerCase(),
           password: formData.password,
           confirm_password: formData.confirmPassword
         };
         
-        console.log('Attempting registration...');
+        console.log('Attempting registration with payload:', { email: payload.email, password: '[HIDDEN]' });
         
         const result = await makeApiCall(
           'https://django.bhtokens.com/api/user_account/signup',
@@ -330,22 +340,30 @@ const SignUpPage = () => {
         }
         
         const data = result.data;
-        console.log('Registration successful:', data);
+        console.log('Registration successful:', { ...data, password: '[HIDDEN]' });
         
-        // Validate response data
+        // Validate response data - Django returns user_id in response
         if (!data.user_id) {
           setError('Registration failed: Invalid server response');
           return;
         }
         
         setUserId(data.user_id);
-        if (data.token) {
-          setToken(data.token);
-        }
+        
+        // Store initial data
+        localStorage.setItem('user_id', data.user_id);
+        localStorage.setItem('tempEmail', formData.email.trim().toLowerCase());
         
         setCurrentStep(3);
         setResendTimer(60);
         setCanResend(false);
+        
+        // Focus first OTP input
+        setTimeout(() => {
+          if (otpRefs.current[0]) {
+            otpRefs.current[0].focus();
+          }
+        }, 100);
         
       } catch (err) {
         console.error('Unexpected registration error:', err);
@@ -374,7 +392,7 @@ const SignUpPage = () => {
           otp: otpValue
         };
         
-        console.log('Verifying OTP...');
+        console.log('Verifying OTP for email:', payload.email);
         
         const result = await makeApiCall(
           'https://django.bhtokens.com/api/user_account/verify-otp',
@@ -383,6 +401,23 @@ const SignUpPage = () => {
         
         if (result.success) {
           console.log('OTP verification successful');
+          
+          // Store verification data - Django returns jwt_token, uid, etc.
+          const verificationData = result.data;
+          if (verificationData.jwt_token) {
+            localStorage.setItem('authToken', verificationData.jwt_token);
+            localStorage.setItem('jwt_token', verificationData.jwt_token);
+          }
+          if (verificationData.uid) {
+            localStorage.setItem('uid', verificationData.uid);
+          }
+          if (verificationData.referral_code) {
+            localStorage.setItem('referral_code', verificationData.referral_code);
+          }
+          if (verificationData.secret_phrase) {
+            localStorage.setItem('secret_phrase', verificationData.secret_phrase);
+          }
+          
           setCurrentStep(4);
         } else {
           setError(result.error || 'Invalid verification code. Please try again.');
@@ -409,7 +444,7 @@ const SignUpPage = () => {
         email: formData.email.trim().toLowerCase() 
       };
       
-      console.log('Resending OTP...');
+      console.log('Resending OTP to:', payload.email);
       
       const result = await makeApiCall(
         'https://django.bhtokens.com/api/user_account/resend-otp',
@@ -426,9 +461,11 @@ const SignUpPage = () => {
           otp: ['', '', '', '', '', '']
         }));
         // Focus first OTP input
-        if (otpRefs.current[0]) {
-          otpRefs.current[0].focus();
-        }
+        setTimeout(() => {
+          if (otpRefs.current[0]) {
+            otpRefs.current[0].focus();
+          }
+        }, 100);
       } else {
         setError(result.error || 'Failed to resend verification code');
       }
@@ -438,36 +475,6 @@ const SignUpPage = () => {
       setError('Failed to resend code. Please try again.');
     } finally {
       setLoading(false);
-    }
-  };
-
-  // Handle send data API
-  const handleSendData = async (userId, password) => {
-    try {
-      const user_id = userId || localStorage.getItem('user_id');
-      if (!user_id) {
-        throw new Error('User ID not found');
-      }
-      
-      const payload = {
-        user_id: user_id,
-        password: password
-      };
-      
-      const result = await makeApiCall(
-        'https://django.bhtokens.com/api/user_account/send-data',
-        payload
-      );
-      
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-      
-      console.log('Send data successful:', result.data);
-      return result.data;
-    } catch (error) {
-      console.error("Error sending data:", error);
-      throw error;
     }
   };
 
@@ -497,8 +504,8 @@ const SignUpPage = () => {
     try {
       setLoading(true);
       
-      const storedToken = token || localStorage.getItem('authToken');
       const storedUserId = userId || localStorage.getItem('user_id');
+      const storedToken = localStorage.getItem('authToken') || localStorage.getItem('jwt_token');
       
       if (!storedUserId) {
         setError('Session expired. Please try signing up again.');
@@ -506,176 +513,245 @@ const SignUpPage = () => {
         return;
       }
       
-      // Prepare profile data
-      const commonProfileData = {
+      // Prepare profile data according to Django API expectations
+      const profileData = {
         name: formData.fullName.trim(),
         phone_number: formData.phone.trim(),
+        // Add any additional fields that need to be updated
       };
 
       let profileDataPayload;
-      let contentType = 'application/json';
+      const headers = {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${storedToken}`
+      };
       
       // Handle profile picture upload
-      if (formData.profilePic && formData.profilePic.startsWith('data:image')) {
+      if (formData.profilePic && formData.profilePic.startsWith('data:image') && 
+          formData.profilePic !== "/assets/default-profile.png") {
+        // Use FormData for file uploads
         profileDataPayload = new FormData();
-        Object.keys(commonProfileData).forEach(key => {
-          profileDataPayload.append(key, commonProfileData[key]);
+        
+        // Append all profile data to FormData
+        Object.entries(profileData).forEach(([key, value]) => {
+          if (value !== null && value !== undefined) {
+            profileDataPayload.append(key, value);
+          }
         });
         
         try {
-          const fetchResponse = await fetch(formData.profilePic);
-          const blob = await fetchResponse.blob();
-          const profileImageFile = new File([blob], 'profile.jpg', { type: blob.type || 'image/jpeg' });
+          const response = await fetch(formData.profilePic);
+          const blob = await response.blob();
+          const profileImageFile = new File([blob], 'profile.jpg', { 
+            type: blob.type || 'image/jpeg' 
+          });
           profileDataPayload.append('user_profile', profileImageFile);
-          contentType = 'multipart/form-data';
+          // Let the browser set the Content-Type with boundary for FormData
+          delete headers['Content-Type'];
         } catch (imageError) {
           console.warn('Failed to process profile image, continuing without it:', imageError);
-          profileDataPayload = commonProfileData;
+          // Fall back to JSON if image processing fails
+          profileDataPayload = profileData;
+          headers['Content-Type'] = 'application/json';
         }
       } else {
-        profileDataPayload = commonProfileData;
+        // Use regular JSON for non-file updates
+        profileDataPayload = profileData;
+        headers['Content-Type'] = 'application/json';
       }
       
       const profileUpdateUrl = `https://django.bhtokens.com/api/user_account/edit_profile/user=${storedUserId}`;
       
-      console.log('Updating profile...');
+      console.log('Updating profile for user:', storedUserId);
+      console.log('Profile data being sent:', profileDataPayload);
       
-      // Make profile update request
-      const config = {
-        headers: {
-          'Authorization': storedToken ? `Bearer ${storedToken}` : undefined,
-        }
-      };
-      
-      if (contentType === 'multipart/form-data') {
-        // Let axios set the content-type for FormData (includes boundary)
-        delete config.headers['Content-Type'];
-      } else {
-        config.headers['Content-Type'] = 'application/json';
-      }
-      
-      const response = await axios.post(
-        profileUpdateUrl,
-        profileDataPayload instanceof FormData ? profileDataPayload : JSON.stringify(profileDataPayload),
-        config
-      );
-      
-      console.log('Profile update response:', response.data);
-      
-      if (!response.data.success) {
-        setError(response.data.message || 'Failed to update profile. Please try again.');
-        return;
-      }
-      
-      // Store user data in localStorage
-      const userData = {
-        fullName: formData.fullName,
-        email: formData.email,
-        authToken: storedToken,
-        user_id: storedUserId,
-        isAuthenticated: 'true'
-      };
-      
-      Object.entries(userData).forEach(([key, value]) => {
-        if (value) localStorage.setItem(key, value);
-      });
-      
-      // Store additional user data from response
-      if (response.data.user) {
-        if (response.data.user.phone_number) {
-          localStorage.setItem('phone', response.data.user.phone_number);
-        }
-        if (response.data.user.profile_image) {
-          localStorage.setItem('profileImage', response.data.user.profile_image);
-        }
-      }
-
-      // Send additional data (non-critical)
       try {
-        console.log('Sending additional data...');
-        await handleSendData(storedUserId, formData.password);
-        console.log('Additional data sent successfully');
-      } catch (sendDataError) {
-        console.warn('Error sending additional data (non-critical):', sendDataError);
-      }
-      
-      // Fetch wallet data (non-critical)
-      try {
-        console.log('Fetching wallet data...');
-        const walletUrl = `https://django.bhtokens.com/api/user_account/get_wallet/user=${storedUserId}`;
-        const walletResponse = await axios.get(walletUrl, {
-          headers: { 'Authorization': `Bearer ${storedToken}` }
-        });
-        
-        if (walletResponse.data?.success && walletResponse.data.wallet) {
-          localStorage.setItem('walletData', JSON.stringify(walletResponse.data.wallet));
-          console.log('Wallet data stored successfully');
-        }
-      } catch (walletErr) {
-        console.log('Wallet fetch failed (expected for new users):', walletErr.response?.status);
-      }
-      
-      // Get true UID from login API
-      try {
-        console.log('Getting true UID from login...');
-        const loginResult = await makeApiCall(
-          'https://django.bhtokens.com/api/user_account/login',
-          {
-            email: formData.email.trim().toLowerCase(),
-            password: formData.password
+        // Make profile update request with minimal headers
+        const response = await axios.post(
+          profileUpdateUrl,
+          profileDataPayload,
+          { 
+            headers: headers,
+            timeout: 30000,
+            withCredentials: true
           }
         );
         
-        if (loginResult.success) {
-          const { user_id, uid, jwt_token } = loginResult.data;
-          
-          if (uid) {
-            localStorage.setItem('uid', uid);
-            localStorage.setItem('user', JSON.stringify({
-              user_id,
-              email: formData.email,
-              uid
-            }));
-            console.log('True UID stored:', uid);
+        console.log('Profile update response:', response.data);
+        
+        if (!response.data.success) {
+          const errorMsg = response.data.message || 'Failed to update profile. Please try again.';
+          setError(errorMsg);
+          console.error('Profile update failed:', response.data);
+          return;
+        }
+        
+        // If we have a profile image in the response, update it
+        if (response.data.user_detail?.user_profile) {
+          localStorage.setItem('profileImage', response.data.user_detail.user_profile);
+        }
+        
+      } catch (error) {
+        console.error('Error updating profile:', error);
+        setError(error.response?.data?.message || 'Failed to update profile. Please try again.');
+        return;
+      }
+      
+      // Get updated user data after profile update
+      try {
+        const userInfoResponse = await axios.get(
+          `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${storedUserId}`,
+          {
+            headers: {
+              'Authorization': `Bearer ${storedToken}`,
+              'Cache-Control': 'no-cache',
+              'Pragma': 'no-cache'
+            },
+            timeout: 10000
           }
-          
-          if (jwt_token) {
-            localStorage.setItem('authToken', jwt_token);
-            axios.defaults.headers.common['Authorization'] = `Bearer ${jwt_token}`;
+        );
+        
+        const userData = userInfoResponse.data;
+        
+        // Store essential user data in localStorage
+        const essentialData = {
+          fullName: formData.fullName || userData.user?.name || '',
+          email: formData.email || userData.user?.email || '',
+          user_id: storedUserId,
+          isAuthenticated: 'true',
+          phone: userData.user_detail?.phone_number || formData.phone || '',
+          userName: userData.user?.name || formData.fullName || '',
+          userEmail: userData.user?.email || formData.email || '',
+          is_verified: userData.user_detail?.is_verified?.toString() || 'false',
+          profileImage: userData.user_detail?.user_profile || formData.profilePic || '/assets/default-profile.png'
+        };
+        
+        // Save to localStorage
+        Object.entries(essentialData).forEach(([key, value]) => {
+          if (value !== null && value !== undefined) {
+            localStorage.setItem(key, value);
           }
-
-          // Get user information including verification status
-          try {
-            const profileResponse = await axios.get(
-              `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${user_id || uid}`,
-              {
-                headers: {
-                  'Authorization': `Bearer ${jwt_token || storedToken}`
-                }
+        });
+        
+        console.log('User data saved to localStorage:', essentialData);
+        
+      } catch (userInfoError) {
+        console.error('Failed to fetch updated user info:', userInfoError);
+        // Fallback to form data if API call fails
+        const fallbackData = {
+          fullName: formData.fullName,
+          email: formData.email,
+          user_id: storedUserId,
+          isAuthenticated: 'true',
+          phone: formData.phone,
+          userName: formData.fullName,
+          userEmail: formData.email,
+          is_verified: 'false',
+          profileImage: formData.profilePic
+        };
+        
+        Object.entries(fallbackData).forEach(([key, value]) => {
+          if (value) localStorage.setItem(key, value);
+        });
+      }
+      
+      // Update country information
+      if (formData.country) {
+        try {
+          const countryPayload = {
+            user_id: parseInt(storedUserId),
+            country: formData.country
+          };
+          
+          const countryResult = await makeApiCall(
+            'https://django.bhtokens.com/api/user_account/user-detail/add-country',
+            countryPayload,
+            { headers: { 'Authorization': `Bearer ${storedToken}` } }
+          );
+          
+          if (countryResult.success) {
+            localStorage.setItem('userCountry', formData.country);
+            console.log('Country updated successfully');
+            
+            // Send additional user data
+            try {
+              const sendDataResult = await makeApiCall(
+                'https://django.bhtokens.com/api/user_account/send-data',
+                {
+                  user_id: parseInt(storedUserId),
+                  password: formData.password
+                },
+                { headers: { 'Authorization': `Bearer ${storedToken}` } }
+              );
+              
+              if (sendDataResult.success) {
+                console.log('User data sent successfully');
+              } else {
+                console.warn('Failed to send user data:', sendDataResult.error);
               }
-            );
+            } catch (sendDataError) {
+              console.warn('Non-critical error sending user data:', sendDataError);
+              // Continue with registration even if send-data fails
+            }
+          } else {
+            console.warn('Failed to update country:', countryResult.error);
+          }
+        } catch (countryError) {
+          console.warn('Non-critical error updating country:', countryError);
+          // Continue with registration even if country update fails
+        }
+      }
+      
+      // Get user information including verification status
+      try {
+        const userInfoResponse = await axios.get(
+          `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${storedUserId}`,
+          {
+            headers: {
+              'Authorization': `Bearer ${storedToken}`
+            },
+            timeout: 15000
+          }
+        );
 
-            const isVerified = profileResponse.data?.user_detail?.is_verified || false;
+        if (userInfoResponse.data) {
+          const userInfo = userInfoResponse.data;
+          
+          // Store user information
+          if (userInfo.user) {
+            localStorage.setItem('user', JSON.stringify(userInfo.user));
+            if (userInfo.user.uid) {
+              localStorage.setItem('uid', userInfo.user.uid);
+            }
+            if (userInfo.user.referral_code) {
+              localStorage.setItem('referral_code', userInfo.user.referral_code);
+            }
+            if (userInfo.user.secret_phrase) {
+              localStorage.setItem('secret_phrase', userInfo.user.secret_phrase);
+            }
+          }
+          
+          if (userInfo.user_detail) {
+            const isVerified = userInfo.user_detail.is_verified || false;
             localStorage.setItem('is_verified', isVerified.toString());
             console.log('Verification status stored:', isVerified);
-          } catch (profileErr) {
-            console.warn('Failed to fetch user information:', profileErr);
-            localStorage.setItem('is_verified', 'false');
           }
-        } else {
-          localStorage.setItem('is_verified', 'false');
         }
-      } catch (loginErr) {
-        console.warn('Failed to get true UID:', loginErr);
+      } catch (userInfoErr) {
+        console.warn('Failed to fetch user information:', userInfoErr);
         localStorage.setItem('is_verified', 'false');
       }
       
       // Success - redirect user
       console.log('Registration completed successfully');
-      alert('Registration successful! Welcome to TradeX.');
       
-      const isVerified = localStorage.getItem('is_verified') === 'true';
-      navigate(isVerified ? '/spot-trading' : '/', { replace: true });
+      // Show success message
+      setTimeout(() => {
+        alert('Registration successful! Welcome to TradeX.');
+        
+        const isVerified = localStorage.getItem('is_verified') === 'true';
+        navigate(isVerified ? '/spot-trading' : '/', { replace: true });
+      }, 500);
       
     } catch (err) {
       console.error('Profile update error:', err);
@@ -830,20 +906,20 @@ const SignUpPage = () => {
                   id="email" 
                   name="email" 
                   placeholder="Enter your email" 
-                  value={formData.email} 
-                  onChange={handleChange}
-                  autoComplete="email"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="password" className="block text-sm font-medium text-gray-600 mb-2">
-                  Password *
-                </label>
-                <input 
-                  type="password" 
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent transition-all duration-200"
-                  id="password" 
+                 value={formData.email} 
+                 onChange={handleChange}
+                 autoComplete="email"
+                 required
+               />
+             </div>
+             <div className="mb-4">
+               <label htmlFor="password" className="block text-sm font-medium text-gray-600 mb-2">
+                 Password *
+               </label>
+               <input 
+                 type="password" 
+                 className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent transition-all duration-200"
+                 id="password" 
                  name="password" 
                  placeholder="Create a password (min 8 characters)" 
                  value={formData.password} 
@@ -876,9 +952,9 @@ const SignUpPage = () => {
                {loading ? (
                  <span className="flex items-center justify-center">
                    <i className="fas fa-spinner fa-spin mr-2"></i>
-                   Processing...
+                   Creating Account...
                  </span>
-               ) : 'Next'}
+               ) : 'Create Account'}
              </button>
            </div>
            
@@ -1028,7 +1104,7 @@ const SignUpPage = () => {
                {loading ? (
                  <span className="flex items-center justify-center">
                    <i className="fas fa-spinner fa-spin mr-2"></i>
-                   Creating Account...
+                   Completing Registration...
                  </span>
                ) : 'Complete Registration'}
              </button>
