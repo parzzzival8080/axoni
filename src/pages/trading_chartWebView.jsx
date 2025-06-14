@@ -197,6 +197,12 @@ const TradingChartWebView = () => {
   const [chartType, setChartType] = useState("candles");
   const [timeframe, setTimeframe] = useState("1");
 
+  // Mobile detection
+  const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+           window.innerWidth <= 768;
+  };
+
   // Format the symbol for TradingView (use just the base symbol without USDT suffix)
   const formatSymbolForChart = (sym) => {
     if (!sym) return "BTC";
@@ -245,6 +251,17 @@ const TradingChartWebView = () => {
     };
   };
 
+  // Add viewport meta tag for better mobile interaction
+  useEffect(() => {
+    const viewport = document.querySelector('meta[name="viewport"]');
+    if (!viewport && isMobile()) {
+      const meta = document.createElement('meta');
+      meta.name = 'viewport';
+      meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover';
+      document.getElementsByTagName('head')[0].appendChild(meta);
+    }
+  }, []);
+
   useEffect(() => {
     if (!chartContainerRef.current) return;
     if (tvWidgetRef.current) {
@@ -271,39 +288,35 @@ const TradingChartWebView = () => {
           "chart_style_hilo_last_price",
           "hide_resolution_in_legend",
           "hide_unresolved_symbols_in_legend",
-          // "chart_style_hilo",
           "show_symbol_logos",
+          "touch_support",
+          "mobile_trading_web",
+          "chart_crosshair_menu",
+          "use_localstorage_for_settings",
+          "side_toolbar_in_fullscreen_mode",
+          "header_in_fullscreen_mode",
         ],
         toolbar_bg: "#1f2630",
         disabled_features: [
           "items_favoriting",
-          // "legend_context_menu",
-          // "hide_main_series_symbol_from_indicator_legend",
-          // "symbol_info",
           "header_compare",
           "header_fullscreen_button",
           "header_settings",
           "header_quick_search",
           "symbol_search_hot_key",
-          "show_hide_button_in_legend",
-          "format_button_in_legend",
           "header_symbol_search",
-          // "show_object_tree",
           "header_saveload",
           "compare_symbol_search_spread_operators",
-          // "legend_widget",
-          "format_button_in_legend",
-          "delete_button_in_legend",
-          "show_hide_button_in_legend",
           "create_volume_indicator_by_default",
           "show_chart_property_page",
-          // "control_bar",
-          "always_show_legend_values_on_mobile",
           "adaptive_logo",
-          // "header_widget",
           "header_resolutions",
-          // "main_series_scale_menu",
           "timeframes_toolbar",
+          // Remove these to allow mobile interactions
+          // "show_hide_button_in_legend",
+          // "format_button_in_legend",
+          // "delete_button_in_legend",
+          // "always_show_legend_values_on_mobile",
         ],
         charts_storage_url: getChartConfig(symbol).chartsStorageUrl,
         charts_storage_api_version:
@@ -377,7 +390,26 @@ const TradingChartWebView = () => {
           "timeScale.secondsVisible": true,
           "timeScale.backgroundColor": "#000000",
           "timeScale.textColor": "#999999",
+          // Mobile-specific overrides for better touch interaction
+          "scalesProperties.showSeriesLastValue": true,
+          "scalesProperties.showSeriesOHLC": false,
+          "scalesProperties.showBarChange": false,
+          "crosshair.mode": 1, // Normal crosshair mode for mobile
+          "crosshair.color": "#758696",
+          "crosshair.width": 1,
+          "crosshair.style": 2,
+          "crosshair.transparency": 0,
         },
+        // Add mobile-specific settings
+        mobile: {
+          disableFeatures: [],
+          enableFeatures: ["touch_support", "mobile_trading_web"],
+        },
+        // Additional mobile optimizations
+        debug: false,
+        autosize: true,
+        width: isMobile() ? window.innerWidth : undefined,
+        height: 320,
       };
       const tvWidget = new widget(widgetOptions);
       tvWidgetRef.current = tvWidget;
@@ -386,6 +418,29 @@ const TradingChartWebView = () => {
           "paneProperties.background": "#000000",
           "paneProperties.backgroundType": "solid",
         });
+        
+        // Enable mobile touch interactions
+        const chartContainer = chartContainerRef.current;
+        if (chartContainer) {
+          // Prevent default touch behaviors that might interfere
+          chartContainer.style.touchAction = 'manipulation';
+          chartContainer.style.userSelect = 'none';
+          chartContainer.style.webkitUserSelect = 'none';
+          chartContainer.style.webkitTouchCallout = 'none';
+          
+          // Add event listeners for better mobile interaction
+          chartContainer.addEventListener('touchstart', (e) => {
+            e.stopPropagation();
+          }, { passive: true });
+          
+          chartContainer.addEventListener('touchmove', (e) => {
+            e.stopPropagation();
+          }, { passive: true });
+          
+          chartContainer.addEventListener('touchend', (e) => {
+            e.stopPropagation();
+          }, { passive: true });
+        }
       });
     } catch (error) {
       console.error("TradingView Widget Error:", error);
@@ -425,6 +480,39 @@ const TradingChartWebView = () => {
         className="TVChartContainer"
       />
       <style>{`
+        .tvchart-mobile-wrapper {
+          touch-action: manipulation !important;
+          -webkit-touch-callout: none !important;
+          -webkit-user-select: none !important;
+          -moz-user-select: none !important;
+          -ms-user-select: none !important;
+          user-select: none !important;
+          -webkit-tap-highlight-color: transparent !important;
+        }
+        
+        .TVChartContainer {
+          touch-action: manipulation !important;
+          -webkit-touch-callout: none !important;
+          -webkit-user-select: none !important;
+          -moz-user-select: none !important;
+          -ms-user-select: none !important;
+          user-select: none !important;
+          -webkit-tap-highlight-color: transparent !important;
+        }
+        
+        .TVChartContainer iframe {
+          touch-action: manipulation !important;
+          -webkit-touch-callout: none !important;
+          -webkit-user-select: none !important;
+          pointer-events: auto !important;
+        }
+        
+        /* Ensure chart elements are touchable */
+        .TVChartContainer * {
+          pointer-events: auto !important;
+        }
+        
+        /* Mobile-specific styles */
         @media (max-width: 600px) {
           .tvchart-mobile-wrapper {
             width: 100vw !important;
@@ -436,6 +524,7 @@ const TradingChartWebView = () => {
             top: 0 !important;
             background: #000 !important;
             border-radius: 0 !important;
+            overflow: visible !important;
           }
           .TVChartContainer {
             width: 100vw !important;
@@ -443,6 +532,32 @@ const TradingChartWebView = () => {
             min-height: 320px !important;
             max-height: 320px !important;
             background: #000 !important;
+            overflow: visible !important;
+          }
+          
+          /* Ensure mobile touch events work properly */
+          .TVChartContainer canvas {
+            touch-action: manipulation !important;
+            pointer-events: auto !important;
+          }
+          
+          /* Fix for webview touch issues */
+          .TVChartContainer div {
+            touch-action: manipulation !important;
+            pointer-events: auto !important;
+          }
+        }
+        
+        /* WebView specific fixes */
+        @media screen and (max-device-width: 768px) {
+          .TVChartContainer {
+            -webkit-overflow-scrolling: touch !important;
+            overflow: visible !important;
+          }
+          
+          .TVChartContainer iframe {
+            -webkit-overflow-scrolling: touch !important;
+            overflow: visible !important;
           }
         }
       `}</style>

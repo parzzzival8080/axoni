@@ -75,7 +75,6 @@ const OverviewTab = () => {
           <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
             <div className="flex items-center justify-between mb-4">
               <span className="text-gray-600">Estimated total value</span>
-              <FaEye className="text-gray-400 cursor-pointer hover:text-gray-600 transition-colors" />
             </div>
             
             {loading ? (
@@ -101,17 +100,18 @@ const OverviewTab = () => {
               >
                 Deposit
               </button>
-              <button 
-                className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg font-medium transition-colors border border-gray-300"
-                onClick={() => navigate('/conversion')}
-              >
-                Convert
-              </button>
+           
               <button 
                 className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg font-medium transition-colors border border-gray-300"
                 onClick={() => navigate('/withdraw')}
               >
                 Withdraw
+              </button>
+              <button 
+                className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg font-medium transition-colors border border-gray-300"
+                onClick={() => navigate('/conversion')}
+              >
+                Convert
               </button>
               <button 
                 className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg font-medium transition-colors border border-gray-300"
