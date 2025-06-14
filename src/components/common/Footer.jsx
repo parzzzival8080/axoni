@@ -12,6 +12,7 @@ const Footer = () => {
   
   const appDownloadUrl = "https://drive.google.com/file/d/1DUL9nHAo46Puc9S8--THRMvgAz9rQbj2/view?usp=sharing";
 
+
   // Check if viewport is mobile
   useEffect(() => {
     const checkViewport = () => {

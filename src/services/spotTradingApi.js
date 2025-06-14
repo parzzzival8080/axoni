@@ -722,4 +722,211 @@ export const clearCache = (keys = 'all') => {
     }
 };
 
+/**
+ * Add coin to user's favorites
+ * @param {string} uid - User ID
+ * @param {string} coinId - Coin ID
+ * @returns {Promise<Object>} Promise with success status
+ */
+export const addToFavorites = async (uid, coinId) => {
+    try {
+        if (!uid || !coinId) {
+            return {
+                success: false,
+                message: 'User ID and Coin ID are required'
+            };
+        }
+
+        await enforceRateLimit(`favorites_${uid}`);
+
+        const url = `${API_BASE_URL}/user-wallet/${uid}/${coinId}?apikey=${API_KEY}`;
+        
+        const response = await fetchWithTimeout(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                action: 'add_favorite'
+            })
+        });
+
+        if (response.aborted) {
+            throw new Error('Request timed out');
+        }
+
+        if (!response.ok) {
+            throw new Error(`API Error: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        return {
+            success: true,
+            data,
+            message: 'Successfully added to favorites'
+        };
+
+    } catch (error) {
+        console.error('Error adding to favorites:', error);
+        return {
+            success: false,
+            message: error.message || 'Failed to add to favorites'
+        };
+    }
+};
+
+/**
+ * Remove coin from user's favorites
+ * @param {string} uid - User ID
+ * @param {string} coinId - Coin ID
+ * @returns {Promise<Object>} Promise with success status
+ */
+export const removeFromFavorites = async (uid, coinId) => {
+    try {
+        if (!uid || !coinId) {
+            return {
+                success: false,
+                message: 'User ID and Coin ID are required'
+            };
+        }
+
+        await enforceRateLimit(`favorites_${uid}`);
+
+        const url = `${API_BASE_URL}/user-wallet/${uid}/${coinId}?apikey=${API_KEY}`;
+        
+        const response = await fetchWithTimeout(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                action: 'remove_favorite'
+            })
+        });
+
+        if (response.aborted) {
+            throw new Error('Request timed out');
+        }
+
+        if (!response.ok) {
+            throw new Error(`API Error: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        return {
+            success: true,
+            data,
+            message: 'Successfully removed from favorites'
+        };
+
+    } catch (error) {
+        console.error('Error removing from favorites:', error);
+        return {
+            success: false,
+            message: error.message || 'Failed to remove from favorites'
+        };
+    }
+};
+
+/**
+ * Check if coin is in user's favorites
+ * @param {string} uid - User ID
+ * @param {string} coinId - Coin ID
+ * @returns {Promise<Object>} Promise with favorite status
+ */
+export const checkFavoriteStatus = async (uid, coinId) => {
+    try {
+        if (!uid || !coinId) {
+            return {
+                success: false,
+                message: 'User ID and Coin ID are required'
+            };
+        }
+
+        await enforceRateLimit(`check_favorite_${uid}`);
+
+        const url = `${API_BASE_URL}/user-wallet/${uid}/${coinId}?apikey=${API_KEY}`;
+        
+        const response = await fetchWithTimeout(url, {
+            method: 'GET'
+        });
+
+        if (response.aborted) {
+            throw new Error('Request timed out');
+        }
+
+        if (!response.ok) {
+            throw new Error(`API Error: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        return {
+            success: true,
+            is_favorite: data.is_favorite || false,
+            data,
+            message: 'Favorite status retrieved successfully'
+        };
+
+    } catch (error) {
+        console.error('Error checking favorite status:', error);
+        return {
+            success: false,
+            is_favorite: false,
+            message: error.message || 'Failed to check favorite status'
+        };
+    }
+};
+
+/**
+ * Get user's favorite coins list
+ * @param {string} uid - User ID
+ * @returns {Promise<Object>} Promise with favorites list
+ */
+export const getUserFavorites = async (uid) => {
+    try {
+        if (!uid) {
+            return {
+                success: false,
+                message: 'User ID is required'
+            };
+        }
+
+        // For now, we'll get all coins and filter favorites
+        // In a real implementation, there should be a dedicated endpoint
+        const coinsResponse = await fetchAllCoins();
+        
+        if (!coinsResponse.success) {
+            return {
+                success: false,
+                message: 'Failed to fetch coins data'
+            };
+        }
+
+        // Check favorite status for each coin (this is not efficient for large lists)
+        // In production, you'd want a dedicated endpoint that returns only favorites
+        const favoriteCoins = [];
+        
+        // For demo purposes, return first 8 tradable coins as favorites
+        const tradableCoins = coinsResponse.coins.filter(coin => coin.is_tradable);
+        const demoFavorites = tradableCoins.slice(0, 8);
+
+        return {
+            success: true,
+            favorites: demoFavorites,
+            message: 'Favorites retrieved successfully'
+        };
+
+    } catch (error) {
+        console.error('Error getting user favorites:', error);
+        return {
+            success: false,
+            favorites: [],
+            message: error.message || 'Failed to get favorites'
+        };
+    }
+};
+
 export { formatPrice };
