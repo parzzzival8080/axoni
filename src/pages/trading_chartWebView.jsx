@@ -486,7 +486,7 @@ const TradingChartWebView = () => {
             return false;
           });
           
-          // Handle touch events properly
+          // Handle touch events properly - allow UI elements to scroll
           let touchStartTime = 0;
           let touchStartX = 0;
           let touchStartY = 0;
@@ -497,15 +497,77 @@ const TradingChartWebView = () => {
               touchStartX = e.touches[0].clientX;
               touchStartY = e.touches[0].clientY;
             }
-            e.stopPropagation();
+            
+            // Check if touch is on a UI element (dropdown, menu, etc.)
+            const target = e.target;
+            const isUIElement = target.closest('[class*="dropdown"]') || 
+                               target.closest('[class*="menu"]') || 
+                               target.closest('[class*="popup"]') ||
+                               target.closest('[class*="dialog"]') ||
+                               target.closest('[class*="list"]') ||
+                               target.closest('[role="menu"]') ||
+                               target.closest('[role="listbox"]') ||
+                               target.closest('[data-name="legend-source-item"]') ||
+                               target.closest('.tv-dropdown-behavior') ||
+                               target.closest('.tv-context-menu') ||
+                               target.style.position === 'absolute' ||
+                               target.style.position === 'fixed';
+            
+            // Don't interfere with UI element interactions
+            if (!isUIElement) {
+              e.stopPropagation();
+            }
+          }, { passive: true });
+          
+          chartContainer.addEventListener("touchmove", (e) => {
+            // Check if touch is on a UI element
+            const target = e.target;
+            const isUIElement = target.closest('[class*="dropdown"]') || 
+                               target.closest('[class*="menu"]') || 
+                               target.closest('[class*="popup"]') ||
+                               target.closest('[class*="dialog"]') ||
+                               target.closest('[class*="list"]') ||
+                               target.closest('[role="menu"]') ||
+                               target.closest('[role="listbox"]') ||
+                               target.closest('[data-name="legend-source-item"]') ||
+                               target.closest('.tv-dropdown-behavior') ||
+                               target.closest('.tv-context-menu') ||
+                               target.style.position === 'absolute' ||
+                               target.style.position === 'fixed';
+            
+            // Don't interfere with UI element scrolling
+            if (!isUIElement) {
+              e.stopPropagation();
+            }
           }, { passive: true });
           
           chartContainer.addEventListener("touchend", (e) => {
             const touchEndTime = Date.now();
             const touchDuration = touchEndTime - touchStartTime;
             
-            // Prevent accidental selections on quick taps
-            if (touchDuration < 200 && e.changedTouches.length === 1) {
+            // Check if touch is on a UI element
+            const target = e.changedTouches[0] ? document.elementFromPoint(
+              e.changedTouches[0].clientX, 
+              e.changedTouches[0].clientY
+            ) : e.target;
+            
+            const isUIElement = target && (
+              target.closest('[class*="dropdown"]') || 
+              target.closest('[class*="menu"]') || 
+              target.closest('[class*="popup"]') ||
+              target.closest('[class*="dialog"]') ||
+              target.closest('[class*="list"]') ||
+              target.closest('[role="menu"]') ||
+              target.closest('[role="listbox"]') ||
+              target.closest('[data-name="legend-source-item"]') ||
+              target.closest('.tv-dropdown-behavior') ||
+              target.closest('.tv-context-menu') ||
+              target.style.position === 'absolute' ||
+              target.style.position === 'fixed'
+            );
+            
+            // Prevent accidental selections on quick taps (but allow UI interactions)
+            if (!isUIElement && touchDuration < 200 && e.changedTouches.length === 1) {
               const touchEndX = e.changedTouches[0].clientX;
               const touchEndY = e.changedTouches[0].clientY;
               const distance = Math.sqrt(
@@ -518,7 +580,11 @@ const TradingChartWebView = () => {
                 // This is a tap, let it through
               }
             }
-            e.stopPropagation();
+            
+            // Don't interfere with UI element interactions
+            if (!isUIElement) {
+              e.stopPropagation();
+            }
           }, { passive: true });
           
           // Optimize iframe interactions if present
@@ -694,18 +760,58 @@ const TradingChartWebView = () => {
           }
         }
         
-        /* Prevent text selection and context menus */
-        .tvchart-mobile-wrapper,
-        .TVChartContainer,
-        .TVChartContainer * {
-          -webkit-touch-callout: none !important;
-          -webkit-user-select: none !important;
-          -khtml-user-select: none !important;
-          -moz-user-select: none !important;
-          -ms-user-select: none !important;
-          user-select: none !important;
-          -webkit-tap-highlight-color: transparent !important;
-        }
+                 /* Prevent text selection and context menus */
+         .tvchart-mobile-wrapper,
+         .TVChartContainer,
+         .TVChartContainer * {
+           -webkit-touch-callout: none !important;
+           -webkit-user-select: none !important;
+           -khtml-user-select: none !important;
+           -moz-user-select: none !important;
+           -ms-user-select: none !important;
+           user-select: none !important;
+           -webkit-tap-highlight-color: transparent !important;
+         }
+         
+         /* Allow scrolling in TradingView UI elements */
+         .TVChartContainer [class*="dropdown"],
+         .TVChartContainer [class*="menu"],
+         .TVChartContainer [class*="popup"],
+         .TVChartContainer [class*="dialog"],
+         .TVChartContainer [class*="list"],
+         .TVChartContainer [role="menu"],
+         .TVChartContainer [role="listbox"],
+         .TVChartContainer [data-name="legend-source-item"],
+         .TVChartContainer .tv-dropdown-behavior,
+         .TVChartContainer .tv-context-menu,
+         .TVChartContainer .tv-menu,
+         .TVChartContainer .tv-popup,
+         .TVChartContainer .tv-dialog {
+           touch-action: auto !important;
+           -webkit-overflow-scrolling: touch !important;
+           overflow-y: auto !important;
+           pointer-events: auto !important;
+           -webkit-user-select: auto !important;
+           user-select: auto !important;
+         }
+         
+         /* Specific fixes for chart style selector */
+         .TVChartContainer [data-name="legend-source-item"],
+         .TVChartContainer .tv-legend-source-item,
+         .TVChartContainer .tv-chart-types-tabs,
+         .TVChartContainer .tv-chart-types-tab {
+           touch-action: auto !important;
+           pointer-events: auto !important;
+           -webkit-overflow-scrolling: touch !important;
+         }
+         
+         /* Allow scrolling in any absolutely positioned elements (likely dropdowns) */
+         .TVChartContainer [style*="position: absolute"],
+         .TVChartContainer [style*="position: fixed"] {
+           touch-action: auto !important;
+           -webkit-overflow-scrolling: touch !important;
+           overflow-y: auto !important;
+         }
       `}</style>
     </div>
   );
