@@ -228,6 +228,7 @@ const Navbar = () => {
   const appDownloadUrl =
     "https://drive.google.com/file/d/1DUL9nHAo46Puc9S8--THRMvgAz9rQbj2/view?usp=sharing";
 
+
   const openComingSoon = () => setIsComingSoonOpen(true);
   const closeComingSoon = () => setIsComingSoonOpen(false);
   const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
