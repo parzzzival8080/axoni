@@ -635,3 +635,271 @@
 .coin-logo-round {
   border-radius: 50% !important;
 }
+
+.favorite-star {
+  margin-left: 12px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.favorite-star:hover {
+  background-color: #1a1a1a;
+  color: #00b574;
+}
+
+.favorite-star.active {
+  color: #ffd700;
+}
+
+/* Favorites Modal Styles */
+.favorites-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.favorites-modal {
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  padding: 24px;
+  min-width: 400px;
+  max-width: 90vw;
+  border: 1px solid #333;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+  animation: slideUp 0.3s ease-out;
+}
+
+.favorites-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.favorites-modal-title {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.favorites-modal-close {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+
+.favorites-modal-close:hover {
+  color: #fff;
+}
+
+.favorites-modal-coin {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.favorites-modal-coin-logo {
+  width: 48px;
+  height: 48px;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50% !important;
+  overflow: hidden;
+  background-color: #2a2a2a;
+  flex-shrink: 0;
+}
+
+.favorites-modal-coin-logo img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 50% !important;
+}
+
+.favorites-modal-coin-info {
+  flex: 1;
+}
+
+.favorites-modal-coin-symbol {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.favorites-modal-coin-name {
+  color: #666;
+  font-size: 14px;
+}
+
+.favorites-modal-description {
+  color: #ccc;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.favorites-modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.favorites-modal-button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+  border: none;
+}
+
+.favorites-modal-button.cancel {
+  background: none;
+  border: 1px solid #333;
+  color: #ccc;
+}
+
+.favorites-modal-button.cancel:hover {
+  border-color: #555;
+  color: #fff;
+}
+
+.favorites-modal-button.primary {
+  background: #00b574;
+  color: #fff;
+}
+
+.favorites-modal-button.primary:hover {
+  background: #00a65a;
+}
+
+.favorites-modal-button.danger {
+  background: #f23645;
+  color: #fff;
+}
+
+.favorites-modal-button.danger:hover {
+  background: #d63031;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Force circular icon styling with high specificity */
+.favorites-modal .favorites-modal-coin .w-12.h-12.rounded-full,
+.favorites-modal div[style*="borderRadius"] {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 50% !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.favorites-modal .favorites-modal-coin .w-12.h-12.rounded-full img,
+.favorites-modal div[style*="borderRadius"] img {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  display: block !important;
+  max-width: none !important;
+  max-height: none !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
+}
+
+/* Additional force styling */
+.sub-header .favorites-modal img[src*="btc"],
+.sub-header .favorites-modal img[alt*="BTC"],
+.sub-header .favorites-modal img {
+  border-radius: 50% !important;
+  width: 48px !important;
+  height: 48px !important;
+  object-fit: cover !important;
+}
+
+/* Mobile responsiveness for favorites modal */
+@media (max-width: 768px) {
+  .favorites-modal {
+    min-width: 320px;
+    max-width: 95vw;
+    padding: 20px;
+    margin: 20px;
+  }
+  
+  .favorites-modal-coin-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 12px;
+  }
+  
+  .favorites-modal-coin-logo img {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .favorites-modal-coin-symbol {
+    font-size: 18px;
+  }
+  
+  .favorites-modal-actions {
+    flex-direction: column;
+  }
+  
+  .favorites-modal-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .favorite-star {
+    padding: 6px;
+    margin-left: 8px;
+  }
+}
