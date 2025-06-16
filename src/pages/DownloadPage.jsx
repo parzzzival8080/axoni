@@ -19,7 +19,7 @@ const DownloadPage = () => {
   };
 
   const appDownloadUrl =
-    "https://drive.google.com/file/d/1DUL9nHAo46Puc9S8--THRMvgAz9rQbj2/view?usp=sharing";
+    "https://drive.google.com/file/d/1wCt9CMCr1wy6FPSm4vDcj-1cuZY6GGUB/view?usp=sharing";
 
   const handleAppDownload = () => {
     // For Google Drive links, we need to convert the sharing URL to a direct download URL

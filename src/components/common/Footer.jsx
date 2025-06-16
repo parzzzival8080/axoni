@@ -10,7 +10,7 @@ const Footer = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [showTradeOnGo, setShowTradeOnGo] = useState(true);
   
-  const appDownloadUrl = "https://drive.google.com/file/d/1DUL9nHAo46Puc9S8--THRMvgAz9rQbj2/view?usp=sharing";
+  const appDownloadUrl = "https://drive.google.com/file/d/1wCt9CMCr1wy6FPSm4vDcj-1cuZY6GGUB/view?usp=sharing";
 
 
   // Check if viewport is mobile
