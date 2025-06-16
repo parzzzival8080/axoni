@@ -138,7 +138,7 @@ const Navbar = () => {
                 headers: {
                   Authorization: `Bearer ${token}`,
                 },
-              }
+              },
             );
 
             if (
@@ -228,7 +228,6 @@ const Navbar = () => {
   const appDownloadUrl =
     "https://drive.google.com/file/d/1DUL9nHAo46Puc9S8--THRMvgAz9rQbj2/view?usp=sharing";
 
-
   const openComingSoon = () => setIsComingSoonOpen(true);
   const closeComingSoon = () => setIsComingSoonOpen(false);
   const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
@@ -244,7 +243,7 @@ const Navbar = () => {
         item.subItems.forEach((subItem) => {
           if (subItem.id && expandedSubSubMenus.includes(subItem.id)) {
             setExpandedSubSubMenus((prev) =>
-              prev.filter((id) => id !== subItem.id)
+              prev.filter((id) => id !== subItem.id),
             );
           }
         });
@@ -256,7 +255,7 @@ const Navbar = () => {
 
   const toggleSubSubmenu = (id) => {
     setExpandedSubSubMenus((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
 
@@ -489,8 +488,8 @@ const Navbar = () => {
                     <i className="fas fa-chevron-right"></i>
                 </div>
                 </Link>
-                
-                
+
+
                 <div className="dropdown-sub-items">
                   <Link to="/earn/simple-earn" className="dropdown-link">
                     <div className="dropdown-sub-item">
@@ -500,11 +499,11 @@ const Navbar = () => {
                       <span>Simple Earn</span>
                     </div>
                   </Link>
-                  
+
                 </div>
               </div>
-              
-         
+
+
             </div>
         </div> */}
 
@@ -861,7 +860,7 @@ const Navbar = () => {
                 <i className="fas fa-chevron-down"></i>
               </div>
               <div className="assets-dropdown-menu">
-                <Link to="/assets" className="menu-item">
+                <Link to="/my-assets" className="menu-item">
                   <i className="fas fa-wallet"></i> My assets
                 </Link>
                 <Link to="/deposit" className="menu-item">
@@ -1116,7 +1115,7 @@ const Navbar = () => {
                                           >
                                             {subSubItem.name}
                                           </a>
-                                        )
+                                        ),
                                       )}
                                     </div>
                                   )}

@@ -41,7 +41,7 @@
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/assets</loc>
+    <loc>https://fluxcoin.tech/my-assets</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
