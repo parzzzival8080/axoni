@@ -24,7 +24,7 @@ const Footer = () => {
   const [showTradeOnGo, setShowTradeOnGo] = useState(true);
 
   const appDownloadUrl =
-    "https://drive.google.com/file/d/1CZqefwxri0DHMMlHe4DQr_5hW96hPv_n/view?usp=sharing";
+    "https://drive.google.com/file/d/1N4DFPGpFfXatDrKUeX-77F2kuUY6q4jk/view?usp=sharing";
 
   // Check if viewport is mobile
   useEffect(() => {
