@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Assets.css";
 import axios from "axios";
+import { useCurrency } from "../context/CurrencyContext";
 import OverviewTab from "../components/assets/OverviewTab";
 import FundingTab from "../components/assets/FundingTab";
 import TradingTab from "../components/assets/TradingTab";
@@ -17,42 +18,44 @@ export default function Assets() {
     overview: 0,
     spot_wallet: 0,
     future_wallet: 0,
-    funding_wallet: 0
+    funding_wallet: 0,
   });
-  
+  const { selectedCurrency } = useCurrency();
+
   // Fetch wallet data from API
   useEffect(() => {
     const fetchWalletData = async () => {
       try {
         setLoading(true);
         setError(null);
-        
+
         // Get UID from localStorage
-        const uid = localStorage.getItem('uid') || localStorage.getItem('user_id');
-        
+        const uid =
+          localStorage.getItem("uid") || localStorage.getItem("user_id");
+
         if (!uid) {
           setError("User ID not found. Please log in again.");
           setLoading(false);
           return;
         }
-        
+
         // API key
-        const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
-        
+        const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
+
         // Construct the API URL
         const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
-        
+
         const response = await axios.get(apiUrl);
-        
+
         if (response.data && response.data["0"]) {
           // Format the coin data with proper value calculations
-          const formattedCoins = response.data["0"].map(coin => {
+          const formattedCoins = response.data["0"].map((coin) => {
             const price = parseFloat(coin.price) || 0;
             const spotWallet = parseFloat(coin.spot_wallet) || 0;
             const futureWallet = parseFloat(coin.future_wallet) || 0;
             const fundingWallet = parseFloat(coin.funding_wallet) || 0;
             const totalValue = price * spotWallet;
-            
+
             return {
               id: coin.coin_id,
               symbol: coin.crypto_symbol,
@@ -65,21 +68,30 @@ export default function Assets() {
               raw_value: totalValue,
               future_wallet: futureWallet,
               funding_wallet: fundingWallet,
-              formatted_price: price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 8 }),
-              formatted_balance: spotWallet.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 8 }),
-              formatted_value: totalValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+              formatted_price: price.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 8,
+              }),
+              formatted_balance: spotWallet.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 8,
+              }),
+              formatted_value: totalValue.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }),
             };
           });
-          
+
           setCoins(formattedCoins);
-          
+
           // Set overview data
           if (response.data.overview !== undefined) {
             setOverviewData({
               overview: parseFloat(response.data.overview) || 0,
               spot_wallet: parseFloat(response.data.spot_wallet) || 0,
               future_wallet: parseFloat(response.data.future_wallet) || 0,
-              funding_wallet: parseFloat(response.data.funding_wallet) || 0
+              funding_wallet: parseFloat(response.data.funding_wallet) || 0,
             });
           }
         } else {
@@ -94,20 +106,20 @@ export default function Assets() {
         setLoading(false);
       }
     };
-    
+
     fetchWalletData();
-  }, []);
-  
+  }, [selectedCurrency]);
+
   // Content for different tabs
   const renderTabContent = () => {
-    switch(activeTab) {
+    switch (activeTab) {
       case "overview":
         return <OverviewTab />;
       case "funding":
         return <FundingTab />;
       case "trading":
         return (
-          <TradingTab 
+          <TradingTab
             coins={coins}
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
@@ -124,31 +136,32 @@ export default function Assets() {
         return null;
     }
   };
-  
+
   return (
     <div className="assets-container">
       <div className="assets-header">
         <div className="header-tabs">
-          <div 
-            className={activeTab === "overview" ? "header-tab active" : "header-tab"}
+          <div
+            className={
+              activeTab === "overview" ? "header-tab active" : "header-tab"
+            }
             onClick={() => setActiveTab("overview")}
           >
             Overview
           </div>
-      
-          <div 
-            className={activeTab === "trading" ? "header-tab active" : "header-tab"}
+
+          <div
+            className={
+              activeTab === "trading" ? "header-tab active" : "header-tab"
+            }
             onClick={() => setActiveTab("trading")}
           >
             Trading
           </div>
-  
         </div>
       </div>
-      
-      <div className="assets-content">
-        {renderTabContent()}
-      </div>
+
+      <div className="assets-content">{renderTabContent()}</div>
     </div>
   );
 }
