@@ -29,6 +29,7 @@ import ChangePassword from "./pages/account/ChangePassword";
 import ChangeEmail from "./pages/account/ChangeEmail";
 import { CryptoProvider } from "./context/CryptoContext";
 import { CurrencyProvider } from "./context/CurrencyContext";
+import { MetaMaskProvider } from "./context/MetaMaskContext";
 import TradingChartWebView from "./pages/trading_chartWebView";
 import DepositGuide from "./components/faq/depositGuide";
 import WithdrawalGuide from "./components/faq/withdrawGuide";
@@ -38,8 +39,9 @@ import PrivacyPolicy from "./components/common/footerContent/PolicyContent";
 import ScrollToTop from "./services/userWindowsSize";
 function App() {
   return (
-    <CurrencyProvider>
-      <CryptoProvider>
+    <MetaMaskProvider>
+      <CurrencyProvider>
+        <CryptoProvider>
         <Router>
           <div className="App">
             <ScrollToTop />
@@ -602,8 +604,9 @@ function App() {
             </Routes>
           </div>
         </Router>
-      </CryptoProvider>
-    </CurrencyProvider>
+        </CryptoProvider>
+      </CurrencyProvider>
+    </MetaMaskProvider>
   );
 }
 
