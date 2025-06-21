@@ -4,55 +4,311 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MetaMask Integration</title>
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            padding: 20px; 
+        * {
             margin: 0;
-            background: #f5f5f5;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            background: white;
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: linear-gradient(45deg, #f6851b, #e2761b);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            box-shadow: 0 10px 15px -3px rgba(246, 133, 27, 0.3);
+        }
+        
+        h2 {
+            color: #1f2937;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            color: #6b7280;
+            font-size: 16px;
+            margin-bottom: 32px;
+        }
+        
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+        
+        .status.connected {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status.disconnected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .status.connected .status-dot {
+            background: #16a34a;
+        }
+        
+        .status.disconnected .status-dot {
+            background: #dc2626;
+        }
+        
         button {
             width: 100%;
-            padding: 12px;
-            margin: 8px 0;
+            padding: 16px 24px;
             border: none;
-            border-radius: 8px;
-            cursor: pointer;
+            border-radius: 12px;
             font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin: 8px 0;
+            position: relative;
+            overflow: hidden;
         }
-        .connect-btn { background: #f6851b; color: white; }
-        .disconnect-btn { background: #dc2626; color: white; }
-        .info { margin: 16px 0; padding: 12px; background: #f0f9ff; border-radius: 8px; }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .connect-btn {
+            background: linear-gradient(45deg, #f6851b, #e2761b);
+            color: white;
+            border: 2px solid transparent;
+        }
+        
+        .connect-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(246, 133, 27, 0.3);
+        }
+        
+        .disconnect-btn {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .disconnect-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+        
+        .refresh-btn {
+            background: #3b82f6;
+            color: white;
+            width: auto;
+            padding: 8px 16px;
+            font-size: 14px;
+            margin: 0 8px;
+        }
+        
+        .wallet-info {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 24px;
+            margin: 24px 0;
+            text-align: left;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .info-value {
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+            color: #1f2937;
+            font-size: 14px;
+        }
+        
+        .address-value {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .copy-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            width: auto;
+            margin: 0;
+        }
+        
+        .copy-btn:hover {
+            background: #e2e8f0;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #f6851b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background: #10b981;
+        }
+        
+        .notification.error {
+            background: #ef4444;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 24px;
+                margin: 10px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="logo">🦊</div>
         <h2>MetaMask Integration</h2>
-        <div id="status">Not Connected</div>
-        <button id="connectBtn" class="connect-btn">Connect MetaMask</button>
-        <button id="disconnectBtn" class="disconnect-btn" style="display:none;">Disconnect</button>
-        <div id="walletInfo" class="info" style="display:none;">
-            <p><strong>Address:</strong> <span id="address"></span></p>
-            <p><strong>Balance:</strong> <span id="balance"></span> ETH</p>
-            <p><strong>Network:</strong> <span id="network"></span></p>
+        <p class="subtitle">Connect your wallet to get started</p>
+        
+        <div id="status" class="status disconnected">
+            <div class="status-dot"></div>
+            <span>Not Connected</span>
+        </div>
+        
+        <button id="connectBtn" class="connect-btn">
+            <span id="connectText">Connect MetaMask</span>
+        </button>
+        
+        <button id="disconnectBtn" class="disconnect-btn" style="display:none;">
+            Disconnect Wallet
+        </button>
+        
+        <div id="walletInfo" class="wallet-info" style="display:none;">
+            <div class="info-item">
+                <span class="info-label">Address</span>
+                <div class="address-value">
+                    <span id="address" class="info-value"></span>
+                    <button class="copy-btn" onclick="copyAddress()" title="Copy address">
+                        📋
+                    </button>
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <span class="info-label">Balance</span>
+                <span id="balance" class="info-value">Loading...</span>
+            </div>
+            
+            <div class="info-item">
+                <span class="info-label">Network</span>
+                <span id="network" class="info-value">Loading...</span>
+            </div>
+            
+            <div class="button-group">
+                <button class="refresh-btn" onclick="refreshWalletInfo()">
+                    🔄 Refresh
+                </button>
+            </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@metamask/sdk@latest/dist/browser/sdk.js"></script>
     <script>
+        console.log('MetaMask Integration loaded');
+        
+        // Initialize MetaMask SDK
         const MMSDK = new MetaMaskSDK.MetaMaskSDK({
             dappMetadata: {
-                name: "TradingApp",
-                url: window.location.href,
+                name: "FLUX Trading App",
+                url: window.location.origin,
+                iconUrl: "https://your-app-icon.png",
             },
-            preferDesktop: false, // Prefer mobile app
+            preferDesktop: false,
         });
 
         const ethereum = MMSDK.getProvider();
@@ -60,6 +316,7 @@
 
         // UI Elements
         const connectBtn = document.getElementById('connectBtn');
+        const connectText = document.getElementById('connectText');
         const disconnectBtn = document.getElementById('disconnectBtn');
         const status = document.getElementById('status');
         const walletInfo = document.getElementById('walletInfo');
@@ -67,11 +324,37 @@
         const balanceSpan = document.getElementById('balance');
         const networkSpan = document.getElementById('network');
 
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkConnection();
+            setupEventListeners();
+        });
+
+        // Check if already connected
+        async function checkConnection() {
+            if (ethereum?.selectedAddress) {
+                currentAccount = ethereum.selectedAddress;
+                updateUI(true);
+                await updateWalletInfo();
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            connectBtn.addEventListener('click', connectWallet);
+            disconnectBtn.addEventListener('click', disconnectWallet);
+
+            if (ethereum) {
+                ethereum.on('accountsChanged', handleAccountsChanged);
+                ethereum.on('chainChanged', handleChainChanged);
+                ethereum.on('disconnect', handleDisconnect);
+            }
+        }
+
         // Connect to MetaMask
         async function connectWallet() {
             try {
-                connectBtn.textContent = 'Connecting...';
-                connectBtn.disabled = true;
+                setConnectingState(true);
 
                 const accounts = await ethereum.request({ 
                     method: 'eth_requestAccounts' 
@@ -79,11 +362,13 @@
                 
                 if (accounts.length > 0) {
                     currentAccount = accounts[0];
-                    await updateWalletInfo();
                     updateUI(true);
+                    await updateWalletInfo();
                     
-                    // Send data to Flutter
-                    sendToFlutter({
+                    showNotification('✅ Wallet connected successfully!', 'success');
+                    
+                    // Send data to parent window (React app)
+                    sendToParent({
                         type: 'connected',
                         address: currentAccount,
                         balance: await getBalance(),
@@ -92,22 +377,27 @@
                 }
             } catch (error) {
                 console.error('Connection failed:', error);
-                status.textContent = 'Connection failed: ' + error.message;
-                sendToFlutter({
+                showNotification('❌ Connection failed: ' + error.message, 'error');
+                
+                sendToParent({
                     type: 'error',
                     message: error.message
                 });
             } finally {
-                connectBtn.textContent = 'Connect MetaMask';
-                connectBtn.disabled = false;
+                setConnectingState(false);
             }
         }
 
         // Disconnect wallet
         function disconnectWallet() {
+            if (MMSDK) {
+                MMSDK.terminate();
+            }
             currentAccount = null;
             updateUI(false);
-            sendToFlutter({
+            showNotification('🔌 Wallet disconnected', 'success');
+            
+            sendToParent({
                 type: 'disconnected'
             });
         }
@@ -136,8 +426,9 @@
                 const networks = {
                     '0x1': 'Ethereum Mainnet',
                     '0x89': 'Polygon',
-                    '0xa4b1': 'Arbitrum',
-                    '0x38': 'BSC'
+                    '0xa4b1': 'Arbitrum One',
+                    '0x38': 'Binance Smart Chain',
+                    '0xa': 'Optimism'
                 };
                 return networks[chainId] || `Chain ID: ${parseInt(chainId, 16)}`;
             } catch (error) {
@@ -149,74 +440,150 @@
         async function updateWalletInfo() {
             if (!currentAccount) return;
             
-            const balance = await getBalance();
-            const network = await getNetwork();
+            try {
+                const [balance, network] = await Promise.all([
+                    getBalance(),
+                    getNetwork()
+                ]);
+                
+                addressSpan.textContent = formatAddress(currentAccount);
+                balanceSpan.textContent = balance + ' ETH';
+                networkSpan.textContent = network;
+            } catch (error) {
+                console.error('Error updating wallet info:', error);
+            }
+        }
+
+        // Refresh wallet info
+        async function refreshWalletInfo() {
+            if (!currentAccount) return;
             
-            addressSpan.textContent = currentAccount.substring(0, 6) + '...' + currentAccount.substring(38);
-            balanceSpan.textContent = balance;
-            networkSpan.textContent = network;
+            balanceSpan.textContent = 'Loading...';
+            networkSpan.textContent = 'Loading...';
+            
+            await updateWalletInfo();
+            showNotification('🔄 Wallet info refreshed', 'success');
+        }
+
+        // Format address
+        function formatAddress(address) {
+            if (!address) return '';
+            return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+        }
+
+        // Copy address to clipboard
+        async function copyAddress() {
+            if (!currentAccount) return;
+            
+            try {
+                await navigator.clipboard.writeText(currentAccount);
+                showNotification('📋 Address copied to clipboard', 'success');
+            } catch (error) {
+                console.error('Failed to copy address:', error);
+                showNotification('❌ Failed to copy address', 'error');
+            }
         }
 
         // Update UI state
         function updateUI(connected) {
             if (connected) {
-                status.textContent = 'Connected to MetaMask';
+                status.className = 'status connected';
+                status.innerHTML = '<div class="status-dot"></div><span>Connected</span>';
                 connectBtn.style.display = 'none';
                 disconnectBtn.style.display = 'block';
                 walletInfo.style.display = 'block';
             } else {
-                status.textContent = 'Not Connected';
+                status.className = 'status disconnected';
+                status.innerHTML = '<div class="status-dot"></div><span>Not Connected</span>';
                 connectBtn.style.display = 'block';
                 disconnectBtn.style.display = 'none';
                 walletInfo.style.display = 'none';
             }
         }
 
-        // Send data to Flutter via postMessage
-        function sendToFlutter(data) {
-            if (window.flutter_inappwebview) {
-                // For flutter_inappwebview
-                window.flutter_inappwebview.callHandler('metaMaskHandler', data);
-            } else if (window.parent) {
-                // For webview_flutter
-                window.parent.postMessage(JSON.stringify(data), '*');
+        // Set connecting state
+        function setConnectingState(connecting) {
+            connectBtn.disabled = connecting;
+            connectText.textContent = connecting ? 'Connecting...' : 'Connect MetaMask';
+            if (connecting) {
+                connectText.innerHTML = '<div class="loading"></div> Connecting...';
             }
         }
 
-        // Event listeners
-        connectBtn.addEventListener('click', connectWallet);
-        disconnectBtn.addEventListener('click', disconnectWallet);
+        // Show notification
+        function showNotification(message, type) {
+            // Remove existing notifications
+            const existing = document.querySelector('.notification');
+            if (existing) {
+                existing.remove();
+            }
 
-        // Listen for account changes
-        if (ethereum) {
-            ethereum.on('accountsChanged', (accounts) => {
-                if (accounts.length > 0) {
-                    currentAccount = accounts[0];
-                    updateWalletInfo();
-                    sendToFlutter({
-                        type: 'accountChanged',
-                        address: currentAccount
-                    });
-                } else {
-                    disconnectWallet();
-                }
-            });
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
 
-            ethereum.on('chainChanged', (chainId) => {
+            // Show notification
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+
+            // Hide notification after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // Send data to parent window (React app)
+        function sendToParent(data) {
+            try {
+                // For iframe communication
+                window.parent.postMessage({
+                    source: 'metamask-integration',
+                    ...data
+                }, '*');
+                
+                console.log('Sent to parent:', data);
+            } catch (error) {
+                console.error('Error sending to parent:', error);
+            }
+        }
+
+        // Event handlers
+        function handleAccountsChanged(accounts) {
+            if (accounts.length > 0) {
+                currentAccount = accounts[0];
                 updateWalletInfo();
-                sendToFlutter({
-                    type: 'networkChanged',
-                    chainId: chainId
+                sendToParent({
+                    type: 'accountChanged',
+                    address: currentAccount
                 });
+            } else {
+                disconnectWallet();
+            }
+        }
+
+        function handleChainChanged(chainId) {
+            updateWalletInfo();
+            sendToParent({
+                type: 'networkChanged',
+                chainId: chainId
             });
         }
 
-        // Check if already connected
-        if (ethereum && ethereum.selectedAddress) {
-            currentAccount = ethereum.selectedAddress;
-            updateWalletInfo();
-            updateUI(true);
+        function handleDisconnect() {
+            currentAccount = null;
+            updateUI(false);
+            sendToParent({
+                type: 'disconnected'
+            });
         }
+
+        // Log when page loads
+        console.log('MetaMask Integration Ready');
     </script>
 </body>
 </html>

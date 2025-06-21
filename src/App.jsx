@@ -37,6 +37,7 @@ import GetStarted from "./components/common/GetStarted";
 import TermsAndConditions from "./components/common/footerContent/TermsAndConditions";
 import PrivacyPolicy from "./components/common/footerContent/PolicyContent";
 import ScrollToTop from "./services/userWindowsSize";
+
 function App() {
   return (
     <MetaMaskProvider>
@@ -58,14 +59,246 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignUpPage />} />
 
-              <Route
-                path="/appstore"
-                element={
-                  <div style={{ height: "100vh", width: "100%" }}>
-                    <iframe
-                      src="/landing/appstore.html"
-                      style={{ width: "100%", height: "100%", border: "none" }}
-                      title="FLUX Coin App Store"
+            <Route
+              path="/appstore"
+              element={
+                <div style={{ height: "100vh", width: "100%" }}>
+                  <iframe
+                    src="/landing/appstore.html"
+                    style={{ width: "100%", height: "100%", border: "none" }}
+                    title="FLUX Coin App Store"
+                  />
+                </div>
+              }
+            />
+
+            
+            <Route
+              path="/metamask"
+              element={
+                <div style={{ height: "100vh", width: "100%" }}>
+                  <iframe
+                    src="../public/metamask/metamask.html"
+                    style={{ width: "100%", height: "100%", border: "none" }}
+                    title="MetaMask Integration"
+                  />
+                </div>
+              }
+            />
+
+            <Route
+              path="/playstore"
+              element={
+                <div style={{ height: "100vh", width: "100%" }}>
+                  <iframe
+                    src="/landing/playstore.html"
+                    style={{ width: "100%", height: "100%", border: "none" }}
+                    title="FLUX Coin Play Store"
+                  />
+                </div>
+              }
+            />
+            <Route
+              path="/landing/playstore"
+              element={
+                <div style={{ height: "100vh", width: "100%" }}>
+                  <iframe
+                    src="/landing/playstore.html"
+                    style={{ width: "100%", height: "100%", border: "none" }}
+                    title="FLUX Coin Play Store"
+                  />
+                </div>
+              }
+            />
+
+            {/* Add a redirect for direct access to the HTML file */}
+            <Route
+              path="/landing/appstore.html"
+              element={
+                <div style={{ height: "100vh", width: "100%" }}>
+                  <iframe
+                    src="/landing/appstore.html"
+                    style={{ width: "100%", height: "100%", border: "none" }}
+                    title="FLUX Coin App Store"
+                  />
+                </div>
+              }
+            />
+
+            <Route
+              path="/spot-trading"
+              element={
+                <>
+                  <Navbar />
+                  <main>
+                    <SpotTrading />
+                  </main>
+                </>
+              }
+            />
+            <Route
+              path="/future-trading"
+              element={
+                <>
+                  <Navbar />
+                  <main>
+                    <FutureTrading />
+                  </main>
+                </>
+              }
+            />
+            <Route
+              path="/deposit"
+              element={
+                <>
+                  <Navbar />
+                  <main>
+                    <Deposit />
+                  </main>
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/withdraw"
+              element={
+                <>
+                  <Navbar />
+                  <main>
+                    <Withdraw />
+                  </main>
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/transfer"
+              element={
+                <>
+                  <Navbar />
+                  <main>
+                    <Transfer />
+                  </main>
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/conversion"
+              element={
+                <>
+                  <Navbar />
+                  <main>
+                    <Conversion />
+                  </main>
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/earn"
+              element={
+                <>
+                  <Navbar />
+                  <main>
+                    <Earn />
+                  </main>
+                  <Footer />
+                  <ChatBubble />
+                </>
+              }
+            />
+            <Route
+              path="/coming-soon"
+              element={
+                <>
+                  <main>
+                    <ComingSoon />
+                  </main>
+                  <ChatBubble />
+                </>
+              }
+            />
+            <Route
+              path="/earn/simple-earn"
+              element={
+                <>
+                  <Navbar />
+                  <main>
+                    <SimpleEarn />
+                  </main>
+                  <Footer />
+                  <ChatBubble />
+                </>
+              }
+            />
+            <Route
+
+              path="/account/overview"
+              element={
+                <>
+                  <Navbar />
+                  <main>
+                    <Overview />
+                  </main>
+                  <Footer />
+                  <ChatBubble />
+                </>
+              }
+            />
+            <Route
+              path="/account/profile"
+              element={
+                <>
+                  <Navbar />
+                  <main>
+                    <Profile />
+                  </main>
+                  <Footer />
+                  <ChatBubble />
+                </>
+              }
+            />
+            <Route
+              path="/account/profile/verify"
+              element={
+                <>
+                  <Navbar />
+                  <main>
+                    <VerifyPage />
+                  </main>
+                  <Footer />
+                  <ChatBubble />
+                </>
+              }
+            />
+            <Route
+              path="/account/profile/security"
+              element={
+                <>
+                  <Navbar />
+                  <main>
+                    <React.Suspense fallback={<div>Loading...</div>}>
+                      {React.createElement(
+                        React.lazy(() => import("./pages/account/Security")),
+                      )}
+                    </React.Suspense>
+                  </main>
+                  <Footer />
+                  <ChatBubble />
+                </>
+              }
+            />
+            <Route
+              path="/account/profile/preferences"
+              element={
+                <>
+                  <Navbar />
+                  <main>
+                    <ComingSoon
+                      title="Preferences"
+                      message="This feature is coming soon"
+
                     />
                   </div>
                 }
