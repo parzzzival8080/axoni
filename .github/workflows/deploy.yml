@@ -25,7 +25,7 @@ jobs:
           send "${{ secrets.SSH_PASSWORD }}\r"
           expect "# "
 
-          send "cd .. && cd /var/www/html && git config --system --add safe.directory /var/www/html && git stash && git pull https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_TOKEN }}@github.com//parzzzival8080/tx-web.git ${{ env.GIT_BRANCH }}  && npm install \r"
+          send "cd .. && cd /var/www/html && git config --system --add safe.directory /var/www/html && git stash && git pull https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_TOKEN }}@github.com//parzzzival8080/tx-web.git ${{ env.GIT_BRANCH }}\r"
           expect "# "
           send "npm run build \r "
           expect "# "
