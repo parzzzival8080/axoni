@@ -1,199 +1,311 @@
 /* Modal backdrop - covers the entire screen */
 .modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  animation: fadeIn 0.2s ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.2s ease;
 }
 
 /* Language modal container */
 .language-modal {
-  background-color: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  max-width: 720px;
-  max-height: 90vh;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  animation: scaleIn 0.2s ease;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 720px;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: scaleIn 0.2s ease;
 }
 
 /* Modal header with tabs */
 .language-modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24px 24px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 24px 0;
 }
 
 /* Tabs container */
 .language-modal-tabs {
-  display: flex;
-  gap: 24px;
+    display: flex;
+    gap: 24px;
 }
 
 /* Individual tab */
 .language-modal-tab {
-  font-size: 16px;
-  font-weight: 500;
-  color: #757575;
-  padding-bottom: 16px;
-  cursor: pointer;
-  position: relative;
-  transition: color 0.2s;
+    font-size: 16px;
+    font-weight: 500;
+    color: #757575;
+    padding-bottom: 16px;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.2s;
 }
 
 /* Active tab */
 .language-modal-tab.active {
-  color: #000;
-  font-weight: 600;
+    color: #000;
+    font-weight: 600;
 }
 
 /* Active tab indicator line */
 .language-modal-tab.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background-color: #000;
-  border-radius: 2px;
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #000;
+    border-radius: 2px;
 }
 
 /* Close button */
 .language-modal-close {
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #757575;
-  padding: 8px;
-  border-radius: 50%;
-  transition: background-color 0.2s;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #757575;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
 }
 
 .language-modal-close:hover {
-  background-color: #f5f5f5;
+    background-color: #f5f5f5;
 }
 
 /* Info box styling */
 .language-modal-info {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  margin: 16px 24px;
-  padding: 16px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  font-size: 14px;
-  color: #333;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 16px 24px;
+    padding: 16px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333;
 }
 
 .language-modal-info i {
-  font-size: 16px;
-  color: #000;
-  margin-top: 2px;
+    font-size: 16px;
+    color: #000;
+    margin-top: 2px;
 }
 
 /* Languages grid */
 .language-modal-content {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  padding: 16px 24px 24px;
-  overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 16px 24px 24px;
+    overflow-y: auto;
+}
+
+/* Custom scrollbar styling */
+.language-modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.language-modal-content::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+}
+
+.language-modal-content::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.language-modal-content::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* For language tab - use 4 columns */
+.language-modal-content.language-grid {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* For currency tab - use 2 columns for better layout */
+.language-modal-content.currency-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    padding: 12px 16px 16px;
 }
 
 /* Individual language option */
 .language-option {
-  padding: 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-  font-size: 14px;
-  font-weight: 500;
-  background: #111;
-  color: #fff;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition:
+        background 0.2s,
+        color 0.2s,
+        box-shadow 0.2s,
+        border 0.2s;
+    font-size: 13px;
+    font-weight: 500;
+    background: #fff !important;
+    color: #333 !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
 }
 
 .language-option:hover {
-  background: #222;
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    background: #fef7f0 !important;
+    color: #333 !important;
+    border-color: #f97316 !important;
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.15) !important;
 }
 
 .language-option.selected {
-  background: #222;
-  color: #00ffae;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.20);
+    background: #fff5f0 !important;
+    color: #f97316 !important;
+    font-weight: 600;
+    border-color: #f97316 !important;
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.2) !important;
+}
+
+/* Currency specific styling */
+.language-option .currency-symbol {
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 4px;
+    color: #f97316 !important;
+}
+
+.language-option .currency-code {
+    font-weight: 600;
+    margin-right: 4px;
+    color: #1f2937 !important;
+}
+
+.language-option .currency-name {
+    font-size: 10px;
+    opacity: 0.7;
+    display: block;
+    margin-top: 1px;
+    color: #6b7280 !important;
+}
+
+.language-option:hover .currency-name {
+    opacity: 0.9;
+}
+
+.language-option.selected .currency-symbol {
+    color: #f97316 !important;
+}
+
+.language-option.selected .currency-code {
+    color: #f97316 !important;
+}
+
+.language-option.selected .currency-name {
+    color: #f97316 !important;
+    opacity: 0.8;
+}
+
+/* Additional overrides to ensure light mode styling */
+.language-modal-content .language-option,
+.currency-grid .language-option {
+    background-color: #ffffff !important;
+    color: #333333 !important;
+}
+
+.language-modal-content .language-option:hover,
+.currency-grid .language-option:hover {
+    background-color: #fef7f0 !important;
+    color: #333333 !important;
+}
+
+.language-modal-content .language-option.selected,
+.currency-grid .language-option.selected {
+    background-color: #fff5f0 !important;
+    color: #f97316 !important;
+}
+
+/* Force override any inherited dark styles */
+.language-option * {
+    background: transparent !important;
 }
 
 /* Animations */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes scaleIn {
-  from {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .language-modal-content {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .language-modal {
-    max-width: 90%;
-    max-height: 80vh;
-  }
+    .language-modal-content {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .language-modal-content.currency-grid {
+        grid-template-columns: repeat(1, 1fr);
+        gap: 10px;
+    }
+
+    .language-modal {
+        max-width: 90%;
+        max-height: 80vh;
+    }
 }
 
 @media (max-width: 480px) {
-  .language-modal-content {
-    grid-template-columns: 1fr;
-  }
-  
-  .language-modal-tab {
-    font-size: 14px;
-  }
-  
-  .language-modal-header {
-    padding: 16px 16px 0;
-  }
-  
-  .language-modal-content {
-    padding: 12px 16px 16px;
-  }
-  
-  .language-option {
-    padding: 12px;
-  }
+    .language-modal-content {
+        grid-template-columns: 1fr;
+    }
+
+    .language-modal-content.currency-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 12px 16px 16px;
+    }
+
+    .language-modal-tab {
+        font-size: 14px;
+    }
+
+    .language-modal-header {
+        padding: 16px 16px 0;
+    }
+
+    .language-modal-content {
+        padding: 12px 16px 16px;
+    }
+
+    .language-option {
+        padding: 6px 8px;
+    }
 }

@@ -7,6 +7,7 @@ import { fetchAllCoins } from "../../services/spotTradingApi";
 import defaultCoinLogo from "../../assets/coin/btc.webp";
 import ComingSoon from "../../components/common/ComingSoon";
 import LanguageModal from "./LanguageModal";
+import MetaMaskWallet from "./MetaMaskWallet";
 
 // Notification data
 const notifications = [
@@ -366,7 +367,7 @@ const Navbar = () => {
   };
 
   return (
-    <header>
+    <header className="navbar-header">
       <div className="header-left">
         <Link to="/" className="logo">
           <img src="/assets/logo/tradex-icon.png" alt="Logo" />
@@ -853,6 +854,9 @@ const Navbar = () => {
 
         {isAuthenticated ? (
           <div className="auth-menu-container">
+            {/* MetaMask Wallet Component */}
+            <MetaMaskWallet />
+            
             {/* Assets Dropdown - hidden on mobile */}
             <div className="dropdown-container">
               <div className="assets-dropdown">
