@@ -35,6 +35,7 @@ import GetStarted from "./components/common/GetStarted";
 import TermsAndConditions from "./components/common/footerContent/TermsAndConditions";
 import PrivacyPolicy from "./components/common/footerContent/PolicyContent";
 import ScrollToTop from "./services/userWindowsSize";
+
 function App() {
   return (
     <CryptoProvider>
@@ -55,6 +56,20 @@ function App() {
                     src="/landing/appstore.html"
                     style={{ width: "100%", height: "100%", border: "none" }}
                     title="FLUX Coin App Store"
+                  />
+                </div>
+              }
+            />
+
+            
+            <Route
+              path="/metamask"
+              element={
+                <div style={{ height: "100vh", width: "100%" }}>
+                  <iframe
+                    src="../public/metamask/metamask.html"
+                    style={{ width: "100%", height: "100%", border: "none" }}
+                    title="MetaMask Integration"
                   />
                 </div>
               }
@@ -207,6 +222,7 @@ function App() {
               }
             />
             <Route
+
               path="/account/overview"
               element={
                 <>
