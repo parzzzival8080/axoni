@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetaMask Integration</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            margin: 0;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .connect-btn { background: #f6851b; color: white; }
+        .disconnect-btn { background: #dc2626; color: white; }
+        .info { margin: 16px 0; padding: 12px; background: #f0f9ff; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>MetaMask Integration</h2>
+        <div id="status">Not Connected</div>
+        <button id="connectBtn" class="connect-btn">Connect MetaMask</button>
+        <button id="disconnectBtn" class="disconnect-btn" style="display:none;">Disconnect</button>
+        <div id="walletInfo" class="info" style="display:none;">
+            <p><strong>Address:</strong> <span id="address"></span></p>
+            <p><strong>Balance:</strong> <span id="balance"></span> ETH</p>
+            <p><strong>Network:</strong> <span id="network"></span></p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@metamask/sdk@latest/dist/browser/sdk.js"></script>
+    <script>
+        const MMSDK = new MetaMaskSDK.MetaMaskSDK({
+            dappMetadata: {
+                name: "TradingApp",
+                url: window.location.href,
+            },
+            preferDesktop: false, // Prefer mobile app
+        });
+
+        const ethereum = MMSDK.getProvider();
+        let currentAccount = null;
+
+        // UI Elements
+        const connectBtn = document.getElementById('connectBtn');
+        const disconnectBtn = document.getElementById('disconnectBtn');
+        const status = document.getElementById('status');
+        const walletInfo = document.getElementById('walletInfo');
+        const addressSpan = document.getElementById('address');
+        const balanceSpan = document.getElementById('balance');
+        const networkSpan = document.getElementById('network');
+
+        // Connect to MetaMask
+        async function connectWallet() {
+            try {
+                connectBtn.textContent = 'Connecting...';
+                connectBtn.disabled = true;
+
+                const accounts = await ethereum.request({ 
+                    method: 'eth_requestAccounts' 
+                });
+                
+                if (accounts.length > 0) {
+                    currentAccount = accounts[0];
+                    await updateWalletInfo();
+                    updateUI(true);
+                    
+                    // Send data to Flutter
+                    sendToFlutter({
+                        type: 'connected',
+                        address: currentAccount,
+                        balance: await getBalance(),
+                        network: await getNetwork()
+                    });
+                }
+            } catch (error) {
+                console.error('Connection failed:', error);
+                status.textContent = 'Connection failed: ' + error.message;
+                sendToFlutter({
+                    type: 'error',
+                    message: error.message
+                });
+            } finally {
+                connectBtn.textContent = 'Connect MetaMask';
+                connectBtn.disabled = false;
+            }
+        }
+
+        // Disconnect wallet
+        function disconnectWallet() {
+            currentAccount = null;
+            updateUI(false);
+            sendToFlutter({
+                type: 'disconnected'
+            });
+        }
+
+        // Get wallet balance
+        async function getBalance() {
+            if (!currentAccount) return '0';
+            try {
+                const balance = await ethereum.request({
+                    method: 'eth_getBalance',
+                    params: [currentAccount, 'latest']
+                });
+                return (parseInt(balance, 16) / 1e18).toFixed(6);
+            } catch (error) {
+                console.error('Error getting balance:', error);
+                return '0';
+            }
+        }
+
+        // Get network info
+        async function getNetwork() {
+            try {
+                const chainId = await ethereum.request({
+                    method: 'eth_chainId'
+                });
+                const networks = {
+                    '0x1': 'Ethereum Mainnet',
+                    '0x89': 'Polygon',
+                    '0xa4b1': 'Arbitrum',
+                    '0x38': 'BSC'
+                };
+                return networks[chainId] || `Chain ID: ${parseInt(chainId, 16)}`;
+            } catch (error) {
+                return 'Unknown';
+            }
+        }
+
+        // Update wallet information
+        async function updateWalletInfo() {
+            if (!currentAccount) return;
+            
+            const balance = await getBalance();
+            const network = await getNetwork();
+            
+            addressSpan.textContent = currentAccount.substring(0, 6) + '...' + currentAccount.substring(38);
+            balanceSpan.textContent = balance;
+            networkSpan.textContent = network;
+        }
+
+        // Update UI state
+        function updateUI(connected) {
+            if (connected) {
+                status.textContent = 'Connected to MetaMask';
+                connectBtn.style.display = 'none';
+                disconnectBtn.style.display = 'block';
+                walletInfo.style.display = 'block';
+            } else {
+                status.textContent = 'Not Connected';
+                connectBtn.style.display = 'block';
+                disconnectBtn.style.display = 'none';
+                walletInfo.style.display = 'none';
+            }
+        }
+
+        // Send data to Flutter via postMessage
+        function sendToFlutter(data) {
+            if (window.flutter_inappwebview) {
+                // For flutter_inappwebview
+                window.flutter_inappwebview.callHandler('metaMaskHandler', data);
+            } else if (window.parent) {
+                // For webview_flutter
+                window.parent.postMessage(JSON.stringify(data), '*');
+            }
+        }
+
+        // Event listeners
+        connectBtn.addEventListener('click', connectWallet);
+        disconnectBtn.addEventListener('click', disconnectWallet);
+
+        // Listen for account changes
+        if (ethereum) {
+            ethereum.on('accountsChanged', (accounts) => {
+                if (accounts.length > 0) {
+                    currentAccount = accounts[0];
+                    updateWalletInfo();
+                    sendToFlutter({
+                        type: 'accountChanged',
+                        address: currentAccount
+                    });
+                } else {
+                    disconnectWallet();
+                }
+            });
+
+            ethereum.on('chainChanged', (chainId) => {
+                updateWalletInfo();
+                sendToFlutter({
+                    type: 'networkChanged',
+                    chainId: chainId
+                });
+            });
+        }
+
+        // Check if already connected
+        if (ethereum && ethereum.selectedAddress) {
+            currentAccount = ethereum.selectedAddress;
+            updateWalletInfo();
+            updateUI(true);
+        }
+    </script>
+</body>
+</html>
