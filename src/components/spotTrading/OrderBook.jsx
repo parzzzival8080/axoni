@@ -82,9 +82,33 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   const pendingUpdateRef = useRef(null);
 
   // Derive instId (instrument ID for OKX, e.g., BTC-USDT)
-  const instId = cryptoData?.cryptoSymbol
-    ? `${cryptoData.cryptoSymbol.toUpperCase()}-USDT`
-    : 'BTC-USDT';
+  // Use websocket_name if available, otherwise fall back to cryptoSymbol or symbol
+  const getWebSocketSymbol = () => {
+    if (cryptoData?.websocket_name) {
+      return cryptoData.websocket_name.toUpperCase();
+    }
+    if (cryptoData?.cryptoSymbol) {
+      return cryptoData.cryptoSymbol.toUpperCase();
+    }
+    if (cryptoData?.symbol) {
+      return cryptoData.symbol.toUpperCase();
+    }
+    return 'BTC';
+  };
+  
+  const instId = `${getWebSocketSymbol()}-USDT`;
+  
+  // Debug logging to track which symbol is being used
+  useEffect(() => {
+    const wsSymbol = getWebSocketSymbol();
+    console.log('[OrderBook] Symbol configuration:', {
+      websocket_name: cryptoData?.websocket_name,
+      cryptoSymbol: cryptoData?.cryptoSymbol,
+      symbol: cryptoData?.symbol,
+      selectedSymbol: wsSymbol,
+      instId: instId
+    });
+  }, [cryptoData?.websocket_name, cryptoData?.cryptoSymbol, cryptoData?.symbol, instId]);
 
   const processOrderBookData = useCallback((asks, bids) => {
     if (!asks || !bids || !Array.isArray(asks) || !Array.isArray(bids)) {
@@ -166,13 +190,13 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
       clearInterval(restFallbackRef.current);
       restFallbackRef.current = null;
     }
-    setDataSource('REST API (OKX)');
+    setDataSource('REST API (FLUX)');
     setIsLoading(true);
 
     const fetchData = async () => {
       try {
         const apiUrl = `https://www.okx.com/api/v5/market/books?instId=${instId}&sz=5`; // Use top 5 levels for fast loading
-        console.log('[OrderBook] Fetching from OKX REST API:', apiUrl);
+        console.log('[OrderBook] Fetching from FLUX REST API:', apiUrl);
         const response = await axios.get(apiUrl);
 
         if (response.data && response.data.code === "0" && response.data.data && response.data.data[0]) {
@@ -213,7 +237,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
               setIsLoading(false);
               setConnectionStatus('fallback');
               lastUpdateTimeRef.current = now; // Or use bookData.ts
-              console.log('[OrderBook] Data updated from OKX REST API');
+              console.log('[OrderBook] Data updated from FLUX REST API');
             }
           } else {
             throw new Error('Malformed OKX REST API response data structure');
@@ -250,7 +274,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
 
     setConnectionStatus('connecting');
     setIsLoading(true);
-    setDataSource('WebSocket (OKX)');
+    setDataSource('WebSocket (FLUX)');
 
     const wsUrl = 'wss://ws.okx.com:8443/ws/v5/public';
     console.log('[OrderBook] Attempting to connect to OKX WebSocket:', wsUrl);
@@ -478,7 +502,8 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   const handleTabChange = useCallback((tab) => setActiveTab(tab), []);
   const handlePrecisionChange = useCallback((precision) => setDecimalPrecision(precision), []);
 
-  const cryptoSymbol = cryptoData?.cryptoSymbol || 'BTC';
+  // Use websocket_name for display if available, otherwise fall back to other options
+  const cryptoSymbol = cryptoData?.websocket_name || cryptoData?.cryptoSymbol || cryptoData?.symbol || 'BTC';
   const usdtSymbol = 'USDT'; // Typically USDT for OKX pairs like BTC-USDT
 
   // Ensure we always display exactly 8 rows each for asks and bids

@@ -359,10 +359,13 @@ const LoginForm = () => {
           localStorage.setItem('is_verified', 'false');
         }
 
+        // Clear the rewards popup flag so it shows on next homepage visit
+        localStorage.removeItem('hasSeenRewardsPopup');
+
         // Redirect based on verification status
         const isVerified = localStorage.getItem('is_verified') === 'true';
         if (isVerified) {
-          window.location.href = '/spot-trading';
+          window.location.href = '/';
         } else {
           window.location.href = '/';
         }

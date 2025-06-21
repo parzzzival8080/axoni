@@ -199,6 +199,7 @@ const processCoinData = (rawCoins) => {
             coin_pair: coin.coin_pair || coin.id || index + 1,
             symbol: coin.symbol || 'UNKNOWN',
             name: coin.name || coin.symbol || 'Unknown Coin',
+            websocket_name: coin.websocket_name || coin.symbol || 'UNKNOWN', // Ensure websocket_name is available
             pair_name: coin.pair_name || 'USDT',
             
             // Process numeric fields
