@@ -10,6 +10,8 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
     provider,
     connectWallet,
     formatAddress,
+    fluxWalletAddress,
+    fetchFluxWalletAddress,
   } = useMetaMask();
 
   const [depositAmount, setDepositAmount] = useState('');
@@ -17,41 +19,13 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
   const [depositStatus, setDepositStatus] = useState(''); // 'success', 'error', 'pending'
   const [txHash, setTxHash] = useState('');
   const [error, setError] = useState('');
-  const [fluxWalletAddress, setFluxWalletAddress] = useState('');
 
-  // Fetch user's FLUX deposit address
+  // Fetch FLUX wallet address when modal opens
   useEffect(() => {
-    const fetchFluxWalletAddress = async () => {
-      try {
-        const uid = localStorage.getItem('uid');
-        const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
-        
-        const response = await fetch(
-          `https://apiv2.bhtokens.com/api/v1/coin-transaction?apikey=${apiKey}&uid=${uid}&transaction_type=deposit`
-        );
-        
-        if (response.ok) {
-          const data = await response.json();
-          const ethCoin = data.find(coin => coin.symbol === selectedCoin);
-          if (ethCoin && ethCoin.network && ethCoin.network.length > 0) {
-            // Find Ethereum network
-            const ethNetwork = ethCoin.network.find(net => 
-              net.name?.toLowerCase().includes('ethereum') || 
-              net.symbol?.toLowerCase().includes('eth') ||
-              net.name?.toLowerCase().includes('erc20')
-            );
-            setFluxWalletAddress(ethNetwork?.address || ethCoin.network[0].address || '');
-          }
-        }
-      } catch (err) {
-        console.error('Error fetching deposit address:', err);
-      }
-    };
-
-    if (isOpen && selectedCoin) {
+    if (isOpen && selectedCoin && !fluxWalletAddress) {
       fetchFluxWalletAddress();
     }
-  }, [isOpen, selectedCoin]);
+  }, [isOpen, selectedCoin, fluxWalletAddress, fetchFluxWalletAddress]);
 
   const handleDeposit = async () => {
     if (!isConnected) {
@@ -129,13 +103,12 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
       const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
 
       // Notify your backend about the pending deposit
-      const response = await fetch('https://apiv2.bhtokens.com/api/v1/deposit-notification', {
+      const response = await fetch(`https://apiv2.bhtokens.com/api/v1/metamask-deposit-notification?apikey=${apiKey}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          apikey: apiKey,
           uid: uid,
           txHash: txHash,
           amount: amount,
@@ -144,11 +117,14 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
           toAddress: fluxWalletAddress,
           timestamp: new Date().toISOString(),
           source: 'metamask',
+          network: 'ethereum',
         }),
       });
 
       if (!response.ok) {
-        console.warn('Failed to notify backend about deposit');
+        console.warn('Failed to notify backend about deposit:', response.status, response.statusText);
+      } else {
+        console.log('Successfully notified backend about deposit');
       }
     } catch (err) {
       console.warn('Error notifying backend:', err);
@@ -282,7 +258,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
                 <span className="text-gray-400">Deposit to:</span>
                 <div className="flex items-center gap-2">
                   <span className="text-gray-300 font-mono">
-                    {fluxWalletAddress ? formatAddress(fluxWalletAddress) : 'Loading...'}
+                    {fluxWalletAddress ? fluxWalletAddress : 'Loading...'}
                   </span>
                   {fluxWalletAddress && (
                     <button

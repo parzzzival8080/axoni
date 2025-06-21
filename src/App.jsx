@@ -298,13 +298,13 @@ function App() {
                     <ComingSoon
                       title="Preferences"
                       message="This feature is coming soon"
-
                     />
-                  </div>
-                }
-              />
+                  </main>
+                </>
+              }
+            />
 
-              <Route
+            <Route
                 path="/playstore"
                 element={
                   <div style={{ height: "100vh", width: "100%" }}>

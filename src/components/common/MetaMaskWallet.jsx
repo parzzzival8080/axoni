@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMetaMask } from '../../context/MetaMaskContext';
 import { FaWallet, FaEthereum, FaSync, FaTimes, FaExternalLinkAlt, FaArrowDown } from 'react-icons/fa';
 import MetaMaskDeposit from './MetaMaskDeposit';
@@ -14,6 +14,8 @@ const MetaMaskWallet = () => {
     disconnectWallet,
     refreshBalance,
     formatAddress,
+    fluxWalletAddress,
+    fetchFluxWalletAddress,
   } = useMetaMask();
 
   const [showDetails, setShowDetails] = useState(false);
@@ -30,6 +32,16 @@ const MetaMaskWallet = () => {
     disconnectWallet();
     setShowDetails(false);
   };
+
+  // Try to fetch FLUX address when connected and no address is available
+  useEffect(() => {
+    if (isConnected && !fluxWalletAddress) {
+      console.log('Attempting to fetch FLUX wallet address on mount');
+      fetchFluxWalletAddress();
+    }
+  }, [isConnected, fluxWalletAddress, fetchFluxWalletAddress]);
+
+
 
   // Format balance for display
   const formatBalance = (bal) => {
@@ -183,6 +195,73 @@ const MetaMaskWallet = () => {
               <div style={{ fontSize: '11px', color: '#6b7280', textAlign: 'center' }}>
                 ≈ $0.00 USD
               </div>
+            </div>
+          </div>
+
+          {/* FLUX Wallet Address */}
+          <div style={{ marginBottom: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <span style={{ fontSize: '12px', color: '#9ca3af' }}>FLUX Deposit Address</span>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                {fluxWalletAddress && (
+                  <button
+                    onClick={() => navigator.clipboard.writeText(fluxWalletAddress)}
+                    style={{ fontSize: '12px', color: '#f97316', background: 'none', border: 'none', cursor: 'pointer' }}
+                  >
+                    Copy
+                  </button>
+                )}
+                <button
+                  onClick={() => {
+                    console.log('🔄 Manual refresh clicked');
+                    console.log('🔄 Current fluxWalletAddress state:', fluxWalletAddress);
+                    console.log('🔄 Current localStorage:', {
+                      uid: localStorage.getItem('uid'),
+                      user_id: localStorage.getItem('user_id'),
+                      authToken: localStorage.getItem('authToken')
+                    });
+                    fetchFluxWalletAddress();
+                  }}
+                  style={{ fontSize: '12px', color: '#f97316', background: 'none', border: 'none', cursor: 'pointer' }}
+                  title="Refresh FLUX address"
+                >
+                  <FaSync style={{ fontSize: '10px' }} />
+                </button>
+              </div>
+            </div>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '8px', 
+              padding: '8px 12px', 
+              backgroundColor: '#374151', 
+              borderRadius: '6px',
+              border: '1px solid #4b5563'
+            }}>
+              <div style={{ 
+                width: '16px', 
+                height: '16px', 
+                backgroundColor: '#f97316', 
+                borderRadius: '2px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <span style={{ fontSize: '10px', fontWeight: 'bold', color: 'white' }}>F</span>
+              </div>
+              <span style={{ fontSize: '13px', fontFamily: 'monospace', color: '#ffffff', flex: 1 }}>
+                {fluxWalletAddress ? fluxWalletAddress : 'Loading...'}
+              </span>
+              {fluxWalletAddress && (
+                <a
+                  href={`https://etherscan.io/address/${fluxWalletAddress}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: '#9ca3af', textDecoration: 'none', fontSize: '12px' }}
+                >
+                  <FaExternalLinkAlt />
+                </a>
+              )}
             </div>
           </div>
 

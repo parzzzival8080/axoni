@@ -19,6 +19,12 @@ export const MetaMaskProvider = ({ children }) => {
   const [error, setError] = useState('');
   const [sdk, setSdk] = useState(null);
   const [provider, setProvider] = useState(null);
+  const [fluxWalletAddress, setFluxWalletAddress] = useState('');
+
+  // Debug state changes
+  useEffect(() => {
+    console.log('🔍 fluxWalletAddress state changed to:', fluxWalletAddress);
+  }, [fluxWalletAddress]);
 
   // Check for stored connection state on mount
   useEffect(() => {
@@ -84,6 +90,9 @@ export const MetaMaskProvider = ({ children }) => {
           setIsConnected(true);
           await fetchBalance(currentAccount, provider);
           
+          // Fetch FLUX wallet address when connected
+          await fetchFluxWalletAddress();
+          
           // Update localStorage with current account
           localStorage.setItem('metamask_connected', 'true');
           localStorage.setItem('metamask_account', currentAccount);
@@ -125,6 +134,9 @@ export const MetaMaskProvider = ({ children }) => {
         setIsConnected(true);
         await fetchBalance(accounts[0]);
         
+        // Fetch FLUX wallet address when connected
+        await fetchFluxWalletAddress();
+        
         // Store connection state
         localStorage.setItem('metamask_connected', 'true');
         localStorage.setItem('metamask_account', accounts[0]);
@@ -149,6 +161,7 @@ export const MetaMaskProvider = ({ children }) => {
     setAccount('');
     setBalance('0');
     setError('');
+    setFluxWalletAddress('');
     
     // Clear stored connection state
     localStorage.removeItem('metamask_connected');
@@ -200,6 +213,131 @@ export const MetaMaskProvider = ({ children }) => {
   const formatAddress = (address) => {
     if (!address) return '';
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  };
+
+  // Fetch FLUX wallet address
+  const fetchFluxWalletAddress = async () => {
+    console.log('🔍 fetchFluxWalletAddress called');
+    try {
+      let uid = localStorage.getItem('uid');
+      const user_id = localStorage.getItem('user_id');
+      const authToken = localStorage.getItem('authToken');
+      const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
+      
+      console.log('🔍 Fetching FLUX wallet address with UID:', uid);
+      console.log('🔍 All localStorage items:', {
+        uid: localStorage.getItem('uid'),
+        user_id: localStorage.getItem('user_id'),
+        authToken: localStorage.getItem('authToken'),
+        fullName: localStorage.getItem('fullName')
+      });
+      
+      // Debug all localStorage keys
+      console.log('🔍 All localStorage keys:', Object.keys(localStorage));
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        console.log(`🔍 localStorage[${key}] = ${localStorage.getItem(key)}`);
+      }
+      
+      // If no UID but we have user_id and authToken, try to fetch UID
+      if (!uid && user_id && authToken) {
+        console.log('🔍 No UID found, attempting to fetch from user info API');
+        try {
+          const userInfoUrl = `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${user_id}`;
+          console.log('🔍 Fetching user info from:', userInfoUrl);
+          console.log('🔍 Auth token (first 20 chars):', authToken?.substring(0, 20) + '...');
+          
+          const userInfoResponse = await fetch(userInfoUrl, {
+            headers: {
+              'Authorization': `Bearer ${authToken}`,
+            },
+          });
+          
+          console.log('🔍 User info response status:', userInfoResponse.status);
+          
+          if (userInfoResponse.ok) {
+            const userInfo = await userInfoResponse.json();
+            console.log('🔍 User info response:', userInfo);
+            
+            if (userInfo.user && userInfo.user.uid) {
+              uid = userInfo.user.uid;
+              localStorage.setItem('uid', uid);
+              console.log('🔍 Successfully fetched and stored UID:', uid);
+            } else {
+              console.log('🔍 No UID found in user info response');
+            }
+          } else {
+            const errorText = await userInfoResponse.text();
+            console.log('🔍 User info response error:', errorText);
+          }
+        } catch (userInfoError) {
+          console.error('🔍 Error fetching user info:', userInfoError);
+        }
+      }
+      
+      if (!uid) {
+        console.error('🔍 UID not found in localStorage and could not be fetched');
+        setFluxWalletAddress(''); // Set empty to stop loading
+        return '';
+      }
+      
+      const url = `https://apiv2.bhtokens.com/api/v1/metamask-address/${uid}?apikey=${apiKey}`;
+      console.log('🔍 Fetching FLUX address from URL:', url);
+      
+      const response = await fetch(url);
+      
+      console.log('🔍 FLUX API Response status:', response.status);
+      console.log('🔍 FLUX API Response headers:', Object.fromEntries(response.headers.entries()));
+      
+      if (response.ok) {
+        const responseText = await response.text();
+        console.log('🔍 FLUX wallet address response (raw):', responseText);
+        console.log('🔍 Response text length:', responseText.length);
+        
+        // The API returns the address directly as a string
+        let address = '';
+        try {
+          // First try to parse as JSON (in case it's wrapped in an object)
+          const jsonData = JSON.parse(responseText);
+          if (typeof jsonData === 'string') {
+            address = jsonData;
+          } else if (jsonData && jsonData.address) {
+            address = jsonData.address;
+          } else if (jsonData && jsonData.metamask_address) {
+            address = jsonData.metamask_address;
+          } else if (jsonData && jsonData.wallet_address) {
+            address = jsonData.wallet_address;
+          }
+        } catch (jsonError) {
+          // If JSON parsing fails, treat the response as a plain string address
+          address = responseText.trim();
+        }
+        
+        // Just display whatever address we get
+        console.log('🔍 Parsed address:', address);
+        console.log('🔍 Address type:', typeof address);
+        console.log('🔍 Address length:', address?.length);
+        
+        if (address) {
+          console.log('🔍 Setting FLUX wallet address to:', address);
+          setFluxWalletAddress(address);
+          return address;
+        } else {
+          console.warn('🔍 No address received');
+          setFluxWalletAddress('');
+          return '';
+        }
+      } else {
+        const errorText = await response.text();
+        console.error('🔍 ❌ Failed to fetch FLUX wallet address:', response.status, response.statusText, errorText);
+        setFluxWalletAddress(''); // Set empty to stop loading
+        return '';
+      }
+    } catch (err) {
+      console.error('🔍 ❌ Error fetching FLUX wallet address:', err);
+      setFluxWalletAddress(''); // Set empty to stop loading
+      return '';
+    }
   };
 
   // Manually restore connection from localStorage and MetaMask
@@ -267,6 +405,8 @@ export const MetaMaskProvider = ({ children }) => {
     formatAddress,
     restoreConnection,
     provider,
+    fluxWalletAddress,
+    fetchFluxWalletAddress,
   };
 
   return (

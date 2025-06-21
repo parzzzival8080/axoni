@@ -1,6 +1,6 @@
 const API_BASE_URL = 'https://apiv2.bhtokens.com/api/v1';
 const API_KEY = 'A20RqFwVktRxxRqrKBtmi6ud';
-const DEFAULT_UID = 'yE8vKBNw';
+const DEFAULT_UID = '   ';
 
 // Enhanced configuration
 const MAX_RETRIES = 3;
