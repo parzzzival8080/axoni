@@ -66,7 +66,7 @@ function App() {
                   <iframe
                     src="/landing/appstore.html"
                     style={{ width: "100%", height: "100%", border: "none" }}
-                    title="FLUX Coin App Store"
+                    title="KINE Coin App Store"
                   />
                 </div>
               }
@@ -93,7 +93,7 @@ function App() {
                   <iframe
                     src="/landing/playstore.html"
                     style={{ width: "100%", height: "100%", border: "none" }}
-                    title="FLUX Coin Play Store"
+                    title="KINE Coin Play Store"
                   />
                 </div>
               }
@@ -105,7 +105,7 @@ function App() {
                   <iframe
                     src="/landing/playstore.html"
                     style={{ width: "100%", height: "100%", border: "none" }}
-                    title="FLUX Coin Play Store"
+                    title="KINE Coin Play Store"
                   />
                 </div>
               }
@@ -119,7 +119,7 @@ function App() {
                   <iframe
                     src="/landing/appstore.html"
                     style={{ width: "100%", height: "100%", border: "none" }}
-                    title="FLUX Coin App Store"
+                    title="KINE Coin App Store"
                   />
                 </div>
               }
@@ -311,7 +311,7 @@ function App() {
                     <iframe
                       src="/landing/playstore.html"
                       style={{ width: "100%", height: "100%", border: "none" }}
-                      title="FLUX Coin Play Store"
+                      title="KINE Coin Play Store"
                     />
                   </div>
                 }
@@ -323,7 +323,7 @@ function App() {
                     <iframe
                       src="/landing/playstore.html"
                       style={{ width: "100%", height: "100%", border: "none" }}
-                      title="FLUX Coin Play Store"
+                      title="KINE Coin Play Store"
                     />
                   </div>
                 }
@@ -337,7 +337,7 @@ function App() {
                     <iframe
                       src="/landing/appstore.html"
                       style={{ width: "100%", height: "100%", border: "none" }}
-                      title="FLUX Coin App Store"
+                      title="KINE Coin App Store"
                     />
                   </div>
                 }

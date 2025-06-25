@@ -20,7 +20,7 @@ const FutureTradingWalkthrough = ({ onClose, isOpen }) => {
   const walkthroughSteps = [
     {
       id: 'welcome',
-      title: 'Welcome to Flux Futures Trading',
+      title: 'Welcome to Kine Futures Trading',
       description: 'Master advanced futures trading with leverage, short selling, and sophisticated risk management tools. Click "Start Tour" to explore our futures platform.',
       target: null,
       position: 'center',
@@ -326,7 +326,7 @@ const FutureTradingWalkthrough = ({ onClose, isOpen }) => {
                 <div className="absolute inset-0 bg-gradient-to-br from-orange-500 to-orange-400 rounded-full flex items-center justify-center shadow-lg shadow-orange-500/40">
                   <img 
                     src={logo} 
-                    alt="Flux Logo" 
+                    alt="Kine Logo" 
                     className="w-8 h-8 object-contain"
                   />
                 </div>

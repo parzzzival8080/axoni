@@ -26,7 +26,7 @@ const Services = () => {
       isActive: false
     },
     {
-      title: 'Flux Earn',
+      title: 'Kine Earn',
       description: 'One-click pledge for daily income increase.',
       isActive: false
     },

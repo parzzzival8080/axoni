@@ -45,7 +45,7 @@ export const MetaMaskProvider = ({ children }) => {
       try {
         const MMSDK = new MetaMaskSDK({
           dappMetadata: {
-            name: "FLUX Trading Platform",
+            name: "KINE Trading Platform",
             url: window.location.href,
           },
           infuraAPIKey: import.meta.env.VITE_INFURA_API_KEY, // Optional - use Vite env variable
@@ -90,7 +90,7 @@ export const MetaMaskProvider = ({ children }) => {
           setIsConnected(true);
           await fetchBalance(currentAccount, provider);
           
-          // Fetch FLUX wallet address when connected
+          // Fetch KINE wallet address when connected
           await fetchFluxWalletAddress();
           
           // Update localStorage with current account
@@ -134,7 +134,7 @@ export const MetaMaskProvider = ({ children }) => {
         setIsConnected(true);
         await fetchBalance(accounts[0]);
         
-        // Fetch FLUX wallet address when connected
+        // Fetch KINE wallet address when connected
         await fetchFluxWalletAddress();
         
         // Store connection state
@@ -215,7 +215,7 @@ export const MetaMaskProvider = ({ children }) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
-  // Fetch FLUX wallet address
+  // Fetch KINE wallet address
   const fetchFluxWalletAddress = async () => {
     console.log('🔍 fetchFluxWalletAddress called');
     try {
@@ -224,7 +224,7 @@ export const MetaMaskProvider = ({ children }) => {
       const authToken = localStorage.getItem('authToken');
       const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
       
-      console.log('🔍 Fetching FLUX wallet address with UID:', uid);
+      console.log('🔍 Fetching KINE wallet address with UID:', uid);
       console.log('🔍 All localStorage items:', {
         uid: localStorage.getItem('uid'),
         user_id: localStorage.getItem('user_id'),
@@ -282,16 +282,16 @@ export const MetaMaskProvider = ({ children }) => {
       }
       
       const url = `https://apiv2.bhtokens.com/api/v1/metamask-address/${uid}?apikey=${apiKey}`;
-      console.log('🔍 Fetching FLUX address from URL:', url);
+      console.log('🔍 Fetching KINE address from URL:', url);
       
       const response = await fetch(url);
       
-      console.log('🔍 FLUX API Response status:', response.status);
-      console.log('🔍 FLUX API Response headers:', Object.fromEntries(response.headers.entries()));
+      console.log('🔍 KINE API Response status:', response.status);
+      console.log('🔍 KINE API Response headers:', Object.fromEntries(response.headers.entries()));
       
       if (response.ok) {
         const responseText = await response.text();
-        console.log('🔍 FLUX wallet address response (raw):', responseText);
+        console.log('🔍 KINE wallet address response (raw):', responseText);
         console.log('🔍 Response text length:', responseText.length);
         
         // The API returns the address directly as a string
@@ -319,7 +319,7 @@ export const MetaMaskProvider = ({ children }) => {
         console.log('🔍 Address length:', address?.length);
         
         if (address) {
-          console.log('🔍 Setting FLUX wallet address to:', address);
+          console.log('🔍 Setting KINE wallet address to:', address);
           setFluxWalletAddress(address);
           return address;
         } else {
@@ -329,12 +329,12 @@ export const MetaMaskProvider = ({ children }) => {
         }
       } else {
         const errorText = await response.text();
-        console.error('🔍 ❌ Failed to fetch FLUX wallet address:', response.status, response.statusText, errorText);
+        console.error('🔍 ❌ Failed to fetch KINE wallet address:', response.status, response.statusText, errorText);
         setFluxWalletAddress(''); // Set empty to stop loading
         return '';
       }
     } catch (err) {
-      console.error('🔍 ❌ Error fetching FLUX wallet address:', err);
+      console.error('🔍 ❌ Error fetching KINE wallet address:', err);
       setFluxWalletAddress(''); // Set empty to stop loading
       return '';
     }

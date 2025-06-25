@@ -60,7 +60,7 @@ const TradeRewardsPopup = ({ isOpen, onClose }) => {
             Trade more,
           </h2>
           <h2 className="text-2xl font-bold text-white mb-4">
-            earn more with <span className="text-orange-400">Flux</span>
+            earn more with <span className="text-orange-400">Kine</span>
           </h2>
 
           <div className="mb-6">
@@ -69,7 +69,7 @@ const TradeRewardsPopup = ({ isOpen, onClose }) => {
                 <span className="text-white text-xs font-bold">🎯</span>
               </div>
               <p className="text-gray-300 text-sm leading-relaxed">
-                <strong className="text-orange-300">Something Big is Coming!</strong> Get ready for an exciting airdrop on the Flux Trading Platform!
+                <strong className="text-orange-300">Something Big is Coming!</strong> Get ready for an exciting airdrop on the Kine Trading Platform!
               </p>
             </div>
 
@@ -87,7 +87,7 @@ const TradeRewardsPopup = ({ isOpen, onClose }) => {
                 <span className="text-white text-xs font-bold">⚡</span>
               </div>
               <p className="text-gray-400 text-sm leading-relaxed">
-                Every transaction gets you closer to unlocking exclusive rewards in our upcoming airdrop event. Start trading now and be part of the momentum — Flux is about to change the game.
+                Every transaction gets you closer to unlocking exclusive rewards in our upcoming airdrop event. Start trading now and be part of the momentum — Kine is about to change the game.
               </p>
             </div>
           </div>

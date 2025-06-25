@@ -49,12 +49,12 @@ const Hero = () => {
           },
           mode: "cors",
           credentials: "omit",
-        },
+        }
       );
 
       if (!response.ok) {
         console.log(
-          `KYC status API returned ${response.status}, treating as not started`,
+          `KYC status API returned ${response.status}, treating as not started`
         );
         return VERIFICATION_STATUS.NOT_STARTED;
       }
@@ -111,7 +111,7 @@ const Hero = () => {
           } catch (error) {
             console.error(
               "Failed to check verification status in Hero:",
-              error,
+              error
             );
             setVerificationStatus(VERIFICATION_STATUS.NOT_STARTED);
             setIsVerified(false);
@@ -502,14 +502,14 @@ const Hero = () => {
             <img
               src={mobileApp}
               alt="Mobile Trading App"
-              className="w-full max-w-xs mx-auto md:max-w-[530px] animate-float"
+              className="w-full max-w-xs mx-auto md:max-w-[900px] animate-float"
             />
           </div>
         </div>
       </div>
 
       {/* Bottom Banner - Changes based on user status */}
-      <div className="w-full bg-gray-800/80 backdrop-blur-sm py-3 px-4 text-center mt-8 rounded-lg mx-auto max-w-7xl">
+      <div className="w-full bg-gray-800/80 backdrop-blur-sm py-3 px-4 text-center rounded-lg mx-auto max-w-7xl mt-[-3rem]">
         {renderBottomBanner()}
       </div>
     </div>

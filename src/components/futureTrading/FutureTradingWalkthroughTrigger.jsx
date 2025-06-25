@@ -50,7 +50,7 @@ const FutureTradingWalkthroughTrigger = () => {
               <div className="w-5 h-5 bg-gradient-to-br from-orange-500 to-orange-400 rounded-full flex items-center justify-center">
                 <img 
                   src={logo} 
-                  alt="Flux Logo" 
+                  alt="Kine Logo" 
                   className="w-3 h-3 object-contain"
                 />
               </div>

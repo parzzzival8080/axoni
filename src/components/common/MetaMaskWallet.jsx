@@ -33,10 +33,10 @@ const MetaMaskWallet = () => {
     setShowDetails(false);
   };
 
-  // Try to fetch FLUX address when connected and no address is available
+  // Try to fetch KINE address when connected and no address is available
   useEffect(() => {
     if (isConnected && !fluxWalletAddress) {
-      console.log('Attempting to fetch FLUX wallet address on mount');
+      console.log('Attempting to fetch KINE wallet address on mount');
       fetchFluxWalletAddress();
     }
   }, [isConnected, fluxWalletAddress, fetchFluxWalletAddress]);
@@ -198,10 +198,10 @@ const MetaMaskWallet = () => {
             </div>
           </div>
 
-          {/* FLUX Wallet Address */}
+          {/* KINE Wallet Address */}
           <div style={{ marginBottom: '16px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-              <span style={{ fontSize: '12px', color: '#9ca3af' }}>FLUX Deposit Address</span>
+              <span style={{ fontSize: '12px', color: '#9ca3af' }}>KINE Deposit Address</span>
               <div style={{ display: 'flex', gap: '8px' }}>
                 {fluxWalletAddress && (
                   <button
@@ -223,7 +223,7 @@ const MetaMaskWallet = () => {
                     fetchFluxWalletAddress();
                   }}
                   style={{ fontSize: '12px', color: '#f97316', background: 'none', border: 'none', cursor: 'pointer' }}
-                  title="Refresh FLUX address"
+                  title="Refresh KINE address"
                 >
                   <FaSync style={{ fontSize: '10px' }} />
                 </button>
@@ -313,7 +313,7 @@ const MetaMaskWallet = () => {
               onMouseLeave={(e) => e.target.style.background = '#f97316'}
             >
               <FaArrowDown />
-              Deposit to FLUX
+              Deposit to KINE
             </button>
             <div className="secondary-actions" style={{ display: 'flex', gap: '8px' }}>
               <button

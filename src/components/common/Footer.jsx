@@ -55,7 +55,7 @@ const Footer = () => {
 
   // Section titles for mobile accordion
   const sectionTitles = [
-    "More about FLUX",
+    "More about KINE",
     "Products",
     "Markets",
     "Account",
@@ -75,7 +75,7 @@ const Footer = () => {
               className="h-12 w-auto object-contain"
             />
           </div>
-          <p className="copyright">©2025 FLUX.COM | All Rights Reserved</p>
+          <p className="copyright">©2025 KINE.COM | All Rights Reserved</p>
         </div>
 
         {/* Language Selector */}
@@ -84,7 +84,7 @@ const Footer = () => {
         {isMobile ? (
           // Mobile Accordion Layout
           <div className="footer-accordion">
-            {/* More about FLUX */}
+            {/* More about KINE */}
             <div className="footer-column">
               <h3
                 className={`column-title ${activeSections.includes(0) ? "active" : ""}`}
@@ -195,7 +195,7 @@ const Footer = () => {
                   <a href="#announcements">Announcements</a>
                 </li>
                 <li>
-                  <a href="#connect-with-okx">Connect with FLUX</a>
+                  <a href="#connect-with-okx">Connect with KINE</a>
                 </li>
               </ul>
             </div>
@@ -305,9 +305,9 @@ const Footer = () => {
         ) : (
           // Desktop Layout
           <div className="footer-columns">
-            {/* More about FLUX */}
+            {/* More about KINE */}
             <div className="footer-column">
-              <h3 className="column-title">More about FLUX</h3>
+              <h3 className="column-title">More about KINE</h3>
               <ul className="column-links">
                 <li>
                   <Link to="/about-us">About us</Link>
@@ -397,7 +397,7 @@ const Footer = () => {
               <div className="footer-column trade-on-go">
                 <h3 className="column-title flex flex-col items-start text-left">
                   <span>Trade on the go with</span>
-                  <span>FLUX</span>
+                  <span>KINE</span>
                 </h3>
                 <button className="bg-[#F88726] hover:bg-[#e67615] text-white font-medium py-2 px-6 rounded-full transition-colors duration-200 mb-2">
                   Trade
@@ -409,7 +409,7 @@ const Footer = () => {
                   includeMargin={true}
                   className="qr-code-image"
                 />
-                <p className="qr-text">Scan to download FLUX app</p>
+                <p className="qr-text">Scan to download KINE app</p>
               </div>
             )}
           </div>

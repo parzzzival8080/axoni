@@ -20,7 +20,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
   const [txHash, setTxHash] = useState('');
   const [error, setError] = useState('');
 
-  // Fetch FLUX wallet address when modal opens
+  // Fetch KINE wallet address when modal opens
   useEffect(() => {
     if (isOpen && selectedCoin && !fluxWalletAddress) {
       fetchFluxWalletAddress();
@@ -44,7 +44,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
     }
 
     if (!fluxWalletAddress) {
-      setError('FLUX deposit address not found');
+      setError('KINE deposit address not found');
       return;
     }
 
@@ -242,14 +242,14 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
               </div>
             </div>
 
-            {/* FLUX Deposit Address - Compact */}
+            {/* KINE Deposit Address - Compact */}
             <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 mb-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center">
                   <div className="w-4 h-4 bg-orange-500 rounded mr-2 flex items-center justify-center">
                     <span className="text-white text-xs font-bold">F</span>
                   </div>
-                  <span className="text-white font-medium text-sm">FLUX Wallet</span>
+                  <span className="text-white font-medium text-sm">KINE Wallet</span>
                 </div>
                 <span className="text-green-400 text-xs">Ethereum</span>
               </div>

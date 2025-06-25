@@ -42,8 +42,8 @@ const News = () => {
       image: news2
     },
     {
-      title: 'FLUX Launches New Trading Tools',
-      description: 'FLUX introduces advanced analytics and automation features to help traders maximize performance and efficiency.',
+      title: 'KINE Launches New Trading Tools',
+      description: 'KINE introduces advanced analytics and automation features to help traders maximize performance and efficiency.',
       date: '25 May 2025',
       category: 'Platform',
       image: news3
@@ -53,7 +53,7 @@ const News = () => {
   return (
     <div className="bg-black py-16">
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-8 text-white">Flux News</h2>
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-8 text-white">Kine News</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {newsArticles.map((article, index) => (
             <NewsCard key={index} {...article} />
