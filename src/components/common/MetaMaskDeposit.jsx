@@ -103,7 +103,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
       const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
 
       // Notify your backend about the pending deposit
-      const response = await fetch(`https://apiv2.bhtokens.com/api/v1/metamask-deposit-notification?apikey=${apiKey}`, {
+      const response = await fetch(`https://api.kinecoin.co/api/v1/metamask-deposit-notification?apikey=${apiKey}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

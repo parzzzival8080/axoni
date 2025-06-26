@@ -15,7 +15,7 @@ const SimpleEarn = () => {
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch('https://apiv2.bhtokens.com/api/v1/coins?apikey=A20RqFwVktRxxRqrKBtmi6ud');
+        const res = await fetch('https://api.kinecoin.co/api/v1/coins?apikey=A20RqFwVktRxxRqrKBtmi6ud');
         const data = await res.json();
         
         if (Array.isArray(data)) {

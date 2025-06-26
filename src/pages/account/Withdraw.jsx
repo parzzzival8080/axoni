@@ -165,7 +165,7 @@ function withdraw() { // Using App as the main exportable component name
           return;
         }
         const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
-        const apiUrl = `https://apiv2.bhtokens.com/api/v1/coin-transaction?apikey=${apiKey}&uid=${uid}&transaction_type=withdrawal`;
+        const apiUrl = `https://api.kinecoin.co/api/v1/coin-transaction?apikey=${apiKey}&uid=${uid}&transaction_type=withdrawal`;
         const response = await axios.get(apiUrl);
         setCoins(response.data);
       } catch (error) {
@@ -365,7 +365,7 @@ function withdraw() { // Using App as the main exportable component name
       
       // Simplified API call - send everything in the request body
       const response = await axios.post(
-        'https://apiv2.bhtokens.com/api/v1/send-otp',
+        'https://api.kinecoin.co/api/v1/send-otp',
         {
           uid: uid,
           apikey: apiKey
@@ -481,7 +481,7 @@ function withdraw() { // Using App as the main exportable component name
       
       // Simplified API call for resend
       const response = await axios.post(
-        'https://apiv2.bhtokens.com/api/v1/send-otp',
+        'https://api.kinecoin.co/api/v1/send-otp',
         {
           uid: uid,
           apikey: apiKey
@@ -536,7 +536,7 @@ function withdraw() { // Using App as the main exportable component name
     const wallet_id = selectedCoinDetails?.balance?.id;
     const initial_amount = parseFloat(withdrawalAmount);
     const network_id = selectedNetwork?.id;
-    const apiUrl = `https://apiv2.bhtokens.com/api/v1/submit-withdrawal?wallet_id=${wallet_id}&initial_amount=${initial_amount}&apikey=${apiKey}&network_id=${network_id}&otp=${otpCode}`;
+    const apiUrl = `https://api.kinecoin.co/api/v1/submit-withdrawal?wallet_id=${wallet_id}&initial_amount=${initial_amount}&apikey=${apiKey}&network_id=${network_id}&otp=${otpCode}`;
 
     console.log("Submitting withdrawal with:", { wallet_id, initial_amount, network_id, apiKey, otp: otpCode });
 
@@ -584,7 +584,7 @@ function withdraw() { // Using App as the main exportable component name
           return;
         }
         const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
-        const url = `https://apiv2.bhtokens.com/api/v1/transaction-history/${uid}?apikey=${apiKey}&transaction_type=withdraw`;
+        const url = `https://api.kinecoin.co/api/v1/transaction-history/${uid}?apikey=${apiKey}&transaction_type=withdraw`;
         const response = await axios.get(url);
         setHistory(Array.isArray(response.data) ? response.data : []);
         setHasLoaded(true);

@@ -56,7 +56,7 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
         return;
       }
       
-      const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-futures/${uid}?apikey=${apiKey}`;
+      const apiUrl = `https://api.kinecoin.co/api/v1/user-futures/${uid}?apikey=${apiKey}`;
       const response = await axios.get(apiUrl);
 
       if (response.data && Array.isArray(response.data)) {
@@ -93,7 +93,7 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
       const apiKey = localStorage.getItem('apiKey') || 'A20RqFwVktRxxRqrKBtmi6ud';
       
       // Call the close position API
-      const closeUrl = `https://apiv2.bhtokens.com/api/v1/close-position?future_id=${selectedPosition.future_id}&apikey=${apiKey}`;
+      const closeUrl = `https://api.kinecoin.co/api/v1/close-position?future_id=${selectedPosition.future_id}&apikey=${apiKey}`;
       const response = await axios.put(closeUrl);
       
       console.log('Close position response:', response.data);

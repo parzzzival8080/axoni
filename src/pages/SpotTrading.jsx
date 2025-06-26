@@ -286,7 +286,7 @@ const SpotTrading = () => {
         if (!uid && userId) {
           try {
             const userInfoResponse = await axios.get(
-              `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${userId}`,
+              `https://django.kinecoin.co/api/user_account/getUserInformation/?user_id=${userId}`,
               { headers: { 'Authorization': `Bearer ${token}` } }
             );
             uid = userInfoResponse.data?.user?.uid || 'yE8vKBNw';
@@ -380,7 +380,7 @@ const SpotTrading = () => {
       if (!uid) {
         try {
           const userInfoResponse = await axios.get(
-            `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${userId}`,
+            `https://django.kinecoin.co/api/user_account/getUserInformation/?user_id=${userId}`,
             { headers: { 'Authorization': `Bearer ${token}` } }
           );
           uid = userInfoResponse.data?.user?.uid || 'yE8vKBNw';

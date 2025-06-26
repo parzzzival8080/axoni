@@ -28,7 +28,7 @@ const OverviewTab = () => {
         setLoading(true);
         const uid = localStorage.getItem("uid") || "QEaIjLlY";
         const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
-        const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
+        const apiUrl = `https://api.kinecoin.co/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
 
         const response = await axios.get(apiUrl);
 

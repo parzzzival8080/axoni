@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://apiv2.bhtokens.com/api/v1';
+const API_BASE_URL = 'https://api.kinecoin.co/api/v1';
 const API_KEY = 'A20RqFwVktRxxRqrKBtmi6ud';
 
 // Cache configuration for tradable coins

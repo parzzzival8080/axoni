@@ -19,7 +19,7 @@ export const CryptoProvider = ({ children }) => {
   useEffect(() => {
     const fetchCoins = async () => {
       try {
-        const response = await axios.get('https://apiv2.bhtokens.com/api/v1/coins', {
+        const response = await axios.get('https://api.kinecoin.co/api/v1/coins', {
           params: {
             apikey: 'A20RqFwVktRxxRqrKBtmi6ud'
           }

@@ -20,9 +20,9 @@ import axios from "axios";
 // Configuration constants
 // Update the API_CONFIG with CORS headers
 const API_CONFIG = {
-  KYC_STATUS_BASE_URL: "https://apiv2.bhtokens.com/api/v1/kyc-status",
-  KYC_UPLOAD_URL: "https://django.bhtokens.com/api/user_account/upload-kyc",
-  KYC_SEND_DATA_URL: "https://django.bhtokens.com/api/user_account/send-kyc-data",
+  KYC_STATUS_BASE_URL: "https://api.kinecoin.co/api/v1/kyc-status",
+  KYC_UPLOAD_URL: "https://django.kinecoin.co/api/user_account/upload-kyc",
+  KYC_SEND_DATA_URL: "https://django.kinecoin.co/api/user_account/send-kyc-data",
   API_KEY: "A20RqFwVktRxxRqrKBtmi6ud",
   MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
   COMPRESSION_THRESHOLD: 2 * 1024 * 1024, // 2MB

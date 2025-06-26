@@ -69,7 +69,7 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
       if (!coin_id) return;
 
       // Get user wallets to check if current coin is in favorites
-      const response = await fetch(`https://apiv2.bhtokens.com/api/v1/user-wallets/${uid}?apikey=A20RqFwVktRxxRqrKBtmi6ud`, {
+      const response = await fetch(`https://api.kinecoin.co/api/v1/user-wallets/${uid}?apikey=A20RqFwVktRxxRqrKBtmi6ud`, {
         method: 'GET'
       });
 
@@ -105,7 +105,7 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
         return;
       }
 
-            const response = await fetch('https://apiv2.bhtokens.com/api/v1/set-favorite?apikey=A20RqFwVktRxxRqrKBtmi6ud', {
+            const response = await fetch('https://api.kinecoin.co/api/v1/set-favorite?apikey=A20RqFwVktRxxRqrKBtmi6ud', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -90,7 +90,7 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await axios.post('https://django.bhtokens.com/api/user_account/password_reset/request', {
+      const response = await axios.post('https://django.kinecoin.co/api/user_account/password_reset/request', {
         email: resetEmail
       });
 
@@ -130,7 +130,7 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await axios.post('https://django.bhtokens.com/api/user_account/password_reset/verify_otp', {
+      const response = await axios.post('https://django.kinecoin.co/api/user_account/password_reset/verify_otp', {
         email: resetEmail,
         otp: otp
       });
@@ -166,7 +166,7 @@ const LoginForm = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('https://django.bhtokens.com/api/user_account/password_reset/resend-otp', {
+      const response = await axios.post('https://django.kinecoin.co/api/user_account/password_reset/resend-otp', {
         email: resetEmail
       });
 
@@ -221,7 +221,7 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await axios.post('https://django.bhtokens.com/api/user_account/password_reset/reset', {
+      const response = await axios.post('https://django.kinecoin.co/api/user_account/password_reset/reset', {
         email: resetEmail,
         otp: otp,
         new_password: newPassword,
@@ -299,7 +299,7 @@ const LoginForm = () => {
 
     try {
       // Replace with your actual API endpoint
-      const response = await axios.post('https://django.bhtokens.com/api/user_account/login', credentials);
+      const response = await axios.post('https://django.kinecoin.co/api/user_account/login', credentials);
 
       // Handle successful login based on your specific response format
       const { success, user_id, email, uid, jwt_token } = response.data;
@@ -328,7 +328,7 @@ const LoginForm = () => {
         try {
           // Fetch user profile to get the full name using the getUserInformation API
           const profileResponse = await axios.get(
-            `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${user_id || uid}`,
+            `https://django.kinecoin.co/api/user_account/getUserInformation/?user_id=${user_id || uid}`,
             {
               headers: {
                 'Authorization': `Bearer ${jwt_token}`

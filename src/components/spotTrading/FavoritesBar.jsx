@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp, faStar, faPlus, faSync, faHeart, faEllipsisH, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-const USER_WALLETS_API_URL = 'https://apiv2.bhtokens.com/api/v1/user-wallets';
+const USER_WALLETS_API_URL = 'https://api.kinecoin.co/api/v1/user-wallets';
 const API_KEY = 'A20RqFwVktRxxRqrKBtmi6ud';
 const CACHE_KEY = 'favorites_bar_data';
 const CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes in milliseconds

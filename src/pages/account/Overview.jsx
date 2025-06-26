@@ -49,7 +49,7 @@ const Overview = () => {
         try {
           console.log("Fetching profile data...");
           const profileResponse = await axios.get(
-            `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${uid}`,
+            `https://django.kinecoin.co/api/user_account/getUserInformation/?user_id=${uid}`,
           );
 
           if (
@@ -74,7 +74,7 @@ const Overview = () => {
         try {
           // API key - same as used in Assets.jsx
           const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
-          const apiUrl = `https://apiv2.bhtokens.com/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
+          const apiUrl = `https://api.kinecoin.co/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
 
           console.log("Fetching wallet data from:", apiUrl);
           const walletResponse = await axios.get(apiUrl);

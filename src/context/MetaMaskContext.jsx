@@ -243,7 +243,7 @@ export const MetaMaskProvider = ({ children }) => {
       if (!uid && user_id && authToken) {
         console.log('🔍 No UID found, attempting to fetch from user info API');
         try {
-          const userInfoUrl = `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${user_id}`;
+          const userInfoUrl = `https://django.kinecoin.co/api/user_account/getUserInformation/?user_id=${user_id}`;
           console.log('🔍 Fetching user info from:', userInfoUrl);
           console.log('🔍 Auth token (first 20 chars):', authToken?.substring(0, 20) + '...');
           
@@ -281,7 +281,7 @@ export const MetaMaskProvider = ({ children }) => {
         return '';
       }
       
-      const url = `https://apiv2.bhtokens.com/api/v1/metamask-address/${uid}?apikey=${apiKey}`;
+      const url = `https://api.kinecoin.co/api/v1/metamask-address/${uid}?apikey=${apiKey}`;
       console.log('🔍 Fetching KINE address from URL:', url);
       
       const response = await fetch(url);

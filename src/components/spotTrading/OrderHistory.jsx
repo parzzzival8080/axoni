@@ -52,7 +52,7 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
       const apiKey = localStorage.getItem('apiKey') || 'A20RqFwVktRxxRqrKBtmi6ud';
       
       // API endpoint for order history
-      const apiUrl = `https://apiv2.bhtokens.com/api/v1/order-history/${uid}?apikey=${apiKey}`;
+      const apiUrl = `https://api.kinecoin.co/api/v1/order-history/${uid}?apikey=${apiKey}`;
       
       const response = await axios.get(apiUrl);
       

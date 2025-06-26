@@ -139,7 +139,7 @@ function App() { // Renamed to App for standard React export
           setIsLoading(false);
           return;
         }
-        const apiUrl = `https://apiv2.bhtokens.com/api/v1/coin-transaction?apikey=${API_KEY}&uid=${uid}&transaction_type=deposit`;
+        const apiUrl = `https://api.kinecoin.co/api/v1/coin-transaction?apikey=${API_KEY}&uid=${uid}&transaction_type=deposit`;
         const response = await fetch(apiUrl);
         if (!response.ok) {
           if (response.status === 400) {

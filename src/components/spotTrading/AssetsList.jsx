@@ -17,7 +17,7 @@ export default function AssetsList() {
       try {
         const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
         const uid = localStorage.getItem('uid');
-        const url = `https://apiv2.bhtokens.com/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
+        const url = `https://api.kinecoin.co/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
         const response = await fetch(url);
         const data = await response.json();
         setAssets(Array.isArray(data["0"]) ? data["0"] : []);

@@ -134,7 +134,7 @@ const Navbar = () => {
         } else if (userId) {
           try {
             const response = await axios.get(
-              `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${userId}`,
+              `https://django.kinecoin.co/api/user_account/getUserInformation/?user_id=${userId}`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,

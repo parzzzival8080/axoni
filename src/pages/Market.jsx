@@ -80,7 +80,7 @@ const Market = () => {
 
       try {
         const response = await fetch(
-          "https://apiv2.bhtokens.com/api/v1/coins?apikey=A20RqFwVktRxxRqrKBtmi6ud",
+          "https://api.kinecoin.co/api/v1/coins?apikey=A20RqFwVktRxxRqrKBtmi6ud",
         );
 
         if (!response.ok) {
