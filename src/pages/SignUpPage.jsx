@@ -991,7 +991,7 @@ const SignUpPage = () => {
                       className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-medium transition-colors duration-200
                                      ${
                                        currentStep >= step
-                                         ? "bg-[#FE7400] text-white border-[#FE7400]"
+                                         ? "bg-[#F88726] text-white border-[#F88726]"
                                          : "bg-white text-gray-400 border border-gray-300"
                                      }`}
                     >
@@ -1044,7 +1044,7 @@ const SignUpPage = () => {
                   <input
                     type="text"
                     id="country"
-                    className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F88726] focus:border-transparent transition-all duration-200"
                     placeholder={
                       loadingCountries
                         ? "Loading countries..."
@@ -1141,21 +1141,21 @@ const SignUpPage = () => {
                   By creating an account, I agree to TradeX{" "}
                   <a
                     href="#"
-                    className="text-[#FE7400] hover:underline font-medium"
+                    className="text-[#F88726] hover:underline font-medium"
                   >
                     Terms of Service
                   </a>
                   ,{" "}
                   <a
                     href="#"
-                    className="text-[#FE7400] hover:underline font-medium"
+                    className="text-[#F88726] hover:underline font-medium"
                   >
                     Risk and Compliance Disclosure
                   </a>
                   , and{" "}
                   <a
                     href="#"
-                    className="text-[#FE7400] hover:underline font-medium"
+                    className="text-[#F88726] hover:underline font-medium"
                   >
                     Privacy Notice
                   </a>
@@ -1164,7 +1164,7 @@ const SignUpPage = () => {
               </div>
 
               <button
-                className="w-full py-3.5 px-6 rounded-full bg-[#FE7400] text-white font-medium hover:bg-[#e56700] transition-colors duration-200 mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3.5 px-6 rounded-full bg-[#F88726] text-white font-medium hover:bg-[#e56700] transition-colors duration-200 mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={() => goToNextStep(1)}
                 disabled={
                   loading ||
@@ -1187,7 +1187,7 @@ const SignUpPage = () => {
                 Already have an account?{" "}
                 <Link
                   to="/login"
-                  className="text-[#FE7400] font-medium hover:underline"
+                  className="text-[#F88726] font-medium hover:underline"
                 >
                   Log in
                 </Link>
@@ -1208,7 +1208,7 @@ const SignUpPage = () => {
                 </label>
                 <input
                   type="email"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F88726] focus:border-transparent transition-all duration-200"
                   id="email"
                   name="email"
                   placeholder="Enter your email"
@@ -1227,7 +1227,7 @@ const SignUpPage = () => {
                 </label>
                 <input
                   type="password"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F88726] focus:border-transparent transition-all duration-200"
                   id="password"
                   name="password"
                   placeholder="Create a password (min 8 characters)"
@@ -1246,7 +1246,7 @@ const SignUpPage = () => {
                 </label>
                 <input
                   type="password"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F88726] focus:border-transparent transition-all duration-200"
                   id="confirmPassword"
                   name="confirmPassword"
                   placeholder="Confirm your password"
@@ -1257,7 +1257,7 @@ const SignUpPage = () => {
                 />
               </div>
               <button
-                className="w-full py-3.5 px-6 rounded-full bg-[#FE7400] text-white font-medium hover:bg-[#e56700] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3.5 px-6 rounded-full bg-[#F88726] text-white font-medium hover:bg-[#e56700] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={() => goToNextStep(2)}
                 disabled={
                   loading ||
@@ -1289,7 +1289,7 @@ const SignUpPage = () => {
                     key={index}
                     type="text"
                     maxLength="1"
-                    className="w-12 h-14 text-center text-lg border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent transition-all duration-200"
+                    className="w-12 h-14 text-center text-lg border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F88726] focus:border-transparent transition-all duration-200"
                     value={digit}
                     onChange={(e) => handleOtpChange(index, e.target.value)}
                     onKeyDown={(e) => handleOtpKeyDown(index, e)}
@@ -1307,7 +1307,7 @@ const SignUpPage = () => {
                 <button
                   className={`text-sm font-medium transition-colors ${
                     canResend
-                      ? "text-[#FE7400] hover:underline cursor-pointer"
+                      ? "text-[#F88726] hover:underline cursor-pointer"
                       : "text-gray-400 cursor-not-allowed"
                   }`}
                   onClick={handleResendOtp}
@@ -1324,7 +1324,7 @@ const SignUpPage = () => {
                 </button>
               </div>
               <button
-                className="w-full py-3.5 px-6 rounded-full bg-[#FE7400] text-white font-medium hover:bg-[#e56700] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3.5 px-6 rounded-full bg-[#F88726] text-white font-medium hover:bg-[#e56700] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={() => goToNextStep(3)}
                 disabled={loading || formData.otp.join("").length !== 6}
               >
@@ -1358,7 +1358,7 @@ const SignUpPage = () => {
                     e.target.src = defaultProfileImage;
                   }}
                 />
-                <div className="absolute bottom-0 right-0 w-8 h-8 bg-[#FE7400] rounded-full flex items-center justify-center transform translate-x-1 -translate-y-1 group-hover:scale-110 transition-transform duration-200">
+                <div className="absolute bottom-0 right-0 w-8 h-8 bg-[#F88726] rounded-full flex items-center justify-center transform translate-x-1 -translate-y-1 group-hover:scale-110 transition-transform duration-200">
                   <i className="fas fa-camera text-white text-sm"></i>
                 </div>
                 <input
@@ -1383,7 +1383,7 @@ const SignUpPage = () => {
                 </label>
                 <input
                   type="text"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F88726] focus:border-transparent transition-all duration-200"
                   id="fullName"
                   name="fullName"
                   placeholder="Enter your full name"
@@ -1403,7 +1403,7 @@ const SignUpPage = () => {
                 </label>
                 <div className="flex">
                   <select
-                    className="w-24 px-3 py-3 border border-r-0 border-gray-300 rounded-l-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent text-sm"
+                    className="w-24 px-3 py-3 border border-r-0 border-gray-300 rounded-l-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F88726] focus:border-transparent text-sm"
                     defaultValue="+1"
                   >
                     <option value="+1">+1 (US)</option>
@@ -1417,7 +1417,7 @@ const SignUpPage = () => {
                   </select>
                   <input
                     type="tel"
-                    className="flex-1 px-4 py-3 border border-l-0 border-gray-300 rounded-r-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent transition-all duration-200"
+                    className="flex-1 px-4 py-3 border border-l-0 border-gray-300 rounded-r-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F88726] focus:border-transparent transition-all duration-200"
                     id="phone"
                     name="phone"
                     placeholder="Enter your phone number"
@@ -1432,7 +1432,7 @@ const SignUpPage = () => {
               </div>
 
               <button
-                className="w-full py-3.5 px-6 rounded-full bg-[#FE7400] text-white font-medium hover:bg-[#e56700] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3.5 px-6 rounded-full bg-[#F88726] text-white font-medium hover:bg-[#e56700] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={handleSubmit}
                 disabled={loading || !formData.fullName || !formData.phone}
               >

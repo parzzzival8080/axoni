@@ -13,7 +13,7 @@ const CryptoPriceSection = ({ cryptoData, isLoading }) => {
   // Loading indicator component
   const LoadingIndicator = () => (
     <div className="flex flex-col items-center justify-center py-20">
-      <div className="w-10 h-10 border-4 border-gray-300 border-t-[#FE7400] rounded-full animate-spin mb-4"></div>
+      <div className="w-10 h-10 border-4 border-gray-300 border-t-[#F88726] rounded-full animate-spin mb-4"></div>
       <p className="text-gray-400">Loading cryptocurrency data...</p>
     </div>
   );
@@ -87,7 +87,7 @@ const CryptoPriceSection = ({ cryptoData, isLoading }) => {
                     <td className="py-4 px-4 text-white">${crypto.marketCap.toFixed(3)}B</td>
                     <td className="py-4 px-4">
                       <div className="flex justify-center space-x-2">
-                        <button className="py-1 px-3 bg-[#FE7400] hover:bg-[#FF8C24] text-white text-sm rounded transition-colors font-medium">
+                        <button className="py-1 px-3 bg-[#F88726] hover:bg-[#FF8C24] text-white text-sm rounded transition-colors font-medium">
                           Trade
                         </button>
                         <button className="py-1 px-3 bg-gray-700 hover:bg-gray-600 text-white text-sm rounded transition-colors font-medium">
@@ -113,28 +113,28 @@ const CryptoPriceSection = ({ cryptoData, isLoading }) => {
           </button>
           <button 
             className={`w-8 h-8 flex items-center justify-center rounded text-sm transition-colors
-              ${currentPage === 1 ? 'bg-[#FE7400] text-white' : 'border border-gray-700 text-gray-400 hover:bg-gray-800'}`}
+              ${currentPage === 1 ? 'bg-[#F88726] text-white' : 'border border-gray-700 text-gray-400 hover:bg-gray-800'}`}
             onClick={() => goToPage(1)}
           >
             1
           </button>
           <button 
             className={`w-8 h-8 flex items-center justify-center rounded text-sm transition-colors
-              ${currentPage === 2 ? 'bg-[#FE7400] text-white' : 'border border-gray-700 text-gray-400 hover:bg-gray-800'}`}
+              ${currentPage === 2 ? 'bg-[#F88726] text-white' : 'border border-gray-700 text-gray-400 hover:bg-gray-800'}`}
             onClick={() => goToPage(2)}
           >
             2
           </button>
           <button 
             className={`w-8 h-8 flex items-center justify-center rounded text-sm transition-colors
-              ${currentPage === 3 ? 'bg-[#FE7400] text-white' : 'border border-gray-700 text-gray-400 hover:bg-gray-800'}`}
+              ${currentPage === 3 ? 'bg-[#F88726] text-white' : 'border border-gray-700 text-gray-400 hover:bg-gray-800'}`}
             onClick={() => goToPage(3)}
           >
             3
           </button>
           <button 
             className={`w-8 h-8 flex items-center justify-center rounded text-sm transition-colors
-              ${currentPage === 4 ? 'bg-[#FE7400] text-white' : 'border border-gray-700 text-gray-400 hover:bg-gray-800'}`}
+              ${currentPage === 4 ? 'bg-[#F88726] text-white' : 'border border-gray-700 text-gray-400 hover:bg-gray-800'}`}
             onClick={() => goToPage(4)}
           >
             4
@@ -142,7 +142,7 @@ const CryptoPriceSection = ({ cryptoData, isLoading }) => {
           <span className="w-8 h-8 flex items-center justify-center text-gray-400">...</span>
           <button 
             className={`w-8 h-8 flex items-center justify-center rounded text-sm transition-colors
-              ${currentPage === 12 ? 'bg-[#FE7400] text-white' : 'border border-gray-700 text-gray-400 hover:bg-gray-800'}`}
+              ${currentPage === 12 ? 'bg-[#F88726] text-white' : 'border border-gray-700 text-gray-400 hover:bg-gray-800'}`}
             onClick={() => goToPage(12)}
           >
             12

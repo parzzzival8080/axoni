@@ -36,13 +36,13 @@ const NavigationTabs = ({ activeTab, onTabClick }) => {
             <span className={`${activeTab === tab.id ? 'text-white font-medium' : 'text-gray-400 hover:text-gray-300'}`}>
               {tab.label}
               {tab.id === 'premarket' && (
-                <span className="ml-1 px-1.5 py-0.5 text-xs font-medium bg-[#FE7400] text-white rounded-sm">
+                <span className="ml-1 px-1.5 py-0.5 text-xs font-medium bg-[#F88726] text-white rounded-sm">
                   New
                 </span>
               )}
             </span>
             {activeTab === tab.id && (
-              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[#FE7400] rounded-t-full"></div>
+              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[#F88726] rounded-t-full"></div>
             )}
           </div>
         ))}
@@ -56,7 +56,7 @@ const NavigationTabs = ({ activeTab, onTabClick }) => {
           >
             <input
               type="text"
-              className="bg-gray-800 text-white border border-gray-700 rounded-lg py-1.5 px-3 pr-8 w-60 focus:outline-none focus:ring-1 focus:ring-[#FE7400] placeholder-gray-500"
+              className="bg-gray-800 text-white border border-gray-700 rounded-lg py-1.5 px-3 pr-8 w-60 focus:outline-none focus:ring-1 focus:ring-[#F88726] placeholder-gray-500"
               placeholder="Search..."
               value={searchQuery}
               onChange={handleSearchChange}

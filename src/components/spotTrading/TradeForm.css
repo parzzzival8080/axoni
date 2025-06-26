@@ -270,7 +270,7 @@
 
 .spot-trading-container .trade-form .trade-button.buy,
 .spot-trading-container .trade-form .buy-btn {
-  background: linear-gradient(135deg, #F88726, #FE7400) !important;
+  background: linear-gradient(135deg, #F88726, #F88726) !important;
   color: white !important;
 }
 

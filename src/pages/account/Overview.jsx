@@ -228,7 +228,7 @@ const Overview = () => {
         <ProfileNavBar currentPath="/profile/overview" />
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="flex justify-center items-center py-16">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FE7400]"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#F88726]"></div>
             <span className="ml-3 text-gray-600 dark:text-gray-300">
               Loading overview...
             </span>
@@ -267,7 +267,7 @@ const Overview = () => {
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="px-4 py-2 bg-[#FE7400] text-white rounded-md hover:bg-orange-600 transition-colors"
+              className="px-4 py-2 bg-[#F88726] text-white rounded-md hover:bg-orange-600 transition-colors"
             >
               Try Again
             </button>
@@ -291,7 +291,7 @@ const Overview = () => {
           {!isVerified && (
             <Link
               to="/account/verify"
-              className="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 bg-[#FE7400] text-white rounded-lg hover:bg-orange-600 transition-colors font-medium"
+              className="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 bg-[#F88726] text-white rounded-lg hover:bg-orange-600 transition-colors font-medium"
             >
               <FiShield className="mr-2" />
               Verify Account
@@ -331,7 +331,7 @@ const Overview = () => {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                   <div className="flex items-center mb-2">
-                    <div className="w-3 h-3 bg-[#FE7400] rounded-full mr-2"></div>
+                    <div className="w-3 h-3 bg-[#F88726] rounded-full mr-2"></div>
                     <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
                       Spot Wallet
                     </span>
@@ -381,7 +381,7 @@ const Overview = () => {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <Link
                   to="/deposit"
-                  className="flex flex-col items-center p-4 bg-[#FE7400] text-white rounded-lg hover:bg-orange-600 transition-colors"
+                  className="flex flex-col items-center p-4 bg-[#F88726] text-white rounded-lg hover:bg-orange-600 transition-colors"
                 >
                   <svg
                     className="w-6 h-6 mb-2"
@@ -469,7 +469,7 @@ const Overview = () => {
                 </h2>
                 <Link
                   to="/my-assets"
-                  className="text-[#FE7400] hover:text-orange-600 text-sm font-medium flex items-center"
+                  className="text-[#F88726] hover:text-orange-600 text-sm font-medium flex items-center"
                 >
                   View All <FiArrowRight className="ml-1" />
                 </Link>
