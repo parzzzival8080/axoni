@@ -25,12 +25,28 @@ jobs:
           send "${{ secrets.SSH_PASSWORD }}\r"
           expect "# "
 
-          send "cd .. && cd /var/www/html && git config --system --add safe.directory /var/www/html && git stash && git pull https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_TOKEN }}@github.com//parzzzival8080/kinecoin-web.git main \r"
+          send "cd /var/www/html\r"
           expect "# "
-          send "npm run build \r "
+
+          send "git config --system --add safe.directory /var/www/html\r"
           expect "# "
-          send "echo '<IfModule mod_negotiation.c>\n  Options -MultiViews\n</IfModule>\n<IfModule mod_rewrite.c>\n  RewriteEngine On\n  RewriteBase /\n  RewriteRule ^index\\.html$ - \\[L\\]\n  RewriteCond %{REQUEST_FILENAME} !-f\n  RewriteCond %{REQUEST_FILENAME} !-d\n  RewriteRule . /index.html \\[L\\]\n</IfModule>' > dist/.htaccess \r"
+
+          send "git stash\r"
           expect "# "
+
+          send "git pull https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_TOKEN }}@github.com/parzzzival8080/etf.git altcoin\r"
+          expect "# "
+
+          send "npm install\r"
+          expect "# "
+
+          send "npm run build && echo BUILD_DONE\r"
+          expect "BUILD_DONE"
+
+          send "echo '<IfModule mod_negotiation.c>\n  Options -MultiViews\n</IfModule>\n<IfModule mod_rewrite.c>\n  RewriteEngine On\n  RewriteBase /\n  RewriteRule ^index\\.html$ - [L]\n  RewriteCond %{REQUEST_FILENAME} !-f\n  RewriteCond %{REQUEST_FILENAME} !-d\n  RewriteRule . /index.html [L]\n</IfModule>' > dist/.htaccess\r"
+          expect "# "
+
           send "exit\r"
           expect eof
           EOF
+
