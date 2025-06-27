@@ -43,7 +43,7 @@ jobs:
           send "npm run build && echo BUILD_DONE\r"
           expect "BUILD_DONE"
 
-          send "echo '<IfModule mod_negotiation.c>\n  Options -MultiViews\n</IfModule>\n<IfModule mod_rewrite.c>\n  RewriteEngine On\n  RewriteBase /\n  RewriteRule ^index\\.html$ - [L]\n  RewriteCond %{REQUEST_FILENAME} !-f\n  RewriteCond %{REQUEST_FILENAME} !-d\n  RewriteRule . /index.html [L]\n</IfModule>' > dist/.htaccess\r"
+          send "echo '<IfModule mod_negotiation.c>\n  Options -MultiViews\n</IfModule>\n<IfModule mod_rewrite.c>\n  RewriteEngine On\n  RewriteBase /\n  RewriteRule ^index\\.html$ - \\[L\\]\n  RewriteCond %{REQUEST_FILENAME} !-f\n  RewriteCond %{REQUEST_FILENAME} !-d\n  RewriteRule . /index.html \\[L\\]\n</IfModule>' > dist/.htaccess\r"
           expect "# "
 
           send "exit\r"
