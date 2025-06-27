@@ -27,7 +27,7 @@ jobs:
           send "cd /var/www/html && git config --system --add safe.directory /var/www/html && git stash && git pull https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_TOKEN }}@github.com//parzzzival8080/kinecoin-web.git ${{ env.GIT_BRANCH }} && npm install \r"
           expect "# "
           send "npm run build \r"
-          expect -re "✓ built in \\[0-9\\]+ms"          
+          expect -re "✓ built in \\[0-9\\]+ms"
           send "cat > dist/.htaccess <<'EOF'\r"
           send "<IfModule mod_negotiation.c>\r"
           send "  Options -MultiViews\r"
