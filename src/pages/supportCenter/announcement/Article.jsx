@@ -7,7 +7,7 @@ import { FaSearch, FaTwitter, FaFacebook, FaLinkedin, FaTelegram, FaLink } from 
 export const notifications = [
   {
     id: 1,
-    title: "TradeX to list perpetual futures for SIGN crypto",
+    title: "KINE to list perpetual futures for SIGN crypto",
     time: "04/28/2025, 14:00:00",
     path: "/help/tradex-to-list-perpetual-futures-for-sign-crypto",
     publishDate: "Apr 28, 2025",
@@ -16,7 +16,7 @@ export const notifications = [
   },
   {
     id: 2,
-    title: "TradeX to delist ZKJ margin trading pair and perpetual future",
+    title: "KINE to delist ZKJ margin trading pair and perpetual future",
     time: "04/28/2025, 11:10:00",
     path: "/help/tradex-to-delist-zkj-margin-trading-pair-and-perpetual-future",
     publishDate: "Apr 28, 2025",
@@ -24,7 +24,7 @@ export const notifications = [
   },
   {
     id: 3,
-    title: "TradeX to enable margin trading and Simple Earn for LAYER crypto",
+    title: "KINE to enable margin trading and Simple Earn for LAYER crypto",
     time: "04/25/2025, 19:20:00",
     path: "/help/tradex-to-enable-margin-trading-and-simple-earn-for-layer-crypto",
     publishDate: "Apr 25, 2025",
@@ -32,7 +32,7 @@ export const notifications = [
   },
   {
     id: 4,
-    title: "TradeX to list LAYER (Solayer) for spot trading",
+    title: "KINE to list LAYER (Solayer) for spot trading",
     time: "04/25/2025, 14:00:00",
     path: "/help/tradex-to-list-layer-solayer-for-spot-trading",
     publishDate: "Apr 25, 2025",
@@ -40,7 +40,7 @@ export const notifications = [
   },
   {
     id: 5,
-    title: "TradeX to list perpetual futures for INIT crypto",
+    title: "KINE to list perpetual futures for INIT crypto",
     time: "04/24/2025, 14:00:00",
     path: "/help/tradex-to-list-perpetual-futures-for-init-crypto",
     publishDate: "Apr 24, 2025",
@@ -212,7 +212,7 @@ const Article = () => {
               </p>
 
               <p>
-                USDT-margined perpetual futures trading: <a href="#" className="article-link green-link">TradeX Perpetual Futures Trading User Agreement</a>
+                USDT-margined perpetual futures trading: <a href="#" className="article-link green-link">KINE Perpetual Futures Trading User Agreement</a>
               </p>
             </div>
           </>
@@ -232,7 +232,7 @@ const Article = () => {
         {/* Add similar conditions for other articles */}
         
         <div className="signature">
-          <p>TradeX team</p>
+          <p>KINE team</p>
           <p>{article.publishDate}</p>
         </div>
       </div>
@@ -240,12 +240,12 @@ const Article = () => {
       {/* Footer links */}
       <div className="article-footer">
         <div className="footer-links">
-          <a href="#" className="footer-link green-link">Download TradeX app for iOS, Android, macOS, and Windows &gt;&gt;&gt;</a>
+          <a href="#" className="footer-link green-link">Download KINE app for iOS, Android, macOS, and Windows &gt;&gt;&gt;</a>
           <a href="#" className="footer-link green-link">Follow us on X (formerly Twitter) &gt;&gt;&gt;</a>
           <a href="#" className="footer-link green-link">Join us on Telegram &gt;&gt;&gt;</a>
           <a href="#" className="footer-link green-link">Join us on Discord &gt;&gt;&gt;</a>
           <a href="#" className="footer-link green-link">Subscribe to our channel on YouTube &gt;&gt;&gt;</a>
-          <a href="#" className="footer-link green-link">Join other TradeX global communities &gt;&gt;&gt;</a>
+          <a href="#" className="footer-link green-link">Join other KINE global communities &gt;&gt;&gt;</a>
         </div>
       </div>
     </div>

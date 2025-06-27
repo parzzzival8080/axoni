@@ -940,7 +940,7 @@ const SignUpPage = () => {
 
       // Show success message
       setTimeout(() => {
-        alert("Registration successful! Welcome to TradeX.");
+        alert("Registration successful! Welcome to KINE.");
 
         const isVerified = localStorage.getItem("is_verified") === "true";
         navigate(isVerified ? "/spot-trading" : "/", { replace: true });
@@ -1138,7 +1138,7 @@ const SignUpPage = () => {
                   htmlFor="terms"
                   className="text-sm text-gray-600 leading-relaxed"
                 >
-                  By creating an account, I agree to TradeX{" "}
+                  By creating an account, I agree to KINE{" "}
                   <a
                     href="#"
                     className="text-[#F88726] hover:underline font-medium"

@@ -24,7 +24,7 @@ const Announcement = () => {
       date: 'Apr 21, 2025'
     },
     {
-      title: 'TradeX to adjust options trading fees',
+      title: 'KINE to adjust options trading fees',
       date: 'Jan 28, 2025'
     },
     {
@@ -32,23 +32,23 @@ const Announcement = () => {
       date: 'Jan 21, 2025'
     },
     {
-      title: 'TradeX will further adjust portfolio margin parameters',
+      title: 'KINE will further adjust portfolio margin parameters',
       date: 'Jan 2, 2025'
     },
     {
-      title: 'TradeX to adjust funding rate interval for MOVEUSD perpetual futures',
+      title: 'KINE to adjust funding rate interval for MOVEUSD perpetual futures',
       date: 'May 2, 2025'
     },
     {
-      title: 'Important notice: Changes to THB trading on TradeX P2P',
+      title: 'Important notice: Changes to THB trading on KINE P2P',
       date: 'Apr 30, 2025'
     },
     {
-      title: 'TradeX to adjust discount rate tiers for multiple tokens',
+      title: 'KINE to adjust discount rate tiers for multiple tokens',
       date: 'Apr 29, 2025'
     },
     {
-      title: 'TradeX to adjust tick size of spot, margin, and perpetual futures',
+      title: 'KINE to adjust tick size of spot, margin, and perpetual futures',
       date: 'Apr 29, 2025'
     },
     {
@@ -56,27 +56,27 @@ const Announcement = () => {
       date: 'Apr 29, 2025'
     },
     {
-      title: 'TradeX to list perpetual futures for SIGN crypto',
+      title: 'KINE to list perpetual futures for SIGN crypto',
       date: 'Apr 28, 2025'
     },
     {
-      title: 'TradeX to delist ZKJ margin trading pair and perpetual future',
+      title: 'KINE to delist ZKJ margin trading pair and perpetual future',
       date: 'Apr 28, 2025'
     },
     {
-      title: 'TradeX to enable margin trading and Simple Earn for LAYER crypto',
+      title: 'KINE to enable margin trading and Simple Earn for LAYER crypto',
       date: 'Apr 25, 2025'
     },
     {
-      title: 'TradeX to list LAYER (Solayer) for spot trading',
+      title: 'KINE to list LAYER (Solayer) for spot trading',
       date: 'Apr 25, 2025'
     },
     {
-      title: 'TradeX to adjust components for several indexes',
+      title: 'KINE to adjust components for several indexes',
       date: 'Apr 24, 2025'
     },
     {
-      title: 'TradeX to list perpetual futures for INIT crypto',
+      title: 'KINE to list perpetual futures for INIT crypto',
       date: 'Apr 24, 2025'
     }
   ];
