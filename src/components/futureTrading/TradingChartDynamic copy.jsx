@@ -56,7 +56,6 @@ const TradingChartDynamic = ({ selectedSymbol = "BTC" }) => {
       clientId: "tradingview.com",
       userId: "public_user_id",
       fullscreen: false,
-      autosize: true,
       studiesOverrides: {
         "volume.volume.color.0": "rgba(239, 83, 80, 0.5)",
         "volume.volume.color.1": "rgba(38, 166, 154, 0.5)",

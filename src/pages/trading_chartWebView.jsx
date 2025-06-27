@@ -232,7 +232,6 @@ const TradingChartWebView = () => {
       clientId: "tradingview.com",
       userId: "public_user_id",
       fullscreen: false,
-      autosize: true,
       studiesOverrides: {
         "volume.volume.color.0": "rgba(239, 83, 80, 0.5)",
         "volume.volume.color.1": "rgba(38, 166, 154, 0.5)",
@@ -333,7 +332,6 @@ const TradingChartWebView = () => {
         theme: "dark",
         custom_css_url: "/chart_styles.css",
         loading_screen: { backgroundColor: "#000000" },
-        toolbar_bg: "#000000",
         overrides: {
           "mainSeriesProperties.candleStyle.upColor": "#26a69a",
           "mainSeriesProperties.candleStyle.downColor": "#ef5350",

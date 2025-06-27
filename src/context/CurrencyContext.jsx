@@ -77,7 +77,6 @@ const CURRENCY_SYMBOLS = {
   ZAR: "R", // South Africa - most developed African market
   KES: "KSh", // Kenya - mobile money innovation (M-Pesa)
   GHS: "₵", // Ghana - West African fintech
-  EGP: "£", // Egypt - MENA e-commerce leader
 
   // Cryptocurrency (increasingly used in internet commerce)
   BTC: "₿", // Bitcoin - most popular cryptocurrency
