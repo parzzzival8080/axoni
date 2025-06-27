@@ -34,7 +34,7 @@ jobs:
           send "git stash\r"
           expect "# "
 
-          send "git pull https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_TOKEN }}@github.com/parzzzival8080/etf.git altcoin\r"
+          send "git pull https://${{ secrets.GIT_USERNAME }}:${{ secrets.GIT_TOKEN }}@github.com/parzzzival8080/etf.git main\r"
           expect "# "
 
           send "npm install\r"
