@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import "./DownloadPage.css";
 import DownloadImage1 from "../assets/assets/asset1.png";
 import DownloadImage2 from "../assets/assets/asset2.png";
-import DownloadImage3 from "../assets/assets/Asset 3.png";
+import DownloadImage3 from "../assets/assets/laptop.png";
 import logo from "../assets/logo/logo.png";
 import ComingSoon from "../components/common/ComingSoon";
 
