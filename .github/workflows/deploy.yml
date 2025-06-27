@@ -28,8 +28,25 @@ jobs:
           expect "# "
           send "npm run build \r"
           expect -re "✓ built in \\[0-9\\]+ms"          
-          send "echo '<IfModule mod_negotiation.c>\n  Options -MultiViews\n</IfModule>\n<IfModule mod_rewrite.c>\n  RewriteEngine On\n  RewriteBase /\n  RewriteRule ^index\\.html$ - \\[L\\]\n  RewriteCond %{REQUEST_FILENAME} !-f\n  RewriteCond %{REQUEST_FILENAME} !-d\n  RewriteRule . /index.html \\[L\\]\n</IfModule>' > dist/.htaccess \r"
+          send "cat > dist/.htaccess <<'EOF'\r"
+          send "<IfModule mod_negotiation.c>\r"
+          send "  Options -MultiViews\r"
+          send "</IfModule>\r"
+          send "<IfModule mod_rewrite.c>\r"
+          send "  RewriteEngine On\r"
+          send "  RewriteBase /\r"
+          send "  RewriteRule ^index.html$ - \\[L\\]\r"
+          send "  RewriteCond %{REQUEST_FILENAME} !-f\r"
+          send "  RewriteCond %{REQUEST_FILENAME} !-d\r"
+          send "  RewriteRule . /index.html \\[L\\]\r"
+          send "</IfModule>\r"
+          send "EOF\r"
+
           expect "# "
-          send "exit\r"
-          expect eof
-          EOF
+
+          # Optional: verify file
+          send "ls -l dist/.htaccess\r"
+          expect "# "          expect "# "
+                    send "exit\r"
+                    expect eof
+                    EOF
