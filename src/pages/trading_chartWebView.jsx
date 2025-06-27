@@ -409,7 +409,6 @@ const TradingChartWebView = () => {
         },
         // Additional mobile optimizations
         debug: false,
-        autosize: true,
         width: isMobile() ? window.innerWidth : undefined,
         height: 320,
       };
