@@ -1,8 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useMetaMask } from '../../context/MetaMaskContext';
-import { FaWallet, FaArrowRight, FaCheck, FaSpinner, FaExclamationTriangle, FaArrowDown } from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import { useMetaMask } from "../../context/MetaMaskContext";
+import {
+  FaWallet,
+  FaArrowRight,
+  FaCheck,
+  FaSpinner,
+  FaExclamationTriangle,
+  FaArrowDown,
+} from "react-icons/fa";
 
-const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
+const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
   const {
     isConnected,
     account,
@@ -14,11 +21,11 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
     fetchFluxWalletAddress,
   } = useMetaMask();
 
-  const [depositAmount, setDepositAmount] = useState('');
+  const [depositAmount, setDepositAmount] = useState("");
   const [isDepositing, setIsDepositing] = useState(false);
-  const [depositStatus, setDepositStatus] = useState(''); // 'success', 'error', 'pending'
-  const [txHash, setTxHash] = useState('');
-  const [error, setError] = useState('');
+  const [depositStatus, setDepositStatus] = useState(""); // 'success', 'error', 'pending'
+  const [txHash, setTxHash] = useState("");
+  const [error, setError] = useState("");
 
   // Fetch KINE wallet address when modal opens
   useEffect(() => {
@@ -34,64 +41,65 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
     }
 
     if (!depositAmount || parseFloat(depositAmount) <= 0) {
-      setError('Please enter a valid amount');
+      setError("Please enter a valid amount");
       return;
     }
 
     if (parseFloat(depositAmount) > parseFloat(balance)) {
-      setError('Insufficient balance');
+      setError("Insufficient balance");
       return;
     }
 
     if (!fluxWalletAddress) {
-      setError('KINE deposit address not found');
+      setError("KINE deposit address not found");
       return;
     }
 
     setIsDepositing(true);
-    setError('');
-    setDepositStatus('pending');
+    setError("");
+    setDepositStatus("pending");
 
     try {
       // Convert amount to Wei (for ETH)
-      const amountInWei = (parseFloat(depositAmount) * Math.pow(10, 18)).toString(16);
+      const amountInWei = (
+        parseFloat(depositAmount) * Math.pow(10, 18)
+      ).toString(16);
 
       // Get current gas price
       const gasPrice = await provider.request({
-        method: 'eth_gasPrice',
+        method: "eth_gasPrice",
       });
 
       // Prepare transaction
       const transactionParameters = {
         to: fluxWalletAddress,
         from: account,
-        value: '0x' + amountInWei,
-        gas: '0x5208', // Standard gas limit for ETH transfer (21000)
+        value: "0x" + amountInWei,
+        gas: "0x5208", // Standard gas limit for ETH transfer (21000)
         gasPrice: gasPrice,
       };
 
       // Send transaction
       const txHash = await provider.request({
-        method: 'eth_sendTransaction',
+        method: "eth_sendTransaction",
         params: [transactionParameters],
       });
 
       setTxHash(txHash);
-      setDepositStatus('success');
+      setDepositStatus("success");
 
       // Notify your backend about the deposit
       await notifyBackendDeposit(txHash, depositAmount, selectedCoin);
-
     } catch (err) {
-      console.error('Deposit error:', err);
+      console.error("Deposit error:", err);
       if (err.code === 4001) {
-        setError('Transaction was rejected by user');
+        setError("Transaction was rejected by user");
       } else if (err.code === -32603) {
-        setError('Transaction failed - insufficient funds for gas');
+        setError("Transaction failed - insufficient funds for gas");
       } else {
-        setError(err.message || 'Transaction failed');
+        setError(err.message || "Transaction failed");
       }
-      setDepositStatus('error');
+      setDepositStatus("error");
     } finally {
       setIsDepositing(false);
     }
@@ -99,35 +107,42 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
 
   const notifyBackendDeposit = async (txHash, amount, coin) => {
     try {
-      const uid = localStorage.getItem('uid');
-      const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
+      const uid = localStorage.getItem("uid");
+      const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
 
       // Notify your backend about the pending deposit
-      const response = await fetch(`https://api.kinecoin.co/api/v1/metamask-deposit-notification?apikey=${apiKey}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          uid: uid,
-          txHash: txHash,
-          amount: amount,
-          coin: coin,
-          fromAddress: account,
-          toAddress: fluxWalletAddress,
-          timestamp: new Date().toISOString(),
-          source: 'metamask',
-          network: 'ethereum',
-        }),
-      });
+      const response = await fetch(
+        `https://api.kinecoin.co/api/v1/metamask-deposit-notification?apikey=${apiKey}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            uid: uid,
+            txHash: txHash,
+            amount: amount,
+            coin: coin,
+            fromAddress: account,
+            toAddress: fluxWalletAddress,
+            timestamp: new Date().toISOString(),
+            source: "metamask",
+            network: "ethereum",
+          }),
+        }
+      );
 
       if (!response.ok) {
-        console.warn('Failed to notify backend about deposit:', response.status, response.statusText);
+        console.warn(
+          "Failed to notify backend about deposit:",
+          response.status,
+          response.statusText
+        );
       } else {
-        console.log('Successfully notified backend about deposit');
+        console.log("Successfully notified backend about deposit");
       }
     } catch (err) {
-      console.warn('Error notifying backend:', err);
+      console.warn("Error notifying backend:", err);
     }
   };
 
@@ -138,16 +153,16 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
   };
 
   const resetDeposit = () => {
-    setDepositAmount('');
-    setDepositStatus('');
-    setTxHash('');
-    setError('');
+    setDepositAmount("");
+    setDepositStatus("");
+    setTxHash("");
+    setError("");
   };
 
   if (!isOpen) return null;
 
   return (
-    <div 
+    <div
       className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[9999]"
       onClick={(e) => {
         if (e.target === e.currentTarget) {
@@ -155,7 +170,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
         }
       }}
     >
-      <div 
+      <div
         className="bg-gray-900 border border-gray-700 rounded-lg p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
@@ -182,10 +197,12 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
               Connect MetaMask
             </button> */}
           </div>
-        ) : depositStatus === 'success' ? (
+        ) : depositStatus === "success" ? (
           <div className="text-center py-6">
             <FaCheck className="mx-auto text-3xl text-green-500 mb-3" />
-            <h3 className="text-lg font-semibold text-white mb-2">Deposit Initiated!</h3>
+            <h3 className="text-lg font-semibold text-white mb-2">
+              Deposit Initiated!
+            </h3>
             <p className="text-gray-300 mb-4 text-sm">
               Transaction submitted. It will be credited once confirmed.
             </p>
@@ -222,18 +239,24 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center">
                   <FaWallet className="text-orange-500 mr-2 text-sm" />
-                  <span className="text-white font-medium text-sm">MetaMask</span>
+                  <span className="text-white font-medium text-sm">
+                    MetaMask
+                  </span>
                 </div>
-                <span className="text-orange-400 font-bold text-sm">{balance} {selectedCoin}</span>
+                <span className="text-orange-400 font-bold text-sm">
+                  {balance} {selectedCoin}
+                </span>
               </div>
-              
+
               <div className="flex items-center justify-between text-xs">
                 <span className="text-gray-400">Address:</span>
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-300 font-mono">{formatAddress(account)}</span>
+                  <span className="text-gray-300 font-mono">
+                    {formatAddress(account)}
+                  </span>
                   <button
                     onClick={() => navigator.clipboard.writeText(account)}
-                    className="text-orange-400 hover:text-orange-300 transition-colors"
+                    className="text-ora nge-400 hover:text-orange-300 transition-colors"
                     title="Copy address"
                   >
                     Copy
@@ -249,20 +272,24 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
                   <div className="w-4 h-4 bg-orange-500 rounded mr-2 flex items-center justify-center">
                     <span className="text-white text-xs font-bold">F</span>
                   </div>
-                  <span className="text-white font-medium text-sm">KINE Wallet</span>
+                  <span className="text-white font-medium text-sm">
+                    KINE Wallet
+                  </span>
                 </div>
                 <span className="text-green-400 text-xs">Ethereum</span>
               </div>
-              
+
               <div className="flex items-center justify-between text-xs">
                 <span className="text-gray-400">Deposit to:</span>
                 <div className="flex items-center gap-2">
                   <span className="text-gray-300 font-mono">
-                    {fluxWalletAddress ? fluxWalletAddress : 'Loading...'}
+                    {fluxWalletAddress ? fluxWalletAddress : "Loading..."}
                   </span>
                   {fluxWalletAddress && (
                     <button
-                      onClick={() => navigator.clipboard.writeText(fluxWalletAddress)}
+                      onClick={() =>
+                        navigator.clipboard.writeText(fluxWalletAddress)
+                      }
                       className="text-orange-400 hover:text-orange-300 transition-colors"
                       title="Copy address"
                     >
@@ -348,7 +375,13 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
               </button>
               <button
                 onClick={handleDeposit}
-                disabled={isDepositing || !depositAmount || parseFloat(depositAmount) < 0.001 || parseFloat(depositAmount) > parseFloat(balance) || !fluxWalletAddress}
+                disabled={
+                  isDepositing ||
+                  !depositAmount ||
+                  parseFloat(depositAmount) < 0.001 ||
+                  parseFloat(depositAmount) > parseFloat(balance) ||
+                  !fluxWalletAddress
+                }
                 className="flex-1 bg-orange-500 text-white py-2.5 rounded-lg hover:bg-orange-600 disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 font-medium text-sm"
               >
                 {isDepositing ? (
@@ -359,7 +392,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
                 ) : (
                   <>
                     <FaArrowRight className="text-sm" />
-                    Deposit {depositAmount || '0'} {selectedCoin}
+                    Deposit {depositAmount || "0"} {selectedCoin}
                   </>
                 )}
               </button>
@@ -371,4 +404,4 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
   );
 };
 
-export default MetaMaskDeposit; 
+export default MetaMaskDeposit;

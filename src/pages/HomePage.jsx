@@ -69,14 +69,7 @@ const HomePage = () => {
       />
 
       {/* Debug button for testing (remove this later) */}
-      {localStorage.getItem('authToken') && (
-        <button
-          onClick={handleManualPopupTrigger}
-          className="fixed bottom-4 right-4 bg-orange-500 text-white px-4 py-2 rounded-lg z-50"
-        >
-          Test Popup
-        </button>
-      )}
+      {localStorage.getItem('authToken')}
     </div>
   );
 };
