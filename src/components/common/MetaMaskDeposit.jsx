@@ -175,12 +175,12 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = 'ETH' }) => {
           <div className="text-center py-8">
             <FaWallet className="mx-auto text-3xl text-gray-400 mb-4" />
             <p className="text-gray-300 mb-4">Connect MetaMask to continue</p>
-            <button
+            {/* <button
               onClick={connectWallet}
               className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors font-medium"
             >
               Connect MetaMask
-            </button>
+            </button> */}
           </div>
         ) : depositStatus === 'success' ? (
           <div className="text-center py-6">
