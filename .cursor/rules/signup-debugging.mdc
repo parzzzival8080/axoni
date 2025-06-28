@@ -15,11 +15,11 @@ alwaysApply: false
 if (formData.profilePic && formData.profilePic.startsWith('data:image')) {
   profileDataPayload = new FormData();
   // ... FormData setup ...
-  profileUpdateUrl = `https://django.kinecoin.cokinecoin.co/api/user_account/edit_profile/user=${storedUserId}`;
+  profileUpdateUrl = `https://django.kinecoin.co/api/user_account/edit_profile/user=${storedUserId}`;
 } else {
   // This else block sets the same URL - no differentiation
   profileDataPayload = commonProfileData;
-  profileUpdateUrl = `https://django.kinecoin.cokinecoin.co/api/user_account/edit_profile/user=${storedUserId}`;
+  profileUpdateUrl = `https://django.kinecoin.co/api/user_account/edit_profile/user=${storedUserId}`;
 }
 ```
 
@@ -110,11 +110,11 @@ if (formData.profilePic && formData.profilePic.startsWith('data:image')) {
   const profileImageFile = new File([blob], 'profile.jpg', { type: 'image/jpeg' });
   profileDataPayload.append('user_profile', profileImageFile);
   
-  profileUpdateUrl = `https://django.kinecoin.cokinecoin.co/api/user_account/edit_profile/user=${storedUserId}`;
+  profileUpdateUrl = `https://django.kinecoin.co/api/user_account/edit_profile/user=${storedUserId}`;
 } else {
   // Use JSON for text-only data
   profileDataPayload = commonProfileData;
-  profileUpdateUrl = `https://django.kinecoin.cokinecoin.co/api/user_account/edit_profile/user=${storedUserId}`;
+  profileUpdateUrl = `https://django.kinecoin.co/api/user_account/edit_profile/user=${storedUserId}`;
 }
 ```
 
