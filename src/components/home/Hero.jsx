@@ -28,7 +28,7 @@ const Hero = () => {
 
   // API configuration (same as VerifyPage)
   const API_CONFIG = {
-    KYC_STATUS_BASE_URL: "https://apiv2.bhtokens.com/api/v1/kyc-status",
+    KYC_STATUS_BASE_URL: "https://api.kinecoin.co/api/v1/kyc-status",
     API_KEY: "A20RqFwVktRxxRqrKBtmi6ud",
   };
 

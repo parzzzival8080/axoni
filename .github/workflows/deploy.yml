@@ -46,7 +46,7 @@ jobs:
 
           # Optional: verify file
           send "ls -l dist/.htaccess\r"
-          expect "# "          
+          expect "# "
           expect "# "
           send "exit\r"
           expect eof
