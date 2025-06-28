@@ -61,7 +61,7 @@ const ChangeEmail = () => {
     
     try {
       const response = await axios.post(
-        'https://django.kinecoin.co/api/user_account/email_reset/request',
+        'https://django.kinecoin.cokinecoin.co/api/user_account/email_reset/request',
         { email: currentEmail }
       );
       
@@ -93,7 +93,7 @@ const ChangeEmail = () => {
     
     try {
       const response = await axios.post(
-        'https://django.kinecoin.co/api/user_account/email_reset/resend_otp',
+        'https://django.kinecoin.cokinecoin.co/api/user_account/email_reset/resend_otp',
         { email: currentEmail }
       );
       
@@ -129,7 +129,7 @@ const ChangeEmail = () => {
     
     try {
       const response = await axios.post(
-        'https://django.kinecoin.co/api/user_account/email_reset/verify_otp',
+        'https://django.kinecoin.cokinecoin.co/api/user_account/email_reset/verify_otp',
         { email: currentEmail, otp: otp }
       );
       
@@ -172,7 +172,7 @@ const ChangeEmail = () => {
     
     try {
       const response = await axios.post(
-        'https://django.kinecoin.co/api/user_account/email_reset/change',
+        'https://django.kinecoin.cokinecoin.co/api/user_account/email_reset/change',
         {
           email: currentEmail,
           otp: otp,
