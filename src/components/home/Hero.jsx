@@ -28,7 +28,7 @@ const Hero = () => {
 
   // API configuration (same as VerifyPage)
   const API_CONFIG = {
-    KYC_STATUS_BASE_URL: "https://api.kinecoin.co/api/v1/kyc-status",
+    KYC_STATUS_BASE_URL: "https://apiv2.bhtokens.com/api/v1/kyc-status",
     API_KEY: "A20RqFwVktRxxRqrKBtmi6ud",
   };
 
@@ -49,12 +49,12 @@ const Hero = () => {
           },
           mode: "cors",
           credentials: "omit",
-        }
+        },
       );
 
       if (!response.ok) {
         console.log(
-          `KYC status API returned ${response.status}, treating as not started`
+          `KYC status API returned ${response.status}, treating as not started`,
         );
         return VERIFICATION_STATUS.NOT_STARTED;
       }
@@ -111,7 +111,7 @@ const Hero = () => {
           } catch (error) {
             console.error(
               "Failed to check verification status in Hero:",
-              error
+              error,
             );
             setVerificationStatus(VERIFICATION_STATUS.NOT_STARTED);
             setIsVerified(false);
@@ -133,7 +133,7 @@ const Hero = () => {
   // Content for non-logged in users
   const renderGuestContent = () => (
     <div className="flex-1 space-y-6">
-      <p className="text-orange-500 font-semibold">
+      <p className="text-[#F88726] font-semibold">
         Better Liquidity, Better Trading
       </p>
       <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-tight">
@@ -149,7 +149,7 @@ const Hero = () => {
         />
         <Link
           to="/signup"
-          className="bg-[#F88726] text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-600 transition-colors w-full sm:w-auto"
+          className="bg-[#F88726] text-black px-8 py-3 rounded-full font-semibold bg:hover-[#00FA8C] transition-colors w-full sm:w-auto"
         >
           Sign up now
         </Link>
@@ -424,7 +424,7 @@ const Hero = () => {
           </p>
           <Link
             to="/signup"
-            className="bg-[#F88726] text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-orange-600 transition-colors whitespace-nowrap w-full sm:w-auto"
+            className="bg-[#F88726] text-black px-6 py-2 rounded-md text-sm font-semibold hover:bg-orange-600 transition-colors whitespace-nowrap w-full sm:w-auto"
           >
             Sign up
           </Link>
@@ -502,14 +502,14 @@ const Hero = () => {
             <img
               src={mobileApp}
               alt="Mobile Trading App"
-              className="w-full max-w-xs mx-auto md:max-w-[900px] animate-float"
+              className="w-full max-w-xs mx-auto md:max-w-[530px] animate-float"
             />
           </div>
         </div>
       </div>
 
       {/* Bottom Banner - Changes based on user status */}
-      <div className="w-full bg-gray-800/80 backdrop-blur-sm py-3 px-4 text-center rounded-lg mx-auto max-w-7xl mt-[-3rem]">
+      <div className="w-full bg-gray-800/80 backdrop-blur-sm py-3 px-4 text-center mt-8 rounded-lg mx-auto max-w-7xl">
         {renderBottomBanner()}
       </div>
     </div>
