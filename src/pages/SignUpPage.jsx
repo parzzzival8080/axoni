@@ -30,6 +30,10 @@ const SignUpPage = () => {
   const [resendTimer, setResendTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
 
+  // Password visibility state
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   // Country-related state
   const [countries, setCountries] = useState([]);
   const [filteredCountries, setFilteredCountries] = useState([]);
@@ -491,7 +495,7 @@ const SignUpPage = () => {
         });
 
         const result = await makeApiCall(
-          "https://django.kinecoin.co/api/user_account/signup",
+          "https://django.bhtokens.com/api/user_account/signup",
           payload,
         );
 
@@ -557,7 +561,7 @@ const SignUpPage = () => {
         console.log("Verifying OTP for email:", payload.email);
 
         const result = await makeApiCall(
-          "https://django.kinecoin.co/api/user_account/verify-otp",
+          "https://django.bhtokens.com/api/user_account/verify-otp",
           payload,
         );
 
@@ -616,7 +620,7 @@ const SignUpPage = () => {
       console.log("Resending OTP to:", payload.email);
 
       const result = await makeApiCall(
-        "https://django.kinecoin.co/api/user_account/resend-otp",
+        "https://django.bhtokens.com/api/user_account/resend-otp",
         payload,
       );
 
@@ -735,7 +739,7 @@ const SignUpPage = () => {
         headers["Content-Type"] = "application/json";
       }
 
-      const profileUpdateUrl = `https://django.kinecoin.co/api/user_account/edit_profile/user=${storedUserId}`;
+      const profileUpdateUrl = `https://django.bhtokens.com/api/user_account/edit_profile/user=${storedUserId}`;
 
       console.log("Updating profile for user:", storedUserId);
       console.log("Profile data being sent:", profileDataPayload);
@@ -782,7 +786,7 @@ const SignUpPage = () => {
       // Get updated user data after profile update
       try {
         const userInfoResponse = await axios.get(
-          `https://django.kinecoin.co/api/user_account/getUserInformation/?user_id=${storedUserId}`,
+          `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${storedUserId}`,
           {
             headers: {
               Authorization: `Bearer ${storedToken}`,
@@ -848,7 +852,7 @@ const SignUpPage = () => {
           };
 
           const countryResult = await makeApiCall(
-            "https://django.kinecoin.co/api/user_account/user-detail/add-country",
+            "https://django.bhtokens.com/api/user_account/user-detail/add-country",
             countryPayload,
             { headers: { Authorization: `Bearer ${storedToken}` } },
           );
@@ -860,7 +864,7 @@ const SignUpPage = () => {
             // Send additional user data
             try {
               const sendDataResult = await makeApiCall(
-                "https://django.kinecoin.co/api/user_account/send-data",
+                "https://django.bhtokens.com/api/user_account/send-data",
                 {
                   user_id: parseInt(storedUserId),
                   password: formData.password,
@@ -892,7 +896,7 @@ const SignUpPage = () => {
       // Get user information including verification status
       try {
         const userInfoResponse = await axios.get(
-          `https://django.kinecoin.co/api/user_account/getUserInformation/?user_id=${storedUserId}`,
+          `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${storedUserId}`,
           {
             headers: {
               Authorization: `Bearer ${storedToken}`,
@@ -940,7 +944,7 @@ const SignUpPage = () => {
 
       // Show success message
       setTimeout(() => {
-        alert("Registration successful! Welcome to KINE.");
+        alert("Registration successful! Welcome to TradeX.");
 
         const isVerified = localStorage.getItem("is_verified") === "true";
         navigate(isVerified ? "/spot-trading" : "/", { replace: true });
@@ -1138,7 +1142,7 @@ const SignUpPage = () => {
                   htmlFor="terms"
                   className="text-sm text-gray-600 leading-relaxed"
                 >
-                  By creating an account, I agree to KINE{" "}
+                  By creating an account, I agree to TradeX{" "}
                   <a
                     href="#"
                     className="text-[#F88726] hover:underline font-medium"
@@ -1225,17 +1229,30 @@ const SignUpPage = () => {
                 >
                   Password *
                 </label>
-                <input
-                  type="password"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F88726] focus:border-transparent transition-all duration-200"
-                  id="password"
-                  name="password"
-                  placeholder="Create a password (min 8 characters)"
-                  value={formData.password}
-                  onChange={handleChange}
-                  autoComplete="new-password"
-                  required
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F88726] focus:border-transparent transition-all duration-200"
+                    id="password"
+                    name="password"
+                    placeholder="Create a password (min 8 characters)"
+                    value={formData.password}
+                    onChange={handleChange}
+                    autoComplete="new-password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <i className="fas fa-eye text-sm"></i>
+                    ) : (
+                      <i className="fas fa-eye-slash text-sm"></i>
+                    )}
+                  </button>
+                </div>
               </div>
               <div className="mb-6">
                 <label
@@ -1244,17 +1261,30 @@ const SignUpPage = () => {
                 >
                   Confirm password *
                 </label>
-                <input
-                  type="password"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F88726] focus:border-transparent transition-all duration-200"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  placeholder="Confirm your password"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  autoComplete="new-password"
-                  required
-                />
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F88726] focus:border-transparent transition-all duration-200"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    placeholder="Confirm your password"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    autoComplete="new-password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? (
+                      <i className="fas fa-eye text-sm"></i>
+                    ) : (
+                      <i className="fas fa-eye-slash text-sm"></i>
+                    )}
+                  </button>
+                </div>
               </div>
               <button
                 className="w-full py-3.5 px-6 rounded-full bg-[#F88726] text-white font-medium hover:bg-[#e56700] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
