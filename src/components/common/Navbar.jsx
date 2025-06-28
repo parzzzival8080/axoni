@@ -855,7 +855,7 @@ const Navbar = () => {
         {isAuthenticated ? (
           <div className="auth-menu-container">
             {/* MetaMask Wallet Component */}
-            <MetaMaskWallet />
+            {/* <MetaMaskWallet /> */}
             
             {/* Assets Dropdown - hidden on mobile */}
             <div className="dropdown-container">
