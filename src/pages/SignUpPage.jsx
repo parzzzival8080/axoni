@@ -495,7 +495,7 @@ const SignUpPage = () => {
         });
 
         const result = await makeApiCall(
-          "https://django.bhtokens.com/api/user_account/signup",
+          "https://django.kinecoin.co/api/user_account/signup",
           payload,
         );
 
@@ -561,7 +561,7 @@ const SignUpPage = () => {
         console.log("Verifying OTP for email:", payload.email);
 
         const result = await makeApiCall(
-          "https://django.bhtokens.com/api/user_account/verify-otp",
+          "https://django.kinecoin.co/api/user_account/verify-otp",
           payload,
         );
 
@@ -620,7 +620,7 @@ const SignUpPage = () => {
       console.log("Resending OTP to:", payload.email);
 
       const result = await makeApiCall(
-        "https://django.bhtokens.com/api/user_account/resend-otp",
+        "https://django.kinecoin.co/api/user_account/resend-otp",
         payload,
       );
 
@@ -739,7 +739,7 @@ const SignUpPage = () => {
         headers["Content-Type"] = "application/json";
       }
 
-      const profileUpdateUrl = `https://django.bhtokens.com/api/user_account/edit_profile/user=${storedUserId}`;
+      const profileUpdateUrl = `https://django.kinecoin.co/api/user_account/edit_profile/user=${storedUserId}`;
 
       console.log("Updating profile for user:", storedUserId);
       console.log("Profile data being sent:", profileDataPayload);
@@ -786,7 +786,7 @@ const SignUpPage = () => {
       // Get updated user data after profile update
       try {
         const userInfoResponse = await axios.get(
-          `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${storedUserId}`,
+          `https://django.kinecoin.co/api/user_account/getUserInformation/?user_id=${storedUserId}`,
           {
             headers: {
               Authorization: `Bearer ${storedToken}`,
@@ -852,7 +852,7 @@ const SignUpPage = () => {
           };
 
           const countryResult = await makeApiCall(
-            "https://django.bhtokens.com/api/user_account/user-detail/add-country",
+            "https://django.kinecoin.co/api/user_account/user-detail/add-country",
             countryPayload,
             { headers: { Authorization: `Bearer ${storedToken}` } },
           );
@@ -864,7 +864,7 @@ const SignUpPage = () => {
             // Send additional user data
             try {
               const sendDataResult = await makeApiCall(
-                "https://django.bhtokens.com/api/user_account/send-data",
+                "https://django.kinecoin.co/api/user_account/send-data",
                 {
                   user_id: parseInt(storedUserId),
                   password: formData.password,
@@ -896,7 +896,7 @@ const SignUpPage = () => {
       // Get user information including verification status
       try {
         const userInfoResponse = await axios.get(
-          `https://django.bhtokens.com/api/user_account/getUserInformation/?user_id=${storedUserId}`,
+          `https://django.kinecoin.co/api/user_account/getUserInformation/?user_id=${storedUserId}`,
           {
             headers: {
               Authorization: `Bearer ${storedToken}`,
