@@ -557,19 +557,27 @@ const SignUpPage = () => {
           email: formData.email.trim().toLowerCase(),
           otp: otpValue,
         };
-
-        console.log("Verifying OTP for email:", payload.email);
+        console.log("OTP verification payload:", payload);
 
         const result = await makeApiCall(
           "https://django.kinecoin.co/api/user_account/verify-otp",
           payload,
         );
 
-        if (result.success) {
-          console.log("OTP verification successful");
+        console.log("OTP verification result:", result);
 
-          // Store verification data - Django returns jwt_token, uid, etc.
-          const verificationData = result.data;
+        // Acceptable success: result.success is true AND (jwt_token or user_id or verified flag present)
+        const verificationData = result.data || {};
+        const isVerified =
+          result.success &&
+          (
+            verificationData.jwt_token ||
+            verificationData.user_id ||
+            verificationData.verified === true
+          );
+
+        if (isVerified) {
+          // Store verification data
           if (verificationData.jwt_token) {
             localStorage.setItem("authToken", verificationData.jwt_token);
             localStorage.setItem("jwt_token", verificationData.jwt_token);
@@ -578,27 +586,28 @@ const SignUpPage = () => {
             localStorage.setItem("uid", verificationData.uid);
           }
           if (verificationData.referral_code) {
-            localStorage.setItem(
-              "referral_code",
-              verificationData.referral_code,
-            );
+            localStorage.setItem("referral_code", verificationData.referral_code);
           }
           if (verificationData.secret_phrase) {
-            localStorage.setItem(
-              "secret_phrase",
-              verificationData.secret_phrase,
-            );
+            localStorage.setItem("secret_phrase", verificationData.secret_phrase);
           }
 
           setCurrentStep(4);
         } else {
+          // Show backend error or fallback error
           setError(
-            result.error || "Invalid verification code. Please try again.",
+            result.error ||
+            verificationData.error ||
+            "Invalid or expired verification code. Please try again or resend the code."
           );
         }
       } catch (err) {
         console.error("OTP verification error:", err);
-        setError("Verification failed. Please try again.");
+        setError(
+          err?.response?.data?.error ||
+          err?.message ||
+          "Verification failed. Please try again."
+        );
       } finally {
         setLoading(false);
       }
