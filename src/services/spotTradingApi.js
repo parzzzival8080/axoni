@@ -402,10 +402,10 @@ export const getCoinsFromCacheByIds = (identifiers) => {
     try {
         const cachedCoins = getCoinsFromCache();
         if (!cachedCoins || !Array.isArray(cachedCoins)) return [];
-        
+
         const results = identifiers.map(id => getCoinFromCache(id)).filter(Boolean);
         console.log(`📦 Retrieved ${results.length}/${identifiers.length} coins from cache`);
-        
+
         return results;
     } catch (error) {
         console.error('Error getting coins from cache:', error);
@@ -425,7 +425,7 @@ export const fetchCoinDetails = async (symbol) => {
         }
 
         const coinSymbol = symbol.toUpperCase().trim();
-        
+
         // Try to get from cache first
         const cachedCoin = getCoinFromCache(coinSymbol);
         if (cachedCoin) {
@@ -439,7 +439,7 @@ export const fetchCoinDetails = async (symbol) => {
         // If not in cache, fetch all coins (which will update cache)
         console.log(`🔍 ${coinSymbol} not in cache, fetching all coins...`);
         const coinsResponse = await fetchAllCoins();
-        
+
         if (!coinsResponse.success) {
             return {
                 success: false,
@@ -475,7 +475,7 @@ export const getCacheStats = () => {
     const cachedCoins = getCoinsFromCache();
     const timestamp = localStorage.getItem(COINS_CACHE_TIMESTAMP_KEY);
     const version = localStorage.getItem(COINS_CACHE_VERSION_KEY);
-    
+
     return {
         coinsCount: cachedCoins ? cachedCoins.length : 0,
         cacheValid: isCacheValid(),
