@@ -190,13 +190,13 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
       clearInterval(restFallbackRef.current);
       restFallbackRef.current = null;
     }
-    setDataSource('REST API (FLUX)');
+    setDataSource('REST API (KINE)');
     setIsLoading(true);
 
     const fetchData = async () => {
       try {
         const apiUrl = `https://www.okx.com/api/v5/market/books?instId=${instId}&sz=5`; // Use top 5 levels for fast loading
-        console.log('[OrderBook] Fetching from FLUX REST API:', apiUrl);
+        console.log('[OrderBook] Fetching from KINE REST API:', apiUrl);
         const response = await axios.get(apiUrl);
 
         if (response.data && response.data.code === "0" && response.data.data && response.data.data[0]) {
@@ -237,7 +237,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
               setIsLoading(false);
               setConnectionStatus('fallback');
               lastUpdateTimeRef.current = now; // Or use bookData.ts
-              console.log('[OrderBook] Data updated from FLUX REST API');
+              console.log('[OrderBook] Data updated from KINE REST API');
             }
           } else {
             throw new Error('Malformed OKX REST API response data structure');
@@ -274,7 +274,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
 
     setConnectionStatus('connecting');
     setIsLoading(true);
-    setDataSource('WebSocket (FLUX)');
+    setDataSource('WebSocket (KINE)');
 
     const wsUrl = 'wss://ws.okx.com:8443/ws/v5/public';
     console.log('[OrderBook] Attempting to connect to OKX WebSocket:', wsUrl);
