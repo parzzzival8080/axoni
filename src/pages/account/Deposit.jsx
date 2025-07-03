@@ -326,7 +326,7 @@ function App() {
           return;
         }
 
-        const apiUrl = `https://api.kinecoin.co/api/v1/address/${uid}?apikey=A20RqFwVktRxxRqrKBtmi6ud&symbol=ERC20`;
+        const apiUrl = `https://api.kinecoin.co/api/v1/address/${uid}?apikey=A20RqFwVktRxxRqrKBtmi6ud&symbol=${selectedNetwork}`;
         console.log(
           `Fetching deposit address for ${selectedCryptoSymbol} on ${selectedNetwork}:`,
           apiUrl
