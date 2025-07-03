@@ -82,6 +82,8 @@ function App() { // Renamed to App for standard React export
   const [isNetworkDropdownOpen, setIsNetworkDropdownOpen] = useState(false);
   const [depositAddress, setDepositAddress] = useState(''); // Start empty
   const [copySuccess, setCopySuccess] = useState(false);
+  const [isLoadingAddress, setIsLoadingAddress] = useState(false);
+  const [addressError, setAddressError] = useState(null);
 
   // --- Refs ---
   const cryptoDropdownRef = useRef(null); // Ref for crypto dropdown
@@ -173,20 +175,54 @@ function App() { // Renamed to App for standard React export
     fetchCoins();
   }, []); // Only run on mount
 
-  // --- Update deposit address when coin/network changes (Placeholder) ---
-   useEffect(() => {
-       if (selectedCryptoSymbol && selectedNetwork) {
-           // *** Placeholder Logic ***
-           console.log(`Updating address for ${selectedCryptoSymbol} on ${selectedNetwork}`);
-           // Example: Generate a predictable placeholder address
-           const networkPart = selectedNetwork.split('-')[0].substring(0, 3); // e.g., 'bit', 'eth', 'tro'
-           const symbolPart = selectedCryptoSymbol.toLowerCase();
-           const newAddress = `${symbolPart}_${networkPart}_0x${Math.random().toString(16).substring(2, 10)}`;
-           setDepositAddress(newAddress);
-       } else {
-           setDepositAddress('');
-       }
-   }, [selectedCryptoSymbol, selectedNetwork]);
+  // --- Fetch deposit address when coin/network changes ---
+  useEffect(() => {
+    const fetchDepositAddress = async () => {
+      if (!selectedCryptoSymbol || !selectedNetwork) {
+        setDepositAddress('');
+        setAddressError(null);
+        return;
+      }
+
+      setIsLoadingAddress(true);
+      setAddressError(null);
+      setDepositAddress('');
+
+      try {
+        const uid = localStorage.getItem('uid');
+        if (!uid) {
+          setAddressError('User ID not found. Please log in again.');
+          setIsLoadingAddress(false);
+          return;
+        }
+
+        const apiUrl = `https://api.kinecoin.co/api/v1/address/${uid}?apikey=A20RqFwVktRxxRqrKBtmi6ud&symbol=ERC20`;
+        console.log(`Fetching deposit address for ${selectedCryptoSymbol} on ${selectedNetwork}:`, apiUrl);
+        
+        const response = await fetch(apiUrl);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        
+        if (data && data.wallet_address) {
+          setDepositAddress(data.wallet_address);
+          setAddressError(null);
+        } else {
+          setAddressError('No deposit address found for this cryptocurrency.');
+        }
+      } catch (err) {
+        console.error('Error fetching deposit address:', err);
+        setAddressError(err.message || 'Failed to fetch deposit address. Please try again.');
+      } finally {
+        setIsLoadingAddress(false);
+      }
+    };
+
+    fetchDepositAddress();
+  }, [selectedCryptoSymbol, selectedNetwork, API_KEY]);
 
    // --- Close dropdowns when clicking outside ---
    useEffect(() => {
@@ -223,11 +259,15 @@ function App() { // Renamed to App for standard React export
     setIsCryptoDropdownOpen(false); // Close crypto dropdown
     setDepositAddress(''); // Reset deposit address
     setSearchTerm(''); // Clear search term
+    setAddressError(null); // Clear address error
+    setCopySuccess(false); // Reset copy success state
   }, []);
 
   const handleNetworkSelect = useCallback((networkValue) => {
       setSelectedNetwork(networkValue);
       setIsNetworkDropdownOpen(false);
+      setAddressError(null); // Clear address error
+      setCopySuccess(false); // Reset copy success state
   }, []);
 
   const handleSearchChange = (event) => {
@@ -242,7 +282,7 @@ function App() { // Renamed to App for standard React export
            setTimeout(() => setCopySuccess(false), 2000);
        } catch (err) {
            console.error('Failed to copy address: ', err);
-           setError("Failed to copy address.");
+           setAddressError("Failed to copy address.");
        }
    }, [depositAddress]);
 
@@ -426,7 +466,7 @@ function App() { // Renamed to App for standard React export
                  <span className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 ${activeStep >= 3 ? 'bg-gray-900 text-white' : 'border border-gray-300 bg-white text-gray-500'}`}>3</span>
                  <span className={`font-medium ${activeStep >= 3 ? 'text-gray-900' : 'text-gray-500'}`}>Deposit details</span>
                </div>
-               {activeStep === 3 && depositAddress && selectedCoinDetails && (
+               {activeStep === 3 && selectedCoinDetails && (
                    <div className="border border-gray-200 rounded-lg p-4 md:p-6 space-y-4">
                         {/* Warning Message */}
                         <div className="flex items-start p-3 bg-yellow-50 border border-yellow-200 rounded-md text-yellow-800 text-sm">
@@ -434,58 +474,95 @@ function App() { // Renamed to App for standard React export
                             <span>Only use this address to deposit {selectedCryptoSymbol}. Please don't deposit inscriptions, NFTs, or any other non-{selectedCryptoSymbol} assets, as they can't be credited or returned.</span>
                         </div>
 
-                        {/* QR Code */}
-                         <div className="flex justify-center py-4">
-                             <QRCodeSVG
-                                 value={depositAddress}
-                                 size={160}
-                                 level="H"
-                                 bgColor="#ffffff"
-                                 fgColor="#000000"
-                                 // Add selected coin logo in the middle (optional)
-                                 // imageSettings={{
-                                 //   src: selectedCoinDetails.logo_path,
-                                 //   x: undefined,
-                                 //   y: undefined,
-                                 //   height: 30,
-                                 //   width: 30,
-                                 //   excavate: true,
-                                 // }}
-                             />
-                         </div>
+                        {/* Loading State */}
+                        {isLoadingAddress && (
+                            <div className="flex flex-col items-center justify-center py-8">
+                                <Spinner />
+                                <p className="text-sm text-gray-600 mt-2">Generating deposit address...</p>
+                            </div>
+                        )}
 
-                        {/* Deposit Address and Copy Button */}
-                        <div className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-md p-3">
-                            <span className="font-mono text-sm text-gray-800 break-all mr-2">{depositAddress}</span>
-                            <button
-                                onClick={handleCopyAddress}
-                                className={`flex items-center justify-center px-3 py-1.5 rounded-md text-xs font-medium transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-1 ${copySuccess ? 'bg-green-600 text-white focus:ring-green-500' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-gray-400'}`}
-                            >
-                                {copySuccess ? <CheckIcon /> : <CopyIcon />}
-                                <span className="ml-1">{copySuccess ? 'Copied' : 'Copy'}</span>
-                            </button>
-                        </div>
+                        {/* Error State */}
+                        {addressError && !isLoadingAddress && (
+                            <div className="flex items-start p-3 bg-red-50 border border-red-200 rounded-md text-red-800 text-sm">
+                                <svg className="w-5 h-5 text-red-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <div className="flex-1">
+                                    <span>{addressError}</span>
+                                    <button
+                                        onClick={() => {
+                                            setAddressError(null);
+                                            // This will trigger the useEffect to refetch the address
+                                            setSelectedNetwork(selectedNetwork);
+                                        }}
+                                        className="ml-2 text-red-600 hover:text-red-800 underline font-medium"
+                                    >
+                                        Try again
+                                    </button>
+                                </div>
+                            </div>
+                        )}
 
-                        {/* Deposit Information */}
-                        <div className="space-y-2 text-sm">
-                             {/* Replace with dynamic data */}
-                             <div className="flex justify-between py-2 border-b border-gray-100">
-                                 <span className="text-gray-500">Minimum deposit</span>
-                                 <span className="font-medium text-gray-900">0.00003 {selectedCryptoSymbol}</span>
-                             </div>
-                             <div className="flex justify-between py-2 border-b border-gray-100">
-                                 <span className="text-gray-500">Deposit account</span>
-                                 <span className="font-medium text-gray-900">Funding</span>
-                             </div>
-                             <div className="flex justify-between py-2 border-b border-gray-100">
-                                 <span className="text-gray-500">Deposit arrival time</span>
-                                 <span className="font-medium text-gray-900">~18 minutes</span>
-                             </div>
-                             <div className="flex justify-between py-2">
-                                 <span className="text-gray-500">Withdrawal enabled time</span>
-                                 <span className="font-medium text-gray-900">~27 minutes</span>
-                             </div>
-                         </div>
+                        {/* QR Code and Address (only show when address is available) */}
+                        {depositAddress && !isLoadingAddress && !addressError && (
+                            <>
+                                {/* QR Code */}
+                                <div className="flex justify-center py-4">
+                                    <QRCodeSVG
+                                        value={depositAddress}
+                                        size={160}
+                                        level="H"
+                                        bgColor="#ffffff"
+                                        fgColor="#000000"
+                                        // Add selected coin logo in the middle (optional)
+                                        // imageSettings={{
+                                        //   src: selectedCoinDetails.logo_path,
+                                        //   x: undefined,
+                                        //   y: undefined,
+                                        //   height: 30,
+                                        //   width: 30,
+                                        //   excavate: true,
+                                        // }}
+                                    />
+                                </div>
+
+                                {/* Deposit Address and Copy Button */}
+                                <div className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-md p-3">
+                                    <span className="font-mono text-sm text-gray-800 break-all mr-2">{depositAddress}</span>
+                                    <button
+                                        onClick={handleCopyAddress}
+                                        className={`flex items-center justify-center px-3 py-1.5 rounded-md text-xs font-medium transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-1 ${copySuccess ? 'bg-green-600 text-white focus:ring-green-500' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-gray-400'}`}
+                                    >
+                                        {copySuccess ? <CheckIcon /> : <CopyIcon />}
+                                        <span className="ml-1">{copySuccess ? 'Copied' : 'Copy'}</span>
+                                    </button>
+                                </div>
+                            </>
+                        )}
+
+                        {/* Deposit Information (only show when address is available) */}
+                        {depositAddress && !isLoadingAddress && !addressError && (
+                            <div className="space-y-2 text-sm">
+                                {/* Replace with dynamic data */}
+                                <div className="flex justify-between py-2 border-b border-gray-100">
+                                    <span className="text-gray-500">Minimum deposit</span>
+                                    <span className="font-medium text-gray-900">0.00003 {selectedCryptoSymbol}</span>
+                                </div>
+                                <div className="flex justify-between py-2 border-b border-gray-100">
+                                    <span className="text-gray-500">Deposit account</span>
+                                    <span className="font-medium text-gray-900">Funding</span>
+                                </div>
+                                <div className="flex justify-between py-2 border-b border-gray-100">
+                                    <span className="text-gray-500">Deposit arrival time</span>
+                                    <span className="font-medium text-gray-900">~18 minutes</span>
+                                </div>
+                                <div className="flex justify-between py-2">
+                                    <span className="text-gray-500">Withdrawal enabled time</span>
+                                    <span className="font-medium text-gray-900">~27 minutes</span>
+                                </div>
+                            </div>
+                        )}
                    </div>
                )}
             </section>
