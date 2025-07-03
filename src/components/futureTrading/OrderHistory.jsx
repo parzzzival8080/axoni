@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { closePosition } from '../../services/futureTradingApi';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronDown,
@@ -90,16 +91,14 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
     
     try {
       setClosingPosition(true);
-      const apiKey = localStorage.getItem('apiKey') || 'A20RqFwVktRxxRqrKBtmi6ud';
       
-      // Call the close position API
-      const closeUrl = `https://api.kinecoin.co/api/v1/close-position?future_id=${selectedPosition.future_id}&apikey=${apiKey}`;
-      const response = await axios.put(closeUrl);
+      // Call the close position API using the new service function
+      const result = await closePosition(selectedPosition.future_id);
       
-      console.log('Close position response:', response.data);
+      console.log('Close position result:', result);
       
       // Store API response for notification
-      setApiResponse(response.data);
+      setApiResponse(result);
       setShowNotification(true);
       
       // Auto-hide notification after 5 seconds
@@ -107,7 +106,7 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
         setShowNotification(false);
       }, 5000);
       
-      if (response.data && response.data.success) {
+      if (result.success) {
         setCloseSuccess(true);
         // Refresh order history after successful close
         setTimeout(() => {
@@ -115,7 +114,14 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
           closePopup();
         }, 2000);
       } else {
-        throw new Error(response.data?.message || 'Failed to close position');
+        // Handle error response with dynamic message from API
+        setError(result.message || 'Failed to close position');
+        
+        // Show error notification
+        setApiResponse({
+          success: false,
+          message: result.message || 'Failed to close position'
+        });
       }
     } catch (err) {
       console.error('Error closing position:', err);

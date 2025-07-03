@@ -237,6 +237,88 @@ export const formatPrice = (price, decimals = 2) => {
 };
 
 /**
+ * Close a future position
+ * @param {number} futureId - Future position ID
+ * @returns {Promise<Object>} Close position result
+ */
+export const closePosition = async (futureId) => {
+  if (!futureId) {
+    return { error: true, message: 'Future ID is required for closing position' };
+  }
+  
+  try {
+    const url = `${API_BASE_URL}/close-position?apikey=${API_KEY}&future_id=${futureId}`;
+    
+    console.log('Closing position with URL:', url);
+    
+    // Use XMLHttpRequest for maximum compatibility
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('PUT', url, true);
+      xhr.setRequestHeader('Accept', 'application/json');
+      
+      xhr.onload = function() {
+        if (this.status >= 200 && this.status < 300) {
+          let data;
+          try {
+            data = JSON.parse(xhr.responseText);
+            console.log('Close position response:', data);
+            
+            // Handle new API response format with status and message fields
+            if (data.status === 'success') {
+              resolve({
+                success: true,
+                data,
+                message: data.message || 'Position closed successfully'
+              });
+            } else if (data.status === 'error') {
+              resolve({
+                error: true,
+                message: data.message || 'Failed to close position'
+              });
+            } else {
+              // Fallback for unexpected response format
+              console.warn('Unexpected close position response format:', data);
+              resolve({
+                error: true,
+                message: 'Unexpected response from server'
+              });
+            }
+          } catch (error) {
+            console.error('Error parsing close position JSON response:', error);
+            console.error('Raw response:', xhr.responseText);
+            resolve({ error: true, message: 'Invalid response from server' });
+          }
+        } else {
+          console.error('Close position API error:', xhr.responseText);
+          resolve({ 
+            error: true, 
+            message: `API error: ${xhr.status}` 
+          });
+        }
+      };
+      
+      xhr.onerror = function() {
+        console.error('Close position execution error (network failure)');
+        resolve({ 
+          error: true, 
+          message: 'Network error occurred during position close' 
+        });
+      };
+      
+      // Send the request with empty body
+      xhr.send();
+    });
+  } catch (error) {
+    console.error('Close position execution error:', error);
+    return {
+      error: true,
+      message: error.message || 'An error occurred during position close'
+    };
+  }
+};
+
+/**
  * Calculate maximum tradeable amount based on available balance and leverage
  * @param {number|string} balance - Available balance
  * @param {number|string} price - Current price
