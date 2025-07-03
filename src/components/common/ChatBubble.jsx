@@ -1,10 +1,14 @@
 import React from 'react';
+import { LiveChatWidget } from "@livechat/widget-react";
 
 const ChatBubble = () => {
   return (
-    <div className="chat-bubble">
-      <i className="fas fa-comment-dots"></i>
-    </div>
+    <LiveChatWidget
+      license="19221915"
+      onNewEvent={(event) => {
+        console.log('LiveChat Event:', event.type, event);
+      }}
+    />
   );
 };
 
