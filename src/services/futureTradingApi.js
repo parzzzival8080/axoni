@@ -162,21 +162,37 @@ export const executeFutureTrade = async (params) => {
           let data;
           try {
             data = JSON.parse(xhr.responseText);
-            console.log('Future trade successful:', data);
-            resolve({
-              success: true,
-              data,
-              message: `Future ${transaction_type === 'BUY MORE' ? 'Buy' : 'Sell'} order executed successfully`,
-              important: true
-            });
+            console.log('Future trade response:', data);
+            
+            // Handle new API response format with status and message fields
+            if (data.status === 'success') {
+              resolve({
+                success: true,
+                data,
+                message: data.message || `Future ${transaction_type === 'BUY MORE' ? 'Buy' : 'Sell'} order executed successfully`,
+                important: true
+              });
+            } else if (data.status === 'error') {
+              resolve({
+                error: true,
+                message: data.message || 'Trade execution failed'
+              });
+            } else {
+              // Fallback for unexpected response format
+              console.warn('Unexpected API response format:', data);
+              resolve({
+                error: true,
+                message: 'Unexpected response from server'
+              });
+            }
           } catch (error) {
             console.error('Error parsing JSON response:', error);
             console.error('Raw response:', xhr.responseText);
-            reject({ error: true, message: 'Invalid response from server' });
+            resolve({ error: true, message: 'Invalid response from server' });
           }
         } else {
           console.error('Future Trade API error:', xhr.responseText);
-          reject({ 
+          resolve({ 
             error: true, 
             message: `API error: ${xhr.status}` 
           });
@@ -185,7 +201,7 @@ export const executeFutureTrade = async (params) => {
       
       xhr.onerror = function() {
         console.error('Future trade execution error (network failure)');
-        reject({ 
+        resolve({ 
           error: true, 
           message: 'Network error occurred during trade execution' 
         });
