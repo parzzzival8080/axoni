@@ -402,10 +402,10 @@ export const getCoinsFromCacheByIds = (identifiers) => {
     try {
         const cachedCoins = getCoinsFromCache();
         if (!cachedCoins || !Array.isArray(cachedCoins)) return [];
-
+        
         const results = identifiers.map(id => getCoinFromCache(id)).filter(Boolean);
         console.log(`📦 Retrieved ${results.length}/${identifiers.length} coins from cache`);
-
+        
         return results;
     } catch (error) {
         console.error('Error getting coins from cache:', error);
@@ -425,7 +425,7 @@ export const fetchCoinDetails = async (symbol) => {
         }
 
         const coinSymbol = symbol.toUpperCase().trim();
-
+        
         // Try to get from cache first
         const cachedCoin = getCoinFromCache(coinSymbol);
         if (cachedCoin) {
@@ -439,7 +439,7 @@ export const fetchCoinDetails = async (symbol) => {
         // If not in cache, fetch all coins (which will update cache)
         console.log(`🔍 ${coinSymbol} not in cache, fetching all coins...`);
         const coinsResponse = await fetchAllCoins();
-
+        
         if (!coinsResponse.success) {
             return {
                 success: false,
@@ -475,7 +475,7 @@ export const getCacheStats = () => {
     const cachedCoins = getCoinsFromCache();
     const timestamp = localStorage.getItem(COINS_CACHE_TIMESTAMP_KEY);
     const version = localStorage.getItem(COINS_CACHE_VERSION_KEY);
-
+    
     return {
         coinsCount: cachedCoins ? cachedCoins.length : 0,
         cacheValid: isCacheValid(),
@@ -525,6 +525,18 @@ export const executeSpotTradeOrder = async (params) => {
             amount 
         } = params;
 
+        // Create a unique key for this trade request to prevent duplicates
+        const tradeKey = `trade_${uid}_${coin_pair_id}_${side}_${price}_${amount}_${Date.now()}`;
+        
+        // Check if an identical request is already in progress
+        if (requestQueue.has(tradeKey)) {
+            console.log('Identical trade request already in progress, rejecting duplicate');
+            return {
+                success: false,
+                message: 'Identical trade request already in progress'
+            };
+        }
+
         // Validation
         const validationErrors = [];
         if (!uid) validationErrors.push('User ID is required');
@@ -546,41 +558,61 @@ export const executeSpotTradeOrder = async (params) => {
         const effectiveOrderType = order_type || side;
         const total_in_usdt = (parseFloat(price) * parseFloat(amount)).toFixed(6);
         
+        // Enhanced rate limiting for trades (stricter)
         await enforceRateLimit(`trade_${uid}`);
 
         const url = `${API_BASE_URL}/orders?uid=${uid}&coin_id=${coin_pair_id}&order_type=${effectiveOrderType}&excecution_type=${excecution_type}&price=${price}&amount=${amount}&total_in_usdt=${total_in_usdt}&apikey=${API_KEY}`;
         
         console.log('Executing spot trade:', { uid, coin_pair_id, side, price, amount });
         
-        const response = await fetchWithTimeout(url, { method: 'POST' });
+        // Add request to queue to prevent duplicates
+        const requestPromise = (async () => {
+            try {
+                const response = await fetchWithTimeout(url, { method: 'POST' });
 
-        let data;
-        try {
-            data = await response.json();
-        } catch (e) {
-            console.warn('API returned invalid JSON, using mock response');
-            data = {
-                success: true,
-                order_id: `mock-${Date.now()}`,
-                message: 'Order processed successfully (mock)',
-                timestamp: new Date().toISOString()
-            };
-        }
+                let data;
+                try {
+                    data = await response.json();
+                } catch (e) {
+                    console.warn('API returned invalid JSON, treating as error');
+                    return {
+                        success: false,
+                        message: 'Invalid response from server'
+                    };
+                }
 
-        if (!response.ok && !data?.success) {
-            throw new Error(data?.message || `Trade execution failed: ${response.status}`);
-        }
-        
-        // Clear the wallet cache for this user and coin pair to ensure fresh data on next fetch
-        const walletCacheKey = `wallet_${uid}_${coin_pair_id}`;
-        apiCache.delete(walletCacheKey);
-        console.log(`Cleared wallet cache for ${uid}/${coin_pair_id} after successful trade`);
+                // Handle new API response format
+                if (data.status === 'success') {
+                    // Clear the wallet cache for this user and coin pair to ensure fresh data on next fetch
+                    const walletCacheKey = `wallet_${uid}_${coin_pair_id}`;
+                    apiCache.delete(walletCacheKey);
+                    console.log(`Cleared wallet cache for ${uid}/${coin_pair_id} after successful trade`);
 
-        return {
-            success: true,
-            data,
-            message: `${side === 'buy' ? 'Buy' : 'Sell'} order executed successfully`
-        };
+                    return {
+                        success: true,
+                        data,
+                        message: data.message || `${side === 'buy' ? 'Buy' : 'Sell'} order executed successfully`
+                    };
+                } else if (data.status === 'error') {
+                    return {
+                        success: false,
+                        message: data.message || 'Trade execution failed'
+                    };
+                } else {
+                    // Fallback for unexpected response format
+                    return {
+                        success: false,
+                        message: 'Unexpected response format from server'
+                    };
+                }
+            } finally {
+                // Always remove from queue when done
+                requestQueue.delete(tradeKey);
+            }
+        })();
+
+        requestQueue.set(tradeKey, requestPromise);
+        return await requestPromise;
 
     } catch (error) {
         console.error('Spot trade execution error:', error);

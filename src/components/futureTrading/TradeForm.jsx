@@ -87,9 +87,7 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
   // Form state
   const [activeTab, setActiveTab] = useState('trade');
   const [positionType, setPositionType] = useState('open');
-  const [leverageMode, setLeverageMode] = useState('isolated');
   const [leverage, setLeverage] = useState('20');
-  const [orderType, setOrderType] = useState('limit');
   const [price, setPrice] = useState('');
   const [amount, setAmount] = useState('');
   const [sliderValue, setSliderValue] = useState(0);
@@ -162,11 +160,6 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
     setPositionType(type);
   };
   
-  // Handle leverage mode change
-  const toggleLeverageMode = () => {
-    setLeverageMode(prev => prev === 'isolated' ? 'cross' : 'isolated');
-  };
-  
   // Handle leverage change
   const toggleLeverage = () => {
     // Cycle through common leverage values: 10x, 20x, 50x, 100x
@@ -174,11 +167,6 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
     const currentIndex = leverageValues.indexOf(leverage);
     const nextIndex = (currentIndex + 1) % leverageValues.length;
     setLeverage(leverageValues[nextIndex]);
-  };
-  
-  // Handle order type change
-  const handleOrderTypeClick = (type) => {
-    setOrderType(type);
   };
   
   // Handle slider change
@@ -396,50 +384,9 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
 
       {/* Leverage */}
       <div className="leverage-section">
-        <div className="leverage-mode">
-          <button
-            className={`leverage-mode-btn ${leverageMode === 'isolated' ? 'active' : ''}`}
-            onClick={toggleLeverageMode}
-          >
-            Isolated
-          </button>
-          <button
-            className={`leverage-mode-btn ${leverageMode === 'cross' ? 'active' : ''}`}
-            onClick={toggleLeverageMode}
-          >
-            Cross
-          </button>
-        </div>
         <div className="leverage-value" onClick={toggleLeverage}>
           <span>{leverage}</span>×
           <FontAwesomeIcon icon={faChevronDown} style={{ marginLeft: '4px', fontSize: '10px' }} />
-        </div>
-      </div>
-
-      {/* Order Type */}
-      <div className="order-type-section">
-        <div className="order-types">
-          <div
-            className={`order-type ${orderType === 'limit' ? 'active' : ''}`}
-            onClick={() => handleOrderTypeClick('limit')}
-          >
-            Limit
-          </div>
-          <div
-            className={`order-type ${orderType === 'market' ? 'active' : ''}`}
-            onClick={() => handleOrderTypeClick('market')}
-          >
-            Market
-          </div>
-          <div
-            className={`order-type ${orderType === 'tp/sl' ? 'active' : ''}`}
-            onClick={() => handleOrderTypeClick('tp/sl')}
-          >
-            TP/SL
-          </div>
-          <div className="order-type-help">
-            <FontAwesomeIcon icon={faQuestionCircle} />
-          </div>
         </div>
       </div>
 

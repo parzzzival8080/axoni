@@ -1,92 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://fluxcoin.tech/</loc>
+    <loc>https://kinecoin.co/</loc>
     <priority>1.0</priority>
     <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/spot-trading</loc>
+    <loc>https://kinecoin.co/spot-trading</loc>
     <priority>0.9</priority>
     <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/future-trading</loc>
+    <loc>https://kinecoin.co/future-trading</loc>
     <priority>0.9</priority>
     <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/deposit</loc>
+    <loc>https://kinecoin.co/deposit</loc>
     <priority>0.9</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/withdraw</loc>
+    <loc>https://kinecoin.co/withdraw</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/transfer</loc>
+    <loc>https://kinecoin.co/transfer</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/conversion</loc>
+    <loc>https://kinecoin.co/conversion</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/earn</loc>
+    <loc>https://kinecoin.co/earn</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/my-assets</loc>
+    <loc>https://kinecoin.co/my-assets</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/about</loc>
+    <loc>https://kinecoin.co/about</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/download</loc>
+    <loc>https://kinecoin.co/download</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/help/deposit/</loc>
+    <loc>https://kinecoin.co/help/deposit/</loc>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/help/withdrawal/</loc>
+    <loc>https://kinecoin.co/help/withdrawal/</loc>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/announcement</loc>
+    <loc>https://kinecoin.co/announcement</loc>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/article</loc>
+    <loc>https://kinecoin.co/article</loc>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/pages/morePages/CampaignCenter</loc>
+    <loc>https://kinecoin.co/pages/morePages/CampaignCenter</loc>
     <priority>0.5</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/pages/morePages/MyRewards</loc>
+    <loc>https://kinecoin.co/pages/morePages/MyRewards</loc>
     <priority>0.5</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/pages/morePages/Referral</loc>
+    <loc>https://kinecoin.co/pages/morePages/Referral</loc>
     <priority>0.5</priority>
     <changefreq>monthly</changefreq>
   </url>
