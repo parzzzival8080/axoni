@@ -68,7 +68,7 @@ const RegistrationSuccessModal = ({ isOpen, onClose }) => {
           {/* Header */}
           <div className="text-center px-6 mb-4">
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
-              Welcome to FLUX!
+              Welcome to KINE!
             </h1>
             <div className="w-12 h-1 rounded-full mx-auto mb-3" style={{ backgroundColor: '#F88726' }}></div>
             <p className="text-gray-600 text-base leading-relaxed">
