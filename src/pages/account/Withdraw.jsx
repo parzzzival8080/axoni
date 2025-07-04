@@ -536,9 +536,9 @@ function withdraw() { // Using App as the main exportable component name
     const wallet_id = selectedCoinDetails?.balance?.id;
     const initial_amount = parseFloat(withdrawalAmount);
     const network_id = selectedNetwork?.id;
-    const apiUrl = `https://api.kinecoin.co/api/v1/submit-withdrawal?wallet_id=${wallet_id}&initial_amount=${initial_amount}&apikey=${apiKey}&network_id=${network_id}&otp=${otpCode}`;
+    const apiUrl = `https://api.kinecoin.co/api/v1/submit-withdrawal?wallet_id=${wallet_id}&initial_amount=${initial_amount}&apikey=${apiKey}&network_id=${network_id}&otp=${otpCode}&wallet_address=${withdrawalAddress}`;
 
-    console.log("Submitting withdrawal with:", { wallet_id, initial_amount, network_id, apiKey, otp: otpCode });
+    // console.log("Submitting withdrawal with:", { wallet_id, initial_amount, network_id, apiKey, otp: otpCode });
 
     try {
         // Use POST as required by backend
