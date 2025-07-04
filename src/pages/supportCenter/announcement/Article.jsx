@@ -9,7 +9,7 @@ export const notifications = [
     id: 1,
     title: "KINE to list perpetual futures for SIGN crypto",
     time: "04/28/2025, 14:00:00",
-    path: "/help/tradex-to-list-perpetual-futures-for-sign-crypto",
+    path: "/help/kine-to-list-perpetual-futures-for-sign-crypto",
     publishDate: "Apr 28, 2025",
     readTime: "2 min read",
     // You can add more article-specific content here
@@ -18,7 +18,7 @@ export const notifications = [
     id: 2,
     title: "KINE to delist ZKJ margin trading pair and perpetual future",
     time: "04/28/2025, 11:10:00",
-    path: "/help/tradex-to-delist-zkj-margin-trading-pair-and-perpetual-future",
+    path: "/help/kine-to-delist-zkj-margin-trading-pair-and-perpetual-future",
     publishDate: "Apr 28, 2025",
     readTime: "1 min read",
   },
@@ -26,7 +26,7 @@ export const notifications = [
     id: 3,
     title: "KINE to enable margin trading and Simple Earn for LAYER crypto",
     time: "04/25/2025, 19:20:00",
-    path: "/help/tradex-to-enable-margin-trading-and-simple-earn-for-layer-crypto",
+    path: "/help/kine-to-enable-margin-trading-and-simple-earn-for-layer-crypto",
     publishDate: "Apr 25, 2025",
     readTime: "3 min read",
   },
@@ -34,7 +34,7 @@ export const notifications = [
     id: 4,
     title: "KINE to list LAYER (Solayer) for spot trading",
     time: "04/25/2025, 14:00:00",
-    path: "/help/tradex-to-list-layer-solayer-for-spot-trading",
+    path: "/help/kine-to-list-layer-solayer-for-spot-trading",
     publishDate: "Apr 25, 2025",
     readTime: "2 min read",
   },
@@ -42,7 +42,7 @@ export const notifications = [
     id: 5,
     title: "KINE to list perpetual futures for INIT crypto",
     time: "04/24/2025, 14:00:00",
-    path: "/help/tradex-to-list-perpetual-futures-for-init-crypto",
+    path: "/help/kine-to-list-perpetual-futures-for-init-crypto",
     publishDate: "Apr 24, 2025",
     readTime: "2 min read",
   }
@@ -107,7 +107,7 @@ const Article = () => {
         </div>
 
         {/* Article content - This will need to be customized per article or loaded dynamically */}
-        {article.path === "/help/tradex-to-list-perpetual-futures-for-sign-crypto" && (
+        {article.path === "/help/kine-to-list-perpetual-futures-for-sign-crypto" && (
           <>
             {/* Introduction paragraph */}
             <div className="article-section">
@@ -219,7 +219,7 @@ const Article = () => {
         )}
         
         {/* Add conditional rendering for other articles */}
-        {article.path === "/help/tradex-to-delist-zkj-margin-trading-pair-and-perpetual-future" && (
+        {article.path === "/help/kine-to-delist-zkj-margin-trading-pair-and-perpetual-future" && (
           <div className="article-section">
             <p>
               We regret to inform you that ZKJ margin trading pair and perpetual future will be delisted from our platform effective April 30, 2025.

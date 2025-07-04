@@ -71,7 +71,7 @@ const Footer = () => {
           <div className="logo-container">
             <img
               src={Logo}
-              alt="tradex-logo"
+              alt="kine-logo"
               className="h-12 w-auto object-contain"
             />
           </div>

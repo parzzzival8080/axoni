@@ -370,7 +370,7 @@ const Navbar = () => {
     <header className="navbar-header">
       <div className="header-left">
         <Link to="/" className="logo">
-          <img src="/assets/logo/tradex-icon.png" alt="Logo" />
+          <img src="/assets/logo/kine-icon.png" alt="Logo" />
         </Link>
         <nav className="desktop-nav">
           <div className="nav-item">
