@@ -149,7 +149,7 @@ const Hero = () => {
         />
         <Link
           to="/signup"
-          className="bg-[#F88726] text-black px-8 py-3 rounded-full font-semibold bg:hover-[#00FA8C] transition-colors w-full sm:w-auto"
+          className="bg-[#F88726] text-black px-8 py-3 rounded-full font-semibold bg:hover-[#F88726] transition-colors w-full sm:w-auto"
         >
           Sign up now
         </Link>

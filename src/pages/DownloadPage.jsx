@@ -107,7 +107,7 @@ const DownloadPage = () => {
           <div className="landing__features-content">
             <h2 className="landing__section-title">One app</h2>
             <h3 className="landing__section-subtitle">
-              <span className="text-[#ff6901]">Unlimited</span> possibilities
+              <span className="text-[#F88726]">Unlimited</span> possibilities
             </h3>
             <p className="landing__description">
               Download the KINE app to trade crypto on the go. Gain access to
@@ -122,10 +122,10 @@ const DownloadPage = () => {
         <div className="landing__container">
           <div className="landing__platform-content">
             <h2 className="landing__section-title">
-              <span className="text-[#ff6901]">Powerful</span> platform
+              <span className="text-[#F88726]">Powerful</span> platform
             </h2>
             <h3 className="landing__section-subtitle">
-              Trade like a <span className="text-[#ff6901]">pro</span>
+              Trade like a <span className="text-[#F88726]">pro</span>
             </h3>
             <p className="landing__description">
               Trade crypto like a pro with our crypto trading platform on your

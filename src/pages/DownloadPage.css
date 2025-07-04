@@ -53,7 +53,7 @@
 }
 
 .landing__highlight {
-  color: #ff6901;
+  color: #F88726;
 }
 
 .landing__tagline {
@@ -93,7 +93,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background-color: #ff6901;
+  background-color: #F88726;
   color: #000000;
   border: none;
   border-radius: 50px;

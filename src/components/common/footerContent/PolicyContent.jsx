@@ -97,7 +97,7 @@ const PrivacyPolicy = () => {
                           }}
                           className={`w-full text-left p-2 rounded text-sm transition-colors ${
                             activeSection === item.id
-                              ? 'bg-blue-50 text-[#ff6901] font-medium'
+                              ? 'bg-blue-50 text-[#F88726] font-medium'
                               : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                           }`}
                         >
@@ -309,7 +309,7 @@ const PrivacyPolicy = () => {
                       onClick={() => scrollToSection(item.id)}
                       className={`w-full text-left py-1.5 px-2 rounded text-sm transition-colors block ${
                         activeSection === item.id
-                          ? 'bg-blue-50 text-[#ff6901] font-medium'
+                          ? 'bg-blue-50 text-[#F88726] font-medium'
                           : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                       }`}
                     >

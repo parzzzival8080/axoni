@@ -1,12 +1,69 @@
-import React, { useState } from "react";
-import { FiKey, FiSmartphone, FiMail, FiLock, FiShield, FiAlertCircle, FiMonitor, FiBarChart2, FiX } from "react-icons/fi";
+import React, { useState, useEffect } from "react";
+import { FiMail, FiLock, FiShield, FiAlertCircle, FiX } from "react-icons/fi";
 import { useNavigate } from 'react-router-dom';
 import ProfileNavBar from '../../components/profile/ProfileNavBar';
+import axios from 'axios';
 
 const Security = () => {
   const navigate = useNavigate();
   const [showPopup, setShowPopup] = useState(false);
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
+  
+  // User data state
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [profileData, setProfileData] = useState(null);
+  
+  // Get user ID from localStorage
+  const userId = localStorage.getItem('user_id');
+  
+  // Fetch user data on component mount
+  useEffect(() => {
+    const fetchUserData = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        if (!userId) {
+          setError('User ID not found. Please log in again.');
+          setIsLoading(false);
+          return;
+        }
+        const response = await axios.get(
+          `https://django.kinecoin.co/api/user_account/getUserInformation/?user_id=${userId}`
+        );
+        if (response.data && response.data.user) {
+          setProfileData(response.data);
+        } else {
+          setError('User data format invalid.');
+        }
+      } catch (err) {
+        setError('Failed to fetch user details.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchUserData();
+  }, [userId]);
+  
+  // Fallback data from localStorage if API fails
+  const storedUser = localStorage.getItem('user');
+  const localUser = storedUser ? JSON.parse(storedUser) : {};
+  
+  const fallbackData = {
+    user: {
+      email: localUser.email || 'user@example.com',
+    },
+  };
+  
+  // Use API data or fallback
+  const user = profileData?.user || fallbackData.user;
+  
+  // Display data with proper null handling
+  const displayData = {
+    email: user.email || 'Not provided',
+  };
+  
+
   
   const handleChangePassword = () => {
     navigate('/account/profile/security/change-password');
@@ -34,6 +91,50 @@ const Security = () => {
   const closePopup = () => {
     setShowPopup(false);
   };
+  
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white relative">
+        <ProfileNavBar />
+        <div className="max-w-4xl mx-auto px-4 py-8">
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 dark:border-blue-400"></div>
+            <span className="ml-3 text-sm">Loading security settings...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white relative">
+        <ProfileNavBar />
+        <div className="max-w-4xl mx-auto px-4 py-8">
+          <div className="flex flex-col items-center justify-center py-12">
+            <div className="text-red-500 mb-4">
+              <FiAlertCircle className="w-12 h-12" />
+            </div>
+            <h3 className="text-xl font-medium text-gray-900 dark:text-gray-100 mb-2 text-center">
+              Error loading security settings
+            </h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-6 text-center px-4">
+              {error}
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-6 py-3 bg-[#FE7400] text-white rounded-md hover:bg-orange-600 transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  
   return (
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white relative">
       <ProfileNavBar />
@@ -118,53 +219,7 @@ const Security = () => {
         <div className="mb-12">
           <h3 className="text-xl font-semibold mb-6">Authentication methods</h3>
 
-          {/* Passkeys */}
-          <div className="border-t border-gray-200 dark:border-gray-800 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 flex items-center justify-center">
-                  <FiKey className="text-gray-600 dark:text-gray-400 w-5 h-5" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h4 className="font-medium">Passkeys</h4>
-                    <span className="bg-green-500 text-xs text-white px-1.5 py-0.5 rounded text-[10px]">Recommended</span>
-                  </div>
-                  <p className="text-xs text-gray-600 dark:text-gray-400">Enjoy secure login without passwords and authentication codes</p>
-                </div>
-              </div>
-              <button 
-                className="text-blue-500 text-sm font-medium hover:underline"
-                onClick={handleComingSoonClick}
-              >
-                Manage
-              </button>
-            </div>
-          </div>
 
-          {/* Phone Authentication */}
-          <div className="border-t border-gray-200 dark:border-gray-800 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 flex items-center justify-center">
-                  <FiSmartphone className="text-gray-600 dark:text-gray-400 w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="font-medium">Phone authentication</h4>
-                  <p className="text-xs text-gray-600 dark:text-gray-400">Get authentication codes via SMS or calls when managing assets and other functions</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-gray-400 text-sm">****1051</span>
-                <button 
-                  className="text-blue-500 text-sm font-medium hover:underline"
-                  onClick={handleComingSoonClick}
-                >
-                  Change phone number
-                </button>
-              </div>
-            </div>
-          </div>
 
           {/* Email Authentication */}
           <div className="border-t border-gray-200 dark:border-gray-800 py-4">
@@ -179,7 +234,7 @@ const Security = () => {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-gray-400 text-sm">ron***@gmail.com</span>
+                <span className="text-gray-400 text-sm">{displayData.email}</span>
                 <button 
                   className="text-blue-500 text-sm font-medium hover:underline"
                   onClick={handleChangeEmail}
@@ -215,55 +270,7 @@ const Security = () => {
           </div>
         </div>
 
-        {/* Advanced Security */}
-        <div>
-          <h3 className="text-xl font-semibold mb-6">Advanced security</h3>
 
-          {/* Device Management */}
-          <div className="border-t border-gray-200 dark:border-gray-800 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 flex items-center justify-center">
-                  <FiMonitor className="text-gray-600 dark:text-gray-400 w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="font-medium">Device management</h4>
-                  <p className="text-xs text-gray-600 dark:text-gray-400">Manage and view recent login activity and device information</p>
-                </div>
-              </div>
-              <button 
-                className="text-blue-500 text-sm font-medium hover:underline"
-                onClick={handleComingSoonClick}
-              >
-                Manage
-              </button>
-            </div>
-          </div>
-
-          {/* Trading Permissions */}
-          <div className="border-t border-gray-200 dark:border-gray-800 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 flex items-center justify-center">
-                  <FiBarChart2 className="text-gray-600 dark:text-gray-400 w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="font-medium">Trading permissions</h4>
-                  <p className="text-xs text-gray-600 dark:text-gray-400">Set your tradable instruments and crypto</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-gray-400 text-sm">Off</span>
-                <button 
-                  className="text-blue-500 text-sm font-medium hover:underline"
-                  onClick={handleComingSoonClick}
-                >
-                  Turn on
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

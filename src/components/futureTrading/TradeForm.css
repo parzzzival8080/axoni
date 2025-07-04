@@ -1,5 +1,5 @@
 .future-trading-container .trade-form {
-  --buy-color: #FF6901;
+  --buy-color: #F88726;
   --sell-color: #F23645;
   --primary-bg: #000000;
   --secondary-bg: #1A1A1A;
@@ -507,7 +507,7 @@
 }
 
 .future-trading-container .trade-form .action-btn.buy-more {
-  background: linear-gradient(135deg, #FF6901, #FF8C42);
+  background: linear-gradient(135deg, #F88726, #FF8C42);
 }
 
 .future-trading-container .trade-form .action-btn.sell {
