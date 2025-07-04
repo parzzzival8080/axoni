@@ -400,16 +400,8 @@ const Footer = () => {
                   <span>KINE</span>
                 </h3>
                 <button className="bg-[#F88726] hover:bg-[#e67615] text-white font-medium py-2 px-6 rounded-full transition-colors duration-200 mb-2">
-                  Trade
+                  Trade Now
                 </button>
-                <QRCodeSVG
-                  value={appDownloadUrl}
-                  size={150}
-                  level={"H"}
-                  includeMargin={true}
-                  className="qr-code-image"
-                />
-                <p className="qr-text">Scan to download KINE app</p>
               </div>
             )}
           </div>

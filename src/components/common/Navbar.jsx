@@ -933,42 +933,6 @@ const Navbar = () => {
 
         <div className="icon-group desktop-only">
           {/* Download App Icon with QR code dropdown */}
-          <div className="right-nav-item">
-            <button
-              className="navbar-icon-link"
-              type="button"
-              aria-label="Download app"
-              style={{
-                background: "none",
-                border: "none",
-                padding: 0,
-                margin: 0,
-                cursor: "pointer",
-              }}
-            >
-              <i className="far fa-arrow-alt-circle-down"></i>
-            </button>
-
-            <div className="right-dropdown-menu download-menu mr-10">
-              <h3 className="dropdown-title">Download app</h3>
-              <div className="qr-code-container">
-                <QRCodeSVG
-                  value={appDownloadUrl}
-                  size={200}
-                  level={"H"}
-                  includeMargin={true}
-                  className="qr-code-image"
-                />
-              </div>
-              <div className="download-qr-code-container">
-                <Link to="/download">
-                  <button className="dropdown-button">More options</button>
-                </Link>
-
-                <p className="dropdown-subtitle">For mobile and desktop</p>
-              </div>
-            </div>
-          </div>
 
           {/* Notifications Icon with announcements dropdown */}
           <div className="right-nav-item hidden">
