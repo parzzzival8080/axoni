@@ -3,12 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/common/Navbar";
 import defaultProfileImage from "../assets/assets/default.png";
+import RegistrationSuccessModal from "../components/common/RegistrationSuccessModal";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
 
   // State for form steps
   const [currentStep, setCurrentStep] = useState(1);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   // State for form values
   const [formData, setFormData] = useState({
@@ -66,7 +68,7 @@ const SignUpPage = () => {
             Accept: "application/json",
             "Cache-Control": "no-cache",
           },
-        },
+        }
       );
 
       if (response.data && Array.isArray(response.data)) {
@@ -78,7 +80,7 @@ const SignUpPage = () => {
         setCountries(sortedCountries);
         setFilteredCountries(sortedCountries);
         console.log(
-          `Loaded ${sortedCountries.length} countries from REST Countries API`,
+          `Loaded ${sortedCountries.length} countries from REST Countries API`
         );
       } else {
         throw new Error("Invalid response format from countries API");
@@ -164,7 +166,7 @@ const SignUpPage = () => {
 
       setFilteredCountries(filtered);
     },
-    [countries],
+    [countries]
   );
 
   // Handle country selection
@@ -182,7 +184,7 @@ const SignUpPage = () => {
         setError("");
       }
     },
-    [error],
+    [error]
   );
 
   // Timer for OTP resend with proper cleanup
@@ -252,7 +254,7 @@ const SignUpPage = () => {
         setError("");
       }
     },
-    [error],
+    [error]
   );
 
   // Handle OTP input changes with improved validation
@@ -279,7 +281,7 @@ const SignUpPage = () => {
         setError("");
       }
     },
-    [formData.otp, error],
+    [formData.otp, error]
   );
 
   // Handle key press in OTP fields
@@ -300,7 +302,7 @@ const SignUpPage = () => {
         }
       }
     },
-    [formData.otp],
+    [formData.otp]
   );
 
   // Handle paste for OTP with improved validation
@@ -337,7 +339,7 @@ const SignUpPage = () => {
         otpRefs.current[focusIndex].focus();
       }
     },
-    [formData.otp],
+    [formData.otp]
   );
 
   // Handle profile picture upload with improved validation
@@ -496,7 +498,7 @@ const SignUpPage = () => {
 
         const result = await makeApiCall(
           "https://django.kinecoin.co/api/user_account/signup",
-          payload,
+          payload
         );
 
         if (!result.success) {
@@ -561,7 +563,7 @@ const SignUpPage = () => {
 
         const result = await makeApiCall(
           "https://django.kinecoin.co/api/user_account/verify-otp",
-          payload,
+          payload
         );
 
         console.log("OTP verification result:", result);
@@ -570,11 +572,9 @@ const SignUpPage = () => {
         const verificationData = result.data || {};
         const isVerified =
           result.success &&
-          (
-            verificationData.jwt_token ||
+          (verificationData.jwt_token ||
             verificationData.user_id ||
-            verificationData.verified === true
-          );
+            verificationData.verified === true);
 
         if (isVerified) {
           // Store verification data
@@ -586,10 +586,16 @@ const SignUpPage = () => {
             localStorage.setItem("uid", verificationData.uid);
           }
           if (verificationData.referral_code) {
-            localStorage.setItem("referral_code", verificationData.referral_code);
+            localStorage.setItem(
+              "referral_code",
+              verificationData.referral_code
+            );
           }
           if (verificationData.secret_phrase) {
-            localStorage.setItem("secret_phrase", verificationData.secret_phrase);
+            localStorage.setItem(
+              "secret_phrase",
+              verificationData.secret_phrase
+            );
           }
 
           setCurrentStep(4);
@@ -597,16 +603,16 @@ const SignUpPage = () => {
           // Show backend error or fallback error
           setError(
             result.error ||
-            verificationData.error ||
-            "Invalid or expired verification code. Please try again or resend the code."
+              verificationData.error ||
+              "Invalid or expired verification code. Please try again or resend the code."
           );
         }
       } catch (err) {
         console.error("OTP verification error:", err);
         setError(
           err?.response?.data?.error ||
-          err?.message ||
-          "Verification failed. Please try again."
+            err?.message ||
+            "Verification failed. Please try again."
         );
       } finally {
         setLoading(false);
@@ -630,7 +636,7 @@ const SignUpPage = () => {
 
       const result = await makeApiCall(
         "https://django.kinecoin.co/api/user_account/resend-otp",
-        payload,
+        payload
       );
 
       if (result.success) {
@@ -657,6 +663,14 @@ const SignUpPage = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleModalClose = () => {
+    setShowSuccessModal(false);
+    setTimeout(() => {
+      const isVerified = localStorage.getItem("is_verified") === "true";
+      navigate(isVerified ? "/spot-trading" : "/", { replace: true });
+    }, 100);
   };
 
   // Handle form submission (final step) with comprehensive error handling
@@ -736,7 +750,7 @@ const SignUpPage = () => {
         } catch (imageError) {
           console.warn(
             "Failed to process profile image, continuing without it:",
-            imageError,
+            imageError
           );
           // Fall back to JSON if image processing fails
           profileDataPayload = profileData;
@@ -762,7 +776,7 @@ const SignUpPage = () => {
             headers: headers,
             timeout: 30000,
             withCredentials: true,
-          },
+          }
         );
 
         console.log("Profile update response:", response.data);
@@ -780,14 +794,14 @@ const SignUpPage = () => {
         if (response.data.user_detail?.user_profile) {
           localStorage.setItem(
             "profileImage",
-            response.data.user_detail.user_profile,
+            response.data.user_detail.user_profile
           );
         }
       } catch (error) {
         console.error("Error updating profile:", error);
         setError(
           error.response?.data?.message ||
-            "Failed to update profile. Please try again.",
+            "Failed to update profile. Please try again."
         );
         return;
       }
@@ -803,7 +817,7 @@ const SignUpPage = () => {
               Pragma: "no-cache",
             },
             timeout: 10000,
-          },
+          }
         );
 
         const userData = userInfoResponse.data;
@@ -863,7 +877,7 @@ const SignUpPage = () => {
           const countryResult = await makeApiCall(
             "https://django.kinecoin.co/api/user_account/user-detail/add-country",
             countryPayload,
-            { headers: { Authorization: `Bearer ${storedToken}` } },
+            { headers: { Authorization: `Bearer ${storedToken}` } }
           );
 
           if (countryResult.success) {
@@ -878,7 +892,7 @@ const SignUpPage = () => {
                   user_id: parseInt(storedUserId),
                   password: formData.password,
                 },
-                { headers: { Authorization: `Bearer ${storedToken}` } },
+                { headers: { Authorization: `Bearer ${storedToken}` } }
               );
 
               if (sendDataResult.success) {
@@ -889,7 +903,7 @@ const SignUpPage = () => {
             } catch (sendDataError) {
               console.warn(
                 "Non-critical error sending user data:",
-                sendDataError,
+                sendDataError
               );
               // Continue with registration even if send-data fails
             }
@@ -911,7 +925,7 @@ const SignUpPage = () => {
               Authorization: `Bearer ${storedToken}`,
             },
             timeout: 15000,
-          },
+          }
         );
 
         if (userInfoResponse.data) {
@@ -926,13 +940,13 @@ const SignUpPage = () => {
             if (userInfo.user.referral_code) {
               localStorage.setItem(
                 "referral_code",
-                userInfo.user.referral_code,
+                userInfo.user.referral_code
               );
             }
             if (userInfo.user.secret_phrase) {
               localStorage.setItem(
                 "secret_phrase",
-                userInfo.user.secret_phrase,
+                userInfo.user.secret_phrase
               );
             }
           }
@@ -952,12 +966,8 @@ const SignUpPage = () => {
       console.log("Registration completed successfully");
 
       // Show success message
-      setTimeout(() => {
-        alert("Registration successful! Welcome to TradeX.");
-
-        const isVerified = localStorage.getItem("is_verified") === "true";
-        navigate(isVerified ? "/spot-trading" : "/", { replace: true });
-      }, 500);
+      console.log("Registration completed successfully");
+      setShowSuccessModal(true);
     } catch (err) {
       console.error("Profile update error:", err);
       const errorMessage =
@@ -1004,7 +1014,7 @@ const SignUpPage = () => {
                       className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-medium transition-colors duration-200
                                      ${
                                        currentStep >= step
-                                         ? "bg-[#F88726] text-white border-[#F88726]"
+                                         ? "bg-[#FE7400] text-white border-[#FE7400]"
                                          : "bg-white text-gray-400 border border-gray-300"
                                      }`}
                     >
@@ -1020,10 +1030,10 @@ const SignUpPage = () => {
                       {step === 1
                         ? "Country"
                         : step === 2
-                          ? "Credentials"
-                          : step === 3
-                            ? "Verification"
-                            : "Profile"}
+                        ? "Credentials"
+                        : step === 3
+                        ? "Verification"
+                        : "Profile"}
                     </span>
                   </div>
                 ))}
@@ -1057,7 +1067,7 @@ const SignUpPage = () => {
                   <input
                     type="text"
                     id="country"
-                    className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F88726] focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent transition-all duration-200"
                     placeholder={
                       loadingCountries
                         ? "Loading countries..."
@@ -1154,21 +1164,21 @@ const SignUpPage = () => {
                   By creating an account, I agree to TradeX{" "}
                   <a
                     href="#"
-                    className="text-[#F88726] hover:underline font-medium"
+                    className="text-[#FE7400] hover:underline font-medium"
                   >
                     Terms of Service
                   </a>
                   ,{" "}
                   <a
                     href="#"
-                    className="text-[#F88726] hover:underline font-medium"
+                    className="text-[#FE7400] hover:underline font-medium"
                   >
                     Risk and Compliance Disclosure
                   </a>
                   , and{" "}
                   <a
                     href="#"
-                    className="text-[#F88726] hover:underline font-medium"
+                    className="text-[#FE7400] hover:underline font-medium"
                   >
                     Privacy Notice
                   </a>
@@ -1177,7 +1187,7 @@ const SignUpPage = () => {
               </div>
 
               <button
-                className="w-full py-3.5 px-6 rounded-full bg-[#F88726] text-white font-medium hover:bg-[#e56700] transition-colors duration-200 mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3.5 px-6 rounded-full bg-[#FE7400] text-white font-medium hover:bg-[#e56700] transition-colors duration-200 mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={() => goToNextStep(1)}
                 disabled={
                   loading ||
@@ -1200,7 +1210,7 @@ const SignUpPage = () => {
                 Already have an account?{" "}
                 <Link
                   to="/login"
-                  className="text-[#F88726] font-medium hover:underline"
+                  className="text-[#FE7400] font-medium hover:underline"
                 >
                   Log in
                 </Link>
@@ -1221,7 +1231,7 @@ const SignUpPage = () => {
                 </label>
                 <input
                   type="email"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F88726] focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent transition-all duration-200"
                   id="email"
                   name="email"
                   placeholder="Enter your email"
@@ -1241,7 +1251,7 @@ const SignUpPage = () => {
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
-                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F88726] focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent transition-all duration-200"
                     id="password"
                     name="password"
                     placeholder="Create a password (min 8 characters)"
@@ -1273,7 +1283,7 @@ const SignUpPage = () => {
                 <div className="relative">
                   <input
                     type={showConfirmPassword ? "text" : "password"}
-                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F88726] focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent transition-all duration-200"
                     id="confirmPassword"
                     name="confirmPassword"
                     placeholder="Confirm your password"
@@ -1296,7 +1306,7 @@ const SignUpPage = () => {
                 </div>
               </div>
               <button
-                className="w-full py-3.5 px-6 rounded-full bg-[#F88726] text-white font-medium hover:bg-[#e56700] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3.5 px-6 rounded-full bg-[#FE7400] text-white font-medium hover:bg-[#e56700] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={() => goToNextStep(2)}
                 disabled={
                   loading ||
@@ -1328,7 +1338,7 @@ const SignUpPage = () => {
                     key={index}
                     type="text"
                     maxLength="1"
-                    className="w-12 h-14 text-center text-lg border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F88726] focus:border-transparent transition-all duration-200"
+                    className="w-12 h-14 text-center text-lg border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent transition-all duration-200"
                     value={digit}
                     onChange={(e) => handleOtpChange(index, e.target.value)}
                     onKeyDown={(e) => handleOtpKeyDown(index, e)}
@@ -1346,7 +1356,7 @@ const SignUpPage = () => {
                 <button
                   className={`text-sm font-medium transition-colors ${
                     canResend
-                      ? "text-[#F88726] hover:underline cursor-pointer"
+                      ? "text-[#FE7400] hover:underline cursor-pointer"
                       : "text-gray-400 cursor-not-allowed"
                   }`}
                   onClick={handleResendOtp}
@@ -1363,7 +1373,7 @@ const SignUpPage = () => {
                 </button>
               </div>
               <button
-                className="w-full py-3.5 px-6 rounded-full bg-[#F88726] text-white font-medium hover:bg-[#e56700] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3.5 px-6 rounded-full bg-[#FE7400] text-white font-medium hover:bg-[#e56700] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={() => goToNextStep(3)}
                 disabled={loading || formData.otp.join("").length !== 6}
               >
@@ -1397,7 +1407,7 @@ const SignUpPage = () => {
                     e.target.src = defaultProfileImage;
                   }}
                 />
-                <div className="absolute bottom-0 right-0 w-8 h-8 bg-[#F88726] rounded-full flex items-center justify-center transform translate-x-1 -translate-y-1 group-hover:scale-110 transition-transform duration-200">
+                <div className="absolute bottom-0 right-0 w-8 h-8 bg-[#FE7400] rounded-full flex items-center justify-center transform translate-x-1 -translate-y-1 group-hover:scale-110 transition-transform duration-200">
                   <i className="fas fa-camera text-white text-sm"></i>
                 </div>
                 <input
@@ -1422,7 +1432,7 @@ const SignUpPage = () => {
                 </label>
                 <input
                   type="text"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F88726] focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent transition-all duration-200"
                   id="fullName"
                   name="fullName"
                   placeholder="Enter your full name"
@@ -1442,7 +1452,7 @@ const SignUpPage = () => {
                 </label>
                 <div className="flex">
                   <select
-                    className="w-24 px-3 py-3 border border-r-0 border-gray-300 rounded-l-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F88726] focus:border-transparent text-sm"
+                    className="w-24 px-3 py-3 border border-r-0 border-gray-300 rounded-l-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent text-sm"
                     defaultValue="+1"
                   >
                     <option value="+1">+1 (US)</option>
@@ -1456,7 +1466,7 @@ const SignUpPage = () => {
                   </select>
                   <input
                     type="tel"
-                    className="flex-1 px-4 py-3 border border-l-0 border-gray-300 rounded-r-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F88726] focus:border-transparent transition-all duration-200"
+                    className="flex-1 px-4 py-3 border border-l-0 border-gray-300 rounded-r-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#FE7400] focus:border-transparent transition-all duration-200"
                     id="phone"
                     name="phone"
                     placeholder="Enter your phone number"
@@ -1471,7 +1481,7 @@ const SignUpPage = () => {
               </div>
 
               <button
-                className="w-full py-3.5 px-6 rounded-full bg-[#F88726] text-white font-medium hover:bg-[#e56700] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3.5 px-6 rounded-full bg-[#FE7400] text-white font-medium hover:bg-[#e56700] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={handleSubmit}
                 disabled={loading || !formData.fullName || !formData.phone}
               >
@@ -1485,6 +1495,10 @@ const SignUpPage = () => {
                 )}
               </button>
             </div>
+            <RegistrationSuccessModal
+              isOpen={showSuccessModal}
+              onClose={handleModalClose}
+            />
           </div>
         </div>
       </div>
