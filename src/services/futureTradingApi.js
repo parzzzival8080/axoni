@@ -335,3 +335,98 @@ export const calculateMaxAmount = (balance, price, leverage) => {
   // Apply a safety margin (0.95) to account for fees and price fluctuations
   return (availableBalance * leverageValue * 0.95) / currentPrice;
 };
+
+/**
+ * Add margin to an existing position
+ * @param {number} futureId - Future position ID
+ * @param {number|string} amount - Amount of margin to add in USDT
+ * @returns {Promise<Object>} Add margin result
+ */
+export const addMargin = async (futureId, amount) => {
+  if (!futureId) {
+    return { success: false, message: 'Future ID is required for adding margin' };
+  }
+  
+  if (!amount || isNaN(parseFloat(amount)) || parseFloat(amount) <= 0) {
+    return { success: false, message: 'Valid amount is required for adding margin' };
+  }
+  
+  try {
+    const url = `${API_BASE_URL}/submit-margin?apikey=${API_KEY}`;
+    
+    console.log('Adding margin with URL:', url);
+    
+    // Use XMLHttpRequest for maximum compatibility
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('PUT', url, true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader('Accept', 'application/json');
+      
+      xhr.onload = function() {
+        if (this.status >= 200 && this.status < 300) {
+          let data;
+          try {
+            data = JSON.parse(xhr.responseText);
+            console.log('Add margin response:', data);
+            
+            // Handle API response format with status and message fields
+            if (data.status === 'success') {
+              resolve({
+                success: true,
+                data,
+                message: data.message || 'Margin added successfully'
+              });
+            } else if (data.status === 'error') {
+              // Handle specific error messages like "Insufficient Balance"
+              console.warn('Add margin API error:', data.message);
+              resolve({
+                success: false,
+                message: data.message || 'Failed to add margin'
+              });
+            } else {
+              // Fallback for unexpected response format
+              console.warn('Unexpected add margin response format:', data);
+              resolve({
+                success: false,
+                message: 'Unexpected response from server'
+              });
+            }
+          } catch (error) {
+            console.error('Error parsing add margin JSON response:', error);
+            console.error('Raw response:', xhr.responseText);
+            resolve({ success: false, message: 'Invalid response from server' });
+          }
+        } else {
+          console.error('Add margin API error:', xhr.responseText);
+          resolve({ 
+            success: false, 
+            message: `API error: ${xhr.status}` 
+          });
+        }
+      };
+      
+      xhr.onerror = function() {
+        console.error('Add margin execution error (network failure)');
+        resolve({ 
+          success: false, 
+          message: 'Network error occurred during adding margin' 
+        });
+      };
+      
+      // Send the request with the margin data
+      const requestData = {
+        future_id: futureId,
+        amount: parseFloat(amount)
+      };
+      
+      xhr.send(JSON.stringify(requestData));
+    });
+  } catch (error) {
+    console.error('Add margin execution error:', error);
+    return {
+      success: false,
+      message: error.message || 'An error occurred during adding margin'
+    };
+  }
+};

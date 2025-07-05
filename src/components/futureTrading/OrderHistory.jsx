@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { closePosition } from '../../services/futureTradingApi';
+import { closePosition, addMargin } from '../../services/futureTradingApi';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronDown,
@@ -11,7 +11,8 @@ import {
   faTimes,
   faExclamationTriangle,
   faCheckCircle,
-  faInfoCircle
+  faInfoCircle,
+  faPlus
 } from '@fortawesome/free-solid-svg-icons';
 
 const OrderHistory = ({ refreshTrigger = 0 }) => {
@@ -21,11 +22,16 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [showAddMarginModal, setShowAddMarginModal] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState(null);
   const [closingPosition, setClosingPosition] = useState(false);
   const [closeSuccess, setCloseSuccess] = useState(false);
   const [apiResponse, setApiResponse] = useState(null);
   const [showNotification, setShowNotification] = useState(false);
+  const [marginAmount, setMarginAmount] = useState('');
+  const [addingMargin, setAddingMargin] = useState(false);
+  const [addMarginSuccess, setAddMarginSuccess] = useState(false);
+  const [maxAvailableMargin, setMaxAvailableMargin] = useState(0);
   const itemsPerPage = 10;
 
   // Check if user is authenticated
@@ -78,11 +84,30 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
     setShowPopup(true);
   };
   
+  // Handle add margin
+  const handleAddMargin = (position) => {
+    setSelectedPosition(position);
+    // Set max available margin (this would typically come from the wallet data)
+    // For now, using a placeholder value
+    setMaxAvailableMargin(235.35);
+    setMarginAmount('');
+    setAddMarginSuccess(false);
+    setShowAddMarginModal(true);
+  };
+  
   // Close the popup
   const closePopup = () => {
     setShowPopup(false);
     setSelectedPosition(null);
     setCloseSuccess(false);
+  };
+  
+  // Close the add margin modal
+  const closeAddMarginModal = () => {
+    setShowAddMarginModal(false);
+    setSelectedPosition(null);
+    setAddMarginSuccess(false);
+    setMarginAmount('');
   };
   
   // Confirm position close
@@ -125,6 +150,64 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
       }
     } catch (err) {
       console.error('Error closing position:', err);
+      setClosingPosition(false);
+      setApiResponse({
+        success: false,
+        message: 'An error occurred while closing the position'
+      });
+      setShowNotification(true);
+    }
+  };
+  
+  // Handle max button click for add margin
+  const handleMaxAmount = () => {
+    setMarginAmount(maxAvailableMargin.toString());
+  };
+  
+  // Confirm add margin
+  const confirmAddMargin = async () => {
+    if (!selectedPosition || !marginAmount) return;
+    
+    try {
+      setAddingMargin(true);
+      
+      // Call the add margin API
+      const result = await addMargin(selectedPosition.future_id, marginAmount);
+      
+      console.log('Add margin result:', result);
+      
+      // Auto-hide notification after 5 seconds
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 5000);
+      
+      if (result.success) {
+        // Store API success response for notification
+        setApiResponse({
+          success: true,
+          message: result.message || 'Margin added successfully'
+        });
+        setShowNotification(true);
+        
+        setAddMarginSuccess(true);
+        // Refresh order history after successful margin addition
+        setTimeout(() => {
+          fetchOrderHistory();
+          closeAddMarginModal();
+        }, 2000);
+      } else {
+        // Handle error response with dynamic message from API
+        setAddingMargin(false);
+        
+        // Show error notification
+        setApiResponse({
+          success: false,
+          message: result.message || 'Failed to add margin'
+        });
+        setShowNotification(true);
+      }
+    } catch (err) {
+      console.error('Error adding margin:', err);
       setError('You cannot close position currently. Please contact customer service.');
       
       // Show info notification instead of error
@@ -249,16 +332,27 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
                     <td>{Number(order.return_percentage).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
                     <td className={`status-${order.status || 'pending'}`}>{order.status || 'pending'}</td>
                     <td>
-                      {order.status !== 'close_position' ? (
-                        <button 
-                          className="bg-white text-black font-medium py-1 px-3 rounded-full hover:bg-gray-100 transition-colors"
-                          onClick={() => handleClosePosition(order)}
-                        >
-                          Close
-                        </button>
-                      ) : (
-                        <span className="text-gray-500 text-sm">Closed</span>
-                      )}
+                      <div className="flex space-x-2">
+                        {order.status !== 'close_position' && (
+                          <button 
+                            className="bg-[#00b897] text-black font-medium py-1 px-3 rounded-full hover:bg-opacity-90 transition-colors flex items-center"
+                            onClick={() => handleAddMargin(order)}
+                          >
+                            <FontAwesomeIcon icon={faPlus} className="mr-1" size="xs" />
+                            Add
+                          </button>
+                        )}
+                        {order.status !== 'close_position' ? (
+                          <button 
+                            className="bg-white text-black font-medium py-1 px-3 rounded-full hover:bg-gray-100 transition-colors"
+                            onClick={() => handleClosePosition(order)}
+                          >
+                            Close
+                          </button>
+                        ) : (
+                          <span className="text-gray-500 text-sm">Closed</span>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -388,6 +482,98 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
         </div>
       )}
     
+      {/* Add Margin Modal */}
+      {showAddMarginModal && selectedPosition && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70">
+          <div className="bg-[#181A20] rounded-lg shadow-xl max-w-md w-full mx-4 overflow-hidden border border-gray-700">
+            <div className="flex justify-between items-center p-4 border-b border-gray-700">
+              <h3 className="text-lg font-medium text-white">
+                {addMarginSuccess ? 'Margin Added' : 'Add Margin'}
+              </h3>
+              <button 
+                onClick={closeAddMarginModal}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            </div>
+            
+            <div className="p-5">
+              {addMarginSuccess ? (
+                <div className="text-center py-4">
+                  <div className="w-16 h-16 rounded-full bg-green-900 bg-opacity-20 mx-auto flex items-center justify-center mb-4">
+                    <FontAwesomeIcon icon={faCheckCircle} className="text-3xl text-green-500" />
+                  </div>
+                  <p className="text-white text-lg mb-2">Margin added successfully</p>
+                  <p className="text-gray-400 text-sm">Additional margin has been added to your position.</p>
+                </div>
+              ) : (
+                <>
+                  <div className="mb-5">
+                    <div className="bg-gray-800 bg-opacity-50 rounded-lg p-4 mb-5">
+                      <div className="grid grid-cols-2 gap-2 text-sm mb-4">
+                        <div className="text-gray-400">Position ID:</div>
+                        <div className="text-white font-medium">{selectedPosition.future_id}</div>
+                        
+                        <div className="text-gray-400">Coin:</div>
+                        <div className="text-white font-medium">{selectedPosition.coin}</div>
+                        
+                        <div className="text-gray-400">Current Margin:</div>
+                        <div className="text-white font-medium">
+                          {Number(selectedPosition.margin).toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })} USDT
+                        </div>
+                        
+                        <div className="text-gray-400">Entry Price:</div>
+                        <div className="text-white font-medium">
+                          ${Number(selectedPosition.entry_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        </div>
+                      </div>
+                      
+                      <div className="mb-4">
+                        <label className="block text-gray-400 text-sm mb-2">Amount (USDT)</label>
+                        <div className="relative">
+                          <input
+                            type="number"
+                            value={marginAmount}
+                            onChange={(e) => setMarginAmount(e.target.value)}
+                            placeholder="0.00"
+                            className="w-full bg-[#12141C] border border-gray-700 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                          />
+                          <button
+                            onClick={handleMaxAmount}
+                            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-yellow-500 text-xs font-bold px-2 py-1 hover:text-yellow-400"
+                          >
+                            MAX
+                          </button>
+                        </div>
+                        <div className="text-xs text-gray-500 mt-1">
+                          Max Available: {maxAvailableMargin.toFixed(2)} USDT
+                        </div>
+                      </div>
+                      
+                      <div className="text-xs text-gray-400">
+                        <div className="mb-1">Currently Assigned Margin: {Number(selectedPosition.margin).toFixed(2)} USDT</div>
+                        <div>Max addable: {maxAvailableMargin.toFixed(2)} USDT</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-center">
+                    <button 
+                      onClick={confirmAddMargin}
+                      disabled={addingMargin || !marginAmount || parseFloat(marginAmount) <= 0 || parseFloat(marginAmount) > maxAvailableMargin}
+                      className="px-16 py-2 bg-[#00b897] text-white rounded-md hover:bg-opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full"
+                    >
+                      {addingMargin ? 'Processing...' : 'Confirm'}
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+      
       {/* API Response Notification */}
       {showNotification && apiResponse && (
         <div className={`fixed bottom-6 right-6 max-w-md p-4 rounded-lg shadow-lg border-l-4 ${apiResponse.success ? 'bg-[#181A20] border-green-500' : 'bg-[#181A20] border-blue-500'} transition-all duration-300 transform ${showNotification ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'} z-50`}>
