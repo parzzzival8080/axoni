@@ -281,7 +281,10 @@ const FutureTrading = () => {
           </div>
         </div>
         <div className="orders-container">
-          <OrdersSection refreshTrigger={orderHistoryRefreshTrigger} />
+          <OrdersSection 
+            refreshTrigger={orderHistoryRefreshTrigger} 
+            walletData={walletData}
+          />
         </div>
         {/* Mobile app bar with buy/sell buttons */}
         <div className="future-mobile-trade-bar">

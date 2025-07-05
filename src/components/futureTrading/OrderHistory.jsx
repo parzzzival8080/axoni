@@ -15,7 +15,7 @@ import {
   faPlus
 } from '@fortawesome/free-solid-svg-icons';
 
-const OrderHistory = ({ refreshTrigger = 0 }) => {
+const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
   const [orderHistoryData, setOrderHistoryData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -87,9 +87,17 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
   // Handle add margin
   const handleAddMargin = (position) => {
     setSelectedPosition(position);
-    // Set max available margin (this would typically come from the wallet data)
-    // For now, using a placeholder value
-    setMaxAvailableMargin(235.35);
+    
+    // Use the same available balance property as used in TradeForm component
+    // This comes from the normalized wallet data in fetchWalletData function
+    const availableBalance = walletData?.available 
+      ? Number(walletData.available) 
+      : 0;
+    
+    console.log('Wallet data for margin:', walletData);
+    console.log('Available balance for margin:', availableBalance);
+    
+    setMaxAvailableMargin(availableBalance);
     setMarginAmount('');
     setAddMarginSuccess(false);
     setShowAddMarginModal(true);
