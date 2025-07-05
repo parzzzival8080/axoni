@@ -45,7 +45,7 @@ function App() {
     useEffect(() => {
       // Initialize LiveChat with correct variable names
       window.__lc = window.__lc || {};
-      window.__lc.license = 19221434;
+      window.__lc.license = 19221915;
       window.__lc.integration_name = "manual_channels";
       window.__lc.product_name = "livechat";
       
