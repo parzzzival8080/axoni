@@ -584,28 +584,30 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
       
       {/* API Response Notification */}
       {showNotification && apiResponse && (
-        <div className={`fixed bottom-6 right-6 max-w-md p-4 rounded-lg shadow-lg border-l-4 ${apiResponse.success ? 'bg-[#181A20] border-green-500' : 'bg-[#181A20] border-blue-500'} transition-all duration-300 transform ${showNotification ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'} z-50`}>
-          <div className="flex items-start">
-            <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${apiResponse.success ? 'bg-green-500 bg-opacity-20' : 'bg-blue-500 bg-opacity-20'} mr-3`}>
-              <FontAwesomeIcon 
-                icon={apiResponse.success ? faCheckCircle : faInfoCircle} 
-                className={`${apiResponse.success ? 'text-green-500' : 'text-blue-500'} text-lg`} 
-              />
+        <div className="fixed top-16 right-4 z-[9999] max-w-md w-full md:w-96 transition-all duration-300 transform">
+          <div className={`p-5 rounded-lg shadow-xl border-l-4 ${apiResponse.success ? 'bg-[#181A20] border-green-500' : 'bg-[#181A20] border-red-500'} ${showNotification ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'}`}>
+            <div className="flex items-start">
+              <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${apiResponse.success ? 'bg-green-500 bg-opacity-20' : 'bg-red-500 bg-opacity-20'} mr-3`}>
+                <FontAwesomeIcon 
+                  icon={apiResponse.success ? faCheckCircle : faExclamationTriangle} 
+                  className={`${apiResponse.success ? 'text-green-500' : 'text-red-500'} text-xl`} 
+                />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-base font-medium text-white mb-1">
+                  {apiResponse.success ? 'Position Updated Successfully' : 'Position Update Failed'}
+                </h3>
+                <p className="text-sm text-gray-300">
+                  {apiResponse.message || (apiResponse.success ? 'Your position has been updated.' : 'Unable to update position. Please try again later.')}
+                </p>
+              </div>
+              <button 
+                onClick={() => setShowNotification(false)}
+                className="ml-3 flex-shrink-0 text-gray-400 hover:text-white transition-colors"
+              >
+                <FontAwesomeIcon icon={faTimes} className="text-lg" />
+              </button>
             </div>
-            <div className="flex-1">
-              <h3 className="text-sm font-medium text-white mb-1">
-                {apiResponse.success ? 'Position Closed Successfully' : 'Position Information'}
-              </h3>
-              <p className="text-xs text-gray-400">
-                {apiResponse.message || (apiResponse.success ? 'Your position has been closed.' : 'You cannot close position currently. Please contact customer service.')}
-              </p>
-            </div>
-            <button 
-              onClick={() => setShowNotification(false)}
-              className="ml-3 flex-shrink-0 text-gray-400 hover:text-white transition-colors"
-            >
-              <FontAwesomeIcon icon={faTimes} className="text-sm" />
-            </button>
           </div>
         </div>
       )}

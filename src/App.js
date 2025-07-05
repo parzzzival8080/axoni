@@ -119,7 +119,7 @@ function App() {
                   <Assets />
                 </main>
                 <Footer />
-                <ChatBubble />
+                {/* <ChatBubble /> */}
               </>
             }
           />

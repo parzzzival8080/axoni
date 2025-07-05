@@ -67,11 +67,9 @@ const HomePage = () => {
         isOpen={showRewardsPopup} 
         onClose={handleCloseRewardsPopup} 
       />
-
-      {/* Debug button for testing (remove this later) */}
-      {localStorage.getItem('authToken')}
+    
     </div>
   );
 };
 
-export default HomePage;
+export default HomePage; 
