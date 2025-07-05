@@ -348,12 +348,7 @@ const SubHeader = ({ cryptoData, coinPairId, tradableCoins }) => {
         </div>
       </div>
       <div className="trading-actions w-full md:w-auto flex items-center justify-start md:justify-end gap-2 mt-2 md:mt-0 pb-1 md:pb-0">
-        <button className="data-btn text-xs md:text-sm px-3 py-1.5 md:px-4 md:py-2 bg-okx-secondary hover:bg-okx-secondary-hover rounded flex items-center">
-          <FontAwesomeIcon icon={faChartLine} className="mr-1.5" /> <span className="whitespace-nowrap">Trading data</span>
-        </button>
-        <button className="info-btn text-xs md:text-sm px-3 py-1.5 md:px-4 md:py-2 bg-okx-secondary hover:bg-okx-secondary-hover rounded flex items-center">
-          <FontAwesomeIcon icon={faFileAlt} className="mr-1.5" /> <span className="whitespace-nowrap">Information</span>
-        </button>
+       
         <div className="settings w-8 h-8 flex items-center justify-center bg-okx-secondary hover:bg-okx-secondary-hover rounded cursor-pointer ml-1">
           <FontAwesomeIcon icon={faCog} />
         </div>
