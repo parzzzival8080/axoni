@@ -1,10 +1,10 @@
-import React, {useRef , useState, useEffect, useMemo, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import React, {useRef , useState, useEffect, useCallback, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faChevronRight, faSearch, faChevronDown, faCopy, faQuestionCircle, faInfoCircle, faTimes
+  faChevronRight, faSearch, faChevronDown, faCopy, faCheck, faQuestionCircle, faInfoCircle, faTimes
 } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import WithdrawalHistoryTable from '../../components/account/WithdrawalHistoryTable';
 
 // Custom scrollbar styles
 const scrollbarStyles = `
@@ -77,7 +77,7 @@ const ImageWithFallback = ({ src, alt, className, symbol }) => {
 
 // --- Main Withdrawal Component ---
 
-function withdraw() { // Using App as the main exportable component name
+function withdraw() {
 
   // --- State Variables ---
 
@@ -146,7 +146,7 @@ function withdraw() { // Using App as the main exportable component name
   ];
 
   // Add state for triggering history refresh
-  const [refreshHistory, setRefreshHistory] = useState(0);
+  const withdrawalHistoryRef = useRef();
 
   // --- Effects ---
 
@@ -541,163 +541,36 @@ function withdraw() { // Using App as the main exportable component name
     // console.log("Submitting withdrawal with:", { wallet_id, initial_amount, network_id, apiKey, otp: otpCode });
 
     try {
-        // Use POST as required by backend
-        const response = await axios.post(
-          apiUrl,
-          {}, // Empty body as parameters are in URL
-          { headers: { 'Content-Type': 'application/json' } }
-        );
-        const result = response.data;
-        console.log('Withdrawal successful:', result);
+      // Use POST as required by backend
+      const response = await axios.post(
+        apiUrl,
+        {}, // Empty body as parameters are in URL
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+
+      if (response.data && response.data.status === 'success') {
         setSubmitSuccess(true);
-        setShowOtpStep(false); // Hide OTP step on success
-        
-        // Trigger history refresh after successful withdrawal
-        setRefreshHistory(prev => prev + 1);
-    } catch (err) {
-        console.error('Withdrawal submission error:', err);
-        setSubmitError(err.response?.data?.message || err.message || 'An unexpected error occurred during withdrawal.');
+        setSubmitError(null);
+      } else {
+        setSubmitError(response.data.message || 'Withdrawal failed. Please try again.');
+        setSubmitSuccess(false);
+      }
+    } catch (error) {
+      console.error('Withdrawal error:', error);
+      const message = error.response?.data?.message || 'An unexpected error occurred.';
+      setSubmitError(message);
+      setSubmitSuccess(false);
     } finally {
-        setIsSubmitting(false);
+      setIsSubmitting(false);
     }
   }, [
       selectedCryptoSymbol, selectedNetwork, withdrawalAddress, withdrawalAmount,
       comment, availableBalance, networkFee, selectedCoinDetails, otpCode
   ]);
 
-  // --- Withdrawal History Table Component ---
-  const WithdrawalHistoryTable = ({ refreshTrigger }) => {
-    const [history, setHistory] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [hasLoaded, setHasLoaded] = useState(false); // Track if data has been loaded
-    const [lastRefreshTrigger, setLastRefreshTrigger] = useState(0); // Track last processed refresh trigger
-  
-    const fetchHistory = useCallback(async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const uid = localStorage.getItem('uid');
-        if (!uid) {
-          setError('User ID not found. Please log in again.');
-          setHistory([]);
-          return;
-        }
-        const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
-        const url = `https://api.kinecoin.co/api/v1/transaction-history/${uid}?apikey=${apiKey}&transaction_type=withdraw`;
-        const response = await axios.get(url);
-        setHistory(Array.isArray(response.data) ? response.data : []);
-        setHasLoaded(true);
-      } catch (err) {
-        console.error('Failed to fetch withdrawal history:', err);
-        setError('Failed to load withdrawal history.');
-        setHistory([]);
-      } finally {
-        setIsLoading(false);
-      }
-    }, []); // No dependencies to prevent recreation
-  
-    // Load data once on component mount only
-    useEffect(() => {
-      if (!hasLoaded) {
-        fetchHistory();
-      }
-    }, []); // Remove fetchHistory and hasLoaded dependencies
 
-    // Refresh only when refreshTrigger changes after successful withdrawal
-    useEffect(() => {
-      if (refreshTrigger > 0 && refreshTrigger !== lastRefreshTrigger && hasLoaded) {
-        setLastRefreshTrigger(refreshTrigger);
-        fetchHistory();
-      }
-    }, [refreshTrigger]); // Only refreshTrigger as dependency
-  
-    const handleRefresh = useCallback(() => {
-      fetchHistory();
-    }, []); // No dependencies
-  
-    return (
-      <section className="w-full">
-        <div className="flex justify-between items-center border-b border-gray-200 mb-6 pb-2 dark:border-gray-700">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Withdrawal History</h2>
-          <button
-            className="text-sm px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
-            onClick={handleRefresh}
-            disabled={isLoading}
-          >
-            {isLoading ? 'Refreshing...' : 'Refresh'}
-          </button>
-        </div>
-        {isLoading && !hasLoaded ? (
-          <div className="flex justify-center items-center py-8">
-            <Spinner />
-          </div>
-        ) : error ? (
-          <div className="text-center py-8">
-            <div className="text-red-500 mb-4">{error}</div>
-            <button
-              onClick={handleRefresh}
-              className="text-sm px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-            >
-              Try Again
-            </button>
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            {isLoading && hasLoaded && (
-              <div className="mb-4 text-center">
-                <span className="text-sm text-gray-500">Refreshing data...</span>
-              </div>
-            )}
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900 rounded shadow-md">
-              <thead className="bg-gray-100 dark:bg-gray-800">
-                <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Date</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Coin</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Amount</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-100 dark:divide-gray-800">
-                {history.length === 0 ? (
-                  <tr>
-                    <td colSpan={3} className="text-center text-gray-500 dark:text-gray-400 py-8">
-                      {hasLoaded ? 'No withdrawal history found.' : 'Loading...'}
-                    </td>
-                  </tr>
-                ) : (
-                  history.map((item, idx) => (
-                    <tr key={item.id || `history-${idx}`} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                      <td className="px-4 py-3 text-xs text-gray-700 dark:text-gray-200 whitespace-nowrap">
-                        {item.date ? new Date(item.date).toLocaleString() : '-'}
-                      </td>
-                      <td className="px-4 py-3 text-xs text-gray-700 dark:text-gray-200 whitespace-nowrap">
-                        <div className="flex items-center gap-2">
-                          {item.image_path && (
-                            <img 
-                              src={item.image_path} 
-                              alt={item.coin_name} 
-                              className="w-5 h-5 rounded-full"
-                              onError={(e) => {
-                                e.target.style.display = 'none';
-                              }}
-                            />
-                          )}
-                          <span>{item.coin_name || '-'}</span>
-                        </div>
-                      </td>
-                      <td className="px-4 py-3 text-xs text-gray-700 dark:text-gray-200 whitespace-nowrap font-medium">
-                        {item.final_amount || '-'}
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </section>
-    );
-  };
+
+
 
   // --- Render ---
   return (
@@ -1104,7 +977,7 @@ function withdraw() { // Using App as the main exportable component name
        {/* Withdrawal History Section */}
        {!showOtpStep && (
          <section className="mt-12">
-           <WithdrawalHistoryTable refreshTrigger={refreshHistory} />
+           <WithdrawalHistoryTable ref={withdrawalHistoryRef} />
          </section>
        )}
 
