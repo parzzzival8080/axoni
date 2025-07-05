@@ -330,10 +330,10 @@ const SubHeader = ({ cryptoData, coinPairId, tradableCoins }) => {
           </div>
           <div className="sub-value text-xs text-gray-500">${formattedPrice}</div>
         </div>
-        <div className="stat flex-shrink-0 min-w-[80px] md:min-w-0 md:text-center text-left">
+        {/* <div className="stat flex-shrink-0 min-w-[80px] md:min-w-0 md:text-center text-left">
           <div className="value text-sm md:text-base font-semibold">{low24h}</div>
           <div className="label text-xs md:text-xs text-gray-400 whitespace-nowrap">24h low</div>
-        </div>
+        </div> */}
         <div className="stat flex-shrink-0 min-w-[80px] md:min-w-0 md:text-center text-left">
           <div className="value text-sm md:text-base font-semibold">{high24h}</div>
           <div className="label text-xs md:text-xs text-gray-400 whitespace-nowrap">24h high</div>

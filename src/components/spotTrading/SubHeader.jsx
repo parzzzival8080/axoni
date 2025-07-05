@@ -746,7 +746,7 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
           </div>
           <div className="label">24h change</div>
         </div>
-        <div className="stat">
+        {/* <div className="stat">
           <div className="value blue">
             {parseFloat(low24h).toLocaleString(undefined, {
               minimumFractionDigits: 2,
@@ -754,7 +754,7 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
             })}
           </div>
           <div className="label">24h low</div>
-        </div>
+        </div> */}
         <div className="stat">
           <div className="value green">
             {parseFloat(high24h).toLocaleString(undefined, {
