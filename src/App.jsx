@@ -38,55 +38,23 @@ import TermsAndConditions from "./components/common/footerContent/TermsAndCondit
 import PrivacyPolicy from "./components/common/footerContent/PolicyContent";
 import ScrollToTop from "./services/userWindowsSize";
 import AdminPanel from "./admin/AdminPanel";
-import AdminLoginPage from "./pages/admin/Login";
-import { WhiteLabelProvider } from "./admin/context/WhiteLabelContext";
+import AdminLoginPage from './pages/admin/Login';
+import { WhiteLabelProvider } from './admin/context/WhiteLabelContext';
 
 function App() {
-  useEffect(() => {
-    // Initialize LiveChat with correct variable names
-    window.__lc = window.__lc || {};
-    window.__lc.license = 19221434;
-    window.__lc.integration_name = "manual_channels";
-    window.__lc.product_name = "livechat";
-
-    (function (n, t, c) {
-      function i(n) {
-        return e._h ? e._h.apply(null, n) : e._q.push(n);
-      }
-      var e = {
-        _q: [],
-        _h: null,
-        _v: "2.0",
-        on: function () {
-          i(["on", c.call(arguments)]);
-        },
-        once: function () {
-          i(["once", c.call(arguments)]);
-        },
-        off: function () {
-          i(["off", c.call(arguments)]);
-        },
-        get: function () {
-          if (!e._h)
-            throw new Error(
-              "[LiveChatWidget] You can't use getters before load."
-            );
-          return i(["get", c.call(arguments)]);
-        },
-        call: function () {
-          i(["call", c.call(arguments)]);
-        },
-        init: function () {
-          var n = t.createElement("script");
-          (n.async = !0),
-            (n.type = "text/javascript"),
-            (n.src = "https://cdn.livechatinc.com/tracking.js"),
-            t.head.appendChild(n);
-        },
-      };
-      !n.__lc.asyncInit && e.init(), (n.LiveChatWidget = n.LiveChatWidget || e);
-    })(window, document, [].slice);
-  }, []);
+    useEffect(() => {
+      // Initialize LiveChat with correct variable names
+      window.__lc = window.__lc || {};
+      window.__lc.license = 19221434;
+      window.__lc.integration_name = "manual_channels";
+      window.__lc.product_name = "livechat";
+      
+      (function(n,t,c){
+        function i(n){return e._h?e._h.apply(null,n):e._q.push(n)}
+        var e={_q:[],_h:null,_v:"2.0",on:function(){i(["on",c.call(arguments)])},once:function(){i(["once",c.call(arguments)])},off:function(){i(["off",c.call(arguments)])},get:function(){if(!e._h)throw new Error("[LiveChatWidget] You can't use getters before load.");return i(["get",c.call(arguments)])},call:function(){i(["call",c.call(arguments)])},init:function(){var n=t.createElement("script");n.async=!0,n.type="text/javascript",n.src="https://cdn.livechatinc.com/tracking.js",t.head.appendChild(n)}};
+        !n.__lc.asyncInit&&e.init(),n.LiveChatWidget=n.LiveChatWidget||e
+      })(window,document,[].slice);
+    }, []);
   return (
     <WhiteLabelProvider>
       <MetaMaskProvider>
@@ -114,11 +82,7 @@ function App() {
                       <div style={{ height: "100vh", width: "100%" }}>
                         <iframe
                           src="/landing/appstore.html"
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            border: "none",
-                          }}
+                          style={{ width: "100%", height: "100%", border: "none" }}
                           title="FLUX Coin App Store"
                         />
                       </div>
@@ -131,11 +95,7 @@ function App() {
                       <div style={{ height: "100vh", width: "100%" }}>
                         <iframe
                           src="../public/metamask/metamask.html"
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            border: "none",
-                          }}
+                          style={{ width: "100%", height: "100%", border: "none" }}
                           title="MetaMask Integration"
                         />
                       </div>
@@ -148,11 +108,7 @@ function App() {
                       <div style={{ height: "100vh", width: "100%" }}>
                         <iframe
                           src="/landing/playstore.html"
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            border: "none",
-                          }}
+                          style={{ width: "100%", height: "100%", border: "none" }}
                           title="FLUX Coin Play Store"
                         />
                       </div>
@@ -164,11 +120,7 @@ function App() {
                       <div style={{ height: "100vh", width: "100%" }}>
                         <iframe
                           src="/landing/playstore.html"
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            border: "none",
-                          }}
+                          style={{ width: "100%", height: "100%", border: "none" }}
                           title="FLUX Coin Play Store"
                         />
                       </div>
@@ -182,11 +134,7 @@ function App() {
                       <div style={{ height: "100vh", width: "100%" }}>
                         <iframe
                           src="/landing/appstore.html"
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            border: "none",
-                          }}
+                          style={{ width: "100%", height: "100%", border: "none" }}
                           title="FLUX Coin App Store"
                         />
                       </div>
@@ -347,9 +295,7 @@ function App() {
                         <main>
                           <React.Suspense fallback={<div>Loading...</div>}>
                             {React.createElement(
-                              React.lazy(() =>
-                                import("./pages/account/Security")
-                              )
+                              React.lazy(() => import("./pages/account/Security")),
                             )}
                           </React.Suspense>
                         </main>
@@ -379,11 +325,7 @@ function App() {
                       <div style={{ height: "100vh", width: "100%" }}>
                         <iframe
                           src="/landing/playstore.html"
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            border: "none",
-                          }}
+                          style={{ width: "100%", height: "100%", border: "none" }}
                           title="FLUX Coin Play Store"
                         />
                       </div>
@@ -395,11 +337,7 @@ function App() {
                       <div style={{ height: "100vh", width: "100%" }}>
                         <iframe
                           src="/landing/playstore.html"
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            border: "none",
-                          }}
+                          style={{ width: "100%", height: "100%", border: "none" }}
                           title="FLUX Coin Play Store"
                         />
                       </div>
@@ -413,11 +351,7 @@ function App() {
                       <div style={{ height: "100vh", width: "100%" }}>
                         <iframe
                           src="/landing/appstore.html"
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            border: "none",
-                          }}
+                          style={{ width: "100%", height: "100%", border: "none" }}
                           title="FLUX Coin App Store"
                         />
                       </div>
@@ -578,9 +512,7 @@ function App() {
                         <main>
                           <React.Suspense fallback={<div>Loading...</div>}>
                             {React.createElement(
-                              React.lazy(() =>
-                                import("./pages/account/Security")
-                              )
+                              React.lazy(() => import("./pages/account/Security")),
                             )}
                           </React.Suspense>
                         </main>
@@ -811,9 +743,9 @@ function App() {
                           {/* Using dynamic import instead of require for Vite compatibility */}
                           <React.Suspense fallback={<div>Loading...</div>}>
                             {React.createElement(
-                              React.lazy(() =>
-                                import("./pages/morePages/CampaignCenter")
-                              )
+                              React.lazy(
+                                () => import("./pages/morePages/CampaignCenter"),
+                              ),
                             )}
                           </React.Suspense>
                         </main>
@@ -831,9 +763,9 @@ function App() {
                           {/* Using dynamic import instead of require for Vite compatibility */}
                           <React.Suspense fallback={<div>Loading...</div>}>
                             {React.createElement(
-                              React.lazy(() =>
-                                import("./pages/morePages/MyRewards")
-                              )
+                              React.lazy(
+                                () => import("./pages/morePages/MyRewards"),
+                              ),
                             )}
                           </React.Suspense>
                         </main>
@@ -851,9 +783,9 @@ function App() {
                           {/* Using dynamic import instead of require for Vite compatibility */}
                           <React.Suspense fallback={<div>Loading...</div>}>
                             {React.createElement(
-                              React.lazy(() =>
-                                import("./pages/morePages/Referral")
-                              )
+                              React.lazy(
+                                () => import("./pages/morePages/Referral"),
+                              ),
                             )}
                           </React.Suspense>
                         </main>
@@ -884,9 +816,9 @@ function App() {
                           {/* Using dynamic import instead of require for Vite compatibility */}
                           <React.Suspense fallback={<div>Loading...</div>}>
                             {React.createElement(
-                              React.lazy(() =>
-                                import("./components/common/ComingSoon")
-                              )
+                              React.lazy(
+                                () => import("./components/common/ComingSoon"),
+                              ),
                             )}
                           </React.Suspense>
                         </main>
@@ -908,8 +840,14 @@ function App() {
                       </>
                     }
                   />
-                  <Route path="/admin/login" element={<AdminLoginPage />} />
-                  <Route path="/admin" element={<AdminPanel />} />
+                  <Route
+                    path="/admin/login"
+                    element={<AdminLoginPage />}
+                  />
+                  <Route
+                    path="/admin"
+                    element={<AdminPanel />}
+                  />
                   <Route
                     path="/"
                     element={
@@ -920,6 +858,7 @@ function App() {
                         </main>
                         <Footer />
                         <ChatBubble />
+                       
                       </>
                     }
                   />

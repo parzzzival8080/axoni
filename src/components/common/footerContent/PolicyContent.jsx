@@ -186,7 +186,7 @@ const PrivacyPolicy = () => {
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">6. Indemnification</h2>
                 <div className="space-y-4 text-gray-800 leading-relaxed">
                   <p>
-                   You agree to indemnify and hold fluxcoin, its affiliates, and their respective officers, directors, employees, and agents harmless from and against any claims, liabilities, damages, losses, and expenses arising from your use of our platform.
+                   You agree to indemnify and hold Kinecoin, its affiliates, and their respective officers, directors, employees, and agents harmless from and against any claims, liabilities, damages, losses, and expenses arising from your use of our platform.
                   </p>
                 
                 </div>
