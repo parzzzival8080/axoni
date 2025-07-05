@@ -19,12 +19,12 @@ export const MetaMaskProvider = ({ children }) => {
   const [error, setError] = useState('');
   const [sdk, setSdk] = useState(null);
   const [provider, setProvider] = useState(null);
-  const [KineWalletAddress, setKineWalletAddress] = useState('');
+  const [fluxWalletAddress, setFluxWalletAddress] = useState('');
 
   // Debug state changes
   useEffect(() => {
-    console.log('🔍 KineWalletAddress state changed to:', KineWalletAddress);
-  }, [KineWalletAddress]);
+    console.log('🔍 fluxWalletAddress state changed to:', fluxWalletAddress);
+  }, [fluxWalletAddress]);
 
   // Check for stored connection state on mount
   useEffect(() => {
@@ -91,7 +91,7 @@ export const MetaMaskProvider = ({ children }) => {
           await fetchBalance(currentAccount, provider);
           
           // Fetch KINE wallet address when connected
-          await fetchKineWalletAddress();
+          await fetchFluxWalletAddress();
           
           // Update localStorage with current account
           localStorage.setItem('metamask_connected', 'true');
@@ -135,7 +135,7 @@ export const MetaMaskProvider = ({ children }) => {
         await fetchBalance(accounts[0]);
         
         // Fetch KINE wallet address when connected
-        await fetchKineWalletAddress();
+        await fetchFluxWalletAddress();
         
         // Store connection state
         localStorage.setItem('metamask_connected', 'true');
@@ -161,7 +161,7 @@ export const MetaMaskProvider = ({ children }) => {
     setAccount('');
     setBalance('0');
     setError('');
-    setKineWalletAddress('');
+    setFluxWalletAddress('');
     
     // Clear stored connection state
     localStorage.removeItem('metamask_connected');
@@ -216,8 +216,8 @@ export const MetaMaskProvider = ({ children }) => {
   };
 
   // Fetch KINE wallet address
-  const fetchKineWalletAddress = async () => {
-    console.log('🔍 fetchKineWalletAddress called');
+  const fetchFluxWalletAddress = async () => {
+    console.log('🔍 fetchFluxWalletAddress called');
     try {
       let uid = localStorage.getItem('uid');
       const user_id = localStorage.getItem('user_id');
@@ -277,7 +277,7 @@ export const MetaMaskProvider = ({ children }) => {
       
       if (!uid) {
         console.error('🔍 UID not found in localStorage and could not be fetched');
-        setKineWalletAddress(''); // Set empty to stop loading
+        setFluxWalletAddress(''); // Set empty to stop loading
         return '';
       }
       
@@ -320,22 +320,22 @@ export const MetaMaskProvider = ({ children }) => {
         
         if (address) {
           console.log('🔍 Setting KINE wallet address to:', address);
-          setKineWalletAddress(address);
+          setFluxWalletAddress(address);
           return address;
         } else {
           console.warn('🔍 No address received');
-          setKineWalletAddress('');
+          setFluxWalletAddress('');
           return '';
         }
       } else {
         const errorText = await response.text();
         console.error('🔍 ❌ Failed to fetch KINE wallet address:', response.status, response.statusText, errorText);
-        setKineWalletAddress(''); // Set empty to stop loading
+        setFluxWalletAddress(''); // Set empty to stop loading
         return '';
       }
     } catch (err) {
       console.error('🔍 ❌ Error fetching KINE wallet address:', err);
-      setKineWalletAddress(''); // Set empty to stop loading
+      setFluxWalletAddress(''); // Set empty to stop loading
       return '';
     }
   };
@@ -405,8 +405,8 @@ export const MetaMaskProvider = ({ children }) => {
     formatAddress,
     restoreConnection,
     provider,
-    KineWalletAddress,
-    fetchKineWalletAddress,
+    fluxWalletAddress,
+    fetchFluxWalletAddress,
   };
 
   return (

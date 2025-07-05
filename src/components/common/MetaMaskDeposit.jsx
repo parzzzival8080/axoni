@@ -17,8 +17,8 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
     provider,
     connectWallet,
     formatAddress,
-    KineWalletAddress,
-    fetchKineWalletAddress,
+    fluxWalletAddress,
+    fetchFluxWalletAddress,
   } = useMetaMask();
 
   const [depositAmount, setDepositAmount] = useState("");
@@ -29,10 +29,10 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
 
   // Fetch KINE wallet address when modal opens
   useEffect(() => {
-    if (isOpen && selectedCoin && !KineWalletAddress) {
-      fetchKineWalletAddress();
+    if (isOpen && selectedCoin && !fluxWalletAddress) {
+      fetchFluxWalletAddress();
     }
-  }, [isOpen, selectedCoin, KineWalletAddress, fetchKineWalletAddress]);
+  }, [isOpen, selectedCoin, fluxWalletAddress, fetchFluxWalletAddress]);
 
   const handleDeposit = async () => {
     if (!isConnected) {
@@ -50,7 +50,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
       return;
     }
 
-    if (!KineWalletAddress) {
+    if (!fluxWalletAddress) {
       setError("KINE deposit address not found");
       return;
     }
@@ -72,7 +72,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
 
       // Prepare transaction
       const transactionParameters = {
-        to: KineWalletAddress,
+        to: fluxWalletAddress,
         from: account,
         value: "0x" + amountInWei,
         gas: "0x5208", // Standard gas limit for ETH transfer (21000)
@@ -124,7 +124,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
             amount: amount,
             coin: coin,
             fromAddress: account,
-            toAddress: KineWalletAddress,
+            toAddress: fluxWalletAddress,
             timestamp: new Date().toISOString(),
             source: "metamask",
             network: "ethereum",
@@ -283,12 +283,12 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
                 <span className="text-gray-400">Deposit to:</span>
                 <div className="flex items-center gap-2">
                   <span className="text-gray-300 font-mono">
-                    {KineWalletAddress ? KineWalletAddress : "Loading..."}
+                    {fluxWalletAddress ? fluxWalletAddress : "Loading..."}
                   </span>
-                  {KineWalletAddress && (
+                  {fluxWalletAddress && (
                     <button
                       onClick={() =>
-                        navigator.clipboard.writeText(KineWalletAddress)
+                        navigator.clipboard.writeText(fluxWalletAddress)
                       }
                       className="text-orange-400 hover:text-orange-300 transition-colors"
                       title="Copy address"
@@ -380,7 +380,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
                   !depositAmount ||
                   parseFloat(depositAmount) < 0.001 ||
                   parseFloat(depositAmount) > parseFloat(balance) ||
-                  !KineWalletAddress
+                  !fluxWalletAddress
                 }
                 className="flex-1 bg-orange-500 text-white py-2.5 rounded-lg hover:bg-orange-600 disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 font-medium text-sm"
               >

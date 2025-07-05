@@ -1,0 +1,509 @@
+.admin-panel {
+  min-height: 100vh;
+  background: #000000;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.admin-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.admin-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.85rem;
+}
+
+.status-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.status-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.status-indicator.saved {
+  background: rgba(34, 197, 94, 0.1);
+  color: #86efac;
+}
+
+.status-indicator.pending {
+  background: rgba(251, 191, 36, 0.1);
+  color: #fde047;
+}
+
+.status-indicator.saving {
+  background: rgba(59, 130, 246, 0.1);
+  color: #93c5fd;
+}
+
+.status-indicator.error {
+  background: rgba(239, 68, 68, 0.1);
+  color: #fca5a5;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-indicator.saving .status-dot {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.status-text {
+  color: #888;
+}
+
+.status-action {
+  color: #fe7400;
+  font-weight: 500;
+}
+
+.auto-save-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #888;
+  cursor: pointer;
+}
+
+.auto-save-toggle input[type="checkbox"] {
+  accent-color: #fe7400;
+}
+
+.status-button {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #888;
+  border-radius: 6px;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.status-button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.status-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.status-button.save:not(:disabled) {
+  color: #86efac;
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.status-button.save:hover:not(:disabled) {
+  background: rgba(34, 197, 94, 0.1);
+}
+
+.admin-error {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background: rgba(239, 68, 68, 0.1);
+  border-bottom: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+
+.error-icon {
+  font-size: 1.1rem;
+}
+
+.error-text {
+  flex: 1;
+  font-size: 0.9rem;
+}
+
+.error-retry {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.error-retry:hover {
+  background: rgba(239, 68, 68, 0.3);
+}
+
+.admin-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.admin-content-header {
+  padding: 2rem 1.5rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-content-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #fe7400, #2ebd85);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.admin-content-header p {
+  color: #888;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.admin-content-body {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 400px;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top: 3px solid #fe7400;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-spinner p {
+  color: #888;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.admin-debug {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.admin-debug details {
+  color: #888;
+  font-size: 0.8rem;
+}
+
+.admin-debug summary {
+  cursor: pointer;
+  font-weight: 500;
+  padding: 0.5rem 0;
+}
+
+.debug-content {
+  padding: 0.5rem 0;
+  line-height: 1.5;
+}
+
+.debug-content p {
+  margin: 0.25rem 0;
+}
+
+.debug-content strong {
+  color: #fe7400;
+  font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-status-bar {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+  
+  .status-left,
+  .status-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .admin-content-header {
+    padding: 1.5rem 1rem 1rem;
+  }
+  
+  .admin-content-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .admin-content-body {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-content-header h1 {
+    font-size: 1.25rem;
+  }
+  
+  .admin-content-header p {
+    font-size: 0.85rem;
+  }
+}
+
+/* Dark mode scrollbar */
+.admin-content-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.admin-content-body::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.admin-content-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.admin-content-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Focus styles for accessibility */
+.status-button:focus-visible,
+.auto-save-toggle:focus-visible,
+.error-retry:focus-visible {
+  outline: 2px solid #fe7400;
+  outline-offset: 2px;
+}
+
+
+
+/* Component Cards */
+.admin-card {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.admin-card h2 {
+  margin: 0 0 1rem 0;
+  color: #2d3748;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.admin-card h3 {
+  margin: 1.5rem 0 0.75rem 0;
+  color: #4a5568;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Form Elements */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #4a5568;
+  font-weight: 500;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+}
+
+.form-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.color-input {
+  width: 60px;
+  height: 40px;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-primary {
+  background: #4299e1;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #3182ce;
+}
+
+.btn-secondary {
+  background: #e2e8f0;
+  color: #4a5568;
+}
+
+.btn-secondary:hover {
+  background: #cbd5e0;
+}
+
+.btn-danger {
+  background: #e53e3e;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #c53030;
+}
+
+/* File Upload */
+.file-upload-area {
+  border: 2px dashed #cbd5e0;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  text-align: center;
+  transition: border-color 0.2s;
+  cursor: pointer;
+}
+
+.file-upload-area:hover {
+  border-color: #4299e1;
+}
+
+.file-upload-area.dragover {
+  border-color: #4299e1;
+  background: #ebf8ff;
+}
+
+.file-input {
+  display: none;
+}
+
+/* Preview Images */
+.image-preview {
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 0.375rem;
+  border: 1px solid #e2e8f0;
+  margin: 0.5rem 0;
+}
+
+/* Grid Layouts */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+/* Status Indicators */
+.status-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+.status-active {
+  background: #48bb78;
+}
+
+.status-inactive {
+  background: #e53e3e;
+}
+
+.status-pending {
+  background: #ed8936;
+}
+
