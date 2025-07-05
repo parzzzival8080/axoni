@@ -1,52 +1,20 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-
-// Custom hook for debugging re-renders
-function useWhyDidYouUpdate(name, props) {
-  const previousProps = useRef();
-
-  useEffect(() => {
-    if (previousProps.current) {
-      const allKeys = Object.keys({ ...previousProps.current, ...props });
-      const changesObj = {};
-      allKeys.forEach(key => {
-        if (previousProps.current[key] !== props[key]) {
-          changesObj[key] = {
-            from: previousProps.current[key],
-            to: props[key],
-          };
-        }
-      });
-
-      if (Object.keys(changesObj).length) {
-        console.log('[Why-Did-You-Update]', name, changesObj);
-      }
-    }
-
-    previousProps.current = props;
-  });
-}
+import React, { useState, useEffect, useCallback, useRef, forwardRef, useImperativeHandle } from 'react';
 import axios from 'axios';
 
-// A simple spinner component, you can replace with your actual Spinner component if it's different
+// A simple spinner component
 const Spinner = () => (
   <div className="border-4 border-gray-200 border-t-blue-500 rounded-full w-8 h-8 animate-spin"></div>
 );
 
-// --- Withdrawal History Table Component ---
-const WithdrawalHistoryTableBase = (props) => {
-  useWhyDidYouUpdate('WithdrawalHistoryTable', props);
-  const { refreshTrigger } = props;
+// The component logic, wrapped in forwardRef
+const WithdrawalHistoryTableBase = forwardRef((props, ref) => {
   const [history, setHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [hasLoaded, setHasLoaded] = useState(false);
 
-  // Use a ref to track the previous refresh trigger value to prevent unnecessary fetches
-  const lastRefreshTriggerRef = useRef(refreshTrigger);
-
   // Fetch withdrawal history data
   const fetchHistory = useCallback(async () => {
-    // No need to check isLoading here, as the effect dependencies will manage it.
     setIsLoading(true);
     setError(null);
     try {
@@ -56,13 +24,10 @@ const WithdrawalHistoryTableBase = (props) => {
         setHistory([]);
         return;
       }
-
       const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
       const url = `https://api.kinecoin.co/api/v1/transaction-history/${uid}?apikey=${apiKey}&transaction_type=withdraw`;
-
       const response = await axios.get(url);
       const data = Array.isArray(response.data) ? response.data : [];
-      
       setHistory(data);
     } catch (err) {
       console.error('Failed to fetch withdrawal history:', err);
@@ -70,33 +35,23 @@ const WithdrawalHistoryTableBase = (props) => {
       setHistory([]);
     } finally {
       setIsLoading(false);
-      setHasLoaded(true); // Set hasLoaded in the finally block
+      setHasLoaded(true);
     }
-  }, []); // Empty dependency array makes this function stable
+  }, []); // Stable function
 
   // Load data on initial component mount
   useEffect(() => {
     fetchHistory();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Empty dependency array ensures this only runs once
+  }, [fetchHistory]);
 
-  // Only refresh when refreshTrigger prop changes
-  useEffect(() => {
-    // Skip if it's the initial render or the trigger hasn't changed
-    if (refreshTrigger === 0 || refreshTrigger === lastRefreshTriggerRef.current) {
-      return;
+  // Expose a `refresh` method to the parent component
+  useImperativeHandle(ref, () => ({
+    refresh: () => {
+      setTimeout(() => {
+        fetchHistory();
+      }, 1500); // Delay to allow API to update
     }
-
-    // Update the ref to the new trigger value
-    lastRefreshTriggerRef.current = refreshTrigger;
-
-    // Add a delay to ensure the API has time to register the new transaction
-    const timer = setTimeout(() => {
-      fetchHistory();
-    }, 1500); // 1.5-second delay
-
-    return () => clearTimeout(timer);
-  }, [refreshTrigger, fetchHistory]);
+  }));
 
   const handleRefresh = useCallback(() => {
     fetchHistory();
@@ -171,15 +126,9 @@ const WithdrawalHistoryTableBase = (props) => {
       )}
     </section>
   );
-};
+});
 
-// Custom equality function for React.memo to prevent unnecessary re-renders.
-// Only re-render when the refreshTrigger prop changes.
-const arePropsEqual = (prevProps, nextProps) => {
-  return prevProps.refreshTrigger === nextProps.refreshTrigger;
-};
-
-// Apply React.memo with the custom equality function
-const WithdrawalHistoryTable = React.memo(WithdrawalHistoryTableBase, arePropsEqual);
+// Memoize the component
+const WithdrawalHistoryTable = React.memo(WithdrawalHistoryTableBase);
 
 export default WithdrawalHistoryTable;

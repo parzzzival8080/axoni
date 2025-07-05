@@ -146,7 +146,7 @@ function withdraw() {
   ];
 
   // Add state for triggering history refresh
-  const [refreshHistory, setRefreshHistory] = useState(0);
+  const withdrawalHistoryRef = useRef();
 
   // --- Effects ---
 
@@ -541,29 +541,34 @@ function withdraw() {
     // console.log("Submitting withdrawal with:", { wallet_id, initial_amount, network_id, apiKey, otp: otpCode });
 
     try {
-        // Use POST as required by backend
-        const response = await axios.post(
-          apiUrl,
-          {}, // Empty body as parameters are in URL
-          { headers: { 'Content-Type': 'application/json' } }
-        );
-        const result = response.data;
-        console.log('Withdrawal successful:', result);
+      // Use POST as required by backend
+      const response = await axios.post(
+        apiUrl,
+        {}, // Empty body as parameters are in URL
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+
+      if (response.data && response.data.status === 'success') {
         setSubmitSuccess(true);
-        setShowOtpStep(false); // Hide OTP step on success
-        
-        // Trigger history refresh after successful withdrawal
-        setRefreshHistory(prev => prev + 1);
-    } catch (err) {
-        console.error('Withdrawal submission error:', err);
-        setSubmitError(err.response?.data?.message || err.message || 'An unexpected error occurred during withdrawal.');
+        setSubmitError(null);
+      } else {
+        setSubmitError(response.data.message || 'Withdrawal failed. Please try again.');
+        setSubmitSuccess(false);
+      }
+    } catch (error) {
+      console.error('Withdrawal error:', error);
+      const message = error.response?.data?.message || 'An unexpected error occurred.';
+      setSubmitError(message);
+      setSubmitSuccess(false);
     } finally {
-        setIsSubmitting(false);
+      setIsSubmitting(false);
     }
   }, [
       selectedCryptoSymbol, selectedNetwork, withdrawalAddress, withdrawalAmount,
       comment, availableBalance, networkFee, selectedCoinDetails, otpCode
   ]);
+
+
 
 
 
@@ -972,7 +977,7 @@ function withdraw() {
        {/* Withdrawal History Section */}
        {!showOtpStep && (
          <section className="mt-12">
-           <WithdrawalHistoryTable refreshTrigger={refreshHistory} />
+           <WithdrawalHistoryTable ref={withdrawalHistoryRef} />
          </section>
        )}
 
