@@ -170,9 +170,7 @@ const Profile = () => {
                   <span className="text-gray-400 text-3xl sm:text-4xl">👤</span>
                 )}
               </div>
-              <button className="absolute bottom-0 right-0 sm:right-0 bg-white dark:bg-gray-800 rounded-full p-1.5 sm:p-2 shadow-md">
-                <FiEdit className="text-gray-500 w-3 h-3 sm:w-4 sm:h-4" />
-              </button>
+           
             </div>
 
             <div className="flex-1">

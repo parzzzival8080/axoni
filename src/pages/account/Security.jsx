@@ -158,9 +158,8 @@ const Security = () => {
       )}
       
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <h2 className="text-2xl font-semibold mb-8">Security center</h2>
+        {/* <h2 className="text-2xl font-semibold mb-8">Security center</h2>
 
-        {/* Pending Security Features */}
         <div className="mb-12">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center">
@@ -172,7 +171,6 @@ const Security = () => {
             </div>
           </div>
 
-          {/* Authenticator App */}
           <div className="border-t border-gray-200 dark:border-gray-800 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -193,7 +191,6 @@ const Security = () => {
             </div>
           </div>
 
-          {/* Anti-phishing Code */}
           <div className="border-t border-gray-200 dark:border-gray-800 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -213,7 +210,7 @@ const Security = () => {
               </button>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Authentication Methods */}
         <div className="mb-12">

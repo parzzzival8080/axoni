@@ -405,7 +405,7 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
             <button className="price-control up"><FontAwesomeIcon icon={faCaretUp} /></button>
             <button className="price-control down"><FontAwesomeIcon icon={faCaretDown} /></button>
           </div>
-          <button className="market-price-btn">BBO</button>
+
         </div>
       </div>
 
