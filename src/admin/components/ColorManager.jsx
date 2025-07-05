@@ -278,7 +278,7 @@ const ColorManager = () => {
                 className="text-2xl font-bold mb-2"
                 style={{ color: getSettingValue(colorSettings.find(s => s.setting_key === 'color_text')) || '#FFFFFF' }}
               >
-                FLUX Platform
+                KINE Platform
               </h2>
               <p 
                 className="text-sm"

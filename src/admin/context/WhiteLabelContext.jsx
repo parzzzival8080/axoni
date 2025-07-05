@@ -65,27 +65,27 @@ const defaultConfig = {
     referralIllustration: '/public/images/referral-illustration.svg'
   },
   names: {
-    siteName: 'FLUX',
-    siteNameLong: 'FLUX COIN',
+    siteName: 'KINE',
+    siteNameLong: 'KINE COIN',
     tagline: 'Best Cryptocurrency Trading Platform for Futures & Spot',
     taglineShort: 'Your trusted crypto partner',
-    companyName: 'FluxCoin Investments LLC',
-    companyNameLegal: 'FLUX.COM',
-    supportEmail: 'support@fluxcoin.tech',
-    contactEmail: 'contact@fluxcoin.tech',
-    contactPhone: '+1-800-FLUX-COIN',
-    websiteUrl: 'https://fluxcoin.tech',
-    description: 'FLUX is a secure, fast, and user-friendly cryptocurrency trading platform for spot and futures trading.',
-    metaKeywords: 'cryptocurrency, trading, bitcoin, ethereum, altcoins, futures, spot, exchange, FLUX, crypto platform',
+    companyName: 'KINECoin Investments LLC',
+    companyNameLegal: 'KINE.COM',
+    supportEmail: 'support@KINEcoin.tech',
+    contactEmail: 'contact@KINEcoin.tech',
+    contactPhone: '+1-800-KINE-COIN',
+    websiteUrl: 'https://KINEcoin.tech',
+    description: 'KINE is a secure, fast, and user-friendly cryptocurrency trading platform for spot and futures trading.',
+    metaKeywords: 'cryptocurrency, trading, bitcoin, ethereum, altcoins, futures, spot, exchange, KINE, crypto platform',
     address: 'California, United States',
     socialMedia: {
-      twitter: '@FluxCoin',
-      telegram: '@FluxCoinOfficial',
-      discord: 'FluxCoin Community',
-      facebook: 'FluxCoin',
-      youtube: 'FluxCoin',
-      linkedin: 'FluxCoin',
-      instagram: 'FluxCoin'
+      twitter: '@KINECoin',
+      telegram: '@KINECoinOfficial',
+      discord: 'KINECoin Community',
+      facebook: 'KINECoin',
+      youtube: 'KINECoin',
+      linkedin: 'KINECoin',
+      instagram: 'KINECoin'
     }
   },
   qr: {
@@ -93,17 +93,17 @@ const defaultConfig = {
     appStoreQR: '',
     playStoreQR: '',
     downloadQRUrl: 'https://drive.google.com/file/d/1N4DFPGpFfXatDrKUeX-77F2kuUY6q4jk/view?usp=sharing',
-    appStoreQRUrl: 'https://apps.apple.com/app/flux-coin',
-    playStoreQRUrl: 'https://play.google.com/store/apps/details?id=com.fluxcoin',
+    appStoreQRUrl: 'https://apps.apple.com/app/KINE-coin',
+    playStoreQRUrl: 'https://play.google.com/store/apps/details?id=com.KINEcoin',
     iosDownloadUrl: 'https://apiv2.bhtokens.com/api/v1/download-ios',
     androidDownloadUrl: 'https://api.bhtokens.com/api/v1/download-apk'
   },
   apis: {
     baseUrl: 'https://django.bhtokens.com/api',
     secondaryUrl: 'https://apiv2.bhtokens.com/api/v1',
-    socketUrl: 'wss://socket.fluxcoin.tech',
+    socketUrl: 'wss://socket.KINEcoin.tech',
     chartDataUrl: 'https://apiv2.bhtokens.com/api/v1',
-    supportUrl: 'https://support.fluxcoin.tech',
+    supportUrl: 'https://support.KINEcoin.tech',
     tradingViewDatafeed: 'https://apiv2.bhtokens.com/api/v1',
     chartsStorageUrl: 'https://saveload.tradingview.com',
     userAccountUrl: 'https://django.bhtokens.com/api/user_account',
@@ -383,14 +383,14 @@ export const WhiteLabelProvider = ({ children }) => {
       metadata: {
         exportedAt: new Date().toISOString(),
         version: '1.0.0',
-        source: 'FLUX Admin Panel'
+        source: 'KINE Admin Panel'
       }
     };
     
     const dataStr = JSON.stringify(exportData, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = `flux-config-${new Date().toISOString().split('T')[0]}.json`;
+    const exportFileDefaultName = `KINE-config-${new Date().toISOString().split('T')[0]}.json`;
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);

@@ -909,7 +909,7 @@ const AssetManager = () => {
             >
               <div className="absolute inset-0 bg-black/40"></div>
               <div className="relative text-center text-white">
-                <h5 className="text-2xl font-bold mb-2">Welcome to {safeConfig.names.siteName || 'FLUX'}</h5>
+                <h5 className="text-2xl font-bold mb-2">Welcome to {safeConfig.names.siteName || 'KINE'}</h5>
                 <p className="text-lg">{safeConfig.names.tagline || 'Your trusted crypto partner'}</p>
               </div>
             </div>
