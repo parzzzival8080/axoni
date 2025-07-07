@@ -453,6 +453,9 @@ function withdraw() {
       // After successful OTP verification, proceed with withdrawal
       await handleSubmitWithdrawal();
       
+      // Hide OTP step after successful withdrawal
+      setShowOtpStep(false);
+      
     } catch (error) {
       console.error('OTP verification error:', error);
       setOtpError('Invalid verification code. Please try again.');
@@ -545,12 +548,40 @@ function withdraw() {
       const response = await axios.post(
         apiUrl,
         {}, // Empty body as parameters are in URL
-        { headers: { 'Content-Type': 'application/json' } }
+        { headers: { 'Content-Type': 'application/json' }, timeout: 30000 }
       );
 
-      if (response.data && response.data.status === 'success') {
+      console.log('Withdrawal API Response:', response.data);
+
+      if (
+        response.data && (
+          response.data.status === 'success' ||
+          response.status === 200 ||
+          (typeof response.data.message === 'string' && response.data.message.toLowerCase().includes('withdraw submitted')) ||
+          (typeof response.data.message === 'string' && response.data.message.toLowerCase().includes('submitted')) ||
+          (typeof response.data === 'string' && response.data.toLowerCase().includes('withdraw submitted')) ||
+          (typeof response.data === 'string' && response.data.toLowerCase().includes('submitted'))
+        )
+      ) {
         setSubmitSuccess(true);
         setSubmitError(null);
+        
+        // Reset form state after successful withdrawal
+        setTimeout(() => {
+          setSelectedCryptoSymbol(null);
+          setSelectedNetwork(null);
+          setWithdrawalAddress('');
+          setWithdrawalAmount('');
+          setComment('');
+          setShowOtpStep(false);
+          setOtpCode('');
+          setOtpError(null);
+        }, 3000); // Reset after 3 seconds to allow user to see success message
+        
+        // Refresh withdrawal history table
+        if (withdrawalHistoryRef.current) {
+          withdrawalHistoryRef.current.refresh();
+        }
       } else {
         setSubmitError(response.data.message || 'Withdrawal failed. Please try again.');
         setSubmitSuccess(false);
@@ -838,8 +869,26 @@ function withdraw() {
                     </button>
                   )}
 
-                  {submitError && !showOtpStep && <p className="mt-3 text-sm text-red-600">{submitError}</p>}
-                  {submitSuccess && <p className="mt-3 text-sm text-green-600">Withdrawal submitted successfully!</p>}
+                  {submitError && !showOtpStep && (
+                    <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-md">
+                      <p className="text-sm text-red-600">{submitError}</p>
+                    </div>
+                  )}
+                  {submitSuccess && !showOtpStep && (
+                    <div className="mt-3 p-4 bg-green-50 border border-green-200 rounded-md">
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0">
+                          <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                        <div className="ml-3">
+                          <h3 className="text-sm font-medium text-green-800">Withdrawal Submitted Successfully!</h3>
+                          <p className="mt-1 text-sm text-green-700">Your withdrawal has been submitted and is being processed. You can track its progress in the withdrawal history below.</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
               </div>
            </section>
 
