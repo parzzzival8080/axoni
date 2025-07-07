@@ -59,7 +59,7 @@ const TradingTab = ({
 
       {/* Assets Cards */}
       {!loading && !error && coins.length > 0 ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6 mb-4 sm:mb-6">
           <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-gray-200">
             <div className="text-gray-600 mb-2 text-sm sm:text-base">
               Assets value
@@ -71,18 +71,9 @@ const TradingTab = ({
               Total assets value in account
             </div>
           </div>
-
-          <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-gray-200">
-            <div className="text-gray-600 mb-2 text-sm sm:text-base">
-              Recent transactions
-            </div>
-            <div className="text-gray-500 text-sm sm:text-base">
-              No recent transactions
-            </div>
-          </div>
         </div>
       ) : !loading && !error ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6 mb-4 sm:mb-6">
           <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-gray-200">
             <div className="flex flex-col items-center text-center py-6 sm:py-8">
               <img
@@ -100,22 +91,6 @@ const TradingTab = ({
               <button className="bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 sm:px-6 rounded-lg font-medium transition-colors text-sm sm:text-base">
                 Deposit
               </button>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-gray-200">
-            <div className="flex flex-col items-center text-center py-6 sm:py-8">
-              <img
-                src={assetIcon}
-                alt="Assets icon"
-                className="w-12 h-12 sm:w-16 sm:h-16 mb-3 sm:mb-4 opacity-50"
-              />
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
-                Recent transactions
-              </h3>
-              <p className="text-gray-500 text-sm sm:text-base">
-                Your recent transactions will appear here.
-              </p>
             </div>
           </div>
         </div>
