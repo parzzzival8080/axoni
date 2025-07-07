@@ -104,6 +104,7 @@ const Navbar = () => {
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const searchRef = useRef(null);
   const mobileSearchRef = useRef(null);
+  const searchInputRef = useRef(null);
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -280,6 +281,10 @@ const Navbar = () => {
   const handleCoinSelect = (coin) => {
     setIsSearchFocused(false);
     setSearchTerm("");
+    if (searchInputRef.current) {
+      searchInputRef.current.blur();
+    }
+    setIsMobileSearchOpen(false);
 
     if (activeTab === "futures") {
       navigate(`/future-trading?coin_pair_id=${coin.coin_pair}`);
@@ -656,6 +661,7 @@ const Navbar = () => {
         <div className="desktop-search okx-navbar-search-box" ref={searchRef}>
           <i className="fas fa-search" aria-hidden="true"></i>
           <input
+            ref={searchInputRef}
             type="text"
             placeholder="Search..."
             aria-label="Search"
