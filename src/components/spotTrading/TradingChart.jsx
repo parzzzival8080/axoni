@@ -421,49 +421,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
 
   return (
     <div className="trading-chart trading-chart-container md:relative md:z-auto z-0 overflow-hidden">
-      <div className="chart-header">
-        <div className="chart-controls">
-          <div className="chart-type-selector">
-            <button
-              className={chartType === "candles" ? "active" : ""}
-              onClick={() => setChartType("candles")}
-            >
-              <i className="fas fa-chart-bar"></i>
-            </button>
-            <button
-              className={chartType === "line" ? "active" : ""}
-              onClick={() => setChartType("line")}
-            >
-              <i className="fas fa-chart-line"></i>
-            </button>
-          </div>
-          <div className="timeframe-selector">
-            {timeframes.map((tf) => (
-              <button
-                key={tf}
-                className={timeframe === tf ? "active" : ""}
-                onClick={() => setTimeframe(tf)}
-              >
-                {tf}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="chart-tools">
-          <button className="tool-button">
-            <i className="fas fa-crosshairs"></i>
-          </button>
-          <button className="tool-button">
-            <i className="fas fa-ruler"></i>
-          </button>
-          <button className="tool-button">
-            <i className="fas fa-draw-polygon"></i>
-          </button>
-          <button className="tool-button">
-            <i className="fas fa-cog"></i>
-          </button>
-        </div>
-      </div>
+
       <div className="chart-content">
         <div
           className="chart-area"
