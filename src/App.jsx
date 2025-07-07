@@ -37,6 +37,7 @@ import GetStarted from "./components/common/GetStarted";
 import TermsAndConditions from "./components/common/footerContent/TermsAndConditions";
 import PrivacyPolicy from "./components/common/footerContent/PolicyContent";
 import ScrollToTop from "./services/userWindowsSize";
+import { FreezeCheckProvider } from "./context/FreezeCheckContext";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
       <CurrencyProvider>
         <CryptoProvider>
         <Router>
+          <FreezeCheckProvider>
           <div className="App">
             <ScrollToTop />
             <Routes>
@@ -840,6 +842,7 @@ function App() {
               />
             </Routes>
           </div>
+          </FreezeCheckProvider>
         </Router>
         </CryptoProvider>
       </CurrencyProvider>

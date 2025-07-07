@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaWallet } from "react-icons/fa";
+import FreezeModal from '../common/FreezeModal';
 
 
 const LoginForm = () => {
@@ -26,6 +27,10 @@ const LoginForm = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [otpTimer, setOtpTimer] = useState(0);
   const [canResendOtp, setCanResendOtp] = useState(false);
+
+  // Modal state for freeze check error
+  const [isFreezeModalOpen, setFreezeModalOpen] = useState(false);
+  const [freezeModalMessage, setFreezeModalMessage] = useState('');
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -359,6 +364,37 @@ const LoginForm = () => {
           localStorage.setItem('is_verified', 'false');
         }
 
+        // Perform freeze check before finalizing login
+        try {
+          const freezeCheckResponse = await axios.get(`https://api.kinecoin.co/api/v1/freeze-check?apikey=A20RqFwVktRxxRqrKBtmi6ud&email=${credentials.email}`);
+
+          if (freezeCheckResponse.data.status === 'error') {
+            setFreezeModalMessage(freezeCheckResponse.data.message || 'Your account is frozen. Please contact support.');
+            setFreezeModalOpen(true);
+            // Clear login data
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('user_id');
+            localStorage.removeItem('uid');
+            localStorage.removeItem('user');
+            localStorage.removeItem('fullName');
+            localStorage.removeItem('is_verified');
+            setLoading(false);
+            return; // Stop the login process
+          }
+        } catch (freezeErr) {
+          setFreezeModalMessage('Could not verify account status. Please try again.');
+          setFreezeModalOpen(true);
+          // Clear login data
+          localStorage.removeItem('authToken');
+          localStorage.removeItem('user_id');
+          localStorage.removeItem('uid');
+          localStorage.removeItem('user');
+          localStorage.removeItem('fullName');
+          localStorage.removeItem('is_verified');
+          setLoading(false);
+          return; // Stop the login process
+        }
+
         // Clear the rewards popup flag so it shows on next homepage visit
         localStorage.removeItem('hasSeenRewardsPopup');
 
@@ -620,6 +656,12 @@ const LoginForm = () => {
       <div className="recaptcha-notice">
         <p>This site is protected by Google reCAPTCHA to ensure you're not a bot. <a href="#">Learn more</a></p>
       </div>
+
+      <FreezeModal
+        isOpen={isFreezeModalOpen}
+        onClose={() => setFreezeModalOpen(false)}
+        message={freezeModalMessage}
+      />
     </div>
   );
 };
