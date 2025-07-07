@@ -96,7 +96,7 @@ const defaultConfig = {
     appStoreQRUrl: 'https://apps.apple.com/app/KINE-coin',
     playStoreQRUrl: 'https://play.google.com/store/apps/details?id=com.KINEcoin',
     iosDownloadUrl: 'https://apiv2.bhtokens.com/api/v1/download-ios',
-    androidDownloadUrl: 'https://api.bhtokens.com/api/v1/download-apk'
+    androidDownloadUrl: 'https://api.kinecoin.co/api/v1/download-apk'
   },
   apis: {
     baseUrl: 'https://django.bhtokens.com/api',
