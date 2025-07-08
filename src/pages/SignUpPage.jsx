@@ -1457,6 +1457,7 @@ const SignUpPage = () => {
                   >
                     <option value="+1">+1 (US)</option>
                     <option value="+44">+44 (UK)</option>
+                    <option value="+60">+60 (MY)</option>
                     <option value="+81">+81 (JP)</option>
                     <option value="+86">+86 (CN)</option>
                     <option value="+91">+91 (IN)</option>

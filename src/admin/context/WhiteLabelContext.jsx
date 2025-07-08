@@ -95,16 +95,16 @@ const defaultConfig = {
     downloadQRUrl: 'https://drive.google.com/file/d/1N4DFPGpFfXatDrKUeX-77F2kuUY6q4jk/view?usp=sharing',
     appStoreQRUrl: 'https://apps.apple.com/app/KINE-coin',
     playStoreQRUrl: 'https://play.google.com/store/apps/details?id=com.KINEcoin',
-    iosDownloadUrl: 'https://apiv2.bhtokens.com/api/v1/download-ios',
-    androidDownloadUrl: 'https://api.bhtokens.com/api/v1/download-apk'
+    iosDownloadUrl: 'https://api.kinecoin.co/api/v1/download-ios',
+    androidDownloadUrl: 'https://api.kinecoin.co/api/v1/download-apk'
   },
   apis: {
     baseUrl: 'https://django.bhtokens.com/api',
-    secondaryUrl: 'https://apiv2.bhtokens.com/api/v1',
+    secondaryUrl: 'https://api.kinecoin.co/api/v1',
     socketUrl: 'wss://socket.KINEcoin.tech',
-    chartDataUrl: 'https://apiv2.bhtokens.com/api/v1',
+    chartDataUrl: 'https://api.kinecoin.co/api/v1',
     supportUrl: 'https://support.KINEcoin.tech',
-    tradingViewDatafeed: 'https://apiv2.bhtokens.com/api/v1',
+    tradingViewDatafeed: 'https://api.kinecoin.co/api/v1',
     chartsStorageUrl: 'https://saveload.tradingview.com',
     userAccountUrl: 'https://django.bhtokens.com/api/user_account',
     metaMaskWidgetUrl: 'https://mpctoken.com/widget.js',
