@@ -12,7 +12,7 @@ const Market = () => {
   const location = useLocation();
   const { formatCurrency } = useCurrency();
 
-  const [activeMarketTab, setActiveMarketTab] = useState("Crypto"); // Crypto, Spot, Future
+  const [activeMarketTab, setActiveMarketTab] = useState("ALL"); // Crypto, Spot, Future
   // Live coin data
   const [coins, setCoins] = useState([]);
   const [search, setSearch] = useState("");
@@ -60,10 +60,10 @@ const Market = () => {
       setError(null);
 
       let url;
-      if (marketType === "Crypto") {
+      if (marketType === "ALL") {
         url = `https://api.kinecoin.co/api/v1/coins?apikey=A20RqFwVktRxxRqrKBtmi6ud`;
       } else {
-        const apiMarketType = marketType === "Spot" ? "is_spot" : "is_future";
+        const apiMarketType = marketType === "POS" ? "is_spot" : "is_future";
         url = `https://api.kinecoin.co/api/v1/fetch-market?apikey=A20RqFwVktRxxRqrKBtmi6ud&pair_type=All&market_type=${apiMarketType}`;
       }
 
@@ -159,7 +159,7 @@ const Market = () => {
 
         {/* Market Type Tabs */}
         <div className="flex space-x-1 border-b border-gray-800 mb-6">
-          {["Crypto", "Spot", "Future"].map((tab) => (
+          {["ALL", "POS", "POW"].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveMarketTab(tab)}
@@ -334,7 +334,7 @@ const Market = () => {
                             params.set("coin_pair_id", coin.coin_pair);
 
                             let tradePath = "/spot-trading";
-                            if (activeMarketTab === "Future") {
+                            if (activeMarketTab === "POW") {
                               tradePath = "/future-trading";
                             }
 
