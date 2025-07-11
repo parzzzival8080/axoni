@@ -67,6 +67,7 @@ const countries = [
   { code: "AU", name: "Australia", flag: "🇦🇺" },
   { code: "PH", name: "Philippines", flag: "🇵🇭" },
   { code: "SG", name: "Singapore", flag: "🇸🇬" },
+  { code: "MY", name: "Malaysia", flag: "🇲🇾" },
   { code: "DE", name: "Germany", flag: "🇩🇪" },
   { code: "FR", name: "France", flag: "🇫🇷" },
   { code: "IT", name: "Italy", flag: "🇮🇹" },

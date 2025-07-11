@@ -50,8 +50,8 @@ const mobileMenuItems = [
     hasDropdown: true,
     subItems: [
       { name: "Convert", path: "/conversion" },
-      { name: "Spot", path: "/spot-trading" },
-      { name: "Future", path: "/future-trading" },
+      { name: "POS", path: "/spot-trading" },
+      { name: "POW", path: "/future-trading" },
       { name: "Transfer", path: "/transfer" },
     ],
   },
@@ -413,7 +413,7 @@ const Navbar = () => {
                     <i className="fas fa-coins"></i>
                   </div>
                   <div className="dropdown-content">
-                    <h3>Spot</h3>
+                    <h3>POS</h3>
                     <p>Buy and sell crypto with ease</p>
                   </div>
                   <i className="fas fa-chevron-right"></i>
@@ -426,7 +426,7 @@ const Navbar = () => {
                     <i className="fas fa-chart-line"></i>
                   </div>
                   <div className="dropdown-content">
-                    <h3>Futures</h3>
+                    <h3>POW</h3>
                     <p>Trade perpetual and expiry futures with leverage</p>
                   </div>
                   <i className="fas fa-chevron-right"></i>
@@ -678,7 +678,7 @@ const Navbar = () => {
                   }`}
                   onClick={() => setActiveTab("spot")}
                 >
-                  Spot
+                  POS
                 </div>
                 <div
                   className={`search-tab ${
@@ -686,7 +686,7 @@ const Navbar = () => {
                   }`}
                   onClick={() => setActiveTab("futures")}
                 >
-                  Futures
+                  POW
                 </div>
               </div>
 
@@ -789,7 +789,7 @@ const Navbar = () => {
                   }`}
                   onClick={() => setActiveTab("spot")}
                 >
-                  Spot
+                  POS
                 </div>
                 <div
                   className={`search-tab ${
@@ -797,7 +797,7 @@ const Navbar = () => {
                   }`}
                   onClick={() => setActiveTab("futures")}
                 >
-                  Futures
+                  POW
                 </div>
               </div>
 
@@ -862,7 +862,6 @@ const Navbar = () => {
           <div className="auth-menu-container">
             {/* MetaMask Wallet Component */}
             {/* <MetaMaskWallet /> */}
-            
             {/* Assets Dropdown - hidden on mobile */}
             <div className="dropdown-container">
               <div className="assets-dropdown">
