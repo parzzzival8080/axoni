@@ -85,6 +85,8 @@ const countries = [
 { code: "IE", name: "Ireland", flag: "🇮🇪" },
 { code: "IS", name: "Iceland", flag: "🇮🇸" },
 { code: "IT", name: "Italy", flag: "🇮🇹" },
+{ code: "IN", name: "India", flag: "🇮🇳" },       // Added India
+{ code: "PK", name: "Pakistan", flag: "🇵🇰" },    // Added Pakistan
 { code: "LU", name: "Luxembourg", flag: "🇱🇺" },
 { code: "MC", name: "Monaco", flag: "🇲🇨" },
 { code: "MD", name: "Moldova", flag: "🇲🇩" },
@@ -101,6 +103,7 @@ const countries = [
 { code: "SE", name: "Sweden", flag: "🇸🇪" },
 { code: "SG", name: "Singapore", flag: "🇸🇬" },
 { code: "US", name: "United States", flag: "🇺🇸" }
+
 
 ];
 

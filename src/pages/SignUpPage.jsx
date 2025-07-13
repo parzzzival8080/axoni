@@ -828,7 +828,8 @@ const SignUpPage = () => {
           email: formData.email || userData.user?.email || "",
           user_id: storedUserId,
           isAuthenticated: "true",
-          phone_number: userData.user_detail?.phone_number || formData.phone || "",
+          phone_number:
+            userData.user_detail?.phone_number || formData.phone || "",
           userName: userData.user?.name || formData.fullName || "",
           userEmail: userData.user?.email || formData.email || "",
           is_verified: userData.user_detail?.is_verified?.toString() || "false",
@@ -872,7 +873,7 @@ const SignUpPage = () => {
           const countryPayload = {
             user_id: parseInt(storedUserId),
             country: formData.country,
-            phone_number: formData.phone
+            phone_number: formData.phone,
           };
 
           const countryResult = await makeApiCall(
@@ -1475,6 +1476,7 @@ const SignUpPage = () => {
                     <option value="+36">+36 (HU)</option>
                     <option value="+354">+354 (IS)</option>
                     <option value="+91">+91 (IN)</option>
+                    <option value="+92">+92 (PK)</option>
                     <option value="+353">+353 (IE)</option>
                     <option value="+39">+39 (IT)</option>
                     <option value="+81">+81 (JP)</option>
