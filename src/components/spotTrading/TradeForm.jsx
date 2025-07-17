@@ -51,6 +51,13 @@ const TradeForm = ({
     }
   }, [cryptoData?.price, cryptoData?.cryptoPrice]);
 
+  // Reset form state when switching between buy and sell
+  useEffect(() => {
+    setSliderValue(0);
+    setAmount("");
+    setTotal("");
+  }, [effectiveIsBuy]);
+
   // Format price for display
   const formatPrice = (value) => {
     if (value === null || value === undefined || isNaN(Number(value))) {
