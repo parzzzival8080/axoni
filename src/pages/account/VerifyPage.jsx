@@ -165,7 +165,6 @@ const FileUploadButton = ({ label, onFileChange, fileName, icon, subtext, disabl
           <span className="text-xs text-blue-600 mt-1">Camera will open first, or choose file</span>
         )}
       </button>
-      
       <input
         type="file"
         ref={inputRef}
