@@ -21,7 +21,7 @@ import './SubHeader.css';
  * @param {string} props.coinPairId - Coin pair ID
  * @param {Array} props.tradableCoins - List of tradable coins passed from parent
  */
-const SubHeader = ({ cryptoData, coinPairId, tradableCoins }) => {
+const SubHeader = ({ cryptoData, coinPairId, tradableCoins, loading }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true); 
@@ -109,11 +109,22 @@ const SubHeader = ({ cryptoData, coinPairId, tradableCoins }) => {
     );
   }
 
-  if (!cryptoData) {
+  if (!cryptoData && (isLoading || loading)) {
     return (
       <div className="sub-header bg-okx-primary border-b border-okx-border">
         <div className="skeleton-loading">
           <div className="loading-message">Loading...</div>
+        </div>
+      </div>
+    );
+  }
+  
+  // If no cryptoData but not loading, show error state instead of infinite loading
+  if (!cryptoData) {
+    return (
+      <div className="sub-header bg-okx-primary border-b border-okx-border">
+        <div className="skeleton-loading">
+          <div className="loading-message">No coin data available</div>
         </div>
       </div>
     );

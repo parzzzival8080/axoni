@@ -49,17 +49,48 @@ const FutureTrading = () => {
   // Fetch wallet data when coinPairId or uid changes
   useEffect(() => {
     const loadInitialWalletData = async () => {
+      setLoading(true);
+      
       if (!uid) {
-        setError("Please log in to access trading features");
+        console.log('No UID, displaying coin data for non-logged user');
+        // For non-logged users, create basic wallet data from tradable coins
+        if (tradableCoins.length > 0) {
+          const selectedCoin = tradableCoins.find(coin => 
+            coin.coin_pair === coinPairId || coin.id === coinPairId
+          ) || tradableCoins.find(coin => coin.symbol === 'BTC') || tradableCoins[0];
+          
+          if (selectedCoin) {
+            const basicWalletData = {
+              name: selectedCoin.name,
+              symbol: selectedCoin.symbol,
+              price: selectedCoin.price || 0,
+              price_change_24h: selectedCoin.price_change_24h || 0,
+              cryptoWallet: {
+                logo_path: selectedCoin.logo_path,
+                spot_wallet: 0
+              },
+              usdtWallet: {
+                crypto_symbol: 'USDT',
+                spot_wallet: 0
+              }
+            };
+            setWalletData(basicWalletData);
+            setError(null);
+          } else {
+            setError("Coin data not available");
+            setWalletData(null);
+          }
+        } else {
+          // Wait for tradable coins to load
+          setError(null);
+          setWalletData(null);
+        }
         setLoading(false);
-        setWalletData(null); // Clear previous wallet data
         return;
       }
       
-      setLoading(true);
-      
       try {
-        // Get wallet data for the selected coin
+        // Get wallet data for the selected coin (logged in users)
         const data = await fetchWalletData(uid, coinPairId);
         
         if (data.error) {
@@ -79,9 +110,9 @@ const FutureTrading = () => {
     };
     
     loadInitialWalletData();
-  }, [coinPairId, uid]);
+  }, [coinPairId, uid, tradableCoins]);
 
-  // --- Real-time polling for live futures price and 24h change ---
+  // --- Real-time polling for live futures price and 24h change (optimized) ---
   useEffect(() => {
     if (!walletData?.symbol) return;
     let isMounted = true;
@@ -89,8 +120,8 @@ const FutureTrading = () => {
 
     const pollPrice = async () => {
       try {
-        // Always fetch the freshest tradable coins (bypass cache)
-        const coins = await fetchTradableCoins(true); // forceRefresh=true
+        // Use cached data first, only refresh periodically for better performance
+        const coins = await fetchTradableCoins(false); // Use cache when available
         if (!isMounted || !Array.isArray(coins)) return;
         const coin = coins.find(c => c.symbol === walletData.symbol);
         if (coin) {
@@ -111,10 +142,12 @@ const FutureTrading = () => {
           });
         }
       } catch (err) {
-        // Optionally handle polling error
+        console.error('Error polling futures price:', err);
       }
     };
-    pollingRef.current = setInterval(pollPrice, 1000);
+    
+    // Poll every 5 seconds instead of 1 second for better performance
+    pollingRef.current = setInterval(pollPrice, 5000);
     pollPrice(); // Initial call
     return () => {
       isMounted = false;
@@ -256,6 +289,7 @@ const FutureTrading = () => {
         cryptoData={subHeaderData} // Use memoized data
         coinPairId={coinPairId}
         tradableCoins={tradableCoins} // Pass tradableCoins as a prop
+        loading={loading} // Pass loading state
       />
       <FavoritesBar 
         activeCoinPairId={coinPairId} 
