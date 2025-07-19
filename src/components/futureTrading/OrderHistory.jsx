@@ -337,7 +337,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
                     <td>{Number(order.liquidation_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     <td>{order.cycle}d</td>
                     <td>{Number(order.asset).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td>{Number(order.return_percentage).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
+                    <td>{Number(order.return_percentage * 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
                     <td className={`status-${order.status || 'pending'}`}>{order.status || 'pending'}</td>
                     <td>
                       <div className="flex space-x-2">
@@ -463,7 +463,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
                       
                       <div className="text-gray-400">Return:</div>
                       <div className="text-white font-medium">
-                        {Number(selectedPosition.return_percentage).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%
+                        {Number(selectedPosition.return_percentage * 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%
                       </div>
                     </div>
                   </div>
