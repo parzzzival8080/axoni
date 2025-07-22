@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Link } from 'react-router-dom';
+import { useVerifyStatus } from "../../context/VerifyStatusContext";
 import {
   ShieldCheck,
   ChevronRight,
@@ -179,6 +180,9 @@ const FileUploadButton = ({ label, onFileChange, fileName, icon, subtext, disabl
 
 const VerifyPage = () => {
   // ALL HOOKS MUST BE DECLARED AT THE TOP LEVEL - NO CONDITIONAL HOOKS
+  // Verification status context
+  const { verificationStatus: contextVerificationStatus, isVerified: contextIsVerified, checkVerificationStatus } = useVerifyStatus();
+  
   // State management
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedCountry, setSelectedCountry] = useState("PH");
@@ -708,6 +712,11 @@ const uploadKycDocuments = useCallback(async () => {
 
       setVerificationStatus(VERIFICATION_STATUS.PENDING);
       setCurrentStep(6);
+      
+      // Trigger immediate verification status check after submission
+      setTimeout(() => {
+        checkVerificationStatus();
+      }, 3000); // Check after 3 seconds to allow backend processing
 
     } catch (error) {
       console.error("Verification submission error:", error);
@@ -892,6 +901,14 @@ const uploadKycDocuments = useCallback(async () => {
       }
     };
   }, [fetchVerificationStatus, cleanupImageUrls, checkCameraAvailability]);
+
+  // Sync context verification status with local state
+  useEffect(() => {
+    if (contextVerificationStatus && contextVerificationStatus !== verificationStatus) {
+      console.log('Verification status updated from context:', contextVerificationStatus);
+      setVerificationStatus(contextVerificationStatus);
+    }
+  }, [contextVerificationStatus, verificationStatus]);
 
   // Show loading state while checking verification status
   if (isCheckingStatus) {
