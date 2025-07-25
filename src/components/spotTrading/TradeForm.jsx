@@ -301,11 +301,7 @@ const TradeForm = ({
         <div className="trade-type-toggle">
           <button
             className={`toggle-btn ${localIsBuy ? "active" : ""}`}
-            onClick={() => {
-              setLocalIsBuy(true);
-              // Refresh balances when switching tabs
-              if (onTradeSuccess) onTradeSuccess();
-            }}
+            onClick={() => setLocalIsBuy(true)}
             style={
               localIsBuy
                 ? {
@@ -320,11 +316,7 @@ const TradeForm = ({
           </button>
           <button
             className={`toggle-btn ${!localIsBuy ? "active" : ""}`}
-            onClick={() => {
-              setLocalIsBuy(false);
-              // Refresh balances when switching tabs
-              if (onTradeSuccess) onTradeSuccess();
-            }}
+            onClick={() => setLocalIsBuy(false)}
           >
             Sell
           </button>
