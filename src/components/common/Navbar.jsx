@@ -228,7 +228,7 @@ const Navbar = () => {
   };
 
   const appDownloadUrl =
-    "https://drive.google.com/file/d/1N4DFPGpFfXatDrKUeX-77F2kuUY6q4jk/view?usp=sharing";
+    "https://api.kinecoin.co/api/v1/download-kine-apk";
 
   const openComingSoon = () => setIsComingSoonOpen(true);
   const closeComingSoon = () => setIsComingSoonOpen(false);

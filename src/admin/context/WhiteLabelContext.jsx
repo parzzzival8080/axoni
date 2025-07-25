@@ -92,7 +92,7 @@ const defaultConfig = {
     downloadQR: '',
     appStoreQR: '',
     playStoreQR: '',
-    downloadQRUrl: 'https://drive.google.com/file/d/1N4DFPGpFfXatDrKUeX-77F2kuUY6q4jk/view?usp=sharing',
+    downloadQRUrl: 'https://api.kinecoin.co/api/v1/download-kine-apk',
     appStoreQRUrl: 'https://apps.apple.com/app/KINE-coin',
     playStoreQRUrl: 'https://play.google.com/store/apps/details?id=com.KINEcoin',
     iosDownloadUrl: 'https://api.kinecoin.co/api/v1/download-ios',
