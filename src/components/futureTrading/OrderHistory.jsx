@@ -385,7 +385,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
                     <td className="text-left">{Number(order.margin).toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })}</td>
                     <td className="text-left">{Number(order.liquidation_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     <td className="text-left">{order.cycle}d</td>
-                    <td className="text-left">{Number(order.asset).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td className="text-left asset-column">{Number(order.asset).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     <td className="text-left">
                       ${(() => {
                         const asset = Number(order.asset) || 0;
@@ -698,6 +698,11 @@ const statusStyles = `
   }
   .status-liquidated {
     color: #f23645;
+  }
+  
+  /* Asset column alignment fix */
+  .asset-column {
+    text-align: left !important;
   }
   
   /* Background refresh indicator styles */
