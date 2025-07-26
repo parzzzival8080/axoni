@@ -358,36 +358,46 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
           <table className="order-history-table">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Date</th>
-                <th>Coin</th>
-                <th>Leverage</th>
-                <th>Entry Price</th>
-                <th>Margin</th>
-                <th>Liquidation Price</th>
-                <th>Cycle</th>
-                <th>Asset</th>
-                <th>Return %</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th className="text-left">ID</th>
+                <th className="text-left">Date</th>
+                <th className="text-left">Coin</th>
+                <th className="text-left">Leverage</th>
+                <th className="text-left">Entry Price</th>
+                <th className="text-left">Margin</th>
+                <th className="text-left">Liquidation Price</th>
+                <th className="text-left">Cycle</th>
+                <th className="text-left">Asset</th>
+                <th className="text-left">Unrealized PnL</th>
+                <th className="text-left">Return %</th>
+                <th className="text-left">Status</th>
+                <th className="text-left">Action</th>
               </tr>
             </thead>
             <tbody>
               {currentItems.length > 0 ? (
                 currentItems.map(order => (
                   <tr key={order._id} className="order-row-fadein">
-                    <td>{order.future_id || '-'}</td>
-                    <td>{order.date ? new Date(order.date).toLocaleString() : '-'}</td>
-                    <td>{order.coin}</td>
-                    <td>{order.leverage}x</td>
-                    <td>{Number(order.entry_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td>{Number(order.margin).toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })}</td>
-                    <td>{Number(order.liquidation_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td>{order.cycle}d</td>
-                    <td>{Number(order.asset).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td>{Number(order.return_percentage).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
-                    <td className={`status-${order.status || 'pending'}`}>{order.status || 'pending'}</td>
-                    <td>
+                    <td className="text-left">{order.future_id || '-'}</td>
+                    <td className="text-left">{order.date ? new Date(order.date).toLocaleString() : '-'}</td>
+                    <td className="text-left">{order.coin}</td>
+                    <td className="text-left">{order.leverage}x</td>
+                    <td className="text-left">{Number(order.entry_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td className="text-left">{Number(order.margin).toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })}</td>
+                    <td className="text-left">{Number(order.liquidation_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td className="text-left">{order.cycle}d</td>
+                    <td className="text-left">{Number(order.asset).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td className="text-left">
+                      ${(() => {
+                        const asset = Number(order.asset) || 0;
+                        const totalRecharge = Number(order.total_recharge) || 0;
+                        const price = Number(walletData?.price) || 0;
+                        const unrealizedPnL = (asset + totalRecharge) * price;
+                        return unrealizedPnL.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                      })()}
+                    </td>
+                    <td className="text-left">{Number(order.return_percentage).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
+                    <td className={`text-left status-${order.status || 'pending'}`}>{order.status || 'pending'}</td>
+                    <td className="text-left">
                       <div className="flex space-x-2">
                         {order.status !== 'close_position' && (
                           <button 
@@ -398,14 +408,15 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
                             Add
                           </button>
                         )}
-                        {order.status !== 'close_position' ? (
+                        {order.status !== 'close_position' && (
                           <button 
-                            className="bg-white text-black font-medium py-1 px-3 rounded-full hover:bg-gray-100 transition-colors"
+                            className="bg-red-600 text-white font-medium py-1 px-3 rounded-full hover:bg-red-700 transition-colors"
                             onClick={() => handleClosePosition(order)}
                           >
                             Close
                           </button>
-                        ) : (
+                        )}
+                        {order.status === 'close_position' && (
                           <span className="text-gray-500 text-sm">Closed</span>
                         )}
                       </div>
