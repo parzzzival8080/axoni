@@ -466,7 +466,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
                         ${(() => {
                           const asset = Number(selectedPosition.asset) || 0;
                           const totalRecharge = Number(selectedPosition.total_recharge) || 0;
-                          const price = Number(walletData?.price) || 0;
+                          const price = Number(selectedPosition.price) || 0;
                           const unrecognizedPnL = (asset + totalRecharge) * price;
                           return unrecognizedPnL.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                         })()}
