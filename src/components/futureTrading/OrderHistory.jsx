@@ -390,12 +390,12 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
                       ${(() => {
                         const asset = Number(order.asset) || 0;
                         const totalRecharge = Number(order.total_recharge) || 0;
-                        const price = Number(walletData?.price) || 0;
+                        const price = Number(order.price) || 0;
                         const unrealizedPnL = (asset + totalRecharge) * price;
                         return unrealizedPnL.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                       })()}
                     </td>
-                    <td className="text-left">{Number(order.return_percentage).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
+                    <td className="text-left">{Number(order.return_percentage * order.leverage).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
                     <td className={`text-left status-${order.status || 'pending'}`}>{order.status || 'pending'}</td>
                     <td className="text-left">
                       <div className="flex space-x-2">
@@ -517,18 +517,18 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
                       
                       <div className="text-gray-400">Asset Value:</div>
                       <div className="text-white font-medium">
-                        ${Number(selectedPosition.asset).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        {Number(selectedPosition.asset).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {selectedPosition.coin}
                       </div>
                       
                       <div className="text-gray-400">Unrealized PnL:</div>
                       <div className="text-white font-medium">
-                        ${(() => {
+                        {(() => {
                           const asset = Number(selectedPosition.asset) || 0;
                           const totalRecharge = Number(selectedPosition.total_recharge) || 0;
                           const price = Number(selectedPosition.price) || 0;
                           const unrecognizedPnL = (asset + totalRecharge) * price;
                           return unrecognizedPnL.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                        })()}
+                        })()} USDT
                       </div>
                       
                       <div className="text-gray-400">Return:</div>
