@@ -28,8 +28,9 @@ export const fetchTradableCoins = async (forceRefresh = false) => {
   }
 
   try {
-    const url = `${API_BASE_URL}/coins?apikey=${API_KEY}`;
-    console.log('Fetching tradable coins from (futures):', url);
+    // Use POW-specific API endpoint (same as Market.jsx POW tab)
+    const url = `${API_BASE_URL}/fetch-market?apikey=${API_KEY}&pair_type=All&market_type=is_future`;
+    console.log('Fetching POW tradable coins from (futures):', url);
     
     const response = await fetch(url, {
       method: 'GET',
@@ -40,11 +41,27 @@ export const fetchTradableCoins = async (forceRefresh = false) => {
       throw new Error(`API Error: ${response.status}`);
     }
     
-    const data = await response.json();
+    const apiResponse = await response.json();
     
-    // Filter tradable coins and sort (BTC first, then by coin_pair)
+    // Handle API response structure (similar to Market.jsx)
+    let data = [];
+    if (Array.isArray(apiResponse)) {
+      data = apiResponse;
+    } else if (apiResponse && Array.isArray(apiResponse.data)) {
+      data = apiResponse.data;
+    } else {
+      console.warn('Unexpected POW API response structure:', apiResponse);
+      throw new Error('Invalid API response structure');
+    }
+    
+    // Filter valid coins and sort (BTC first, then by coin_pair)
     const tradableCoins = data
-      .filter(coin => coin.is_tradable) // Assuming is_tradable is the correct property
+      .filter(coin => 
+        coin &&
+        coin.symbol &&
+        coin.price !== undefined &&
+        coin.coin_pair !== undefined
+      )
       .sort((a, b) => {
         if (a.symbol === 'BTC') return -1;
         if (b.symbol === 'BTC') return 1;

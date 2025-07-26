@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Link } from 'react-router-dom';
+import { useVerifyStatus } from "../../context/VerifyStatusContext";
 import {
   ShieldCheck,
   ChevronRight,
@@ -61,30 +62,50 @@ const InitialVerifyIllustration = () => (
 );
 
 const countries = [
-  { code: "US", name: "United States", flag: "🇺🇸" },
-  { code: "CA", name: "Canada", flag: "🇨🇦" },
-  { code: "GB", name: "United Kingdom", flag: "🇬🇧" },
-  { code: "AU", name: "Australia", flag: "🇦🇺" },
-  { code: "PH", name: "Philippines", flag: "🇵🇭" },
-  { code: "SG", name: "Singapore", flag: "🇸🇬" },
-  { code: "DE", name: "Germany", flag: "🇩🇪" },
-  { code: "FR", name: "France", flag: "🇫🇷" },
-  { code: "IT", name: "Italy", flag: "🇮🇹" },
-  { code: "ES", name: "Spain", flag: "🇪🇸" },
-  { code: "NL", name: "Netherlands", flag: "🇳🇱" },
-  { code: "BE", name: "Belgium", flag: "🇧🇪" },
-  { code: "AT", name: "Austria", flag: "🇦🇹" },
-  { code: "CH", name: "Switzerland", flag: "🇨🇭" },
-  { code: "SE", name: "Sweden", flag: "🇸🇪" },
-  { code: "NO", name: "Norway", flag: "🇳🇴" },
-  { code: "DK", name: "Denmark", flag: "🇩🇰" },
-  { code: "FI", name: "Finland", flag: "🇫🇮" },
-  { code: "IE", name: "Ireland", flag: "🇮🇪" },
-  { code: "PL", name: "Poland", flag: "🇵🇱" },
-  { code: "CZ", name: "Czech Republic", flag: "🇨🇿" },
-  { code: "HU", name: "Hungary", flag: "🇭🇺" },
-  { code: "PT", name: "Portugal", flag: "🇵🇹" },
-  { code: "GR", name: "Greece", flag: "🇬🇷" },
+{ code: "AD", name: "Andorra", flag: "🇦🇩" },
+{ code: "AM", name: "Armenia", flag: "🇦🇲" },
+{ code: "AT", name: "Austria", flag: "🇦🇹" },
+{ code: "AZ", name: "Azerbaijan", flag: "🇦🇿" },
+{ code: "BE", name: "Belgium", flag: "🇧🇪" },
+{ code: "BG", name: "Bulgaria", flag: "🇧🇬" },
+{ code: "BY", name: "Belarus", flag: "🇧🇾" },
+{ code: "CA", name: "Canada", flag: "🇨🇦" },
+{ code: "CH", name: "Switzerland", flag: "🇨🇭" },
+{ code: "CY", name: "Cyprus", flag: "🇨🇾" },
+{ code: "CZ", name: "Czech Republic", flag: "🇨🇿" },
+{ code: "DE", name: "Germany", flag: "🇩🇪" },
+{ code: "DK", name: "Denmark", flag: "🇩🇰" },
+{ code: "ES", name: "Spain", flag: "🇪🇸" },
+{ code: "FI", name: "Finland", flag: "🇫🇮" },
+{ code: "FR", name: "France", flag: "🇫🇷" },
+{ code: "GB", name: "United Kingdom", flag: "🇬🇧" },
+{ code: "GE", name: "Georgia", flag: "🇬🇪" },
+{ code: "GR", name: "Greece", flag: "🇬🇷" },
+{ code: "HR", name: "Croatia", flag: "🇭🇷" },
+{ code: "HU", name: "Hungary", flag: "🇭🇺" },
+{ code: "IE", name: "Ireland", flag: "🇮🇪" },
+{ code: "IS", name: "Iceland", flag: "🇮🇸" },
+{ code: "IT", name: "Italy", flag: "🇮🇹" },
+{ code: "IN", name: "India", flag: "🇮🇳" },       // Added India
+{ code: "PK", name: "Pakistan", flag: "🇵🇰" },    // Added Pakistan
+{ code: "LU", name: "Luxembourg", flag: "🇱🇺" },
+{ code: "MC", name: "Monaco", flag: "🇲🇨" },
+{ code: "MD", name: "Moldova", flag: "🇲🇩" },
+{ code: "ME", name: "Montenegro", flag: "🇲🇪" },
+{ code: "MK", name: "North Macedonia", flag: "🇲🇰" },
+{ code: "MT", name: "Malta", flag: "🇲🇹" },
+{ code: "MY", name: "Malaysia", flag: "🇲🇾" },
+{ code: "NL", name: "Netherlands", flag: "🇳🇱" },
+{ code: "NO", name: "Norway", flag: "🇳🇴" },
+{ code: "PH", name: "Philippines", flag: "🇵🇭" },
+{ code: "PL", name: "Poland", flag: "🇵🇱" },
+{ code: "PT", name: "Portugal", flag: "🇵🇹" },
+{ code: "RO", name: "Romania", flag: "🇷🇴" },
+{ code: "SE", name: "Sweden", flag: "🇸🇪" },
+{ code: "SG", name: "Singapore", flag: "🇸🇬" },
+{ code: "US", name: "United States", flag: "🇺🇸" }
+
+
 ];
 
 const idTypes = [
@@ -145,7 +166,6 @@ const FileUploadButton = ({ label, onFileChange, fileName, icon, subtext, disabl
           <span className="text-xs text-blue-600 mt-1">Camera will open first, or choose file</span>
         )}
       </button>
-      
       <input
         type="file"
         ref={inputRef}
@@ -160,6 +180,9 @@ const FileUploadButton = ({ label, onFileChange, fileName, icon, subtext, disabl
 
 const VerifyPage = () => {
   // ALL HOOKS MUST BE DECLARED AT THE TOP LEVEL - NO CONDITIONAL HOOKS
+  // Verification status context
+  const { verificationStatus: contextVerificationStatus, isVerified: contextIsVerified, checkVerificationStatus } = useVerifyStatus();
+  
   // State management
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedCountry, setSelectedCountry] = useState("PH");
@@ -689,6 +712,11 @@ const uploadKycDocuments = useCallback(async () => {
 
       setVerificationStatus(VERIFICATION_STATUS.PENDING);
       setCurrentStep(6);
+      
+      // Trigger immediate verification status check after submission
+      setTimeout(() => {
+        checkVerificationStatus();
+      }, 3000); // Check after 3 seconds to allow backend processing
 
     } catch (error) {
       console.error("Verification submission error:", error);
@@ -873,6 +901,14 @@ const uploadKycDocuments = useCallback(async () => {
       }
     };
   }, [fetchVerificationStatus, cleanupImageUrls, checkCameraAvailability]);
+
+  // Sync context verification status with local state
+  useEffect(() => {
+    if (contextVerificationStatus && contextVerificationStatus !== verificationStatus) {
+      console.log('Verification status updated from context:', contextVerificationStatus);
+      setVerificationStatus(contextVerificationStatus);
+    }
+  }, [contextVerificationStatus, verificationStatus]);
 
   // Show loading state while checking verification status
   if (isCheckingStatus) {

@@ -106,7 +106,7 @@ const TradingPage = () => {
       }
     };
     fetchBalance();
-  }, [selectedCoinPair]);
+  }, [selectedCoinPair, refreshTrigger]); // Also depend on refreshTrigger to update balance after trade
 
   // Mobile app bar buy/sell buttons
   const renderMobileTradeBar = () => (

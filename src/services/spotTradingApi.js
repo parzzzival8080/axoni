@@ -6,8 +6,8 @@ const DEFAULT_UID = '   ';
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000;
 const CACHE_DURATION = 30000; // 30 seconds for other data
-const COINS_CACHE_DURATION = 5 * 60 * 1000; // 5 minutes for coins data (more frequent updates)
-const REQUEST_TIMEOUT = 8000;
+const COINS_CACHE_DURATION = 2 * 60 * 1000; // 2 minutes for coins data (more frequent updates for better real-time data)
+const REQUEST_TIMEOUT = 6000; // Reduced timeout for faster failure detection
 const RATE_LIMIT_DELAY = 100;
 
 // Cache keys
@@ -752,6 +752,74 @@ export const clearCache = (keys = 'all') => {
             lastRequestTime.delete(key);
         });
         console.log('🗑️ Cleared cache for keys:', keysArray);
+    }
+};
+
+/**
+ * Fetch price data for a specific coin (optimized for polling)
+ * @param {string} symbol - Coin symbol (e.g., 'BTC')
+ * @returns {Promise<Object>} Promise with price data
+ */
+export const fetchCoinPriceData = async (symbol) => {
+    try {
+        if (!symbol) {
+            return { success: false, message: "Coin symbol is required" };
+        }
+
+        const normalizedSymbol = symbol.toUpperCase().trim();
+        
+        // Try cache first for very recent data (10 seconds)
+        const cachedCoin = getCoinFromCache(normalizedSymbol);
+        if (cachedCoin) {
+            const cacheAge = Date.now() - (cachedCoin.cache_timestamp || 0);
+            if (cacheAge < 10000) { // 10 seconds
+                return {
+                    success: true,
+                    data: {
+                        symbol: cachedCoin.symbol,
+                        price: cachedCoin.price,
+                        price_change_24h: cachedCoin.price_change_24h,
+                        '24_high': cachedCoin['24_high'],
+                        '24_low': cachedCoin['24_low'],
+                        volume_24h: cachedCoin.volume_24h
+                    },
+                    fromCache: true,
+                    cacheAge
+                };
+            }
+        }
+
+        // Fallback to fetching all coins if individual API doesn't exist
+        const coinsResponse = await fetchAllCoins(false);
+        if (coinsResponse.success) {
+            const coin = coinsResponse.coins.find(c => c.symbol === normalizedSymbol);
+            if (coin) {
+                return {
+                    success: true,
+                    data: {
+                        symbol: coin.symbol,
+                        price: coin.price,
+                        price_change_24h: coin.price_change_24h,
+                        '24_high': coin['24_high'],
+                        '24_low': coin['24_low'],
+                        volume_24h: coin.volume_24h
+                    },
+                    fromCache: coinsResponse.fromCache
+                };
+            }
+        }
+
+        return {
+            success: false,
+            message: `Price data for ${normalizedSymbol} not found`
+        };
+
+    } catch (error) {
+        console.error('Error fetching coin price data:', error);
+        return {
+            success: false,
+            message: error.message || 'Failed to fetch price data'
+        };
     }
 };
 

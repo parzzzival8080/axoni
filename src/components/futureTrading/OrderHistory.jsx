@@ -461,6 +461,17 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
                         ${Number(selectedPosition.asset).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </div>
                       
+                      <div className="text-gray-400">Unrealized PnL:</div>
+                      <div className="text-white font-medium">
+                        ${(() => {
+                          const asset = Number(selectedPosition.asset) || 0;
+                          const totalRecharge = Number(selectedPosition.total_recharge) || 0;
+                          const price = Number(walletData?.price) || 0;
+                          const unrecognizedPnL = (asset + totalRecharge) * price;
+                          return unrecognizedPnL.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        })()}
+                      </div>
+                      
                       <div className="text-gray-400">Return:</div>
                       <div className="text-white font-medium">
                         {Number(selectedPosition.return_percentage).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%

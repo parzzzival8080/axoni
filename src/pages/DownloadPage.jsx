@@ -19,13 +19,13 @@ const DownloadPage = () => {
   };
 
   const appDownloadUrl =
-    "https://drive.google.com/file/d/1N4DFPGpFfXatDrKUeX-77F2kuUY6q4jk/view?usp=sharing";
+    "https://api.kinecoin.co/api/v1/download-kine-apk";
 
   const handleAppDownload = () => {
     // For Google Drive links, we need to convert the sharing URL to a direct download URL
     // This works for public Google Drive files
     const fileId = appDownloadUrl.split("/")[5]; // Extract the file ID from the URL
-    const directDownloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+    const directDownloadUrl = `https://api.kinecoin.co/api/v1/download-kine-apk`;
     window.open(directDownloadUrl, "_blank", "noopener,noreferrer");
 
     // Create a temporary anchor element to trigger the download

@@ -12,7 +12,8 @@ import {
   getSpotWallet, 
   fetchAllCoins, 
   getCoinFromCache,
-  getCacheStats 
+  getCacheStats,
+  fetchCoinPriceData
 } from '../services/spotTradingApi';
 import '../components/spotTrading/SpotTrading.css';
 
@@ -64,16 +65,29 @@ const SpotTrading = () => {
   // Load coins from cache or API on mount
   useEffect(() => {
     let isMounted = true;
+    let loadingTimeout;
     
     const loadCoins = async () => {
       setCoinsLoading(true);
       setError(null);
+      
+      // Fallback timeout to prevent stuck loading state
+      loadingTimeout = setTimeout(() => {
+        if (isMounted) {
+          console.warn('Coins loading timed out, clearing loading state');
+          setCoinsLoading(false);
+          setLoading(false);
+          setError('Loading timed out. Please refresh the page.');
+        }
+      }, 15000); // 15 second timeout
       
       try {
         console.log('Loading coins...');
         const response = await fetchAllCoins();
         
         if (isMounted) {
+          clearTimeout(loadingTimeout);
+          
           if (response.success) {
             setAvailableCoins(response.coins || []);
             console.log(`Loaded ${response.coins?.length || 0} coins`, response.fromCache ? 'from cache' : 'from API');
@@ -88,6 +102,7 @@ const SpotTrading = () => {
         }
       } catch (error) {
         if (isMounted) {
+          clearTimeout(loadingTimeout);
           console.error('Error loading coins:', error);
           setAvailableCoins([]);
           setError(error.message || 'Failed to load coins');
@@ -101,7 +116,10 @@ const SpotTrading = () => {
     };
     
     loadCoins();
-    return () => { isMounted = false; };
+    return () => { 
+      isMounted = false;
+      if (loadingTimeout) clearTimeout(loadingTimeout);
+    };
   }, []);
 
   // Memoized function to get coin data from cache
@@ -253,6 +271,7 @@ const SpotTrading = () => {
       console.log('SpotTrading: No coin could be selected');
       if (availableCoins.length === 0 && coinsLoading) {
         console.log("SpotTrading: availableCoins is empty, likely still loading them.");
+        return; // Don't clear loading states if coins are still loading
       } else {
         setError(`Coin data for ID ${coinPairId} could not be loaded.`);
         setCryptoData(null);
@@ -278,8 +297,28 @@ const SpotTrading = () => {
         if (coinDataFromCache) {
           setCryptoDataWithLog(coinDataFromCache);
           setError(null);
+          setStatsLoading(false);
         } else {
-          setError(`Failed to load details for ${selectedCoin.symbol}`);
+          // If no cached data, try to fetch coins to populate cache
+          console.log('No cached data for non-logged user, attempting to load from API...');
+          try {
+            const coinsResponse = await fetchAllCoins(false);
+            if (coinsResponse.success) {
+              const freshCoinData = getCoinDataFromCache(selectedCoin.symbol);
+              if (freshCoinData) {
+                setCryptoDataWithLog(freshCoinData);
+                setError(null);
+              } else {
+                setError(`Failed to load details for ${selectedCoin.symbol}`);
+              }
+            } else {
+              setError(`Failed to load coin data: ${coinsResponse.message}`);
+            }
+          } catch (fetchError) {
+            console.error('Error fetching coins for non-logged user:', fetchError);
+            setError(`Failed to load details for ${selectedCoin.symbol}`);
+          }
+          setStatsLoading(false);
         }
         setUserBalance({ cryptoSpotBalance: 0, usdtSpotBalance: 0 });
       } else {
@@ -336,6 +375,7 @@ const SpotTrading = () => {
         setStatsLoading(false);
       }
 
+      
       isInitialized.current = true;
     } catch (err) {
       console.error('Error fetching crypto data:', err);
@@ -359,6 +399,10 @@ const SpotTrading = () => {
       fetchTimeoutRef.current = setTimeout(() => {
         fetchCryptoData(false);
       }, 100);
+    } else if (availableCoins.length === 0 && !coinsLoading) {
+      // If no coins are available and not loading, ensure loading state is cleared
+      setLoading(false);
+      setStatsLoading(false);
     }
 
     return () => {
@@ -477,41 +521,45 @@ const SpotTrading = () => {
     </>
   ), [mobileTradeTab, cryptoData, userBalance, coinPairId, fetchUserBalance]);
 
-  // Poll for price and price_change_24h every second (optimized)
+  // Poll for price and price_change_24h every 5 seconds (optimized) - works for all users
   useEffect(() => {
     if (!cryptoData?.cryptoSymbol) return;
     let isMounted = true;
     setIsPolling(true);
     setPricePollingError(null);
 
-    // Always fetch the freshest price directly from the API (bypass cache)
+    // Use optimized price fetching function
     const pollPrice = async () => {
       try {
-        const response = await fetchAllCoins(true); // forceRefresh=true
+        const response = await fetchCoinPriceData(cryptoData.cryptoSymbol);
         if (!isMounted) return;
-        if (response.success && Array.isArray(response.coins)) {
-          const coin = response.coins.find(c => c.symbol === cryptoData.cryptoSymbol);
-          if (coin) {
-            const { price, price_change_24h } = coin;
-            setCryptoData(prev => {
-              if (!prev) return prev;
-              if (
-                prev.cryptoPrice !== price ||
-                prev.priceChange24h !== price_change_24h ||
-                prev.price !== price ||
-                prev.price_change_24h !== price_change_24h
-              ) {
-                return {
-                  ...prev,
-                  cryptoPrice: price,
-                  priceChange24h: price_change_24h,
-                  price,
-                  price_change_24h
-                };
-              }
-              return prev;
-            });
-          }
+        
+        if (response.success && response.data) {
+          const { price, price_change_24h } = response.data;
+          setCryptoData(prev => {
+            if (!prev) return prev;
+            if (
+              prev.cryptoPrice !== price ||
+              prev.priceChange24h !== price_change_24h ||
+              prev.price !== price ||
+              prev.price_change_24h !== price_change_24h
+            ) {
+              return {
+                ...prev,
+                cryptoPrice: price,
+                priceChange24h: price_change_24h,
+                price,
+                price_change_24h,
+                '24_high': response.data['24_high'] || prev['24_high'],
+                '24_low': response.data['24_low'] || prev['24_low'],
+                volume_24h: response.data.volume_24h || prev.volume_24h
+              };
+            }
+            return prev;
+          });
+          
+          // Clear any previous errors
+          setPricePollingError(null);
         } else if (response.message) {
           setPricePollingError(response.message);
         }
@@ -519,16 +567,20 @@ const SpotTrading = () => {
         if (isMounted) setPricePollingError(err?.message || 'Error updating price');
       }
     };
-    pollingRef.current = setInterval(pollPrice, 1000);
+
+    // Poll every 5 seconds instead of 1 second for better performance
+    pollingRef.current = setInterval(pollPrice, 5000);
+    
     // Initial call for immediate UI update
     pollPrice();
+    
     return () => {
       isMounted = false;
       setIsPolling(false);
       setPricePollingError(null);
       if (pollingRef.current) clearInterval(pollingRef.current);
     };
-  }, [cryptoData?.cryptoSymbol]);
+  }, [cryptoData?.cryptoSymbol, getCoinFromCache]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -568,7 +620,7 @@ const SpotTrading = () => {
         coinPairId={coinPairId}
         availableCoins={availableCoins}
         onCoinSelect={handleCoinSelect}
-        loading={(loading && !isInitialized.current) || coinsLoading}
+        loading={coinsLoading || (loading && !isInitialized.current && !subHeaderData)}
         error={error}
         statsLoading={statsLoading}
         pricePollingError={pricePollingError}

@@ -51,6 +51,13 @@ const TradeForm = ({
     }
   }, [cryptoData?.price, cryptoData?.cryptoPrice]);
 
+  // Reset form state when switching between buy and sell
+  useEffect(() => {
+    setSliderValue(0);
+    setAmount("");
+    setTotal("");
+  }, [effectiveIsBuy]);
+
   // Format price for display
   const formatPrice = (value) => {
     if (value === null || value === undefined || isNaN(Number(value))) {
@@ -82,29 +89,44 @@ const TradeForm = ({
       const usdtSpotBalance = parseFloat(
         userBalance?.usdtSpotBalance || userBalance?.usdtBalance || 0
       );
-      // Ensure we return with full precision for buying
-      return price > 0 ? parseFloat((usdtSpotBalance / price).toFixed(5)) : 0;
+      // Return with full precision for accurate calculations
+      return price > 0 ? usdtSpotBalance / price : 0;
     } else {
-      // For selling, max amount is crypto balance
-      return parseFloat(
-        userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || 0
-      );
+      // For selling, return the precise crypto balance
+      return userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || 0;
     }
   };
 
   // Handle slider change with precise calculations
   const handleSliderChange = (e) => {
-    const value = parseInt(e.target.value);
+    const value = parseInt(e.target.value, 10);
     setSliderValue(value);
 
-    // Calculate amount based on available balance with full precision
-    const maxAmount = getMaxAmount();
-
-    // Use full precision for calculations and ensure 5 decimal places
-    const calculatedAmount = (value / 100) * maxAmount;
-    const formattedAmount = calculatedAmount.toFixed(5);
-    setAmount(formattedAmount);
-    setTotal(calculateTotal(formattedAmount));
+    if (value === 100) {
+      // At 100%, use the full balance to avoid rounding errors
+      if (effectiveIsBuy) {
+        const usdtBalance = parseFloat(
+          userBalance?.usdtSpotBalance || userBalance?.usdtBalance || 0
+        );
+        setTotal(usdtBalance.toFixed(5));
+        if (price > 0) {
+          setAmount((usdtBalance / price).toFixed(5));
+        }
+      } else {
+        const cryptoBalance = parseFloat(
+          userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || 0
+        );
+        setAmount(cryptoBalance.toFixed(5));
+        setTotal((cryptoBalance * price).toFixed(5));
+      }
+    } else {
+      // For other slider values, calculate based on percentage
+      const maxAmount = getMaxAmount();
+      const calculatedAmount = (value / 100) * maxAmount;
+      const formattedAmount = calculatedAmount.toFixed(5);
+      setAmount(formattedAmount);
+      setTotal(calculateTotal(formattedAmount));
+    }
   };
 
   // Handle amount change with precise calculations

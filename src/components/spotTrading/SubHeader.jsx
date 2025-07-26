@@ -63,10 +63,36 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
   // Check if coin is favorited
   const checkCoinFavoriteStatus = useCallback(async () => {
     try {
-      let uid = localStorage.getItem('uid') || localStorage.getItem('userId') || '1';
+      const token = localStorage.getItem('authToken');
+      const userId = localStorage.getItem('user_id');
+      let uid = localStorage.getItem('uid');
       const coin_id = coinPairId || cryptoData?.coin_pair_id || cryptoData?.id;
       
-      if (!coin_id) return;
+      // If no authentication or coin ID, skip favorite check
+      if (!token || !userId || !coin_id) return;
+      
+      // If no UID, try to fetch it from Django API
+      if (!uid) {
+        try {
+          const userInfoResponse = await fetch(
+            `https://django.kinecoin.co/api/user_account/getUserInformation/?user_id=${userId}`,
+            { headers: { 'Authorization': `Bearer ${token}` } }
+          );
+          
+          if (userInfoResponse.ok) {
+            const userInfo = await userInfoResponse.json();
+            uid = userInfo?.user?.uid;
+            if (uid) {
+              localStorage.setItem('uid', uid);
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching UID for favorite check:', error);
+        }
+      }
+      
+      // If still no UID, skip favorite check
+      if (!uid) return;
 
       // Get user wallets to check if current coin is in favorites
       const response = await fetch(`https://api.kinecoin.co/api/v1/user-wallets/${uid}?apikey=A20RqFwVktRxxRqrKBtmi6ud`, {
@@ -96,9 +122,46 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
   const handleAddToFavorites = useCallback(async () => {
     setIsUpdatingFavorite(true);
     try {
-      let uid = localStorage.getItem('uid') || localStorage.getItem('userId') || '1';
-      const coin_id = coinPairId || cryptoData?.coin_pair_id || cryptoData?.id;
+      const token = localStorage.getItem('authToken');
+      const userId = localStorage.getItem('user_id');
+      let uid = localStorage.getItem('uid');
       
+      // Check if user is logged in
+      if (!token || !userId) {
+        console.error('User not logged in');
+        alert('Please log in to add favorites');
+        setIsUpdatingFavorite(false);
+        return;
+      }
+      
+      // If no UID, try to fetch it from Django API
+      if (!uid) {
+        try {
+          const userInfoResponse = await fetch(
+            `https://django.kinecoin.co/api/user_account/getUserInformation/?user_id=${userId}`,
+            { headers: { 'Authorization': `Bearer ${token}` } }
+          );
+          
+          if (userInfoResponse.ok) {
+            const userInfo = await userInfoResponse.json();
+            uid = userInfo?.user?.uid;
+            if (uid) {
+              localStorage.setItem('uid', uid);
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching UID:', error);
+        }
+      }
+      
+      if (!uid) {
+        console.error('Could not retrieve user UID');
+        alert('Unable to add to favorites. Please try logging in again.');
+        setIsUpdatingFavorite(false);
+        return;
+      }
+      
+      const coin_id = coinPairId || cryptoData?.coin_pair_id || cryptoData?.id;
       if (!coin_id) {
         console.error('No coin ID available for favorites');
         setIsUpdatingFavorite(false);
@@ -462,37 +525,39 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
           )}
         </div>
         
-        {/* Separate Star Icon */}
-        <div 
-          className="favorite-star" 
-          style={{
-            marginLeft: '12px', 
-            cursor: 'pointer',
-            padding: '8px',
-            borderRadius: '4px',
-            transition: 'background-color 0.2s, color 0.2s',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-          onClick={handleFavoriteClick}
-          onMouseOver={(e) => {
-            e.currentTarget.style.backgroundColor = '#1a1a1a';
-            e.currentTarget.style.color = '#00b574';
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.backgroundColor = 'transparent';
-            e.currentTarget.style.color = isFavorite ? '#ffd700' : '#666';
-          }}
-        >
-          <FontAwesomeIcon 
-            icon={isFavorite ? solidStar : farStar} 
+        {/* Separate Star Icon - Only show for logged in users */}
+        {localStorage.getItem('authToken') && localStorage.getItem('user_id') && (
+          <div 
+            className="favorite-star" 
             style={{
-              fontSize: '18px',
-              color: isFavorite ? '#ffd700' : '#666'
+              marginLeft: '12px', 
+              cursor: 'pointer',
+              padding: '8px',
+              borderRadius: '4px',
+              transition: 'background-color 0.2s, color 0.2s',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
             }}
-          />
-        </div>
+            onClick={handleFavoriteClick}
+            onMouseOver={(e) => {
+              e.currentTarget.style.backgroundColor = '#1a1a1a';
+              e.currentTarget.style.color = '#00b574';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.color = isFavorite ? '#ffd700' : '#666';
+            }}
+          >
+            <FontAwesomeIcon 
+              icon={isFavorite ? solidStar : farStar} 
+              style={{
+                fontSize: '18px',
+                color: isFavorite ? '#ffd700' : '#666'
+              }}
+            />
+          </div>
+        )}
       </div>
       
       {/* Favorites Modal */}

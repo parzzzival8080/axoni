@@ -1,14 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { executeFutureTrade, fetchWalletData, formatPrice, calculateMaxAmount } from '../../services/futureTradingApi';
-import './TradeForm.css';
-import styles from './FutureTradeNotification.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faCaretUp, faCaretDown, faSyncAlt, faSpinner, faChevronDown, 
-  faChartLine, faCheckCircle, faExclamationCircle, faInfoCircle, 
-  faExclamationTriangle, faTimes, faQuestionCircle 
-} from '@fortawesome/free-solid-svg-icons';
-import styled from 'styled-components';
+import React, { useState, useEffect } from "react";
+import {
+  executeFutureTrade,
+  fetchWalletData,
+  formatPrice,
+  calculateMaxAmount,
+} from "../../services/futureTradingApi";
+import "./TradeForm.css";
+import styles from "./FutureTradeNotification.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCaretUp,
+  faCaretDown,
+  faSyncAlt,
+  faSpinner,
+  faChevronDown,
+  faChartLine,
+  faCheckCircle,
+  faExclamationCircle,
+  faInfoCircle,
+  faExclamationTriangle,
+  faTimes,
+  faQuestionCircle,
+} from "@fortawesome/free-solid-svg-icons";
+import styled from "styled-components";
 
 // Fixed action bar for mobile
 const MobileTradeActionBar = styled.div`
@@ -20,7 +34,7 @@ const MobileTradeActionBar = styled.div`
     bottom: 0;
     background: #101010;
     z-index: 10001;
-    box-shadow: 0 -2px 16px rgba(0,0,0,0.4);
+    box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.4);
     padding: 10px 16px 16px 16px;
     display: flex;
     justify-content: center;
@@ -69,13 +83,17 @@ const ScrollableFormContent = styled.div`
  * @returns {number} - Coin ID (defaults to 1 for BTC if not found)
  */
 const getCoinIdFromPair = (coinPairId, tradableCoins) => {
-  if (!coinPairId || !Array.isArray(tradableCoins) || tradableCoins.length === 0) {
+  if (
+    !coinPairId ||
+    !Array.isArray(tradableCoins) ||
+    tradableCoins.length === 0
+  ) {
     return 1; // Default to BTC
   }
-  
+
   const coinPairIdNum = Number(coinPairId);
-  const coinObj = tradableCoins.find(f => f.coin_pair === coinPairIdNum);
-  
+  const coinObj = tradableCoins.find((f) => f.coin_pair === coinPairIdNum);
+
   return coinObj ? coinObj.coin_id : 1;
 };
 
@@ -83,16 +101,23 @@ const getCoinIdFromPair = (coinPairId, tradableCoins) => {
  * TradeForm Component
  * Handles futures trading form inputs, calculations, and order submission
  */
-function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess, uid, isBottomSheet = false }) {
+function TradeForm({
+  walletData,
+  coinPairId,
+  tradableCoins = [],
+  onTradeSuccess,
+  uid,
+  isBottomSheet = false,
+}) {
   // Form state
-  const [activeTab, setActiveTab] = useState('trade');
-  const [positionType, setPositionType] = useState('open');
-  const [leverage, setLeverage] = useState('20');
-  const [price, setPrice] = useState('');
-  const [amount, setAmount] = useState('');
+  const [activeTab, setActiveTab] = useState("trade");
+  const [positionType, setPositionType] = useState("open");
+  const [leverage, setLeverage] = useState("20");
+  const [price, setPrice] = useState("");
+  const [amount, setAmount] = useState("");
   const [sliderValue, setSliderValue] = useState(0);
   const [tpslEnabled, setTpslEnabled] = useState(false);
-  
+
   // UI state
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingBalance, setIsLoadingBalance] = useState(false);
@@ -108,82 +133,82 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
     }
   }, [notification]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
+
   // Check if user is authenticated
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    const userId = localStorage.getItem('user_id');
+    const token = localStorage.getItem("authToken");
+    const userId = localStorage.getItem("user_id");
     setIsAuthenticated(!!token && !!userId);
   }, []);
-  
+
   // Extract data from wallet
-  const symbol = walletData?.symbol || 'BTC';
-  const availableBalance = walletData?.available || '0';
-  
+  const symbol = walletData?.symbol || "BTC";
+  const availableBalance = walletData?.available || "0";
+
   // Set initial price from wallet data when it changes
   useEffect(() => {
     if (walletData?.price) {
       setPrice(walletData.price);
     }
   }, [walletData]);
-  
+
   // Format number for display
   const formatNumber = (value, decimals = 2) => {
-    if (!value || isNaN(value)) return '0.00';
-    
-    return parseFloat(value).toLocaleString('en-US', {
+    if (!value || isNaN(value)) return "0.00";
+
+    return parseFloat(value).toLocaleString("en-US", {
       minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals
+      maximumFractionDigits: decimals,
     });
   };
 
   // Use available balance directly as the max amount for the slider
   const [maxTradeAmount, setMaxTradeAmount] = useState(0);
-  
+
   // Update max amount when available balance changes
   useEffect(() => {
     // Parse the available balance as a float
     const parsedBalance = parseFloat(availableBalance) || 0;
     setMaxTradeAmount(parsedBalance);
   }, [availableBalance]);
-  
+
   // Format the max amount for display
   const formattedMaxAmount = formatNumber(maxTradeAmount, 6);
-  
+
   // Handle tab click
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
-  
+
   // Handle position type change
   const handlePositionTypeClick = (type) => {
     setPositionType(type);
   };
-  
+
   // Handle leverage change
   const toggleLeverage = () => {
     // Cycle through common leverage values: 10x, 20x, 50x, 100x
-    const leverageValues = ['10', '20', '50', '100'];
+    const leverageValues = ["5", "10", "15", "20", "50", "100", "125"];
     const currentIndex = leverageValues.indexOf(leverage);
     const nextIndex = (currentIndex + 1) % leverageValues.length;
     setLeverage(leverageValues[nextIndex]);
   };
-  
+
   // Handle slider change
   const handleSliderChange = (e) => {
     const newSliderValue = parseFloat(e.target.value);
     setSliderValue(newSliderValue);
-    
+
     // Calculate amount based on slider percentage of available balance
-    const newAmount = (maxTradeAmount * newSliderValue / 100).toFixed(6);
+    const newAmount = ((maxTradeAmount * newSliderValue) / 100).toFixed(6);
     setAmount(newAmount);
   };
-  
+
   // Handle amount change
   const handleAmountChange = (e) => {
     const newAmount = e.target.value;
     setAmount(newAmount);
-    
+
     // Update slider based on amount
     if (newAmount && !isNaN(newAmount)) {
       if (maxTradeAmount > 0) {
@@ -194,154 +219,184 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
       setSliderValue(0);
     }
   };
-  
+
   // Calculate USDT value
   const calculateUsdtValue = () => {
-    if (!amount || !price) return '0.00 USDT';
-    
+    if (!amount || !price) return "0.00 USDT";
+
     const amountValue = parseFloat(amount) || 0;
     const priceValue = parseFloat(price) || 0;
     const usdtValue = amountValue * priceValue;
-    
+
     return `${usdtValue.toFixed(2)} USDT`;
   };
-  
+
   // Refresh wallet balance
   const refreshWalletBalance = async () => {
     if (!uid) {
       setNotification({
-        message: 'Authentication required to view balance',
-        type: 'error'
+        message: "Authentication required to view balance",
+        type: "error",
       });
       return;
     }
-    
+
     setIsLoadingBalance(true);
-    
+
     try {
       // Use symbol directly instead of trying to get a coin ID
-      console.log(`Refreshing wallet balance for user ${uid} with symbol ${symbol}`);
-      
+      console.log(
+        `Refreshing wallet balance for user ${uid} with symbol ${symbol}`
+      );
+
       // Fetch updated wallet data using the symbol instead of coin ID
       const data = await fetchWalletData(uid, symbol);
-      
+
       if (data.error) {
         setNotification({
-          message: data.message || 'Failed to refresh balance',
-          type: 'error'
+          message: data.message || "Failed to refresh balance",
+          type: "error",
         });
       } else {
         // Clear any existing notifications
         setNotification(null);
       }
     } catch (error) {
-      console.error('Error refreshing wallet balance:', error);
+      console.error("Error refreshing wallet balance:", error);
       setNotification({
-        message: error.message || 'Failed to refresh balance',
-        type: 'error'
+        message: error.message || "Failed to refresh balance",
+        type: "error",
       });
     } finally {
       setIsLoadingBalance(false);
     }
   };
-  
+
   // Handle trade submission
   const handleTradeSubmit = async () => {
     if (!uid) {
       setNotification({
-        message: 'Authentication required. Please log in to trade.',
-        type: 'error'
+        message: "Authentication required. Please log in to trade.",
+        type: "error",
       });
       return;
     }
-    
+
     if (!amount || parseFloat(amount) <= 0) {
       setNotification({
-        message: 'Please enter a valid amount',
-        type: 'error'
+        message: "Please enter a valid amount",
+        type: "error",
       });
       return;
     }
-    
+
     if (!price || parseFloat(price) <= 0) {
       setNotification({
-        message: 'Please enter a valid price',
-        type: 'error'
+        message: "Please enter a valid price",
+        type: "error",
       });
       return;
     }
-    
+
     setIsLoading(true);
     setNotification(null);
-    
+
     try {
       // Log the trade attempt
-      console.log(`Attempting to execute ${positionType === 'open' ? 'Buy/Long' : 'Sell/Short'} order for ${amount} ${symbol} at ${price} USDT with ${leverage}x leverage`);
-      
+      console.log(
+        `Attempting to execute ${
+          positionType === "open" ? "Buy/Long" : "Sell/Short"
+        } order for ${amount} ${symbol} at ${price} USDT with ${leverage}x leverage`
+      );
+
       // Prepare trade parameters with the exact parameters shown in the API screenshot
-      const transaction_type = positionType === 'open' ? 'BUY MORE' : 'SELL SHORT';
+      const transaction_type =
+        positionType === "open" ? "BUY MORE" : "SELL SHORT";
       const tradeParams = {
         uid,
         symbol,
         entry_price: price, // Using entry_price instead of price to match API
         amount,
         leverage,
-        transaction_type
+        transaction_type,
       };
-      
-      console.log('Trade parameters:', tradeParams);
-      
+
+      console.log("Trade parameters:", tradeParams);
+
       // Execute the trade
       const result = await executeFutureTrade(tradeParams);
-      
-      console.log('Trade result:', result);
-      
+
+      console.log("Trade result:", result);
+
       if (result.error) {
         setNotification({
-          message: result.message || 'Trade execution failed',
-          type: 'error'
+          message: result.message || "Trade execution failed",
+          type: "error",
         });
       } else {
-        console.log(`${positionType === 'open' ? 'Buy' : 'Sell'} order placed for ${amount} ${symbol} with ${leverage}x leverage`);
-        
+        console.log(
+          `${
+            positionType === "open" ? "Buy" : "Sell"
+          } order placed for ${amount} ${symbol} with ${leverage}x leverage`
+        );
+
         // Notify parent component of successful trade to trigger wallet refresh
-        if (typeof onTradeSuccess === 'function') {
-          console.log('Notifying parent of successful trade to refresh wallet data');
+        if (typeof onTradeSuccess === "function") {
+          console.log(
+            "Notifying parent of successful trade to refresh wallet data"
+          );
           onTradeSuccess();
         }
-        
+
         // Reset form
-        setAmount('');
+        setAmount("");
         setSliderValue(0);
       }
     } catch (error) {
-      console.error('Trade error:', error);
+      console.error("Trade error:", error);
       setNotification({
-        message: error.message || 'An error occurred during trade execution',
-        type: 'error'
+        message: error.message || "An error occurred during trade execution",
+        type: "error",
       });
     } finally {
       setIsLoading(false);
     }
   };
-  
+
   return (
     <div className="trade-form">
-      <div className={styles['future-trade-notification-container']} aria-live="polite" style={{ marginBottom: notification ? 16 : 0 }}>
+      <div
+        className={styles["future-trade-notification-container"]}
+        aria-live="polite"
+        style={{ marginBottom: notification ? 16 : 0 }}
+      >
         {notification && (
-          <div className={`${styles['future-trade-notification']} ${styles[notification.type]}`}>
+          <div
+            className={`${styles["future-trade-notification"]} ${
+              styles[notification.type]
+            }`}
+          >
             <div className={styles.icon}>
-              {notification.type === 'success' ? (
-                <FontAwesomeIcon icon={faCheckCircle} style={{ color: '#09C989' }} />
-              ) : notification.type === 'error' ? (
-                <FontAwesomeIcon icon={faExclamationCircle} style={{ color: '#F23645' }} />
+              {notification.type === "success" ? (
+                <FontAwesomeIcon
+                  icon={faCheckCircle}
+                  style={{ color: "#09C989" }}
+                />
+              ) : notification.type === "error" ? (
+                <FontAwesomeIcon
+                  icon={faExclamationCircle}
+                  style={{ color: "#F23645" }}
+                />
               ) : (
-                <FontAwesomeIcon icon={faInfoCircle} style={{ color: '#3C78E0' }} />
+                <FontAwesomeIcon
+                  icon={faInfoCircle}
+                  style={{ color: "#3C78E0" }}
+                />
               )}
             </div>
             <div className={styles.message}>{notification.message}</div>
-            <button 
-              className={styles.close} 
+            <button
+              className={styles.close}
               onClick={() => setNotification(null)}
               aria-label="Close notification"
             >
@@ -350,190 +405,252 @@ function TradeForm({ walletData, coinPairId, tradableCoins = [], onTradeSuccess,
           </div>
         )}
       </div>
-      <ScrollableFormContent className={isBottomSheet ? 'bottom-sheet-mode' : ''}>
-      {/* Tabs */}
-      <div className="trade-tabs">
-        <div
-          className={`tab ${activeTab === 'trade' ? 'active' : ''}`}
-          onClick={() => handleTabClick('trade')}
-        >
-          Trade
-        </div>
-        <div
-          className={`tab ${activeTab === 'tools' ? 'active' : ''}`}
-          onClick={() => handleTabClick('tools')}
-        >
-          Tools
-        </div>
-      </div>
-      {/* Position Type */}
-      <div className="position-type">
-        <button
-          className={`position-btn ${positionType === 'open' ? 'active buy-more' : ''}`}
-          onClick={() => handlePositionTypeClick('open')}
-        >
-          Open
-        </button>
-        <button
-          className={`position-btn ${positionType === 'close' ? 'active sell' : ''}`}
-          onClick={() => handlePositionTypeClick('close')}
-        >
-          Close
-        </button>
-      </div>
-
-      {/* Leverage */}
-      <div className="leverage-section">
-        <div className="leverage-value" onClick={toggleLeverage}>
-          <span>{leverage}</span>×
-          <FontAwesomeIcon icon={faChevronDown} style={{ marginLeft: '4px', fontSize: '10px' }} />
-        </div>
-      </div>
-
-      {/* Price Input */}
-      <div className="price-input-section">
-        <div className="price-label">Price (USDT)</div>
-        <div className="price-input-container">
-          <input
-            type="text"
-            className="price-input"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            placeholder="0.00"
-          />
-          <div className="price-controls">
-            <button className="price-control up"><FontAwesomeIcon icon={faCaretUp} /></button>
-            <button className="price-control down"><FontAwesomeIcon icon={faCaretDown} /></button>
+      <ScrollableFormContent
+        className={isBottomSheet ? "bottom-sheet-mode" : ""}
+      >
+        {/* Tabs */}
+        <div className="trade-tabs">
+          <div
+            className={`tab ${activeTab === "trade" ? "active" : ""}`}
+            onClick={() => handleTabClick("trade")}
+          >
+            Trade
           </div>
-
-        </div>
-      </div>
-
-      {/* Amount Input */}
-      <div className="amount-input-section">
-        <div className="amount-label">
-          Amount ({symbol}) <FontAwesomeIcon icon={faChevronDown} style={{ fontSize: '10px' }} />
-        </div>
-        <div className="amount-input-container">
-          <input
-            type="text"
-            className="amount-input"
-            value={amount}
-            onChange={handleAmountChange}
-            placeholder="0"
-          />
-        </div>
-
-        {/* Slider Container */}
-        <div className="slider-container">
-          <input
-            type="range"
-            min="0"
-            max="100"
-            step="0.01"
-            value={sliderValue}
-            onChange={handleSliderChange}
-            className="range-slider"
-          />
-          <div className="slider-labels">
-            <span>0</span>
-            <span>100%</span>
-          </div>
-          <div className="balance-info">
-            {isAuthenticated ? (
-              <>
-                <div className="available-balance">
-                  {isLoadingBalance ? (
-                    <div className="loading-balance">
-                      <span className="loading-text">Loading balance</span>
-                      <span className="loading-dots"><span>.</span><span>.</span><span>.</span></span>
-                      <FontAwesomeIcon icon={faSpinner} spin style={{ marginLeft: '8px' }} />
-                    </div>
-                  ) : (
-                    <>
-                      <span>Available {formatNumber(availableBalance, 6)} {symbol}</span>
-                      <button 
-                        className="info-btn" 
-                        onClick={refreshWalletBalance}
-                        disabled={isLoadingBalance}
-                      >
-                        {isLoadingBalance ? <FontAwesomeIcon icon={faSpinner} spin /> : <FontAwesomeIcon icon={faSyncAlt} />}
-                      </button>
-                    </>
-                  )}
-                </div>
-                <div className="max-values">
-                  <span className="max-long">
-                    Max long {formatNumber(maxTradeAmount, 6)} {symbol}
-                  </span>
-                  <span className="max-short">
-                    Max short {formatNumber(maxTradeAmount, 6)} {symbol}
-                  </span>
-                </div>
-              </>
-            ) : (
-              <div className="login-message" style={{ textAlign: 'center', padding: '10px', color: '#999' }}>
-                Login to view your balance
-              </div>
-            )}
+          <div
+            className={`tab ${activeTab === "tools" ? "active" : ""}`}
+            onClick={() => handleTabClick("tools")}
+          >
+            Tools
           </div>
         </div>
-      </div>
-
-      {/* Action Button (now directly above cost section) */}
-      <div className="trade-action-btn-row" style={{ margin: '16px 0 8px 0', display: 'flex', justifyContent: 'center' }}>
-        {isAuthenticated ? (
+        {/* Position Type */}
+        <div className="position-type">
           <button
-            className={`action-btn ${positionType === 'open' ? 'buy-more' : 'sell'}`}
-            onClick={handleTradeSubmit}
-            disabled={isLoading}
-            style={{ width: '100%', maxWidth: 480 }}
+            className={`position-btn ${
+              positionType === "open" ? "active buy-more" : ""
+            }`}
+            onClick={() => handlePositionTypeClick("open")}
           >
-            {isLoading ? (
-              <>
-                <FontAwesomeIcon icon={faSpinner} spin style={{ marginRight: '8px' }} />
-                Processing...
-              </>
-            ) : (
-              positionType === 'open' ? 'Buy / Long' : 'Sell / Short'
-            )}
+            Open
           </button>
-        ) : (
-          <button 
-            className="future-login-pill-btn"
-            onClick={() => window.location.href = '/login'}
-            style={{ width: '100%', maxWidth: 480 }}
+          <button
+            className={`position-btn ${
+              positionType === "close" ? "active sell" : ""
+            }`}
+            onClick={() => handlePositionTypeClick("close")}
           >
-            LOGIN TO TRADE
+            Close
           </button>
-        )}
-      </div>
+        </div>
 
-      {/* Cost Section */}
-      <div className="cost-section">
-        <div className="cost-item">
-          <div className="cost-label">Cost</div>
-          <div className="max-price">{calculateUsdtValue().replace(' USDT', '')} USDT</div>
+        {/* Leverage */}
+        <div className="leverage-section">
+          <div className="leverage-value" onClick={toggleLeverage}>
+            <span>{leverage}</span>×
+            <FontAwesomeIcon
+              icon={faChevronDown}
+              style={{ marginLeft: "4px", fontSize: "10px" }}
+            />
+          </div>
         </div>
-        <div className="cost-item">
-          <div className="cost-label">Fees</div>
-          <div className="min-price">{(parseFloat(calculateUsdtValue().replace(' USDT', '')) * 0.0005).toFixed(2)} USDT</div>
-        </div>
-      </div>
 
-      {/* Tools Section */}
-      <div className="tools-section">
-        <div className="tool-item">
-          <span className="percent-icon">%</span> Calculator
+        {/* Price Input */}
+        <div className="price-input-section">
+          <div className="price-label">Price (USDT)</div>
+          <div className="price-input-container">
+            <input
+              type="text"
+              className="price-input"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder="0.00"
+            />
+            <div className="price-controls">
+              <button className="price-control up">
+                <FontAwesomeIcon icon={faCaretUp} />
+              </button>
+              <button className="price-control down">
+                <FontAwesomeIcon icon={faCaretDown} />
+              </button>
+            </div>
+          </div>
         </div>
-        <div className="tool-item">
-          <span className="percent-icon">%</span> Fees
+
+        {/* Amount Input */}
+        <div className="amount-input-section">
+          <div className="amount-label">
+            Amount ({symbol}){" "}
+            <FontAwesomeIcon
+              icon={faChevronDown}
+              style={{ fontSize: "10px" }}
+            />
+          </div>
+          <div className="amount-input-container">
+            <input
+              type="text"
+              className="amount-input"
+              value={amount}
+              onChange={handleAmountChange}
+              placeholder="0"
+            />
+          </div>
+
+          {/* Slider Container */}
+          <div className="slider-container">
+            <input
+              type="range"
+              min="0"
+              max="100"
+              step="0.01"
+              value={sliderValue}
+              onChange={handleSliderChange}
+              className="range-slider"
+            />
+            <div className="slider-labels">
+              <span>0</span>
+              <span>100%</span>
+            </div>
+            <div className="balance-info">
+              {isAuthenticated ? (
+                <>
+                  <div className="available-balance">
+                    {isLoadingBalance ? (
+                      <div className="loading-balance">
+                        <span className="loading-text">Loading balance</span>
+                        <span className="loading-dots">
+                          <span>.</span>
+                          <span>.</span>
+                          <span>.</span>
+                        </span>
+                        <FontAwesomeIcon
+                          icon={faSpinner}
+                          spin
+                          style={{ marginLeft: "8px" }}
+                        />
+                      </div>
+                    ) : (
+                      <>
+                        <span>
+                          Available {formatNumber(availableBalance, 6)} {symbol}
+                        </span>
+                        <button
+                          className="info-btn"
+                          onClick={refreshWalletBalance}
+                          disabled={isLoadingBalance}
+                        >
+                          {isLoadingBalance ? (
+                            <FontAwesomeIcon icon={faSpinner} spin />
+                          ) : (
+                            <FontAwesomeIcon icon={faSyncAlt} />
+                          )}
+                        </button>
+                      </>
+                    )}
+                  </div>
+                  <div className="max-values">
+                    <span className="max-long">
+                      Max long {formatNumber(maxTradeAmount, 6)} {symbol}
+                    </span>
+                    <span className="max-short">
+                      Max short {formatNumber(maxTradeAmount, 6)} {symbol}
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <div
+                  className="login-message"
+                  style={{
+                    textAlign: "center",
+                    padding: "10px",
+                    color: "#999",
+                  }}
+                >
+                  Login to view your balance
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-        <div className="tool-item">
-          <FontAwesomeIcon icon={faChartLine} style={{ marginRight: '4px' }} />
-          Position builder
+
+        {/* Action Button (now directly above cost section) */}
+        <div
+          className="trade-action-btn-row"
+          style={{
+            margin: "16px 0 8px 0",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          {isAuthenticated ? (
+            <button
+              className={`action-btn ${
+                positionType === "open" ? "buy-more" : "sell"
+              }`}
+              onClick={handleTradeSubmit}
+              disabled={isLoading}
+              style={{ width: "100%", maxWidth: 480 }}
+            >
+              {isLoading ? (
+                <>
+                  <FontAwesomeIcon
+                    icon={faSpinner}
+                    spin
+                    style={{ marginRight: "8px" }}
+                  />
+                  Processing...
+                </>
+              ) : positionType === "open" ? (
+                "Buy / Long"
+              ) : (
+                "Sell / Short"
+              )}
+            </button>
+          ) : (
+            <button
+              className="future-login-pill-btn"
+              onClick={() => (window.location.href = "/login")}
+              style={{ width: "100%", maxWidth: 480 }}
+            >
+              LOGIN TO TRADE
+            </button>
+          )}
         </div>
-      </div>
+
+        {/* Cost Section */}
+        <div className="cost-section">
+          <div className="cost-item">
+            <div className="cost-label">Cost</div>
+            <div className="max-price">
+              {calculateUsdtValue().replace(" USDT", "")} USDT
+            </div>
+          </div>
+          <div className="cost-item">
+            <div className="cost-label">Fees</div>
+            <div className="min-price">
+              {(
+                parseFloat(calculateUsdtValue().replace(" USDT", "")) * 0.0005
+              ).toFixed(2)}{" "}
+              USDT
+            </div>
+          </div>
+        </div>
+
+        {/* Tools Section */}
+        <div className="tools-section">
+          <div className="tool-item">
+            <span className="percent-icon">%</span> Calculator
+          </div>
+          <div className="tool-item">
+            <span className="percent-icon">%</span> Fees
+          </div>
+          <div className="tool-item">
+            <FontAwesomeIcon
+              icon={faChartLine}
+              style={{ marginRight: "4px" }}
+            />
+            Position builder
+          </div>
+        </div>
       </ScrollableFormContent>
     </div>
   );
