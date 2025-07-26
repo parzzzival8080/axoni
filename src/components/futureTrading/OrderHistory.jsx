@@ -32,6 +32,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
   const [addingMargin, setAddingMargin] = useState(false);
   const [addMarginSuccess, setAddMarginSuccess] = useState(false);
   const [maxAvailableMargin, setMaxAvailableMargin] = useState(0);
+  const [isBackgroundRefresh, setIsBackgroundRefresh] = useState(false);
   const itemsPerPage = 10;
 
   // Check if user is authenticated
@@ -42,16 +43,23 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
   }, []);
 
   // Fetch order history from API
-  const fetchOrderHistory = async () => {
+  const fetchOrderHistory = async (backgroundRefresh = false) => {
     try {
       // If user is not authenticated, don't fetch order history
       if (!isAuthenticated) {
-        setLoading(false);
+        if (!backgroundRefresh) {
+          setLoading(false);
+        }
         return;
       }
       
-      setLoading(true);
-      setError(null);
+      // Only show loading spinner for initial load, not background refreshes
+      if (!backgroundRefresh) {
+        setLoading(true);
+        setError(null);
+      } else {
+        setIsBackgroundRefresh(true);
+      }
       
       // Get UID and API key values from localStorage if available
       const uid = localStorage.getItem('uid');
@@ -59,7 +67,11 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
       
       // Only proceed if UID is available
       if (!uid) {
-        setLoading(false);
+        if (!backgroundRefresh) {
+          setLoading(false);
+        } else {
+          setIsBackgroundRefresh(false);
+        }
         return;
       }
       
@@ -69,12 +81,24 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
       if (response.data && Array.isArray(response.data)) {
         console.log("API Response:", response.data[0]); // Log first item for debugging
         setOrderHistoryData(response.data.map(order => ({ ...order, imgError: false })));
+        
+        // Clear any previous errors on successful background refresh
+        if (backgroundRefresh && error) {
+          setError(null);
+        }
       }
     } catch (err) {
       console.error('Error fetching order history:', err);
-      setError('Failed to load order history. Please try again later.');
+      // Only show error on initial load or if there's no existing data
+      if (!backgroundRefresh || orderHistoryData.length === 0) {
+        setError('Failed to load order history. Please try again later.');
+      }
     } finally {
-      setLoading(false);
+      if (!backgroundRefresh) {
+        setLoading(false);
+      } else {
+        setIsBackgroundRefresh(false);
+      }
     }
   };
   
@@ -141,9 +165,9 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
       
       if (result.success) {
         setCloseSuccess(true);
-        // Refresh order history after successful close
+        // Immediate refresh followed by modal close
+        await fetchOrderHistory(false);
         setTimeout(() => {
-          fetchOrderHistory();
           closePopup();
         }, 2000);
       } else {
@@ -158,12 +182,13 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
       }
     } catch (err) {
       console.error('Error closing position:', err);
-      setClosingPosition(false);
       setApiResponse({
         success: false,
         message: 'An error occurred while closing the position'
       });
       setShowNotification(true);
+    } finally {
+      setClosingPosition(false);
     }
   };
   
@@ -198,15 +223,13 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
         setShowNotification(true);
         
         setAddMarginSuccess(true);
-        // Refresh order history after successful margin addition
+        // Immediate refresh followed by modal close
+        await fetchOrderHistory(false);
         setTimeout(() => {
-          fetchOrderHistory();
           closeAddMarginModal();
         }, 2000);
       } else {
-        // Handle error response with dynamic message from API
-        setAddingMargin(false);
-        
+        // Handle error response with dynamic message from API        
         // Show error notification
         setApiResponse({
           success: false,
@@ -230,7 +253,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
         setShowNotification(false);
       }, 5000);
     } finally {
-      setClosingPosition(false);
+      setAddingMargin(false);
     }
   };
 
@@ -243,6 +266,22 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
       fetchOrderHistory();
     }
   }, [refreshTrigger, isAuthenticated]);
+
+  // Auto-refresh effect
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    // Set up auto-refresh interval
+    const intervalId = setInterval(() => {
+      // Don't auto-refresh if modals are open to avoid disrupting user interactions
+      if (!showPopup && !showAddMarginModal && !addingMargin && !closingPosition) {
+        fetchOrderHistory(true);
+      }
+    }, 5000); // Refresh every 5 seconds
+
+    // Cleanup interval on unmount or when authentication changes
+    return () => clearInterval(intervalId);
+  }, [isAuthenticated, showPopup, showAddMarginModal, addingMargin, closingPosition]);
 
   // Process and sort data by date (newest first)
   const processedData = orderHistoryData
@@ -299,8 +338,17 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
   return (
     <div className="order-history-container dark-mode">
      
-      <div className="order-history-table-wrapper">
+      <div className="order-history-table-wrapper relative">
         {loading && <div className="overlay-loader">Loading...</div>}
+        {/* Background refresh indicator */}
+        {isBackgroundRefresh && (
+          <div className="absolute top-2 right-2 z-10 background-refresh-indicator">
+            <div className="flex items-center bg-gray-800 bg-opacity-90 px-3 py-1 rounded-full text-xs text-gray-300">
+              <FontAwesomeIcon icon={faSyncAlt} className="animate-spin mr-2" size="xs" />
+              Updating...
+            </div>
+          </div>
+        )}
         {error && <div className="order-history-error">{error}</div>}
         {!isAuthenticated ? (
           <div className="login-message" style={{ textAlign: 'center', padding: '20px', color: '#999' }}>
@@ -639,6 +687,25 @@ const statusStyles = `
   }
   .status-liquidated {
     color: #f23645;
+  }
+  
+  /* Background refresh indicator styles */
+  .order-history-table-wrapper {
+    position: relative;
+  }
+  
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  
+  .background-refresh-indicator {
+    animation: fadeInOut 0.3s ease-in-out;
+  }
+  
+  /* Ensure smooth transitions for table updates */
+  .order-history-table tbody tr {
+    transition: all 0.2s ease-in-out;
   }
 `;
 
