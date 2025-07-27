@@ -214,7 +214,7 @@ const TradeForm = ({
 
     // Check if user has enough balance
     const maxAmount = getMaxAmount();
-    if (parseFloat(amount) > maxAmount) {
+    if (parseFloat(maxAmount) > maxAmount) {
       showNotification(
         "error",
         `Insufficient balance. Max ${
