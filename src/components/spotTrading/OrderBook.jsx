@@ -601,10 +601,10 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
                       {ask ? formatNumber(ask.price, decimalPrecision) : '—'}
                     </div>
                     <div className="order-amount" style={{ opacity: ask?.isEmpty ? 0.5 : 1 }}>
-                      {ask ? formatNumber(ask.amount, 5) : '—'}
+                      {ask ? formatNumber(ask.amount, 8) : '—'}
                     </div>
                     <div className="order-total" style={{ opacity: ask?.isEmpty ? 0.5 : 1 }}>
-                      {ask ? formatNumber(ask.total, 5) : '—'}
+                      {ask ? formatNumber(ask.total, 8) : '—'}
                     </div>
                   </div>
                 ))}
@@ -628,10 +628,10 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
                       {bid ? formatNumber(bid.price, decimalPrecision) : '—'}
                     </div>
                     <div className="order-amount" style={{ opacity: bid?.isEmpty ? 0.5 : 1 }}>
-                      {bid ? formatNumber(bid.amount, 5) : '—'}
+                      {bid ? formatNumber(bid.amount, 8) : '—'}
                     </div>
                     <div className="order-total" style={{ opacity: bid?.isEmpty ? 0.5 : 1 }}>
-                      {bid ? formatNumber(bid.total, 5) : '—'}
+                      {bid ? formatNumber(bid.total, 8) : '—'}
                     </div>
                   </div>
                 ))}

@@ -66,20 +66,20 @@ const TradeForm = ({
     return formatNumber(value, 2, true);
   };
 
-  // Format crypto amount with 5 decimal places
+  // Format crypto amount with 8 decimal places
   const formatCryptoAmount = (value) => {
     if (value === null || value === undefined || isNaN(Number(value))) {
-      return "0.00000";
+      return "0.00000000";
     }
-    // Use exactly 5 decimal places for crypto amounts
-    return formatNumber(value, 5, false);
+    // Use exactly 8 decimal places for crypto amounts
+    return formatNumber(value, 8, false);
   };
 
   // Calculate total with proper precision
   const calculateTotal = (amount) => {
     const amountValue = parseFloat(amount) || 0;
     const priceValue = parseFloat(price) || 0;
-    return (amountValue * priceValue).toFixed(5);
+    return (amountValue * priceValue).toFixed(8);
   };
 
   // Calculate max amount based on available balance with consistent precision
@@ -97,33 +97,127 @@ const TradeForm = ({
     }
   };
 
-  // Handle slider change with precise calculations
+  // Get available balance for display
+  const getAvailableBalance = () => {
+    if (effectiveIsBuy) {
+      return parseFloat(
+        userBalance?.usdtSpotBalance || userBalance?.usdtBalance || 0
+      );
+    } else {
+      return parseFloat(
+        userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || 0
+      );
+    }
+  };
+
+  // Validate if amount exceeds available balance using raw balance amounts
+  const isAmountValid = () => {
+    const currentAmount = parseFloat(amount) || 0;
+    
+    if (currentAmount === 0) return true;
+    
+    if (effectiveIsBuy) {
+      // Use raw balance for accurate validation
+      const totalCost = currentAmount * parseFloat(price || 0);
+      const availableUSDT = parseFloat(
+        userBalance?.usdtSpotBalance || userBalance?.usdtBalance || 0
+      );
+      
+
+      
+      // Compare using raw balance amounts
+      return totalCost <= availableUSDT;
+    } else {
+      // For sell orders, compare with raw crypto balance
+      const availableCrypto = parseFloat(
+        userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || 0
+      );
+      
+
+      
+      return currentAmount <= availableCrypto;
+    }
+  };
+
+  // Check if user is at exactly maximum available balance using raw amounts
+  const isAtMaxBalance = () => {
+    const currentAmount = parseFloat(amount) || 0;
+    if (currentAmount === 0) return false;
+    
+    if (effectiveIsBuy) {
+      // For buy orders, check if total cost is very close to available USDT (within small tolerance)
+      const totalCost = currentAmount * parseFloat(price || 0);
+      const availableUSDT = parseFloat(
+        userBalance?.usdtSpotBalance || userBalance?.usdtBalance || 0
+      );
+      
+      // Use small tolerance for floating point precision
+      const tolerance = Math.max(availableUSDT * 1e-8, 1e-8);
+      const isAtMax = Math.abs(totalCost - availableUSDT) <= tolerance;
+      
+
+      
+      return isAtMax;
+    } else {
+      // For sell orders, check if amount is very close to available crypto
+      const availableCrypto = parseFloat(
+        userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || 0
+      );
+      
+      const tolerance = Math.max(availableCrypto * 1e-8, 1e-10);
+      const isAtMax = Math.abs(currentAmount - availableCrypto) <= tolerance;
+      
+
+      
+      return isAtMax;
+    }
+  };
+
+  // Handle slider change with discrete levels (25%, 50%, 75%, 100%)
   const handleSliderChange = (e) => {
     const value = parseInt(e.target.value, 10);
-    setSliderValue(value);
+    // Snap to nearest discrete level
+    let snappedValue;
+    if (value <= 12.5) snappedValue = 0;
+    else if (value <= 37.5) snappedValue = 25;
+    else if (value <= 62.5) snappedValue = 50;
+    else if (value <= 87.5) snappedValue = 75;
+    else snappedValue = 100;
+    
+    setSliderValue(snappedValue);
+    calculateAmountFromPercentage(snappedValue);
+  };
 
-    if (value === 100) {
+  // Calculate amount based on percentage with precise calculations
+  const calculateAmountFromPercentage = (percentage) => {
+    if (percentage === 0) {
+      setAmount("");
+      setTotal("");
+      return;
+    }
+
+    if (percentage === 100) {
       // At 100%, use the full balance to avoid rounding errors
       if (effectiveIsBuy) {
         const usdtBalance = parseFloat(
           userBalance?.usdtSpotBalance || userBalance?.usdtBalance || 0
         );
-        setTotal(usdtBalance.toFixed(5));
+        setTotal(usdtBalance.toFixed(8));
         if (price > 0) {
-          setAmount((usdtBalance / price).toFixed(5));
+          setAmount((usdtBalance / price).toFixed(8));
         }
       } else {
         const cryptoBalance = parseFloat(
           userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || 0
         );
-        setAmount(cryptoBalance.toFixed(5));
-        setTotal((cryptoBalance * price).toFixed(5));
+        setAmount(cryptoBalance.toFixed(8));
+        setTotal((cryptoBalance * price).toFixed(8));
       }
     } else {
-      // For other slider values, calculate based on percentage
+      // For other percentages, calculate based on percentage
       const maxAmount = getMaxAmount();
-      const calculatedAmount = (value / 100) * maxAmount;
-      const formattedAmount = calculatedAmount.toFixed(5);
+      const calculatedAmount = (percentage / 100) * maxAmount;
+      const formattedAmount = calculatedAmount.toFixed(8);
       setAmount(formattedAmount);
       setTotal(calculateTotal(formattedAmount));
     }
@@ -140,12 +234,19 @@ const TradeForm = ({
     // Calculate total based on amount
     setTotal(calculateTotal(value));
 
-    // Update slider position
+    // Update slider position to nearest discrete level
     const maxAmount = getMaxAmount();
 
     if (maxAmount > 0) {
-      const sliderPercentage = (parseFloat(value) / maxAmount) * 100;
-      setSliderValue(sliderPercentage > 100 ? 100 : sliderPercentage);
+      const percentage = (parseFloat(value) / maxAmount) * 100;
+      let snappedValue;
+      if (percentage <= 12.5) snappedValue = 0;
+      else if (percentage <= 37.5) snappedValue = 25;
+      else if (percentage <= 62.5) snappedValue = 50;
+      else if (percentage <= 87.5) snappedValue = 75;
+      else snappedValue = 100;
+      
+      setSliderValue(snappedValue);
     }
   };
 
@@ -159,7 +260,7 @@ const TradeForm = ({
 
     // Calculate amount based on total with full precision
     const calculatedAmount = price > 0 ? parseFloat(value) / price : 0;
-    setAmount(calculatedAmount.toFixed(5));
+    setAmount(calculatedAmount.toFixed(8));
 
     // Update slider position
     const maxAmount = getMaxAmount();
@@ -212,16 +313,37 @@ const TradeForm = ({
       return;
     }
 
-    // Check if user has enough balance
-    const maxAmount = getMaxAmount();
-    if (parseFloat(amount) > maxAmount) {
-      showNotification(
-        "error",
-        `Insufficient balance. Max ${
-          effectiveIsBuy ? "buy" : "sell"
-        } amount: ${maxAmount.toFixed(5)}`
+    // Check if user has enough balance using raw balance amounts
+    if (effectiveIsBuy) {
+      // Use raw balance for accurate validation
+      const currentAmount = parseFloat(amount);
+      const totalCost = currentAmount * parseFloat(price);
+      const availableUSDT = parseFloat(
+        userBalance?.usdtSpotBalance || userBalance?.usdtBalance || 0
       );
-      return;
+      
+      if (totalCost > availableUSDT) {
+        const maxAmount = getMaxAmount();
+        showNotification(
+          "error",
+          `Insufficient balance. Max buy amount: ${formatCryptoAmount(maxAmount)} BTC (${formatCryptoAmount(availableUSDT)} USDT available)`
+        );
+        return;
+      }
+    } else {
+      // For sell orders, compare with raw crypto balance
+      const currentAmount = parseFloat(amount);
+      const availableCrypto = parseFloat(
+        userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || 0
+      );
+      
+      if (currentAmount > availableCrypto) {
+        showNotification(
+          "error",
+          `Insufficient balance. Max sell amount: ${formatCryptoAmount(availableCrypto)}`
+        );
+        return;
+      }
     }
 
     setIsLoading(true);
@@ -258,10 +380,15 @@ const TradeForm = ({
           onTradeSuccess();
         }
       } else {
-        showNotification(
-          "error",
-          response.message || "Failed to place order. Please try again."
-        );
+        // Filter out unhelpful server error messages
+        let errorMessage = response.message || "Failed to place order. Please try again.";
+        
+        // Replace unhelpful server validation errors with user-friendly messages
+        if (errorMessage.includes("Balance must be greater than 100")) {
+          errorMessage = "Trade amount is too small. Please increase your order amount.";
+        }
+        
+        showNotification("error", errorMessage);
       }
     } catch (error) {
       console.error("Error submitting trade:", error);
@@ -345,30 +472,49 @@ const TradeForm = ({
         />
       </div>
 
-      {/* Slider */}
-      <div className="slider-container">
-        <input
-          type="range"
-          min="0"
-          max="100"
-          step="1"
-          value={sliderValue}
-          onChange={handleSliderChange}
-          className={`slider-range appearance-none w-full h-2 rounded-lg outline-none ${
-            effectiveIsBuy ? "bg-[#F88726]" : "bg-[#F23645]"
-          }`}
-          style={{
-            background: `linear-gradient(90deg, ${
-              effectiveIsBuy ? "#F88726" : "#F23645"
-            } ${sliderValue}%, #232323 ${sliderValue}%) !important`,
-          }}
-        />
-        <div className="slider-labels">
-          <span>0%</span>
-          <span>25%</span>
-          <span>50%</span>
-          <span>75%</span>
-          <span>100%</span>
+      {/* Enhanced Slider with Tailwind */}
+      <div 
+        className="relative mb-6"
+        style={{
+          '--slider-color': effectiveIsBuy ? '#F88726' : '#F23645'
+        }}
+      >
+        {/* Slider Track */}
+        <div className="relative">
+          <input
+            type="range"
+            min="0"
+            max="100"
+            step="25"
+            value={sliderValue}
+            onChange={handleSliderChange}
+            className="enhanced-slider w-full h-2 bg-transparent cursor-pointer focus:outline-none"
+            style={{
+              background: `linear-gradient(90deg, ${
+                effectiveIsBuy ? "#F88726" : "#F23645"
+              } ${sliderValue}%, #232323 ${sliderValue}%)`,
+              borderRadius: '12px',
+              WebkitAppearance: 'none',
+              MozAppearance: 'none',
+              appearance: 'none',
+            }}
+          />
+          
+
+        </div>
+        
+        {/* Slider Labels */}
+        <div className="flex justify-between mt-2 px-1">
+          {['0%', '25%', '50%', '75%', '100%'].map((label, index) => (
+            <span 
+              key={label}
+              className={`text-xs font-medium select-none transition-colors duration-200 ${
+                sliderValue >= index * 25 ? 'text-white' : 'text-gray-400'
+              }`}
+            >
+              {label}
+            </span>
+          ))}
         </div>
       </div>
 
@@ -386,7 +532,7 @@ const TradeForm = ({
             fontWeight: 500,
           }}
         >
-          {formatNumber(total, 5, false)}
+          {formatNumber(total, 8, false)}
         </span>
       </div>
 
@@ -396,28 +542,29 @@ const TradeForm = ({
           <>
             <span>
               Available:{" "}
-              {effectiveIsBuy
-                ? formatNumber(
-                    userBalance?.usdtSpotBalance ||
-                      userBalance?.usdtBalance ||
-                      0,
-                    5
-                  )
-                : formatNumber(
-                    userBalance?.cryptoSpotBalance ||
-                      userBalance?.cryptoBalance ||
-                      0,
-                    5
-                  )}{" "}
+              {formatNumber(getAvailableBalance(), 8)}{" "}
               {effectiveIsBuy
                 ? cryptoData?.usdtSymbol || "USDT"
                 : cryptoData?.cryptoSymbol || "BTC"}
             </span>
             <span>
               Max {effectiveIsBuy ? "buy" : "sell"}:{" "}
-              {formatNumber(getMaxAmount(), 5)}{" "}
+              {formatNumber(getMaxAmount(), 8)}{" "}
               {cryptoData?.cryptoSymbol || "BTC"}
             </span>
+            {/* Validation feedback */}
+            {amount && !isAmountValid() && !isAtMaxBalance() && (
+              <span 
+                style={{ 
+                  color: "#F23645", 
+                  fontSize: "12px", 
+                  marginTop: "4px",
+                  display: "block"
+                }}
+              >
+                ⚠ Insufficient balance. Max amount: {formatCryptoAmount(getMaxAmount())} {cryptoData?.cryptoSymbol || "BTC"}
+              </span>
+            )}
           </>
         ) : (
           <span>Login to view your balance</span>
@@ -428,7 +575,7 @@ const TradeForm = ({
       {isAuthenticated ? (
         <button
           className={`buy-btn${effectiveIsBuy ? "" : " sell-btn"}`}
-          disabled={isLoading}
+          disabled={isLoading || !amount || !isAmountValid()}
           onClick={handleTradeSubmit}
           style={{
             marginTop: 10,
@@ -437,16 +584,16 @@ const TradeForm = ({
             fontSize: 18,
             padding: "12px 0",
             borderRadius: "4px",
-            backgroundColor: isLoading
+            backgroundColor: (isLoading || !amount || !isAmountValid())
               ? "#666 !important"
               : effectiveIsBuy
               ? "#F88726 !important"
               : "#F23645 !important",
             backgroundImage: "none !important",
             color: "white !important",
-            cursor: isLoading ? "not-allowed !important" : "pointer !important",
-            pointerEvents: isLoading ? "none" : "auto",
-            opacity: isLoading ? 0.7 : 1,
+            cursor: (isLoading || !amount || !isAmountValid()) ? "not-allowed !important" : "pointer !important",
+            pointerEvents: (isLoading || !amount || !isAmountValid()) ? "none" : "auto",
+            opacity: (isLoading || !amount || !isAmountValid()) ? 0.7 : 1,
             transition: "all 0.2s ease",
           }}
         >
