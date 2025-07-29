@@ -15,7 +15,7 @@ import {
   faPlus
 } from '@fortawesome/free-solid-svg-icons';
 
-const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
+const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) => {
   const [orderHistoryData, setOrderHistoryData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -80,7 +80,13 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
 
       if (response.data && Array.isArray(response.data)) {
         console.log("API Response:", response.data[0]); // Log first item for debugging
-        setOrderHistoryData(response.data.map(order => ({ ...order, imgError: false })));
+        const processedData = response.data.map(order => ({ ...order, imgError: false }));
+        setOrderHistoryData(processedData);
+        
+        // Pass order history data to parent component
+        if (typeof onOrderHistoryData === 'function') {
+          onOrderHistoryData(processedData);
+        }
         
         // Clear any previous errors on successful background refresh
         if (backgroundRefresh && error) {
@@ -364,11 +370,11 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
                 <th className="text-left">Leverage</th>
                 <th className="text-left">Entry Price</th>
                 <th className="text-left">Margin</th>
-                <th className="text-left">Liquidation Price</th>
+                <th className="text-left">Liquidation</th>
                 <th className="text-left">Cycle</th>
                 <th className="text-left">Asset</th>
-                <th className="text-left">Unrealized PnL</th>
-                <th className="text-left">Return %</th>
+                <th className="text-left">Unrealized PNL (Profit and Loss)</th>
+                <th className="text-left">ROE (Return on Equity)</th>
                 <th className="text-left">Status</th>
                 <th className="text-left">Action</th>
               </tr>
@@ -396,7 +402,19 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
                       })()}
                     </td>
                     <td className="text-left">{Number(order.return_percentage).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
-                    <td className={`text-left status-${order.status || 'pending'}`}>{order.status || 'pending'}</td>
+                    <td className="text-left">
+                      <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                        order.status === 'open_position' ? 'bg-green-900 bg-opacity-30 text-green-400 border border-green-700' :
+                        order.status === 'close_position' ? 'bg-gray-900 bg-opacity-30 text-gray-400 border border-gray-700' :
+                        order.status === 'liquidated' ? 'bg-red-900 bg-opacity-30 text-red-400 border border-red-700' :
+                        'bg-yellow-900 bg-opacity-30 text-yellow-400 border border-yellow-700'
+                      }`}>
+                        {order.status === 'open_position' ? 'Open Position' :
+                         order.status === 'close_position' ? 'Closed Position' :
+                         order.status === 'liquidated' ? 'Liquidated' :
+                         order.status || 'Pending'}
+                      </span>
+                    </td>
                     <td className="text-left">
                       <div className="flex space-x-2">
                         {order.status !== 'close_position' && (

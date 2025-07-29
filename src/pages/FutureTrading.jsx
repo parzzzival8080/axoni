@@ -28,6 +28,7 @@ const FutureTrading = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [orderHistoryRefreshTrigger, setOrderHistoryRefreshTrigger] = useState(0);
+  const [orderHistoryData, setOrderHistoryData] = useState([]);
   const [mobileTradeTab, setMobileTradeTab] = useState(''); // '' | 'buy' | 'sell'
   
   // Notification state
@@ -226,6 +227,11 @@ const FutureTrading = () => {
     setMobileTradeTab(mobileTradeTab === tab ? '' : tab);
   };
 
+  // Handle order history data from OrderHistory component
+  const handleOrderHistoryData = useCallback((data) => {
+    setOrderHistoryData(data);
+  }, []);
+
   // Mobile bottom sheet trade form
   const renderMobileTradeForm = () => (
     <>
@@ -248,6 +254,7 @@ const FutureTrading = () => {
             onTradeSuccess={handleTradeSuccess}
             uid={uid}
             positionType={mobileTradeTab === 'buy' ? 'open' : 'close'}
+            orderHistoryData={orderHistoryData}
           />
         </div>
       </div>
@@ -311,6 +318,7 @@ const FutureTrading = () => {
               tradableCoins={tradableCoins}
               onTradeSuccess={handleTradeSuccess}
               uid={uid}
+              orderHistoryData={orderHistoryData}
             />
           </div>
         </div>
@@ -318,6 +326,7 @@ const FutureTrading = () => {
           <OrdersSection 
             refreshTrigger={orderHistoryRefreshTrigger} 
             walletData={walletData}
+            onOrderHistoryData={handleOrderHistoryData}
           />
         </div>
         {/* Mobile app bar with buy/sell buttons */}

@@ -73,6 +73,7 @@
   opacity: 1;
 }
 
+/* Keyframe animation for Tailwind usage */
 @keyframes fadeInSlideUp {
   0% {
     opacity: 0;
@@ -86,4 +87,9 @@
     opacity: 1;
     transform: translateX(-50%) translateY(0);
   }
+}
+
+/* Global animation class for Tailwind */
+:global(.animate-fadeInSlideUp) {
+  animation: fadeInSlideUp 0.3s cubic-bezier(0.4,0,0.2,1);
 }
