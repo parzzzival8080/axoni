@@ -395,7 +395,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
                         return unrealizedPnL.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                       })()}
                     </td>
-                    <td className="text-left">{Number(order.return_percentage * order.leverage).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
+                    <td className="text-left">{Number(order.return_percentage).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
                     <td className={`text-left status-${order.status || 'pending'}`}>{order.status || 'pending'}</td>
                     <td className="text-left">
                       <div className="flex space-x-2">
