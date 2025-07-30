@@ -87,12 +87,12 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     if (cryptoData?.websocket_name) {
       return cryptoData.websocket_name.toUpperCase();
     }
-    // if (cryptoData?.cryptoSymbol) {
-    //   return cryptoData.cryptoSymbol.toUpperCase();
-    // }
-    // if (cryptoData?.symbol) {
-    //   return cryptoData.symbol.toUpperCase();
-    // }
+    if (cryptoData?.cryptoSymbol) {
+      return cryptoData.cryptoSymbol.toUpperCase();
+    }
+    if (cryptoData?.symbol) {
+      return cryptoData.symbol.toUpperCase();
+    }
     return 'BTC';
   };
   

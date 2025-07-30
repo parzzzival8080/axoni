@@ -60,56 +60,12 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
     onCoinSelect(coin.coin_pair);
   }, [onCoinSelect]);
 
-  // Check if coin is favorited
-  const checkCoinFavoriteStatus = useCallback(async () => {
-    try {
-      const token = localStorage.getItem('authToken');
-      const userId = localStorage.getItem('user_id');
-      let uid = localStorage.getItem('uid');
-      const coin_id = coinPairId || cryptoData?.coin_pair_id || cryptoData?.id;
-      
-      // If no authentication or coin ID, skip favorite check
-      if (!token || !userId || !coin_id) return;
-      
-      // If no UID, try to fetch it from Django API
-      if (!uid) {
-        try {
-          const userInfoResponse = await fetch(
-            `https://django.kinecoin.co/api/user_account/getUserInformation/?user_id=${userId}`,
-            { headers: { 'Authorization': `Bearer ${token}` } }
-          );
-          
-          if (userInfoResponse.ok) {
-            const userInfo = await userInfoResponse.json();
-            uid = userInfo?.user?.uid;
-            if (uid) {
-              localStorage.setItem('uid', uid);
-            }
-          }
-        } catch (error) {
-          console.error('Error fetching UID for favorite check:', error);
-        }
-      }
-      
-      // If still no UID, skip favorite check
-      if (!uid) return;
-
-      // Get user wallets to check if current coin is in favorites
-      const response = await fetch(`https://api.kinecoin.co/api/v1/user-wallets/${uid}?apikey=A20RqFwVktRxxRqrKBtmi6ud`, {
-        method: 'GET'
-      });
-
-      if (response.ok) {
-        const walletsData = await response.json();
-        const userWallets = walletsData["0"] || walletsData[0] || walletsData || [];
-        
-        // Find the current coin in the wallets and check if it's favorited
-        const currentCoinWallet = userWallets.find(wallet => wallet.coin_id == coin_id);
-        setIsFavorite(currentCoinWallet?.is_favorite || false);
-      }
-    } catch (error) {
-      console.error('Error checking favorite status:', error);
-    }
+  // Simplified favorite check - no API calls to prevent timeouts
+  const checkCoinFavoriteStatus = useCallback(() => {
+    // For now, just use localStorage to track favorites locally
+    const localFavorites = JSON.parse(localStorage.getItem('localFavorites') || '[]');
+    const coin_id = coinPairId || cryptoData?.coin_pair_id || cryptoData?.id;
+    setIsFavorite(localFavorites.includes(coin_id?.toString()));
   }, [coinPairId, cryptoData]);
 
   // Handle favorite toggle
@@ -118,49 +74,11 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
     setShowFavoriteModal(true);
   }, []);
 
-  // Handle add to favorites
-  const handleAddToFavorites = useCallback(async () => {
+  // Simplified add to favorites - use localStorage to avoid API timeouts
+  const handleAddToFavorites = useCallback(() => {
     setIsUpdatingFavorite(true);
+    
     try {
-      const token = localStorage.getItem('authToken');
-      const userId = localStorage.getItem('user_id');
-      let uid = localStorage.getItem('uid');
-      
-      // Check if user is logged in
-      if (!token || !userId) {
-        console.error('User not logged in');
-        alert('Please log in to add favorites');
-        setIsUpdatingFavorite(false);
-        return;
-      }
-      
-      // If no UID, try to fetch it from Django API
-      if (!uid) {
-        try {
-          const userInfoResponse = await fetch(
-            `https://django.kinecoin.co/api/user_account/getUserInformation/?user_id=${userId}`,
-            { headers: { 'Authorization': `Bearer ${token}` } }
-          );
-          
-          if (userInfoResponse.ok) {
-            const userInfo = await userInfoResponse.json();
-            uid = userInfo?.user?.uid;
-            if (uid) {
-              localStorage.setItem('uid', uid);
-            }
-          }
-        } catch (error) {
-          console.error('Error fetching UID:', error);
-        }
-      }
-      
-      if (!uid) {
-        console.error('Could not retrieve user UID');
-        alert('Unable to add to favorites. Please try logging in again.');
-        setIsUpdatingFavorite(false);
-        return;
-      }
-      
       const coin_id = coinPairId || cryptoData?.coin_pair_id || cryptoData?.id;
       if (!coin_id) {
         console.error('No coin ID available for favorites');
@@ -168,60 +86,61 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
         return;
       }
 
-            const response = await fetch('https://api.kinecoin.co/api/v1/set-favorite?apikey=A20RqFwVktRxxRqrKBtmi6ud', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          uid: uid,
-          coin_id: coin_id
-        })
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log('Successfully added to favorites:', result);
-        setIsFavorite(true);
-        setShowFavoriteModal(false);
-        
-        // Notify other components about the favorite change
-        window.dispatchEvent(new CustomEvent('favoriteChanged', { 
-          detail: { action: 'add', coinId: coin_id } 
-        }));
-        localStorage.setItem('favoriteChanged', Date.now().toString());
-      } else {
-        console.error('Failed to add to favorites:', response.statusText);
-        // Still update UI optimistically
-        setIsFavorite(true);
-        setShowFavoriteModal(false);
-        
-        // Still notify in case of optimistic update
-        window.dispatchEvent(new CustomEvent('favoriteChanged', { 
-          detail: { action: 'add', coinId: coin_id } 
-        }));
+      // Update local favorites
+      const localFavorites = JSON.parse(localStorage.getItem('localFavorites') || '[]');
+      if (!localFavorites.includes(coin_id.toString())) {
+        localFavorites.push(coin_id.toString());
+        localStorage.setItem('localFavorites', JSON.stringify(localFavorites));
       }
-    } catch (error) {
-      console.error('Error adding to favorites:', error);
-      // Still update UI optimistically
+
       setIsFavorite(true);
       setShowFavoriteModal(false);
+      
+      // Notify other components about the favorite change
+      window.dispatchEvent(new CustomEvent('favoriteChanged', { 
+        detail: { action: 'add', coinId: coin_id } 
+      }));
+      localStorage.setItem('favoriteChanged', Date.now().toString());
+      
+    } catch (error) {
+      console.error('Error adding to favorites:', error);
     } finally {
       setIsUpdatingFavorite(false);
     }
   }, [cryptoData, coinPairId]);
 
-  // Handle remove from favorites - Under Development
-  const handleRemoveFromFavorites = useCallback(async () => {
+  // Handle remove from favorites - Simplified local storage
+  const handleRemoveFromFavorites = useCallback(() => {
     setIsUpdatingFavorite(true);
     
-    // Show "Under Development" message
-    setTimeout(() => {
-      alert('Remove from favorites feature is under development.');
-      setIsUpdatingFavorite(false);
+    try {
+      const coin_id = coinPairId || cryptoData?.coin_pair_id || cryptoData?.id;
+      if (!coin_id) {
+        console.error('No coin ID available for favorites');
+        setIsUpdatingFavorite(false);
+        return;
+      }
+
+      // Update local favorites
+      const localFavorites = JSON.parse(localStorage.getItem('localFavorites') || '[]');
+      const updatedFavorites = localFavorites.filter(fav => fav !== coin_id.toString());
+      localStorage.setItem('localFavorites', JSON.stringify(updatedFavorites));
+
+      setIsFavorite(false);
       setShowFavoriteModal(false);
-    }, 500);
-  }, []);
+      
+      // Notify other components about the favorite change
+      window.dispatchEvent(new CustomEvent('favoriteChanged', { 
+        detail: { action: 'remove', coinId: coin_id } 
+      }));
+      localStorage.setItem('favoriteChanged', Date.now().toString());
+      
+    } catch (error) {
+      console.error('Error removing from favorites:', error);
+    } finally {
+      setIsUpdatingFavorite(false);
+    }
+  }, [cryptoData, coinPairId]);
 
   // Check favorite status when coin changes
   useEffect(() => {
