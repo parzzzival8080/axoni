@@ -75,8 +75,8 @@ const OrderBookSection = ({ type, orders }: OrderBookSectionProps) => {
           key={index}
           type={type}
           price={formatNumber(order.price, 1)}
-          amount={formatNumber(order.amount, 5)}
-          total={formatNumber(order.total, 5)}
+          amount={formatNumber(order.amount, 8)}
+          total={formatNumber(order.total, 8)}
         />
       ))}
     </div>
@@ -149,7 +149,7 @@ const TradeForm = ({
   // Set maximum amount based on available balance
   const handleSetMaxAmount = () => {
     if (maxTradeAmount > 0) {
-      setAmount(maxTradeAmount.toFixed(5));
+      setAmount(maxTradeAmount.toFixed(8));
     }
   };
 
@@ -319,7 +319,7 @@ const TradeForm = ({
             className="range-slider"
             onChange={(e) => {
               const percent = parseInt(e.target.value);
-              const newAmount = ((maxTradeAmount * percent) / 100).toFixed(5);
+              const newAmount = ((maxTradeAmount * percent) / 100).toFixed(8);
               setAmount(newAmount);
             }}
           />
@@ -351,23 +351,23 @@ const TradeForm = ({
       <div className="balance-info">
         <span>
           Available:{" "}
-          {formatNumber(availableBalance, activeTab === "buy" ? 2 : 5)}{" "}
-          {activeTab === "buy" ? "USDT" : cryptoSymbol}
-        </span>
-        <span className="max-amount" onClick={handleSetMaxAmount}>
-          Max
-        </span>
-      </div>
+          {formatNumber(availableBalance, 8)}{" "}
+            {activeTab === "buy" ? "USDT" : cryptoSymbol}
+          </span>
+          <span className="max-amount" onClick={handleSetMaxAmount}>
+            Max
+          </span>
+        </div>
 
-      {/* Trade button */}
-      {isAuthenticated ? (
-        <button
-          className={`trade-button ${activeTab}`}
-          onClick={handleTradeSubmit}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <>
+        {/* Trade button */}
+        {isAuthenticated ? (
+          <button
+            className={`trade-button ${activeTab}`}
+            onClick={handleTradeSubmit}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
               <i
                 className="fas fa-spinner fa-spin"
                 style={{ marginRight: "8px" }}

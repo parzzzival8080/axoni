@@ -15,7 +15,7 @@ import {
   faPlus
 } from '@fortawesome/free-solid-svg-icons';
 
-const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
+const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) => {
   const [orderHistoryData, setOrderHistoryData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -33,6 +33,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
   const [addMarginSuccess, setAddMarginSuccess] = useState(false);
   const [maxAvailableMargin, setMaxAvailableMargin] = useState(0);
   const [isBackgroundRefresh, setIsBackgroundRefresh] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(null);
   const itemsPerPage = 10;
 
   // Check if user is authenticated
@@ -79,12 +80,39 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
       const response = await axios.get(apiUrl);
 
       if (response.data && Array.isArray(response.data)) {
-        console.log("API Response:", response.data[0]); // Log first item for debugging
-        setOrderHistoryData(response.data.map(order => ({ ...order, imgError: false })));
+        console.log("API Response - Total records:", response.data.length); // Log total records for debugging
+        if (response.data.length > 0) {
+          console.log("Latest record:", response.data[0]); // Log first item for debugging
+        }
         
-        // Clear any previous errors on successful background refresh
-        if (backgroundRefresh && error) {
+        const processedData = response.data.map(order => ({ 
+          ...order, 
+          imgError: false,
+          // Ensure date is properly formatted
+          date: order.date || new Date().toISOString()
+        }));
+        
+        // Always update the data, even if it's the same
+        setOrderHistoryData(processedData);
+        setLastUpdated(new Date());
+        
+        // Pass order history data to parent component
+        if (typeof onOrderHistoryData === 'function') {
+          onOrderHistoryData(processedData);
+        }
+        
+        // Clear any previous errors on successful refresh
+        if (error) {
           setError(null);
+        }
+      } else {
+        console.log("No data received or data is not an array:", response.data);
+        // If no data received but request was successful, set empty array
+        if (response.status === 200 && !response.data) {
+          setOrderHistoryData([]);
+          if (typeof onOrderHistoryData === 'function') {
+            onOrderHistoryData([]);
+          }
         }
       }
     } catch (err) {
@@ -263,11 +291,19 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
 
   useEffect(() => {
     if (refreshTrigger > 0 && isAuthenticated) {
-      fetchOrderHistory();
+      console.log('Refresh trigger activated:', refreshTrigger);
+      // Force a fresh fetch without background flag to ensure loading state
+      fetchOrderHistory(false);
     }
   }, [refreshTrigger, isAuthenticated]);
 
-  // Auto-refresh effect
+  // Force refresh function for manual refresh
+  const forceRefresh = async () => {
+    console.log('Force refreshing order history...');
+    await fetchOrderHistory(false);
+  };
+
+  // Auto-refresh effect - simplified dependencies to ensure it always runs when authenticated
   useEffect(() => {
     if (!isAuthenticated) return;
 
@@ -277,19 +313,30 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
       if (!showPopup && !showAddMarginModal && !addingMargin && !closingPosition) {
         fetchOrderHistory(true);
       }
-    }, 5000); // Refresh every 5 seconds
+    }, 3000); // Refresh every 3 seconds for more frequent updates
 
     // Cleanup interval on unmount or when authentication changes
     return () => clearInterval(intervalId);
-  }, [isAuthenticated, showPopup, showAddMarginModal, addingMargin, closingPosition]);
+  }, [isAuthenticated]); // Removed other dependencies to prevent blocking
 
   // Process and sort data by date (newest first)
   const processedData = orderHistoryData
     .map((order, idx) => ({
       ...order,
-      _id: idx + '-' + order.date,
+      _id: order.future_id ? `${order.future_id}-${order.date}` : `${idx}-${order.date}`,
     }))
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+    .sort((a, b) => {
+      // More robust date sorting
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      
+      // Handle invalid dates
+      if (isNaN(dateA.getTime()) && isNaN(dateB.getTime())) return 0;
+      if (isNaN(dateA.getTime())) return 1;
+      if (isNaN(dateB.getTime())) return -1;
+      
+      return dateB.getTime() - dateA.getTime();
+    });
 
   // Pagination
   const totalPages = Math.ceil(processedData.length / itemsPerPage);
@@ -340,15 +387,31 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
      
       <div className="order-history-table-wrapper relative">
         {loading && <div className="overlay-loader">Loading...</div>}
-        {/* Background refresh indicator */}
-        {isBackgroundRefresh && (
-          <div className="absolute top-2 right-2 z-10 background-refresh-indicator">
-            <div className="flex items-center bg-gray-800 bg-opacity-90 px-3 py-1 rounded-full text-xs text-gray-300">
+        {/* Background refresh indicator and manual refresh button */}
+        <div className="absolute top-2 right-2 z-10 flex items-center gap-2">
+          {/* Manual refresh button */}
+          <button
+            onClick={forceRefresh}
+            disabled={loading || isBackgroundRefresh}
+            className="flex items-center bg-gray-800 bg-opacity-90 hover:bg-opacity-100 px-3 py-1 rounded-full text-xs text-gray-300 hover:text-white transition-colors disabled:opacity-50"
+            title="Refresh order history"
+          >
+            <FontAwesomeIcon 
+              icon={faSyncAlt} 
+              className={`mr-1 ${(loading || isBackgroundRefresh) ? 'animate-spin' : ''}`} 
+              size="xs" 
+            />
+            Refresh
+          </button>
+          
+          {/* Background refresh indicator */}
+          {isBackgroundRefresh && (
+            <div className="flex items-center bg-blue-800 bg-opacity-90 px-3 py-1 rounded-full text-xs text-blue-300">
               <FontAwesomeIcon icon={faSyncAlt} className="animate-spin mr-2" size="xs" />
-              Updating...
+              Auto-updating...
             </div>
-          </div>
-        )}
+          )}
+        </div>
         {error && <div className="order-history-error">{error}</div>}
         {!isAuthenticated ? (
           <div className="login-message" style={{ textAlign: 'center', padding: '20px', color: '#999' }}>
@@ -364,11 +427,11 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
                 <th className="text-left">Leverage</th>
                 <th className="text-left">Entry Price</th>
                 <th className="text-left">Margin</th>
-                <th className="text-left">Liquidation Price</th>
+                <th className="text-left">Liquidation</th>
                 <th className="text-left">Cycle</th>
                 <th className="text-left">Asset</th>
-                <th className="text-left">Unrealized PnL</th>
-                <th className="text-left">Return %</th>
+                <th className="text-left">Unrealized PNL (Profit and Loss)</th>
+                <th className="text-left">ROE (Return on Equity)</th>
                 <th className="text-left">Status</th>
                 <th className="text-left">Action</th>
               </tr>
@@ -396,7 +459,19 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
                       })()}
                     </td>
                     <td className="text-left">{Number(order.return_percentage).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
-                    <td className={`text-left status-${order.status || 'pending'}`}>{order.status || 'pending'}</td>
+                    <td className="text-left">
+                      <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                        order.status === 'open_position' ? 'bg-green-900 bg-opacity-30 text-green-400 border border-green-700' :
+                        order.status === 'close_position' ? 'bg-gray-900 bg-opacity-30 text-gray-400 border border-gray-700' :
+                        order.status === 'liquidated' ? 'bg-red-900 bg-opacity-30 text-red-400 border border-red-700' :
+                        'bg-yellow-900 bg-opacity-30 text-yellow-400 border border-yellow-700'
+                      }`}>
+                        {order.status === 'open_position' ? 'Open Position' :
+                         order.status === 'close_position' ? 'Closed Position' :
+                         order.status === 'liquidated' ? 'Liquidated' :
+                         order.status || 'Pending'}
+                      </span>
+                    </td>
                     <td className="text-left">
                       <div className="flex space-x-2">
                         {order.status !== 'close_position' && (
@@ -462,8 +537,15 @@ const OrderHistory = ({ refreshTrigger = 0, walletData }) => {
         </div>
       )}
       {isAuthenticated && (
-        <div className="order-history-page-info">
-          Showing {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, processedData.length)} of {processedData.length} orders
+        <div className="order-history-page-info flex justify-between items-center">
+          <div>
+            Showing {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, processedData.length)} of {processedData.length} orders
+          </div>
+          {lastUpdated && (
+            <div className="text-xs text-gray-500">
+              Last updated: {lastUpdated.toLocaleTimeString()}
+            </div>
+          )}
         </div>
       )}
     

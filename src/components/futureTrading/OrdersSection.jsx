@@ -3,7 +3,7 @@ import OrderHistory from './OrderHistory';
 import FutureAssetsList from './FutureAssetsList';
 import './FutureTrading.css';
 
-const OrdersSection = ({ refreshTrigger = 0, walletData }) => {
+const OrdersSection = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) => {
   const [activeTab, setActiveTab] = useState('order-history');
 
   return (
@@ -23,7 +23,7 @@ const OrdersSection = ({ refreshTrigger = 0, walletData }) => {
         </div>
       </div>
       <div className="orders-content">
-        {activeTab === 'order-history' && <OrderHistory refreshTrigger={refreshTrigger} walletData={walletData} />}
+        {activeTab === 'order-history' && <OrderHistory refreshTrigger={refreshTrigger} walletData={walletData} onOrderHistoryData={onOrderHistoryData} />}
         {activeTab === 'assets' && <FutureAssetsList />}
       </div>
     </div>

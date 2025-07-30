@@ -108,6 +108,7 @@ function TradeForm({
   onTradeSuccess,
   uid,
   isBottomSheet = false,
+  orderHistoryData = [],
 }) {
   // Form state
   const [activeTab, setActiveTab] = useState("trade");
@@ -282,6 +283,21 @@ function TradeForm({
       return;
     }
 
+    // Check for existing open position when trying to open a new position
+    if (positionType === "open" && Array.isArray(orderHistoryData)) {
+      const existingOpenPosition = orderHistoryData.find(
+        order => order.coin === symbol && order.status === 'open_position'
+      );
+      
+      if (existingOpenPosition) {
+        setNotification({
+          message: `An open position already exists for ${symbol}. Please close your existing position before opening a new one.`,
+          type: "error",
+        });
+        return;
+      }
+    }
+
     if (!amount || parseFloat(amount) <= 0) {
       setNotification({
         message: "Please enter a valid amount",
@@ -366,37 +382,41 @@ function TradeForm({
   return (
     <div className="trade-form">
       <div
-        className={styles["future-trade-notification-container"]}
+        className="relative w-full z-[1200] pointer-events-none mb-4"
         aria-live="polite"
         style={{ marginBottom: notification ? 16 : 0 }}
       >
         {notification && (
           <div
-            className={`${styles["future-trade-notification"]} ${
-              styles[notification.type]
-            }`}
+            className={`fixed bottom-5 left-1/2 transform -translate-x-1/2 z-[9999] max-w-sm w-auto min-w-0 px-4 py-3 rounded-2xl shadow-2xl flex items-center justify-start gap-3 text-sm pointer-events-auto box-border animate-fadeInSlideUp ${
+              notification.type === "success" 
+                ? "bg-gradient-to-br from-green-900/90 to-green-800/90 border-l-4 border-green-500 text-green-100" 
+                : notification.type === "error" 
+                ? "bg-gradient-to-br from-red-900/90 to-red-800/90 border-l-4 border-red-500 text-red-100" 
+                : "bg-gradient-to-br from-blue-900/90 to-blue-800/90 border-l-4 border-blue-500 text-blue-100"
+            } backdrop-blur-sm border border-white/10`}
           >
-            <div className={styles.icon}>
+            <div className="text-xl flex-shrink-0">
               {notification.type === "success" ? (
                 <FontAwesomeIcon
                   icon={faCheckCircle}
-                  style={{ color: "#09C989" }}
+                  className="text-green-400"
                 />
               ) : notification.type === "error" ? (
                 <FontAwesomeIcon
                   icon={faExclamationCircle}
-                  style={{ color: "#F23645" }}
+                  className="text-red-400"
                 />
               ) : (
                 <FontAwesomeIcon
                   icon={faInfoCircle}
-                  style={{ color: "#3C78E0" }}
+                  className="text-blue-400"
                 />
               )}
             </div>
-            <div className={styles.message}>{notification.message}</div>
+            <div className="flex-1 font-medium leading-snug">{notification.message}</div>
             <button
-              className={styles.close}
+              className="bg-transparent border-none text-white/60 hover:text-white/90 text-lg cursor-pointer p-0 opacity-80 hover:opacity-100 transition-opacity duration-200 ml-2 flex-shrink-0"
               onClick={() => setNotification(null)}
               aria-label="Close notification"
             >
