@@ -453,7 +453,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                       ${(() => {
                         const asset = Number(order.asset) || 0;
                         const totalRecharge = Number(order.total_recharge) || 0;
-                        const price = Number(walletData?.price) || 0;
+                        const price = Number(order.price) || 0;
                         const unrealizedPnL = (asset + totalRecharge) * price;
                         return unrealizedPnL.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                       })()}
@@ -599,18 +599,18 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                       
                       <div className="text-gray-400">Asset Value:</div>
                       <div className="text-white font-medium">
-                        ${Number(selectedPosition.asset).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        {Number(selectedPosition.asset).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {selectedPosition.coin}
                       </div>
                       
                       <div className="text-gray-400">Unrealized PnL:</div>
                       <div className="text-white font-medium">
-                        ${(() => {
+                        {(() => {
                           const asset = Number(selectedPosition.asset) || 0;
                           const totalRecharge = Number(selectedPosition.total_recharge) || 0;
-                          const price = Number(walletData?.price) || 0;
+                          const price = Number(selectedPosition.price) || 0;
                           const unrecognizedPnL = (asset + totalRecharge) * price;
                           return unrecognizedPnL.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                        })()}
+                        })()} USDT
                       </div>
                       
                       <div className="text-gray-400">Return:</div>

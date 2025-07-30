@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import "./DownloadPage.css";
 import DownloadImage1 from "../assets/assets/asset1.png";
 import DownloadImage2 from "../assets/assets/asset2.png";
@@ -9,26 +8,38 @@ import ComingSoon from "../components/common/ComingSoon";
 
 const DownloadPage = () => {
   const [isComingSoonOpen, setIsComingSoonOpen] = useState(false);
+  const [isNoticeOpen, setIsNoticeOpen] = useState(false);
+  const [noticeStore, setNoticeStore] = useState(null); // "playstore" or "appstore"
 
-  const openComingSoonModal = () => {
-    setIsComingSoonOpen(true);
+  const openComingSoonModal = () => setIsComingSoonOpen(true);
+  const closeComingSoonModal = () => setIsComingSoonOpen(false);
+
+  // Modified: openNoticeModal takes which store was clicked
+  const openNoticeModal = (store) => (e) => {
+    e.preventDefault();
+    setNoticeStore(store);
+    setIsNoticeOpen(true);
   };
 
-  const closeComingSoonModal = () => {
-    setIsComingSoonOpen(false);
+  const closeNoticeModal = () => setIsNoticeOpen(false);
+
+  const handleAlternativeDownload = () => {
+    // You can customize alternative URLs per store if needed
+    const url =
+      noticeStore === "appstore"
+        ? "https://api.kinecoin.co/api/v1/download-kine-ios"
+        : "https://api.kinecoin.co/api/v1/download-kine-apk";
+
+    window.open(url, "_blank");
+    setIsNoticeOpen(false);
   };
 
-  const appDownloadUrl =
-    "https://api.kinecoin.co/api/v1/download-kine-apk";
+  const appDownloadUrl = "https://api.kinecoin.co/api/v1/download-kine-apk";
 
   const handleAppDownload = () => {
-    // For Google Drive links, we need to convert the sharing URL to a direct download URL
-    // This works for public Google Drive files
-    const fileId = appDownloadUrl.split("/")[5]; // Extract the file ID from the URL
-    const directDownloadUrl = `https://api.kinecoin.co/api/v1/download-kine-apk`;
+    const directDownloadUrl = appDownloadUrl;
     window.open(directDownloadUrl, "_blank", "noopener,noreferrer");
 
-    // Create a temporary anchor element to trigger the download
     const downloadLink = document.createElement("a");
     downloadLink.href = directDownloadUrl;
     downloadLink.setAttribute("download", "kine.apk");
@@ -36,6 +47,7 @@ const DownloadPage = () => {
     downloadLink.click();
     document.body.removeChild(downloadLink);
   };
+
   return (
     <div className="landing">
       {/* Hero Section */}
@@ -49,15 +61,15 @@ const DownloadPage = () => {
               <br />
               <span className="landing__highlight">journey</span>
             </h1>
-            <p className="landing__tagline">
-              Crypto trading — made easy for you
-            </p>
+            <p className="landing__tagline">Crypto trading — made easy for you</p>
             <div
               className="landing__buttons"
               style={{ display: "flex", gap: "20px", marginTop: "20px" }}
             >
+              {/* Play Store button */}
               <a
-                href="/landing/playstore.html"
+                href="#"
+                onClick={openNoticeModal("playstore")}
                 style={{ display: "inline-block" }}
               >
                 <img
@@ -72,8 +84,11 @@ const DownloadPage = () => {
                   }}
                 />
               </a>
+
+              {/* App Store button */}
               <a
-                href="/landing/appstore.html"
+                href="#"
+                onClick={openNoticeModal("appstore")}
                 style={{ display: "inline-block" }}
               >
                 <img
@@ -91,7 +106,6 @@ const DownloadPage = () => {
             </div>
           </div>
           <div className="landing__hero-image">
-            {/* Placeholder for phone mockups */}
             <img src={DownloadImage1} alt="download-img-1" />
           </div>
         </div>
@@ -101,7 +115,6 @@ const DownloadPage = () => {
       <section className="landing__features">
         <div className="landing__container landing__container--reverse">
           <div className="landing__features-image">
-            {/* Placeholder for app screenshots */}
             <img src={DownloadImage2} alt="download-img-2" />
           </div>
           <div className="landing__features-content">
@@ -134,7 +147,6 @@ const DownloadPage = () => {
             </p>
           </div>
           <div className="landing__platform-image">
-            {/* Placeholder for desktop platform screenshot */}
             <img src={DownloadImage3} alt="download-img-3" />
           </div>
         </div>
@@ -169,6 +181,35 @@ const DownloadPage = () => {
 
       {/* Coming Soon Modal */}
       <ComingSoon isOpen={isComingSoonOpen} onClose={closeComingSoonModal} />
+
+      {/* Notice Modal */}
+      {isNoticeOpen && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h2>Notice</h2>
+            {noticeStore === "playstore" && (
+              <p>
+                This app isn’t available in your region through the official
+                Play Store.
+                <br />
+                Would you like to download it from an alternative source?
+              </p>
+            )}
+            {noticeStore === "appstore" && (
+              <p>
+                This app isn’t available in your region through the official
+                App Store.
+                <br />
+                Would you like to download it from an alternative source?
+              </p>
+            )}
+            <div className="modal-buttons">
+              <button onClick={handleAlternativeDownload}>Yes</button>
+              <button onClick={closeNoticeModal}>No</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

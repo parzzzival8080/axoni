@@ -313,6 +313,7 @@ const TradeForm = ({
       return;
     }
 
+
     // Check if user has enough balance using raw balance amounts
     if (effectiveIsBuy) {
       // Use raw balance for accurate validation

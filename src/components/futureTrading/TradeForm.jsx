@@ -189,7 +189,7 @@ function TradeForm({
   // Handle leverage change
   const toggleLeverage = () => {
     // Cycle through common leverage values: 10x, 20x, 50x, 100x
-    const leverageValues = ["5", "10", "15", "20", "50", "100", "125"];
+    const leverageValues = ["5", "10", "15", "20"];
     const currentIndex = leverageValues.indexOf(leverage);
     const nextIndex = (currentIndex + 1) % leverageValues.length;
     setLeverage(leverageValues[nextIndex]);
