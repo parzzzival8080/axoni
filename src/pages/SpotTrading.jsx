@@ -167,6 +167,7 @@ const SpotTrading = () => {
           cryptoData: {
             cryptoName: cryptoWallet?.crypto_name || '',
             cryptoSymbol: cryptoWallet?.crypto_symbol || '',
+            websocket_name: cryptoWallet?.websocket_name || '',
             cryptoPrice: cryptoWallet?.price || 0,
             cryptoLogoPath: cryptoWallet?.logo_path || '',
             usdtName: usdtWallet?.crypto_name || 'USDT',
@@ -353,6 +354,7 @@ const SpotTrading = () => {
             ...walletResponse.cryptoData,
             // Prioritize cached data for price and market info
             cryptoPrice: coinDataFromCache?.cryptoPrice ?? walletResponse.cryptoData.cryptoPrice,
+            websocket_name: walletResponse.cryptoData.websocket_name,
             priceChange24h: coinDataFromCache?.priceChange24h ?? 0,
             '24_high': coinDataFromCache?.['24_high'],
             '24_low': coinDataFromCache?.['24_low'],
