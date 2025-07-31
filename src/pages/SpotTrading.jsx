@@ -56,6 +56,8 @@ const SpotTrading = () => {
   const setCryptoDataWithLog = useCallback((data) => {
     console.log('setCryptoData called with:', {
       symbol: data?.cryptoSymbol || data?.crypto_symbol,
+      websocket_name: data?.websocket_name,
+      instId: data?.instId,
       logo: data?.cryptoLogoPath || data?.crypto_logo_path,
       data: data
     });
@@ -144,7 +146,12 @@ const SpotTrading = () => {
       crypto_symbol: coin.symbol,
       crypto_name: coin.name,
       price: coin.price,
-      usdt_symbol: coin.pair_name || 'USDT'
+      usdt_symbol: coin.pair_name || 'USDT',
+      // OrderBook compatibility - preserve EXACT websocket_name from API
+      websocket_name: coin.websocket_name, // This should be 'ETC' for SMT coin
+      symbol: coin.symbol, // This should be 'SMT'
+      selectedSymbol: coin.symbol, // This should be 'SMT' 
+      instId: `${coin.websocket_name || coin.symbol}-USDT` // This should be 'ETC-USDT' for SMT
     };
   }, []);
 
@@ -355,6 +362,11 @@ const SpotTrading = () => {
             crypto_symbol: coinDataFromCache?.crypto_symbol || walletResponse.cryptoData.crypto_symbol,
             crypto_name: coinDataFromCache?.crypto_name || walletResponse.cryptoData.crypto_name,
             crypto_logo_path: coinDataFromCache?.crypto_logo_path || walletResponse.cryptoData.crypto_logo_path,
+            // CRITICAL: Preserve websocket_name from cached coin data (from API)
+            websocket_name: coinDataFromCache?.websocket_name, // e.g., 'ETC' for SMT coin
+            symbol: coinDataFromCache?.symbol,
+            selectedSymbol: coinDataFromCache?.selectedSymbol,
+            instId: coinDataFromCache?.instId,
           };
 
           setUserBalance(walletResponse.balance || { cryptoSpotBalance: 0, usdtSpotBalance: 0 });
@@ -636,7 +648,15 @@ const SpotTrading = () => {
           selectedSymbol={cryptoData?.crypto_symbol || cryptoData?.cryptoSymbol || 'BTC'}
         />
         <OrderBook
-          cryptoData={cryptoData}
+          cryptoData={{
+            ...cryptoData,
+            // Map the correct fields for OrderBook - PRESERVE websocket_name from API
+            websocket_name: cryptoData?.websocket_name, // Keep original websocket_name (e.g., 'ETC' for SMT)
+            symbol: cryptoData?.symbol || cryptoData?.crypto_symbol || cryptoData?.cryptoSymbol || 'BTC',
+            selectedSymbol: cryptoData?.crypto_symbol || cryptoData?.cryptoSymbol || 'BTC',
+            cryptoSymbol: cryptoData?.crypto_symbol || cryptoData?.cryptoSymbol || 'BTC',
+            instId: `${cryptoData?.websocket_name || cryptoData?.crypto_symbol || cryptoData?.cryptoSymbol || 'BTC'}-USDT`
+          }}
         />
         <div className="hidden md:block">
           <TradeForm

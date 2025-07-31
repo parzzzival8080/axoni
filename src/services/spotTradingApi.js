@@ -7,7 +7,7 @@ const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000;
 const CACHE_DURATION = 30000; // 30 seconds for other data
 const COINS_CACHE_DURATION = 2 * 60 * 1000; // 2 minutes for coins data (more frequent updates for better real-time data)
-const REQUEST_TIMEOUT = 6000; // Reduced timeout for faster failure detection
+const REQUEST_TIMEOUT = 15000; // Increased timeout to prevent premature timeouts
 const RATE_LIMIT_DELAY = 100;
 
 // Cache keys
