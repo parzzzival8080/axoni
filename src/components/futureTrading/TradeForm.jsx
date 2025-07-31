@@ -6,7 +6,9 @@ import {
   calculateMaxAmount,
 } from "../../services/futureTradingApi";
 import "./TradeForm.css";
-import styles from "./FutureTradeNotification.module.css";
+import UnifiedNotification from "../common/UnifiedNotification";
+import "../common/UnifiedNotification.css";
+import { useNotification } from "../../hooks/useNotification";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCaretUp,
@@ -15,11 +17,6 @@ import {
   faSpinner,
   faChevronDown,
   faChartLine,
-  faCheckCircle,
-  faExclamationCircle,
-  faInfoCircle,
-  faExclamationTriangle,
-  faTimes,
   faQuestionCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
@@ -122,17 +119,16 @@ function TradeForm({
   // UI state
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingBalance, setIsLoadingBalance] = useState(false);
-  const [notification, setNotification] = useState(null);
-
-  // Auto-hide notification after 3 seconds
-  useEffect(() => {
-    if (notification) {
-      const timer = setTimeout(() => {
-        setNotification(null);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [notification]);
+  
+  // Unified notification system
+  const {
+    notification,
+    showSuccess,
+    showError,
+    showWarning,
+    showInfo,
+    hideNotification,
+  } = useNotification(5000); // Auto-hide after 5 seconds
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Check if user is authenticated
@@ -145,6 +141,21 @@ function TradeForm({
   // Extract data from wallet
   const symbol = walletData?.symbol || "BTC";
   const availableBalance = walletData?.available || "0";
+
+  // Get raw balance with full precision (12 decimals from API)
+  const getRawBalance = () => {
+    // For futures, use the available balance with full precision
+    return walletData?.available || 0;
+  };
+
+  // Format crypto amount with 8 decimal places for DISPLAY only
+  const formatCryptoAmount = (value) => {
+    if (value === null || value === undefined || isNaN(Number(value))) {
+      return "0.00000000";
+    }
+    // Use exactly 8 decimal places for crypto amounts DISPLAY
+    return parseFloat(value).toFixed(8);
+  };
 
   // Set initial price from wallet data when it changes
   useEffect(() => {
@@ -166,12 +177,16 @@ function TradeForm({
   // Use available balance directly as the max amount for the slider
   const [maxTradeAmount, setMaxTradeAmount] = useState(0);
 
-  // Update max amount when available balance changes
+  // Update max amount when available balance changes with FULL precision
   useEffect(() => {
-    // Parse the available balance as a float
-    const parsedBalance = parseFloat(availableBalance) || 0;
-    setMaxTradeAmount(parsedBalance);
-  }, [availableBalance]);
+    // Use raw balance with full 12-decimal precision
+    const rawBalance = getRawBalance();
+    console.log('Future trading - Setting max trade amount with full precision:', {
+      rawBalance: rawBalance.toString(),
+      precision: typeof rawBalance
+    });
+    setMaxTradeAmount(rawBalance);
+  }, [availableBalance, walletData]);
 
   // Format the max amount for display
   const formattedMaxAmount = formatNumber(maxTradeAmount, 6);
@@ -195,26 +210,50 @@ function TradeForm({
     setLeverage(leverageValues[nextIndex]);
   };
 
-  // Handle slider change
+  // Handle slider change with FULL precision
   const handleSliderChange = (e) => {
     const newSliderValue = parseFloat(e.target.value);
     setSliderValue(newSliderValue);
 
-    // Calculate amount based on slider percentage of available balance
-    const newAmount = ((maxTradeAmount * newSliderValue) / 100).toFixed(6);
-    setAmount(newAmount);
+    // Calculate amount based on slider percentage with full precision
+    if (newSliderValue === 100) {
+      // At 100%, use the EXACT full balance with full precision to avoid rounding errors
+      const rawBalance = getRawBalance();
+      console.log('Future trading 100% slider - Using exact balance:', rawBalance.toString());
+      setAmount(rawBalance.toString());
+    } else if (newSliderValue === 0) {
+      setAmount("");
+    } else {
+      // For other percentages, calculate based on percentage with full precision
+      const calculatedAmount = (maxTradeAmount * newSliderValue) / 100;
+      setAmount(calculatedAmount.toString());
+    }
   };
 
-  // Handle amount change
+  // Handle amount change with FULL precision
   const handleAmountChange = (e) => {
     const newAmount = e.target.value;
+    // Validate number input
+    if (!/^(\d*\.?\d*)?$/.test(newAmount)) return;
+    
     setAmount(newAmount);
 
-    // Update slider based on amount
+    // Update slider based on amount with full precision
     if (newAmount && !isNaN(newAmount)) {
       if (maxTradeAmount > 0) {
-        const newSliderValue = (parseFloat(newAmount) / maxTradeAmount) * 100;
-        setSliderValue(Math.min(100, Math.max(0, newSliderValue)));
+        const rawBalance = getRawBalance();
+        const currentAmount = parseFloat(newAmount);
+        
+        // Check if user is at exactly maximum balance
+        const tolerance = Math.max(rawBalance * 1e-12, 1e-12);
+        const isAtMax = Math.abs(currentAmount - rawBalance) <= tolerance;
+        
+        if (isAtMax) {
+          setSliderValue(100);
+        } else {
+          const newSliderValue = (currentAmount / maxTradeAmount) * 100;
+          setSliderValue(Math.min(100, Math.max(0, newSliderValue)));
+        }
       }
     } else {
       setSliderValue(0);
@@ -235,10 +274,7 @@ function TradeForm({
   // Refresh wallet balance
   const refreshWalletBalance = async () => {
     if (!uid) {
-      setNotification({
-        message: "Authentication required to view balance",
-        type: "error",
-      });
+      showError("Authentication required to view balance");
       return;
     }
 
@@ -254,20 +290,14 @@ function TradeForm({
       const data = await fetchWalletData(uid, symbol);
 
       if (data.error) {
-        setNotification({
-          message: data.message || "Failed to refresh balance",
-          type: "error",
-        });
+        showError(data.message || "Failed to refresh balance");
       } else {
         // Clear any existing notifications
-        setNotification(null);
+        hideNotification();
       }
     } catch (error) {
       console.error("Error refreshing wallet balance:", error);
-      setNotification({
-        message: error.message || "Failed to refresh balance",
-        type: "error",
-      });
+      showError(error.message || "Failed to refresh balance");
     } finally {
       setIsLoadingBalance(false);
     }
@@ -276,10 +306,7 @@ function TradeForm({
   // Handle trade submission
   const handleTradeSubmit = async () => {
     if (!uid) {
-      setNotification({
-        message: "Authentication required. Please log in to trade.",
-        type: "error",
-      });
+      showError("Authentication required. Please log in to trade.");
       return;
     }
 
@@ -290,32 +317,38 @@ function TradeForm({
       );
       
       if (existingOpenPosition) {
-        setNotification({
-          message: `An open position already exists for ${symbol}. Please close your existing position before opening a new one.`,
-          type: "error",
-        });
+        showError(`An open position already exists for ${symbol}. Please close your existing position before opening a new one.`);
         return;
       }
     }
 
     if (!amount || parseFloat(amount) <= 0) {
-      setNotification({
-        message: "Please enter a valid amount",
-        type: "error",
-      });
+      showError("Please enter a valid amount");
       return;
     }
 
     if (!price || parseFloat(price) <= 0) {
-      setNotification({
-        message: "Please enter a valid price",
-        type: "error",
-      });
+      showError("Please enter a valid price");
+      return;
+    }
+
+    // Check if user has enough balance using FULL precision
+    const currentAmount = parseFloat(amount);
+    const availableBalance = getRawBalance();
+    
+    console.log('Future trading balance validation:', {
+      currentAmount: currentAmount.toFixed(12),
+      availableBalance: availableBalance.toString(),
+      isValid: currentAmount <= availableBalance
+    });
+    
+    if (currentAmount > availableBalance) {
+      showError(`Insufficient balance. Max amount: ${formatCryptoAmount(availableBalance)} ${symbol} available`);
       return;
     }
 
     setIsLoading(true);
-    setNotification(null);
+    hideNotification();
 
     try {
       // Log the trade attempt
@@ -345,10 +378,7 @@ function TradeForm({
       console.log("Trade result:", result);
 
       if (result.error) {
-        setNotification({
-          message: result.message || "Trade execution failed",
-          type: "error",
-        });
+        showError(result.message || "Trade execution failed");
       } else {
         console.log(
           `${
@@ -370,10 +400,7 @@ function TradeForm({
       }
     } catch (error) {
       console.error("Trade error:", error);
-      setNotification({
-        message: error.message || "An error occurred during trade execution",
-        type: "error",
-      });
+      showError(error.message || "An error occurred during trade execution");
     } finally {
       setIsLoading(false);
     }
@@ -381,50 +408,13 @@ function TradeForm({
 
   return (
     <div className="trade-form">
-      <div
-        className="relative w-full z-[1200] pointer-events-none mb-4"
-        aria-live="polite"
-        style={{ marginBottom: notification ? 16 : 0 }}
-      >
-        {notification && (
-          <div
-            className={`fixed bottom-5 left-1/2 transform -translate-x-1/2 z-[9999] max-w-sm w-auto min-w-0 px-4 py-3 rounded-2xl shadow-2xl flex items-center justify-start gap-3 text-sm pointer-events-auto box-border animate-fadeInSlideUp ${
-              notification.type === "success" 
-                ? "bg-gradient-to-br from-green-900/90 to-green-800/90 border-l-4 border-green-500 text-green-100" 
-                : notification.type === "error" 
-                ? "bg-gradient-to-br from-red-900/90 to-red-800/90 border-l-4 border-red-500 text-red-100" 
-                : "bg-gradient-to-br from-blue-900/90 to-blue-800/90 border-l-4 border-blue-500 text-blue-100"
-            } backdrop-blur-sm border border-white/10`}
-          >
-            <div className="text-xl flex-shrink-0">
-              {notification.type === "success" ? (
-                <FontAwesomeIcon
-                  icon={faCheckCircle}
-                  className="text-green-400"
-                />
-              ) : notification.type === "error" ? (
-                <FontAwesomeIcon
-                  icon={faExclamationCircle}
-                  className="text-red-400"
-                />
-              ) : (
-                <FontAwesomeIcon
-                  icon={faInfoCircle}
-                  className="text-blue-400"
-                />
-              )}
-            </div>
-            <div className="flex-1 font-medium leading-snug">{notification.message}</div>
-            <button
-              className="bg-transparent border-none text-white/60 hover:text-white/90 text-lg cursor-pointer p-0 opacity-80 hover:opacity-100 transition-opacity duration-200 ml-2 flex-shrink-0"
-              onClick={() => setNotification(null)}
-              aria-label="Close notification"
-            >
-              <FontAwesomeIcon icon={faTimes} />
-            </button>
-          </div>
-        )}
-      </div>
+      {/* Unified Notification System */}
+      <UnifiedNotification 
+        notification={notification}
+        onClose={hideNotification}
+        position="bottom-center"
+        className="unified-notification-override"
+      />
       <ScrollableFormContent
         className={isBottomSheet ? "bottom-sheet-mode" : ""}
       >
@@ -551,7 +541,7 @@ function TradeForm({
                     ) : (
                       <>
                         <span>
-                          Available {formatNumber(availableBalance, 6)} {symbol}
+                          Available {formatNumber(getRawBalance(), 8)} {symbol}
                         </span>
                         <button
                           className="info-btn"
@@ -569,10 +559,10 @@ function TradeForm({
                   </div>
                   <div className="max-values">
                     <span className="max-long">
-                      Max long {formatNumber(maxTradeAmount, 6)} {symbol}
+                      Max long {formatNumber(maxTradeAmount, 8)} {symbol}
                     </span>
                     <span className="max-short">
-                      Max short {formatNumber(maxTradeAmount, 6)} {symbol}
+                      Max short {formatNumber(maxTradeAmount, 8)} {symbol}
                     </span>
                   </div>
                 </>

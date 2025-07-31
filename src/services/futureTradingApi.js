@@ -130,13 +130,20 @@ export const fetchWalletData = async (uid, coinId) => {
       throw new Error('Invalid wallet data structure');
     }
     
-    // Extract and format the necessary data
+    // Extract and format the necessary data - preserve full precision (12 decimals)
+    const futureWalletBalance = data.cryptoWallet?.future_wallet || '0';
+    console.log('Future trading API - Preserving balance precision:', {
+      futureWalletBalance,
+      balanceType: typeof futureWalletBalance,
+      symbol: data.cryptoWallet?.crypto_symbol
+    });
+    
     return {
       success: true,
       cryptoWallet: data.cryptoWallet || null,
       usdtWallet: data.usdtWallet || null,
       price: data.cryptoWallet?.price || '0',
-      available: data.cryptoWallet?.future_wallet || '0',
+      available: futureWalletBalance, // Preserve full precision from API
       symbol: data.cryptoWallet?.crypto_symbol || 'BTC',
       name: data.cryptoWallet?.crypto_name || 'Bitcoin',
       coinId: data.cryptoWallet?.coin_id || coinId
