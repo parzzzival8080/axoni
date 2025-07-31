@@ -83,9 +83,25 @@ const TradeForm = ({
   // Get raw balance with full precision (12 decimals from API)
   const getRawBalance = (balanceType) => {
     if (balanceType === 'usdt') {
-      return userBalance?.usdtSpotBalance || userBalance?.usdtBalance || 0;
+      const balance = userBalance?.usdtSpotBalance || userBalance?.usdtBalance || 0;
+      const parsedBalance = parseFloat(balance) || 0;
+      console.log('getRawBalance USDT:', {
+        balance,
+        parsedBalance,
+        type: typeof balance,
+        userBalance: userBalance
+      });
+      return parsedBalance;
     } else {
-      return userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || 0;
+      const balance = userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || 0;
+      const parsedBalance = parseFloat(balance) || 0;
+      console.log('getRawBalance Crypto:', {
+        balance,
+        parsedBalance,
+        type: typeof balance,
+        userBalance: userBalance
+      });
+      return parsedBalance;
     }
   };
 
@@ -165,20 +181,25 @@ const TradeForm = ({
       // Compare using full precision balance amounts with tolerance
       return totalCost <= availableUSDT || isWithinTolerance;
     } else {
-      // For sell orders, compare with raw crypto balance (full precision)
-      const availableCrypto = getRawBalance('crypto');
+      // For sell orders, use raw crypto balance string (don't parse like buy does with USDT)
+      const availableCryptoRaw = userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || '0';
+      const availableCrypto = parseFloat(availableCryptoRaw) || 0;
       
       // Use tolerance for 12-decimal precision to handle floating point precision issues
       const tolerance = Math.max(availableCrypto * 1e-12, 1e-12);
-      const isWithinTolerance = (currentAmount - availableCrypto) <= tolerance;
+      const difference = currentAmount - availableCrypto;
+      const isWithinTolerance = difference <= tolerance;
       
-      console.log('Sell validation:', {
-        currentAmount: currentAmount.toFixed(12),
-        availableCrypto: availableCrypto.toFixed ? availableCrypto.toFixed(12) : availableCrypto,
-        tolerance: tolerance.toFixed(15),
-        isWithinTolerance: isWithinTolerance,
-        isValid: currentAmount <= availableCrypto || isWithinTolerance
-      });
+      console.log('Sell validation (isAmountValid):');
+      console.log('  amount:', amount);
+      console.log('  currentAmount:', currentAmount);
+      console.log('  availableCryptoRaw:', availableCryptoRaw);
+      console.log('  availableCrypto:', availableCrypto);
+      console.log('  difference:', difference);
+      console.log('  tolerance:', tolerance.toFixed(15));
+      console.log('  isWithinTolerance:', isWithinTolerance);
+      console.log('  isValid:', currentAmount <= availableCrypto || isWithinTolerance);
+      console.log('  rawComparison:', currentAmount <= availableCrypto);
       
       return currentAmount <= availableCrypto || isWithinTolerance;
     }
@@ -207,18 +228,21 @@ const TradeForm = ({
       
       return isAtMax;
     } else {
-      // For sell orders, check if amount matches available crypto with full precision
-      const availableCrypto = getRawBalance('crypto');
+      // For sell orders, use raw crypto balance string directly from userBalance
+      const availableCryptoRaw = userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || '0';
       
       // Use tolerance appropriate for 12-decimal precision
-      const tolerance = Math.max(availableCrypto * 1e-12, 1e-12);
-      const isAtMax = Math.abs(currentAmount - availableCrypto) <= tolerance;
+      const tolerance = Math.max(parseFloat(availableCryptoRaw) * 1e-12, 1e-12);
+      const difference = Math.abs(currentAmount - parseFloat(availableCryptoRaw));
+      const isAtMax = difference <= tolerance;
       
-      console.log('Sell max balance check:', {
+      console.log('Sell max balance check (isAtMaxBalance):', {
         currentAmount: currentAmount.toFixed(12),
-        availableCrypto: availableCrypto.toFixed ? availableCrypto.toFixed(12) : availableCrypto,
+        availableCryptoRaw: availableCryptoRaw,
+        difference: difference.toFixed(15),
         tolerance: tolerance.toFixed(15),
-        isAtMax
+        isAtMax,
+        exactMatch: currentAmount === parseFloat(availableCryptoRaw)
       });
       
       return isAtMax;
@@ -430,25 +454,28 @@ const TradeForm = ({
         return;
       }
     } else {
-      // For sell orders, compare with raw crypto balance (full precision)
+      // For sell orders, use raw crypto balance string (don't parse like buy does with USDT)
       const currentAmount = parseFloat(amount);
-      const availableCrypto = getRawBalance('crypto');
+      const availableCryptoRaw = userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || '0';
+      const availableCrypto = parseFloat(availableCryptoRaw) || 0;
       
       // Use tolerance for 12-decimal precision to handle floating point precision issues
       const tolerance = Math.max(availableCrypto * 1e-12, 1e-12);
-      const isWithinTolerance = (currentAmount - availableCrypto) <= tolerance;
+      const difference = currentAmount - availableCrypto;
+      const isWithinTolerance = difference <= tolerance;
       
-      console.log('Trade submission sell validation:', {
-        currentAmount: currentAmount.toFixed(12),
-        availableCrypto: availableCrypto.toFixed ? availableCrypto.toFixed(12) : availableCrypto,
-        tolerance: tolerance.toFixed(15),
-        difference: (currentAmount - availableCrypto).toFixed(15),
-        isWithinTolerance: isWithinTolerance,
-        isValid: currentAmount <= availableCrypto || isWithinTolerance
-      });
+      console.log('Trade submission sell validation:');
+      console.log('  currentAmount:', currentAmount);
+      console.log('  availableCryptoRaw:', availableCryptoRaw);
+      console.log('  availableCrypto:', availableCrypto);
+      console.log('  difference:', difference);
+      console.log('  tolerance:', tolerance.toFixed(15));
+      console.log('  isWithinTolerance:', isWithinTolerance);
+      console.log('  willShowError:', currentAmount > availableCrypto && !isWithinTolerance);
       
       // Only show insufficient balance if the difference is significant (beyond tolerance)
       if (currentAmount > availableCrypto && !isWithinTolerance) {
+        console.log('SHOWING INSUFFICIENT BALANCE ERROR FROM TRADE SUBMISSION');
         showNotification(
           "error",
           `Insufficient balance. Max sell amount: ${formatCryptoAmount(availableCrypto)} ${cryptoData?.cryptoSymbol || 'BTC'}`
@@ -674,7 +701,22 @@ const TradeForm = ({
             </span>
 
             {/* Validation feedback */}
-            {amount && !isAmountValid() && !isAtMaxBalance() && (
+            {(() => {
+              const amountExists = !!amount;
+              const isValid = isAmountValid();
+              const isAtMax = isAtMaxBalance();
+              const shouldShowWarning = amountExists && !isValid && !isAtMax;
+              
+              console.log('Warning display logic:', {
+                amountExists,
+                isValid,
+                isAtMax,
+                shouldShowWarning,
+                amount: amount
+              });
+              
+              return shouldShowWarning;
+            })() && (
               <span 
                 style={{ 
                   color: "#F23645", 
