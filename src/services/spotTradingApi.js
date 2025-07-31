@@ -556,7 +556,8 @@ export const executeSpotTradeOrder = async (params) => {
         }
 
         const effectiveOrderType = order_type || side;
-        const total_in_usdt = (parseFloat(price) * parseFloat(amount)).toFixed(6);
+        // Use 12 decimal places to match raw data precision
+        const total_in_usdt = (parseFloat(price) * parseFloat(amount)).toFixed(12);
         
         // Enhanced rate limiting for trades (stricter)
         await enforceRateLimit(`trade_${uid}`);

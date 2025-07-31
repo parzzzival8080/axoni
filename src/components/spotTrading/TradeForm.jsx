@@ -21,6 +21,8 @@ const TradeForm = ({
   const [notification, setNotification] = useState(null);
   const [notificationTimeout, setNotificationTimeout] = useState(null);
   const [uid, setUid] = useState("");
+  const [isPriceLocked, setIsPriceLocked] = useState(false);
+  const [lockedPrice, setLockedPrice] = useState(0);
 
   // Ref to track last submission time for debouncing
   const lastSubmissionTime = useRef(0);
@@ -37,25 +39,28 @@ const TradeForm = ({
     setUid(localStorage.getItem("uid") || "");
   }, []);
 
-  // Update price when cryptoData changes (defensive: use price or cryptoPrice)
+  // Update price when cryptoData changes (but respect price locking)
   useEffect(() => {
-    if (cryptoData) {
+    if (cryptoData && !isPriceLocked) {
       const livePrice = cryptoData.price ?? cryptoData.cryptoPrice;
       if (
         livePrice !== undefined &&
         livePrice !== null &&
         !isNaN(Number(livePrice))
       ) {
-        setPrice(parseFloat(livePrice));
+        const newPrice = parseFloat(livePrice);
+        setPrice(newPrice);
+        setLockedPrice(newPrice); // Update locked price when not locked
       }
     }
-  }, [cryptoData?.price, cryptoData?.cryptoPrice]);
+  }, [cryptoData?.price, cryptoData?.cryptoPrice, isPriceLocked]);
 
   // Reset form state when switching between buy and sell
   useEffect(() => {
     setSliderValue(0);
     setAmount("");
     setTotal("");
+    setIsPriceLocked(false); // Unlock price when switching modes
   }, [effectiveIsBuy]);
 
   // Format price for display
@@ -84,21 +89,41 @@ const TradeForm = ({
     }
   };
 
-  // Calculate total with proper precision
+  // Helper functions for price locking
+  const lockPriceForTrading = () => {
+    if (!isPriceLocked) {
+      setIsPriceLocked(true);
+      setLockedPrice(price);
+      console.log('Price locked for trading at:', price);
+    }
+  };
+
+  const unlockPrice = () => {
+    setIsPriceLocked(false);
+    console.log('Price unlocked, will follow live updates');
+  };
+
+  // Get the effective price to use for calculations (locked or live)
+  const getEffectivePrice = () => {
+    return isPriceLocked ? lockedPrice : price;
+  };
+
+  // Calculate total with proper precision using effective price
   const calculateTotal = (amount) => {
     const amountValue = parseFloat(amount) || 0;
-    const priceValue = parseFloat(price) || 0;
+    const priceValue = parseFloat(getEffectivePrice()) || 0;
     return (amountValue * priceValue).toFixed(8);
   };
 
   // Calculate max amount based on available balance with FULL 12-decimal precision
   const getMaxAmount = () => {
     if (effectiveIsBuy) {
-      // For buying, max amount is USDT balance divided by price
+      // For buying, max amount is USDT balance divided by effective price
       // Use raw balance with full precision (12 decimals from API)
       const usdtSpotBalance = getRawBalance('usdt');
+      const effectivePrice = getEffectivePrice();
       // Return with full precision for accurate calculations
-      return price > 0 ? usdtSpotBalance / price : 0;
+      return effectivePrice > 0 ? usdtSpotBalance / effectivePrice : 0;
     } else {
       // For selling, return the precise crypto balance with full precision
       return getRawBalance('crypto');
@@ -114,7 +139,7 @@ const TradeForm = ({
     }
   };
 
-  // Validate if amount exceeds available balance using FULL precision
+  // Validate if amount exceeds available balance using FULL precision with tolerance
   const isAmountValid = () => {
     const currentAmount = parseFloat(amount) || 0;
     
@@ -122,28 +147,40 @@ const TradeForm = ({
     
     if (effectiveIsBuy) {
       // Use raw balance with full 12-decimal precision for accurate validation
-      const totalCost = currentAmount * parseFloat(price || 0);
+      const totalCost = currentAmount * parseFloat(getEffectivePrice() || 0);
       const availableUSDT = getRawBalance('usdt');
+      
+      // Use tolerance for 12-decimal precision to handle floating point precision issues
+      const tolerance = Math.max(availableUSDT * 1e-12, 1e-12);
+      const isWithinTolerance = (totalCost - availableUSDT) <= tolerance;
       
       console.log('Buy validation:', {
         totalCost: totalCost.toFixed(12),
         availableUSDT: availableUSDT.toFixed ? availableUSDT.toFixed(12) : availableUSDT,
-        isValid: totalCost <= availableUSDT
+        tolerance: tolerance.toFixed(15),
+        isWithinTolerance: isWithinTolerance,
+        isValid: totalCost <= availableUSDT || isWithinTolerance
       });
       
-      // Compare using full precision balance amounts
-      return totalCost <= availableUSDT;
+      // Compare using full precision balance amounts with tolerance
+      return totalCost <= availableUSDT || isWithinTolerance;
     } else {
       // For sell orders, compare with raw crypto balance (full precision)
       const availableCrypto = getRawBalance('crypto');
       
+      // Use tolerance for 12-decimal precision to handle floating point precision issues
+      const tolerance = Math.max(availableCrypto * 1e-12, 1e-12);
+      const isWithinTolerance = (currentAmount - availableCrypto) <= tolerance;
+      
       console.log('Sell validation:', {
         currentAmount: currentAmount.toFixed(12),
         availableCrypto: availableCrypto.toFixed ? availableCrypto.toFixed(12) : availableCrypto,
-        isValid: currentAmount <= availableCrypto
+        tolerance: tolerance.toFixed(15),
+        isWithinTolerance: isWithinTolerance,
+        isValid: currentAmount <= availableCrypto || isWithinTolerance
       });
       
-      return currentAmount <= availableCrypto;
+      return currentAmount <= availableCrypto || isWithinTolerance;
     }
   };
 
@@ -154,7 +191,7 @@ const TradeForm = ({
     
     if (effectiveIsBuy) {
       // For buy orders, check if total cost matches available USDT with full precision
-      const totalCost = currentAmount * parseFloat(price || 0);
+      const totalCost = currentAmount * parseFloat(getEffectivePrice() || 0);
       const availableUSDT = getRawBalance('usdt');
       
       // Use tolerance appropriate for 12-decimal precision
@@ -199,6 +236,13 @@ const TradeForm = ({
     else if (value <= 87.5) snappedValue = 75;
     else snappedValue = 100;
     
+    // Lock price when user interacts with slider (except when setting to 0)
+    if (snappedValue > 0) {
+      lockPriceForTrading();
+    } else {
+      unlockPrice(); // Unlock when slider is set to 0
+    }
+    
     setSliderValue(snappedValue);
     calculateAmountFromPercentage(snappedValue);
   };
@@ -220,11 +264,12 @@ const TradeForm = ({
         
         // Set total to exact balance (display with 8 decimals but store full precision)
         setTotal(usdtBalance.toString());
-        if (price > 0) {
-          // Calculate amount with full precision, display with 8 decimals
-          const exactAmount = usdtBalance / price;
+        const effectivePrice = getEffectivePrice();
+        if (effectivePrice > 0) {
+          // Calculate amount with full precision using locked price
+          const exactAmount = usdtBalance / effectivePrice;
           setAmount(exactAmount.toString());
-          console.log('100% Buy - Calculated amount:', exactAmount.toFixed(12));
+          console.log('100% Buy - Calculated amount:', exactAmount.toFixed(12), 'using locked price:', effectivePrice);
         }
       } else {
         // Use raw crypto balance with full 12-decimal precision
@@ -233,9 +278,10 @@ const TradeForm = ({
         
         // Set amount to exact balance
         setAmount(cryptoBalance.toString());
-        const exactTotal = cryptoBalance * price;
+        const effectivePrice = getEffectivePrice();
+        const exactTotal = cryptoBalance * effectivePrice;
         setTotal(exactTotal.toString());
-        console.log('100% Sell - Calculated total:', exactTotal.toFixed(12));
+        console.log('100% Sell - Calculated total:', exactTotal.toFixed(12), 'using locked price:', effectivePrice);
       }
     } else {
       // For other percentages, calculate based on percentage
@@ -252,6 +298,13 @@ const TradeForm = ({
     const value = e.target.value;
     // Validate number input
     if (!/^(\d*\.?\d*)?$/.test(value)) return;
+
+    // Lock price when user manually enters amount (except when clearing)
+    if (value && parseFloat(value) > 0) {
+      lockPriceForTrading();
+    } else if (!value) {
+      unlockPrice(); // Unlock when amount is cleared
+    }
 
     setAmount(value);
 
@@ -280,10 +333,18 @@ const TradeForm = ({
     // Validate number input
     if (!/^(\d*\.?\d*)?$/.test(value)) return;
 
+    // Lock price when user manually enters total (except when clearing)
+    if (value && parseFloat(value) > 0) {
+      lockPriceForTrading();
+    } else if (!value) {
+      unlockPrice(); // Unlock when total is cleared
+    }
+
     setTotal(value);
 
-    // Calculate amount based on total with full precision
-    const calculatedAmount = price > 0 ? parseFloat(value) / price : 0;
+    // Calculate amount based on total with full precision using effective price
+    const effectivePrice = getEffectivePrice();
+    const calculatedAmount = effectivePrice > 0 ? parseFloat(value) / effectivePrice : 0;
     setAmount(calculatedAmount.toFixed(8));
 
     // Update slider position
@@ -332,27 +393,35 @@ const TradeForm = ({
       return;
     }
 
-    if (!price || parseFloat(price) <= 0) {
+    const effectivePrice = getEffectivePrice();
+    if (!effectivePrice || parseFloat(effectivePrice) <= 0) {
       showNotification("error", "Please enter a valid price");
       return;
     }
 
-
-    // Check if user has enough balance using FULL precision balance amounts
+    // Check if user has enough balance using FULL precision balance amounts with tolerance
     if (effectiveIsBuy) {
       // Use raw balance with full 12-decimal precision for accurate validation
       const currentAmount = parseFloat(amount);
-      const totalCost = currentAmount * parseFloat(price);
+      const totalCost = currentAmount * parseFloat(effectivePrice);
       const availableUSDT = getRawBalance('usdt');
+      
+      // Use tolerance for 12-decimal precision to handle floating point precision issues
+      const tolerance = Math.max(availableUSDT * 1e-12, 1e-12);
+      const isWithinTolerance = (totalCost - availableUSDT) <= tolerance;
       
       console.log('Trade submission buy validation:', {
         currentAmount: currentAmount.toFixed(12),
         totalCost: totalCost.toFixed(12),
         availableUSDT: availableUSDT.toFixed ? availableUSDT.toFixed(12) : availableUSDT,
-        isValid: totalCost <= availableUSDT
+        tolerance: tolerance.toFixed(15),
+        difference: (totalCost - availableUSDT).toFixed(15),
+        isWithinTolerance: isWithinTolerance,
+        isValid: totalCost <= availableUSDT || isWithinTolerance
       });
       
-      if (totalCost > availableUSDT) {
+      // Only show insufficient balance if the difference is significant (beyond tolerance)
+      if (totalCost > availableUSDT && !isWithinTolerance) {
         const maxAmount = getMaxAmount();
         showNotification(
           "error",
@@ -365,13 +434,21 @@ const TradeForm = ({
       const currentAmount = parseFloat(amount);
       const availableCrypto = getRawBalance('crypto');
       
+      // Use tolerance for 12-decimal precision to handle floating point precision issues
+      const tolerance = Math.max(availableCrypto * 1e-12, 1e-12);
+      const isWithinTolerance = (currentAmount - availableCrypto) <= tolerance;
+      
       console.log('Trade submission sell validation:', {
         currentAmount: currentAmount.toFixed(12),
         availableCrypto: availableCrypto.toFixed ? availableCrypto.toFixed(12) : availableCrypto,
-        isValid: currentAmount <= availableCrypto
+        tolerance: tolerance.toFixed(15),
+        difference: (currentAmount - availableCrypto).toFixed(15),
+        isWithinTolerance: isWithinTolerance,
+        isValid: currentAmount <= availableCrypto || isWithinTolerance
       });
       
-      if (currentAmount > availableCrypto) {
+      // Only show insufficient balance if the difference is significant (beyond tolerance)
+      if (currentAmount > availableCrypto && !isWithinTolerance) {
         showNotification(
           "error",
           `Insufficient balance. Max sell amount: ${formatCryptoAmount(availableCrypto)} ${cryptoData?.cryptoSymbol || 'BTC'}`
@@ -383,11 +460,11 @@ const TradeForm = ({
     setIsLoading(true);
 
     try {
-      // Execute trade order
+      // Execute trade order using the locked/effective price
       const orderData = {
         uid: uid,
         coin_pair_id: coinPairId,
-        price: parseFloat(price),
+        price: parseFloat(effectivePrice), // Use the locked price for consistency
         amount: parseFloat(amount),
         order_type: effectiveIsBuy ? "buy" : "sell", // Using buy or sell for order_type
         side: effectiveIsBuy ? "buy" : "sell",
@@ -404,10 +481,11 @@ const TradeForm = ({
           `${effectiveIsBuy ? "Buy" : "Sell"} order placed successfully!`
         );
 
-        // Reset form
+        // Reset form and unlock price
         setAmount("");
         setTotal("");
         setSliderValue(0);
+        unlockPrice(); // Allow price to update again after successful trade
 
         // Trigger refresh of balances
         if (onTradeSuccess) {
@@ -453,6 +531,13 @@ const TradeForm = ({
     }, 5000);
 
     setNotificationTimeout(timeout);
+  };
+
+  // Handle percentage button clicks
+  const handlePercentageClick = (percentage) => {
+    lockPriceForTrading(); // Lock price when user clicks percentage button
+    setSliderValue(percentage);
+    calculateAmountFromPercentage(percentage);
   };
 
   return (
