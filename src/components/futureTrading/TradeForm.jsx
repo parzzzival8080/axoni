@@ -115,6 +115,8 @@ function TradeForm({
   const [amount, setAmount] = useState("");
   const [sliderValue, setSliderValue] = useState(0);
   const [tpslEnabled, setTpslEnabled] = useState(false);
+  const [isPriceLocked, setIsPriceLocked] = useState(false);
+  const [lockedPrice, setLockedPrice] = useState(0);
 
   // UI state
   const [isLoading, setIsLoading] = useState(false);
@@ -148,6 +150,25 @@ function TradeForm({
     return walletData?.available || 0;
   };
 
+  // Helper functions for price locking
+  const lockPriceForTrading = () => {
+    if (!isPriceLocked) {
+      setIsPriceLocked(true);
+      setLockedPrice(parseFloat(price) || 0);
+      console.log('Future trading - Price locked for trading at:', price);
+    }
+  };
+
+  const unlockPrice = () => {
+    setIsPriceLocked(false);
+    console.log('Future trading - Price unlocked, will follow live updates');
+  };
+
+  // Get the effective price to use for calculations (locked or live)
+  const getEffectivePrice = () => {
+    return isPriceLocked ? lockedPrice : parseFloat(price) || 0;
+  };
+
   // Format crypto amount with 8 decimal places for DISPLAY only
   const formatCryptoAmount = (value) => {
     if (value === null || value === undefined || isNaN(Number(value))) {
@@ -157,12 +178,14 @@ function TradeForm({
     return parseFloat(value).toFixed(8);
   };
 
-  // Set initial price from wallet data when it changes
+  // Set initial price from wallet data when it changes (but respect price locking)
   useEffect(() => {
-    if (walletData?.price) {
-      setPrice(walletData.price);
+    if (walletData?.price && !isPriceLocked) {
+      const newPrice = walletData.price;
+      setPrice(newPrice);
+      setLockedPrice(parseFloat(newPrice)); // Update locked price when not locked
     }
-  }, [walletData]);
+  }, [walletData?.price, isPriceLocked]);
 
   // Format number for display
   const formatNumber = (value, decimals = 2) => {
@@ -199,6 +222,7 @@ function TradeForm({
   // Handle position type change
   const handlePositionTypeClick = (type) => {
     setPositionType(type);
+    unlockPrice(); // Unlock price when switching position types
   };
 
   // Handle leverage change
@@ -214,6 +238,13 @@ function TradeForm({
   const handleSliderChange = (e) => {
     const newSliderValue = parseFloat(e.target.value);
     setSliderValue(newSliderValue);
+
+    // Lock price when user interacts with slider (except when setting to 0)
+    if (newSliderValue > 0) {
+      lockPriceForTrading();
+    } else {
+      unlockPrice(); // Unlock when slider is set to 0
+    }
 
     // Calculate amount based on slider percentage with full precision
     if (newSliderValue === 100) {
@@ -235,6 +266,13 @@ function TradeForm({
     const newAmount = e.target.value;
     // Validate number input
     if (!/^(\d*\.?\d*)?$/.test(newAmount)) return;
+    
+    // Lock price when user manually enters amount (except when clearing)
+    if (newAmount && parseFloat(newAmount) > 0) {
+      lockPriceForTrading();
+    } else if (!newAmount) {
+      unlockPrice(); // Unlock when amount is cleared
+    }
     
     setAmount(newAmount);
 
@@ -260,13 +298,13 @@ function TradeForm({
     }
   };
 
-  // Calculate USDT value
+  // Calculate USDT value using effective price
   const calculateUsdtValue = () => {
-    if (!amount || !price) return "0.00 USDT";
+    if (!amount) return "0.00 USDT";
 
     const amountValue = parseFloat(amount) || 0;
-    const priceValue = parseFloat(price) || 0;
-    const usdtValue = amountValue * priceValue;
+    const effectivePrice = getEffectivePrice();
+    const usdtValue = amountValue * effectivePrice;
 
     return `${usdtValue.toFixed(2)} USDT`;
   };
@@ -327,22 +365,31 @@ function TradeForm({
       return;
     }
 
-    if (!price || parseFloat(price) <= 0) {
+    const effectivePrice = getEffectivePrice();
+    if (!effectivePrice || effectivePrice <= 0) {
       showError("Please enter a valid price");
       return;
     }
 
-    // Check if user has enough balance using FULL precision
+    // Check if user has enough balance using FULL precision with tolerance
     const currentAmount = parseFloat(amount);
     const availableBalance = getRawBalance();
+    
+    // Use tolerance for 12-decimal precision to handle floating point precision issues
+    const tolerance = Math.max(availableBalance * 1e-12, 1e-12);
+    const isWithinTolerance = (currentAmount - availableBalance) <= tolerance;
     
     console.log('Future trading balance validation:', {
       currentAmount: currentAmount.toFixed(12),
       availableBalance: availableBalance.toString(),
-      isValid: currentAmount <= availableBalance
+      tolerance: tolerance.toFixed(15),
+      difference: (currentAmount - availableBalance).toFixed(15),
+      isWithinTolerance: isWithinTolerance,
+      isValid: currentAmount <= availableBalance || isWithinTolerance
     });
     
-    if (currentAmount > availableBalance) {
+    // Only show insufficient balance if the difference is significant (beyond tolerance)
+    if (currentAmount > availableBalance && !isWithinTolerance) {
       showError(`Insufficient balance. Max amount: ${formatCryptoAmount(availableBalance)} ${symbol} available`);
       return;
     }
@@ -364,7 +411,7 @@ function TradeForm({
       const tradeParams = {
         uid,
         symbol,
-        entry_price: price, // Using entry_price instead of price to match API
+        entry_price: effectivePrice, // Using locked/effective price for consistency
         amount,
         leverage,
         transaction_type,
@@ -394,15 +441,34 @@ function TradeForm({
           onTradeSuccess();
         }
 
-        // Reset form
+        // Reset form and unlock price
         setAmount("");
         setSliderValue(0);
+        unlockPrice(); // Allow price to update again after successful trade
       }
     } catch (error) {
       console.error("Trade error:", error);
       showError(error.message || "An error occurred during trade execution");
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Handle percentage button clicks
+  const handlePercentageClick = (percentage) => {
+    lockPriceForTrading(); // Lock price when user clicks percentage button
+    setSliderValue(percentage);
+    
+    // Calculate amount based on percentage
+    if (percentage === 100) {
+      const rawBalance = getRawBalance();
+      setAmount(rawBalance.toString());
+    } else if (percentage === 0) {
+      setAmount("");
+      unlockPrice(); // Unlock when setting to 0%
+    } else {
+      const calculatedAmount = (maxTradeAmount * percentage) / 100;
+      setAmount(calculatedAmount.toString());
     }
   };
 
