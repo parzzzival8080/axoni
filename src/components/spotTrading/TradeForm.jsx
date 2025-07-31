@@ -66,13 +66,22 @@ const TradeForm = ({
     return formatNumber(value, 2, true);
   };
 
-  // Format crypto amount with 8 decimal places
+  // Format crypto amount with 8 decimal places for DISPLAY only
   const formatCryptoAmount = (value) => {
     if (value === null || value === undefined || isNaN(Number(value))) {
       return "0.00000000";
     }
-    // Use exactly 8 decimal places for crypto amounts
+    // Use exactly 8 decimal places for crypto amounts DISPLAY
     return formatNumber(value, 8, false);
+  };
+
+  // Get raw balance with full precision (12 decimals from API)
+  const getRawBalance = (balanceType) => {
+    if (balanceType === 'usdt') {
+      return userBalance?.usdtSpotBalance || userBalance?.usdtBalance || 0;
+    } else {
+      return userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || 0;
+    }
   };
 
   // Calculate total with proper precision
@@ -82,92 +91,98 @@ const TradeForm = ({
     return (amountValue * priceValue).toFixed(8);
   };
 
-  // Calculate max amount based on available balance with consistent precision
+  // Calculate max amount based on available balance with FULL 12-decimal precision
   const getMaxAmount = () => {
     if (effectiveIsBuy) {
       // For buying, max amount is USDT balance divided by price
-      const usdtSpotBalance = parseFloat(
-        userBalance?.usdtSpotBalance || userBalance?.usdtBalance || 0
-      );
+      // Use raw balance with full precision (12 decimals from API)
+      const usdtSpotBalance = getRawBalance('usdt');
       // Return with full precision for accurate calculations
       return price > 0 ? usdtSpotBalance / price : 0;
     } else {
-      // For selling, return the precise crypto balance
-      return userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || 0;
+      // For selling, return the precise crypto balance with full precision
+      return getRawBalance('crypto');
     }
   };
 
-  // Get available balance for display
+  // Get available balance for display (uses raw precision for accuracy)
   const getAvailableBalance = () => {
     if (effectiveIsBuy) {
-      return parseFloat(
-        userBalance?.usdtSpotBalance || userBalance?.usdtBalance || 0
-      );
+      return getRawBalance('usdt');
     } else {
-      return parseFloat(
-        userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || 0
-      );
+      return getRawBalance('crypto');
     }
   };
 
-  // Validate if amount exceeds available balance using raw balance amounts
+  // Validate if amount exceeds available balance using FULL precision
   const isAmountValid = () => {
     const currentAmount = parseFloat(amount) || 0;
     
     if (currentAmount === 0) return true;
     
     if (effectiveIsBuy) {
-      // Use raw balance for accurate validation
+      // Use raw balance with full 12-decimal precision for accurate validation
       const totalCost = currentAmount * parseFloat(price || 0);
-      const availableUSDT = parseFloat(
-        userBalance?.usdtSpotBalance || userBalance?.usdtBalance || 0
-      );
+      const availableUSDT = getRawBalance('usdt');
       
-
+      console.log('Buy validation:', {
+        totalCost: totalCost.toFixed(12),
+        availableUSDT: availableUSDT.toFixed ? availableUSDT.toFixed(12) : availableUSDT,
+        isValid: totalCost <= availableUSDT
+      });
       
-      // Compare using raw balance amounts
+      // Compare using full precision balance amounts
       return totalCost <= availableUSDT;
     } else {
-      // For sell orders, compare with raw crypto balance
-      const availableCrypto = parseFloat(
-        userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || 0
-      );
+      // For sell orders, compare with raw crypto balance (full precision)
+      const availableCrypto = getRawBalance('crypto');
       
-
+      console.log('Sell validation:', {
+        currentAmount: currentAmount.toFixed(12),
+        availableCrypto: availableCrypto.toFixed ? availableCrypto.toFixed(12) : availableCrypto,
+        isValid: currentAmount <= availableCrypto
+      });
       
       return currentAmount <= availableCrypto;
     }
   };
 
-  // Check if user is at exactly maximum available balance using raw amounts
+  // Check if user is at exactly maximum available balance using FULL precision
   const isAtMaxBalance = () => {
     const currentAmount = parseFloat(amount) || 0;
     if (currentAmount === 0) return false;
     
     if (effectiveIsBuy) {
-      // For buy orders, check if total cost is very close to available USDT (within small tolerance)
+      // For buy orders, check if total cost matches available USDT with full precision
       const totalCost = currentAmount * parseFloat(price || 0);
-      const availableUSDT = parseFloat(
-        userBalance?.usdtSpotBalance || userBalance?.usdtBalance || 0
-      );
+      const availableUSDT = getRawBalance('usdt');
       
-      // Use small tolerance for floating point precision
-      const tolerance = Math.max(availableUSDT * 1e-8, 1e-8);
+      // Use tolerance appropriate for 12-decimal precision
+      const tolerance = Math.max(availableUSDT * 1e-12, 1e-12);
       const isAtMax = Math.abs(totalCost - availableUSDT) <= tolerance;
       
-
+      console.log('Buy max balance check:', {
+        totalCost: totalCost.toFixed(12),
+        availableUSDT: availableUSDT.toFixed ? availableUSDT.toFixed(12) : availableUSDT,
+        tolerance: tolerance.toFixed(15),
+        isAtMax
+      });
       
       return isAtMax;
     } else {
-      // For sell orders, check if amount is very close to available crypto
-      const availableCrypto = parseFloat(
-        userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || 0
-      );
+      // For sell orders, check if amount matches available crypto with full precision
+      const availableCrypto = getRawBalance('crypto');
       
-      const tolerance = Math.max(availableCrypto * 1e-8, 1e-10);
+      // Use tolerance appropriate for 12-decimal precision
+      const tolerance = Math.max(availableCrypto * 1e-12, 1e-12);
       const isAtMax = Math.abs(currentAmount - availableCrypto) <= tolerance;
       
-
+      console.log('Sell max balance check:', {
+        currentAmount: currentAmount.toFixed(12),
+        availableCrypto: availableCrypto.toFixed ? availableCrypto.toFixed(12) : availableCrypto,
+        tolerance: tolerance.toFixed(15),
+        isAtMax
+      });
       
       return isAtMax;
     }
@@ -197,21 +212,30 @@ const TradeForm = ({
     }
 
     if (percentage === 100) {
-      // At 100%, use the full balance to avoid rounding errors
+      // At 100%, use the EXACT full balance with full precision to avoid rounding errors
       if (effectiveIsBuy) {
-        const usdtBalance = parseFloat(
-          userBalance?.usdtSpotBalance || userBalance?.usdtBalance || 0
-        );
-        setTotal(usdtBalance.toFixed(8));
+        // Use raw USDT balance with full 12-decimal precision
+        const usdtBalance = getRawBalance('usdt');
+        console.log('100% Buy - Using exact USDT balance:', usdtBalance.toFixed ? usdtBalance.toFixed(12) : usdtBalance);
+        
+        // Set total to exact balance (display with 8 decimals but store full precision)
+        setTotal(usdtBalance.toString());
         if (price > 0) {
-          setAmount((usdtBalance / price).toFixed(8));
+          // Calculate amount with full precision, display with 8 decimals
+          const exactAmount = usdtBalance / price;
+          setAmount(exactAmount.toString());
+          console.log('100% Buy - Calculated amount:', exactAmount.toFixed(12));
         }
       } else {
-        const cryptoBalance = parseFloat(
-          userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || 0
-        );
-        setAmount(cryptoBalance.toFixed(8));
-        setTotal((cryptoBalance * price).toFixed(8));
+        // Use raw crypto balance with full 12-decimal precision
+        const cryptoBalance = getRawBalance('crypto');
+        console.log('100% Sell - Using exact crypto balance:', cryptoBalance.toFixed ? cryptoBalance.toFixed(12) : cryptoBalance);
+        
+        // Set amount to exact balance
+        setAmount(cryptoBalance.toString());
+        const exactTotal = cryptoBalance * price;
+        setTotal(exactTotal.toString());
+        console.log('100% Sell - Calculated total:', exactTotal.toFixed(12));
       }
     } else {
       // For other percentages, calculate based on percentage
@@ -314,34 +338,43 @@ const TradeForm = ({
     }
 
 
-    // Check if user has enough balance using raw balance amounts
+    // Check if user has enough balance using FULL precision balance amounts
     if (effectiveIsBuy) {
-      // Use raw balance for accurate validation
+      // Use raw balance with full 12-decimal precision for accurate validation
       const currentAmount = parseFloat(amount);
       const totalCost = currentAmount * parseFloat(price);
-      const availableUSDT = parseFloat(
-        userBalance?.usdtSpotBalance || userBalance?.usdtBalance || 0
-      );
+      const availableUSDT = getRawBalance('usdt');
+      
+      console.log('Trade submission buy validation:', {
+        currentAmount: currentAmount.toFixed(12),
+        totalCost: totalCost.toFixed(12),
+        availableUSDT: availableUSDT.toFixed ? availableUSDT.toFixed(12) : availableUSDT,
+        isValid: totalCost <= availableUSDT
+      });
       
       if (totalCost > availableUSDT) {
         const maxAmount = getMaxAmount();
         showNotification(
           "error",
-          `Insufficient balance. Max buy amount: ${formatCryptoAmount(maxAmount)} BTC (${formatCryptoAmount(availableUSDT)} USDT available)`
+          `Insufficient balance. Max buy amount: ${formatCryptoAmount(maxAmount)} ${cryptoData?.cryptoSymbol || 'BTC'} (${formatCryptoAmount(availableUSDT)} USDT available)`
         );
         return;
       }
     } else {
-      // For sell orders, compare with raw crypto balance
+      // For sell orders, compare with raw crypto balance (full precision)
       const currentAmount = parseFloat(amount);
-      const availableCrypto = parseFloat(
-        userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || 0
-      );
+      const availableCrypto = getRawBalance('crypto');
+      
+      console.log('Trade submission sell validation:', {
+        currentAmount: currentAmount.toFixed(12),
+        availableCrypto: availableCrypto.toFixed ? availableCrypto.toFixed(12) : availableCrypto,
+        isValid: currentAmount <= availableCrypto
+      });
       
       if (currentAmount > availableCrypto) {
         showNotification(
           "error",
-          `Insufficient balance. Max sell amount: ${formatCryptoAmount(availableCrypto)}`
+          `Insufficient balance. Max sell amount: ${formatCryptoAmount(availableCrypto)} ${cryptoData?.cryptoSymbol || 'BTC'}`
         );
         return;
       }
@@ -533,7 +566,8 @@ const TradeForm = ({
             fontWeight: 500,
           }}
         >
-          {formatNumber(total, 8, false)}
+          {/* Display total with 8 decimals but preserve full precision internally */}
+          {formatNumber(parseFloat(total) || 0, 8, false)}
         </span>
       </div>
 
@@ -553,6 +587,7 @@ const TradeForm = ({
               {formatNumber(getMaxAmount(), 8)}{" "}
               {cryptoData?.cryptoSymbol || "BTC"}
             </span>
+
             {/* Validation feedback */}
             {amount && !isAmountValid() && !isAtMaxBalance() && (
               <span 

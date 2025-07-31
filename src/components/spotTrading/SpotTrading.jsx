@@ -231,7 +231,7 @@ const TradeForm = ({
               type="text"
               value={total}
               readOnly
-              className="readonly"
+              className="readonly" 
             />
           </div>
         )}

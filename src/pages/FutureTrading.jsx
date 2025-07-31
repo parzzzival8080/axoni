@@ -9,9 +9,9 @@ import OrdersSection from '../components/futureTrading/OrdersSection';
 import FutureTradingWalkthroughTrigger from '../components/futureTrading/FutureTradingWalkthroughTrigger';
 import { fetchTradableCoins, fetchWalletData } from '../services/futureTradingApi';
 import '../components/futureTrading/FutureTrading.css';
-import '../components/futureTrading/FutureNotification.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import UnifiedNotification from '../components/common/UnifiedNotification';
+import '../components/common/UnifiedNotification.css';
+import { useNotification } from '../hooks/useNotification';
 
 /**
  * Future Trading Page Component
@@ -31,8 +31,15 @@ const FutureTrading = () => {
   const [orderHistoryData, setOrderHistoryData] = useState([]);
   const [mobileTradeTab, setMobileTradeTab] = useState(''); // '' | 'buy' | 'sell'
   
-  // Notification state
-  const [notification, setNotification] = useState({ show: false, message: '', type: 'success' });
+  // Unified notification system
+  const {
+    notification,
+    showSuccess,
+    showError,
+    showWarning,
+    showInfo,
+    hideNotification,
+  } = useNotification(4000); // Auto-hide after 4 seconds
   
   // User authentication
   const [uid, setUid] = useState(localStorage.getItem('uid') || '');
@@ -98,6 +105,12 @@ const FutureTrading = () => {
           setError(data.message);
           setWalletData(null);
         } else {
+          // Preserve full precision from API (12 decimals) - don't parse to float
+          console.log('Future trading - Setting wallet data with full precision:', {
+            available: data.available,
+            availableType: typeof data.available,
+            symbol: data.symbol
+          });
           setWalletData(data);
           setError(null);
         }
@@ -189,17 +202,8 @@ const FutureTrading = () => {
   const handleTradeSuccess = useCallback((message) => {
     console.log('FutureTrading: Trade successful, refreshing data...');
     
-    // Show success notification
-    setNotification({
-      show: true,
-      message: message || 'Future trade executed successfully',
-      type: 'success'
-    });
-    
-    // Hide notification after 3 seconds
-    setTimeout(() => {
-      setNotification(prev => ({ ...prev, show: false }));
-    }, 3000);
+    // Show success notification using unified system
+    showSuccess(message || 'Future trade executed successfully');
     
     // Refresh wallet data
     refreshWalletData(); // Call the memoized refresh function
@@ -261,31 +265,7 @@ const FutureTrading = () => {
     </>
   );
   
-  // Render notification
-  const renderNotification = () => {
-    if (!notification.show) return null;
-    
-    return (
-      <div className={`future-notification ${notification.type === 'error' ? 'error' : ''}`}>
-        <div className="future-notification-content">
-          <div className="future-notification-icon">
-            <FontAwesomeIcon 
-              icon={notification.type === 'success' ? faCheckCircle : faTimesCircle} 
-            />
-          </div>
-          <div className="future-notification-message">
-            {notification.message}
-          </div>
-        </div>
-        <button 
-          className="future-notification-close" 
-          onClick={() => setNotification(prev => ({ ...prev, show: false }))}
-        >
-          ×
-        </button>
-      </div>
-    );
-  };
+  // Unified notification component (no longer need custom render function)
   
   // Optionally: show a non-blocking inline warning (never block the UI)
   // Example: {error && !walletData && <div className="inline-warning">{error}</div>}
@@ -345,7 +325,13 @@ const FutureTrading = () => {
           </button>
         </div>
         {renderMobileTradeForm()}
-        {renderNotification()}
+        {/* Unified Notification System */}
+        <UnifiedNotification 
+          notification={notification}
+          onClose={hideNotification}
+          position="bottom-center"
+          className="unified-notification-override"
+        />
       </>
       
       {/* Walkthrough Trigger */}

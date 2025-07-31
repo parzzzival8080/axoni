@@ -1,0 +1,183 @@
+/* Unified Notification Animations and Styles */
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) translateX(-50%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateX(-50%);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) translateX(-50%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateX(-50%);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Animation classes */
+.animate-slideInUp {
+  animation: slideInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-slideInDown {
+  animation: slideInDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-slideInLeft {
+  animation: slideInLeft 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-fadeInScale {
+  animation: fadeInScale 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* FORCE notifications to be always visible and on top of EVERYTHING */
+.unified-notification-container {
+  position: fixed !important;
+  z-index: 2147483647 !important; /* Maximum 32-bit integer */
+  pointer-events: none !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  overflow: visible !important;
+  isolation: isolate !important;
+}
+
+.unified-notification-container > * {
+  pointer-events: auto !important;
+  z-index: 2147483647 !important;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .unified-notification-container [class*="bottom-"] {
+    bottom: 80px !important; /* Account for mobile navigation */
+    left: 10px !important;
+    right: 10px !important;
+    max-width: calc(100vw - 20px) !important;
+    transform: none !important;
+    z-index: 2147483647 !important;
+  }
+  
+  .unified-notification-container [class*="top-"] {
+    top: 20px !important;
+    left: 10px !important;
+    right: 10px !important;
+    max-width: calc(100vw - 20px) !important;
+    transform: none !important;
+    z-index: 2147483647 !important;
+  }
+}
+
+/* MAXIMUM OVERRIDE - Force notifications above everything */
+.unified-notification-override {
+  position: fixed !important;
+  z-index: 2147483647 !important; /* Maximum possible z-index */
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: flex !important;
+  pointer-events: auto !important;
+  isolation: isolate !important;
+  will-change: transform !important;
+  /* Force it to create its own stacking context */
+  transform: translateZ(0) !important;
+}
+
+/* Backdrop blur support */
+@supports (backdrop-filter: blur(10px)) {
+  .unified-notification-backdrop {
+    backdrop-filter: blur(10px);
+  }
+}
+
+@supports not (backdrop-filter: blur(10px)) {
+  .unified-notification-backdrop {
+    background-color: rgba(0, 0, 0, 0.8) !important;
+  }
+}
+
+/* NUCLEAR OPTION - Override any possible z-index conflicts */
+.unified-notification-override,
+.unified-notification-override * {
+  z-index: 2147483647 !important;
+  position: relative !important;
+}
+
+/* Specifically target notification elements to be above OrderBook and all trading components */
+[role="alert"][aria-live="polite"] {
+  z-index: 2147483647 !important;
+  position: fixed !important;
+  isolation: isolate !important;
+}
+
+/* Force create new stacking context for notifications */
+.unified-notification-force-top {
+  position: fixed !important;
+  z-index: 2147483647 !important;
+  isolation: isolate !important;
+  contain: layout style paint !important;
+  will-change: transform, opacity !important;
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+}
+
+/* Override any parent container z-index that might interfere */
+body .unified-notification-override {
+  z-index: 2147483647 !important;
+}
+
+html .unified-notification-override {
+  z-index: 2147483647 !important;
+}
+
+* .unified-notification-override {
+  z-index: 2147483647 !important;
+}

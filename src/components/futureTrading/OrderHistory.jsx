@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { closePosition, addMargin } from '../../services/futureTradingApi';
+import UnifiedNotification from '../common/UnifiedNotification';
+import '../common/UnifiedNotification.css';
+import { useNotification } from '../../hooks/useNotification';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronDown,
@@ -26,11 +29,19 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
   const [selectedPosition, setSelectedPosition] = useState(null);
   const [closingPosition, setClosingPosition] = useState(false);
   const [closeSuccess, setCloseSuccess] = useState(false);
-  const [apiResponse, setApiResponse] = useState(null);
-  const [showNotification, setShowNotification] = useState(false);
   const [marginAmount, setMarginAmount] = useState('');
   const [addingMargin, setAddingMargin] = useState(false);
   const [addMarginSuccess, setAddMarginSuccess] = useState(false);
+  
+  // Unified notification system
+  const {
+    notification,
+    showSuccess,
+    showError,
+    showWarning,
+    showInfo,
+    hideNotification,
+  } = useNotification(4000); // Auto-hide after 4 seconds
   const [maxAvailableMargin, setMaxAvailableMargin] = useState(0);
   const [isBackgroundRefresh, setIsBackgroundRefresh] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(null);
@@ -136,18 +147,19 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
     setShowPopup(true);
   };
   
-  // Handle add margin
+  // Handle add margin with FULL precision
   const handleAddMargin = (position) => {
     setSelectedPosition(position);
     
-    // Use the same available balance property as used in TradeForm component
-    // This comes from the normalized wallet data in fetchWalletData function
-    const availableBalance = walletData?.available 
-      ? Number(walletData.available) 
-      : 0;
+    // Preserve full 12-decimal precision from API - don't parse as Number
+    const availableBalance = walletData?.available || 0;
     
-    console.log('Wallet data for margin:', walletData);
-    console.log('Available balance for margin:', availableBalance);
+    console.log('Add margin - Wallet data with full precision:', {
+      walletData: walletData,
+      availableBalance: availableBalance,
+      balanceType: typeof availableBalance,
+      balanceString: availableBalance.toString()
+    });
     
     setMaxAvailableMargin(availableBalance);
     setMarginAmount('');
@@ -166,8 +178,8 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
   const closeAddMarginModal = () => {
     setShowAddMarginModal(false);
     setSelectedPosition(null);
-    setAddMarginSuccess(false);
     setMarginAmount('');
+    setAddMarginSuccess(false);
   };
   
   // Confirm position close
@@ -182,16 +194,8 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
       
       console.log('Close position result:', result);
       
-      // Store API response for notification
-      setApiResponse(result);
-      setShowNotification(true);
-      
-      // Auto-hide notification after 5 seconds
-      setTimeout(() => {
-        setShowNotification(false);
-      }, 5000);
-      
       if (result.success) {
+        showSuccess(result.message || 'Position closed successfully');
         setCloseSuccess(true);
         // Immediate refresh followed by modal close
         await fetchOrderHistory(false);
@@ -201,33 +205,45 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
       } else {
         // Handle error response with dynamic message from API
         setError(result.message || 'Failed to close position');
-        
-        // Show error notification
-        setApiResponse({
-          success: false,
-          message: result.message || 'Failed to close position'
-        });
+        showError(result.message || 'Failed to close position');
       }
     } catch (err) {
       console.error('Error closing position:', err);
-      setApiResponse({
-        success: false,
-        message: 'An error occurred while closing the position'
-      });
-      setShowNotification(true);
+      showError('An error occurred while closing the position');
     } finally {
       setClosingPosition(false);
     }
   };
   
-  // Handle max button click for add margin
+  // Handle max button click for add margin with FULL precision
   const handleMaxAmount = () => {
+    console.log('Add margin MAX button - Using exact balance:', {
+      maxAvailableMargin: maxAvailableMargin,
+      marginType: typeof maxAvailableMargin,
+      marginString: maxAvailableMargin.toString()
+    });
+    // Use the exact balance with full precision
     setMarginAmount(maxAvailableMargin.toString());
   };
   
-  // Confirm add margin
+  // Confirm add margin with FULL precision validation
   const confirmAddMargin = async () => {
     if (!selectedPosition || !marginAmount) return;
+    
+    // Validate margin amount with full precision
+    const currentMarginAmount = parseFloat(marginAmount);
+    const availableBalance = parseFloat(maxAvailableMargin);
+    
+    console.log('Add margin validation:', {
+      currentMarginAmount: currentMarginAmount.toFixed(12),
+      availableBalance: availableBalance.toFixed(12),
+      isValid: currentMarginAmount <= availableBalance
+    });
+    
+    if (currentMarginAmount > availableBalance) {
+      showError(`Insufficient balance. Max available: ${availableBalance.toFixed(8)} USDT`);
+      return;
+    }
     
     try {
       setAddingMargin(true);
@@ -237,19 +253,8 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
       
       console.log('Add margin result:', result);
       
-      // Auto-hide notification after 5 seconds
-      setTimeout(() => {
-        setShowNotification(false);
-      }, 5000);
-      
       if (result.success) {
-        // Store API success response for notification
-        setApiResponse({
-          success: true,
-          message: result.message || 'Margin added successfully'
-        });
-        setShowNotification(true);
-        
+        showSuccess(result.message || 'Margin added successfully');
         setAddMarginSuccess(true);
         // Immediate refresh followed by modal close
         await fetchOrderHistory(false);
@@ -258,28 +263,11 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
         }, 2000);
       } else {
         // Handle error response with dynamic message from API        
-        // Show error notification
-        setApiResponse({
-          success: false,
-          message: result.message || 'Failed to add margin'
-        });
-        setShowNotification(true);
+        showError(result.message || 'Failed to add margin');
       }
     } catch (err) {
       console.error('Error adding margin:', err);
-      setError('You cannot close position currently. Please contact customer service.');
-      
-      // Show info notification instead of error
-      setApiResponse({
-        success: false,
-        message: 'You cannot close position currently. Please contact customer service.'
-      });
-      setShowNotification(true);
-      
-      // Auto-hide notification after 5 seconds
-      setTimeout(() => {
-        setShowNotification(false);
-      }, 5000);
+      showError('You cannot add margin currently. Please contact customer service.');
     } finally {
       setAddingMargin(false);
     }
@@ -707,13 +695,13 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                           </button>
                         </div>
                         <div className="text-xs text-gray-500 mt-1">
-                          Max Available: {maxAvailableMargin.toFixed(2)} USDT
+                          Max Available: {parseFloat(maxAvailableMargin).toFixed(8)} USDT
                         </div>
                       </div>
                       
                       <div className="text-xs text-gray-400">
                         <div className="mb-1">Currently Assigned Margin: {Number(selectedPosition.margin).toFixed(2)} USDT</div>
-                        <div>Max addable: {maxAvailableMargin.toFixed(2)} USDT</div>
+                        <div>Max addable: {parseFloat(maxAvailableMargin).toFixed(8)} USDT</div>
                       </div>
                     </div>
                   </div>
@@ -734,35 +722,13 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
         </div>
       )}
       
-      {/* API Response Notification */}
-      {showNotification && apiResponse && (
-        <div className="fixed top-16 right-4 z-[9999] max-w-md w-full md:w-96 transition-all duration-300 transform">
-          <div className={`p-5 rounded-lg shadow-xl border-l-4 ${apiResponse.success ? 'bg-[#181A20] border-green-500' : 'bg-[#181A20] border-red-500'} ${showNotification ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'}`}>
-            <div className="flex items-start">
-              <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${apiResponse.success ? 'bg-green-500 bg-opacity-20' : 'bg-red-500 bg-opacity-20'} mr-3`}>
-                <FontAwesomeIcon 
-                  icon={apiResponse.success ? faCheckCircle : faExclamationTriangle} 
-                  className={`${apiResponse.success ? 'text-green-500' : 'text-red-500'} text-xl`} 
-                />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-base font-medium text-white mb-1">
-                  {apiResponse.success ? 'Position Updated Successfully' : 'Position Update Failed'}
-                </h3>
-                <p className="text-sm text-gray-300">
-                  {apiResponse.message || (apiResponse.success ? 'Your position has been updated.' : 'Unable to update position. Please try again later.')}
-                </p>
-              </div>
-              <button 
-                onClick={() => setShowNotification(false)}
-                className="ml-3 flex-shrink-0 text-gray-400 hover:text-white transition-colors"
-              >
-                <FontAwesomeIcon icon={faTimes} className="text-lg" />
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Unified Notification System */}
+      <UnifiedNotification 
+        notification={notification}
+        onClose={hideNotification}
+        position="top-right"
+        className="unified-notification-override"
+      />
     </div>
   );
 };

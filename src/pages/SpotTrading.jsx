@@ -181,6 +181,7 @@ const SpotTrading = () => {
             usdt_symbol: usdtWallet?.crypto_symbol || 'USDT'
           },
           balance: {
+            // Preserve full precision from API (12 decimals) - store raw values
             cryptoSpotBalance: cryptoWallet?.spot_wallet || 0,
             usdtSpotBalance: usdtWallet?.spot_wallet || 0
           }
@@ -369,7 +370,15 @@ const SpotTrading = () => {
             instId: coinDataFromCache?.instId,
           };
 
-          setUserBalance(walletResponse.balance || { cryptoSpotBalance: 0, usdtSpotBalance: 0 });
+          // Preserve full precision from API (12 decimals) - don't parse to float
+        const balanceData = walletResponse.balance || { cryptoSpotBalance: 0, usdtSpotBalance: 0 };
+        console.log('Setting user balance with full precision:', {
+          cryptoSpotBalance: balanceData.cryptoSpotBalance,
+          usdtSpotBalance: balanceData.usdtSpotBalance,
+          cryptoPrecision: typeof balanceData.cryptoSpotBalance,
+          usdtPrecision: typeof balanceData.usdtSpotBalance
+        });
+        setUserBalance(balanceData);
         } else if (coinDataFromCache) {
           console.warn("SpotTrading: Wallet data failed or empty, using cached coin data.");
           finalCryptoData = coinDataFromCache;
@@ -451,10 +460,18 @@ const SpotTrading = () => {
       if (walletData.success) {
         const { cryptoWallet, usdtWallet } = walletData;
         
-        setUserBalance({
+        // Preserve full precision from API (12 decimals) - store raw values
+        const balanceData = {
           cryptoSpotBalance: cryptoWallet?.spot_wallet || 0,
           usdtSpotBalance: usdtWallet?.spot_wallet || 0
+        };
+        console.log('Updated balances after trade with full precision:', {
+          crypto: cryptoWallet?.spot_wallet,
+          usdt: usdtWallet?.spot_wallet,
+          cryptoType: typeof cryptoWallet?.spot_wallet,
+          usdtType: typeof usdtWallet?.spot_wallet
         });
+        setUserBalance(balanceData);
         
         console.log('Updated balances after trade:', {
           crypto: cryptoWallet?.spot_wallet,
