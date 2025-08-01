@@ -63,6 +63,14 @@ const TradeForm = ({
     setIsPriceLocked(false); // Unlock price when switching modes
   }, [effectiveIsBuy]);
 
+  // Reset price lock when switching coins
+  useEffect(() => {
+    setIsPriceLocked(false); // Unlock price when switching coins
+    setSliderValue(0);
+    setAmount("");
+    setTotal("");
+  }, [coinPairId]);
+
   // Format price for display
   const formatPrice = (value) => {
     if (value === null || value === undefined || isNaN(Number(value))) {
@@ -286,8 +294,8 @@ const TradeForm = ({
         const usdtBalance = getRawBalance('usdt');
         console.log('100% Buy - Using exact USDT balance:', usdtBalance.toFixed ? usdtBalance.toFixed(12) : usdtBalance);
         
-        // Set total to exact balance (display with 8 decimals but store full precision)
-        setTotal(usdtBalance.toString());
+        // Set total to exact balance with 8 decimal precision
+        setTotal(usdtBalance.toFixed(8));
         const effectivePrice = getEffectivePrice();
         if (effectivePrice > 0) {
           // Calculate amount with full precision using locked price
@@ -304,7 +312,7 @@ const TradeForm = ({
         setAmount(cryptoBalance.toString());
         const effectivePrice = getEffectivePrice();
         const exactTotal = cryptoBalance * effectivePrice;
-        setTotal(exactTotal.toString());
+        setTotal(exactTotal.toFixed(8));
         console.log('100% Sell - Calculated total:', exactTotal.toFixed(12), 'using locked price:', effectivePrice);
       }
     } else {
@@ -491,8 +499,8 @@ const TradeForm = ({
       const orderData = {
         uid: uid,
         coin_pair_id: coinPairId,
-        price: parseFloat(effectivePrice), // Use the locked price for consistency
-        amount: parseFloat(amount),
+        price: parseFloat(parseFloat(effectivePrice).toFixed(8)), // Use 8 decimal precision
+        amount: parseFloat(parseFloat(amount).toFixed(8)), // Use 8 decimal precision
         order_type: effectiveIsBuy ? "buy" : "sell", // Using buy or sell for order_type
         side: effectiveIsBuy ? "buy" : "sell",
         excecution_type: "limit", // Always use limit execution type
