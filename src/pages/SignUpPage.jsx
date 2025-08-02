@@ -92,13 +92,79 @@ const SignUpPage = () => {
       // Fallback to a minimal country list if API fails
       const fallbackCountries = [
         {
+          name: { common: "Canada", official: "Canada" },
+          flags: {
+            png: "https://flagcdn.com/w320/ca.png",
+            svg: "https://flagcdn.com/ca.svg",
+          },
+        },
+        {
+          name: { common: "Greece", official: "Greece" },
+          flags: {
+            png: "https://flagcdn.com/w320/gr.png",
+            svg: "https://flagcdn.com/gr.svg",
+          },
+        },
+        {
+          name: { common: "Italy", official: "Italy" },
+          flags: {
+            png: "https://flagcdn.com/w320/it.png",
+            svg: "https://flagcdn.com/it.svg",
+          },
+        },
+        {
+          name: { common: "Malaysia", official: "Malaysia" },
+          flags: {
+            png: "https://flagcdn.com/w320/my.png",
+            svg: "https://flagcdn.com/my.svg",
+          },
+        },
+        {
+          name: { common: "Netherlands", official: "Netherlands" },
+          flags: {
+            png: "https://flagcdn.com/w320/nl.png",
+            svg: "https://flagcdn.com/nl.svg",
+          },
+        },
+        {
           name: {
-            common: "United States",
-            official: "United States of America",
+            common: "Philippines",
+            official: "Republic of the Philippines",
           },
           flags: {
-            png: "https://flagcdn.com/w320/us.png",
-            svg: "https://flagcdn.com/us.svg",
+            png: "https://flagcdn.com/w320/ph.png",
+            svg: "https://flagcdn.com/ph.svg",
+          },
+        },
+        {
+          name: { common: "Portugal", official: "Portugal" },
+          flags: {
+            png: "https://flagcdn.com/w320/pt.png",
+            svg: "https://flagcdn.com/pt.svg",
+          },
+        },
+        {
+          name: { common: "Singapore", official: "Singapore" },
+          flags: {
+            png: "https://flagcdn.com/w320/sg.png",
+            svg: "https://flagcdn.com/sg.svg",
+          },
+        },
+        {
+          name: { common: "Spain", official: "Spain" },
+          flags: {
+            png: "https://flagcdn.com/w320/es.png",
+            svg: "https://flagcdn.com/es.svg",
+          },
+        },
+        {
+          name: {
+            common: "United Arab Emirates",
+            official: "United Arab Emirates",
+          },
+          flags: {
+            png: "https://flagcdn.com/w320/ae.png",
+            svg: "https://flagcdn.com/ae.svg",
           },
         },
         {
@@ -112,20 +178,13 @@ const SignUpPage = () => {
           },
         },
         {
-          name: { common: "Canada", official: "Canada" },
-          flags: {
-            png: "https://flagcdn.com/w320/ca.png",
-            svg: "https://flagcdn.com/ca.svg",
-          },
-        },
-        {
           name: {
-            common: "Philippines",
-            official: "Republic of the Philippines",
+            common: "United States",
+            official: "United States of America",
           },
           flags: {
-            png: "https://flagcdn.com/w320/ph.png",
-            svg: "https://flagcdn.com/ph.svg",
+            png: "https://flagcdn.com/w320/us.png",
+            svg: "https://flagcdn.com/us.svg",
           },
         },
       ];
