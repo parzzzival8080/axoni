@@ -23,10 +23,9 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
     return sessionStorage.getItem('slTimeFrame') || '1';
   });
   const timeframes = [
-     { value: '1min', label: '1min' },
-     { value: '5min', label: '5min' },
-     { value: '1hr', label: '1hr' },
-     { value: '4hr', label: '4hr' },
+     { value: '1', label: '1min' },
+     { value: '5', label: '5min' },
+     { value: '60', label: '1hr' },
      { value: '1D', label: '1D' }
    ];
 
