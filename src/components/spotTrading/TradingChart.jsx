@@ -89,16 +89,16 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
   // Handle timeframe changes with session storage
   const handleTimeframeChange = (newTimeframe) => {
     console.log('=== TIMEFRAME CHANGE DEBUG ===');
-    console.log('Previous timeframe:', timeframe);
+    console.log('Previous timeframe state:', timeframe);
     console.log('New timeframe selected:', newTimeframe);
     console.log('Previous slTimeFrame in sessionStorage:', sessionStorage.getItem('slTimeFrame'));
     
+    // Update both sessionStorage and component state
     setTimeframe(newTimeframe);
     sessionStorage.setItem('slTimeFrame', newTimeframe);
     
     console.log('Updated slTimeFrame in sessionStorage:', sessionStorage.getItem('slTimeFrame'));
-    console.log('State timeframe updated to:', newTimeframe);
-    console.log('=== END TIMEFRAME DEBUG ===');
+    console.log('Component timeframe state updated to:', newTimeframe);
     
     // Force chart reinitialization for timeframe change
     if (tvWidgetRef.current) {
@@ -107,6 +107,8 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
       tvWidgetRef.current = null;
       setShouldReinitialize(true);
     }
+    
+    console.log('=== END TIMEFRAME DEBUG ===');
   };
 
   // Effect to handle symbol changes
@@ -448,7 +450,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
       }
     };
     setShouldReinitialize(false);
-  }, [symbol, timeframe, chartType, shouldReinitialize]);
+  }, [symbol, chartType, shouldReinitialize]);
 
   return (
     <div className="trading-chart trading-chart-container md:relative md:z-auto z-0 overflow-hidden">
