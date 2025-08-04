@@ -19,8 +19,16 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
   const [symbol, setSymbol] = useState(selectedSymbol || "BTC");
   const [shouldReinitialize, setShouldReinitialize] = useState(false);
   const [chartType, setChartType] = useState("candles");
-  const [timeframe, setTimeframe] = useState("1");
-  const [timeframes, setTimeframes] = useState(["1m", "5m", "15m", "4h"]);
+  const [timeframe, setTimeframe] = useState(() => {
+    return sessionStorage.getItem('slTimeFrame') || '1';
+  });
+  const timeframes = [
+     { value: '1min', label: '1min' },
+     { value: '5min', label: '5min' },
+     { value: '1hr', label: '1hr' },
+     { value: '4hr', label: '4hr' },
+     { value: '1D', label: '1D' }
+   ];
 
   // Format the symbol for TradingView (use just the base symbol without USDT suffix)
   const formatSymbolForChart = (sym) => {
@@ -76,6 +84,29 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
       },
       backgroundColor: "#000000",
     };
+  };
+
+  // Handle timeframe changes with session storage
+  const handleTimeframeChange = (newTimeframe) => {
+    console.log('=== TIMEFRAME CHANGE DEBUG ===');
+    console.log('Previous timeframe:', timeframe);
+    console.log('New timeframe selected:', newTimeframe);
+    console.log('Previous slTimeFrame in sessionStorage:', sessionStorage.getItem('slTimeFrame'));
+    
+    setTimeframe(newTimeframe);
+    sessionStorage.setItem('slTimeFrame', newTimeframe);
+    
+    console.log('Updated slTimeFrame in sessionStorage:', sessionStorage.getItem('slTimeFrame'));
+    console.log('State timeframe updated to:', newTimeframe);
+    console.log('=== END TIMEFRAME DEBUG ===');
+    
+    // Force chart reinitialization for timeframe change
+    if (tvWidgetRef.current) {
+      console.log('Removing existing chart for timeframe change');
+      tvWidgetRef.current.remove();
+      tvWidgetRef.current = null;
+      setShouldReinitialize(true);
+    }
   };
 
   // Effect to handle symbol changes
@@ -421,6 +452,24 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
 
   return (
     <div className="trading-chart trading-chart-container md:relative md:z-auto z-0 overflow-hidden">
+      {/* Timeframe Tabs */}
+      <div className="timeframe-tabs mb-6">
+        <div className="flex space-x-1 bg-black border border-orange-500/20 rounded-lg p-1 w-fit">
+          {timeframes.map((tf) => (
+            <button
+              key={tf.value}
+              onClick={() => handleTimeframeChange(tf.value)}
+              className={`px-4 py-2 rounded-md font-semibold text-sm transition-all duration-200 min-w-[60px] ${
+                timeframe === tf.value
+                  ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-black shadow-lg shadow-orange-500/25 border border-orange-400'
+                  : 'bg-transparent text-orange-300 hover:text-orange-200 hover:bg-orange-500/10 border border-transparent'
+              }`}
+            >
+              {tf.label}
+            </button>
+          ))}
+        </div>
+      </div>
 
       <div className="chart-content">
         <div
