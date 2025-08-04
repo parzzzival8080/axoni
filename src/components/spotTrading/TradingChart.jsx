@@ -54,9 +54,10 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
     const formattedSymbol = formatSymbolForChart(currentSymbol);
     console.log("Current Symbol in getChartConfig:", currentSymbol);
     console.log("Formatted Symbol for Chart:", formattedSymbol);
+    const interval = sessionStorage.getItem("slTimeFrame");
     return {
       symbol: formattedSymbol,
-      interval: timeframe,
+      interval: interval,
       datafeedUrl: "https://api.kinecoin.co/api/v1",
       libraryPath: "/charting_library/",
       chartsStorageUrl: "https://saveload.tradingview.com",
@@ -238,6 +239,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
           "show_chart_property_page",
           "volume_force_overlay",
         ],
+        supported_resolutions: ["1", "5", "60", "240", "1D"],
         charts_storage_url: getChartConfig(symbol).chartsStorageUrl,
         charts_storage_api_version:
           getChartConfig(symbol).chartsStorageApiVersion,
