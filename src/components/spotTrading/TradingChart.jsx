@@ -56,7 +56,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
       '1': '1',
       '5': '5', 
       '60': '60',
-      '240': '240',
+      '240': '4h',
       '1D': '1D'
     };
     return mapping[tf] || '1';
@@ -203,13 +203,13 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
         getChartConfig(symbol).datafeedUrl
       );
       
-      // Override the onReady method to include 240-minute resolution
+      // Override the onReady method to include 4h resolution
       const originalOnReady = customDatafeed.onReady.bind(customDatafeed);
       customDatafeed.onReady = function(callback) {
         originalOnReady((config) => {
-          // Add 240-minute resolution to supported resolutions
-          if (config.supported_resolutions && !config.supported_resolutions.includes('240')) {
-            config.supported_resolutions.push('240');
+          // Add 4h resolution to supported resolutions
+          if (config.supported_resolutions && !config.supported_resolutions.includes('4h')) {
+            config.supported_resolutions.push('4h');
           }
           callback(config);
         });
@@ -261,7 +261,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
           "show_chart_property_page",
           "volume_force_overlay",
         ],
-        supported_resolutions: ["1", "5", "60", "240", "1D"],
+        supported_resolutions: ["1", "5", "60", "4h", "1D"],
         charts_storage_url: getChartConfig(symbol).chartsStorageUrl,
         charts_storage_api_version:
           getChartConfig(symbol).chartsStorageApiVersion,
