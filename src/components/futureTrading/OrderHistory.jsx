@@ -429,6 +429,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                 <th className="text-left">Margin</th>
                 <th className="text-left">Liquidation</th>
                 <th className="text-left">Cycle</th>
+                <th className="text-left">Days remaining</th>
                 <th className="text-left">Asset</th>
                 <th className="text-left">Unrealized PNL (Profit and Loss)</th>
                 <th className="text-left">ROE (Return on Equity)</th>
@@ -448,6 +449,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                     <td className="text-left">{Number(order.margin).toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })}</td>
                     <td className="text-left">{Number(order.liquidation_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     <td className="text-left">{order.cycle}d</td>
+                    <td className="text-left">{order.remaining}d</td>
                     <td className="text-left asset-column">{Number(order.asset).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     <td className="text-left">
                       ${(() => {
