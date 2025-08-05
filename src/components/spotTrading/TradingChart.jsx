@@ -26,6 +26,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
      { value: '1', label: '1min' },
      { value: '5', label: '5min' },
      { value: '60', label: '1hr' },
+     { value: '240', label: '4hr' },
      { value: '1D', label: '1D' }
    ];
 
@@ -49,12 +50,26 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
     return upperSym;
   };
 
+  // Map timeframe values to TradingView intervals
+  const mapTimeframeToInterval = (tf) => {
+    const mapping = {
+      '1': '1',
+      '5': '5', 
+      '60': '60',
+      '240': '240',
+      '1D': '1D'
+    };
+    return mapping[tf] || '1';
+  };
+
   // Default props with dynamic symbol - ensure symbol is never empty
   const getChartConfig = (currentSymbol) => {
     const formattedSymbol = formatSymbolForChart(currentSymbol);
     console.log("Current Symbol in getChartConfig:", currentSymbol);
     console.log("Formatted Symbol for Chart:", formattedSymbol);
-    const interval = sessionStorage.getItem("slTimeFrame");
+    const currentTimeframe = sessionStorage.getItem("slTimeFrame") || timeframe;
+    const interval = mapTimeframeToInterval(currentTimeframe);
+    console.log("Using timeframe:", currentTimeframe, "mapped to interval:", interval);
     return {
       symbol: formattedSymbol,
       interval: interval,
@@ -99,15 +114,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
     
     console.log('Updated slTimeFrame in sessionStorage:', sessionStorage.getItem('slTimeFrame'));
     console.log('Component timeframe state updated to:', newTimeframe);
-    
-    // Force chart reinitialization for timeframe change
-    if (tvWidgetRef.current) {
-      console.log('Removing existing chart for timeframe change');
-      tvWidgetRef.current.remove();
-      tvWidgetRef.current = null;
-      setShouldReinitialize(true);
-    }
-    
+    console.log('Chart will reinitialize automatically via useEffect');
     console.log('=== END TIMEFRAME DEBUG ===');
   };
 
@@ -191,13 +198,28 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
     `;
       document.head.appendChild(styleElement);
 
+      // Create custom datafeed with 240-minute support
+      const customDatafeed = new window.Datafeeds.UDFCompatibleDatafeed(
+        getChartConfig(symbol).datafeedUrl
+      );
+      
+      // Override the onReady method to include 240-minute resolution
+      const originalOnReady = customDatafeed.onReady.bind(customDatafeed);
+      customDatafeed.onReady = function(callback) {
+        originalOnReady((config) => {
+          // Add 240-minute resolution to supported resolutions
+          if (config.supported_resolutions && !config.supported_resolutions.includes('240')) {
+            config.supported_resolutions.push('240');
+          }
+          callback(config);
+        });
+      };
+
       // Create widget options
       const widgetOptions = {
         symbol: formattedSymbol,
         // BEWARE: no trailing slash is expected in feed URL
-        datafeed: new window.Datafeeds.UDFCompatibleDatafeed(
-          getChartConfig(symbol).datafeedUrl
-        ),
+        datafeed: customDatafeed,
         interval: getChartConfig(symbol).interval,
         container: chartContainerRef.current,
         library_path: getChartConfig(symbol).libraryPath,
@@ -451,7 +473,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
       }
     };
     setShouldReinitialize(false);
-  }, [symbol, chartType, shouldReinitialize]);
+  }, [symbol, chartType, shouldReinitialize, timeframe]);
 
   return (
     <div className="trading-chart trading-chart-container md:relative md:z-auto z-0 overflow-hidden">
