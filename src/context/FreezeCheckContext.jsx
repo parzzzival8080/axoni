@@ -10,7 +10,6 @@ export const useFreezeCheck = () => useContext(FreezeCheckContext);
 
 export const FreezeCheckProvider = ({ children }) => {
   const [isFrozen, setIsFrozen] = useState(false);
-  const [freezeMessage, setFreezeMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,22 +21,11 @@ export const FreezeCheckProvider = ({ children }) => {
         try {
           const response = await axios.get(`${API_BASE_URL}/freeze-check?apikey=${API_KEY}&email=${user.email}`);
 
-          // Handle different response statuses
-          if (response.data.status === 'error' || response.data.error === 'User Not Found') {
+          if (response.data.status === 'error') {
             setIsFrozen(true);
-            setFreezeMessage('Your login session has expired. Please log in again to continue.');
-          } else if (response.data.status === 'success' || response.data.status === 'not freeze') {
-            setIsFrozen(false);
-            setFreezeMessage('');
-          } else if (response.data.status === 'freeze') {
-            // User is frozen - show freeze message with session expired
-            setIsFrozen(true);
-            setFreezeMessage('Your login session has expired. Please log in again to continue.');
           }
         } catch (error) {
           console.error('Error checking freeze status:', error);
-          setIsFrozen(true);
-          setFreezeMessage('Your login session has expired. Please log in again to continue.');
         }
       }
     };
@@ -50,7 +38,6 @@ export const FreezeCheckProvider = ({ children }) => {
   const handleLogout = () => {
     localStorage.clear();
     setIsFrozen(false);
-    setFreezeMessage('');
     navigate('/login');
   };
 
@@ -62,7 +49,7 @@ export const FreezeCheckProvider = ({ children }) => {
         onClose={handleLogout} // Prevent closing without logging out
         title="Account Frozen"
       >
-        <p>{freezeMessage || 'Your account has been frozen. Please contact customer support.'}</p>
+        <p>Your account has been frozen. Please contact customer support.</p>
         <button
           onClick={handleLogout}
           style={{
