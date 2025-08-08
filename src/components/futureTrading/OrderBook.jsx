@@ -274,8 +274,8 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   const connectWebSocket = () => {
     console.log('[OrderBook] Connecting to OKX WebSocket...');
     
-    // Use OKX WebSocket endpoint
-    const wsEndpoint = 'wss://ws.okx.com:8443/ws/v5/public';
+    // Use Cloudflare Worker WebSocket proxy endpoint
+    const wsEndpoint = 'wss://wssorderbook.devweb09.workers.dev/ws/okx';
     const wsEndpoints = [wsEndpoint];
 
     // Format the trading pair for OKX (BASE-QUOTE format)
