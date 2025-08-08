@@ -173,7 +173,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
           // Format symbol for OKX API request (BASE-QUOTE format)
           const symbol = cryptoData?.cryptoSymbol?.toUpperCase() || 'BTC';
           const instId = `${symbol}-USDT`;
-          const apiUrl = `https://www.okx.com/api/v5/market/books?instId=${instId}&sz=20`;
+          const apiUrl = `https://orderbookkine.devweb09.workers.dev/api/okx/api/v5/market/books?instId=${instId}&sz=5`;
           
           console.log('[OrderBook] Fetching orderbook from OKX API:', apiUrl);
           const response = await axios.get(apiUrl);
