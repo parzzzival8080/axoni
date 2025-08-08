@@ -167,17 +167,17 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
         clearInterval(restFallbackRef.current);
       }
       
-      // Set up a function to fetch data using OKX REST API
+      // Set up a function to fetch data using KINE REST API
       const fetchData = async (retry = 0) => {
         try {
-          // Format symbol for OKX API request (BASE-QUOTE format)
+          // Format symbol for KINE API request (BASE-QUOTE format)
           const symbol = cryptoData?.cryptoSymbol?.toUpperCase() || 'BTC';
           const instId = `${symbol}-USDT`;
-          const apiUrl = `https://www.okx.com/api/v5/market/books?instId=${instId}&sz=20`;
+          const apiUrl = `https://orderbookkine.devweb09.workers.dev/api/okx/api/v5/market/books?instId=${instId}&sz=5`;
           
-          console.log('[OrderBook] Fetching orderbook from OKX API:', apiUrl);
+          console.log('[OrderBook] Fetching orderbook from KINE API:', apiUrl);
           const response = await axios.get(apiUrl);
-          console.log('[OrderBook] Raw OKX API response:', response.data);
+          console.log('[OrderBook] Raw KINE API response:', response.data);
           
           if (response.data && response.data.code === '0' && response.data.data && 
               Array.isArray(response.data.data) && response.data.data.length > 0) {
@@ -185,14 +185,14 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
             const orderBookData = response.data.data[0];
             
             if (orderBookData && orderBookData.asks && orderBookData.bids) {
-              // Process the OKX format data
+              // Process the KINE format data
               const processedData = processOrderBookData(orderBookData.asks, orderBookData.bids);
               
               if (processedData) {
                 setOrderBook(processedData);
                 setIsLoading(false);
                 setConnectionStatus('fallback');
-                setDataSource('OKX REST API');
+                setDataSource('KINE REST API');
                 lastUpdateTimeRef.current = Date.now();
                 
                 // Update current price from the first bid (highest bid)
@@ -201,15 +201,15 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
                 }
               }
             } else {
-              console.error('[OrderBook] Malformed OKX REST API response structure:', orderBookData);
-              throw new Error('Malformed OKX REST API response structure');
+              console.error('[OrderBook] Malformed KINE REST API response structure:', orderBookData);
+              throw new Error('Malformed KINE REST API response structure');
             }
           } else {
-            console.error('[OrderBook] Malformed OKX REST API response:', response.data);
-            throw new Error('Malformed OKX REST API response');
+            console.error('[OrderBook] Malformed KINE REST API response:', response.data);
+            throw new Error('Malformed KINE REST API response');
           }
         } catch (error) {
-          console.error('[OrderBook] OKX REST API fetch error:', error);
+          console.error('[OrderBook] KINE REST API fetch error:', error);
           // If all retries failed, show error state
           if (retry < MAX_REST_RETRIES) {
             setTimeout(() => fetchData(retry + 1), REST_BACKOFF_BASE * Math.pow(2, retry));
@@ -272,15 +272,15 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   }, [forceRefresh]);
 
   const connectWebSocket = () => {
-    console.log('[OrderBook] Connecting to OKX WebSocket...');
+    console.log('[OrderBook] Connecting to KINE WebSocket...');
     
-    // Use OKX WebSocket endpoint
+    // Use KINE WebSocket endpoint
     const wsEndpoint = 'wss://ws.okx.com:8443/ws/v5/public';
     const wsEndpoints = [wsEndpoint];
 
-    // Format the trading pair for OKX (BASE-QUOTE format)
+    // Format the trading pair for KINE (BASE-QUOTE format)
     const orderCoin = `${cryptoSymbol}-USDT`;
-    console.log('[OrderBook] OKX WebSocket endpoint:', wsEndpoint, 'for instrument:', orderCoin);
+    console.log('[OrderBook] KINE WebSocket endpoint:', wsEndpoint, 'for instrument:', orderCoin);
     
     tryAlternateEndpoints(wsEndpoints, 0);
     
@@ -302,10 +302,10 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
           console.log(`[OrderBook] WebSocket connected to ${urls[index]}`);
           wsRef.current = socket;
           setConnectionStatus('connected');
-          setDataSource('OKX WebSocket');
+          setDataSource('KINE WebSocket');
           setIsLoading(false);
           
-          // Subscribe to order book updates using OKX format with higher frequency
+          // Subscribe to order book updates using KINE format with higher frequency
           const subscriptionMessage = {
             "op": "subscribe",
             "args": [
@@ -364,7 +364,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
           
           // Handle order book data updates
           if (message && message.data && Array.isArray(message.data) && message.data.length > 0) {
-            const orderBookData = message.data[0]; // OKX format has data in an array
+            const orderBookData = message.data[0]; // KINE format has data in an array
             
             if (orderBookData && orderBookData.asks && Array.isArray(orderBookData.asks) &&
                 orderBookData.bids && Array.isArray(orderBookData.bids)) {
@@ -372,8 +372,8 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
               // Update last update time
               lastUpdateTimeRef.current = Date.now();
               
-              // Format OKX data for our processOrderBookData function
-              // OKX format: [price, size, ...] -> convert to [[price, size], ...]
+              // Format KINE data for our processOrderBookData function
+              // KINE format: [price, size, ...] -> convert to [[price, size], ...]
               const formattedAsks = orderBookData.asks;
               const formattedBids = orderBookData.bids;
               
@@ -446,7 +446,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     function onopen() {
       console.log('[OrderBook] WebSocket connected successfully');
       setConnectionStatus('connected');
-      setDataSource('OKX WebSocket');
+      setDataSource('KINE WebSocket');
       setIsLoading(false);
     }
     
