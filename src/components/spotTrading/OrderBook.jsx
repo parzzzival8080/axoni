@@ -196,7 +196,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
 
     const fetchData = async () => {
       try {
-        const apiUrl = `https://www.okx.com/api/v5/market/books?instId=${instId}&sz=5`; // Use top 5 levels for fast loading
+        const apiUrl = `https://orderbookkine.devweb09.workers.dev/api/okx/api/v5/market/books?instId=${instId}&sz=5`; // Proxied via Cloudflare Worker; top 5 levels for fast loading
         console.log('[OrderBook] Fetching from KINE REST API:', apiUrl);
         const response = await axios.get(apiUrl);
 
