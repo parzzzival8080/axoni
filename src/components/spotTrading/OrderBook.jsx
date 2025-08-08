@@ -277,7 +277,11 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     setIsLoading(true);
     setDataSource('WebSocket (KINE)');
 
-    const wsUrl = 'wss://ws.okx.com:8443/ws/v5/public';
+    let wsUrl = 'https://wssorderbook.devweb09.workers.dev/';
+    // Guard: ensure we always use wss:// for WebSocket
+    if (wsUrl.startsWith('http://') || wsUrl.startsWith('https://')) {
+      wsUrl = wsUrl.replace(/^http(s)?:\/\//, 'wss://');
+    }
     console.log('[OrderBook] Attempting to connect to KINE WebSocket:', wsUrl);
 
     try {

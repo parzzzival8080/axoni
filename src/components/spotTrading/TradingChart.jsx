@@ -19,8 +19,16 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
   const [symbol, setSymbol] = useState(selectedSymbol || "BTC");
   const [shouldReinitialize, setShouldReinitialize] = useState(false);
   const [chartType, setChartType] = useState("candles");
-  const [timeframe, setTimeframe] = useState("1");
-  const [timeframes, setTimeframes] = useState(["1m", "5m", "15m", "4h"]);
+  const [timeframe, setTimeframe] = useState(() => {
+    return sessionStorage.getItem('slTimeFrame') || '1';
+  });
+  const timeframes = [
+     { value: '1', label: '1min' },
+     { value: '5', label: '5min' },
+     { value: '60', label: '1hr' },
+     { value: '240', label: '4hr' },
+     { value: '1D', label: '1D' }
+   ];
 
   // Format the symbol for TradingView (use just the base symbol without USDT suffix)
   const formatSymbolForChart = (sym) => {
@@ -42,14 +50,29 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
     return upperSym;
   };
 
+  // Map timeframe values to TradingView intervals
+  const mapTimeframeToInterval = (tf) => {
+    const mapping = {
+      '1': '1',
+      '5': '5', 
+      '60': '60',
+      '240': '4h',
+      '1D': '1D'
+    };
+    return mapping[tf] || '1';
+  };
+
   // Default props with dynamic symbol - ensure symbol is never empty
   const getChartConfig = (currentSymbol) => {
     const formattedSymbol = formatSymbolForChart(currentSymbol);
     console.log("Current Symbol in getChartConfig:", currentSymbol);
     console.log("Formatted Symbol for Chart:", formattedSymbol);
+    const currentTimeframe = sessionStorage.getItem("slTimeFrame") || timeframe;
+    const interval = mapTimeframeToInterval(currentTimeframe);
+    console.log("Using timeframe:", currentTimeframe, "mapped to interval:", interval);
     return {
       symbol: formattedSymbol,
-      interval: timeframe,
+      interval: interval,
       datafeedUrl: "https://api.kinecoin.co/api/v1",
       libraryPath: "/charting_library/",
       chartsStorageUrl: "https://saveload.tradingview.com",
@@ -76,6 +99,23 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
       },
       backgroundColor: "#000000",
     };
+  };
+
+  // Handle timeframe changes with session storage
+  const handleTimeframeChange = (newTimeframe) => {
+    console.log('=== TIMEFRAME CHANGE DEBUG ===');
+    console.log('Previous timeframe state:', timeframe);
+    console.log('New timeframe selected:', newTimeframe);
+    console.log('Previous slTimeFrame in sessionStorage:', sessionStorage.getItem('slTimeFrame'));
+    
+    // Update both sessionStorage and component state
+    setTimeframe(newTimeframe);
+    sessionStorage.setItem('slTimeFrame', newTimeframe);
+    
+    console.log('Updated slTimeFrame in sessionStorage:', sessionStorage.getItem('slTimeFrame'));
+    console.log('Component timeframe state updated to:', newTimeframe);
+    console.log('Chart will reinitialize automatically via useEffect');
+    console.log('=== END TIMEFRAME DEBUG ===');
   };
 
   // Effect to handle symbol changes
@@ -158,13 +198,28 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
     `;
       document.head.appendChild(styleElement);
 
+      // Create custom datafeed with 240-minute support
+      const customDatafeed = new window.Datafeeds.UDFCompatibleDatafeed(
+        getChartConfig(symbol).datafeedUrl
+      );
+      
+      // Override the onReady method to include 4h resolution
+      const originalOnReady = customDatafeed.onReady.bind(customDatafeed);
+      customDatafeed.onReady = function(callback) {
+        originalOnReady((config) => {
+          // Add 4h resolution to supported resolutions
+          if (config.supported_resolutions && !config.supported_resolutions.includes('4h')) {
+            config.supported_resolutions.push('4h');
+          }
+          callback(config);
+        });
+      };
+
       // Create widget options
       const widgetOptions = {
         symbol: formattedSymbol,
         // BEWARE: no trailing slash is expected in feed URL
-        datafeed: new window.Datafeeds.UDFCompatibleDatafeed(
-          getChartConfig(symbol).datafeedUrl
-        ),
+        datafeed: customDatafeed,
         interval: getChartConfig(symbol).interval,
         container: chartContainerRef.current,
         library_path: getChartConfig(symbol).libraryPath,
@@ -206,6 +261,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
           "show_chart_property_page",
           "volume_force_overlay",
         ],
+        supported_resolutions: ["1", "5", "60", "4h", "1D"],
         charts_storage_url: getChartConfig(symbol).chartsStorageUrl,
         charts_storage_api_version:
           getChartConfig(symbol).chartsStorageApiVersion,
@@ -417,10 +473,28 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
       }
     };
     setShouldReinitialize(false);
-  }, [symbol, timeframe, chartType, shouldReinitialize]);
+  }, [symbol, chartType, shouldReinitialize, timeframe]);
 
   return (
     <div className="trading-chart trading-chart-container md:relative md:z-auto z-0 overflow-hidden">
+      {/* Timeframe Tabs */}
+      <div className="timeframe-tabs mb-6">
+        <div className="flex space-x-1 bg-black border border-orange-500/20 rounded-lg p-1 w-fit">
+          {timeframes.map((tf) => (
+            <button
+              key={tf.value}
+              onClick={() => handleTimeframeChange(tf.value)}
+              className={`px-4 py-2 rounded-md font-semibold text-sm transition-all duration-200 min-w-[60px] ${
+                timeframe === tf.value
+                  ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-black shadow-lg shadow-orange-500/25 border border-orange-400'
+                  : 'bg-transparent text-orange-300 hover:text-orange-200 hover:bg-orange-500/10 border border-transparent'
+              }`}
+            >
+              {tf.label}
+            </button>
+          ))}
+        </div>
+      </div>
 
       <div className="chart-content">
         <div
