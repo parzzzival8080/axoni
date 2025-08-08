@@ -275,7 +275,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     console.log('[OrderBook] Connecting to KINE WebSocket...');
     
     // Use KINE WebSocket endpoint
-    const wsEndpoint = 'wss://ws.okx.com:8443/ws/v5/public';
+    const wsEndpoint = 'https://wssorderbook.devweb09.workers.dev/';
     const wsEndpoints = [wsEndpoint];
 
     // Format the trading pair for KINE (BASE-QUOTE format)
