@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaWallet } from "react-icons/fa";
 import FreezeModal from '../common/FreezeModal';
+import { API_BASE_URL, API_KEY } from '../../config';
 
 
 const LoginForm = () => {
@@ -366,10 +367,41 @@ const LoginForm = () => {
 
         // Perform freeze check before finalizing login
         try {
-          const freezeCheckResponse = await axios.get(`https://api.kinecoin.co/api/v1/freeze-check?apikey=A20RqFwVktRxxRqrKBtmi6ud&email=${credentials.email}`);
+          const freezeCheckResponse = await axios.get(`${API_BASE_URL}/freeze-check?apikey=${API_KEY}&email=${credentials.email}`);
 
-          if (freezeCheckResponse.data.status === 'error') {
-            setFreezeModalMessage(freezeCheckResponse.data.message || 'Your account is frozen. Please contact support.');
+          // Handle different response statuses according to new requirements
+          if (freezeCheckResponse.data.status === 'error' || freezeCheckResponse.data.error === 'User Not Found') {
+            // User Not Found or other errors - prevent login
+            setFreezeModalMessage('Oops! Something went wrong on our end. Please try logging in again.');
+            setFreezeModalOpen(true);
+            // Clear login data
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('user_id');
+            localStorage.removeItem('uid');
+            localStorage.removeItem('user');
+            localStorage.removeItem('fullName');
+            localStorage.removeItem('is_verified');
+            setLoading(false);
+            return; // Stop the login process
+          } else if (freezeCheckResponse.data.status === 'freeze') {
+            // User is frozen - prevent login
+            setFreezeModalMessage('Oops! Something went wrong on our end. Please try logging in again.');
+            setFreezeModalOpen(true);
+            // Clear login data
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('user_id');
+            localStorage.removeItem('uid');
+            localStorage.removeItem('user');
+            localStorage.removeItem('fullName');
+            localStorage.removeItem('is_verified');
+            setLoading(false);
+            return; // Stop the login process
+          } else if (freezeCheckResponse.data.status === 'success' || freezeCheckResponse.data.status === 'not freeze') {
+            // User is not frozen - continue with login (do nothing, proceed to redirect)
+            console.log('Freeze check passed: User is not frozen');
+          } else {
+            // Unknown status - treat as error for security
+            setFreezeModalMessage('Your account has been frozen. Please contact customer support.');
             setFreezeModalOpen(true);
             // Clear login data
             localStorage.removeItem('authToken');
@@ -382,7 +414,9 @@ const LoginForm = () => {
             return; // Stop the login process
           }
         } catch (freezeErr) {
-          setFreezeModalMessage('Could not verify account status. Please try again.');
+          console.error('Freeze check error:', freezeErr);
+          // On network error, also prevent login for security
+          setFreezeModalMessage('Your account has been frozen. Please contact customer support.');
           setFreezeModalOpen(true);
           // Clear login data
           localStorage.removeItem('authToken');
