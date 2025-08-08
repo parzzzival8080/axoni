@@ -49,8 +49,9 @@ export class HistoryProvider {
 
             try {
                 // const link = 'history'
-                if (sessionStorage.getItem('slTimeFrame') == '1') {
+                if (sessionStorage.getItem('slTimeFrame') == '1min') {
                     const link = 'history'
+
                     const initialResponse = await this._requester.sendRequest(this._datafeedUrl, link, requestParams);
                     const result = this._processHistoryResponse(initialResponse);
 
@@ -61,7 +62,7 @@ export class HistoryProvider {
                     sessionStorage.setItem('historicalData', JSON.stringify(result));
                     console.log(sessionStorage.getItem('historicalData'))
                 }
-                else if (sessionStorage.getItem('slTimeFrame') == '5') {
+                else if (sessionStorage.getItem('slTimeFrame') == '5min') {
                     const link = 'history/five-min'
 
                     const initialResponse = await this._requester.sendRequest(this._datafeedUrl, link, requestParams);
