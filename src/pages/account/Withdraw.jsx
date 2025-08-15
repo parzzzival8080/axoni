@@ -5,6 +5,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import WithdrawalHistoryTable from '../../components/account/WithdrawalHistoryTable';
+import { validateAddress, getNetworkDescription } from '../../utils/addressValidation';
 
 // Custom scrollbar styles
 const scrollbarStyles = `
@@ -104,6 +105,7 @@ function withdraw() {
   const [availableLimit] = useState(9999200.06); // Placeholder 24h limit
   const [isAddressBookOpen, setIsAddressBookOpen] = useState(false); // For address book modal
   const [isSendingOtp, setIsSendingOtp] = useState(false); // Loading state for OTP sending
+  const [addressValidation, setAddressValidation] = useState({ isValid: true, error: null, warning: null }); // Address validation state
 
   // --- OTP State Variables ---
   const [showOtpStep, setShowOtpStep] = useState(false); // Controls whether to show OTP step
@@ -233,6 +235,22 @@ function withdraw() {
     }
   }, [showOtpStep]);
 
+  // Validate address whenever address or network changes
+  useEffect(() => {
+    if (!withdrawalAddress.trim()) {
+      setAddressValidation({ isValid: true, error: null, warning: null });
+      return;
+    }
+    
+    if (!selectedNetwork) {
+      setAddressValidation({ isValid: true, error: null, warning: null });
+      return;
+    }
+    
+    const validation = validateAddress(withdrawalAddress, selectedNetwork.symbol || selectedNetwork.value);
+    setAddressValidation(validation);
+  }, [withdrawalAddress, selectedNetwork]);
+
   // --- Memoized Values ---
 
   // Filter coins based on search term
@@ -291,6 +309,8 @@ function withdraw() {
   const handleNetworkSelect = useCallback((network) => { // network is now the full network object
     setSelectedNetwork(network);
     setIsNetworkDropdownOpen(false);
+    // Reset address validation when network changes
+    setAddressValidation({ isValid: true, error: null, warning: null });
   }, []);
 
   const handleDestinationChange = useCallback((destination) => {
@@ -331,6 +351,14 @@ function withdraw() {
       setSubmitError("Please complete all required fields.");
       return;
     }
+    
+    // Address validation
+    if (!addressValidation.isValid || addressValidation.error) {
+      console.log('Validation failed: invalid address');
+      setSubmitError(addressValidation.error || "Please enter a valid address for the selected network.");
+      return;
+    }
+    
     const amountNum = parseFloat(withdrawalAmount);
     if (isNaN(amountNum) || amountNum <= 0) {
       console.log('Validation failed: invalid amount');
@@ -417,7 +445,7 @@ function withdraw() {
     }
   }, [
     selectedCryptoSymbol, selectedNetwork, withdrawalAddress, withdrawalAmount,
-    availableBalance, networkFee
+    availableBalance, networkFee, addressValidation
   ]);
 
   // Handle OTP input change (limit to 6 characters, allow letters and numbers)
@@ -750,6 +778,14 @@ function withdraw() {
                              Manage address book <ChevronRightIcon />
                          </button>
                      </div>
+                     {selectedNetwork && (
+                         <div className="mb-2 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                             <p className="text-xs text-gray-600">
+                                 <FontAwesomeIcon icon={faInfoCircle} className="mr-2 text-gray-400" />
+                                 {getNetworkDescription(selectedNetwork.symbol || selectedNetwork.value)}
+                             </p>
+                         </div>
+                     )}
                       <div className="relative" ref={addressBookDropdownRef}>
                           <input
                              id="withdrawalAddress" type="text"
@@ -757,7 +793,15 @@ function withdraw() {
                              value={withdrawalAddress}
                              onChange={(e) => setWithdrawalAddress(e.target.value)}
                              disabled={!selectedNetwork || showOtpStep}
-                             className="flex items-center justify-between w-full h-12 px-3 bg-gray-100 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                             className={`flex items-center justify-between w-full h-12 px-3 bg-gray-100 border rounded-lg text-sm focus:outline-none focus:ring-1 disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${
+                                 addressValidation.error 
+                                     ? 'border-red-200 focus:ring-red-100 focus:border-red-300 bg-red-50' 
+                                     : addressValidation.warning 
+                                     ? 'border-orange-200 focus:ring-orange-100 focus:border-orange-300 bg-orange-50'
+                                     : withdrawalAddress && addressValidation.isValid && !addressValidation.error && !addressValidation.warning
+                                     ? 'border-green-200 focus:ring-green-100 focus:border-green-300 bg-green-50'
+                                     : 'border-gray-200 focus:ring-gray-100 focus:border-gray-300'
+                             }`}
                           />
                           {/* Simple Chevron for visual cue, actual dropdown is separate for address book */}
                            {!withdrawalAddress && ( // Show chevron only if input is empty, implying selection
@@ -790,6 +834,23 @@ function withdraw() {
                               </div>
                           )}
                       </div>
+                      {/* Address validation feedback */}
+                      {withdrawalAddress && addressValidation.error && (
+                          <div className="mt-2 flex items-start space-x-2">
+                              <FontAwesomeIcon icon={faTimes} className="text-red-400 mt-0.5 text-xs flex-shrink-0" />
+                              <p className="text-xs text-red-600 leading-relaxed">
+                                  {addressValidation.error}
+                              </p>
+                          </div>
+                      )}
+                      {withdrawalAddress && addressValidation.warning && !addressValidation.error && (
+                          <div className="mt-2 flex items-start space-x-2">
+                              <FontAwesomeIcon icon={faQuestionCircle} className="text-orange-400 mt-0.5 text-xs flex-shrink-0" />
+                              <p className="text-xs text-orange-600 leading-relaxed">
+                                  {addressValidation.warning}
+                              </p>
+                          </div>
+                      )}
                  </div>
              </div>
            </section>
@@ -862,7 +923,7 @@ function withdraw() {
                   {!showOtpStep && (
                     <button
                         onClick={handleProceedToOtp}
-                        disabled={isSubmitting || isSendingOtp || !withdrawalAmount || parseFloat(withdrawalAmount) <= 0 || parseFloat(withdrawalAmount) > availableBalance || parseFloat(withdrawalAmount) < networkFee}
+                        disabled={isSubmitting || isSendingOtp || !withdrawalAmount || parseFloat(withdrawalAmount) <= 0 || parseFloat(withdrawalAmount) > availableBalance || parseFloat(withdrawalAmount) < networkFee || !withdrawalAddress || !addressValidation.isValid || addressValidation.error}
                         className="w-full h-11 flex items-center justify-center px-4 py-2 bg-[#F88726] text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F88726] hover:bg-[#ff9c44] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                         {(isSubmitting || isSendingOtp) ? <Spinner /> : 'Next'}
