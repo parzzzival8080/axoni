@@ -522,7 +522,8 @@ export const executeSpotTradeOrder = async (params) => {
             excecution_type = 'limit',
             side = 'buy',
             price, 
-            amount 
+            amount ,
+            total
         } = params;
 
         // Create a unique key for this trade request to prevent duplicates
@@ -557,14 +558,14 @@ export const executeSpotTradeOrder = async (params) => {
 
         const effectiveOrderType = order_type || side;
         // Use 8 decimal places for API submission
-        const total_in_usdt = (parseFloat(price) * parseFloat(amount));
-        
+        // const total_in_usdt = (parseFloat(price) * parseFloat(amount));        
+        const total_in_usdt = total;
         // Enhanced rate limiting for trades (stricter)
         await enforceRateLimit(`trade_${uid}`);
 
         const url = `${API_BASE_URL}/orders?uid=${uid}&coin_id=${coin_pair_id}&order_type=${effectiveOrderType}&excecution_type=${excecution_type}&price=${price}&amount=${amount}&total_in_usdt=${total_in_usdt}&apikey=${API_KEY}`;
         
-        console.log('Executing spot trade:', { uid, coin_pair_id, side, price, amount });
+        console.log('Executing spot trade:', { uid, coin_pair_id, side, price, amount, params });
         
         // Add request to queue to prevent duplicates
         const requestPromise = (async () => {

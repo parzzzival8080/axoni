@@ -504,6 +504,7 @@ const TradeForm = ({
         order_type: effectiveIsBuy ? "buy" : "sell", // Using buy or sell for order_type
         side: effectiveIsBuy ? "buy" : "sell",
         excecution_type: "limit", // Always use limit execution type
+        total: total,
       };
 
       console.log("Submitting trade order:", orderData);
