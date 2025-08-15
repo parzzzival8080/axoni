@@ -5,7 +5,7 @@ const ChatBubble = () => {
   return (
 
       // <LiveChatWidget
-      //   license="19254284"
+      //   license="19269280"
       //   onNewEvent={(event) => {
       //     console.log('LiveChat Event:', event.type, event);
       //   }}
