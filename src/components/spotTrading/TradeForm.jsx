@@ -90,24 +90,26 @@ const TradeForm = ({
 
   // Get raw balance with full precision (12 decimals from API)
   const getRawBalance = (balanceType) => {
-    if (balanceType === 'usdt') {
-      const balance = userBalance?.usdtSpotBalance || userBalance?.usdtBalance || 0;
+    if (balanceType === "usdt") {
+      const balance =
+        userBalance?.usdtSpotBalance || userBalance?.usdtBalance || 0;
       const parsedBalance = parseFloat(balance) || 0;
-      console.log('getRawBalance USDT:', {
+      console.log("getRawBalance USDT:", {
         balance,
         parsedBalance,
         type: typeof balance,
-        userBalance: userBalance
+        userBalance: userBalance,
       });
       return parsedBalance;
     } else {
-      const balance = userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || 0;
+      const balance =
+        userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || 0;
       const parsedBalance = parseFloat(balance) || 0;
-      console.log('getRawBalance Crypto:', {
+      console.log("getRawBalance Crypto:", {
         balance,
         parsedBalance,
         type: typeof balance,
-        userBalance: userBalance
+        userBalance: userBalance,
       });
       return parsedBalance;
     }
@@ -118,13 +120,13 @@ const TradeForm = ({
     if (!isPriceLocked) {
       setIsPriceLocked(true);
       setLockedPrice(price);
-      console.log('Price locked for trading at:', price);
+      console.log("Price locked for trading at:", price);
     }
   };
 
   const unlockPrice = () => {
     setIsPriceLocked(false);
-    console.log('Price unlocked, will follow live updates');
+    console.log("Price unlocked, will follow live updates");
   };
 
   // Get the effective price to use for calculations (locked or live)
@@ -144,71 +146,77 @@ const TradeForm = ({
     if (effectiveIsBuy) {
       // For buying, max amount is USDT balance divided by effective price
       // Use raw balance with full precision (12 decimals from API)
-      const usdtSpotBalance = getRawBalance('usdt');
+      const usdtSpotBalance = getRawBalance("usdt");
       const effectivePrice = getEffectivePrice();
       // Return with full precision for accurate calculations
       return effectivePrice > 0 ? usdtSpotBalance / effectivePrice : 0;
     } else {
       // For selling, return the precise crypto balance with full precision
-      return getRawBalance('crypto');
+      return getRawBalance("crypto");
     }
   };
 
   // Get available balance for display (uses raw precision for accuracy)
   const getAvailableBalance = () => {
     if (effectiveIsBuy) {
-      return getRawBalance('usdt');
+      return getRawBalance("usdt");
     } else {
-      return getRawBalance('crypto');
+      return getRawBalance("crypto");
     }
   };
 
   // Validate if amount exceeds available balance using FULL precision with tolerance
   const isAmountValid = () => {
     const currentAmount = parseFloat(amount) || 0;
-    
+
     if (currentAmount === 0) return true;
-    
+
     if (effectiveIsBuy) {
       // Use raw balance with full 12-decimal precision for accurate validation
       const totalCost = currentAmount * parseFloat(getEffectivePrice() || 0);
-      const availableUSDT = getRawBalance('usdt');
-      
+      const availableUSDT = getRawBalance("usdt");
+
       // Use tolerance for 12-decimal precision to handle floating point precision issues
       const tolerance = Math.max(availableUSDT * 1e-12, 1e-12);
-      const isWithinTolerance = (totalCost - availableUSDT) <= tolerance;
-      
-      console.log('Buy validation:', {
+      const isWithinTolerance = totalCost - availableUSDT <= tolerance;
+
+      console.log("Buy validation:", {
         totalCost: totalCost.toFixed(12),
-        availableUSDT: availableUSDT.toFixed ? availableUSDT.toFixed(12) : availableUSDT,
+        availableUSDT: availableUSDT.toFixed
+          ? availableUSDT.toFixed(12)
+          : availableUSDT,
         tolerance: tolerance.toFixed(15),
         isWithinTolerance: isWithinTolerance,
-        isValid: totalCost <= availableUSDT || isWithinTolerance
+        isValid: totalCost <= availableUSDT || isWithinTolerance,
       });
-      
+
       // Compare using full precision balance amounts with tolerance
       return totalCost <= availableUSDT || isWithinTolerance;
     } else {
       // For sell orders, use raw crypto balance string (don't parse like buy does with USDT)
-      const availableCryptoRaw = userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || '0';
+      const availableCryptoRaw =
+        userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || "0";
       const availableCrypto = parseFloat(availableCryptoRaw) || 0;
-      
+
       // Use tolerance for 12-decimal precision to handle floating point precision issues
       const tolerance = Math.max(availableCrypto * 1e-12, 1e-12);
       const difference = currentAmount - availableCrypto;
       const isWithinTolerance = difference <= tolerance;
-      
-      console.log('Sell validation (isAmountValid):');
-      console.log('  amount:', amount);
-      console.log('  currentAmount:', currentAmount);
-      console.log('  availableCryptoRaw:', availableCryptoRaw);
-      console.log('  availableCrypto:', availableCrypto);
-      console.log('  difference:', difference);
-      console.log('  tolerance:', tolerance.toFixed(15));
-      console.log('  isWithinTolerance:', isWithinTolerance);
-      console.log('  isValid:', currentAmount <= availableCrypto || isWithinTolerance);
-      console.log('  rawComparison:', currentAmount <= availableCrypto);
-      
+
+      console.log("Sell validation (isAmountValid):");
+      console.log("  amount:", amount);
+      console.log("  currentAmount:", currentAmount);
+      console.log("  availableCryptoRaw:", availableCryptoRaw);
+      console.log("  availableCrypto:", availableCrypto);
+      console.log("  difference:", difference);
+      console.log("  tolerance:", tolerance.toFixed(15));
+      console.log("  isWithinTolerance:", isWithinTolerance);
+      console.log(
+        "  isValid:",
+        currentAmount <= availableCrypto || isWithinTolerance
+      );
+      console.log("  rawComparison:", currentAmount <= availableCrypto);
+
       return currentAmount <= availableCrypto || isWithinTolerance;
     }
   };
@@ -217,42 +225,47 @@ const TradeForm = ({
   const isAtMaxBalance = () => {
     const currentAmount = parseFloat(amount) || 0;
     if (currentAmount === 0) return false;
-    
+
     if (effectiveIsBuy) {
       // For buy orders, check if total cost matches available USDT with full precision
       const totalCost = currentAmount * parseFloat(getEffectivePrice() || 0);
-      const availableUSDT = getRawBalance('usdt');
-      
+      const availableUSDT = getRawBalance("usdt");
+
       // Use tolerance appropriate for 12-decimal precision
       const tolerance = Math.max(availableUSDT * 1e-12, 1e-12);
       const isAtMax = Math.abs(totalCost - availableUSDT) <= tolerance;
-      
-      console.log('Buy max balance check:', {
+
+      console.log("Buy max balance check:", {
         totalCost: totalCost.toFixed(12),
-        availableUSDT: availableUSDT.toFixed ? availableUSDT.toFixed(12) : availableUSDT,
+        availableUSDT: availableUSDT.toFixed
+          ? availableUSDT.toFixed(12)
+          : availableUSDT,
         tolerance: tolerance.toFixed(15),
-        isAtMax
+        isAtMax,
       });
-      
+
       return isAtMax;
     } else {
       // For sell orders, use raw crypto balance string directly from userBalance
-      const availableCryptoRaw = userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || '0';
-      
+      const availableCryptoRaw =
+        userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || "0";
+
       // Use tolerance appropriate for 12-decimal precision
       const tolerance = Math.max(parseFloat(availableCryptoRaw) * 1e-12, 1e-12);
-      const difference = Math.abs(currentAmount - parseFloat(availableCryptoRaw));
+      const difference = Math.abs(
+        currentAmount - parseFloat(availableCryptoRaw)
+      );
       const isAtMax = difference <= tolerance;
-      
-      console.log('Sell max balance check (isAtMaxBalance):', {
+
+      console.log("Sell max balance check (isAtMaxBalance):", {
         currentAmount: currentAmount.toFixed(12),
         availableCryptoRaw: availableCryptoRaw,
         difference: difference.toFixed(15),
         tolerance: tolerance.toFixed(15),
         isAtMax,
-        exactMatch: currentAmount === parseFloat(availableCryptoRaw)
+        exactMatch: currentAmount === parseFloat(availableCryptoRaw),
       });
-      
+
       return isAtMax;
     }
   };
@@ -267,14 +280,14 @@ const TradeForm = ({
     else if (value <= 62.5) snappedValue = 50;
     else if (value <= 87.5) snappedValue = 75;
     else snappedValue = 100;
-    
+
     // Lock price when user interacts with slider (except when setting to 0)
     if (snappedValue > 0) {
       lockPriceForTrading();
     } else {
       unlockPrice(); // Unlock when slider is set to 0
     }
-    
+
     setSliderValue(snappedValue);
     calculateAmountFromPercentage(snappedValue);
   };
@@ -291,9 +304,12 @@ const TradeForm = ({
       // At 100%, use the EXACT full balance with full precision to avoid rounding errors
       if (effectiveIsBuy) {
         // Use raw USDT balance with full 12-decimal precision
-        const usdtBalance = getRawBalance('usdt');
-        console.log('100% Buy - Using exact USDT balance:', usdtBalance.toFixed ? usdtBalance.toFixed(12) : usdtBalance);
-        
+        const usdtBalance = getRawBalance("usdt");
+        console.log(
+          "100% Buy - Using exact USDT balance:",
+          usdtBalance.toFixed ? usdtBalance.toFixed(12) : usdtBalance
+        );
+
         // Set total to exact balance with 8 decimal precision
         setTotal(usdtBalance.toFixed(8));
         const effectivePrice = getEffectivePrice();
@@ -301,19 +317,32 @@ const TradeForm = ({
           // Calculate amount with full precision using locked price
           const exactAmount = usdtBalance / effectivePrice;
           setAmount(exactAmount.toString());
-          console.log('100% Buy - Calculated amount:', exactAmount.toFixed(12), 'using locked price:', effectivePrice);
+          console.log(
+            "100% Buy - Calculated amount:",
+            exactAmount.toFixed(12),
+            "using locked price:",
+            effectivePrice
+          );
         }
       } else {
         // Use raw crypto balance with full 12-decimal precision
-        const cryptoBalance = getRawBalance('crypto');
-        console.log('100% Sell - Using exact crypto balance:', cryptoBalance.toFixed ? cryptoBalance.toFixed(12) : cryptoBalance);
-        
+        const cryptoBalance = getRawBalance("crypto");
+        console.log(
+          "100% Sell - Using exact crypto balance:",
+          cryptoBalance.toFixed ? cryptoBalance.toFixed(12) : cryptoBalance
+        );
+
         // Set amount to exact balance
         setAmount(cryptoBalance.toString());
         const effectivePrice = getEffectivePrice();
         const exactTotal = cryptoBalance * effectivePrice;
         setTotal(exactTotal.toFixed(8));
-        console.log('100% Sell - Calculated total:', exactTotal.toFixed(12), 'using locked price:', effectivePrice);
+        console.log(
+          "100% Sell - Calculated total:",
+          exactTotal.toFixed(12),
+          "using locked price:",
+          effectivePrice
+        );
       }
     } else {
       // For other percentages, calculate based on percentage
@@ -354,7 +383,7 @@ const TradeForm = ({
       else if (percentage <= 62.5) snappedValue = 50;
       else if (percentage <= 87.5) snappedValue = 75;
       else snappedValue = 100;
-      
+
       setSliderValue(snappedValue);
     }
   };
@@ -376,7 +405,8 @@ const TradeForm = ({
 
     // Calculate amount based on total with full precision using effective price
     const effectivePrice = getEffectivePrice();
-    const calculatedAmount = effectivePrice > 0 ? parseFloat(value) / effectivePrice : 0;
+    const calculatedAmount =
+      effectivePrice > 0 ? parseFloat(value) / effectivePrice : 0;
     setAmount(calculatedAmount.toFixed(8));
 
     // Update slider position
@@ -436,57 +466,69 @@ const TradeForm = ({
       // Use raw balance with full 12-decimal precision for accurate validation
       const currentAmount = parseFloat(amount);
       const totalCost = currentAmount * parseFloat(effectivePrice);
-      const availableUSDT = getRawBalance('usdt');
-      
+      const availableUSDT = getRawBalance("usdt");
+
       // Use tolerance for 12-decimal precision to handle floating point precision issues
       const tolerance = Math.max(availableUSDT * 1e-12, 1e-12);
-      const isWithinTolerance = (totalCost - availableUSDT) <= tolerance;
-      
-      console.log('Trade submission buy validation:', {
+      const isWithinTolerance = totalCost - availableUSDT <= tolerance;
+
+      console.log("Trade submission buy validation:", {
         currentAmount: currentAmount.toFixed(12),
         totalCost: totalCost.toFixed(12),
-        availableUSDT: availableUSDT.toFixed ? availableUSDT.toFixed(12) : availableUSDT,
+        availableUSDT: availableUSDT.toFixed
+          ? availableUSDT.toFixed(12)
+          : availableUSDT,
         tolerance: tolerance.toFixed(15),
         difference: (totalCost - availableUSDT).toFixed(15),
         isWithinTolerance: isWithinTolerance,
-        isValid: totalCost <= availableUSDT || isWithinTolerance
+        isValid: totalCost <= availableUSDT || isWithinTolerance,
       });
-      
+
       // Only show insufficient balance if the difference is significant (beyond tolerance)
       if (totalCost > availableUSDT && !isWithinTolerance) {
         const maxAmount = getMaxAmount();
         showNotification(
           "error",
-          `Insufficient balance. Max buy amount: ${formatCryptoAmount(maxAmount)} ${cryptoData?.cryptoSymbol || 'BTC'} (${formatCryptoAmount(availableUSDT)} USDT available)`
+          `Insufficient balance. Max buy amount: ${formatCryptoAmount(
+            maxAmount
+          )} ${cryptoData?.cryptoSymbol || "BTC"} (${formatCryptoAmount(
+            availableUSDT
+          )} USDT available)`
         );
         return;
       }
     } else {
       // For sell orders, use raw crypto balance string (don't parse like buy does with USDT)
       const currentAmount = parseFloat(amount);
-      const availableCryptoRaw = userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || '0';
+      const availableCryptoRaw =
+        userBalance?.cryptoSpotBalance || userBalance?.cryptoBalance || "0";
       const availableCrypto = parseFloat(availableCryptoRaw) || 0;
-      
+
       // Use tolerance for 12-decimal precision to handle floating point precision issues
       const tolerance = Math.max(availableCrypto * 1e-12, 1e-12);
       const difference = currentAmount - availableCrypto;
       const isWithinTolerance = difference <= tolerance;
-      
-      console.log('Trade submission sell validation:');
-      console.log('  currentAmount:', currentAmount);
-      console.log('  availableCryptoRaw:', availableCryptoRaw);
-      console.log('  availableCrypto:', availableCrypto);
-      console.log('  difference:', difference);
-      console.log('  tolerance:', tolerance.toFixed(15));
-      console.log('  isWithinTolerance:', isWithinTolerance);
-      console.log('  willShowError:', currentAmount > availableCrypto && !isWithinTolerance);
-      
+
+      console.log("Trade submission sell validation:");
+      console.log("  currentAmount:", currentAmount);
+      console.log("  availableCryptoRaw:", availableCryptoRaw);
+      console.log("  availableCrypto:", availableCrypto);
+      console.log("  difference:", difference);
+      console.log("  tolerance:", tolerance.toFixed(15));
+      console.log("  isWithinTolerance:", isWithinTolerance);
+      console.log(
+        "  willShowError:",
+        currentAmount > availableCrypto && !isWithinTolerance
+      );
+
       // Only show insufficient balance if the difference is significant (beyond tolerance)
       if (currentAmount > availableCrypto && !isWithinTolerance) {
-        console.log('SHOWING INSUFFICIENT BALANCE ERROR FROM TRADE SUBMISSION');
+        console.log("SHOWING INSUFFICIENT BALANCE ERROR FROM TRADE SUBMISSION");
         showNotification(
           "error",
-          `Insufficient balance. Max sell amount: ${formatCryptoAmount(availableCrypto)} ${cryptoData?.cryptoSymbol || 'BTC'}`
+          `Insufficient balance. Max sell amount: ${formatCryptoAmount(
+            availableCrypto
+          )} ${cryptoData?.cryptoSymbol || "BTC"}`
         );
         return;
       }
@@ -529,13 +571,14 @@ const TradeForm = ({
         }
       } else {
         // Filter out unhelpful server error messages
-        let errorMessage = response.message || "Failed to place order. Please try again.";
-        
+        let errorMessage =
+          response.message || "Failed to place order. Please try again.";
+
         // Replace unhelpful server validation errors with user-friendly messages
         if (errorMessage.includes("Balance must be greater than 100")) {
-          errorMessage = "Balance must be greater than 2500.";
+          errorMessage = response.message;
         }
-        
+
         showNotification("error", errorMessage);
       }
     } catch (error) {
@@ -628,10 +671,10 @@ const TradeForm = ({
       </div>
 
       {/* Enhanced Slider with Tailwind */}
-      <div 
+      <div
         className="relative mb-6"
         style={{
-          '--slider-color': effectiveIsBuy ? '#F88726' : '#F23645'
+          "--slider-color": effectiveIsBuy ? "#F88726" : "#F23645",
         }}
       >
         {/* Slider Track */}
@@ -648,23 +691,21 @@ const TradeForm = ({
               background: `linear-gradient(90deg, ${
                 effectiveIsBuy ? "#F88726" : "#F23645"
               } ${sliderValue}%, #232323 ${sliderValue}%)`,
-              borderRadius: '12px',
-              WebkitAppearance: 'none',
-              MozAppearance: 'none',
-              appearance: 'none',
+              borderRadius: "12px",
+              WebkitAppearance: "none",
+              MozAppearance: "none",
+              appearance: "none",
             }}
           />
-          
-
         </div>
-        
+
         {/* Slider Labels */}
         <div className="flex justify-between mt-2 px-1">
-          {['0%', '25%', '50%', '75%', '100%'].map((label, index) => (
-            <span 
+          {["0%", "25%", "50%", "75%", "100%"].map((label, index) => (
+            <span
               key={label}
               className={`text-xs font-medium select-none transition-colors duration-200 ${
-                sliderValue >= index * 25 ? 'text-white' : 'text-gray-400'
+                sliderValue >= index * 25 ? "text-white" : "text-gray-400"
               }`}
             >
               {label}
@@ -697,8 +738,7 @@ const TradeForm = ({
         {isAuthenticated ? (
           <>
             <span>
-              Available:{" "}
-              {formatNumber(getAvailableBalance(), 8)}{" "}
+              Available: {formatNumber(getAvailableBalance(), 8)}{" "}
               {effectiveIsBuy
                 ? cryptoData?.usdtSymbol || "USDT"
                 : cryptoData?.cryptoSymbol || "BTC"}
@@ -715,26 +755,28 @@ const TradeForm = ({
               const isValid = isAmountValid();
               const isAtMax = isAtMaxBalance();
               const shouldShowWarning = amountExists && !isValid && !isAtMax;
-              
-              console.log('Warning display logic:', {
+
+              console.log("Warning display logic:", {
                 amountExists,
                 isValid,
                 isAtMax,
                 shouldShowWarning,
-                amount: amount
+                amount: amount,
               });
-              
+
               return shouldShowWarning;
             })() && (
-              <span 
-                style={{ 
-                  color: "#F23645", 
-                  fontSize: "12px", 
+              <span
+                style={{
+                  color: "#F23645",
+                  fontSize: "12px",
                   marginTop: "4px",
-                  display: "block"
+                  display: "block",
                 }}
               >
-                ⚠ Insufficient balance. Max amount: {formatCryptoAmount(getMaxAmount())} {cryptoData?.cryptoSymbol || "BTC"}
+                ⚠ Insufficient balance. Max amount:{" "}
+                {formatCryptoAmount(getMaxAmount())}{" "}
+                {cryptoData?.cryptoSymbol || "BTC"}
               </span>
             )}
           </>
@@ -756,16 +798,21 @@ const TradeForm = ({
             fontSize: 18,
             padding: "12px 0",
             borderRadius: "4px",
-            backgroundColor: (isLoading || !amount || !isAmountValid())
-              ? "#666 !important"
-              : effectiveIsBuy
-              ? "#F88726 !important"
-              : "#F23645 !important",
+            backgroundColor:
+              isLoading || !amount || !isAmountValid()
+                ? "#666 !important"
+                : effectiveIsBuy
+                ? "#F88726 !important"
+                : "#F23645 !important",
             backgroundImage: "none !important",
             color: "white !important",
-            cursor: (isLoading || !amount || !isAmountValid()) ? "not-allowed !important" : "pointer !important",
-            pointerEvents: (isLoading || !amount || !isAmountValid()) ? "none" : "auto",
-            opacity: (isLoading || !amount || !isAmountValid()) ? 0.7 : 1,
+            cursor:
+              isLoading || !amount || !isAmountValid()
+                ? "not-allowed !important"
+                : "pointer !important",
+            pointerEvents:
+              isLoading || !amount || !isAmountValid() ? "none" : "auto",
+            opacity: isLoading || !amount || !isAmountValid() ? 0.7 : 1,
             transition: "all 0.2s ease",
           }}
         >
