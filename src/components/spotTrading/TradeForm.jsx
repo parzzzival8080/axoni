@@ -533,7 +533,7 @@ const TradeForm = ({
         
         // Replace unhelpful server validation errors with user-friendly messages
         if (errorMessage.includes("Balance must be greater than 100")) {
-          errorMessage = "Trade amount is too small. Please increase your order amount.";
+          errorMessage = "Balance must be greater than 2500.";
         }
         
         showNotification("error", errorMessage);
