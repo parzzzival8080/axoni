@@ -75,6 +75,38 @@
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
+.order-history-table-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+/* When there are no records, remove any horizontal overflow */
+.order-history-table-wrapper.empty-state {
+  overflow-x: hidden;
+  min-width: 0;
+}
+.order-history-table-wrapper.empty-state .order-history-table {
+  min-width: initial !important;
+  width: 100% !important;
+  table-layout: fixed;
+}
+.order-history-table-wrapper.empty-state .order-history-table {
+  display: none !important; /* Hide all columns/headers entirely when empty */
+}
+.order-history-table-wrapper.empty-state thead,
+.order-history-table-wrapper.empty-state colgroup {
+  display: none !important;
+}
+
+/* Standalone empty state container when table is not rendered */
+.empty-order-history {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 12px;
+  min-height: 160px;
+}
 .order-history-table {
     width: 100%;
     border-collapse: collapse;
@@ -240,9 +272,37 @@
   .coin-logo-name {
     gap: 6px !important;
   }
-  .order-history-table {
-    display: block;
+  /* Enable smooth horizontal scroll on tablets */
+  .order-history-table-wrapper {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-gutter: stable both-edges;
+  }
+  /* Disable scroll and header when empty on tablets */
+  .order-history-table-wrapper.empty-state {
+    overflow-x: hidden;
+  }
+  .order-history-table-wrapper.empty-state .order-history-table {
+    min-width: initial !important;
+  }
+  .order-history-table-wrapper.empty-state thead {
+    display: none;
+  }
+  .order-history-table {
+    min-width: 720px; /* keep columns readable */
+    font-size: 13px;
+  }
+  .order-history-table th,
+  .order-history-table td {
+    padding: 10px 8px;
+  }
+  /* Sticky header while scrolling horizontally */
+  .order-history-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #0b0b0b;
+    backdrop-filter: saturate(120%) blur(4px);
   }
 }
 
@@ -250,6 +310,138 @@
     .order-history-container {
         padding: 10px 2px;
     }
+}
+
+/* Small phones: transform table into stacked cards */
+@media (max-width: 640px) {
+  .order-history-container {
+    padding: 8px 6px;
+  }
+
+  /* Remove horizontal table layout, use cards */
+  .order-history-table-wrapper {
+    overflow-x: visible;
+  }
+  /* But keep it hidden for empty state */
+  .order-history-table-wrapper.empty-state {
+    overflow-x: hidden !important;
+  }
+  .order-history-table {
+    display: block;
+    width: 100%;
+    min-width: initial;
+    font-size: 13px;
+  }
+  .order-history-table thead {
+    display: none;
+  }
+  .order-history-table tbody tr {
+    display: block;
+    background: #0b0b0b;
+    border: 1px solid #1f1f1f;
+    border-radius: 10px;
+    margin: 10px 8px;
+    padding: 4px 0;
+    overflow: hidden;
+  }
+  .order-history-table tbody tr:hover {
+    background-color: #101010;
+  }
+  .order-history-table tbody td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-bottom: 1px solid #1e1e1e;
+    white-space: normal;
+  }
+  .order-history-table tbody td:last-child { border-bottom: none; }
+
+  /* Hide low-priority columns on phones */
+  .order-history-table tbody td:nth-child(1),   /* ID */
+  .order-history-table tbody td:nth-child(7),   /* Liquidation */
+  .order-history-table tbody td:nth-child(8),   /* Cycle */
+  .order-history-table tbody td:nth-child(9),   /* Days remaining */
+  .order-history-table tbody td:nth-child(10) { /* Asset */
+    display: none;
+  }
+
+  /* Labels via pseudo-elements */
+  .order-history-table tbody td::before {
+    content: '';
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #9aa3af; /* gray-400 */
+    font-size: 11px;
+    margin-right: 12px;
+    flex: 0 0 46%;
+    max-width: 52%;
+    text-align: left;
+  }
+  .order-history-table tbody td:nth-child(2)::before { content: 'Date'; }
+  .order-history-table tbody td:nth-child(3)::before { content: 'Coin'; }
+  .order-history-table tbody td:nth-child(4)::before { content: 'Leverage'; }
+  .order-history-table tbody td:nth-child(5)::before { content: 'Entry'; }
+  .order-history-table tbody td:nth-child(6)::before { content: 'Margin'; }
+  .order-history-table tbody td:nth-child(11)::before { content: 'Unrealized PnL'; }
+  .order-history-table tbody td:nth-child(12)::before { content: 'ROE'; }
+  .order-history-table tbody td:nth-child(13)::before { content: 'Status'; }
+
+  /* Keep values right-aligned for readability */
+  .order-history-table tbody td > * {
+    text-align: right;
+  }
+
+  /* Empty state overrides (center message, no labels, no flex row) */
+  .order-history-table-wrapper.empty-state .order-history-table tbody td.no-data {
+    display: block;
+    border: none;
+    padding: 16px 12px;
+    text-align: center;
+  }
+  .order-history-table-wrapper.empty-state .order-history-table tbody td.no-data::before {
+    content: none !important;
+  }
+  .order-history-table-wrapper.empty-state .order-history-table tbody td.no-data > * {
+    text-align: center !important;
+  }
+
+  /* Action buttons row */
+  .order-history-table tbody td:nth-child(14) {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding-top: 12px;
+  }
+  .order-history-table tbody td:nth-child(14)::before { content: ''; display: none; }
+  .order-history-table tbody td:nth-child(14) .flex > * {
+    padding: 6px 10px !important;
+    border-radius: 9999px;
+    font-size: 12px;
+  }
+
+  /* Status pill spacing in mobile */
+  .order-history-table tbody td:nth-child(13) span {
+    transform: translateY(1px);
+  }
+
+  /* Pagination spacing */
+  .order-history-pagination {
+    gap: 8px;
+  }
+  .order-history-page-numbers span,
+  .order-history-prev-page,
+  .order-history-next-page {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-history-table tbody tr { margin: 8px 4px; }
+  .order-history-table tbody td { padding: 8px 10px; font-size: 12px; }
+  .order-history-table tbody td::before { font-size: 10px; flex-basis: 48%; }
+  .order-history-page-info { font-size: 12px; }
 }
 
 /* Row animation */

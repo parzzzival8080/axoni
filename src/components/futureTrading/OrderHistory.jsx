@@ -382,64 +382,82 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
     return pageNumbers;
   };
 
+  const isEmpty = !loading && currentItems.length === 0;
+
   return (
     <div className="order-history-container dark-mode">
      
-      <div className="order-history-table-wrapper relative">
+      <div className={`order-history-table-wrapper relative ${isEmpty ? 'empty-state' : ''}`}>
         {loading && <div className="overlay-loader">Loading...</div>}
         {/* Background refresh indicator and manual refresh button */}
-        <div className="absolute top-2 right-2 z-10 flex items-center gap-2">
-          {/* Manual refresh button */}
-          <button
-            onClick={forceRefresh}
-            disabled={loading || isBackgroundRefresh}
-            className="flex items-center bg-gray-800 bg-opacity-90 hover:bg-opacity-100 px-3 py-1 rounded-full text-xs text-gray-300 hover:text-white transition-colors disabled:opacity-50"
-            title="Refresh order history"
-          >
-            <FontAwesomeIcon 
-              icon={faSyncAlt} 
-              className={`mr-1 ${(loading || isBackgroundRefresh) ? 'animate-spin' : ''}`} 
-              size="xs" 
-            />
-            Refresh
-          </button>
-          
-          {/* Background refresh indicator */}
-          {isBackgroundRefresh && (
-            <div className="flex items-center bg-blue-800 bg-opacity-90 px-3 py-1 rounded-full text-xs text-blue-300">
-              <FontAwesomeIcon icon={faSyncAlt} className="animate-spin mr-2" size="xs" />
-              Auto-updating...
-            </div>
-          )}
-        </div>
+        {!isEmpty && (
+          <div className="absolute top-2 right-2 z-10 flex items-center gap-2">
+            {/* Manual refresh button */}
+            <button
+              onClick={forceRefresh}
+              disabled={loading || isBackgroundRefresh}
+              className="flex items-center bg-gray-800 bg-opacity-90 hover:bg-opacity-100 px-3 py-1 rounded-full text-xs text-gray-300 hover:text-white transition-colors disabled:opacity-50"
+              title="Refresh order history"
+            >
+              <FontAwesomeIcon 
+                icon={faSyncAlt} 
+                className={`mr-1 ${(loading || isBackgroundRefresh) ? 'animate-spin' : ''}`} 
+                size="xs" 
+              />
+              Refresh
+            </button>
+            
+            {/* Background refresh indicator */}
+            {isBackgroundRefresh && (
+              <div className="flex items-center bg-blue-800 bg-opacity-90 px-3 py-1 rounded-full text-xs text-blue-300">
+                <FontAwesomeIcon icon={faSyncAlt} className="animate-spin mr-2" size="xs" />
+                Auto-updating...
+              </div>
+            )}
+          </div>
+        )}
         {error && <div className="order-history-error">{error}</div>}
         {!isAuthenticated ? (
           <div className="login-message" style={{ textAlign: 'center', padding: '20px', color: '#999' }}>
             Please login to view your order history
           </div>
         ) : (
-          <table className="order-history-table">
-            <thead>
-              <tr>
-                <th className="text-left">ID</th>
-                <th className="text-left">Date</th>
-                <th className="text-left">Coin</th>
-                <th className="text-left">Leverage</th>
-                <th className="text-left">Entry Price</th>
-                <th className="text-left">Margin</th>
-                <th className="text-left">Liquidation</th>
-                <th className="text-left">Cycle</th>
-                <th className="text-left">Days remaining</th>
-                <th className="text-left">Asset</th>
-                <th className="text-left">Unrealized PNL (Profit and Loss)</th>
-                <th className="text-left">ROE (Return on Equity)</th>
-                <th className="text-left">Status</th>
-                <th className="text-left">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentItems.length > 0 ? (
-                currentItems.map(order => (
+          (!loading && currentItems.length === 0) ? (
+            <div className="empty-order-history">
+              <div className="flex flex-col items-center justify-center py-8">
+                <img
+                  src="/assets/img/no-records-found.webp"
+                  alt="No records found"
+                  className="w-16 h-16 mb-4"
+                />
+                <p className="text-base font-medium text-gray-400 mb-1">No records found</p>
+                <p className="text-sm text-gray-500">Get started with your first transaction</p>
+              </div>
+            </div>
+          ) : (
+            <table className="order-history-table">
+              {currentItems.length > 0 && (
+                <thead>
+                  <tr>
+                    <th className="text-left">ID</th>
+                    <th className="text-left">Date</th>
+                    <th className="text-left">Coin</th>
+                    <th className="text-left">Leverage</th>
+                    <th className="text-left">Entry Price</th>
+                    <th className="text-left">Margin</th>
+                    <th className="text-left">Liquidation</th>
+                    <th className="text-left">Cycle</th>
+                    <th className="text-left">Days remaining</th>
+                    <th className="text-left">Asset</th>
+                    <th className="text-left">Unrealized PNL (Profit and Loss)</th>
+                    <th className="text-left">ROE (Return on Equity)</th>
+                    <th className="text-left">Status</th>
+                    <th className="text-left">Action</th>
+                  </tr>
+                </thead>
+              )}
+              <tbody>
+                {currentItems.length > 0 && currentItems.map(order => (
                   <tr key={order._id} className="order-row-fadein">
                     <td className="text-left">{order.future_id || '-'}</td>
                     <td className="text-left">{order.date ? new Date(order.date).toLocaleString() : '-'}</td>
@@ -499,26 +517,10 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                       </div>
                     </td>
                   </tr>
-                ))
-              ) : (
-                !loading && (
-                  <tr>
-                    <td colSpan="12" className="no-data">
-                      <div className="flex flex-col items-center justify-center py-8">
-                        <img
-                          src="/assets/img/no-records-found.webp"
-                          alt="No records found"
-                          className="w-16 h-16 mb-4"
-                        />
-                        <p className="text-base font-medium text-gray-400 mb-1">No records found</p>
-                        <p className="text-sm text-gray-500">Get started with your first transaction</p>
-                      </div>
-                    </td>
-                  </tr>
-                )
-              )}
-            </tbody>
-          </table>
+                ))}
+              </tbody>
+            </table>
+          )
         )}
       </div>
       {isAuthenticated && processedData.length > 0 && (
