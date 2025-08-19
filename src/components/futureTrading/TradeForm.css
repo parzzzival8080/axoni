@@ -342,6 +342,7 @@
   width: 100%;
   height: 2px;
   -webkit-appearance: none;
+  appearance: none;
   background: var(--border-color);
   outline: none;
   border-radius: 2px;
@@ -689,16 +690,84 @@
   .desktop-trade-action-btn {
     display: none !important;
   }
+
   .future-trading-container .trade-form {
-    padding: var(--spacing-md);
-    padding-bottom: 110px !important; /* leave space for fixed bar */
+    padding: 12px;
+    padding-bottom: 120px !important; /* Space for fixed bar */
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
   }
+
   .future-trading-container .trade-form .action-btn,
   .future-trading-container .future-login-pill-btn {
     width: 100% !important;
     max-width: 100% !important;
+    height: 42px;
+    font-size: 15px;
+    margin: 8px 0;
+    padding: 0 12px;
   }
-  /* Mobile fixed action bar is styled via styled-components */
+
+  .future-trading-container .trade-form .price-input,
+  .future-trading-container .trade-form .amount-input {
+    height: 40px;
+    font-size: 14px;
+    padding: 0 10px;
+  }
+
+  .future-trading-container .trade-form .leverage-section,
+  .future-trading-container .trade-form .order-types,
+  .future-trading-container .trade-form .tools-section {
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 4px 0 6px;
+  }
+
+  .future-trading-container .trade-form .tool-item {
+    margin-bottom: 6px;
+    padding: 4px 0;
+  }
+
+  .future-trading-container .trade-form .form-group {
+    margin-bottom: 6px;
+  }
+
+  .future-trading-container .trade-form .slider-row {
+    margin: 6px 0 2px 0 !important;
+  }
+
+  .future-trading-container .trade-form .slider-labels {
+    margin: 2px 0 4px 0 !important;
+    font-size: 11px;
+  }
+
+  .future-trading-container .trade-form .position-type {
+    height: 38px;
+    margin-bottom: 8px;
+  }
+
+  .future-trading-container .trade-form .position-btn {
+    font-size: 14px;
+    padding: 2px 0;
+  }
+
+  .future-trading-container .trade-form .leverage-value {
+    height: 26px;
+    font-size: 12px;
+    padding: 0 8px;
+  }
+
+  .future-trading-container .trade-form .order-type {
+    padding: 2px 6px;
+    font-size: 12px;
+    margin-right: 4px;
+  }
+
+  .future-trading-container .trade-form .range-slider {
+    margin: 4px 0;
+  }
 }
 
 @media (min-width: 769px) {
@@ -707,33 +776,11 @@
   }
 }
 
-@media (max-width: 768px) {
-  .future-trading-container .trade-form .action-btn {
-    height: 44px;
-    font-size: var(--font-size-lg);
-  }
-  
-  .future-trading-container .trade-form .price-input,
-  .future-trading-container .trade-form .amount-input {
-    height: 44px;
-  }
-  
-  .future-trading-container .trade-form .leverage-section,
-  .future-trading-container .trade-form .order-types,
-  .future-trading-container .trade-form .tools-section {
-    flex-wrap: wrap;
-  }
-  
-  .future-trading-container .trade-form .tool-item {
-    margin-bottom: var(--spacing-sm);
-  }
-}
-
 /* --- Compact trade form spacing for futures --- */
 .future-trading-container .trade-form .form-group,
 .future-trading-container .trade-form .form-group.price-container,
 .future-trading-container .trade-form .form-group.total-container {
-    margin-bottom: 6px !important;
+    margin-bottom: 8px !important;
     gap: 2px;
 }
 .future-trading-container .trade-form .slider-row {
@@ -745,9 +792,11 @@
 }
 .future-trading-container .trade-form .buy-btn,
 .future-trading-container .trade-form .sell-btn {
-    margin-top: 8px !important;
+    margin: 8px 0 !important;
     padding: 10px 0 !important;
-    font-size: 16px !important;
+    font-size: 15px !important;
+    flex-shrink: 0;
+    min-height: 44px;
 }
 
 /* Loading balance indicator */

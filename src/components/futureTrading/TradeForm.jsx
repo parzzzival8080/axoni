@@ -62,14 +62,11 @@ const ScrollableFormContent = styled.div`
     background: #333;
   }
 
-  @media (max-width: 900px) {
-    max-height: 45vh;
-  }
   @media (max-width: 768px) {
-    max-height: calc(100vh - 90px);
-  }
-  @media (max-width: 600px) {
-    max-height: 38vh;
+    overflow-y: visible !important;
+    max-height: none !important;
+    height: auto !important;
+    padding-right: 0;
   }
 `;
 
