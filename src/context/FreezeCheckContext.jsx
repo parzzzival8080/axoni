@@ -25,7 +25,7 @@ export const FreezeCheckProvider = ({ children }) => {
           // Handle different response statuses
           if (response.data.status === 'error' || response.data.error === 'User Not Found') {
             setIsFrozen(true);
-            setFreezeMessage('Your account has been frozen. Please contact customer support.');
+            setFreezeMessage('Session expired. Kindly log in again.');
           } else if (response.data.status === 'success' || response.data.status === 'not freeze') {
             setIsFrozen(false);
             setFreezeMessage('');
@@ -60,9 +60,9 @@ export const FreezeCheckProvider = ({ children }) => {
       <Modal
         isOpen={isFrozen}
         onClose={handleLogout} // Prevent closing without logging out
-        title="Account Frozen"
+        title="Prompt"
       >
-        <p>{freezeMessage || 'Your account has been frozen. Please contact customer support.'}</p>
+        <p>{freezeMessage || 'Session expired. Kindly log in again.'}</p>
         <button
           onClick={handleLogout}
           style={{
