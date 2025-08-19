@@ -452,7 +452,7 @@ const Transfer = () => {
 
   // Handle max amount
   const handleMaxAmount = () => {
-    setTransferAmount(availableBalance.toFixed(8));
+    setTransferAmount(availableBalance);
     setError(null);
   };
 
@@ -524,7 +524,6 @@ const Transfer = () => {
     <>
       <style dangerouslySetInnerHTML={{ __html: scrollbarStyles }} />
       <div className="min-h-screen bg-white text-gray-900 font-sans">
-
 
         {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 py-8">
@@ -747,13 +746,13 @@ const Transfer = () => {
                   <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-full px-4 py-2 shadow-sm border border-gray-200 dark:border-gray-700 min-w-[150px]">
                     <svg className="w-4 h-4 mr-2 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" strokeWidth="2"/><path d="M8 12h8" strokeWidth="2"/></svg>
                     <span className="text-xs text-gray-600 dark:text-gray-300 font-semibold mr-1">Spot</span>
-                    <span className="text-sm text-gray-900 dark:text-white font-bold">{isBalanceLoading ? '...' : spotBalance.toFixed(8)}</span>
+                    <span className="text-sm text-gray-900 dark:text-white font-bold">{isBalanceLoading ? '...' : spotBalance}</span>
                     <span className="ml-1 text-xs text-gray-500 dark:text-gray-400">{selectedAsset}</span>
                   </div>
                   <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-full px-4 py-2 shadow-sm border border-gray-200 dark:border-gray-700 min-w-[150px]">
                     <svg className="w-4 h-4 mr-2 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" strokeWidth="2"/><path d="M16 12H8" strokeWidth="2"/></svg>
-                    <span className="text-xs text-gray-600 dark:text-gray-300 font-semibold mr-1">Futures</span>
-                    <span className="text-sm text-gray-900 dark:text-white font-bold">{isBalanceLoading ? '...' : futureBalance.toFixed(8)}</span>
+                    <span className="text-xs text-gray-600 dark:text-gray-300 font-semibold mr-1">Future</span>
+                    <span className="text-sm text-gray-900 dark:text-white font-bold">{isBalanceLoading ? '...' : futureBalance}</span>
                     <span className="ml-1 text-xs text-gray-500 dark:text-gray-400">{selectedAsset}</span>
                   </div>
                 </div>
@@ -876,7 +875,7 @@ const Transfer = () => {
                     </div>
                     {/* Amount */}
                     <div className="text-gray-900 dark:text-gray-100 font-medium">
-                      {parseFloat(transfer.amount).toFixed(8)}
+                      {parseFloat(transfer.amount)}
                     </div>
                     {/* From */}
                     <div className="text-gray-700 dark:text-gray-300 capitalize">
