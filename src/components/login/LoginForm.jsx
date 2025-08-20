@@ -385,7 +385,7 @@ const LoginForm = () => {
             return; // Stop the login process
           } else if (freezeCheckResponse.data.status === 'freeze') {
             // User is frozen - prevent login
-            setFreezeModalMessage('Oops! Something went wrong on our end. Please try logging in again.');
+            setFreezeModalMessage('Your account has been frozen. Please contact customer support');
             setFreezeModalOpen(true);
             // Clear login data
             localStorage.removeItem('authToken');
