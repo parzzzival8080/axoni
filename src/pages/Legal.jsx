@@ -1,273 +1,227 @@
 import React from 'react';
-import { FaShieldAlt, FaGavel, FaUserShield, FaExclamationTriangle, FaClipboardCheck, FaEnvelope, FaClock } from 'react-icons/fa';
 
 const Legal = () => {
   return (
     <div className="bg-black text-white min-h-screen">
       
       {/* Hero Section */}
-      <section className="py-16 md:py-24 px-4">
+      <section className="py-12 px-4">
         <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">Legal <span className="text-[#F88726]">Information</span></h1>
-            <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
-              Comprehensive legal framework and regulatory compliance for our cryptocurrency exchange
+          <div className="mb-8">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">Licenses, Registrations and Other Legal Matters</h1>
+            <h2 className="text-2xl font-semibold text-[#F88726] mb-6">Licenses and Registrations</h2>
+            <p className="text-lg text-gray-300 mb-8 leading-relaxed">
+              KINE is committed to working closely and collaboratively with regulators from around the world. KINE currently holds the following regulatory licenses, registrations and/or other legal matters:
             </p>
           </div>
         </div>
       </section>
 
       {/* Legal Content Sections */}
-      <section className="py-8 px-4">
-        <div className="container mx-auto max-w-6xl space-y-16">
+      <section className="px-4">
+        <div className="container mx-auto max-w-6xl">
           
-          {/* Licenses and Regulatory Compliance */}
-          <div className="flex flex-col md:flex-row gap-8 items-start">
-            <div className="flex-1">
-              <div className="flex items-center gap-4 mb-6">
-                <FaShieldAlt className="text-[#F88726] text-3xl" />
-                <h2 className="text-3xl font-bold">Licenses and <span className="text-[#F88726]">Regulatory Compliance</span></h2>
-              </div>
-              <div className="bg-gray-900/50 border border-gray-800 p-8 rounded-lg">
-                <p className="mb-6 text-lg text-gray-300">
-                  KINE operates under strict regulatory oversight and maintains compliance with applicable laws and regulations in the jurisdictions where we provide services.
-                </p>
-                <ul className="space-y-3 text-gray-300">
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#F88726] mt-1">•</span>
-                    <span>Virtual Asset Service Provider (VASP) Registration</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#F88726] mt-1">•</span>
-                    <span>Anti-Money Laundering (AML) Compliance</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#F88726] mt-1">•</span>
-                    <span>Know Your Customer (KYC) Requirements</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#F88726] mt-1">•</span>
-                    <span>Financial Services Licensing where applicable</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+          {/* Regional Licenses */}
+          <div className="space-y-12">
 
-          {/* Regulatory Framework */}
-          <div className="flex flex-col md:flex-row-reverse gap-8 items-start">
-            <div className="flex-1">
-              <div className="flex items-center gap-4 mb-6">
-                <FaGavel className="text-[#F88726] text-3xl" />
-                <h2 className="text-3xl font-bold">Regulatory <span className="text-[#F88726]">Framework</span></h2>
-              </div>
-              <div className="bg-gray-900/50 border border-gray-800 p-8 rounded-lg">
-                <p className="mb-6 text-lg text-gray-300">
-                  Our operations are conducted in accordance with the regulatory requirements of the jurisdictions in which we operate, including:
-                </p>
-                <ul className="space-y-3 text-gray-300">
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#F88726] mt-1">•</span>
-                    <span>Compliance with local cryptocurrency and digital asset regulations</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#F88726] mt-1">•</span>
-                    <span>Adherence to financial services laws and regulations</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#F88726] mt-1">•</span>
-                    <span>Implementation of consumer protection measures</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#F88726] mt-1">•</span>
-                    <span>Regular regulatory reporting and auditing</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          {/* Terms and Conditions */}
-          <div className="flex flex-col md:flex-row gap-8 items-start">
-            <div className="flex-1">
-              <div className="flex items-center gap-4 mb-6">
-                <FaClipboardCheck className="text-[#F88726] text-3xl" />
-                <h2 className="text-3xl font-bold">Terms and <span className="text-[#F88726]">Conditions</span></h2>
-              </div>
-              <div className="bg-gray-900/50 border border-gray-800 p-8 rounded-lg">
-                <p className="mb-6 text-lg text-gray-300">
-                  By using KINE's services, you agree to be bound by our comprehensive Terms and Conditions, which include:
-                </p>
-                <ul className="space-y-3 text-gray-300">
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#F88726] mt-1">•</span>
-                    <span>Service availability and limitations</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#F88726] mt-1">•</span>
-                    <span>User responsibilities and obligations</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#F88726] mt-1">•</span>
-                    <span>Trading rules and procedures</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#F88726] mt-1">•</span>
-                    <span>Fee structures and payment terms</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#F88726] mt-1">•</span>
-                    <span>Risk disclosure and liability limitations</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          {/* Privacy and Data Protection */}
-          <div className="flex flex-col md:flex-row-reverse gap-8 items-start">
-            <div className="flex-1">
-              <div className="flex items-center gap-4 mb-6">
-                <FaUserShield className="text-[#F88726] text-3xl" />
-                <h2 className="text-3xl font-bold">Privacy and <span className="text-[#F88726]">Data Protection</span></h2>
-              </div>
-              <div className="bg-gray-900/50 border border-gray-800 p-8 rounded-lg">
-                <p className="mb-6 text-lg text-gray-300">
-                  KINE is committed to protecting your privacy and personal data in accordance with applicable privacy laws:
-                </p>
-                <ul className="space-y-3 text-gray-300">
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#F88726] mt-1">•</span>
-                    <span>GDPR compliance for European users</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#F88726] mt-1">•</span>
-                    <span>Secure data storage and encryption</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#F88726] mt-1">•</span>
-                    <span>Limited data collection and processing</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#F88726] mt-1">•</span>
-                    <span>User rights regarding personal data</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#F88726] mt-1">•</span>
-                    <span>Regular privacy policy updates</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          {/* Risk Disclosure - Special Warning Section */}
-          <div className="bg-gradient-to-r from-yellow-900/20 to-red-900/20 border border-yellow-600/50 p-8 rounded-lg">
-            <div className="flex items-center gap-4 mb-6">
-              <FaExclamationTriangle className="text-yellow-500 text-4xl" />
-              <h2 className="text-3xl font-bold text-yellow-400">Important Risk Disclosure</h2>
-            </div>
-            <div className="space-y-6">
-              <p className="text-xl font-semibold text-yellow-300">
-                ⚠️ Trading in cryptocurrencies involves substantial risk
-              </p>
-              <p className="text-lg text-gray-300">
-                Trading in cryptocurrencies and digital assets involves substantial risk of loss and may not be suitable for all investors. Key risks include:
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                <div className="bg-red-900/20 border border-red-700/50 p-4 rounded-lg">
-                  <h4 className="font-semibold text-red-400 mb-2">Market Risks</h4>
-                  <ul className="space-y-2 text-gray-300 text-sm">
-                    <li>• High volatility and price fluctuations</li>
-                    <li>• Potential total loss of invested capital</li>
-                    <li>• Liquidity risks in certain market conditions</li>
-                  </ul>
-                </div>
-                <div className="bg-orange-900/20 border border-orange-700/50 p-4 rounded-lg">
-                  <h4 className="font-semibold text-orange-400 mb-2">Regulatory & Technical Risks</h4>
-                  <ul className="space-y-2 text-gray-300 text-sm">
-                    <li>• Regulatory changes affecting market access</li>
-                    <li>• Technology risks and security vulnerabilities</li>
-                    <li>• Network congestion and transaction delays</li>
-                  </ul>
-                </div>
-              </div>
-              <p className="text-lg font-semibold text-yellow-400 bg-yellow-900/20 p-4 rounded-lg border border-yellow-600/50">
-                Please ensure you understand these risks and only invest what you can afford to lose.
-              </p>
-            </div>
-          </div>
-
-          {/* Contact and Support */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-gray-900/50 border border-gray-800 p-8 rounded-lg">
-              <div className="flex items-center gap-4 mb-6">
-                <FaEnvelope className="text-[#F88726] text-2xl" />
-                <h3 className="text-2xl font-bold">Legal <span className="text-[#F88726]">Contact</span></h3>
-              </div>
-              <div className="space-y-4 text-gray-300">
-                <div className="flex items-center gap-3">
-                  <span className="text-[#F88726]">•</span>
-                  <div>
-                    <strong>Legal Department:</strong><br/>
-                    <a href="mailto:legal@kinecoin.co" className="text-[#F88726] hover:underline">legal@kinecoin.co</a>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-[#F88726]">•</span>
-                  <div>
-                    <strong>Compliance Team:</strong><br/>
-                    <a href="mailto:compliance@kinecoin.co" className="text-[#F88726] hover:underline">compliance@kinecoin.co</a>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-[#F88726]">•</span>
-                  <div>
-                    <strong>General Support:</strong><br/>
-                    <a href="mailto:support@kinecoin.co" className="text-[#F88726] hover:underline">support@kinecoin.co</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-gray-900/50 border border-gray-800 p-8 rounded-lg">
-              <div className="flex items-center gap-4 mb-6">
-                <FaClock className="text-[#F88726] text-2xl" />
-                <h3 className="text-2xl font-bold">Legal <span className="text-[#F88726]">Updates</span></h3>
-              </div>
+            {/* France */}
+            <div className="border-l-4 border-[#F88726] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F88726]">• France</h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  This legal information page is subject to periodic updates to reflect changes in our regulatory status, licensing, and compliance requirements.
+                  KINE Markets Ltd has been granted registration as a <a href="https://www.amf-france.org/en" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Digital Asset Service Provider (DASP)</a> by the <a href="https://www.amf-france.org/en" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Autorité des Marchés Financiers (AMF)</a>, 
+                  French financial services authority (Registration number F202).
                 </p>
                 <p>
-                  We recommend reviewing this page regularly for the most current information.
+                  KINE France Ltd will provide the following regulated services in France: digital assets custody services; exchange of digital assets for legal tender; exchange of 
+                  digital assets; operating of a trading platform for digital assets.
                 </p>
-                <div className="bg-[#F88726]/10 border border-[#F88726]/30 p-4 rounded-lg mt-4">
-                  <p className="text-[#F88726] font-semibold">
-                    Last updated: {new Date().toLocaleDateString()}
-                  </p>
+              </div>
+            </div>
+
+            {/* Lithuania */}
+            <div className="border-l-4 border-[#F88726] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F88726]">• Lithuania</h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  KINE UAB S.A. has been granted a <a href="https://www.lb.lt/en/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Virtual Asset Service Provider (VASP)</a> registration by the <a href="https://www.registrucentras.lt/en/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Lithuanian State Enterprise Centre of Registers</a> under MoF01. 
+                  The registration enables the provision of the following regulated services in Lithuania: digital assets custody services; exchange of digital assets for legal tender; exchange of 
+                  digital assets for other digital assets; execution of orders for digital assets on behalf of third parties; market-making.
+                </p>
+              </div>
+            </div>
+
+            {/* Poland */}
+            <div className="border-l-4 border-[#F88726] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F88726]">• Poland</h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  KINE (Poland) Sp.z.o.o has obtained a <a href="#" className="text-[#F88726] underline hover:text-orange-400">Virtual Asset Service Provider (VASP)</a> registration for the Republic of Lithuania administered by the 
+                  State Enterprise Centre of Registers under Ministry of Finance (Registration number: 306511623). The registration enables the provision of digital assets services including 
+                  custody services, exchange services and operating a digital assets trading platform.
+                </p>
+              </div>
+            </div>
+
+            {/* Italy */}
+            <div className="border-l-4 border-[#F88726] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F88726]">• Italy</h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  KINE (Italy) S.r.l obtained authorization from the Organismo per la gestione degli elenchi degli agenti in attività finanziaria e dei mediatori creditizi (OAM) 
+                  for the Republic of Lithuania administered by the State Enterprise Centre of Registers under Ministry of Finance (Registration number: PSV-215). The registration enables 
+                  the provision of digital assets services including custody services, exchange services and operating a digital assets trading platform.
+                </p>
+              </div>
+            </div>
+
+            {/* Spain */}
+            <div className="border-l-4 border-[#F88726] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F88726]">• Spain</h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  KINE (Spain) Technologies, has obtained a <a href="https://www.bde.es/f/webbde/INF/MenuHorizontal/Normativa/Circulares_y_guias_especializadas/Ficheros/Circular_1_2021_en.pdf" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Virtual Asset Service Provider (VASP)</a> license under PSAV from the 
+                  <a href="https://www.bde.es/wbe/en/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Banco de España (Bank of Spain)</a> for digital asset service provision. 
+                  The registration enables business activities throughout the EEA under applicable regulations for digital asset services including trading and custody activities on its platform.
+                </p>
+              </div>
+            </div>
+
+            {/* Kazakhstan */}
+            <div className="border-l-4 border-[#F88726] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F88726]">• Kazakhstan</h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  The KINE Group entities have been granted a category "A" type 1 license at an <a href="#" className="text-[#F88726] underline hover:text-orange-400">Astana International Financial Centre</a> by the Astana Financial Services 
+                  Authority (AFSA) to conduct digital asset activities in respect of the regulated activities of Operating a Multilateral Trading Facility (MTF), 
+                  Providing Custody and related services.
+                </p>
+              </div>
+            </div>
+
+            {/* Australia */}
+            <div className="border-l-4 border-[#F88726] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F88726]">• Australia</h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  KINE Australia Derivatives Pty Ltd holds an <a href="https://asic.gov.au/for-business/your-business/financial-services/afsl/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Australian Financial Services License</a> (AFSL) to provide 
+                  derivative intermediary services to <a href="https://asic.gov.au/regulatory-resources/financial-services/giving-financial-product-advice/wholesale-and-retail-clients/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">wholesale clients</a>. AFSL 001317. 
+                  KINE Australia and its <a href="https://asic.gov.au/for-business/your-business/financial-services/afsl/authorised-representatives/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">authorised representatives</a> are subject to limited regulatory oversight under AFSL. 
+                  Further details about AFSL can be obtained from <a href="https://asic.gov.au/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">ASIC's website</a>.
+                </p>
+                <p>
+                  KINE (Australia) is registered as a reporting entity with the <a href="https://www.austrac.gov.au/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Australian Transaction Reports and Analysis Centre (AUSTRAC)</a> 
+                  and holds DCE registration 100789820-001.
+                </p>
+              </div>
+            </div>
+
+            {/* Singapore */}
+            <div className="border-l-4 border-[#F88726] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F88726]">• Singapore</h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  As per <a href="https://www.mas.gov.sg/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Monetary Authority of Singapore</a> (MAS) <a href="https://www.mas.gov.sg/regulation/guidelines" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Guidelines (FSG-G01)</a> for the provision 
+                  of <a href="https://www.mas.gov.sg/regulation/explainers/explainer-on-digital-payment-tokens" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">digital payment token services</a>, KINE operates under the regulatory framework established for digital asset service providers in Singapore.
+                </p>
+              </div>
+            </div>
+
+            {/* British Virgin Islands */}
+            <div className="border-l-4 border-[#F88726] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F88726]">• British Virgin Islands</h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  KINE has obtained the required <a href="https://www.bvifsc.vg/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Virtual Asset Service Providers</a> (VASP) registration in <a href="https://www.bvifsc.vg/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">British Virgin Islands</a> and is operating through its related services under the oversight of the BVI Financial Services Commission.
+                </p>
+              </div>
+            </div>
+
+            {/* Dubai */}
+            <div className="border-l-4 border-[#F88726] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F88726]">• Dubai</h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  KINE Global Entity has been granted a Category 1 License by the <a href="https://www.vara.ae/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Dubai Virtual Assets Regulatory Authority (VARA)</a> to enable the business to operate the VARA 
+                  KINE platform to licensed Virtual Assets Activities Providers.
+                </p>
+              </div>
+            </div>
+
+            {/* Kazakhstan */}
+            <div className="border-l-4 border-[#F88726] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F88726]">• Kazakhstan</h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  The KINE Group entities have been granted a category "A" type 1 license at an <a href="https://aifc.kz/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Astana International Financial Centre</a> by the <a href="https://www.afsa.kz/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Astana Financial Services Authority (AFSA)</a> to conduct digital asset activities in respect of the regulated activities of Operating a Multilateral Trading Facility (MTF), 
+                  Providing Custody and related services.
+                </p>
+              </div>
+            </div>
+
+            {/* Other Legal Matters */}
+            <div className="border-t border-gray-700 pt-8">
+              <h2 className="text-2xl font-semibold text-[#F88726] mb-6">Other Legal Matters</h2>
+              
+              <div className="space-y-8">
+                {/* Regulatory Authorities */}
+                <div>
+                  <h3 className="text-xl font-bold mb-4">Regulatory Authorities</h3>
+                  <div className="space-y-4 text-gray-300">
+                    <p>
+                      KINE operates under the oversight of various regulatory authorities across multiple jurisdictions. Our commitment to regulatory compliance ensures that we meet the highest standards 
+                      of consumer protection and market integrity.
+                    </p>
+                    <p>
+                      Please note that the regulatory landscape for digital assets is evolving rapidly, and KINE continues to monitor developments and adapt its compliance framework accordingly.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Prohibited Jurisdictions */}
+                <div>
+                  <h3 className="text-xl font-bold mb-4">Service Restrictions</h3>
+                  <div className="space-y-4 text-gray-300">
+                    <p>
+                      KINE services may not be available in all jurisdictions. We maintain a list of restricted countries and territories where our services are not offered due to regulatory or business considerations.
+                    </p>
+                    <p>
+                      Users are responsible for ensuring their compliance with local laws and regulations. KINE reserves the right to restrict or terminate access to services based on jurisdiction-specific requirements.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Contact Information */}
+                <div>
+                  <h3 className="text-xl font-bold mb-4">Legal and Compliance Contact</h3>
+                  <div className="space-y-4 text-gray-300">
+                    <p>
+                      For questions regarding our regulatory status, licensing, or compliance matters, please contact our legal department:
+                    </p>
+                    <ul className="space-y-2 pl-6">
+                      <li>• Legal Department: <a href="mailto:legal@kinecoin.co" className="text-[#F88726] underline hover:text-orange-400">legal@kinecoin.co</a></li>
+                      <li>• Compliance Team: <a href="mailto:compliance@kinecoin.co" className="text-[#F88726] underline hover:text-orange-400">compliance@kinecoin.co</a></li>
+                      <li>• General Support: <a href="mailto:support@kinecoin.co" className="text-[#F88726] underline hover:text-orange-400">support@kinecoin.co</a></li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-        </div>
-      </section>
+            {/* Last Updated */}
+            <div className="bg-gray-900/50 border border-gray-700 p-6 rounded-lg">
+              <p className="text-sm text-gray-400">
+                <strong>Last updated:</strong> {new Date().toLocaleDateString('en-US', { 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+                })}
+              </p>
+              <p className="text-sm text-gray-400 mt-2">
+                This page is subject to regular updates to reflect changes in our regulatory status and licensing. Please check back regularly for the most current information.
+              </p>
+            </div>
 
-      {/* CTA Section */}
-      <section className="py-16 md:py-24 px-4">
-        <div className="container mx-auto max-w-6xl text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Questions About Our <span className="text-[#F88726]">Legal Framework?</span></h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
-            Our legal and compliance teams are here to help. Contact us for any questions regarding our regulatory status, licensing, or legal compliance.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="mailto:legal@kinecoin.co" className="bg-[#F88726] hover:bg-[#e56800] text-white font-bold py-3 px-8 rounded-full text-lg transition-colors">
-              Contact Legal Team
-            </a>
-            <a href="/terms-condtions" className="bg-transparent border border-[#F88726] hover:bg-[#F88726]/10 text-white font-bold py-3 px-8 rounded-full text-lg transition-colors">
-              View Terms & Conditions
-            </a>
           </div>
         </div>
       </section>
