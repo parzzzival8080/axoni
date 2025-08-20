@@ -32,12 +32,12 @@ export const FreezeCheckProvider = ({ children }) => {
           } else if (response.data.status === 'freeze') {
             // User is frozen - show freeze message with session expired
             setIsFrozen(true);
-            setFreezeMessage('Your account has been frozen. Please contact customer support.');
+            setFreezeMessage('Session expired. Kindly log in again.');
           }
         } catch (error) {
           console.error('Error checking freeze status:', error);
           setIsFrozen(true);
-          setFreezeMessage('Your account has been frozen. Please contact customer support.');
+          setFreezeMessage('Session expired. Kindly log in again.');
         }
       }
     };
