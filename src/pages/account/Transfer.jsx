@@ -1108,7 +1108,7 @@ const Transfer = () => {
                         </div>
                         {/* Amount */}
                         <div className="text-gray-900 dark:text-gray-100 font-medium">
-                          {parseFloat(transfer.amount)}
+                          {parseFloat(transfer.amount).toFixed(2)}
                         </div>
                         {/* From */}
                         <div className="text-gray-700 dark:text-gray-300 capitalize">
