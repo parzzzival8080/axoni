@@ -290,12 +290,16 @@ const Conversion = () => {
         console.log('Conversion response:', responseData);
         
         // Check if we have a valid response
-        if (!response.ok) {
-          throw new Error('Conversion failed. Please try again.');
-        }
+        // if (!response.status == 'error') {
+        //   throw new Error('Conversion failed. Please try again.');
+        // }
+        // else
+        // {
+
+        // }
         
         // Check if the response contains the success message
-        if (responseData === "conversion submitted" || 
+        if (responseData.message === "Conversion Submitted" || 
             (responseData.message && responseData.message.includes("submitted")) ||
             (responseData.msg && responseData.msg.includes("submitted"))) {
           
