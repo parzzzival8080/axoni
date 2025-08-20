@@ -107,6 +107,9 @@ const Footer = () => {
                 <li>
                   <Link to="/download">Download App</Link>
                 </li>
+                <li>
+                  <Link to="/legal">Legal</Link>
+                </li>
               </ul>
             </div>
 
@@ -320,6 +323,9 @@ const Footer = () => {
                 </li>
                 <li>
                   <Link to="/download">Download App</Link>
+                </li>
+                <li>
+                  <Link to="/legal">Legal</Link>
                 </li>
               </ul>
             </div>

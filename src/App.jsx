@@ -19,6 +19,7 @@ import Profile from "./pages/account/Profile";
 import Market from "./pages/Market";
 import DownloadPage from "./pages/DownloadPage";
 import AboutUs from "./pages/AboutUs";
+import Legal from "./pages/Legal";
 import Announcement from "./pages/supportCenter/announcement/Announcement";
 import Article from "./pages/supportCenter/announcement/Article";
 import Deposit from "./pages/account/Deposit";
@@ -632,6 +633,18 @@ function App() {
                     <Navbar />
                     <main>
                       <AboutUs />
+                    </main>
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/legal"
+                element={
+                  <>
+                    <Navbar />
+                    <main>
+                      <Legal />
                     </main>
                     <Footer />
                   </>
