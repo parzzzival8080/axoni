@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useRef,
 } from "react";
+import { useNavigate } from "react-router-dom";
 // Import QRCodeSVG component
 // Make sure to install this library: npm install qrcode.react
 import { QRCodeSVG } from "qrcode.react";
@@ -173,6 +174,7 @@ const ImageWithFallback = ({ src, alt, className, symbol }) => {
 
 function App() {
   // Renamed to App for standard React export
+  const navigate = useNavigate();
 
   // --- State Variables ---
 
@@ -250,6 +252,18 @@ function App() {
       id: net.id,
     }));
   }, [selectedCoinDetails]);
+
+  // --- Authentication Check ---
+  useEffect(() => {
+    const authToken = localStorage.getItem('authToken');
+    const uid = localStorage.getItem('uid');
+    
+    if (!authToken || !uid) {
+      // User is not logged in, redirect to login page
+      navigate('/login');
+      return;
+    }
+  }, [navigate]);
 
   // --- API Fetching Effect ---
   useEffect(() => {
