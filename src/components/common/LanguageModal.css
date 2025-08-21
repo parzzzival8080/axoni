@@ -115,6 +115,7 @@
     gap: 16px;
     padding: 16px 24px 24px;
     overflow-y: auto;
+    position: relative;
 }
 
 /* Custom scrollbar styling */
@@ -139,6 +140,18 @@
 /* For language tab - use 4 columns */
 .language-modal-content.language-grid {
     grid-template-columns: repeat(4, 1fr);
+}
+
+/* When ConveyThis widget is active, remove grid layout */
+.language-modal-content.language-grid:has(#conveythis_widget) {
+    display: block;
+    grid-template-columns: none;
+}
+
+/* Fallback for browsers that don't support :has() */
+.language-modal-content.language-grid.widget-active {
+    display: block;
+    grid-template-columns: none;
 }
 
 /* For currency tab - use 2 columns for better layout */

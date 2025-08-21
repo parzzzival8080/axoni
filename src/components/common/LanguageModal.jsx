@@ -34,26 +34,55 @@ const LanguageModal = ({ isOpen, onClose }) => {
         /* ConveyThis widget styling inside modal */
         #conveythis_widget {
           background: transparent !important;
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: center !important;
+          justify-content: flex-start !important;
+          gap: 8px !important;
+          padding: 16px !important;
+          width: 100% !important;
+          height: 100% !important;
+          overflow: auto !important;
         }
 
         #conveythis_widget .conveythis-language-item {
-          padding: 8px 12px !important;
-          margin: 4px 0 !important;
-          border-radius: 6px !important;
+          padding: 12px 16px !important;
+          margin: 4px 8px !important;
+          border-radius: 8px !important;
           cursor: pointer !important;
-          transition: background-color 0.2s ease !important;
+          transition: all 0.2s ease !important;
           display: flex !important;
           align-items: center !important;
+          justify-content: center !important;
           gap: 8px !important;
+          background: #fff !important;
+          border: 1px solid #e5e7eb !important;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+          min-width: 120px !important;
+          text-align: center !important;
         }
 
         #conveythis_widget .conveythis-language-item:hover {
-          background-color: #f5f5f5 !important;
+          background-color: #fef7f0 !important;
+          border-color: #f97316 !important;
+          box-shadow: 0 2px 8px rgba(249, 115, 22, 0.15) !important;
+          transform: translateY(-1px) !important;
         }
 
         #conveythis_widget .conveythis-language-text {
           font-size: 14px !important;
           color: #333 !important;
+          font-weight: 500 !important;
+        }
+
+        /* Grid layout for language options */
+        #conveythis_widget {
+          display: grid !important;
+          grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) !important;
+          gap: 12px !important;
+          padding: 20px !important;
+          align-content: start !important;
+          justify-items: center !important;
         }
 
         /* Ensure flag images load properly */
@@ -101,23 +130,32 @@ const LanguageModal = ({ isOpen, onClose }) => {
         // Remove hidden class and show the widget
         widgetElement.classList.remove("conveythis-widget-hidden");
 
-        // Get the position of the modal content
-        const modalRect = modalContent.getBoundingClientRect();
-
-        // Position the widget over the modal content with some top spacing
-        widgetElement.style.position = "fixed";
-        widgetElement.style.left = modalRect.left + "px";
-        widgetElement.style.top = modalRect.top + 20 + "px";
-        widgetElement.style.width = modalRect.width + "px";
-        widgetElement.style.height = "auto";
+        // Position the widget inside the modal content using absolute positioning
+        widgetElement.style.position = "absolute";
+        widgetElement.style.top = "0";
+        widgetElement.style.left = "0";
+        widgetElement.style.right = "0";
+        widgetElement.style.bottom = "0";
+        widgetElement.style.width = "100%";
+        widgetElement.style.height = "100%";
         widgetElement.style.visibility = "visible";
         widgetElement.style.opacity = "1";
-        widgetElement.style.zIndex = "10001";
-        widgetElement.style.overflow = "visible";
+        widgetElement.style.zIndex = "1";
+        widgetElement.style.overflow = "auto";
         widgetElement.style.backgroundColor = "transparent";
-        widgetElement.style.padding = "10px";
+        widgetElement.style.padding = "16px";
         widgetElement.style.pointerEvents = "auto";
         widgetElement.style.transform = "none";
+        widgetElement.style.display = "flex";
+        widgetElement.style.flexDirection = "column";
+        widgetElement.style.alignItems = "center";
+        widgetElement.style.justifyContent = "flex-start";
+        widgetElement.style.gap = "8px";
+
+        // Append the widget to the modal content instead of positioning over it
+        if (!modalContent.contains(widgetElement)) {
+          modalContent.appendChild(widgetElement);
+        }
 
         // Force refresh ConveyThis
         setTimeout(() => {
@@ -130,7 +168,6 @@ const LanguageModal = ({ isOpen, onClose }) => {
         }, 100);
       } else {
         // Hide the widget when modal is closed or not on language tab
-        // Use transform instead of display to preserve DOM structure
         widgetElement.classList.add("conveythis-widget-hidden");
         widgetElement.style.transform = "translateX(-10000px)";
         widgetElement.style.visibility = "hidden";
@@ -138,8 +175,12 @@ const LanguageModal = ({ isOpen, onClose }) => {
         widgetElement.style.position = "absolute";
         widgetElement.style.zIndex = "-1";
         widgetElement.style.pointerEvents = "none";
+        widgetElement.style.display = "none";
 
-        // Don't modify child elements - let ConveyThis manage them
+        // Remove from modal content if it's there
+        if (modalContent && modalContent.contains(widgetElement)) {
+          document.body.appendChild(widgetElement);
+        }
       }
     }
   }, [isOpen, activeTab]);
