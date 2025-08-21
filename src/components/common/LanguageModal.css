@@ -293,6 +293,20 @@
         max-width: 90%;
         max-height: 80vh;
     }
+    
+    /* ConveyThis widget responsive adjustments */
+    #conveythis_widget {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
+        gap: 8px !important;
+        padding: 16px !important;
+    }
+    
+    #conveythis_widget .conveythis-language-item {
+        padding: 10px 12px !important;
+        margin: 2px 4px !important;
+        min-width: 100px !important;
+        font-size: 13px !important;
+    }
 }
 
 @media (max-width: 480px) {
@@ -320,5 +334,20 @@
 
     .language-option {
         padding: 6px 8px;
+    }
+    
+    /* ConveyThis widget mobile adjustments */
+    #conveythis_widget {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)) !important;
+        gap: 6px !important;
+        padding: 12px !important;
+    }
+    
+    #conveythis_widget .conveythis-language-item {
+        padding: 8px 10px !important;
+        margin: 2px !important;
+        min-width: 90px !important;
+        font-size: 12px !important;
+        border-radius: 6px !important;
     }
 }

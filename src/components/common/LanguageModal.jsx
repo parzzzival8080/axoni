@@ -36,7 +36,7 @@ const LanguageModal = ({ isOpen, onClose }) => {
           background: transparent !important;
           display: flex !important;
           flex-direction: column !important;
-          align-items: center !important;
+          align-items: flex-start !important;
           justify-content: flex-start !important;
           gap: 8px !important;
           padding: 16px !important;
@@ -76,14 +76,14 @@ const LanguageModal = ({ isOpen, onClose }) => {
         }
 
         /* Grid layout for language options */
-        #conveythis_widget {
-          display: grid !important;
-          grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) !important;
-          gap: 12px !important;
-          padding: 20px !important;
-          align-content: start !important;
-          justify-items: center !important;
-        }
+         #conveythis_widget {
+           display: grid !important;
+           grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) !important;
+           gap: 12px !important;
+           padding: 20px !important;
+           align-content: start !important;
+           justify-items: start !important;
+         }
 
         /* Ensure flag images load properly */
         img[src*="conveythis"] {
@@ -156,6 +156,9 @@ const LanguageModal = ({ isOpen, onClose }) => {
         if (!modalContent.contains(widgetElement)) {
           modalContent.appendChild(widgetElement);
         }
+        
+        // Add class to indicate widget is active (fallback for browsers without :has() support)
+        modalContent.classList.add('widget-active');
 
         // Force refresh ConveyThis
         setTimeout(() => {
@@ -180,6 +183,7 @@ const LanguageModal = ({ isOpen, onClose }) => {
         // Remove from modal content if it's there
         if (modalContent && modalContent.contains(widgetElement)) {
           document.body.appendChild(widgetElement);
+          modalContent.classList.remove('widget-active');
         }
       }
     }
