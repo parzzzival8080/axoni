@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useCurrency } from "../../context/CurrencyContext";
 import assetIcon from "../../assets/assets/411B1865A7B26122.webp";
+import { Link } from "react-router-dom";
 
 const TradingTab = ({
   coins,
@@ -88,9 +89,12 @@ const TradingTab = ({
                 Your assets will appear once you make a deposit or buy crypto
                 with cash.
               </p>
-              <button className="bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 sm:px-6 rounded-lg font-medium transition-colors text-sm sm:text-base">
-                Deposit
-              </button>
+              <Link
+                to="/deposit"
+                className="bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 sm:px-6 rounded-lg font-medium transition-colors text-sm sm:text-base "
+              >
+                <span>Deposit</span>
+              </Link>
             </div>
           </div>
         </div>
@@ -344,7 +348,7 @@ const TradingTab = ({
 
                 {[
                   ...Array(
-                    Math.min(totalPages, window.innerWidth < 640 ? 3 : 5),
+                    Math.min(totalPages, window.innerWidth < 640 ? 3 : 5)
                   ).keys(),
                 ].map((i) => {
                   let pageNum;
