@@ -23,8 +23,7 @@ const Footer = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [showTradeOnGo, setShowTradeOnGo] = useState(true);
 
-  const appDownloadUrl =
-    "https://api.kinecoin.co/api/v1/download-kine-apk";
+  const appDownloadUrl = "https://api.kinecoin.co/api/v1/download-kine-apk";
 
   // Check if viewport is mobile
   useEffect(() => {
@@ -87,13 +86,17 @@ const Footer = () => {
             {/* More about KINE */}
             <div className="footer-column">
               <h3
-                className={`column-title ${activeSections.includes(0) ? "active" : ""}`}
+                className={`column-title ${
+                  activeSections.includes(0) ? "active" : ""
+                }`}
                 onClick={() => toggleSection(0)}
               >
                 {sectionTitles[0]}
               </h3>
               <ul
-                className={`column-links ${activeSections.includes(0) ? "active" : ""}`}
+                className={`column-links ${
+                  activeSections.includes(0) ? "active" : ""
+                }`}
               >
                 <li>
                   <Link to="/about-us">About us</Link>
@@ -116,13 +119,17 @@ const Footer = () => {
             {/* Products */}
             <div className="footer-column">
               <h3
-                className={`column-title ${activeSections.includes(1) ? "active" : ""}`}
+                className={`column-title ${
+                  activeSections.includes(1) ? "active" : ""
+                }`}
                 onClick={() => toggleSection(1)}
               >
                 {sectionTitles[1]}
               </h3>
               <ul
-                className={`column-links ${activeSections.includes(1) ? "active" : ""}`}
+                className={`column-links ${
+                  activeSections.includes(1) ? "active" : ""
+                }`}
               >
                 <li>
                   <Link to="/conversion">Convert</Link>
@@ -133,9 +140,9 @@ const Footer = () => {
                 <li>
                   <Link to="/future-trading">Future Trading</Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link to="/earn">Earn</Link>
-                </li>
+                </li> */}
                 <li>
                   <Link to="/market">Markets</Link>
                 </li>
@@ -148,13 +155,17 @@ const Footer = () => {
             {/* Services */}
             <div className="footer-column">
               <h3
-                className={`column-title ${activeSections.includes(2) ? "active" : ""}`}
+                className={`column-title ${
+                  activeSections.includes(2) ? "active" : ""
+                }`}
                 onClick={() => toggleSection(2)}
               >
                 {sectionTitles[2]}
               </h3>
               <ul
-                className={`column-links ${activeSections.includes(2) ? "active" : ""}`}
+                className={`column-links ${
+                  activeSections.includes(2) ? "active" : ""
+                }`}
               >
                 <li>
                   <a href="#affiliate">Affiliate</a>
@@ -180,13 +191,17 @@ const Footer = () => {
             {/* Support */}
             <div className="footer-column">
               <h3
-                className={`column-title ${activeSections.includes(3) ? "active" : ""}`}
+                className={`column-title ${
+                  activeSections.includes(3) ? "active" : ""
+                }`}
                 onClick={() => toggleSection(3)}
               >
                 {sectionTitles[3]}
               </h3>
               <ul
-                className={`column-links ${activeSections.includes(3) ? "active" : ""}`}
+                className={`column-links ${
+                  activeSections.includes(3) ? "active" : ""
+                }`}
               >
                 <li>
                   <a href="#support-center">Support center</a>
@@ -206,13 +221,17 @@ const Footer = () => {
             {/* Crypto calculator */}
             <div className="footer-column">
               <h3
-                className={`column-title ${activeSections.includes(4) ? "active" : ""}`}
+                className={`column-title ${
+                  activeSections.includes(4) ? "active" : ""
+                }`}
                 onClick={() => toggleSection(4)}
               >
                 {sectionTitles[4]}
               </h3>
               <ul
-                className={`column-links ${activeSections.includes(4) ? "active" : ""}`}
+                className={`column-links ${
+                  activeSections.includes(4) ? "active" : ""
+                }`}
               >
                 <li>
                   <a href="#btc-usd">BTC to USD</a>
@@ -235,13 +254,17 @@ const Footer = () => {
             {/* Trade */}
             <div className="footer-column">
               <h3
-                className={`column-title ${activeSections.includes(5) ? "active" : ""}`}
+                className={`column-title ${
+                  activeSections.includes(5) ? "active" : ""
+                }`}
                 onClick={() => toggleSection(5)}
               >
                 {sectionTitles[5]}
               </h3>
               <ul
-                className={`column-links ${activeSections.includes(5) ? "active" : ""}`}
+                className={`column-links ${
+                  activeSections.includes(5) ? "active" : ""
+                }`}
               >
                 <li>
                   <a href="#btc-usdc">BTC USDC</a>
@@ -343,9 +366,9 @@ const Footer = () => {
                 <li>
                   <Link to="/conversion">Conversion</Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link to="/earn">Earn</Link>
-                </li>
+                </li> */}
               </ul>
             </div>
 
@@ -405,9 +428,17 @@ const Footer = () => {
                   <span>Trade on the go with</span>
                   <span>KINE</span>
                 </h3>
-                <button className="bg-[#F88726] hover:bg-[#e67615] text-white font-medium py-2 px-6 rounded-full transition-colors duration-200 mb-2">
+                {/* <button
+                  to="/spot-trading"
+                >
                   Trade Now
-                </button>
+                </button> */}
+                <Link
+                  className="bg-[#F88726] hover:bg-[#e67615] text-white font-medium py-2 px-6 rounded-full transition-colors duration-200 mb-2"
+                  to="/spot-trading"
+                >
+                  Trade Now
+                </Link>
               </div>
             )}
           </div>
