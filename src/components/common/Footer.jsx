@@ -131,7 +131,7 @@ const Footer = () => {
                   activeSections.includes(1) ? "active" : ""
                 }`}
               >
-                <li>
+                {/* <li>
                   <Link to="/conversion">Convert</Link>
                 </li>
                 <li>
@@ -140,14 +140,23 @@ const Footer = () => {
                 <li>
                   <Link to="/future-trading">Future Trading</Link>
                 </li>
-                {/* <li>
+                <li>
                   <Link to="/earn">Earn</Link>
-                </li> */}
+                </li>
                 <li>
                   <Link to="/market">Markets</Link>
                 </li>
                 <li>
                   <Link to="/my-assets">Assets</Link>
+                </li> */}
+                <li>
+                  <Link to="/spot-trading">Spot Trading</Link>
+                </li>
+                <li>
+                  <Link to="/future-trading">Futures Trading</Link>
+                </li>
+                <li>
+                  <Link to="/conversion">Conversion</Link>
                 </li>
               </ul>
             </div>
@@ -167,7 +176,7 @@ const Footer = () => {
                   activeSections.includes(2) ? "active" : ""
                 }`}
               >
-                <li>
+                {/* <li>
                   <a href="#affiliate">Affiliate</a>
                 </li>
                 <li>
@@ -184,8 +193,17 @@ const Footer = () => {
                 </li>
                 <li>
                   <a href="#p2p-merchant">P2P Merchant application</a>
+                </li> */}
+
+          
+                <li>
+                  <Link to="/market">Market Overview</Link>
+                </li>
+                <li>
+                  <Link to="/my-assets">Assets</Link>
                 </li>
               </ul>
+
             </div>
 
             {/* Support */}
@@ -203,7 +221,7 @@ const Footer = () => {
                   activeSections.includes(3) ? "active" : ""
                 }`}
               >
-                <li>
+                {/* <li>
                   <a href="#support-center">Support center</a>
                 </li>
                 <li>
@@ -214,6 +232,12 @@ const Footer = () => {
                 </li>
                 <li>
                   <a href="#connect-with-okx">Connect with KINE</a>
+                </li> */}
+                 <li>
+                  <Link to="/signup">Sign Up</Link>
+                </li>
+                <li>
+                  <Link to="/login">Login</Link>
                 </li>
               </ul>
             </div>
@@ -233,7 +257,7 @@ const Footer = () => {
                   activeSections.includes(4) ? "active" : ""
                 }`}
               >
-                <li>
+                {/* <li>
                   <a href="#btc-usd">BTC to USD</a>
                 </li>
                 <li>
@@ -247,6 +271,12 @@ const Footer = () => {
                 </li>
                 <li>
                   <a href="#xrp-usd">XRP to USD</a>
+                </li> */}
+                  <li>
+                  <Link to="/about-us">About Us</Link>
+                </li>
+                <li>
+                  <Link to="/download">Download App</Link>
                 </li>
               </ul>
             </div>
@@ -266,7 +296,7 @@ const Footer = () => {
                   activeSections.includes(5) ? "active" : ""
                 }`}
               >
-                <li>
+                {/* <li>
                   <a href="#btc-usdc">BTC USDC</a>
                 </li>
                 <li>
@@ -322,7 +352,15 @@ const Footer = () => {
                 </li>
                 <li>
                   <a href="#how-to-buy-solana">How to buy Solana</a>
+                </li> */}
+
+                 <li>
+                  <Link to="/spot-trading">Spot Trading</Link>
                 </li>
+                <li>
+                  <Link to="/future-trading">Futures Trading</Link>
+                </li>
+
               </ul>
             </div>
 
