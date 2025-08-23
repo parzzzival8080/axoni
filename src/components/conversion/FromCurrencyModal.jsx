@@ -38,7 +38,7 @@ const FromCurrencyModal = ({ onClose, onSelectCurrency }) => {
           </div>
           
           {/* Keep tabs for consistent UI but make them non-functional */}
-          <div className="currency-tabs">
+          {/* <div className="currency-tabs">
             <button 
               className="currency-tab active"
             >
@@ -48,9 +48,9 @@ const FromCurrencyModal = ({ onClose, onSelectCurrency }) => {
               className="currency-tab"
               disabled
             >
-              Stablecoins
+            Stablecoins 
             </button>
-          </div>
+          </div> */}
           
           <div className="currency-list">
             <div 
