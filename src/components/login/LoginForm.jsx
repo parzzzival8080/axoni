@@ -416,7 +416,7 @@ const LoginForm = () => {
         } catch (freezeErr) {
           console.error('Freeze check error:', freezeErr);
           // On network error, also prevent login for security
-          setFreezeModalMessage('Your account has been frozen. Please contact customer support.');
+          setFreezeModalMessage('Oops! Something went wrong on our end. Please try logging in again.');
           setFreezeModalOpen(true);
           // Clear login data
           localStorage.removeItem('authToken');

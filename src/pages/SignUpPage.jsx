@@ -573,7 +573,11 @@ const SignUpPage = () => {
 
         // Validate response data - Django returns user_id in response
         if (!data.user_id) {
-          setError("Registration failed: Invalid server response");
+          
+          if (data.error == "Email already in use")
+            setError(
+              "Registration failed: Email already registered."
+            );
           return;
         }
 
