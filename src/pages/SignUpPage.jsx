@@ -573,11 +573,8 @@ const SignUpPage = () => {
 
         // Validate response data - Django returns user_id in response
         if (!data.user_id) {
-          
           if (data.error == "Email already in use")
-            setError(
-              "Registration failed: Email already registered."
-            );
+            setError("Registration failed: Email already registered.");
           return;
         }
 
@@ -1521,13 +1518,12 @@ const SignUpPage = () => {
                     defaultValue="+1"
                   >
                     <option value="+376">+376 (AD)</option>
-                    <option value="+374">+374 (AM)</option>
-                    <option value="+43">+43 (AT)</option>
+                    <option value="+61">+61 (AU)</option>
                     <option value="+994">+994 (AZ)</option>
-                    <option value="+375">+375 (BY)</option>
                     <option value="+32">+32 (BE)</option>
+                    <option value="+375">+375 (BY)</option>
                     <option value="+359">+359 (BG)</option>
-                    <option value="+385">+385 (HR)</option>
+                    <option value="+1">+1 (US)</option>
                     <option value="+357">+357 (CY)</option>
                     <option value="+420">+420 (CZ)</option>
                     <option value="+45">+45 (DK)</option>
@@ -1539,29 +1535,34 @@ const SignUpPage = () => {
                     <option value="+36">+36 (HU)</option>
                     <option value="+354">+354 (IS)</option>
                     <option value="+91">+91 (IN)</option>
-                    <option value="+92">+92 (PK)</option>
                     <option value="+353">+353 (IE)</option>
                     <option value="+39">+39 (IT)</option>
                     <option value="+81">+81 (JP)</option>
                     <option value="+82">+82 (KR)</option>
                     <option value="+352">+352 (LU)</option>
+                    <option value="+389">+389 (MK)</option>
                     <option value="+356">+356 (MT)</option>
                     <option value="+373">+373 (MD)</option>
                     <option value="+377">+377 (MC)</option>
                     <option value="+382">+382 (ME)</option>
                     <option value="+60">+60 (MY)</option>
                     <option value="+31">+31 (NL)</option>
-                    <option value="+389">+389 (MK)</option>
+                    <option value="+64">+64 (NZ)</option>
+                    <option value="+92">+92 (PK)</option>
+                    <option value="+63">+63 (PH)</option>
                     <option value="+48">+48 (PL)</option>
                     <option value="+351">+351 (PT)</option>
-                    <option value="+63">+63 (PH)</option>
                     <option value="+40">+40 (RO)</option>
                     <option value="+65">+65 (SG)</option>
                     <option value="+34">+34 (ES)</option>
                     <option value="+46">+46 (SE)</option>
                     <option value="+41">+41 (CH)</option>
                     <option value="+44">+44 (GB)</option>
-                    <option value="+1">+1 (US)</option>
+                    <option value="+84">+84 (VN)</option>
+                    <option value="+374">+374 (AM)</option>
+                    <option value="+43">+43 (AT)</option>
+                    <option value="+385">+385 (HR)</option>
+                    <option value="+373">+373 (MD)</option>
                   </select>
                   <input
                     type="tel"
