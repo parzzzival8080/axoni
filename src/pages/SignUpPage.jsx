@@ -120,6 +120,27 @@ const SignUpPage = () => {
           },
         },
         {
+          name: { common: "Vietnam", official: "Vietnam" },
+          flags: {
+            png: "https://flagcdn.com/w320/vn.png",
+            svg: "https://flagcdn.com/vn.svg",
+          },
+        },
+        {
+          name: { common: "Australia", official: "Australia" },
+          flags: {
+            png: "https://flagcdn.com/w320/au.png",
+            svg: "https://flagcdn.com/au.svg",
+          },
+        },
+        {
+          name: { common: "New Zealand", official: "New Zealand" },
+          flags: {
+            png: "https://flagcdn.com/w320/nz.png",
+            svg: "https://flagcdn.com/nz.svg",
+          },
+        },
+        {
           name: { common: "Netherlands", official: "Netherlands" },
           flags: {
             png: "https://flagcdn.com/w320/nl.png",
