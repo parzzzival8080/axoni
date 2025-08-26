@@ -222,7 +222,7 @@ export const MetaMaskProvider = ({ children }) => {
       let uid = localStorage.getItem('uid');
       const user_id = localStorage.getItem('user_id');
       const authToken = localStorage.getItem('authToken');
-      const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
+      const apiKey = '5lPMMw7mIuyzQQDjlKJbe0dY';
       
       console.log('🔍 Fetching FLUX wallet address with UID:', uid);
       console.log('🔍 All localStorage items:', {

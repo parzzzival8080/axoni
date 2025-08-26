@@ -260,7 +260,7 @@ const Transfer = () => {
 
       console.log("Fetching fresh coins data...");
       const response = await axios.get(
-        "https://api.fluxcoin.tech/api/v1/coins?apikey=A20RqFwVktRxxRqrKBtmi6ud"
+        "https://api.fluxcoin.tech/api/v1/coins?apikey=5lPMMw7mIuyzQQDjlKJbe0dY"
       );
       const coinsData = response.data;
       console.log("Fresh coins data loaded:", coinsData.length, "coins");
@@ -324,7 +324,7 @@ const Transfer = () => {
 
       // Fetch transfer history from API
       const response = await axios.get(
-        `https://api.fluxcoin.tech/api/v1/transfer-history/${uid}?apikey=A20RqFwVktRxxRqrKBtmi6ud`
+        `https://api.fluxcoin.tech/api/v1/transfer-history/${uid}?apikey=5lPMMw7mIuyzQQDjlKJbe0dY`
       );
 
       console.log("Transfer history response status:", response.status);
@@ -418,7 +418,7 @@ const Transfer = () => {
     const fetchCoinBalance = async () => {
       setIsBalanceLoading(true);
       try {
-        const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
+        const apiKey = "5lPMMw7mIuyzQQDjlKJbe0dY";
         const uid = localStorage.getItem("uid");
         const url = `https://api.fluxcoin.tech/api/v1/coin-balance/${uid}?apikey=${apiKey}&symbol=${selectedAsset}`;
         const response = await axios.get(url);
@@ -444,7 +444,7 @@ const Transfer = () => {
   // Refetch balances after a successful transfer
   useEffect(() => {
     if (success && selectedAsset) {
-      const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
+      const apiKey = "5lPMMw7mIuyzQQDjlKJbe0dY";
       const uid = localStorage.getItem("uid");
       const url = `https://api.fluxcoin.tech/api/v1/coin-balance/${uid}?apikey=${apiKey}&symbol=${selectedAsset}`;
       axios.get(url).then((response) => {
@@ -593,7 +593,7 @@ const Transfer = () => {
     setError(null);
     setSuccess(false);
 
-    const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
+    const apiKey = "5lPMMw7mIuyzQQDjlKJbe0dY";
     const uid = localStorage.getItem("uid");
     const transfer_from =
       fromAccount.toLowerCase() === "future"

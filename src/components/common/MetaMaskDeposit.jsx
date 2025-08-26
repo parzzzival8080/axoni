@@ -108,7 +108,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
   const notifyBackendDeposit = async (txHash, amount, coin) => {
     try {
       const uid = localStorage.getItem("uid");
-      const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
+      const apiKey = "5lPMMw7mIuyzQQDjlKJbe0dY";
 
       // Notify your backend about the pending deposit
       const response = await fetch(

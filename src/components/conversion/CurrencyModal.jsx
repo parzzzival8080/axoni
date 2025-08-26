@@ -15,7 +15,7 @@ const CurrencyModal = ({ onClose, onSelectCurrency }) => {
         
         // Using your API to fetch currencies
         const response = await fetch(
-          'https://api.fluxcoin.tech/api/v1/coin-conversions?apikey=A20RqFwVktRxxRqrKBtmi6ud'
+          'https://api.fluxcoin.tech/api/v1/coin-conversions?apikey=5lPMMw7mIuyzQQDjlKJbe0dY'
         );
         
         if (!response.ok) {

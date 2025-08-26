@@ -17,7 +17,7 @@ const FundingTab = () => {
       try {
         setLoading(true);
         const uid = localStorage.getItem("uid") || "QEaIjLlY";
-        const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
+        const apiKey = "5lPMMw7mIuyzQQDjlKJbe0dY";
         const apiUrl = `https://api.fluxcoin.tech/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
 
         const response = await axios.get(apiUrl);

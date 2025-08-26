@@ -49,7 +49,7 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
       
       // Get UID and API key values from localStorage if available
       const uid = localStorage.getItem('uid') || 'gSq3oxfi';
-      const apiKey = localStorage.getItem('apiKey') || 'A20RqFwVktRxxRqrKBtmi6ud';
+      const apiKey = localStorage.getItem('apiKey') || '5lPMMw7mIuyzQQDjlKJbe0dY';
       
       // API endpoint for order history
       const apiUrl = `https://api.fluxcoin.tech/api/v1/order-history/${uid}?apikey=${apiKey}`;

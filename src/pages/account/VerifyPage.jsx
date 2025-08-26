@@ -25,7 +25,7 @@ const API_CONFIG = {
   KYC_UPLOAD_URL: "https://django.fluxcoin.tech/api/user_account/upload-kyc",
   KYC_SEND_DATA_URL:
     "https://django.fluxcoin.tech/api/user_account/send-kyc-data",
-  API_KEY: "A20RqFwVktRxxRqrKBtmi6ud",
+  API_KEY: "5lPMMw7mIuyzQQDjlKJbe0dY",
   MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
   COMPRESSION_THRESHOLD: 2 * 1024 * 1024, // 2MB
   REQUEST_TIMEOUT: 30000, // 30 seconds

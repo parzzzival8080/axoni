@@ -1,5 +1,5 @@
 const API_BASE_URL = 'https://api.fluxcoin.tech/api/v1';
-const API_KEY = 'A20RqFwVktRxxRqrKBtmi6ud';
+const API_KEY = '5lPMMw7mIuyzQQDjlKJbe0dY';
 
 // Cache configuration for tradable coins
 const TRADABLE_COINS_CACHE_KEY = 'future_tradable_coins';

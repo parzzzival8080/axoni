@@ -24,7 +24,7 @@ const WithdrawalHistoryTableBase = forwardRef((props, ref) => {
         setHistory([]);
         return;
       }
-      const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
+      const apiKey = '5lPMMw7mIuyzQQDjlKJbe0dY';
       const url = `https://api.fluxcoin.tech/api/v1/transaction-history/${uid}?apikey=${apiKey}&transaction_type=withdraw`;
       const response = await axios.get(url);
       const data = Array.isArray(response.data) ? response.data : [];

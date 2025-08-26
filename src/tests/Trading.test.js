@@ -11,7 +11,7 @@ const TEST_PASSWORD = '123';
 const TEST_UID = 'yE8vKBNw'; // Default UID from your services
 
 // API constants
-const API_KEY = 'A20RqFwVktRxxRqrKBtmi6ud';
+const API_KEY = '5lPMMw7mIuyzQQDjlKJbe0dY';
 
 // Mock the API services
 jest.mock('../services/spotTradingApi', () => ({

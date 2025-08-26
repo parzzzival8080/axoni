@@ -21,7 +21,7 @@ export const CryptoProvider = ({ children }) => {
       try {
         const response = await axios.get('https://api.fluxcoin.tech/api/v1/coins', {
           params: {
-            apikey: 'A20RqFwVktRxxRqrKBtmi6ud'
+            apikey: '5lPMMw7mIuyzQQDjlKJbe0dY'
           }
         });
         

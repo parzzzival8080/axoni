@@ -29,7 +29,7 @@ const Hero = () => {
   // API configuration (same as VerifyPage)
   const API_CONFIG = {
     KYC_STATUS_BASE_URL: "https://api.fluxcoin.tech/api/v1/kyc-status",
-    API_KEY: "A20RqFwVktRxxRqrKBtmi6ud",
+    API_KEY: "5lPMMw7mIuyzQQDjlKJbe0dY",
   };
 
   // Fetch verification status from API (same method as VerifyPage)

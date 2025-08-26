@@ -196,7 +196,7 @@ function App() {
   const networkDropdownRef = useRef(null); // Ref for network dropdown
 
   // --- Constants ---
-  const API_KEY = "A20RqFwVktRxxRqrKBtmi6ud";
+  const API_KEY = "5lPMMw7mIuyzQQDjlKJbe0dY";
   const headerTabs = [
     "Overview",
     "Funding",
@@ -340,7 +340,7 @@ function App() {
           return;
         }
 
-        const apiUrl = `https://api.fluxcoin.tech/api/v1/address/${uid}?apikey=A20RqFwVktRxxRqrKBtmi6ud&symbol=${selectedNetwork}`;
+        const apiUrl = `https://api.fluxcoin.tech/api/v1/address/${uid}?apikey=5lPMMw7mIuyzQQDjlKJbe0dY&symbol=${selectedNetwork}`;
         console.log(
           `Fetching deposit address for ${selectedCryptoSymbol} on ${selectedNetwork}:`,
           apiUrl

@@ -73,7 +73,7 @@ const Overview = () => {
         // Fetch wallet data - using the same approach as Assets.jsx
         try {
           // API key - same as used in Assets.jsx
-          const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
+          const apiKey = "5lPMMw7mIuyzQQDjlKJbe0dY";
           const apiUrl = `https://api.fluxcoin.tech/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
 
           console.log("Fetching wallet data from:", apiUrl);

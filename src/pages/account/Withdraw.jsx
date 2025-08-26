@@ -166,7 +166,7 @@ function withdraw() {
           setIsLoadingCoins(false);
           return;
         }
-        const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
+        const apiKey = '5lPMMw7mIuyzQQDjlKJbe0dY';
         const apiUrl = `https://api.fluxcoin.tech/api/v1/coin-transaction?apikey=${apiKey}&uid=${uid}&transaction_type=withdrawal`;
         const response = await axios.get(apiUrl);
         setCoins(response.data);
@@ -382,7 +382,7 @@ function withdraw() {
     setSubmitError(null); // Clear previous errors
 
     try {
-      const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
+      const apiKey = '5lPMMw7mIuyzQQDjlKJbe0dY';
       const uid = localStorage.getItem('uid');
       if (!uid) {
         console.log('Error: UID not found in localStorage');
@@ -502,7 +502,7 @@ function withdraw() {
     setOtpCode(''); // Clear current OTP
 
     try {
-      const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
+      const apiKey = '5lPMMw7mIuyzQQDjlKJbe0dY';
       const uid = localStorage.getItem('uid');
       if (!uid) {
         throw new Error('User ID not found');
@@ -563,7 +563,7 @@ function withdraw() {
     setSubmitSuccess(false);
 
     // Build new API URL for withdrawal submission
-    const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
+    const apiKey = '5lPMMw7mIuyzQQDjlKJbe0dY';
     const wallet_id = selectedCoinDetails?.balance?.id;
     const initial_amount = parseFloat(withdrawalAmount);
     const network_id = selectedNetwork?.id;

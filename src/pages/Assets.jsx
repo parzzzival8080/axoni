@@ -40,7 +40,7 @@ export default function Assets() {
         }
 
         // API key
-        const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
+        const apiKey = "5lPMMw7mIuyzQQDjlKJbe0dY";
 
         // Construct the API URL
         const apiUrl = `https://api.fluxcoin.tech/api/v1/user-wallets/${uid}?apikey=${apiKey}`;

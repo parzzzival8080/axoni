@@ -15,7 +15,7 @@ export default function FutureAssetsList() {
       setIsLoading(true);
       setError(null);
       try {
-        const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
+        const apiKey = '5lPMMw7mIuyzQQDjlKJbe0dY';
         const uid = localStorage.getItem('uid');
         // Use the same endpoint as spot for now; if futures-specific endpoint is needed, update here
         const url = `https://api.fluxcoin.tech/api/v1/user-wallets/${uid}?apikey=${apiKey}`;

@@ -64,7 +64,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
       
       // Get UID and API key values from localStorage if available
       const uid = localStorage.getItem('uid');
-      const apiKey = localStorage.getItem('apiKey') || 'A20RqFwVktRxxRqrKBtmi6ud';
+      const apiKey = localStorage.getItem('apiKey') || '5lPMMw7mIuyzQQDjlKJbe0dY';
       
       // Only proceed if UID is available
       if (!uid) {

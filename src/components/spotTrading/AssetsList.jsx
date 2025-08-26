@@ -15,7 +15,7 @@ export default function AssetsList() {
       setIsLoading(true);
       setError(null);
       try {
-        const apiKey = 'A20RqFwVktRxxRqrKBtmi6ud';
+        const apiKey = '5lPMMw7mIuyzQQDjlKJbe0dY';
         const uid = localStorage.getItem('uid');
         const url = `https://api.fluxcoin.tech/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
         const response = await fetch(url);
