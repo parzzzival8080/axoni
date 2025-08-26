@@ -12,7 +12,7 @@ const FaqSection = () => {
     {
       id: 'top-coins',
       question: 'What are the top 10 cryptocurrencies?',
-      answer: 'Typically, top cryptocurrencies are ranked based on their market capitalization. On this page, you can view the market caps of all cryptocurrencies available on KINE. Additionally, you can sort the columns for price change and market capitalization in either ascending or descending order.'
+      answer: 'Typically, top cryptocurrencies are ranked based on their market capitalization. On this page, you can view the market caps of all cryptocurrencies available on FLUX. Additionally, you can sort the columns for price change and market capitalization in either ascending or descending order.'
     },
     {
       id: 'price-changes',

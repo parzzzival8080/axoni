@@ -11,7 +11,7 @@ const SpotTradingWalkthrough = ({ onClose, isOpen }) => {
   const walkthroughSteps = [
     {
       id: 'welcome',
-      title: 'Welcome to Kine Spot Trading',
+      title: 'Welcome to Flux Spot Trading',
       description: 'Let us guide you through our professional trading interface. Click "Start Tour" to begin your journey.',
       target: null,
       position: 'center',
@@ -317,7 +317,7 @@ const SpotTradingWalkthrough = ({ onClose, isOpen }) => {
                 <div className="absolute inset-0 bg-gradient-to-br from-orange-500 to-orange-400 rounded-full flex items-center justify-center shadow-lg shadow-orange-500/40">
                   <img 
                     src={logo} 
-                    alt="Kine Logo" 
+                    alt="Flux Logo" 
                     className="w-8 h-8 object-contain"
                   />
                 </div>

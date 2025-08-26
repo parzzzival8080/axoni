@@ -11,7 +11,7 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
   const walkthroughSteps = [
     {
       id: 'welcome',
-      title: 'Welcome to Kine Conversion',
+      title: 'Welcome to Flux Conversion',
       description: 'Convert between cryptocurrencies instantly with zero trading fees and no slippage. Learn how to use our simple conversion tools. Click "Start Tour" to begin.',
       target: null,
       position: 'center',
@@ -75,7 +75,7 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
     {
       id: 'features',
       title: 'Platform Benefits',
-      description: 'Kine offers zero trading fees, no slippage, and supports many trading pairs. These features make conversions cost-effective and reliable.',
+      description: 'Flux offers zero trading fees, no slippage, and supports many trading pairs. These features make conversions cost-effective and reliable.',
       target: '.max-w-4xl.mx-auto.px-4.mb-16',
       position: 'top',
       type: 'highlight',
@@ -84,7 +84,7 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
     {
       id: 'complete',
       title: 'Ready to Convert!',
-      description: 'You\'re now equipped to convert cryptocurrencies efficiently on Kine. Start with small amounts to familiarize yourself with the process.',
+      description: 'You\'re now equipped to convert cryptocurrencies efficiently on Flux. Start with small amounts to familiarize yourself with the process.',
       target: null,
       position: 'center',
       type: 'completion',
@@ -317,7 +317,7 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
                 <div className="absolute inset-0 bg-gradient-to-br from-orange-500 to-orange-400 rounded-full flex items-center justify-center shadow-lg shadow-orange-500/40">
                   <img 
                     src={logo} 
-                    alt="Kine Logo" 
+                    alt="Flux Logo" 
                     className="w-8 h-8 object-contain"
                   />
                 </div>

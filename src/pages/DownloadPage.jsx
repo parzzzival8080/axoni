@@ -27,14 +27,14 @@ const DownloadPage = () => {
     // You can customize alternative URLs per store if needed
     const url =
       noticeStore === "appstore"
-        ? "https://api.kinecoin.co/api/v1/download-kine-ios"
-        : "https://api.kinecoin.co/api/v1/download-kine-apk";
+        ? "https://api.kinecoin.co/api/v1/download-flux-ios"
+        : "https://api.kinecoin.co/api/v1/download-flux-apk";
 
     window.open(url, "_blank");
     setIsNoticeOpen(false);
   };
 
-  const appDownloadUrl = "https://api.kinecoin.co/api/v1/download-kine-apk";
+  const appDownloadUrl = "https://api.kinecoin.co/api/v1/download-flux-apk";
 
   const handleAppDownload = () => {
     const directDownloadUrl = appDownloadUrl;
@@ -42,7 +42,7 @@ const DownloadPage = () => {
 
     const downloadLink = document.createElement("a");
     downloadLink.href = directDownloadUrl;
-    downloadLink.setAttribute("download", "kine.apk");
+    downloadLink.setAttribute("download", "flux.apk");
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
@@ -123,7 +123,7 @@ const DownloadPage = () => {
               <span className="text-[#F88726]">Unlimited</span> possibilities
             </h3>
             <p className="landing__description">
-              Download the KINE app to trade crypto on the go. Gain access to
+              Download the FLUX app to trade crypto on the go. Gain access to
               diverse tokens and trading pairs, advanced market data and more!
             </p>
           </div>
@@ -158,7 +158,7 @@ const DownloadPage = () => {
           <div className="landing__footer-brand">
             <div className="landing__logo">
               <img src={logo} alt="logo" className="object-contain" />
-              <h3 className="landing__logo-text">KINE APP</h3>
+              <h3 className="landing__logo-text">FLUX APP</h3>
             </div>
             <p className="landing__footer-tagline">Crypto exchange on the go</p>
           </div>

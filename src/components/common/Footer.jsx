@@ -23,7 +23,7 @@ const Footer = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [showTradeOnGo, setShowTradeOnGo] = useState(true);
 
-  const appDownloadUrl = "https://api.kinecoin.co/api/v1/download-kine-apk";
+  const appDownloadUrl = "https://api.kinecoin.co/api/v1/download-flux-apk";
 
   // Check if viewport is mobile
   useEffect(() => {
@@ -54,7 +54,7 @@ const Footer = () => {
 
   // Section titles for mobile accordion
   const sectionTitles = [
-    "More about KINE",
+    "More about FLUX",
     "Products",
     "Markets",
     "Account",
@@ -70,11 +70,11 @@ const Footer = () => {
           <div className="logo-container">
             <img
               src={Logo}
-              alt="kine-logo"
+              alt="flux-logo"
               className="h-12 w-auto object-contain"
             />
           </div>
-          <p className="copyright">©2025 Kinecoin.co | All Rights Reserved</p>
+          <p className="copyright">©2025 Fluxcoin.co | All Rights Reserved</p>
         </div>
 
         {/* Language Selector */}
@@ -83,7 +83,7 @@ const Footer = () => {
         {isMobile ? (
           // Mobile Accordion Layout
           <div className="footer-accordion">
-            {/* More about KINE */}
+            {/* More about FLUX */}
             <div className="footer-column">
               <h3
                 className={`column-title ${
@@ -231,7 +231,7 @@ const Footer = () => {
                   <a href="#announcements">Announcements</a>
                 </li>
                 <li>
-                  <a href="#connect-with-okx">Connect with KINE</a>
+                  <a href="#connect-with-okx">Connect with FLUX</a>
                 </li> */}
                  <li>
                   <Link to="/signup">Sign Up</Link>
@@ -369,9 +369,9 @@ const Footer = () => {
         ) : (
           // Desktop Layout
           <div className="footer-columns">
-            {/* More about KINE */}
+            {/* More about FLUX */}
             <div className="footer-column">
-              <h3 className="column-title">More about KINE</h3>
+              <h3 className="column-title">More about FLUX</h3>
               <ul className="column-links">
                 <li>
                   <Link to="/about-us">About us</Link>
@@ -464,7 +464,7 @@ const Footer = () => {
               <div className="footer-column trade-on-go">
                 <h3 className="column-title flex flex-col items-start text-left">
                   <span>Trade on the go with</span>
-                  <span>KINE</span>
+                  <span>FLUX</span>
                 </h3>
                 {/* <button
                   to="/spot-trading"

@@ -681,7 +681,7 @@ const LoginForm = () => {
       ) : (
         <div className="qr-code-container">
           <img src="/assets/login/qr-code.png" alt="Login QR Code" className="qr-code" />
-          <p>Scan with the KINE App to log in</p>
+          <p>Scan with the FLUX App to log in</p>
         </div>
       )}
       <br />

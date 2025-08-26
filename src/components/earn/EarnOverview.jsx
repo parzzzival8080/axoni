@@ -91,7 +91,7 @@ const EarnOverview = () => {
     { 
       question: 'What is Earn?', 
       isExpanded: true,
-      answer: 'KINE Earn provides you with a way to generate interest on your assets through multiple investment choices. Products include Simple Earn, Loan, and On-chain Earn.'
+      answer: 'FLUX Earn provides you with a way to generate interest on your assets through multiple investment choices. Products include Simple Earn, Loan, and On-chain Earn.'
     },
     { 
       question: 'What is annual percentage rate (APR)?', 
@@ -106,7 +106,7 @@ const EarnOverview = () => {
     { 
       question: 'What are the risks?', 
       isExpanded: false,
-      answer: 'KINE accesses third party DeFi protocols, and only provides related services such as project display and revenue distribution, and does not take responsibility for any asset losses caused by potential risks such as contract vulnerabilities, hacking incidents, or termination of business.'
+      answer: 'FLUX accesses third party DeFi protocols, and only provides related services such as project display and revenue distribution, and does not take responsibility for any asset losses caused by potential risks such as contract vulnerabilities, hacking incidents, or termination of business.'
     },
   ]);
 

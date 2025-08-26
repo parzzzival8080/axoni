@@ -35,7 +35,7 @@ const ErrorText = styled.div`
 const LoadingSpinner = () => (
   <div className="order-book-loading" style={{ textAlign: 'center', padding: '20px' }}>
     <SpinnerIcon icon={faSpinner} size="2x" />
-    <LoadingText>Loading KINE order book data...</LoadingText>
+    <LoadingText>Loading FLUX order book data...</LoadingText>
   </div>
 );
 
@@ -43,7 +43,7 @@ const ConnectionError = ({ connectionStatus, reconnectAttempts, maxReconnectAtte
   <div className="order-book-error" style={{ textAlign: 'center', padding: '20px' }}>
     <ErrorIconStyled icon={faExclamationTriangle} size="2x" />
     <ErrorText>
-      Connection to KINE failed.
+      Connection to FLUX failed.
       {connectionStatus === 'error' ? ' An error occurred.' : ''}
       <br />
       {reconnectAttempts >= maxReconnectAttempts && connectionStatus !== 'fallback' ? 'Max retries reached. ' : ''}
@@ -81,7 +81,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   const lastUpdateRef = useRef(Date.now());
   const pendingUpdateRef = useRef(null);
 
-  // Derive instId (instrument ID for KINE, e.g., BTC-USDT)
+  // Derive instId (instrument ID for FLUX, e.g., BTC-USDT)
   // Use websocket_name if available, otherwise fall back to cryptoSymbol or symbol
   const getWebSocketSymbol = () => {
     if (cryptoData?.websocket_name) {
@@ -113,13 +113,13 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
 
   const processOrderBookData = useCallback((asks, bids) => {
     if (!asks || !bids || !Array.isArray(asks) || !Array.isArray(bids)) {
-      console.error('[OrderBook] Invalid order book data structure for KINE', { asks, bids });
+      console.error('[OrderBook] Invalid order book data structure for FLUX', { asks, bids });
       return null;
     }
 
     const processedAsks = asks
       .map(item => ({
-        price: parseFloat(item[0]), // KINE: [price, size, liquidations, orders]
+        price: parseFloat(item[0]), // FLUX: [price, size, liquidations, orders]
         amount: parseFloat(item[1]),
         total: 0
       }))
@@ -163,7 +163,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     return {
       asks: processedAsks,
       bids: processedBids,
-      lastUpdateId: Date.now() // KINE provides 'ts' in the data payload, could use that
+      lastUpdateId: Date.now() // FLUX provides 'ts' in the data payload, could use that
     };
   }, []);
 
@@ -191,13 +191,13 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
       clearInterval(restFallbackRef.current);
       restFallbackRef.current = null;
     }
-    setDataSource('REST API (KINE)');
+    setDataSource('REST API (FLUX)');
     setIsLoading(true);
 
     const fetchData = async () => {
       try {
         const apiUrl = `https://orderbookkine.devweb09.workers.dev/api/okx/api/v5/market/books?instId=${instId}&sz=5`; // Proxied via Cloudflare Worker; top 5 levels for fast loading
-        console.log('[OrderBook] Fetching from KINE REST API:', apiUrl);
+        console.log('[OrderBook] Fetching from FLUX REST API:', apiUrl);
         const response = await axios.get(apiUrl);
 
         if (response.data && response.data.code === "0" && response.data.data && response.data.data[0]) {
@@ -238,20 +238,20 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
               setIsLoading(false);
               setConnectionStatus('fallback');
               lastUpdateTimeRef.current = now; // Or use bookData.ts
-              console.log('[OrderBook] Data updated from KINE REST API');
+              console.log('[OrderBook] Data updated from FLUX REST API');
             }
           } else {
-            throw new Error('Malformed KINE REST API response data structure');
+            throw new Error('Malformed FLUX REST API response data structure');
           }
         } else {
-          throw new Error(`KINE REST API Error: ${response.data.msg || 'Unknown error'} (Code: ${response.data.code})`);
+          throw new Error(`FLUX REST API Error: ${response.data.msg || 'Unknown error'} (Code: ${response.data.code})`);
         }
       } catch (error) {
-        console.error(`[OrderBook] KINE REST API fetch error (attempt ${retry + 1}):`, error);
+        console.error(`[OrderBook] FLUX REST API fetch error (attempt ${retry + 1}):`, error);
         if (retry < MAX_REST_RETRIES) {
           setTimeout(() => fetchOrderBookREST(retry + 1), REST_BACKOFF_BASE * Math.pow(2, retry));
         } else {
-          console.error('[OrderBook] Max REST retries reached for KINE.');
+          console.error('[OrderBook] Max REST retries reached for FLUX.');
           setConnectionStatus('error'); // Or 'failed' if it's persistent
           setIsLoading(false);
           // Optionally, display mock data or a more persistent error message
@@ -267,7 +267,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
 
   const connectWebSocket = useCallback(() => {
     if (wsRef.current) {
-      console.log('[OrderBook] Closing existing KINE WebSocket connection.');
+      console.log('[OrderBook] Closing existing FLUX WebSocket connection.');
       wsRef.current.onclose = null; // Prevent reconnect logic on manual close
       wsRef.current.close();
       wsRef.current = null;
@@ -275,17 +275,17 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
 
     setConnectionStatus('connecting');
     setIsLoading(true);
-    setDataSource('WebSocket (KINE)');
+    setDataSource('WebSocket (FLUX)');
 
     const wsUrl = 'https://wssorderbook.devweb09.workers.dev/';
-    console.log('[OrderBook] Attempting to connect to KINE WebSocket:', wsUrl);
+    console.log('[OrderBook] Attempting to connect to FLUX WebSocket:', wsUrl);
 
     try {
       const socket = new WebSocket(wsUrl);
       wsRef.current = socket;
 
       socket.onopen = () => {
-        console.log('[OrderBook] Connected to KINE WebSocket');
+        console.log('[OrderBook] Connected to FLUX WebSocket');
         setConnectionStatus('connected');
         // setIsLoading(false); // Wait for first data message
         setReconnectAttempts(0); // Reset on successful connection
@@ -300,29 +300,29 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
           ],
         };
         socket.send(JSON.stringify(subscriptionMessage));
-        console.log('[OrderBook] Sent KINE subscription message:', subscriptionMessage);
+        console.log('[OrderBook] Sent FLUX subscription message:', subscriptionMessage);
         lastUpdateTimeRef.current = Date.now(); // Reset last update time on new connection
       };
 
       socket.onerror = (error) => {
-        console.error('[OrderBook] KINE WebSocket error:', error);
+        console.error('[OrderBook] FLUX WebSocket error:', error);
         // Don't set to 'error' immediately, onclose will handle reconnect or fallback
         // setIsLoading(false); // Let onclose handle this
       };
 
       socket.onclose = (event) => {
-        console.log('[OrderBook] KINE WebSocket closed:', event.code, event.reason);
+        console.log('[OrderBook] FLUX WebSocket closed:', event.code, event.reason);
         wsRef.current = null; // Clear the ref
 
         if (connectionStatus !== 'disconnected' && connectionStatus !== 'failed') { // Avoid if manually closed or already failed
           if (reconnectAttempts < maxReconnectAttempts) {
             setReconnectAttempts(prev => prev + 1);
             const backoffTime = Math.min(1000 * Math.pow(2, reconnectAttempts), 10000);
-            console.log(`[OrderBook] Attempting to reconnect to KINE in ${backoffTime / 1000}s (attempt ${reconnectAttempts + 1})...`);
+            console.log(`[OrderBook] Attempting to reconnect to FLUX in ${backoffTime / 1000}s (attempt ${reconnectAttempts + 1})...`);
             setConnectionStatus('reconnecting');
             reconnectTimeoutRef.current = setTimeout(connectWebSocket, backoffTime);
           } else {
-            console.error('[OrderBook] Max reconnect attempts to KINE reached. Falling back to REST.');
+            console.error('[OrderBook] Max reconnect attempts to FLUX reached. Falling back to REST.');
             setConnectionStatus('failed'); // Explicitly set to failed before fallback
             fetchOrderBookREST();
           }
@@ -336,11 +336,11 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
           const message = JSON.parse(event.data);
 
           if (message.event === 'subscribe') {
-            console.log('[OrderBook] KINE Subscription confirmed:', message.arg);
+            console.log('[OrderBook] FLUX Subscription confirmed:', message.arg);
             return;
           }
           if (message.event === 'error') {
-            console.error('[OrderBook] KINE API Error Message:', message.msg, 'Code:', message.code);
+            console.error('[OrderBook] FLUX API Error Message:', message.msg, 'Code:', message.code);
             // Depending on the error code, you might want to close the socket or try to resubscribe.
             // For critical errors, closing might trigger the reconnect/fallback logic.
             if (socket.readyState === WebSocket.OPEN) {
@@ -351,7 +351,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
             return;
           }
 
-          // KINE 'books5' channel sends full snapshots for both 'snapshot' and 'update' actions
+          // FLUX 'books5' channel sends full snapshots for both 'snapshot' and 'update' actions
           if (message.arg && (message.arg.channel === 'books5' || message.arg.channel === 'books') && message.data && Array.isArray(message.data) && message.data.length > 0) {
             const orderBookUpdate = message.data[0];
             if (orderBookUpdate && orderBookUpdate.asks && orderBookUpdate.bids) {
@@ -392,18 +392,18 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
                 if (connectionStatus !== 'connected') setConnectionStatus('connected');
               }
             }
-          } else if (message.op === 'ping') { // KINE sends pings
+          } else if (message.op === 'ping') { // FLUX sends pings
             socket.send(JSON.stringify({ op: 'pong' }));
           } else {
-            // console.warn('[OrderBook] Unknown KINE WebSocket message format:', message);
+            // console.warn('[OrderBook] Unknown FLUX WebSocket message format:', message);
           }
         } catch (error) {
-          console.error('[OrderBook] Error processing KINE WebSocket message:', error, event.data);
+          console.error('[OrderBook] Error processing FLUX WebSocket message:', error, event.data);
         }
       };
 
     } catch (error) {
-      console.error('[OrderBook] Error creating KINE WebSocket:', error);
+      console.error('[OrderBook] Error creating FLUX WebSocket:', error);
       setConnectionStatus('failed'); // Connection attempt itself failed
       setIsLoading(false);
       fetchOrderBookREST(); // Fallback if WebSocket object cannot even be created
@@ -416,7 +416,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     if (canUseWebSocket) {
       connectWebSocket();
     } else {
-      console.log('[OrderBook] WebSocket not supported, falling back to REST for KINE.');
+      console.log('[OrderBook] WebSocket not supported, falling back to REST for FLUX.');
       setConnectionStatus('fallback');
       fetchOrderBookREST();
     }
@@ -424,10 +424,10 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     // Stale connection checker
     staleConnectionCheckRef.current = setInterval(() => {
       if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN && (Date.now() - lastUpdateTimeRef.current > 20000)) { // 20s no data
-        console.warn('[OrderBook] KINE WebSocket connection appears stale (no data for >20s). Closing to trigger reconnect.');
+        console.warn('[OrderBook] FLUX WebSocket connection appears stale (no data for >20s). Closing to trigger reconnect.');
         wsRef.current.close(); // This will trigger the onclose logic for reconnection
       } else if (connectionStatus === 'fallback' && (Date.now() - lastUpdateTimeRef.current > 30000)) { // 30s for REST
-         console.warn('[OrderBook] KINE REST connection appears stale. Re-fetching.');
+         console.warn('[OrderBook] FLUX REST connection appears stale. Re-fetching.');
          fetchOrderBookREST(); // Re-initiate fetch
       }
     }, 10000); // Check every 10 seconds
@@ -435,7 +435,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     return () => {
       console.log('[OrderBook] Cleaning up for', instId);
       if (wsRef.current) {
-        console.log('[OrderBook] Closing KINE WebSocket on unmount.');
+        console.log('[OrderBook] Closing FLUX WebSocket on unmount.');
         wsRef.current.onclose = null; // Prevent reconnect logic on unmount
         wsRef.current.close();
         wsRef.current = null;
@@ -459,14 +459,14 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
 
   useEffect(() => {
     if (forceRefresh > 0) {
-      console.log('[OrderBook] Force refresh triggered for KINE');
+      console.log('[OrderBook] Force refresh triggered for FLUX');
       handleManualReconnect();
     }
   }, [forceRefresh]);
 
 
   const handleManualReconnect = () => {
-    console.log('[OrderBook] Manual reconnect triggered for KINE');
+    console.log('[OrderBook] Manual reconnect triggered for FLUX');
     setConnectionStatus('disconnected'); // Set to disconnected to allow fresh connection attempt sequence
     setReconnectAttempts(0); // Reset attempts
 
@@ -505,7 +505,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
 
   // Use websocket_name for display if available, otherwise fall back to other options
   const cryptoSymbol = cryptoData?.websocket_name || cryptoData?.cryptoSymbol || cryptoData?.symbol || 'BTC';
-  const usdtSymbol = 'USDT'; // Typically USDT for KINE pairs like BTC-USDT
+  const usdtSymbol = 'USDT'; // Typically USDT for FLUX pairs like BTC-USDT
 
   // Ensure we always display exactly 8 rows each for asks and bids
   const ensureExactRows = useCallback((data, count, isAsk) => {
@@ -642,7 +642,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
         </div>
       ) : (
         <div className="trades-container" style={{ padding: '20px', textAlign: 'center', color: '#aaa' }}>
-          Trade data display is not yet implemented for KINE.
+          Trade data display is not yet implemented for FLUX.
         </div>
       )}
 
@@ -651,11 +651,11 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
         <span className="status-text">
           {connectionStatus === 'connected' && `Live via ${dataSource}`}
           {connectionStatus === 'fallback' && `Live via ${dataSource}`}
-          {connectionStatus === 'connecting' && 'Connecting to KINE...'}
-          {connectionStatus === 'reconnecting' && `Reconnecting to KINE (Attempt ${reconnectAttempts})...`}
-          {connectionStatus === 'disconnected' && 'Disconnected from KINE'}
-          {connectionStatus === 'error' && 'KINE Connection Error'}
-          {connectionStatus === 'failed' && 'Failed to connect to KINE'}
+          {connectionStatus === 'connecting' && 'Connecting to FLUX...'}
+          {connectionStatus === 'reconnecting' && `Reconnecting to FLUX (Attempt ${reconnectAttempts})...`}
+          {connectionStatus === 'disconnected' && 'Disconnected from FLUX'}
+          {connectionStatus === 'error' && 'FLUX Connection Error'}
+          {connectionStatus === 'failed' && 'Failed to connect to FLUX'}
         </span>
       </div>
     </div>

@@ -1244,7 +1244,7 @@ const SignUpPage = () => {
                   htmlFor="terms"
                   className="text-sm text-gray-600 leading-relaxed"
                 >
-                  By creating an account, I agree to KINE{" "}
+                  By creating an account, I agree to FLUX{" "}
                   <a
                     href="#"
                     className="text-[#FE7400] hover:underline font-medium"

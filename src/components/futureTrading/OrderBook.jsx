@@ -167,17 +167,17 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
         clearInterval(restFallbackRef.current);
       }
       
-      // Set up a function to fetch data using KINE REST API
+      // Set up a function to fetch data using FLUX REST API
       const fetchData = async (retry = 0) => {
         try {
-          // Format symbol for KINE API request (BASE-QUOTE format)
+          // Format symbol for FLUX API request (BASE-QUOTE format)
           const symbol = cryptoData?.cryptoSymbol?.toUpperCase() || 'BTC';
           const instId = `${symbol}-USDT`;
           const apiUrl = `https://orderbookkine.devweb09.workers.dev/api/okx/api/v5/market/books?instId=${instId}&sz=5`;
           
-          console.log('[OrderBook] Fetching orderbook from KINE API:', apiUrl);
+          console.log('[OrderBook] Fetching orderbook from FLUX API:', apiUrl);
           const response = await axios.get(apiUrl);
-          console.log('[OrderBook] Raw KINE API response:', response.data);
+          console.log('[OrderBook] Raw FLUX API response:', response.data);
           
           if (response.data && response.data.code === '0' && response.data.data && 
               Array.isArray(response.data.data) && response.data.data.length > 0) {
@@ -185,14 +185,14 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
             const orderBookData = response.data.data[0];
             
             if (orderBookData && orderBookData.asks && orderBookData.bids) {
-              // Process the KINE format data
+              // Process the FLUX format data
               const processedData = processOrderBookData(orderBookData.asks, orderBookData.bids);
               
               if (processedData) {
                 setOrderBook(processedData);
                 setIsLoading(false);
                 setConnectionStatus('fallback');
-                setDataSource('KINE REST API');
+                setDataSource('FLUX REST API');
                 lastUpdateTimeRef.current = Date.now();
                 
                 // Update current price from the first bid (highest bid)
@@ -201,15 +201,15 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
                 }
               }
             } else {
-              console.error('[OrderBook] Malformed KINE REST API response structure:', orderBookData);
-              throw new Error('Malformed KINE REST API response structure');
+              console.error('[OrderBook] Malformed FLUX REST API response structure:', orderBookData);
+              throw new Error('Malformed FLUX REST API response structure');
             }
           } else {
-            console.error('[OrderBook] Malformed KINE REST API response:', response.data);
-            throw new Error('Malformed KINE REST API response');
+            console.error('[OrderBook] Malformed FLUX REST API response:', response.data);
+            throw new Error('Malformed FLUX REST API response');
           }
         } catch (error) {
-          console.error('[OrderBook] KINE REST API fetch error:', error);
+          console.error('[OrderBook] FLUX REST API fetch error:', error);
           // If all retries failed, show error state
           if (retry < MAX_REST_RETRIES) {
             setTimeout(() => fetchData(retry + 1), REST_BACKOFF_BASE * Math.pow(2, retry));
@@ -272,15 +272,15 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   }, [forceRefresh]);
 
   const connectWebSocket = () => {
-    console.log('[OrderBook] Connecting to KINE WebSocket...');
+    console.log('[OrderBook] Connecting to FLUX WebSocket...');
     
-    // Use KINE WebSocket endpoint
+    // Use FLUX WebSocket endpoint
     const wsEndpoint = 'https://wssorderbook.devweb09.workers.dev/';
     const wsEndpoints = [wsEndpoint];
 
-    // Format the trading pair for KINE (BASE-QUOTE format)
+    // Format the trading pair for FLUX (BASE-QUOTE format)
     const orderCoin = `${cryptoSymbol}-USDT`;
-    console.log('[OrderBook] KINE WebSocket endpoint:', wsEndpoint, 'for instrument:', orderCoin);
+    console.log('[OrderBook] FLUX WebSocket endpoint:', wsEndpoint, 'for instrument:', orderCoin);
     
     tryAlternateEndpoints(wsEndpoints, 0);
     
@@ -302,10 +302,10 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
           console.log(`[OrderBook] WebSocket connected to ${urls[index]}`);
           wsRef.current = socket;
           setConnectionStatus('connected');
-          setDataSource('KINE WebSocket');
+          setDataSource('FLUX WebSocket');
           setIsLoading(false);
           
-          // Subscribe to order book updates using KINE format with higher frequency
+          // Subscribe to order book updates using FLUX format with higher frequency
           const subscriptionMessage = {
             "op": "subscribe",
             "args": [
@@ -364,7 +364,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
           
           // Handle order book data updates
           if (message && message.data && Array.isArray(message.data) && message.data.length > 0) {
-            const orderBookData = message.data[0]; // KINE format has data in an array
+            const orderBookData = message.data[0]; // FLUX format has data in an array
             
             if (orderBookData && orderBookData.asks && Array.isArray(orderBookData.asks) &&
                 orderBookData.bids && Array.isArray(orderBookData.bids)) {
@@ -372,8 +372,8 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
               // Update last update time
               lastUpdateTimeRef.current = Date.now();
               
-              // Format KINE data for our processOrderBookData function
-              // KINE format: [price, size, ...] -> convert to [[price, size], ...]
+              // Format FLUX data for our processOrderBookData function
+              // FLUX format: [price, size, ...] -> convert to [[price, size], ...]
               const formattedAsks = orderBookData.asks;
               const formattedBids = orderBookData.bids;
               
@@ -446,7 +446,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     function onopen() {
       console.log('[OrderBook] WebSocket connected successfully');
       setConnectionStatus('connected');
-      setDataSource('KINE WebSocket');
+      setDataSource('FLUX WebSocket');
       setIsLoading(false);
     }
     

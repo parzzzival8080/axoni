@@ -45,7 +45,7 @@ class CORSCompatibleDatafeed {
       session: "24x7",
       timezone: "Etc/UTC",
       ticker: symbolName,
-      exchange: "KINE",
+      exchange: "FLUX",
       minmov: 1,
       pricescale: 100000000,
       has_intraday: true,

@@ -9,7 +9,7 @@ const AboutUs = () => {
       <section className="py-16 md:py-24 px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">About <span className="text-[#F88726]">KINE</span></h1>
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">About <span className="text-[#F88726]">FLUX</span></h1>
             <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
               Your trusted partner in the world of cryptocurrency trading and investment
             </p>
@@ -19,7 +19,7 @@ const AboutUs = () => {
             <div className="flex-1">
               <h2 className="text-3xl font-bold mb-6">Our <span className="text-[#F88726]">Mission</span></h2>
               <p className="text-lg text-gray-300 mb-6">
-                At KINE, we're on a mission to make cryptocurrency trading accessible, secure, and efficient for everyone. 
+                At FLUX, we're on a mission to make cryptocurrency trading accessible, secure, and efficient for everyone. 
                 We believe in the transformative power of blockchain technology and digital assets to create a more 
                 inclusive and transparent financial system.
               </p>
@@ -90,7 +90,7 @@ const AboutUs = () => {
             <div className="flex-1">
               <h2 className="text-3xl font-bold mb-6">Global <span className="text-[#F88726]">Presence</span></h2>
               <p className="text-lg text-gray-300 mb-6">
-                KINE operates globally with a presence in major financial hubs across Asia, Europe, and the Americas. 
+                FLUX operates globally with a presence in major financial hubs across Asia, Europe, and the Americas. 
                 Our diverse team works around the clock to provide 24/7 support and ensure seamless trading experiences 
                 for users worldwide.
               </p>
@@ -109,7 +109,7 @@ const AboutUs = () => {
       {/* CTA Section */}
       <section className="py-16 md:py-24 px-4">
         <div className="container mx-auto max-w-6xl text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Join the <span className="text-[#F88726]">KINE</span> Community</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">Join the <span className="text-[#F88726]">FLUX</span> Community</h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
             Start your crypto journey with a platform you can trust. Sign up today and experience 
             the next generation of cryptocurrency trading.

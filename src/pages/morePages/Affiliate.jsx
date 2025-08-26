@@ -106,7 +106,7 @@ const Affiliate = () => {
       number: 2,
       title: "Spread the word",
       label: "Spread the word",
-      description: "Share your affiliate links or codes with your friends and community, or promote KINE via social media or any other platform.",
+      description: "Share your affiliate links or codes with your friends and community, or promote FLUX via social media or any other platform.",
       hasUnderReviewBadge: false,
       illustration: HowItUse2
     },
@@ -114,7 +114,7 @@ const Affiliate = () => {
       number: 3,
       title: "Earn commission",
       label: "Earn commission",
-      description: "Promote KINE via social media or any other platforms, and you can earn up to 50% of your friends' trading fees.",
+      description: "Promote FLUX via social media or any other platforms, and you can earn up to 50% of your friends' trading fees.",
       hasUnderReviewBadge: true,
       illustration: HowItUse3
     }
@@ -139,9 +139,9 @@ const Affiliate = () => {
   <div className="container">
     <div className="hero-content">
       <div className="hero-text">
-        <h1>Monetize your<br />influence with<br />KINE</h1>
+        <h1>Monetize your<br />influence with<br />FLUX</h1>
         <p className="hero-subheading">
-          Are you an influencer or a content creator who shares a passion for crypto? Turn your influence into affluence and earn money by joining the KINE Affiliate Program!
+          Are you an influencer or a content creator who shares a passion for crypto? Turn your influence into affluence and earn money by joining the FLUX Affiliate Program!
         </p>
         {/* Apply Now Button */}
         <div className="hero-cta">

@@ -11,7 +11,7 @@ const Legal = () => {
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Licenses, Registrations and Other Legal Matters</h1>
             <h2 className="text-2xl font-semibold text-[#F88726] mb-6">Licenses and Registrations</h2>
             <p className="text-lg text-gray-300 mb-8 leading-relaxed">
-              KINE is committed to working closely and collaboratively with regulators from around the world. KINE currently holds the following regulatory licenses, registrations and/or other legal matters:
+              FLUX is committed to working closely and collaboratively with regulators from around the world. FLUX currently holds the following regulatory licenses, registrations and/or other legal matters:
             </p>
           </div>
         </div>
@@ -29,11 +29,11 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#F88726]">• France</h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  KINE Markets Ltd has been granted registration as a <a href="https://www.amf-france.org/en" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Digital Asset Service Provider (DASP)</a> by the <a href="https://www.amf-france.org/en" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Autorité des Marchés Financiers (AMF)</a>, 
+                  FLUX Markets Ltd has been granted registration as a <a href="https://www.amf-france.org/en" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Digital Asset Service Provider (DASP)</a> by the <a href="https://www.amf-france.org/en" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Autorité des Marchés Financiers (AMF)</a>, 
                   French financial services authority (Registration number F202).
                 </p>
                 <p>
-                  KINE France Ltd will provide the following regulated services in France: digital assets custody services; exchange of digital assets for legal tender; exchange of 
+                  FLUX France Ltd will provide the following regulated services in France: digital assets custody services; exchange of digital assets for legal tender; exchange of 
                   digital assets; operating of a trading platform for digital assets.
                 </p>
               </div>
@@ -44,7 +44,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#F88726]">• Lithuania</h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  KINE UAB S.A. has been granted a <a href="https://www.lb.lt/en/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Virtual Asset Service Provider (VASP)</a> registration by the <a href="https://www.registrucentras.lt/en/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Lithuanian State Enterprise Centre of Registers</a> under MoF01. 
+                  FLUX UAB S.A. has been granted a <a href="https://www.lb.lt/en/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Virtual Asset Service Provider (VASP)</a> registration by the <a href="https://www.registrucentras.lt/en/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Lithuanian State Enterprise Centre of Registers</a> under MoF01. 
                   The registration enables the provision of the following regulated services in Lithuania: digital assets custody services; exchange of digital assets for legal tender; exchange of 
                   digital assets for other digital assets; execution of orders for digital assets on behalf of third parties; market-making.
                 </p>
@@ -56,7 +56,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#F88726]">• Poland</h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  KINE (Poland) Sp.z.o.o has obtained a <a href="#" className="text-[#F88726] underline hover:text-orange-400">Virtual Asset Service Provider (VASP)</a> registration for the Republic of Lithuania administered by the 
+                  FLUX (Poland) Sp.z.o.o has obtained a <a href="#" className="text-[#F88726] underline hover:text-orange-400">Virtual Asset Service Provider (VASP)</a> registration for the Republic of Lithuania administered by the 
                   State Enterprise Centre of Registers under Ministry of Finance (Registration number: 306511623). The registration enables the provision of digital assets services including 
                   custody services, exchange services and operating a digital assets trading platform.
                 </p>
@@ -68,7 +68,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#F88726]">• Italy</h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  KINE (Italy) S.r.l obtained authorization from the Organismo per la gestione degli elenchi degli agenti in attività finanziaria e dei mediatori creditizi (OAM) 
+                  FLUX (Italy) S.r.l obtained authorization from the Organismo per la gestione degli elenchi degli agenti in attività finanziaria e dei mediatori creditizi (OAM) 
                   for the Republic of Lithuania administered by the State Enterprise Centre of Registers under Ministry of Finance (Registration number: PSV-215). The registration enables 
                   the provision of digital assets services including custody services, exchange services and operating a digital assets trading platform.
                 </p>
@@ -80,7 +80,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#F88726]">• Spain</h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  KINE (Spain) Technologies, has obtained a <a href="https://www.bde.es/f/webbde/INF/MenuHorizontal/Normativa/Circulares_y_guias_especializadas/Ficheros/Circular_1_2021_en.pdf" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Virtual Asset Service Provider (VASP)</a> license under PSAV from the 
+                  FLUX (Spain) Technologies, has obtained a <a href="https://www.bde.es/f/webbde/INF/MenuHorizontal/Normativa/Circulares_y_guias_especializadas/Ficheros/Circular_1_2021_en.pdf" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Virtual Asset Service Provider (VASP)</a> license under PSAV from the 
                   <a href="https://www.bde.es/wbe/en/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Banco de España (Bank of Spain)</a> for digital asset service provision. 
                   The registration enables business activities throughout the EEA under applicable regulations for digital asset services including trading and custody activities on its platform.
                 </p>
@@ -92,7 +92,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#F88726]">• Kazakhstan</h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  The KINE Group entities have been granted a category "A" type 1 license at an <a href="#" className="text-[#F88726] underline hover:text-orange-400">Astana International Financial Centre</a> by the Astana Financial Services 
+                  The FLUX Group entities have been granted a category "A" type 1 license at an <a href="#" className="text-[#F88726] underline hover:text-orange-400">Astana International Financial Centre</a> by the Astana Financial Services 
                   Authority (AFSA) to conduct digital asset activities in respect of the regulated activities of Operating a Multilateral Trading Facility (MTF), 
                   Providing Custody and related services.
                 </p>
@@ -104,13 +104,13 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#F88726]">• Australia</h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  KINE Australia Derivatives Pty Ltd holds an <a href="https://asic.gov.au/for-business/your-business/financial-services/afsl/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Australian Financial Services License</a> (AFSL) to provide 
+                  FLUX Australia Derivatives Pty Ltd holds an <a href="https://asic.gov.au/for-business/your-business/financial-services/afsl/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Australian Financial Services License</a> (AFSL) to provide 
                   derivative intermediary services to <a href="https://asic.gov.au/regulatory-resources/financial-services/giving-financial-product-advice/wholesale-and-retail-clients/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">wholesale clients</a>. AFSL 001317. 
-                  KINE Australia and its <a href="https://asic.gov.au/for-business/your-business/financial-services/afsl/authorised-representatives/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">authorised representatives</a> are subject to limited regulatory oversight under AFSL. 
+                  FLUX Australia and its <a href="https://asic.gov.au/for-business/your-business/financial-services/afsl/authorised-representatives/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">authorised representatives</a> are subject to limited regulatory oversight under AFSL. 
                   Further details about AFSL can be obtained from <a href="https://asic.gov.au/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">ASIC's website</a>.
                 </p>
                 <p>
-                  KINE (Australia) is registered as a reporting entity with the <a href="https://www.austrac.gov.au/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Australian Transaction Reports and Analysis Centre (AUSTRAC)</a> 
+                  FLUX (Australia) is registered as a reporting entity with the <a href="https://www.austrac.gov.au/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Australian Transaction Reports and Analysis Centre (AUSTRAC)</a> 
                   and holds DCE registration 100789820-001.
                 </p>
               </div>
@@ -122,7 +122,7 @@ const Legal = () => {
               <div className="space-y-4 text-gray-300">
                 <p>
                   As per <a href="https://www.mas.gov.sg/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Monetary Authority of Singapore</a> (MAS) <a href="https://www.mas.gov.sg/regulation/guidelines" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Guidelines (FSG-G01)</a> for the provision 
-                  of <a href="https://www.mas.gov.sg/regulation/explainers/explainer-on-digital-payment-tokens" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">digital payment token services</a>, KINE operates under the regulatory framework established for digital asset service providers in Singapore.
+                  of <a href="https://www.mas.gov.sg/regulation/explainers/explainer-on-digital-payment-tokens" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">digital payment token services</a>, FLUX operates under the regulatory framework established for digital asset service providers in Singapore.
                 </p>
               </div>
             </div>
@@ -132,7 +132,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#F88726]">• British Virgin Islands</h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  KINE has obtained the required <a href="https://www.bvifsc.vg/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Virtual Asset Service Providers</a> (VASP) registration in <a href="https://www.bvifsc.vg/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">British Virgin Islands</a> and is operating through its related services under the oversight of the BVI Financial Services Commission.
+                  FLUX has obtained the required <a href="https://www.bvifsc.vg/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Virtual Asset Service Providers</a> (VASP) registration in <a href="https://www.bvifsc.vg/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">British Virgin Islands</a> and is operating through its related services under the oversight of the BVI Financial Services Commission.
                 </p>
               </div>
             </div>
@@ -142,8 +142,8 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#F88726]">• Dubai</h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  KINE Global Entity has been granted a Category 1 License by the <a href="https://www.vara.ae/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Dubai Virtual Assets Regulatory Authority (VARA)</a> to enable the business to operate the VARA 
-                  KINE platform to licensed Virtual Assets Activities Providers.
+                  FLUX Global Entity has been granted a Category 1 License by the <a href="https://www.vara.ae/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Dubai Virtual Assets Regulatory Authority (VARA)</a> to enable the business to operate the VARA 
+                  FLUX platform to licensed Virtual Assets Activities Providers.
                 </p>
               </div>
             </div>
@@ -153,7 +153,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#F88726]">• Kazakhstan</h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  The KINE Group entities have been granted a category "A" type 1 license at an <a href="https://aifc.kz/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Astana International Financial Centre</a> by the <a href="https://www.afsa.kz/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Astana Financial Services Authority (AFSA)</a> to conduct digital asset activities in respect of the regulated activities of Operating a Multilateral Trading Facility (MTF), 
+                  The FLUX Group entities have been granted a category "A" type 1 license at an <a href="https://aifc.kz/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Astana International Financial Centre</a> by the <a href="https://www.afsa.kz/" className="text-[#F88726] underline hover:text-orange-400" target="_blank" rel="noopener noreferrer">Astana Financial Services Authority (AFSA)</a> to conduct digital asset activities in respect of the regulated activities of Operating a Multilateral Trading Facility (MTF), 
                   Providing Custody and related services.
                 </p>
               </div>
@@ -169,11 +169,11 @@ const Legal = () => {
                   <h3 className="text-xl font-bold mb-4">Regulatory Authorities</h3>
                   <div className="space-y-4 text-gray-300">
                     <p>
-                      KINE operates under the oversight of various regulatory authorities across multiple jurisdictions. Our commitment to regulatory compliance ensures that we meet the highest standards 
+                      FLUX operates under the oversight of various regulatory authorities across multiple jurisdictions. Our commitment to regulatory compliance ensures that we meet the highest standards 
                       of consumer protection and market integrity.
                     </p>
                     <p>
-                      Please note that the regulatory landscape for digital assets is evolving rapidly, and KINE continues to monitor developments and adapt its compliance framework accordingly.
+                      Please note that the regulatory landscape for digital assets is evolving rapidly, and FLUX continues to monitor developments and adapt its compliance framework accordingly.
                     </p>
                   </div>
                 </div>
@@ -183,10 +183,10 @@ const Legal = () => {
                   <h3 className="text-xl font-bold mb-4">Service Restrictions</h3>
                   <div className="space-y-4 text-gray-300">
                     <p>
-                      KINE services may not be available in all jurisdictions. We maintain a list of restricted countries and territories where our services are not offered due to regulatory or business considerations.
+                      FLUX services may not be available in all jurisdictions. We maintain a list of restricted countries and territories where our services are not offered due to regulatory or business considerations.
                     </p>
                     <p>
-                      Users are responsible for ensuring their compliance with local laws and regulations. KINE reserves the right to restrict or terminate access to services based on jurisdiction-specific requirements.
+                      Users are responsible for ensuring their compliance with local laws and regulations. FLUX reserves the right to restrict or terminate access to services based on jurisdiction-specific requirements.
                     </p>
                   </div>
                 </div>

@@ -84,7 +84,7 @@ const articleData = {
           },
           {
             number: 3,
-            content: 'Choose your withdrawal method: <strong class="text-orange-600">On-chain withdrawal</strong> (to external wallet) or <strong class="text-orange-600">Internal withdrawal</strong> (to another Kine account).'
+            content: 'Choose your withdrawal method: <strong class="text-orange-600">On-chain withdrawal</strong> (to external wallet) or <strong class="text-orange-600">Internal withdrawal</strong> (to another Flux account).'
           },
           {
             number: 4,
@@ -305,11 +305,11 @@ const articleData = {
         steps: [
           {
             number: 1,
-            content: '<strong class="text-green-600">Deposits are generally free</strong> on most platforms, including Kine. You only pay the network fee from your sending wallet.'
+            content: '<strong class="text-green-600">Deposits are generally free</strong> on most platforms, including Flux. You only pay the network fee from your sending wallet.'
           },
           {
             number: 2,
-            content: 'The network fee is paid to miners/validators and is <strong class="text-orange-600">not collected by Kine</strong>.'
+            content: 'The network fee is paid to miners/validators and is <strong class="text-orange-600">not collected by Flux</strong>.'
           },
           {
             number: 3,
@@ -364,7 +364,7 @@ const articleData = {
     ],
     notes: [
       'Fees are subject to change based on network conditions and platform policies.',
-      'Internal transfers (between Kine accounts) may have different fee structures.',
+      'Internal transfers (between Flux accounts) may have different fee structures.',
       'Always check the current fee before confirming your transaction.',
       'Choose networks with lower fees for smaller amounts to maximize efficiency.'
     ]

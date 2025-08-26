@@ -65,18 +65,18 @@ const defaultConfig = {
     referralIllustration: '/public/images/referral-illustration.svg'
   },
   names: {
-    siteName: 'KINE',
-    siteNameLong: 'KINE COIN',
+    siteName: 'FLUX',
+    siteNameLong: 'FLUX COIN',
     tagline: 'Best Cryptocurrency Trading Platform for Futures & Spot',
     taglineShort: 'Your trusted crypto partner',
     companyName: 'KINECoin Investments LLC',
-    companyNameLegal: 'Kinecoin.co',
+    companyNameLegal: 'Fluxcoin.co',
     supportEmail: 'support@KINEcoin.tech',
     contactEmail: 'contact@KINEcoin.tech',
-    contactPhone: '+1-800-KINE-COIN',
+    contactPhone: '+1-800-FLUX-COIN',
     websiteUrl: 'https://KINEcoin.tech',
-    description: 'KINE is a secure, fast, and user-friendly cryptocurrency trading platform for spot and futures trading.',
-    metaKeywords: 'cryptocurrency, trading, bitcoin, ethereum, altcoins, futures, spot, exchange, KINE, crypto platform',
+    description: 'FLUX is a secure, fast, and user-friendly cryptocurrency trading platform for spot and futures trading.',
+    metaKeywords: 'cryptocurrency, trading, bitcoin, ethereum, altcoins, futures, spot, exchange, FLUX, crypto platform',
     address: 'California, United States',
     socialMedia: {
       twitter: '@KINECoin',
@@ -92,8 +92,8 @@ const defaultConfig = {
     downloadQR: '',
     appStoreQR: '',
     playStoreQR: '',
-    downloadQRUrl: 'https://api.kinecoin.co/api/v1/download-kine-apk',
-    appStoreQRUrl: 'https://apps.apple.com/app/KINE-coin',
+    downloadQRUrl: 'https://api.kinecoin.co/api/v1/download-flux-apk',
+    appStoreQRUrl: 'https://apps.apple.com/app/FLUX-coin',
     playStoreQRUrl: 'https://play.google.com/store/apps/details?id=com.KINEcoin',
     iosDownloadUrl: 'https://api.kinecoin.co/api/v1/download-ios',
     androidDownloadUrl: 'https://api.kinecoin.co/api/v1/download-apk'
@@ -383,14 +383,14 @@ export const WhiteLabelProvider = ({ children }) => {
       metadata: {
         exportedAt: new Date().toISOString(),
         version: '1.0.0',
-        source: 'KINE Admin Panel'
+        source: 'FLUX Admin Panel'
       }
     };
     
     const dataStr = JSON.stringify(exportData, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = `KINE-config-${new Date().toISOString().split('T')[0]}.json`;
+    const exportFileDefaultName = `FLUX-config-${new Date().toISOString().split('T')[0]}.json`;
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
