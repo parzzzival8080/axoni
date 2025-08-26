@@ -208,6 +208,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
         background-color: #000000 !important;
       }
     `;
+    //comment here
       document.head.appendChild(styleElement);
 
       // Create custom datafeed with 240-minute support
