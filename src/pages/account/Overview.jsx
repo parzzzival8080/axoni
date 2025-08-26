@@ -74,7 +74,7 @@ const Overview = () => {
         try {
           // API key - same as used in Assets.jsx
           const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
-          const apiUrl = `https://api.kinecoin.co/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
+          const apiUrl = `https://api.fluxcoin.tech/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
 
           console.log("Fetching wallet data from:", apiUrl);
           const walletResponse = await axios.get(apiUrl);

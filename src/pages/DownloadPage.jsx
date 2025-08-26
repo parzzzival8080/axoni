@@ -27,14 +27,14 @@ const DownloadPage = () => {
     // You can customize alternative URLs per store if needed
     const url =
       noticeStore === "appstore"
-        ? "https://api.kinecoin.co/api/v1/download-flux-ios"
-        : "https://api.kinecoin.co/api/v1/download-flux-apk";
+        ? "https://api.fluxcoin.tech/api/v1/download-flux-ios"
+        : "https://api.fluxcoin.tech/api/v1/download-flux-apk";
 
     window.open(url, "_blank");
     setIsNoticeOpen(false);
   };
 
-  const appDownloadUrl = "https://api.kinecoin.co/api/v1/download-flux-apk";
+  const appDownloadUrl = "https://api.fluxcoin.tech/api/v1/download-flux-apk";
 
   const handleAppDownload = () => {
     const directDownloadUrl = appDownloadUrl;

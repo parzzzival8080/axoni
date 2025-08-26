@@ -228,7 +228,7 @@ const Navbar = () => {
   };
 
   const appDownloadUrl =
-    "https://api.kinecoin.co/api/v1/download-flux-apk";
+    "https://api.fluxcoin.tech/api/v1/download-flux-apk";
 
   const openComingSoon = () => setIsComingSoonOpen(true);
   const closeComingSoon = () => setIsComingSoonOpen(false);

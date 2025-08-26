@@ -72,7 +72,7 @@ const Trading = () => {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch('https://api.kinecoin.co/api/v1/coins?apikey=A20RqFwVktRxxRqrKBtmi6ud');
+        const res = await fetch('https://api.fluxcoin.tech/api/v1/coins?apikey=A20RqFwVktRxxRqrKBtmi6ud');
         const data = await res.json();
         if (!isMounted) return;
         if (Array.isArray(data)) {

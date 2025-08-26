@@ -61,10 +61,10 @@ const Market = () => {
 
       let url;
       if (marketType === "ALL") {
-        url = `https://api.kinecoin.co/api/v1/coins?apikey=A20RqFwVktRxxRqrKBtmi6ud`;
+        url = `https://api.fluxcoin.tech/api/v1/coins?apikey=A20RqFwVktRxxRqrKBtmi6ud`;
       } else {
         const apiMarketType = marketType === "POS" ? "is_spot" : "is_future";
-        url = `https://api.kinecoin.co/api/v1/fetch-market?apikey=A20RqFwVktRxxRqrKBtmi6ud&pair_type=All&market_type=${apiMarketType}`;
+        url = `https://api.fluxcoin.tech/api/v1/fetch-market?apikey=A20RqFwVktRxxRqrKBtmi6ud&pair_type=All&market_type=${apiMarketType}`;
       }
 
       try {

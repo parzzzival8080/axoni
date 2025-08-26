@@ -76,7 +76,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
         return;
       }
       
-      const apiUrl = `https://api.kinecoin.co/api/v1/user-futures/${uid}?apikey=${apiKey}`;
+      const apiUrl = `https://api.fluxcoin.tech/api/v1/user-futures/${uid}?apikey=${apiKey}`;
       const response = await axios.get(apiUrl);
 
       if (response.data && Array.isArray(response.data)) {

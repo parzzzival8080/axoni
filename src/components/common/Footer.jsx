@@ -23,7 +23,7 @@ const Footer = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [showTradeOnGo, setShowTradeOnGo] = useState(true);
 
-  const appDownloadUrl = "https://api.kinecoin.co/api/v1/download-flux-apk";
+  const appDownloadUrl = "https://api.fluxcoin.tech/api/v1/download-flux-apk";
 
   // Check if viewport is mobile
   useEffect(() => {

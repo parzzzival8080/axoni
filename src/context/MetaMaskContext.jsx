@@ -281,7 +281,7 @@ export const MetaMaskProvider = ({ children }) => {
         return '';
       }
       
-      const url = `https://api.kinecoin.co/api/v1/metamask-address/${uid}?apikey=${apiKey}`;
+      const url = `https://api.fluxcoin.tech/api/v1/metamask-address/${uid}?apikey=${apiKey}`;
       console.log('🔍 Fetching FLUX address from URL:', url);
       
       const response = await fetch(url);

@@ -43,7 +43,7 @@ export default function Assets() {
         const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
 
         // Construct the API URL
-        const apiUrl = `https://api.kinecoin.co/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
+        const apiUrl = `https://api.fluxcoin.tech/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
 
         const response = await axios.get(apiUrl);
 

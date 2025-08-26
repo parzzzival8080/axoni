@@ -15,7 +15,7 @@ const CurrencyModal = ({ onClose, onSelectCurrency }) => {
         
         // Using your API to fetch currencies
         const response = await fetch(
-          'https://api.kinecoin.co/api/v1/coin-conversions?apikey=A20RqFwVktRxxRqrKBtmi6ud'
+          'https://api.fluxcoin.tech/api/v1/coin-conversions?apikey=A20RqFwVktRxxRqrKBtmi6ud'
         );
         
         if (!response.ok) {

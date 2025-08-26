@@ -78,7 +78,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
     return {
       symbol: formattedSymbol,
       interval: interval,
-      datafeedUrl: "https://api.kinecoin.co/api/v1",
+      datafeedUrl: "https://api.fluxcoin.tech/api/v1",
       libraryPath: "/charting_library/",
       chartsStorageUrl: "https://saveload.tradingview.com",
       chartsStorageApiVersion: "1.1",
@@ -456,7 +456,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
           button.addEventListener("click", () => {
             console.log("API Check button clicked");
             // Example of checking API status
-            fetch("https://api.kinecoin.co/api/v1/status")
+            fetch("https://api.fluxcoin.tech/api/v1/status")
               .then((response) => response.json())
               .then((data) => {
                 console.log("API Status:", data);
