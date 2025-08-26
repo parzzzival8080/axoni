@@ -135,7 +135,7 @@ const Navbar = () => {
         } else if (userId) {
           try {
             const response = await axios.get(
-              `https://django.kinecoin.co/api/user_account/getUserInformation/?user_id=${userId}`,
+              `https://django.fluxcoin.tech/api/user_account/getUserInformation/?user_id=${userId}`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
@@ -375,7 +375,7 @@ const Navbar = () => {
     <header className="navbar-header">
       <div className="header-left">
         <Link to="/" className="logo">
-          <img src="/assets/logo/flux-icon.png" alt="Logo" />
+          <img src="/assets/logo/flux-logo.png" alt="Logo" />
         </Link>
         <nav className="desktop-nav">
           <div className="nav-item">

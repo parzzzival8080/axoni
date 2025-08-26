@@ -70,7 +70,7 @@ const defaultConfig = {
     tagline: 'Best Cryptocurrency Trading Platform for Futures & Spot',
     taglineShort: 'Your trusted crypto partner',
     companyName: 'KINECoin Investments LLC',
-    companyNameLegal: 'Fluxcoin.co',
+    companyNameLegal: 'Fluxcoin.tech',
     supportEmail: 'support@KINEcoin.tech',
     contactEmail: 'contact@KINEcoin.tech',
     contactPhone: '+1-800-FLUX-COIN',

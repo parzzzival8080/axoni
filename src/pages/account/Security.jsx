@@ -29,7 +29,7 @@ const Security = () => {
           return;
         }
         const response = await axios.get(
-          `https://django.kinecoin.co/api/user_account/getUserInformation/?user_id=${userId}`
+          `https://django.fluxcoin.tech/api/user_account/getUserInformation/?user_id=${userId}`
         );
         if (response.data && response.data.user) {
           setProfileData(response.data);

@@ -22,9 +22,9 @@ import axios from "axios";
 // Update the API_CONFIG with CORS headers
 const API_CONFIG = {
   KYC_STATUS_BASE_URL: "https://api.fluxcoin.tech/api/v1/kyc-status",
-  KYC_UPLOAD_URL: "https://django.kinecoin.co/api/user_account/upload-kyc",
+  KYC_UPLOAD_URL: "https://django.fluxcoin.tech/api/user_account/upload-kyc",
   KYC_SEND_DATA_URL:
-    "https://django.kinecoin.co/api/user_account/send-kyc-data",
+    "https://django.fluxcoin.tech/api/user_account/send-kyc-data",
   API_KEY: "A20RqFwVktRxxRqrKBtmi6ud",
   MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
   COMPRESSION_THRESHOLD: 2 * 1024 * 1024, // 2MB

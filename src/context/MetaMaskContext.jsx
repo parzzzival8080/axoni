@@ -243,7 +243,7 @@ export const MetaMaskProvider = ({ children }) => {
       if (!uid && user_id && authToken) {
         console.log('🔍 No UID found, attempting to fetch from user info API');
         try {
-          const userInfoUrl = `https://django.kinecoin.co/api/user_account/getUserInformation/?user_id=${user_id}`;
+          const userInfoUrl = `https://django.fluxcoin.tech/api/user_account/getUserInformation/?user_id=${user_id}`;
           console.log('🔍 Fetching user info from:', userInfoUrl);
           console.log('🔍 Auth token (first 20 chars):', authToken?.substring(0, 20) + '...');
           

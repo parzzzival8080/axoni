@@ -49,7 +49,7 @@ const Overview = () => {
         try {
           console.log("Fetching profile data...");
           const profileResponse = await axios.get(
-            `https://django.kinecoin.co/api/user_account/getUserInformation/?user_id=${uid}`,
+            `https://django.fluxcoin.tech/api/user_account/getUserInformation/?user_id=${uid}`,
           );
 
           if (

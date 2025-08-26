@@ -74,7 +74,7 @@ const Footer = () => {
               className="h-12 w-auto object-contain"
             />
           </div>
-          <p className="copyright">©2025 Fluxcoin.co | All Rights Reserved</p>
+          <p className="copyright">©2025 Fluxcoin.tech | All Rights Reserved</p>
         </div>
 
         {/* Language Selector */}
