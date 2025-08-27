@@ -92,6 +92,13 @@ const SignUpPage = () => {
       // Fallback to a minimal country list if API fails
       const fallbackCountries = [
         {
+          name: { common: "Australia", official: "Australia" },
+          flags: {
+            png: "https://flagcdn.com/w320/au.png",
+            svg: "https://flagcdn.com/au.svg",
+          },
+        },
+        {
           name: { common: "Canada", official: "Canada" },
           flags: {
             png: "https://flagcdn.com/w320/ca.png",
@@ -113,6 +120,13 @@ const SignUpPage = () => {
           },
         },
         {
+          name: { common: "Japan", official: "Japan" },
+          flags: {
+            png: "https://flagcdn.com/w320/jp.png",
+            svg: "https://flagcdn.com/jp.svg",
+          },
+        },
+        {
           name: { common: "Malaysia", official: "Malaysia" },
           flags: {
             png: "https://flagcdn.com/w320/my.png",
@@ -120,17 +134,10 @@ const SignUpPage = () => {
           },
         },
         {
-          name: { common: "Vietnam", official: "Vietnam" },
+          name: { common: "Netherlands", official: "Netherlands" },
           flags: {
-            png: "https://flagcdn.com/w320/vn.png",
-            svg: "https://flagcdn.com/vn.svg",
-          },
-        },
-        {
-          name: { common: "Australia", official: "Australia" },
-          flags: {
-            png: "https://flagcdn.com/w320/au.png",
-            svg: "https://flagcdn.com/au.svg",
+            png: "https://flagcdn.com/w320/nl.png",
+            svg: "https://flagcdn.com/nl.svg",
           },
         },
         {
@@ -138,13 +145,6 @@ const SignUpPage = () => {
           flags: {
             png: "https://flagcdn.com/w320/nz.png",
             svg: "https://flagcdn.com/nz.svg",
-          },
-        },
-        {
-          name: { common: "Netherlands", official: "Netherlands" },
-          flags: {
-            png: "https://flagcdn.com/w320/nl.png",
-            svg: "https://flagcdn.com/nl.svg",
           },
         },
         {
@@ -179,6 +179,34 @@ const SignUpPage = () => {
           },
         },
         {
+          name: { common: "Taiwan", official: "Republic of China (Taiwan)" },
+          flags: {
+            png: "https://flagcdn.com/w320/tw.png",
+            svg: "https://flagcdn.com/tw.svg",
+          },
+        },
+        {
+          name: { common: "Thailand", official: "Kingdom of Thailand" },
+          flags: {
+            png: "https://flagcdn.com/w320/th.png",
+            svg: "https://flagcdn.com/th.svg",
+          },
+        },
+        {
+          name: { common: "Tunisia", official: "Tunisian Republic" },
+          flags: {
+            png: "https://flagcdn.com/w320/tn.png",
+            svg: "https://flagcdn.com/tn.svg",
+          },
+        },
+        {
+          name: { common: "Turkey", official: "Republic of Türkiye" },
+          flags: {
+            png: "https://flagcdn.com/w320/tr.png",
+            svg: "https://flagcdn.com/tr.svg",
+          },
+        },
+        {
           name: {
             common: "United Arab Emirates",
             official: "United Arab Emirates",
@@ -208,7 +236,15 @@ const SignUpPage = () => {
             svg: "https://flagcdn.com/us.svg",
           },
         },
+        {
+          name: { common: "Vietnam", official: "Vietnam" },
+          flags: {
+            png: "https://flagcdn.com/w320/vn.png",
+            svg: "https://flagcdn.com/vn.svg",
+          },
+        },
       ];
+
       setCountries(fallbackCountries);
       setFilteredCountries(fallbackCountries);
     } finally {
@@ -1539,7 +1575,9 @@ const SignUpPage = () => {
                     defaultValue="+1"
                   >
                     <option value="+376">+376 (AD)</option>
+                    <option value="+374">+374 (AM)</option>
                     <option value="+61">+61 (AU)</option>
+                    <option value="+43">+43 (AT)</option>
                     <option value="+994">+994 (AZ)</option>
                     <option value="+32">+32 (BE)</option>
                     <option value="+375">+375 (BY)</option>
@@ -1553,6 +1591,7 @@ const SignUpPage = () => {
                     <option value="+995">+995 (GE)</option>
                     <option value="+49">+49 (DE)</option>
                     <option value="+30">+30 (GR)</option>
+                    <option value="+385">+385 (HR)</option>
                     <option value="+36">+36 (HU)</option>
                     <option value="+354">+354 (IS)</option>
                     <option value="+91">+91 (IN)</option>
@@ -1562,7 +1601,6 @@ const SignUpPage = () => {
                     <option value="+82">+82 (KR)</option>
                     <option value="+352">+352 (LU)</option>
                     <option value="+389">+389 (MK)</option>
-                    <option value="+356">+356 (MT)</option>
                     <option value="+373">+373 (MD)</option>
                     <option value="+377">+377 (MC)</option>
                     <option value="+382">+382 (ME)</option>
@@ -1578,12 +1616,12 @@ const SignUpPage = () => {
                     <option value="+34">+34 (ES)</option>
                     <option value="+46">+46 (SE)</option>
                     <option value="+41">+41 (CH)</option>
+                    <option value="+66">+66 (TH)</option>
+                    <option value="+886">+886 (TW)</option>
+                    <option value="+216">+216 (TN)</option>
+                    <option value="+90">+90 (TR)</option>
                     <option value="+44">+44 (GB)</option>
                     <option value="+84">+84 (VN)</option>
-                    <option value="+374">+374 (AM)</option>
-                    <option value="+43">+43 (AT)</option>
-                    <option value="+385">+385 (HR)</option>
-                    <option value="+373">+373 (MD)</option>
                   </select>
                   <input
                     type="tel"
