@@ -6,6 +6,6 @@ Allow: /
 # Disallow: /admin/
 # Disallow: /private/
 
-Sitemap: https://kinecoin.co/sitemap.xml
+Sitemap: https://fluxcoin.tech/sitemap.xml
 er-agent: *
 Disallow:

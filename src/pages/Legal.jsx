@@ -199,9 +199,9 @@ const Legal = () => {
                       For questions regarding our regulatory status, licensing, or compliance matters, please contact our legal department:
                     </p>
                     <ul className="space-y-2 pl-6">
-                      <li>• Legal Department: <a href="mailto:legal@kinecoin.co" className="text-[#F88726] underline hover:text-orange-400">legal@kinecoin.co</a></li>
-                      <li>• Compliance Team: <a href="mailto:compliance@kinecoin.co" className="text-[#F88726] underline hover:text-orange-400">compliance@kinecoin.co</a></li>
-                      <li>• General Support: <a href="mailto:support@kinecoin.co" className="text-[#F88726] underline hover:text-orange-400">support@kinecoin.co</a></li>
+                      <li>• Legal Department: <a href="mailto:legal@fluxcoin.tech" className="text-[#F88726] underline hover:text-orange-400">legal@fluxcoin.tech</a></li>
+                      <li>• Compliance Team: <a href="mailto:compliance@fluxcoin.tech" className="text-[#F88726] underline hover:text-orange-400">compliance@fluxcoin.tech</a></li>
+                      <li>• General Support: <a href="mailto:support@fluxcoin.tech" className="text-[#F88726] underline hover:text-orange-400">support@fluxcoin.tech</a></li>
                     </ul>
                   </div>
                 </div>

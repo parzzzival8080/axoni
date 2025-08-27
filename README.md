@@ -2,5 +2,5 @@
  
 </rewritten_file>
  
-# kinecoin-web
+# fluxcoin-web
 # flux-v2

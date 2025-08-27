@@ -291,7 +291,7 @@ const PrivacyPolicy = () => {
                 If you have any questions about this Privacy Policy, please contact our support team.
               </p>
               <div className="space-y-1 text-sm text-gray-600">
-                <p>Email: customerservice@kinecoin.co</p>
+                <p>Email: customerservice@fluxcoin.tech</p>
                 <p>Support Center: Available 24/7</p>
               </div>
             </div>
