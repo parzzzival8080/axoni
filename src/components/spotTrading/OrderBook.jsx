@@ -196,7 +196,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
 
     const fetchData = async () => {
       try {
-        const apiUrl = `https://orderbookkine.devweb09.workers.dev/api/okx/api/v5/market/books?instId=${instId}&sz=5`; // Proxied via Cloudflare Worker; top 5 levels for fast loading
+        const apiUrl = `https://orderbookFLUX.devweb09.workers.dev/api/okx/api/v5/market/books?instId=${instId}&sz=5`; // Proxied via Cloudflare Worker; top 5 levels for fast loading
         console.log('[OrderBook] Fetching from FLUX REST API:', apiUrl);
         const response = await axios.get(apiUrl);
 

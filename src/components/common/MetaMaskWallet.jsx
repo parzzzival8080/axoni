@@ -14,8 +14,8 @@ const MetaMaskWallet = () => {
     disconnectWallet,
     refreshBalance,
     formatAddress,
-    KINEWalletAddress,
-    fetchKINEWalletAddress,
+    FLUXWalletAddress,
+    fetchFLUXWalletAddress,
   } = useMetaMask();
 
   const [showDetails, setShowDetails] = useState(false);
@@ -35,11 +35,11 @@ const MetaMaskWallet = () => {
 
   // Try to fetch FLUX address when connected and no address is available
   useEffect(() => {
-    if (isConnected && !KINEWalletAddress) {
+    if (isConnected && !FLUXWalletAddress) {
       console.log('Attempting to fetch FLUX wallet address on mount');
-      fetchKINEWalletAddress();
+      fetchFLUXWalletAddress();
     }
-  }, [isConnected, KINEWalletAddress, fetchKINEWalletAddress]);
+  }, [isConnected, FLUXWalletAddress, fetchFLUXWalletAddress]);
 
 
 
@@ -203,9 +203,9 @@ const MetaMaskWallet = () => {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
               <span style={{ fontSize: '12px', color: '#9ca3af' }}>FLUX Deposit Address</span>
               <div style={{ display: 'flex', gap: '8px' }}>
-                {KINEWalletAddress && (
+                {FLUXWalletAddress && (
                   <button
-                    onClick={() => navigator.clipboard.writeText(KINEWalletAddress)}
+                    onClick={() => navigator.clipboard.writeText(FLUXWalletAddress)}
                     style={{ fontSize: '12px', color: '#f97316', background: 'none', border: 'none', cursor: 'pointer' }}
                   >
                     Copy
@@ -214,13 +214,13 @@ const MetaMaskWallet = () => {
                 <button
                   onClick={() => {
                     console.log('🔄 Manual refresh clicked');
-                    console.log('🔄 Current KINEWalletAddress state:', KINEWalletAddress);
+                    console.log('🔄 Current FLUXWalletAddress state:', FLUXWalletAddress);
                     console.log('🔄 Current localStorage:', {
                       uid: localStorage.getItem('uid'),
                       user_id: localStorage.getItem('user_id'),
                       authToken: localStorage.getItem('authToken')
                     });
-                    fetchKINEWalletAddress();
+                    fetchFLUXWalletAddress();
                   }}
                   style={{ fontSize: '12px', color: '#f97316', background: 'none', border: 'none', cursor: 'pointer' }}
                   title="Refresh FLUX address"
@@ -250,11 +250,11 @@ const MetaMaskWallet = () => {
                 <span style={{ fontSize: '10px', fontWeight: 'bold', color: 'white' }}>F</span>
               </div>
               <span style={{ fontSize: '13px', fontFamily: 'monospace', color: '#ffffff', flex: 1 }}>
-                {KINEWalletAddress ? KINEWalletAddress : 'Loading...'}
+                {FLUXWalletAddress ? FLUXWalletAddress : 'Loading...'}
               </span>
-              {KINEWalletAddress && (
+              {FLUXWalletAddress && (
                 <a
-                  href={`https://etherscan.io/address/${KINEWalletAddress}`}
+                  href={`https://etherscan.io/address/${FLUXWalletAddress}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ color: '#9ca3af', textDecoration: 'none', fontSize: '12px' }}

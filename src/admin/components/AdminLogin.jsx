@@ -73,7 +73,7 @@ const AdminLogin = ({ onLogin }) => {
             value={email}
             onChange={e => setEmail(e.target.value)}
             className="w-full px-3 py-2 bg-background border border-border rounded text-text placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent"
-            placeholder="admin@KINEcoin.tech"
+            placeholder="admin@FLUXcoin.tech"
             required
             autoFocus
           />
