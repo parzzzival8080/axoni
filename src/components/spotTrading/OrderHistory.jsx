@@ -91,6 +91,7 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
       side: (order.order_type || order.orde_type || '').toLowerCase(),
       price: parseFloat(order.price || order.amount || 0),
       amount: parseFloat(order.amount || 0),
+      total_in_usdt: parseFloat(order.total_in_usdt || 0),
       excecution_type: order.excecution_type || order.excecution_type || '',
       filled: '100%',
       total: parseFloat(order.account_balance || order.total || 0),
@@ -277,7 +278,7 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
                     <td>{order.excecution_type} ({order.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})</td>
                     <td>{order.amount.toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })}</td>
                     <td>{order.filled}</td>
-                    <td>{(order.amount	* order.price).toFixed(2)}</td>
+                    <td>{(order.total_in_usdt).toFixed(2)}</td>
                     <td>
                       <span className={
                         order.status.toLowerCase() === 'pending' ? 'pending-status' : 
