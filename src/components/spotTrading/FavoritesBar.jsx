@@ -84,7 +84,7 @@ const FavoriteItem = ({ coin, isActive, onClick, compact = false }) => {
       {/* Pair Name */}
       <div className="flex items-center text-sm font-medium text-white">
         {symbol}/{pairName}
-        <span className="ml-1 text-xs py-0.5 px-1 bg-[#F88726] rounded text-white font-medium">10x</span>
+        <span className="ml-1 text-xs py-0.5 px-1 bg-[#014EB2] rounded text-white font-medium">10x</span>
       </div>
       
   

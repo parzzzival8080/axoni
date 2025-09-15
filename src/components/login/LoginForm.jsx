@@ -535,7 +535,7 @@ const LoginForm = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-[#F88726] text-white font-medium py-3 rounded-md hover:bg-[#e66a00] transition-colors"
+                  className="w-full bg-[#014EB2] text-white font-medium py-3 rounded-md hover:bg-[#e66a00] transition-colors"
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Send OTP'}
@@ -572,7 +572,7 @@ const LoginForm = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-[#F88726] text-white font-medium py-3 rounded-md hover:bg-[#e66a00] transition-colors"
+                  className="w-full bg-[#014EB2] text-white font-medium py-3 rounded-md hover:bg-[#e66a00] transition-colors"
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Verify OTP'}
@@ -613,7 +613,7 @@ const LoginForm = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-[#F88726] text-white font-medium py-3 rounded-md hover:bg-[#e66a00] transition-colors"
+                  className="w-full bg-[#014EB2] text-white font-medium py-3 rounded-md hover:bg-[#e66a00] transition-colors"
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Reset Password'}
@@ -657,7 +657,7 @@ const LoginForm = () => {
 
             <button
               type="submit"
-              className="w-full bg-[#F88726] text-white font-bold py-3 px-4 rounded-full hover:bg-[#e66a00] transition-colors"
+              className="w-full bg-[#014EB2] text-white font-bold py-3 px-4 rounded-full hover:bg-[#e66a00] transition-colors"
               disabled={loading}
             >
               {loading ? 'Processing...' : showPassword ? 'Log in' : 'Next'}

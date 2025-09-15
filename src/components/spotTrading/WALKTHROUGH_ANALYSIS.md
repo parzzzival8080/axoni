@@ -44,7 +44,7 @@ Your `SpotTrading.jsx` page is well-structured with these key components:
 #### 2. `SpotTradingWalkthrough.css`
 - **Purpose**: Professional styling with animations
 - **Features**:
-  - Modern glass-morphism design matching your orange theme (#F88726)
+  - Modern glass-morphism design matching your orange theme (#014EB2)
   - Smooth animations and transitions
   - Pulse effects and highlight overlays
   - Responsive breakpoints for mobile/tablet

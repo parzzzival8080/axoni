@@ -32,7 +32,7 @@ const GetStarted = () => {
         <div className="flex justify-center px-4">
           <button 
             onClick={handleStartClick}
-            className="w-full max-w-[365px] h-[45px] sm:h-[50px] bg-[#F88726] hover:bg-[#e55a01] text-white font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#F88726] focus:ring-opacity-50 text-sm sm:text-base lg:text-lg flex items-center justify-center">
+            className="w-full max-w-[365px] h-[45px] sm:h-[50px] bg-[#014EB2] hover:bg-[#e55a01] text-white font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#014EB2] focus:ring-opacity-50 text-sm sm:text-base lg:text-lg flex items-center justify-center">
             START
           </button>
         </div>

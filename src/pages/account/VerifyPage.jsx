@@ -1138,7 +1138,7 @@ const VerifyPage = () => {
           </p>
           <Link
             to="/"
-            className="px-6 py-2 rounded-full bg-[#F88726] text-white font-semibold text-sm hover:bg-orange-600 transition shadow-lg"
+            className="px-6 py-2 rounded-full bg-[#014EB2] text-white font-semibold text-sm hover:bg-orange-600 transition shadow-lg"
             style={{ borderRadius: 9999 }}
           >
             Go to Home
@@ -1169,7 +1169,7 @@ const VerifyPage = () => {
           </p>
           <Link
             to="/account/profile"
-            className="px-6 py-2 rounded-lg bg-[#F88726] text-white font-semibold text-sm hover:bg-orange-600 transition"
+            className="px-6 py-2 rounded-lg bg-[#014EB2] text-white font-semibold text-sm hover:bg-orange-600 transition"
           >
             Go to Profile
           </Link>
@@ -1219,7 +1219,7 @@ const VerifyPage = () => {
               setSubmissionError("");
               cleanupImageUrls();
             }}
-            className="px-6 py-2 rounded-lg bg-[#F88726] text-white font-semibold text-sm hover:bg-orange-600 transition"
+            className="px-6 py-2 rounded-lg bg-[#014EB2] text-white font-semibold text-sm hover:bg-orange-600 transition"
           >
             Try Again
           </button>

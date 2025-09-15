@@ -472,7 +472,7 @@ const Footer = () => {
                   Trade Now
                 </button> */}
                 <Link
-                  className="bg-[#F88726] hover:bg-[#e67615] text-white font-medium py-2 px-6 rounded-full transition-colors duration-200 mb-2"
+                  className="bg-[#014EB2] hover:bg-[#e67615] text-white font-medium py-2 px-6 rounded-full transition-colors duration-200 mb-2"
                   to="/spot-trading"
                 >
                   Trade Now

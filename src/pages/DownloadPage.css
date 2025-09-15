@@ -53,7 +53,7 @@
 }
 
 .landing__highlight {
-  color: #F88726;
+  color: #014EB2;
 }
 
 .landing__tagline {
@@ -93,7 +93,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background-color: #F88726;
+  background-color: #014EB2;
   color: #000000;
   border: none;
   border-radius: 50px;
@@ -425,7 +425,7 @@
 
 /* Confirm button */
 .modal-buttons button:first-child {
-  background-color: #f88726;
+  background-color: #014EB2;
   color: #ffffff;
 }
 
