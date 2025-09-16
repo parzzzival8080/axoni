@@ -253,7 +253,7 @@ const LanguageModal = ({ isOpen, onClose }) => {
           >
             {currencyLoading ? (
               <div className="text-center py-4">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mx-auto"></div>
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-orange-500 mx-auto"></div>
                 <p className="text-gray-500 mt-2">Loading exchange rates...</p>
               </div>
             ) : (

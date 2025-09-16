@@ -103,7 +103,7 @@ const AdminNavbar = ({
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Unsaved Changes:</span>
-                    <span className={hasChanges ? "text-blue-400" : "text-green-400"}>
+                    <span className={hasChanges ? "text-orange-400" : "text-green-400"}>
                       {hasChanges ? "Yes" : "No"}
                     </span>
                   </div>

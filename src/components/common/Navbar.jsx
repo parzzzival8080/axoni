@@ -8,6 +8,8 @@ import defaultCoinLogo from "../../assets/coin/btc.webp";
 import ComingSoon from "../../components/common/ComingSoon";
 import LanguageModal from "./LanguageModal";
 import MetaMaskWallet from "./MetaMaskWallet";
+import Logo from "../../assets/logo/logo.png";
+
 
 // Notification data
 const notifications = [
@@ -375,7 +377,7 @@ const Navbar = () => {
     <header className="navbar-header">
       <div className="header-left">
         <Link to="/" className="logo">
-          <img src="/assets/logo/COINCHI-logo.png" alt="Logo" />
+          <img src={Logo} alt="Logo" />
         </Link>
         <nav className="desktop-nav">
           <div className="nav-item">
@@ -1012,7 +1014,7 @@ const Navbar = () => {
               <div className="mobile-auth-links p-4 border-b border-gray-700">
                 <Link
                   to="/login"
-                  className="block text-center py-3 px-4 mb-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md text-sm font-medium transition-colors"
+                  className="block text-center py-3 px-4 mb-2 text-white bg-orange-500 hover:bg-orange-600 rounded-md text-sm font-medium transition-colors"
                   onClick={toggleMobileMenu}
                 >
                   Log In

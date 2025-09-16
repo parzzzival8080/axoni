@@ -38,7 +38,7 @@ const TrendingCoin = ({ symbol, price, change, logo, coinPair }) => {
       {/* Trade Button */}
       <div className="w-full mt-2 sm:mt-0 sm:w-20 sm:text-right">
         <button
-          className="w-full sm:w-auto text-blue-500 text-base sm:text-sm font-medium hover:text-blue-400 transition-colors px-4 py-2 sm:px-3 sm:py-1 rounded-lg sm:rounded-full bg-blue-500/10 sm:bg-white/5 border border-blue-500/30 sm:border-blue-500/20 shadow-sm"
+          className="w-full sm:w-auto text-orange-500 text-base sm:text-sm font-medium hover:text-orange-400 transition-colors px-4 py-2 sm:px-3 sm:py-1 rounded-lg sm:rounded-full bg-orange-500/10 sm:bg-white/5 border border-orange-500/30 sm:border-orange-500/20 shadow-sm"
           onClick={() => {
             if (coinPair) {
               // Navigate to spot-trading with the specific coin pair ID
@@ -117,7 +117,7 @@ const Trading = () => {
               onClick={() => setActiveTab(tab)}
               className={`text-sm font-medium transition-colors ${
                 activeTab === tab
-                  ? 'text-white border-b-2 border-blue-500 pb-2'
+                  ? 'text-white border-b-2 border-orange-500 pb-2'
                   : 'text-gray-400 hover:text-white'
               }`}
             >

@@ -138,7 +138,7 @@ const Profile = () => {
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="px-4 py-2 sm:px-6 sm:py-3 bg-[#FE7400] text-white rounded-md hover:bg-blue-600 transition-colors text-sm sm:text-base"
+              className="px-4 py-2 sm:px-6 sm:py-3 bg-[#FE7400] text-white rounded-md hover:bg-orange-600 transition-colors text-sm sm:text-base"
             >
               Try Again
             </button>
@@ -451,9 +451,9 @@ const Profile = () => {
                     This tier applies to users with a 30-day trading volume below $5,000,000 USDT or total assets below $100,000 USDT.
                   </p>
                 </div>
-                <div className="bg-blue-50 dark:bg-blue-900/20 p-3 sm:p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                <div className="bg-orange-50 dark:bg-orange-900/20 p-3 sm:p-4 rounded-lg border border-orange-200 dark:border-orange-800">
                   <p className="text-gray-700 dark:text-gray-300 mb-2">
-                    <strong className="text-blue-600 dark:text-blue-400">Premium Tier:</strong> Benefit from reduced trading fees.
+                    <strong className="text-orange-600 dark:text-orange-400">Premium Tier:</strong> Benefit from reduced trading fees.
                   </p>
                   <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                     This tier is for users with a 30-day trading volume exceeding $5,000,000 USDT or total assets above $100,000 USDT.
@@ -472,7 +472,7 @@ const Profile = () => {
               <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-0 sm:justify-end">
                 <button
                   onClick={() => setShowTradingFeeModal(false)}
-                  className="w-full sm:w-auto px-6 py-3 sm:px-6 sm:py-2 bg-[#FE7400] text-white rounded-lg sm:rounded-md hover:bg-blue-600 active:bg-blue-700 transition-colors text-sm sm:text-base font-medium"
+                  className="w-full sm:w-auto px-6 py-3 sm:px-6 sm:py-2 bg-[#FE7400] text-white rounded-lg sm:rounded-md hover:bg-orange-600 active:bg-orange-700 transition-colors text-sm sm:text-base font-medium"
                 >
                   Close
                 </button>

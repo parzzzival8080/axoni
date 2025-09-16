@@ -14,7 +14,7 @@ const defaultConfig = {
   colors: {
     primary: '#000000',      // Main background
     secondary: '#1E1E1E',    // Secondary background
-    accent: '#FE7400',       // blue accent color
+    accent: '#FE7400',       // Orange accent color
     accentSecondary: '#2EBD85', // Green accent color
     background: '#000000',   // Page background
     cardBackground: '#121212', // Card backgrounds

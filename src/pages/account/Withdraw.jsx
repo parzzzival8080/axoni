@@ -797,7 +797,7 @@ function withdraw() {
                                  addressValidation.error 
                                      ? 'border-red-200 focus:ring-red-100 focus:border-red-300 bg-red-50' 
                                      : addressValidation.warning 
-                                     ? 'border-blue-200 focus:ring-blue-100 focus:border-blue-300 bg-blue-50'
+                                     ? 'border-orange-200 focus:ring-orange-100 focus:border-orange-300 bg-orange-50'
                                      : withdrawalAddress && addressValidation.isValid && !addressValidation.error && !addressValidation.warning
                                      ? 'border-green-200 focus:ring-green-100 focus:border-green-300 bg-green-50'
                                      : 'border-gray-200 focus:ring-gray-100 focus:border-gray-300'
@@ -845,8 +845,8 @@ function withdraw() {
                       )}
                       {withdrawalAddress && addressValidation.warning && !addressValidation.error && (
                           <div className="mt-2 flex items-start space-x-2">
-                              <FontAwesomeIcon icon={faQuestionCircle} className="text-blue-400 mt-0.5 text-xs flex-shrink-0" />
-                              <p className="text-xs text-blue-600 leading-relaxed">
+                              <FontAwesomeIcon icon={faQuestionCircle} className="text-orange-400 mt-0.5 text-xs flex-shrink-0" />
+                              <p className="text-xs text-orange-600 leading-relaxed">
                                   {addressValidation.warning}
                               </p>
                           </div>

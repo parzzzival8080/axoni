@@ -495,15 +495,15 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
     <div className="trading-chart trading-chart-container md:relative md:z-auto z-0 overflow-hidden">
       {/* Timeframe Tabs */}
       <div className="timeframe-tabs mb-6">
-        <div className="flex space-x-1 bg-black border border-blue-500/20 rounded-lg p-1 w-fit">
+        <div className="flex space-x-1 bg-black border border-orange-500/20 rounded-lg p-1 w-fit">
           {timeframes.map((tf) => (
             <button
               key={tf.value}
               onClick={() => handleTimeframeChange(tf.value)}
               className={`px-4 py-2 rounded-md font-semibold text-sm transition-all duration-200 min-w-[60px] ${
                 timeframe === tf.value
-                  ? "bg-gradient-to-r from-blue-500 to-blue-600 text-black shadow-lg shadow-blue-500/25 border border-blue-400"
-                  : "bg-transparent text-blue-300 hover:text-blue-200 hover:bg-blue-500/10 border border-transparent"
+                  ? "bg-gradient-to-r from-orange-500 to-orange-600 text-black shadow-lg shadow-orange-500/25 border border-orange-400"
+                  : "bg-transparent text-orange-300 hover:text-orange-200 hover:bg-orange-500/10 border border-transparent"
               }`}
             >
               {tf.label}

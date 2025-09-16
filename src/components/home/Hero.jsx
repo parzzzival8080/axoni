@@ -210,7 +210,7 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             <Link
               to="/account/profile/verify"
-              className="bg-[#014EB2] text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors text-center"
+              className="bg-[#014EB2] text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors text-center"
             >
               Verify Account
             </Link>
@@ -252,9 +252,9 @@ const Hero = () => {
     <div className="flex-1 space-y-6">
       <div className="flex items-center gap-3">
         <div className="animate-pulse">
-          <FaShieldAlt className="text-blue-500 text-2xl" />
+          <FaShieldAlt className="text-orange-500 text-2xl" />
         </div>
-        <p className="text-blue-500 font-semibold">
+        <p className="text-orange-500 font-semibold">
           Verification Under Review
         </p>
       </div>
@@ -263,8 +263,8 @@ const Hero = () => {
         <br />
         <span className="text-[#014EB2]">{userName}!</span>
       </h1>
-      <div className="bg-blue-900/20 border border-blue-600 rounded-lg p-6">
-        <h3 className="text-blue-400 font-semibold mb-2">
+      <div className="bg-orange-900/20 border border-orange-600 rounded-lg p-6">
+        <h3 className="text-orange-400 font-semibold mb-2">
           Verification Under Review
         </h3>
         <p className="text-gray-300 mb-4">
@@ -275,7 +275,7 @@ const Hero = () => {
         <div className="flex flex-col sm:flex-row gap-4">
           <Link
             to="/account/profile/verify"
-            className="bg-[#014EB2] text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors text-center"
+            className="bg-[#014EB2] text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors text-center"
           >
             Check Status
           </Link>
@@ -331,7 +331,7 @@ const Hero = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
         <Link
           to="/spot-trading"
-          className="bg-[#014EB2] text-white px-6 py-4 rounded-lg font-semibold hover:bg-blue-600 transition-colors text-center"
+          className="bg-[#014EB2] text-white px-6 py-4 rounded-lg font-semibold hover:bg-orange-600 transition-colors text-center"
         >
           Start Trading
         </Link>
@@ -424,7 +424,7 @@ const Hero = () => {
           </p>
           <Link
             to="/signup"
-            className="bg-[#014EB2] text-black px-6 py-2 rounded-md text-sm font-semibold hover:bg-blue-600 transition-colors whitespace-nowrap w-full sm:w-auto"
+            className="bg-[#014EB2] text-black px-6 py-2 rounded-md text-sm font-semibold hover:bg-orange-600 transition-colors whitespace-nowrap w-full sm:w-auto"
           >
             Sign up
           </Link>
@@ -435,12 +435,12 @@ const Hero = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center sm:space-x-4 space-y-3 sm:space-y-0 max-w-4xl mx-auto">
           <p className="text-gray-300 text-sm sm:text-base sm:mr-2">
             Your verification is{" "}
-            <span className="text-blue-500 font-semibold">under review</span>.
+            <span className="text-orange-500 font-semibold">under review</span>.
             You'll be notified once approved!
           </p>
           <Link
             to="/account/profile/verify"
-            className="bg-[#014EB2] text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-blue-600 transition-colors whitespace-nowrap w-full sm:w-auto"
+            className="bg-[#014EB2] text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-orange-600 transition-colors whitespace-nowrap w-full sm:w-auto"
           >
             Check Status
           </Link>
@@ -458,7 +458,7 @@ const Hero = () => {
           </p>
           <Link
             to="/account/profile/verify"
-            className="bg-[#014EB2] text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-blue-600 transition-colors whitespace-nowrap w-full sm:w-auto"
+            className="bg-[#014EB2] text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-orange-600 transition-colors whitespace-nowrap w-full sm:w-auto"
           >
             Verify Now
           </Link>
@@ -474,7 +474,7 @@ const Hero = () => {
           </p>
           <Link
             to="/spot-trading"
-            className="bg-[#014EB2] text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-blue-600 transition-colors whitespace-nowrap w-full sm:w-auto"
+            className="bg-[#014EB2] text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-orange-600 transition-colors whitespace-nowrap w-full sm:w-auto"
           >
             Start Trading
           </Link>

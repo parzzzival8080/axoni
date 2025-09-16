@@ -92,13 +92,13 @@ const SimpleEarn = () => {
             <div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
                 Grow crypto effortlessly on<br />
-                <span className="text-blue-500">Simple Earn</span>
+                <span className="text-orange-500">Simple Earn</span>
               </h1>
               <p className="text-xl text-gray-300 mb-8 leading-relaxed">
                 Entrust your crypto assets to our highly secure platform, while enjoying
               attractive returns
             </p>
-              <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-8 py-4 rounded-lg transition-colors duration-200 shadow-lg">
+              <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-4 rounded-lg transition-colors duration-200 shadow-lg">
                 What is Simple Earn?
               </button>
           </div>
@@ -128,7 +128,7 @@ const SimpleEarn = () => {
             <input 
               type="text"
               placeholder="Search crypto"
-                className="bg-gray-800 text-white border border-gray-700 rounded-lg py-3 pl-10 pr-4 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 placeholder-gray-400"
+                className="bg-gray-800 text-white border border-gray-700 rounded-lg py-3 pl-10 pr-4 w-full focus:outline-none focus:ring-1 focus:ring-orange-500 placeholder-gray-400"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
             />
@@ -155,7 +155,7 @@ const SimpleEarn = () => {
                   <tr>
                     <td colSpan={4} className="py-12 text-center text-gray-400">
                       <div className="flex justify-center items-center">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
                         <span className="ml-3">Loading products...</span>
                       </div>
                     </td>
@@ -216,7 +216,7 @@ const SimpleEarn = () => {
 
             {!loading && !error && filteredCoins.length > 0 && (
               <div className="px-6 py-4 border-t border-gray-800 text-center">
-                <button className="text-blue-500 hover:text-blue-400 font-medium transition-colors">
+                <button className="text-orange-500 hover:text-orange-400 font-medium transition-colors">
                   View more
                 </button>
               </div>
@@ -232,8 +232,8 @@ const SimpleEarn = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {alternativeOptions.map((option, index) => (
               <div key={index} className="bg-gray-800/50 rounded-2xl p-8 text-center hover:bg-gray-800/70 transition-colors border border-gray-700">
-                <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <i className={`${option.icon} text-2xl text-blue-500`}></i>
+                <div className="w-16 h-16 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <i className={`${option.icon} text-2xl text-orange-500`}></i>
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-4">{option.title}</h3>
                 <p className="text-gray-300 leading-relaxed">{option.description}</p>

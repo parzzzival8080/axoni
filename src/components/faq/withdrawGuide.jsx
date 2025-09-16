@@ -17,7 +17,7 @@ const ImageWithFallback = ({ src, alt, description, className = "" }) => {
         <div className="rounded-lg overflow-hidden border border-gray-200 bg-white">
           {imageLoading && (
             <div className="w-full h-64 md:h-80 bg-gray-50 flex items-center justify-center">
-              <div className="animate-spin rounded-full h-6 w-6 border-2 border-blue-500 border-t-transparent"></div>
+              <div className="animate-spin rounded-full h-6 w-6 border-2 border-orange-500 border-t-transparent"></div>
             </div>
           )}
           <img 
@@ -76,7 +76,7 @@ const articleData = {
         steps: [
           {
             number: 1,
-            content: 'Log in to your account at <strong>COINCHIcoin.tech</strong>, go to the <strong class="text-gray-900">Assets</strong>, and select <strong class="text-blue-600">Withdrawal</strong>.'
+            content: 'Log in to your account at <strong>COINCHIcoin.tech</strong>, go to the <strong class="text-gray-900">Assets</strong>, and select <strong class="text-orange-600">Withdrawal</strong>.'
           },
           {
             number: 2,
@@ -84,7 +84,7 @@ const articleData = {
           },
           {
             number: 3,
-            content: 'Choose your withdrawal method: <strong class="text-blue-600">On-chain withdrawal</strong> (to external wallet) or <strong class="text-blue-600">Internal withdrawal</strong> (to another COINCHI account).'
+            content: 'Choose your withdrawal method: <strong class="text-orange-600">On-chain withdrawal</strong> (to external wallet) or <strong class="text-orange-600">Internal withdrawal</strong> (to another COINCHI account).'
           },
           {
             number: 4,
@@ -92,11 +92,11 @@ const articleData = {
           },
           {
             number: 5,
-            content: 'Enter the destination <strong class="text-gray-900">Address</strong> where you want to send your crypto. You can also select from your saved addresses using <strong class="text-blue-600">Manage address book</strong>.'
+            content: 'Enter the destination <strong class="text-gray-900">Address</strong> where you want to send your crypto. You can also select from your saved addresses using <strong class="text-orange-600">Manage address book</strong>.'
           },
           {
             number: 6,
-            content: 'Set the <strong class="text-gray-900">withdrawal amount</strong>. You can see your available balance and use the <strong class="text-blue-600">Max</strong> button to withdraw the maximum amount.'
+            content: 'Set the <strong class="text-gray-900">withdrawal amount</strong>. You can see your available balance and use the <strong class="text-orange-600">Max</strong> button to withdraw the maximum amount.'
           },
           {
             number: 7,
@@ -104,7 +104,7 @@ const articleData = {
           },
           {
             number: 8,
-            content: 'Click <strong class="text-blue-600">Next</strong> to proceed with your withdrawal.'
+            content: 'Click <strong class="text-orange-600">Next</strong> to proceed with your withdrawal.'
           },
           {
             number: 9,
@@ -145,19 +145,19 @@ const articleData = {
         steps: [
           {
             number: 1,
-            content: 'Check the <strong class="text-blue-600">network confirmation status</strong>. Different networks require different numbers of confirmations before the transaction is considered complete.'
+            content: 'Check the <strong class="text-orange-600">network confirmation status</strong>. Different networks require different numbers of confirmations before the transaction is considered complete.'
           },
           {
             number: 2,
-            content: 'Verify that you sent to the correct <strong class="text-blue-600">network</strong>. Sending to the wrong network is a common cause of delays or lost funds.'
+            content: 'Verify that you sent to the correct <strong class="text-orange-600">network</strong>. Sending to the wrong network is a common cause of delays or lost funds.'
           },
           {
             number: 3,
-            content: 'Check for <strong class="text-blue-600">network congestion</strong>. During high traffic periods, transactions may take longer than usual to process.'
+            content: 'Check for <strong class="text-orange-600">network congestion</strong>. During high traffic periods, transactions may take longer than usual to process.'
           },
           {
             number: 4,
-            content: 'Review your <strong class="text-blue-600">destination wallet</strong> settings. Some wallets or exchanges may have additional processing times.'
+            content: 'Review your <strong class="text-orange-600">destination wallet</strong> settings. Some wallets or exchanges may have additional processing times.'
           }
         ]
       },
@@ -167,11 +167,11 @@ const articleData = {
         steps: [
           {
             number: 1,
-            content: 'Go to <strong class="text-blue-600">Assets</strong> > <strong class="text-blue-600">Transaction History</strong> to view your withdrawal status.'
+            content: 'Go to <strong class="text-orange-600">Assets</strong> > <strong class="text-orange-600">Transaction History</strong> to view your withdrawal status.'
           },
           {
             number: 2,
-            content: 'Copy the <strong class="text-blue-600">Transaction Hash (TXID)</strong> from your withdrawal record.'
+            content: 'Copy the <strong class="text-orange-600">Transaction Hash (TXID)</strong> from your withdrawal record.'
           },
           {
             number: 3,
@@ -229,7 +229,7 @@ const articleData = {
           },
           {
             number: 2,
-            content: 'The network determines the <strong class="text-blue-600">transaction fees</strong>, <strong class="text-blue-600">speed</strong>, and <strong class="text-blue-600">compatibility</strong> with your destination wallet or exchange.'
+            content: 'The network determines the <strong class="text-orange-600">transaction fees</strong>, <strong class="text-orange-600">speed</strong>, and <strong class="text-orange-600">compatibility</strong> with your destination wallet or exchange.'
           },
           {
             number: 3,
@@ -247,15 +247,15 @@ const articleData = {
           },
           {
             number: 2,
-            content: 'Consider the <strong class="text-blue-600">transaction fees</strong>: TRC-20 (Tron) typically has lower fees than ERC-20 (Ethereum).'
+            content: 'Consider the <strong class="text-orange-600">transaction fees</strong>: TRC-20 (Tron) typically has lower fees than ERC-20 (Ethereum).'
           },
           {
             number: 3,
-            content: 'Consider the <strong class="text-blue-600">transaction speed</strong>: BSC and Tron are usually faster than Ethereum.'
+            content: 'Consider the <strong class="text-orange-600">transaction speed</strong>: BSC and Tron are usually faster than Ethereum.'
           },
           {
             number: 4,
-            content: 'When in doubt, <strong class="text-blue-600">contact the receiving platform</strong> to confirm which network they prefer or support.'
+            content: 'When in doubt, <strong class="text-orange-600">contact the receiving platform</strong> to confirm which network they prefer or support.'
           }
         ]
       },
@@ -309,7 +309,7 @@ const articleData = {
           },
           {
             number: 2,
-            content: 'The network fee is paid to miners/validators and is <strong class="text-blue-600">not collected by COINCHI</strong>.'
+            content: 'The network fee is paid to miners/validators and is <strong class="text-orange-600">not collected by COINCHI</strong>.'
           },
           {
             number: 3,
@@ -331,7 +331,7 @@ const articleData = {
           },
           {
             number: 3,
-            content: 'Fees are automatically deducted from your withdrawal amount. The <strong class="text-blue-600">Amount received</strong> shows what you\'ll actually receive.'
+            content: 'Fees are automatically deducted from your withdrawal amount. The <strong class="text-orange-600">Amount received</strong> shows what you\'ll actually receive.'
           },
           {
             number: 4,
@@ -473,8 +473,8 @@ const WithdrawalGuide = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Subtle blue Header Section */}
-      <div className="bg-gradient-to-r from-gray-50 to-blue-50 border-b border-blue-100">
+      {/* Subtle Orange Header Section */}
+      <div className="bg-gradient-to-r from-gray-50 to-orange-50 border-b border-orange-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           {/* Breadcrumb Navigation */}
           <nav className="mb-3 sm:mb-4">
@@ -490,7 +490,7 @@ const WithdrawalGuide = () => {
                 <React.Fragment key={idx}>
                   {idx > 0 && <ChevronRight className="w-3 h-3 text-gray-400 flex-shrink-0" />}
                   <span 
-                    className={`hover:text-blue-600 cursor-pointer transition-colors truncate ${
+                    className={`hover:text-orange-600 cursor-pointer transition-colors truncate ${
                       idx === arr.length - 1 ? 'max-w-[120px]' : 'max-w-[80px]'
                     }`}
                     title={crumb}
@@ -507,7 +507,7 @@ const WithdrawalGuide = () => {
                 {article.breadcrumbs.map((crumb, idx) => (
                   <React.Fragment key={idx}>
                     {idx > 0 && <ChevronRight className="w-4 h-4 text-gray-400" />}
-                    <span className="hover:text-blue-600 cursor-pointer transition-colors">{crumb}</span>
+                    <span className="hover:text-orange-600 cursor-pointer transition-colors">{crumb}</span>
                   </React.Fragment>
                 ))}
               </div>
@@ -516,7 +516,7 @@ const WithdrawalGuide = () => {
           
           {/* Category and Difficulty Tags */}
           <div className="flex items-center space-x-3 mb-4">
-            <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+            <span className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-medium">
               {article.category}
             </span>
             <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
@@ -551,10 +551,10 @@ const WithdrawalGuide = () => {
             <div className="flex gap-2">
               <button
                 onClick={() => handleShare('native')}
-                className="p-2 bg-white hover:bg-blue-50 rounded-lg transition-colors border border-gray-200 hover:border-blue-200"
+                className="p-2 bg-white hover:bg-orange-50 rounded-lg transition-colors border border-gray-200 hover:border-orange-200"
                 title="Share"
               >
-                <Share2 className="w-4 h-4 text-gray-500 hover:text-blue-600" />
+                <Share2 className="w-4 h-4 text-gray-500 hover:text-orange-600" />
               </button>
               <button
                 onClick={() => handleShare('facebook')}
@@ -608,7 +608,7 @@ const WithdrawalGuide = () => {
                   <div className="space-y-4 mb-6">
                     {section.steps.map((step, stepIndex) => (
                       <div key={stepIndex} className="flex gap-3">
-                        <div className="flex-shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">
+                        <div className="flex-shrink-0 w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-medium">
                           {step.number}
                         </div>
                         <div className="flex-1 pt-0.5">
@@ -635,12 +635,12 @@ const WithdrawalGuide = () => {
 
               {/* Note Section */}
               {article.notes && article.notes.length > 0 && (
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
                   <h3 className="text-base font-semibold text-gray-900 mb-4">Note:</h3>
                   <div className="space-y-3">
                     {article.notes.map((note, noteIndex) => (
                       <div key={noteIndex} className="flex gap-2">
-                        <span className="text-blue-600 mt-1 text-sm">•</span>
+                        <span className="text-orange-600 mt-1 text-sm">•</span>
                         <p 
                           className="text-gray-700 text-sm leading-relaxed"
                           dangerouslySetInnerHTML={{ __html: note }} 
@@ -677,7 +677,7 @@ const WithdrawalGuide = () => {
                 <input
                   type="text"
                   placeholder="Search FAQs..."
-                  className="w-full pl-3 pr-3 py-2 text-sm border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  className="w-full pl-3 pr-3 py-2 text-sm border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white"
                   value={faqSearch}
                   onChange={(e) => setFaqSearch(e.target.value)}
                 />
@@ -691,7 +691,7 @@ const WithdrawalGuide = () => {
                     onClick={() => handleFaqClick(faq.slug)}
                     className={`w-full text-left text-sm hover:text-gray-900 transition-colors ${
                       currentSlug === faq.slug 
-                        ? 'text-blue-600 font-medium' 
+                        ? 'text-orange-600 font-medium' 
                         : 'text-gray-700'
                     }`}
                   >
