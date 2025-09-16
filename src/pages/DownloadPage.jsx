@@ -27,14 +27,14 @@ const DownloadPage = () => {
     // You can customize alternative URLs per store if needed
     const url =
       noticeStore === "appstore"
-        ? "https://api.coinchi.co/api/v1/download-COINCHI-ios"
-        : "https://api.coinchi.co/api/v1/download-COINCHI-apk";
+        ? "https://api.fluxcoin.tech/api/v1/download-COINCHI-ios"
+        : "https://api.fluxcoin.tech/api/v1/download-COINCHI-apk";
 
     window.open(url, "_blank");
     setIsNoticeOpen(false);
   };
 
-  const appDownloadUrl = "https://api.coinchi.co/api/v1/download-COINCHI-apk";
+  const appDownloadUrl = "https://api.fluxcoin.tech/api/v1/download-COINCHI-apk";
 
   const handleAppDownload = () => {
     const directDownloadUrl = appDownloadUrl;

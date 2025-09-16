@@ -334,7 +334,7 @@ const SpotTrading = () => {
         if (!uid && userId) {
           try {
             const userInfoResponse = await axios.get(
-              `https://django.coinchi.co/api/user_account/getUserInformation/?user_id=${userId}`,
+              `https://django.fluxcoin.tech/api/user_account/getUserInformation/?user_id=${userId}`,
               { headers: { 'Authorization': `Bearer ${token}` } }
             );
             uid = userInfoResponse.data?.user?.uid || 'yE8vKBNw';
@@ -447,7 +447,7 @@ const SpotTrading = () => {
       if (!uid) {
         try {
           const userInfoResponse = await axios.get(
-            `https://django.coinchi.co/api/user_account/getUserInformation/?user_id=${userId}`,
+            `https://django.fluxcoin.tech/api/user_account/getUserInformation/?user_id=${userId}`,
             { headers: { 'Authorization': `Bearer ${token}` } }
           );
           uid = userInfoResponse.data?.user?.uid || 'yE8vKBNw';

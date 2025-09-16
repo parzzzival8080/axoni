@@ -43,7 +43,7 @@ export default function Assets() {
         const apiKey = "5lPMMw7mIuyzQQDjlKJbe0dY";
 
         // Construct the API URL
-        const apiUrl = `https://api.coinchi.co/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
+        const apiUrl = `https://api.fluxcoin.tech/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
 
         const response = await axios.get(apiUrl);
 

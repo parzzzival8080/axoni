@@ -96,7 +96,7 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await axios.post('https://django.coinchi.co/api/user_account/password_reset/request', {
+      const response = await axios.post('https://django.fluxcoin.tech/api/user_account/password_reset/request', {
         email: resetEmail
       });
 
@@ -136,7 +136,7 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await axios.post('https://django.coinchi.co/api/user_account/password_reset/verify_otp', {
+      const response = await axios.post('https://django.fluxcoin.tech/api/user_account/password_reset/verify_otp', {
         email: resetEmail,
         otp: otp
       });
@@ -172,7 +172,7 @@ const LoginForm = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('https://django.coinchi.co/api/user_account/password_reset/resend-otp', {
+      const response = await axios.post('https://django.fluxcoin.tech/api/user_account/password_reset/resend-otp', {
         email: resetEmail
       });
 
@@ -227,7 +227,7 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await axios.post('https://django.coinchi.co/api/user_account/password_reset/reset', {
+      const response = await axios.post('https://django.fluxcoin.tech/api/user_account/password_reset/reset', {
         email: resetEmail,
         otp: otp,
         new_password: newPassword,
@@ -305,7 +305,7 @@ const LoginForm = () => {
 
     try {
       // Replace with your actual API endpoint
-      const response = await axios.post('https://django.coinchi.co/api/user_account/login', credentials);
+      const response = await axios.post('https://django.fluxcoin.tech/api/user_account/login', credentials);
 
       // Handle successful login based on your specific response format
       const { success, user_id, email, uid, jwt_token } = response.data;
@@ -334,7 +334,7 @@ const LoginForm = () => {
         try {
           // Fetch user profile to get the full name using the getUserInformation API
           const profileResponse = await axios.get(
-            `https://django.coinchi.co/api/user_account/getUserInformation/?user_id=${user_id || uid}`,
+            `https://django.fluxcoin.tech/api/user_account/getUserInformation/?user_id=${user_id || uid}`,
             {
               headers: {
                 'Authorization': `Bearer ${jwt_token}`
@@ -535,7 +535,7 @@ const LoginForm = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-[#014EB2] text-white font-medium py-3 rounded-md hover:bg-[#e66a00] transition-colors"
+                  className="w-full bg-[#014EB2] text-white font-medium py-3 rounded-md hover:bg-[#014EB2] transition-colors"
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Send OTP'}
@@ -572,7 +572,7 @@ const LoginForm = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-[#014EB2] text-white font-medium py-3 rounded-md hover:bg-[#e66a00] transition-colors"
+                  className="w-full bg-[#014EB2] text-white font-medium py-3 rounded-md hover:bg-[#014EB2] transition-colors"
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Verify OTP'}
@@ -613,7 +613,7 @@ const LoginForm = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-[#014EB2] text-white font-medium py-3 rounded-md hover:bg-[#e66a00] transition-colors"
+                  className="w-full bg-[#014EB2] text-white font-medium py-3 rounded-md hover:bg-[#014EB2] transition-colors"
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Reset Password'}
@@ -657,7 +657,7 @@ const LoginForm = () => {
 
             <button
               type="submit"
-              className="w-full bg-[#014EB2] text-white font-bold py-3 px-4 rounded-full hover:bg-[#e66a00] transition-colors"
+              className="w-full bg-[#014EB2] text-white font-bold py-3 px-4 rounded-full hover:bg-[#014EB2] transition-colors"
               disabled={loading}
             >
               {loading ? 'Processing...' : showPassword ? 'Log in' : 'Next'}

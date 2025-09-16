@@ -29,7 +29,7 @@ const Security = () => {
           return;
         }
         const response = await axios.get(
-          `https://django.coinchi.co/api/user_account/getUserInformation/?user_id=${userId}`
+          `https://django.fluxcoin.tech/api/user_account/getUserInformation/?user_id=${userId}`
         );
         if (response.data && response.data.user) {
           setProfileData(response.data);
@@ -125,7 +125,7 @@ const Security = () => {
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="px-6 py-3 bg-[#FE7400] text-white rounded-md hover:bg-blue-600 transition-colors"
+              className="px-6 py-3 bg-[#014EB2] text-white rounded-md hover:bg-blue-600 transition-colors"
             >
               Try Again
             </button>

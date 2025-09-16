@@ -27,7 +27,7 @@ const Profile = () => {
           return;
         }
         const response = await axios.get(
-          `https://django.coinchi.co/api/user_account/getUserInformation/?user_id=${userId}`
+          `https://django.fluxcoin.tech/api/user_account/getUserInformation/?user_id=${userId}`
         );
         if (response.data && response.data.user && response.data.user_detail) {
           setProfileData(response.data);
@@ -138,7 +138,7 @@ const Profile = () => {
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="px-4 py-2 sm:px-6 sm:py-3 bg-[#FE7400] text-white rounded-md hover:bg-blue-600 transition-colors text-sm sm:text-base"
+              className="px-4 py-2 sm:px-6 sm:py-3 bg-[#014EB2] text-white rounded-md hover:bg-blue-600 transition-colors text-sm sm:text-base"
             >
               Try Again
             </button>
@@ -472,7 +472,7 @@ const Profile = () => {
               <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-0 sm:justify-end">
                 <button
                   onClick={() => setShowTradingFeeModal(false)}
-                  className="w-full sm:w-auto px-6 py-3 sm:px-6 sm:py-2 bg-[#FE7400] text-white rounded-lg sm:rounded-md hover:bg-blue-600 active:bg-blue-700 transition-colors text-sm sm:text-base font-medium"
+                  className="w-full sm:w-auto px-6 py-3 sm:px-6 sm:py-2 bg-[#014EB2] text-white rounded-lg sm:rounded-md hover:bg-blue-600 active:bg-blue-700 transition-colors text-sm sm:text-base font-medium"
                 >
                   Close
                 </button>

@@ -296,7 +296,7 @@ const ColorManager = () => {
                   <span className="text-sm">Trading Card</span>
                   <span 
                     className="text-sm font-semibold"
-                    style={{ color: getSettingValue(colorSettings.find(s => s.setting_key === 'color_accent')) || '#FE7400' }}
+                    style={{ color: getSettingValue(colorSettings.find(s => s.setting_key === 'color_accent')) || '#014EB2' }}
                   >
                     $50,000
                   </span>
@@ -306,7 +306,7 @@ const ColorManager = () => {
                 <button 
                   className="px-4 py-2 rounded-lg text-sm font-medium"
                   style={{ 
-                    backgroundColor: getSettingValue(colorSettings.find(s => s.setting_key === 'color_accent')) || '#FE7400',
+                    backgroundColor: getSettingValue(colorSettings.find(s => s.setting_key === 'color_accent')) || '#014EB2',
                     color: '#FFFFFF'
                   }}
                 >

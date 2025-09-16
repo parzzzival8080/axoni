@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://api.coinchi.co/api/v1';
+const API_BASE_URL = 'https://api.fluxcoin.tech/api/v1';
 const API_KEY = '5lPMMw7mIuyzQQDjlKJbe0dY';
 
 // Cache configuration for tradable coins

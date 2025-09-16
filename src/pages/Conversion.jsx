@@ -66,7 +66,7 @@ const Conversion = () => {
         const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
         
         const response = await fetch(
-          `https://api.coinchi.co/api/v1/coin-balance/${uid}?apikey=${apiKey}&symbol=BTC`,
+          `https://api.fluxcoin.tech/api/v1/coin-balance/${uid}?apikey=${apiKey}&symbol=BTC`,
           { signal: controller.signal }
         );
         
@@ -103,7 +103,7 @@ const Conversion = () => {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
         
-        const url = `https://api.coinchi.co/api/v1/user-wallet/${uid}/1?apikey=${apiKey}`;
+        const url = `https://api.fluxcoin.tech/api/v1/user-wallet/${uid}/1?apikey=${apiKey}`;
         const response = await fetch(url, { signal: controller.signal });
         
         clearTimeout(timeoutId);
@@ -186,7 +186,7 @@ const Conversion = () => {
         const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
         
         // Use the same API endpoint but with GET method to fetch history
-        const url = `https://api.coinchi.co/api/v1/conversions?apikey=${apiKey}&uid=${uid}`;
+        const url = `https://api.fluxcoin.tech/api/v1/conversions?apikey=${apiKey}&uid=${uid}`;
         
         console.log('Fetching conversion history:', url);
         
@@ -261,7 +261,7 @@ const Conversion = () => {
         const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout for conversion
         
         // Use the URL format from the image but with POST method
-        const url = 'https://api.coinchi.co/api/v1/conversions';
+        const url = 'https://api.fluxcoin.tech/api/v1/conversions';
         
         const params = {
           apikey: apiKey,
@@ -451,7 +451,7 @@ const Conversion = () => {
         
         {/* Convert button */}
         <button 
-          className={`w-full py-3.5 px-6 rounded-full font-medium text-white transition-colors duration-200 ${isSubmitting || (!isAuthenticated ? '' : (!fromAmount || !toAmount || !!conversionError)) ? 'bg-gray-700 cursor-not-allowed' : 'bg-[#014EB2] hover:bg-[#e56700]'}`}
+          className={`w-full py-3.5 px-6 rounded-full font-medium text-white transition-colors duration-200 ${isSubmitting || (!isAuthenticated ? '' : (!fromAmount || !toAmount || !!conversionError)) ? 'bg-gray-700 cursor-not-allowed' : 'bg-[#014EB2] hover:bg-[#014EB2]'}`}
           onClick={handleConvert}
           disabled={isSubmitting || (!isAuthenticated ? false : (!fromAmount || !toAmount || !!conversionError))}
         >

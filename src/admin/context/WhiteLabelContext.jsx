@@ -14,7 +14,7 @@ const defaultConfig = {
   colors: {
     primary: '#000000',      // Main background
     secondary: '#1E1E1E',    // Secondary background
-    accent: '#FE7400',       // blue accent color
+    accent: '#014EB2',       // blue accent color
     accentSecondary: '#2EBD85', // Green accent color
     background: '#000000',   // Page background
     cardBackground: '#121212', // Card backgrounds
@@ -23,7 +23,7 @@ const defaultConfig = {
     textMuted: '#5E6673',    // Muted text
     border: '#2A2A2A',       // Border color
     success: '#2EBD85',      // Success color
-    warning: '#FE7400',      // Warning color
+    warning: '#014EB2',      // Warning color
     error: '#FF4747'         // Error color
   },
   assets: {
@@ -92,19 +92,19 @@ const defaultConfig = {
     downloadQR: '',
     appStoreQR: '',
     playStoreQR: '',
-    downloadQRUrl: 'https://api.coinchi.co/api/v1/download-COINCHI-apk',
+    downloadQRUrl: 'https://api.fluxcoin.tech/api/v1/download-COINCHI-apk',
     appStoreQRUrl: 'https://apps.apple.com/app/COINCHI-coin',
     playStoreQRUrl: 'https://play.google.com/store/apps/details?id=com.COINCHIcoin',
-    iosDownloadUrl: 'https://api.coinchi.co/api/v1/download-ios',
-    androidDownloadUrl: 'https://api.coinchi.co/api/v1/download-apk'
+    iosDownloadUrl: 'https://api.fluxcoin.tech/api/v1/download-ios',
+    androidDownloadUrl: 'https://api.fluxcoin.tech/api/v1/download-apk'
   },
   apis: {
     baseUrl: 'https://django.bhtokens.com/api',
-    secondaryUrl: 'https://api.coinchi.co/api/v1',
+    secondaryUrl: 'https://api.fluxcoin.tech/api/v1',
     socketUrl: 'wss://socket.coinchi.co',
-    chartDataUrl: 'https://api.coinchi.co/api/v1',
+    chartDataUrl: 'https://api.fluxcoin.tech/api/v1',
     supportUrl: 'https://support.coinchi.co',
-    tradingViewDatafeed: 'https://api.coinchi.co/api/v1',
+    tradingViewDatafeed: 'https://api.fluxcoin.tech/api/v1',
     chartsStorageUrl: 'https://saveload.tradingview.com',
     userAccountUrl: 'https://django.bhtokens.com/api/user_account',
     metaMaskWidgetUrl: 'https://mpctoken.com/widget.js',
