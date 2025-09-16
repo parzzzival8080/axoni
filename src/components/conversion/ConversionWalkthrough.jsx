@@ -1,6 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { FiX, FiChevronLeft, FiChevronRight, FiPlay, FiPause, FiRotateCcw } from 'react-icons/fi';
-import logo from '../../assets/logo/logo.png';
+import React, { useState, useEffect, useRef } from "react";
+import {
+  FiX,
+  FiChevronLeft,
+  FiChevronRight,
+  FiPlay,
+  FiPause,
+  FiRotateCcw,
+} from "react-icons/fi";
+import logo from "../../assets/logo/logo.png";
 
 const ConversionWalkthrough = ({ onClose, isOpen }) => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -10,86 +17,95 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
 
   const walkthroughSteps = [
     {
-      id: 'welcome',
-      title: 'Welcome to COINCHI Conversion',
-      description: 'Convert between cryptocurrencies instantly with zero trading fees and no slippage. Learn how to use our simple conversion tools. Click "Start Tour" to begin.',
+      id: "welcome",
+      title: "Welcome to COINCHI Conversion",
+      description:
+        'Convert between cryptocurrencies instantly with zero trading fees and no slippage. Learn how to use our simple conversion tools. Click "Start Tour" to begin.',
       target: null,
-      position: 'center',
-      type: 'welcome',
-      duration: 0
+      position: "center",
+      type: "welcome",
+      duration: 0,
     },
     {
-      id: 'header',
-      title: 'Conversion Overview',
-      description: 'This is your conversion dashboard. Enjoy zero trading fees, lower limits, and simple transactions for all your crypto conversions.',
-      target: '.min-h-screen > div:first-child',
-      position: 'bottom',
-      type: 'highlight',
-      duration: 4000
+      id: "header",
+      title: "Conversion Overview",
+      description:
+        "This is your conversion dashboard. Enjoy zero trading fees, lower limits, and simple transactions for all your crypto conversions.",
+      target: ".min-h-screen > div:first-child",
+      position: "bottom",
+      type: "highlight",
+      duration: 4000,
     },
     {
-      id: 'from-section',
-      title: 'Select Source Currency',
-      description: 'Choose which cryptocurrency you want to convert from. Enter the amount you wish to convert and view your available balance here.',
-      target: '.bg-gray-900:first-of-type',
-      position: 'right',
-      type: 'highlight',
-      duration: 5000
+      id: "from-section",
+      title: "Select Source Currency",
+      description:
+        "Choose which cryptocurrency you want to convert from. Enter the amount you wish to convert and view your available balance here.",
+      target: ".bg-gray-900:first-of-type",
+      position: "right",
+      type: "highlight",
+      duration: 5000,
     },
     {
-      id: 'to-section',
-      title: 'Select Target Currency',
-      description: 'Choose which cryptocurrency you want to convert to. The converted amount will be calculated automatically based on current exchange rates.',
-      target: '.bg-gray-900:nth-of-type(2)',
-      position: 'right',
-      type: 'highlight',
-      duration: 5000
+      id: "to-section",
+      title: "Select Target Currency",
+      description:
+        "Choose which cryptocurrency you want to convert to. The converted amount will be calculated automatically based on current exchange rates.",
+      target: ".bg-gray-900:nth-of-type(2)",
+      position: "right",
+      type: "highlight",
+      duration: 5000,
     },
     {
-      id: 'exchange-rate',
-      title: 'Live Exchange Rate',
-      description: 'View the current exchange rate between your selected currencies. Rates are updated in real-time to ensure accurate conversions.',
-      target: '.mt-2.text-xs.text-gray-500:last-of-type',
-      position: 'top',
-      type: 'highlight',
-      duration: 4000
+      id: "exchange-rate",
+      title: "Live Exchange Rate",
+      description:
+        "View the current exchange rate between your selected currencies. Rates are updated in real-time to ensure accurate conversions.",
+      target: ".mt-2.text-xs.text-gray-500:last-of-type",
+      position: "top",
+      type: "highlight",
+      duration: 4000,
     },
     {
-      id: 'convert-button',
-      title: 'Execute Conversion',
-      description: 'Click this button to execute your conversion. Make sure you have sufficient balance and review the amounts before proceeding.',
+      id: "convert-button",
+      title: "Execute Conversion",
+      description:
+        "Click this button to execute your conversion. Make sure you have sufficient balance and review the amounts before proceeding.",
       target: 'button[class*="w-full py-3.5"]',
-      position: 'top',
-      type: 'highlight',
-      duration: 4000
+      position: "top",
+      type: "highlight",
+      duration: 4000,
     },
     {
-      id: 'history',
-      title: 'Conversion History',
-      description: 'Click here to view all your past conversions. Track transaction details, dates, amounts, and status of your conversion orders in a detailed modal.',
-      target: '.conversion-history-section',
-      position: 'top',
-      type: 'highlight',
-      duration: 4000
+      id: "history",
+      title: "Conversion History",
+      description:
+        "Click here to view all your past conversions. Track transaction details, dates, amounts, and status of your conversion orders in a detailed modal.",
+      target: ".conversion-history-section",
+      position: "top",
+      type: "highlight",
+      duration: 4000,
     },
     {
-      id: 'features',
-      title: 'Platform Benefits',
-      description: 'COINCHI offers zero trading fees, no slippage, and supports many trading pairs. These features make conversions cost-effective and reliable.',
-      target: '.max-w-4xl.mx-auto.px-4.mb-16',
-      position: 'top',
-      type: 'highlight',
-      duration: 5000
+      id: "features",
+      title: "Platform Benefits",
+      description:
+        "COINCHI offers zero trading fees, no slippage, and supports many trading pairs. These features make conversions cost-effective and reliable.",
+      target: ".max-w-4xl.mx-auto.px-4.mb-16",
+      position: "top",
+      type: "highlight",
+      duration: 5000,
     },
     {
-      id: 'complete',
-      title: 'Ready to Convert!',
-      description: 'You\'re now equipped to convert cryptocurrencies efficiently on COINCHI. Start with small amounts to familiarize yourself with the process.',
+      id: "complete",
+      title: "Ready to Convert!",
+      description:
+        "You're now equipped to convert cryptocurrencies efficiently on COINCHI. Start with small amounts to familiarize yourself with the process.",
       target: null,
-      position: 'center',
-      type: 'completion',
-      duration: 0
-    }
+      position: "center",
+      type: "completion",
+      duration: 0,
+    },
   ];
 
   const currentStepData = walkthroughSteps[currentStep];
@@ -115,41 +131,50 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
         // Check if element is visible
         const rect = targetElement.getBoundingClientRect();
         const isVisible = rect.width > 0 && rect.height > 0;
-        
+
         if (isVisible) {
-          targetElement.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center' 
+          targetElement.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
           });
-          
+
           // Add highlight class
-          targetElement.classList.add('walkthrough-highlight');
-          
+          targetElement.classList.add("walkthrough-highlight");
+
           // Calculate spotlight position and size
           const centerX = rect.left + rect.width / 2;
           const centerY = rect.top + rect.height / 2;
           const radius = Math.max(rect.width, rect.height) / 2 + 40;
-          
+
           // Apply spotlight CSS variables
-          document.documentElement.style.setProperty('--spotlight-x', `${centerX}px`);
-          document.documentElement.style.setProperty('--spotlight-y', `${centerY}px`);
-          document.documentElement.style.setProperty('--spotlight-radius', `${radius}px`);
-          
+          document.documentElement.style.setProperty(
+            "--spotlight-x",
+            `${centerX}px`
+          );
+          document.documentElement.style.setProperty(
+            "--spotlight-y",
+            `${centerY}px`
+          );
+          document.documentElement.style.setProperty(
+            "--spotlight-radius",
+            `${radius}px`
+          );
+
           return () => {
-            targetElement.classList.remove('walkthrough-highlight');
+            targetElement.classList.remove("walkthrough-highlight");
             // Clean up CSS variables
-            document.documentElement.style.removeProperty('--spotlight-x');
-            document.documentElement.style.removeProperty('--spotlight-y');
-            document.documentElement.style.removeProperty('--spotlight-radius');
+            document.documentElement.style.removeProperty("--spotlight-x");
+            document.documentElement.style.removeProperty("--spotlight-y");
+            document.documentElement.style.removeProperty("--spotlight-radius");
           };
         }
       }
-      
+
       // Clean up any existing spotlight variables if element doesn't exist or isn't visible
       return () => {
-        document.documentElement.style.removeProperty('--spotlight-x');
-        document.documentElement.style.removeProperty('--spotlight-y');
-        document.documentElement.style.removeProperty('--spotlight-radius');
+        document.documentElement.style.removeProperty("--spotlight-x");
+        document.documentElement.style.removeProperty("--spotlight-y");
+        document.documentElement.style.removeProperty("--spotlight-radius");
       };
     }
   }, [currentStep, isOpen, currentStepData.target]);
@@ -189,14 +214,14 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
 
   const getTooltipPosition = () => {
     if (!currentStepData.target) return {};
-    
+
     const targetElement = document.querySelector(currentStepData.target);
     if (!targetElement) {
       // If target element doesn't exist, center the tooltip
       return {
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)'
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
       };
     }
 
@@ -204,45 +229,50 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
     const position = currentStepData.position;
 
     // Check if element is visible
-    if (rect.width === 0 || rect.height === 0 || rect.top < 0 || rect.bottom > window.innerHeight) {
+    if (
+      rect.width === 0 ||
+      rect.height === 0 ||
+      rect.top < 0 ||
+      rect.bottom > window.innerHeight
+    ) {
       // If element is not visible, center the tooltip
       return {
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)'
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
       };
     }
 
     switch (position) {
-      case 'top':
+      case "top":
         return {
           top: rect.top - 20,
           left: rect.left + rect.width / 2,
-          transform: 'translateX(-50%) translateY(-100%)'
+          transform: "translateX(-50%) translateY(-100%)",
         };
-      case 'bottom':
+      case "bottom":
         return {
           top: rect.bottom + 20,
           left: rect.left + rect.width / 2,
-          transform: 'translateX(-50%)'
+          transform: "translateX(-50%)",
         };
-      case 'left':
+      case "left":
         return {
           top: rect.top + rect.height / 2,
           left: rect.left - 20,
-          transform: 'translateX(-100%) translateY(-50%)'
+          transform: "translateX(-100%) translateY(-50%)",
         };
-      case 'right':
+      case "right":
         return {
           top: rect.top + rect.height / 2,
           left: rect.right + 20,
-          transform: 'translateY(-50%)'
+          transform: "translateY(-50%)",
         };
       default:
         return {
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)'
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
         };
     }
   };
@@ -253,32 +283,36 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
     <>
       {/* Backdrop */}
       <div className="fixed inset-0 bg-black/30 z-[10000] animate-in fade-in duration-300" />
-      
+
       {/* Spotlight Effect */}
-      {currentStepData.target && (() => {
-        const targetElement = document.querySelector(currentStepData.target);
-        const isVisible = targetElement && targetElement.getBoundingClientRect().width > 0;
-        return isVisible;
-      })() && (
-        <div 
-          className="fixed inset-0 pointer-events-none z-[9998] animate-in fade-in duration-300"
-          style={{
-            background: `radial-gradient(circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), transparent var(--spotlight-radius, 150px), rgba(0, 0, 0, 0.85) calc(var(--spotlight-radius, 150px) + 30px))`
-          }}
-        />
-      )}
-      
+      {currentStepData.target &&
+        (() => {
+          const targetElement = document.querySelector(currentStepData.target);
+          const isVisible =
+            targetElement && targetElement.getBoundingClientRect().width > 0;
+          return isVisible;
+        })() && (
+          <div
+            className="fixed inset-0 pointer-events-none z-[9998] animate-in fade-in duration-300"
+            style={{
+              background: `radial-gradient(circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), transparent var(--spotlight-radius, 150px), rgba(0, 0, 0, 0.85) calc(var(--spotlight-radius, 150px) + 30px))`,
+            }}
+          />
+        )}
+
       {/* Main tooltip/modal */}
-      <div 
+      <div
         ref={overlayRef}
         className={`fixed z-[10001] bg-gradient-to-br from-zinc-900 to-zinc-800 border border-blue-500/40 rounded-3xl shadow-2xl backdrop-blur-xl text-white animate-in slide-in-from-bottom-4 zoom-in-95 duration-300 ${
-          currentStepData.type === 'welcome' || currentStepData.type === 'completion' 
-            ? 'w-[400px] min-w-[320px]' 
-            : 'w-[320px] min-w-[260px]'
+          currentStepData.type === "welcome" ||
+          currentStepData.type === "completion"
+            ? "w-[400px] min-w-[320px]"
+            : "w-[320px] min-w-[260px]"
         }`}
-        style={currentStepData.position === 'center' ? 
-          { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' } : 
-          getTooltipPosition()
+        style={
+          currentStepData.position === "center"
+            ? { top: "50%", left: "50%", transform: "translate(-50%, -50%)" }
+            : getTooltipPosition()
         }
       >
         {/* Header */}
@@ -288,15 +322,19 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
               {currentStep + 1} of {walkthroughSteps.length}
             </span>
             <div className="w-full h-0.5 bg-white/10 rounded-full overflow-hidden">
-              <div 
+              <div
                 className="h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full transition-all duration-500 relative"
-                style={{ width: `${((currentStep + 1) / walkthroughSteps.length) * 100}%` }}
+                style={{
+                  width: `${
+                    ((currentStep + 1) / walkthroughSteps.length) * 100
+                  }%`,
+                }}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse" />
               </div>
             </div>
           </div>
-          <button 
+          <button
             onClick={onClose}
             className="ml-4 p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 hover:scale-105"
           >
@@ -306,7 +344,7 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
 
         {/* Content */}
         <div className="p-4">
-          {currentStepData.type === 'welcome' && (
+          {currentStepData.type === "welcome" && (
             <div className="text-center py-4">
               <div className="relative w-20 h-20 mx-auto mb-6">
                 {/* Pulse rings */}
@@ -315,9 +353,9 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
                 <div className="absolute inset-0 border-2 border-blue-500 rounded-full animate-ping animation-delay-600" />
                 {/* Logo */}
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-400 rounded-full flex items-center justify-center shadow-lg shadow-blue-500/40">
-                  <img 
-                    src={logo} 
-                    alt="COINCHI Logo" 
+                  <img
+                    src={logo}
+                    alt="COINCHI Logo"
                     className="w-8 h-8 object-contain"
                   />
                 </div>
@@ -330,23 +368,41 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
               </p>
               <div className="flex justify-center gap-8 mb-3">
                 <div className="text-center">
-                  <span className="block text-lg font-bold text-blue-500 mb-0.5">8</span>
-                  <span className="text-xs text-white/60 uppercase tracking-wide">Key Features</span>
+                  <span className="block text-lg font-bold text-blue-500 mb-0.5">
+                    8
+                  </span>
+                  <span className="text-xs text-white/60 uppercase tracking-wide">
+                    Key Features
+                  </span>
                 </div>
                 <div className="text-center">
-                  <span className="block text-lg font-bold text-blue-500 mb-0.5">~2min</span>
-                  <span className="text-xs text-white/60 uppercase tracking-wide">Tour Duration</span>
+                  <span className="block text-lg font-bold text-blue-500 mb-0.5">
+                    ~2min
+                  </span>
+                  <span className="text-xs text-white/60 uppercase tracking-wide">
+                    Tour Duration
+                  </span>
                 </div>
               </div>
             </div>
           )}
 
-          {currentStepData.type === 'completion' && (
+          {currentStepData.type === "completion" && (
             <div className="text-center py-4">
               <div className="w-20 h-20 mx-auto mb-6 relative">
                 <div className="w-full h-full bg-blue-500 rounded-full flex items-center justify-center animate-in zoom-in duration-500">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                  <svg
+                    className="w-8 h-8 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={3}
+                      d="M5 13l4 4L19 7"
+                    />
                   </svg>
                 </div>
               </div>
@@ -358,19 +414,22 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
               </p>
               <div className="text-left bg-blue-500/10 border border-blue-500/20 rounded-2xl p-3 space-y-1.5">
                 <div className="text-xs text-white/90 leading-tight">
-                  <strong className="text-blue-500">💡 Pro Tip:</strong> Always verify conversion amounts before confirming
+                  <strong className="text-blue-500">💡 Pro Tip:</strong> Always
+                  verify conversion amounts before confirming
                 </div>
                 <div className="text-xs text-white/90 leading-tight">
-                  <strong className="text-blue-500">🔄 Remember:</strong> Check exchange rates for the best conversion timing
+                  <strong className="text-blue-500">🔄 Remember:</strong> Check
+                  exchange rates for the best conversion timing
                 </div>
                 <div className="text-xs text-white/90 leading-tight">
-                  <strong className="text-blue-500">📊 Track:</strong> Monitor your conversion history for better planning
+                  <strong className="text-blue-500">📊 Track:</strong> Monitor
+                  your conversion history for better planning
                 </div>
               </div>
             </div>
           )}
 
-          {currentStepData.type === 'highlight' && (
+          {currentStepData.type === "highlight" && (
             <div>
               <h3 className="text-base font-semibold text-white mb-2 leading-tight">
                 {currentStepData.title}
@@ -381,14 +440,16 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
               {isPlaying && currentStepData.duration > 0 && (
                 <div className="mt-3 pt-3 border-t border-white/10">
                   <div className="w-full h-0.5 bg-white/10 rounded-full overflow-hidden mb-1.5">
-                    <div 
+                    <div
                       className="h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full origin-left transform scale-x-0"
-                      style={{ 
-                        animation: `scaleProgress ${currentStepData.duration}ms linear forwards`
+                      style={{
+                        animation: `scaleProgress ${currentStepData.duration}ms linear forwards`,
                       }}
                     />
                   </div>
-                  <span className="text-xs text-white/60 italic">Auto-advancing...</span>
+                  <span className="text-xs text-white/60 italic">
+                    Auto-advancing...
+                  </span>
                 </div>
               )}
             </div>
@@ -397,15 +458,15 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
 
         {/* Navigation */}
         <div className="px-4 py-3 border-t border-white/10">
-          {currentStepData.type === 'welcome' && (
+          {currentStepData.type === "welcome" && (
             <div className="flex gap-3 justify-center">
-              <button 
+              <button
                 onClick={onClose}
                 className="px-5 py-2.5 bg-white/10 text-white/80 border border-white/20 rounded-xl text-xs font-medium hover:bg-white/15 hover:text-white hover:border-white/30 transition-all duration-200 flex items-center gap-2"
               >
                 Skip Tour
               </button>
-              <button 
+              <button
                 onClick={handleStart}
                 className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-blue-400 text-white rounded-xl text-xs font-semibold hover:shadow-lg hover:shadow-blue-500/25 hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2"
               >
@@ -414,15 +475,15 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
             </div>
           )}
 
-          {currentStepData.type === 'completion' && (
+          {currentStepData.type === "completion" && (
             <div className="flex gap-3 justify-center">
-              <button 
+              <button
                 onClick={handleRestart}
                 className="px-5 py-2.5 bg-white/10 text-white/80 border border-white/20 rounded-xl text-xs font-medium hover:bg-white/15 hover:text-white hover:border-white/30 transition-all duration-200 flex items-center gap-2"
               >
                 <FiRotateCcw size={14} /> Restart Tour
               </button>
-              <button 
+              <button
                 onClick={onClose}
                 className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-blue-400 text-white rounded-xl text-xs font-semibold hover:shadow-lg hover:shadow-blue-500/25 hover:-translate-y-0.5 transition-all duration-200"
               >
@@ -431,26 +492,26 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
             </div>
           )}
 
-          {currentStepData.type === 'highlight' && (
+          {currentStepData.type === "highlight" && (
             <div className="flex justify-between items-center">
               <div className="flex gap-2 items-center">
-                <button 
+                <button
                   onClick={handlePrevious}
                   disabled={currentStep === 0}
                   className="px-3 py-1.5 bg-white/10 text-white/80 border border-white/20 rounded-xl text-xs font-medium hover:bg-white/15 hover:text-white hover:border-white/30 transition-all duration-200 flex items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white/10"
                 >
                   <FiChevronLeft size={12} /> Previous
                 </button>
-                
-                <button 
+
+                <button
                   onClick={handlePlayPause}
                   className="p-1.5 bg-blue-500/10 text-blue-500 border border-blue-500/30 rounded-xl hover:bg-blue-500/20 hover:border-blue-500/40 transition-all duration-200"
-                  title={isPlaying ? 'Pause auto-advance' : 'Play auto-advance'}
+                  title={isPlaying ? "Pause auto-advance" : "Play auto-advance"}
                 >
                   {isPlaying ? <FiPause size={12} /> : <FiPlay size={12} />}
                 </button>
-                
-                <button 
+
+                <button
                   onClick={handleNext}
                   disabled={currentStep === walkthroughSteps.length - 1}
                   className="px-3 py-1.5 bg-white/10 text-white/80 border border-white/20 rounded-xl text-xs font-medium hover:bg-white/15 hover:text-white hover:border-white/30 transition-all duration-200 flex items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white/10"
@@ -458,8 +519,8 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
                   Next <FiChevronRight size={12} />
                 </button>
               </div>
-              
-              <button 
+
+              <button
                 onClick={handleSkip}
                 className="px-2 py-1.5 text-white/50 hover:text-white/80 text-xs transition-colors duration-200"
               >
@@ -483,39 +544,38 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
         .walkthrough-highlight {
           position: relative;
           z-index: 10000;
-          box-shadow: 
-            0 0 0 3px rgba(254, 116, 0, 1),
-            0 0 0 6px rgba(254, 116, 0, 0.5),
-            0 0 30px rgba(254, 116, 0, 0.8),
-            0 0 60px rgba(254, 116, 0, 0.4);
+          box-shadow: 0 0 0 3px rgba(0, 191, 255, 1),
+            0 0 0 6px rgba(0, 191, 255, 0.5), 0 0 30px rgba(0, 191, 255, 0.8),
+            0 0 60px rgba(0, 191, 255, 0.6);
           border-radius: 16px;
           transition: all 0.3s ease;
           background: rgba(254, 116, 0, 0.05);
           animation: highlightPulse 2s ease-in-out infinite;
         }
         @keyframes highlightPulse {
-          0%, 100% { 
-            box-shadow: 
-              0 0 0 3px rgba(254, 116, 0, 1),
-              0 0 0 6px rgba(254, 116, 0, 0.5),
-              0 0 30px rgba(254, 116, 0, 0.8),
-              0 0 60px rgba(254, 116, 0, 0.4);
+          0%,
+          100% {
+            box-shadow: 0 0 0 3px rgba(0, 191, 255, 1),
+              0 0 0 6px rgba(0, 191, 255, 0.5), 0 0 30px rgba(0, 191, 255, 0.8),
+              0 0 60px rgba(0, 191, 255, 0.6);
           }
-          50% { 
-            box-shadow: 
-              0 0 0 3px rgba(254, 116, 0, 1),
-              0 0 0 6px rgba(254, 116, 0, 0.7),
-              0 0 40px rgba(254, 116, 0, 1),
-              0 0 80px rgba(254, 116, 0, 0.6);
+          50% {
+            box-shadow: 0 0 0 3px rgba(0, 191, 255, 1),
+              0 0 0 6px rgba(0, 191, 255, 0.5), 0 0 30px rgba(0, 191, 255, 0.8),
+              0 0 60px rgba(0, 191, 255, 0.6);
           }
         }
         @keyframes scaleProgress {
-          from { transform: scaleX(0); }
-          to { transform: scaleX(1); }
+          from {
+            transform: scaleX(0);
+          }
+          to {
+            transform: scaleX(1);
+          }
         }
       `}</style>
     </>
   );
 };
 
-export default ConversionWalkthrough; 
+export default ConversionWalkthrough;

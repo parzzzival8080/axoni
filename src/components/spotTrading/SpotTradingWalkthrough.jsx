@@ -481,10 +481,10 @@ const SpotTradingWalkthrough = ({ onClose, isOpen }) => {
           position: relative;
           z-index: 10000;
           box-shadow: 
-            0 0 0 3px rgba(254, 116, 0, 1),
-            0 0 0 6px rgba(254, 116, 0, 0.5),
-            0 0 30px rgba(254, 116, 0, 0.8),
-            0 0 60px rgba(254, 116, 0, 0.4);
+          0 0 0 3px rgba(0, 191, 255, 1),
+0 0 0 6px rgba(0, 191, 255, 0.5),
+0 0 30px rgba(0, 191, 255, 0.8),
+0 0 60px rgba(0, 191, 255, 0.6);
           border-radius: 8px;
           transition: all 0.3s ease;
           background: rgba(254, 116, 0, 0.05);
@@ -493,17 +493,17 @@ const SpotTradingWalkthrough = ({ onClose, isOpen }) => {
         @keyframes highlightPulse {
           0%, 100% { 
             box-shadow: 
-              0 0 0 3px rgba(254, 116, 0, 1),
-              0 0 0 6px rgba(254, 116, 0, 0.5),
-              0 0 30px rgba(254, 116, 0, 0.8),
-              0 0 60px rgba(254, 116, 0, 0.4);
+            0 0 0 3px rgba(0, 191, 255, 1),
+0 0 0 6px rgba(0, 191, 255, 0.5),
+0 0 30px rgba(0, 191, 255, 0.8),
+0 0 60px rgba(0, 191, 255, 0.6);
           }
           50% { 
             box-shadow: 
-              0 0 0 3px rgba(254, 116, 0, 1),
-              0 0 0 6px rgba(254, 116, 0, 0.7),
-              0 0 40px rgba(254, 116, 0, 1),
-              0 0 80px rgba(254, 116, 0, 0.6);
+           0 0 0 3px rgba(0, 191, 255, 1),
+0 0 0 6px rgba(0, 191, 255, 0.5),
+0 0 30px rgba(0, 191, 255, 0.8),
+0 0 60px rgba(0, 191, 255, 0.6);
           }
         }
         @keyframes scaleProgress {
