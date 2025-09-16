@@ -267,7 +267,7 @@ const Overview = () => {
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="px-4 py-2 bg-[#014EB2] text-white rounded-md hover:bg-orange-600 transition-colors"
+              className="px-4 py-2 bg-[#014EB2] text-white rounded-md hover:bg-blue-600 transition-colors"
             >
               Try Again
             </button>
@@ -291,7 +291,7 @@ const Overview = () => {
           {!isVerified && (
             <Link
               to="/account/verify"
-              className="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 bg-[#014EB2] text-white rounded-lg hover:bg-orange-600 transition-colors font-medium"
+              className="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 bg-[#014EB2] text-white rounded-lg hover:bg-blue-600 transition-colors font-medium"
             >
               <FiShield className="mr-2" />
               Verify Account
@@ -381,7 +381,7 @@ const Overview = () => {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <Link
                   to="/deposit"
-                  className="flex flex-col items-center p-4 bg-[#014EB2] text-white rounded-lg hover:bg-orange-600 transition-colors"
+                  className="flex flex-col items-center p-4 bg-[#014EB2] text-white rounded-lg hover:bg-blue-600 transition-colors"
                 >
                   <svg
                     className="w-6 h-6 mb-2"
@@ -469,7 +469,7 @@ const Overview = () => {
                 </h2>
                 <Link
                   to="/my-assets"
-                  className="text-[#014EB2] hover:text-orange-600 text-sm font-medium flex items-center"
+                  className="text-[#014EB2] hover:text-blue-600 text-sm font-medium flex items-center"
                 >
                   View All <FiArrowRight className="ml-1" />
                 </Link>

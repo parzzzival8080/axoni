@@ -125,7 +125,7 @@ const Security = () => {
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="px-6 py-3 bg-[#FE7400] text-white rounded-md hover:bg-orange-600 transition-colors"
+              className="px-6 py-3 bg-[#FE7400] text-white rounded-md hover:bg-blue-600 transition-colors"
             >
               Try Again
             </button>
@@ -162,8 +162,8 @@ const Security = () => {
 
         <div className="mb-12">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center">
-              <FiAlertCircle className="text-orange-500 w-5 h-5" />
+            <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+              <FiAlertCircle className="text-blue-500 w-5 h-5" />
             </div>
             <div>
               <h3 className="font-medium text-lg">Pending security features</h3>

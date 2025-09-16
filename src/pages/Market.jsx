@@ -165,7 +165,7 @@ const Market = () => {
               onClick={() => setActiveMarketTab(tab)}
               className={`px-4 py-2 text-sm font-medium transition-colors ${
                 activeMarketTab === tab
-                  ? "border-b-2 border-orange-500 text-white"
+                  ? "border-b-2 border-blue-500 text-white"
                   : "text-gray-400 hover:text-white"
               }`}
             >
@@ -178,7 +178,7 @@ const Market = () => {
         <div className="mb-6 flex justify-between items-center">
           <input
             type="text"
-            className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-4 w-full max-w-xs focus:outline-none focus:ring-1 focus:ring-orange-500 placeholder-gray-500"
+            className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-4 w-full max-w-xs focus:outline-none focus:ring-1 focus:ring-blue-500 placeholder-gray-500"
             placeholder="Search by symbol or name..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -327,7 +327,7 @@ const Market = () => {
                     </td>
                     <td className="text-center px-4">
                       <button
-                        className="text-orange-500 text-xs font-semibold hover:text-orange-400 transition-colors px-3 py-1 rounded-full bg-white/5 border border-orange-500/20 shadow-sm mr-2"
+                        className="text-blue-500 text-xs font-semibold hover:text-blue-400 transition-colors px-3 py-1 rounded-full bg-white/5 border border-blue-500/20 shadow-sm mr-2"
                         onClick={() => {
                           if (coin.coin_pair) {
                             const params = new URLSearchParams(location.search);
