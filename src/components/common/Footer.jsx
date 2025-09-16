@@ -23,7 +23,7 @@ const Footer = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [showTradeOnGo, setShowTradeOnGo] = useState(true);
 
-  const appDownloadUrl = "https://api.COINCHIcoin.tech/api/v1/download-COINCHI-apk";
+  const appDownloadUrl = "https://api.coinchi.co/api/v1/download-COINCHI-apk";
 
   // Check if viewport is mobile
   useEffect(() => {
@@ -74,7 +74,7 @@ const Footer = () => {
               className="h-12 w-auto object-contain"
             />
           </div>
-          <p className="copyright">©2025 COINCHIcoin.tech | All Rights Reserved</p>
+          <p className="copyright">©2025 coinchi.co | All Rights Reserved</p>
         </div>
 
         {/* Language Selector */}

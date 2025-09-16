@@ -6,6 +6,6 @@ Allow: /
 # Disallow: /admin/
 # Disallow: /private/
 
-Sitemap: https://COINCHIcoin.tech/sitemap.xml
+Sitemap: https://coinchi.co/sitemap.xml
 er-agent: *
 Disallow:

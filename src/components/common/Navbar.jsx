@@ -137,7 +137,7 @@ const Navbar = () => {
         } else if (userId) {
           try {
             const response = await axios.get(
-              `https://django.COINCHIcoin.tech/api/user_account/getUserInformation/?user_id=${userId}`,
+              `https://django.coinchi.co/api/user_account/getUserInformation/?user_id=${userId}`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
@@ -230,7 +230,7 @@ const Navbar = () => {
   };
 
   const appDownloadUrl =
-    "https://api.COINCHIcoin.tech/api/v1/download-COINCHI-apk";
+    "https://api.coinchi.co/api/v1/download-COINCHI-apk";
 
   const openComingSoon = () => setIsComingSoonOpen(true);
   const closeComingSoon = () => setIsComingSoonOpen(false);

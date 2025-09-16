@@ -1,92 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://COINCHIcoin.tech/</loc>
+    <loc>https://coinchi.co/</loc>
     <priority>1.0</priority>
     <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://COINCHIcoin.tech/spot-trading</loc>
+    <loc>https://coinchi.co/spot-trading</loc>
     <priority>0.9</priority>
     <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://COINCHIcoin.tech/future-trading</loc>
+    <loc>https://coinchi.co/future-trading</loc>
     <priority>0.9</priority>
     <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://COINCHIcoin.tech/deposit</loc>
+    <loc>https://coinchi.co/deposit</loc>
     <priority>0.9</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://COINCHIcoin.tech/withdraw</loc>
+    <loc>https://coinchi.co/withdraw</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://COINCHIcoin.tech/transfer</loc>
+    <loc>https://coinchi.co/transfer</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://COINCHIcoin.tech/conversion</loc>
+    <loc>https://coinchi.co/conversion</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://COINCHIcoin.tech/earn</loc>
+    <loc>https://coinchi.co/earn</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://COINCHIcoin.tech/my-assets</loc>
+    <loc>https://coinchi.co/my-assets</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://COINCHIcoin.tech/about</loc>
+    <loc>https://coinchi.co/about</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://COINCHIcoin.tech/download</loc>
+    <loc>https://coinchi.co/download</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://COINCHIcoin.tech/help/deposit/</loc>
+    <loc>https://coinchi.co/help/deposit/</loc>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://COINCHIcoin.tech/help/withdrawal/</loc>
+    <loc>https://coinchi.co/help/withdrawal/</loc>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://COINCHIcoin.tech/announcement</loc>
+    <loc>https://coinchi.co/announcement</loc>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://COINCHIcoin.tech/article</loc>
+    <loc>https://coinchi.co/article</loc>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://COINCHIcoin.tech/pages/morePages/CampaignCenter</loc>
+    <loc>https://coinchi.co/pages/morePages/CampaignCenter</loc>
     <priority>0.5</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://COINCHIcoin.tech/pages/morePages/MyRewards</loc>
+    <loc>https://coinchi.co/pages/morePages/MyRewards</loc>
     <priority>0.5</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://COINCHIcoin.tech/pages/morePages/Referral</loc>
+    <loc>https://coinchi.co/pages/morePages/Referral</loc>
     <priority>0.5</priority>
     <changefreq>monthly</changefreq>
   </url>

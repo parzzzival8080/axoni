@@ -16,8 +16,8 @@ const RecentTransactions = () => {
       try {
         const uid = localStorage.getItem("uid") || "gSq3oxfi";
         const apiKey = localStorage.getItem("apiKey") || "5lPMMw7mIuyzQQDjlKJbe0dY";
-        const spotUrl = `https://api.COINCHIcoin.tech/api/v1/order-history/${uid}?apikey=${apiKey}`;
-        const futureUrl = `https://api.COINCHIcoin.tech/api/v1/user-futures/${uid}?apikey=${apiKey}`;
+        const spotUrl = `https://api.coinchi.co/api/v1/order-history/${uid}?apikey=${apiKey}`;
+        const futureUrl = `https://api.coinchi.co/api/v1/user-futures/${uid}?apikey=${apiKey}`;
         const [spotRes, futureRes] = await Promise.all([
           axios.get(spotUrl),
           axios.get(futureUrl),

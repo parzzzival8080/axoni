@@ -18,7 +18,7 @@ const FundingTab = () => {
         setLoading(true);
         const uid = localStorage.getItem("uid") || "QEaIjLlY";
         const apiKey = "5lPMMw7mIuyzQQDjlKJbe0dY";
-        const apiUrl = `https://api.COINCHIcoin.tech/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
+        const apiUrl = `https://api.coinchi.co/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
 
         const response = await axios.get(apiUrl);
 

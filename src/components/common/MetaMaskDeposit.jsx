@@ -112,7 +112,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
 
       // Notify your backend about the pending deposit
       const response = await fetch(
-        `https://api.COINCHIcoin.tech/api/v1/metamask-deposit-notification?apikey=${apiKey}`,
+        `https://api.coinchi.co/api/v1/metamask-deposit-notification?apikey=${apiKey}`,
         {
           method: "POST",
           headers: {

@@ -243,7 +243,7 @@ export const MetaMaskProvider = ({ children }) => {
       if (!uid && user_id && authToken) {
         console.log('🔍 No UID found, attempting to fetch from user info API');
         try {
-          const userInfoUrl = `https://django.COINCHIcoin.tech/api/user_account/getUserInformation/?user_id=${user_id}`;
+          const userInfoUrl = `https://django.coinchi.co/api/user_account/getUserInformation/?user_id=${user_id}`;
           console.log('🔍 Fetching user info from:', userInfoUrl);
           console.log('🔍 Auth token (first 20 chars):', authToken?.substring(0, 20) + '...');
           
@@ -281,7 +281,7 @@ export const MetaMaskProvider = ({ children }) => {
         return '';
       }
       
-      const url = `https://api.COINCHIcoin.tech/api/v1/metamask-address/${uid}?apikey=${apiKey}`;
+      const url = `https://api.coinchi.co/api/v1/metamask-address/${uid}?apikey=${apiKey}`;
       console.log('🔍 Fetching COINCHI address from URL:', url);
       
       const response = await fetch(url);

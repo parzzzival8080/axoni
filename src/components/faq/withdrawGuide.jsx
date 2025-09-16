@@ -76,7 +76,7 @@ const articleData = {
         steps: [
           {
             number: 1,
-            content: 'Log in to your account at <strong>COINCHIcoin.tech</strong>, go to the <strong class="text-gray-900">Assets</strong>, and select <strong class="text-orange-600">Withdrawal</strong>.'
+            content: 'Log in to your account at <strong>coinchi.co</strong>, go to the <strong class="text-gray-900">Assets</strong>, and select <strong class="text-orange-600">Withdrawal</strong>.'
           },
           {
             number: 2,

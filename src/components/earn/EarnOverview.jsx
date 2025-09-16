@@ -15,7 +15,7 @@ const EarnOverview = () => {
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch('https://api.COINCHIcoin.tech/api/v1/coins?apikey=5lPMMw7mIuyzQQDjlKJbe0dY');
+        const res = await fetch('https://api.coinchi.co/api/v1/coins?apikey=5lPMMw7mIuyzQQDjlKJbe0dY');
         const data = await res.json();
         
         if (Array.isArray(data)) {
