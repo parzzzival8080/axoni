@@ -18,7 +18,7 @@ const JourneyStep = ({ number, title, description, buttonText }) => (
     <div className="mt-auto pt-2">
       <Link
         to={buttonRoutes[buttonText] || '/'}
-        className="w-full block text-center bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold px-4 py-2 rounded-md transition-colors shadow-md uppercase tracking-wide"
+        className="w-full block text-center bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold px-4 py-2 rounded-md transition-colors shadow-md uppercase tracking-wide"
       >
         {buttonText}
       </Link>

@@ -70,11 +70,11 @@ const RecentTransactions = () => {
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
       <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
         Recent Transactions
-        <span className="ml-2 px-2 py-0.5 rounded text-xs font-medium bg-orange-100 text-orange-600">Live</span>
+        <span className="ml-2 px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-600">Live</span>
       </h3>
       {loading ? (
         <div className="flex items-center justify-center py-8">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-orange-500 mr-3"></div>
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mr-3"></div>
           <span className="text-gray-500">Loading recent transactions...</span>
         </div>
       ) : error ? (
@@ -98,7 +98,7 @@ const RecentTransactions = () => {
             </thead>
             <tbody>
               {transactions.map((tx) => (
-                <tr key={tx.id} className="hover:bg-orange-50 transition-colors">
+                <tr key={tx.id} className="hover:bg-blue-50 transition-colors">
                   <td className="px-3 py-2 whitespace-nowrap text-gray-700">{tx.date ? new Date(tx.date).toLocaleString() : '-'}</td>
                   <td className="px-3 py-2 whitespace-nowrap text-gray-900 font-medium">{tx.pair}</td>
                   <td className={`px-3 py-2 whitespace-nowrap font-semibold ${tx.side === 'buy' ? 'text-green-600' : 'text-red-500'}`}>{tx.type}</td>
@@ -106,10 +106,10 @@ const RecentTransactions = () => {
                   <td className="px-3 py-2 whitespace-nowrap">{tx.amount?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</td>
                   <td className="px-3 py-2 whitespace-nowrap">{tx.total?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</td>
                   <td className="px-3 py-2 whitespace-nowrap">
-                    <span className={`px-2 py-0.5 rounded text-xs font-semibold ${tx.status?.toLowerCase() === 'pending' ? 'bg-orange-100 text-orange-600' : tx.status?.toLowerCase() === 'canceled' ? 'bg-gray-200 text-gray-500' : 'bg-green-100 text-green-700'}`}>{tx.status}</span>
+                    <span className={`px-2 py-0.5 rounded text-xs font-semibold ${tx.status?.toLowerCase() === 'pending' ? 'bg-blue-100 text-blue-600' : tx.status?.toLowerCase() === 'canceled' ? 'bg-gray-200 text-gray-500' : 'bg-green-100 text-green-700'}`}>{tx.status}</span>
                   </td>
                   <td className="px-3 py-2 whitespace-nowrap">
-                    <span className={`px-2 py-0.5 rounded text-xs font-medium ${tx.source === 'Spot' ? 'bg-orange-50 text-orange-500' : 'bg-blue-50 text-blue-500'}`}>{tx.source}</span>
+                    <span className={`px-2 py-0.5 rounded text-xs font-medium ${tx.source === 'Spot' ? 'bg-blue-50 text-blue-500' : 'bg-blue-50 text-blue-500'}`}>{tx.source}</span>
                   </td>
                 </tr>
               ))}

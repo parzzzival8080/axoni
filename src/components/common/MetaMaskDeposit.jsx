@@ -192,7 +192,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
             {/* <p className="text-gray-300 mb-4">Connect MetaMask to continue</p> */}
             {/* <button
               onClick={connectWallet}
-              className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors font-medium"
+              className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors font-medium"
             >
               Connect MetaMask
             </button> */}
@@ -212,7 +212,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
                 href={`https://etherscan.io/tx/${txHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-orange-400 text-xs font-mono break-all hover:text-orange-300 transition-colors"
+                className="text-blue-400 text-xs font-mono break-all hover:text-blue-300 transition-colors"
               >
                 {txHash}
               </a>
@@ -238,12 +238,12 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
             <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 mb-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center">
-                  <FaWallet className="text-orange-500 mr-2 text-sm" />
+                  <FaWallet className="text-blue-500 mr-2 text-sm" />
                   <span className="text-white font-medium text-sm">
                     MetaMask
                   </span>
                 </div>
-                <span className="text-orange-400 font-bold text-sm">
+                <span className="text-blue-400 font-bold text-sm">
                   {balance} {selectedCoin}
                 </span>
               </div>
@@ -256,7 +256,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
                   </span>
                   <button
                     onClick={() => navigator.clipboard.writeText(account)}
-                    className="text-ora nge-400 hover:text-orange-300 transition-colors"
+                    className="text-ora nge-400 hover:text-blue-300 transition-colors"
                     title="Copy address"
                   >
                     Copy
@@ -269,7 +269,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
             <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 mb-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center">
-                  <div className="w-4 h-4 bg-orange-500 rounded mr-2 flex items-center justify-center">
+                  <div className="w-4 h-4 bg-blue-500 rounded mr-2 flex items-center justify-center">
                     <span className="text-white text-xs font-bold">F</span>
                   </div>
                   <span className="text-white font-medium text-sm">
@@ -290,7 +290,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
                       onClick={() =>
                         navigator.clipboard.writeText(COINCHIWalletAddress)
                       }
-                      className="text-orange-400 hover:text-orange-300 transition-colors"
+                      className="text-blue-400 hover:text-blue-300 transition-colors"
                       title="Copy address"
                     >
                       Copy
@@ -302,8 +302,8 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
 
             {/* Transfer Arrow - Compact */}
             <div className="flex justify-center mb-4">
-              <div className="bg-orange-500 bg-opacity-20 p-2 rounded-full">
-                <FaArrowRight className="text-orange-500 text-sm" />
+              <div className="bg-blue-500 bg-opacity-20 p-2 rounded-full">
+                <FaArrowRight className="text-blue-500 text-sm" />
               </div>
             </div>
 
@@ -318,7 +318,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
                   value={depositAmount}
                   onChange={(e) => setDepositAmount(e.target.value)}
                   placeholder="0.00"
-                  className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-white placeholder-gray-400"
+                  className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-gray-400"
                   step="0.000001"
                   min="0.001"
                   max={balance}
@@ -326,7 +326,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
                 <div className="absolute right-3 top-3 flex items-center gap-2">
                   <button
                     onClick={handleMaxAmount}
-                    className="bg-orange-500 bg-opacity-20 text-orange-400 px-2 py-1 rounded text-xs hover:bg-opacity-30 transition-colors"
+                    className="bg-blue-500 bg-opacity-20 text-blue-400 px-2 py-1 rounded text-xs hover:bg-opacity-30 transition-colors"
                     type="button"
                   >
                     MAX
@@ -382,7 +382,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
                   parseFloat(depositAmount) > parseFloat(balance) ||
                   !COINCHIWalletAddress
                 }
-                className="flex-1 bg-orange-500 text-white py-2.5 rounded-lg hover:bg-orange-600 disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 font-medium text-sm"
+                className="flex-1 bg-blue-500 text-white py-2.5 rounded-lg hover:bg-blue-600 disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 font-medium text-sm"
               >
                 {isDepositing ? (
                   <>

@@ -1120,10 +1120,10 @@ const VerifyPage = () => {
           <ProfileNavBar />
         </div>
         <div className="w-full max-w-md flex flex-col items-center justify-center bg-white dark:bg-gray-800 rounded-xl p-8 mt-12 shadow">
-          <span className="inline-flex items-center px-6 py-2 rounded-full bg-orange-100 text-orange-700 font-semibold text-lg border border-orange-300 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-700 animate-pulse mb-4">
+          <span className="inline-flex items-center px-6 py-2 rounded-full bg-blue-100 text-blue-700 font-semibold text-lg border border-blue-300 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700 animate-pulse mb-4">
             <CheckCircle2
               size={28}
-              className="mr-2 text-orange-500"
+              className="mr-2 text-blue-500"
               strokeWidth={2}
             />
             Verification Pending
@@ -1138,7 +1138,7 @@ const VerifyPage = () => {
           </p>
           <Link
             to="/"
-            className="px-6 py-2 rounded-full bg-[#014EB2] text-white font-semibold text-sm hover:bg-orange-600 transition shadow-lg"
+            className="px-6 py-2 rounded-full bg-[#014EB2] text-white font-semibold text-sm hover:bg-blue-600 transition shadow-lg"
             style={{ borderRadius: 9999 }}
           >
             Go to Home
@@ -1169,7 +1169,7 @@ const VerifyPage = () => {
           </p>
           <Link
             to="/account/profile"
-            className="px-6 py-2 rounded-lg bg-[#014EB2] text-white font-semibold text-sm hover:bg-orange-600 transition"
+            className="px-6 py-2 rounded-lg bg-[#014EB2] text-white font-semibold text-sm hover:bg-blue-600 transition"
           >
             Go to Profile
           </Link>
@@ -1219,7 +1219,7 @@ const VerifyPage = () => {
               setSubmissionError("");
               cleanupImageUrls();
             }}
-            className="px-6 py-2 rounded-lg bg-[#014EB2] text-white font-semibold text-sm hover:bg-orange-600 transition"
+            className="px-6 py-2 rounded-lg bg-[#014EB2] text-white font-semibold text-sm hover:bg-blue-600 transition"
           >
             Try Again
           </button>
@@ -1596,10 +1596,10 @@ const VerifyPage = () => {
         return (
           <div className="w-full text-center py-12 flex flex-col items-center">
             <div className="flex items-center justify-center mb-4">
-              <span className="inline-flex items-center px-6 py-2 rounded-full bg-orange-100 text-orange-700 font-semibold text-lg border border-orange-300 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-700 animate-pulse">
+              <span className="inline-flex items-center px-6 py-2 rounded-full bg-blue-100 text-blue-700 font-semibold text-lg border border-blue-300 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700 animate-pulse">
                 <CheckCircle2
                   size={32}
-                  className="mr-2 text-orange-500"
+                  className="mr-2 text-blue-500"
                   strokeWidth={2}
                 />
                 Pending Review
@@ -1610,7 +1610,7 @@ const VerifyPage = () => {
             </h2>
             <p className="text-base text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto">
               Thank you! Your information has been submitted and is now{" "}
-              <span className="font-semibold text-orange-500 dark:text-orange-400">
+              <span className="font-semibold text-blue-500 dark:text-blue-400">
                 pending review
               </span>
               .<br />

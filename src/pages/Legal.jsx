@@ -38,7 +38,7 @@ const Legal = () => {
                   COINCHI Markets Ltd has been granted registration as a{" "}
                   <a
                     href="https://www.amf-france.org/en"
-                    className="text-[#014EB2] underline hover:text-orange-400"
+                    className="text-[#014EB2] underline hover:text-blue-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -47,7 +47,7 @@ const Legal = () => {
                   by the{" "}
                   <a
                     href="https://www.amf-france.org/en"
-                    className="text-[#014EB2] underline hover:text-orange-400"
+                    className="text-[#014EB2] underline hover:text-blue-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -75,7 +75,7 @@ const Legal = () => {
                   COINCHI UAB S.A. has been granted a{" "}
                   <a
                     href="https://www.lb.lt/en/"
-                    className="text-[#014EB2] underline hover:text-orange-400"
+                    className="text-[#014EB2] underline hover:text-blue-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -84,7 +84,7 @@ const Legal = () => {
                   registration by the{" "}
                   <a
                     href="https://www.registrucentras.lt/en/"
-                    className="text-[#014EB2] underline hover:text-orange-400"
+                    className="text-[#014EB2] underline hover:text-blue-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -110,7 +110,7 @@ const Legal = () => {
                   COINCHI (Poland) Sp.z.o.o has obtained a{" "}
                   <a
                     href="#"
-                    className="text-[#014EB2] underline hover:text-orange-400"
+                    className="text-[#014EB2] underline hover:text-blue-400"
                   >
                     Virtual Asset Service Provider (VASP)
                   </a>{" "}
@@ -153,7 +153,7 @@ const Legal = () => {
                   COINCHI (Spain) Technologies, has obtained a{" "}
                   <a
                     href="https://www.bde.es/f/webbde/INF/MenuHorizontal/Normativa/Circulares_y_guias_especializadas/Ficheros/Circular_1_2021_en.pdf"
-                    className="text-[#014EB2] underline hover:text-orange-400"
+                    className="text-[#014EB2] underline hover:text-blue-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -162,7 +162,7 @@ const Legal = () => {
                   license under PSAV from the
                   <a
                     href="https://www.bde.es/wbe/en/"
-                    className="text-[#014EB2] underline hover:text-orange-400"
+                    className="text-[#014EB2] underline hover:text-blue-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -187,7 +187,7 @@ const Legal = () => {
                   1 license at an{" "}
                   <a
                     href="#"
-                    className="text-[#014EB2] underline hover:text-orange-400"
+                    className="text-[#014EB2] underline hover:text-blue-400"
                   >
                     Astana International Financial Centre
                   </a>{" "}
@@ -209,7 +209,7 @@ const Legal = () => {
                   COINCHI Australia Derivatives Pty Ltd holds an{" "}
                   <a
                     href="https://asic.gov.au/for-business/your-business/financial-services/afsl/"
-                    className="text-[#014EB2] underline hover:text-orange-400"
+                    className="text-[#014EB2] underline hover:text-blue-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -218,7 +218,7 @@ const Legal = () => {
                   (AFSL) to provide derivative intermediary services to{" "}
                   <a
                     href="https://asic.gov.au/regulatory-resources/financial-services/giving-financial-product-advice/wholesale-and-retail-clients/"
-                    className="text-[#014EB2] underline hover:text-orange-400"
+                    className="text-[#014EB2] underline hover:text-blue-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -227,7 +227,7 @@ const Legal = () => {
                   . AFSL 001317. COINCHI Australia and its{" "}
                   <a
                     href="https://asic.gov.au/for-business/your-business/financial-services/afsl/authorised-representatives/"
-                    className="text-[#014EB2] underline hover:text-orange-400"
+                    className="text-[#014EB2] underline hover:text-blue-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -237,7 +237,7 @@ const Legal = () => {
                   Further details about AFSL can be obtained from{" "}
                   <a
                     href="https://asic.gov.au/"
-                    className="text-[#014EB2] underline hover:text-orange-400"
+                    className="text-[#014EB2] underline hover:text-blue-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -249,7 +249,7 @@ const Legal = () => {
                   COINCHI (Australia) is registered as a reporting entity with the{" "}
                   <a
                     href="https://www.austrac.gov.au/"
-                    className="text-[#014EB2] underline hover:text-orange-400"
+                    className="text-[#014EB2] underline hover:text-blue-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -270,7 +270,7 @@ const Legal = () => {
                   As per{" "}
                   <a
                     href="https://www.mas.gov.sg/"
-                    className="text-[#014EB2] underline hover:text-orange-400"
+                    className="text-[#014EB2] underline hover:text-blue-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -279,7 +279,7 @@ const Legal = () => {
                   (MAS){" "}
                   <a
                     href="https://www.mas.gov.sg/regulation/guidelines"
-                    className="text-[#014EB2] underline hover:text-orange-400"
+                    className="text-[#014EB2] underline hover:text-blue-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -288,7 +288,7 @@ const Legal = () => {
                   for the provision of{" "}
                   <a
                     href="https://www.mas.gov.sg/regulation/explainers/explainer-on-digital-payment-tokens"
-                    className="text-[#014EB2] underline hover:text-orange-400"
+                    className="text-[#014EB2] underline hover:text-blue-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -310,7 +310,7 @@ const Legal = () => {
                   COINCHI has obtained the required{" "}
                   <a
                     href="https://www.bvifsc.vg/"
-                    className="text-[#014EB2] underline hover:text-orange-400"
+                    className="text-[#014EB2] underline hover:text-blue-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -319,7 +319,7 @@ const Legal = () => {
                   (VASP) registration in{" "}
                   <a
                     href="https://www.bvifsc.vg/"
-                    className="text-[#014EB2] underline hover:text-orange-400"
+                    className="text-[#014EB2] underline hover:text-blue-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -342,7 +342,7 @@ const Legal = () => {
                   the{" "}
                   <a
                     href="https://www.vara.ae/"
-                    className="text-[#014EB2] underline hover:text-orange-400"
+                    className="text-[#014EB2] underline hover:text-blue-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -365,7 +365,7 @@ const Legal = () => {
                   1 license at an{" "}
                   <a
                     href="https://aifc.kz/"
-                    className="text-[#014EB2] underline hover:text-orange-400"
+                    className="text-[#014EB2] underline hover:text-blue-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -374,7 +374,7 @@ const Legal = () => {
                   by the{" "}
                   <a
                     href="https://www.afsa.kz/"
-                    className="text-[#014EB2] underline hover:text-orange-400"
+                    className="text-[#014EB2] underline hover:text-blue-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -452,7 +452,7 @@ const Legal = () => {
                         • Legal Department:{" "}
                         <a
                           href="mailto:legal@coinchi.co"
-                          className="text-[#014EB2] underline hover:text-orange-400"
+                          className="text-[#014EB2] underline hover:text-blue-400"
                         >
                           legal@coinchi.co
                         </a>
@@ -461,7 +461,7 @@ const Legal = () => {
                         • Compliance Team:{" "}
                         <a
                           href="mailto:compliance@coinchi.co"
-                          className="text-[#014EB2] underline hover:text-orange-400"
+                          className="text-[#014EB2] underline hover:text-blue-400"
                         >
                           compliance@coinchi.co
                         </a>
@@ -470,7 +470,7 @@ const Legal = () => {
                         • General Support:{" "}
                         <a
                           href="mailto:support@coinchi.co"
-                          className="text-[#014EB2] underline hover:text-orange-400"
+                          className="text-[#014EB2] underline hover:text-blue-400"
                         >
                           support@coinchi.co
                         </a>
