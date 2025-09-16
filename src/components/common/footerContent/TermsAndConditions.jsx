@@ -41,7 +41,7 @@ const TermsAndConditions = () => {
     { id: 'definitions', title: 'DEFINITION OF TERMS', number: '3.' },
     { id: 'compliance', title: 'COMPLIANCE WITH BOT AND AUTOMATED TRADING RESTRICTIONS', number: '4.' },
     { id: 'trading', title: 'CRYPTOCURRENCY TRADING', number: '5.' },
-    { id: 'services', title: 'FLUXCOIN AND SERVICES', number: '6.' },
+    { id: 'services', title: 'COINCHICOIN AND SERVICES', number: '6.' },
     { id: 'intellectual-property', title: 'INTELLECTUAL PROPERTY', number: '7.' },
     { id: 'privacy', title: 'PRIVACY POLICY', number: '8.' },
     { id: 'liability', title: 'LIMITATION OF LIABILITY', number: '9.' },
@@ -130,7 +130,7 @@ const TermsAndConditions = () => {
               <section id="introduction">
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">1. INTRODUCTION</h2>
                 <div className="space-y-4 text-gray-800 leading-relaxed">
-                    <p>Welcome to FLUXcoin ("Exchange," "We," "Us," or "Our"). By using our website and services, you agree to be bound by these Terms of Service ("Terms"). 
+                    <p>Welcome to COINCHIcoin ("Exchange," "We," "Us," or "Our"). By using our website and services, you agree to be bound by these Terms of Service ("Terms"). 
                         Please read them carefully before accessing or using our platform. If you do not agree with any part of these Terms, you should not use our services.
                     </p>
                 </div>
@@ -174,8 +174,8 @@ const TermsAndConditions = () => {
                         entitled to vote for election of directors or other managing authority.
                     </li>
                     <li>
-                        <strong>Application:</strong> means the software program provided by the Company downloaded by You on any electronic device, named FLUXcoin Company (referred to as either 'the Company,' 'we,' 'Us,' or 'Our' in this Agreement)
-                         refers to FLUXcoin.
+                        <strong>Application:</strong> means the software program provided by the Company downloaded by You on any electronic device, named COINCHIcoin Company (referred to as either 'the Company,' 'we,' 'Us,' or 'Our' in this Agreement)
+                         refers to COINCHIcoin.
                     </li>
                     <li>
                         <strong>Country:</strong> refers to: California, United States.
@@ -304,7 +304,7 @@ const TermsAndConditions = () => {
                  <div className="space-y-4 text-gray-800 leading-relaxed">
                   <ul className="space-y-3">
                     <li>
-                        <strong>Risks:</strong> FLUXcoin trading involves significant risks, and the value of FLUXcoin and other cryptocurrencies can be highly volatile. 
+                        <strong>Risks:</strong> COINCHIcoin trading involves significant risks, and the value of COINCHIcoin and other cryptocurrencies can be highly volatile. 
                         You acknowledge and understand the risks associated with trading digital assets.
                     </li>
                     <li>
@@ -312,22 +312,22 @@ const TermsAndConditions = () => {
                          financial advisor before making any trading decisions.
                     </li>
                     <li>
-                        <strong>Fees:</strong> Fees and charges related to FLUXcoin trading are outlined in a separate fee schedule available on our website.
+                        <strong>Fees:</strong> Fees and charges related to COINCHIcoin trading are outlined in a separate fee schedule available on our website.
                     </li>
                   </ul>
                 </div>
               </section>
 
               <section id="services">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">6. FLUXCOIN AND SERVICES</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">6. COINCHICOIN AND SERVICES</h2>
                  <div className="space-y-4 text-gray-800 leading-relaxed">
                   <ul className="space-y-3">
                     <li>
-                        <strong>Availability:</strong> We will make reasonable efforts to ensure the availability of FLUXcoin and a wide range of services on our platform. 
-                        However, we do not guarantee the availability of FLUXcoin or specific services.
+                        <strong>Availability:</strong> We will make reasonable efforts to ensure the availability of COINCHIcoin and a wide range of services on our platform. 
+                        However, we do not guarantee the availability of COINCHIcoin or specific services.
                     </li>
                     <li>
-                        <strong>Modifications:</strong> We reserve the right to modify or discontinue FLUXcoin or any services at any time without prior notice.
+                        <strong>Modifications:</strong> We reserve the right to modify or discontinue COINCHIcoin or any services at any time without prior notice.
                     </li>
                   </ul>
                 </div>
@@ -339,7 +339,7 @@ const TermsAndConditions = () => {
                   <ul className="space-y-3">
                     <li>
                         <strong>Ownership:</strong> All content and materials on our platform, including logos, trademarks, graphics, and software, are the property of 
-                        FLUXcoin and are protected by intellectual property laws.
+                        COINCHIcoin and are protected by intellectual property laws.
                     </li>
                     <li>
                         <strong>Limited License:</strong> You are granted a limited, non-exclusive, non-transferable license to access and use our platform for personal, non-commercial purposes.
@@ -373,7 +373,7 @@ const TermsAndConditions = () => {
               <section id="indemnification">
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">10. INDEMNIFICATION</h2>
                 <div className="space-y-4 text-gray-800 leading-relaxed">
-                  <p>You agree to indemnify and hold FLUXcoin, its affiliates, and their respective officers, directors, employees, and agents harmless from and against any claims, liabilities, damages, losses, and expenses arising from your use of our platform.</p>
+                  <p>You agree to indemnify and hold COINCHIcoin, its affiliates, and their respective officers, directors, employees, and agents harmless from and against any claims, liabilities, damages, losses, and expenses arising from your use of our platform.</p>
                 </div>
               </section>
 
@@ -405,7 +405,7 @@ const TermsAndConditions = () => {
                 If you have any questions about these Terms of Service, please contact our support team.
               </p>
               <div className="space-y-1 text-sm text-gray-600">
-                <p>Email: legal@fluxcoin.tech</p>
+                <p>Email: legal@COINCHIcoin.tech</p>
                 <p>Support Center: Available 24/7</p>
               </div>
             </div>

@@ -27,14 +27,14 @@ const DownloadPage = () => {
     // You can customize alternative URLs per store if needed
     const url =
       noticeStore === "appstore"
-        ? "https://api.fluxcoin.tech/api/v1/download-flux-ios"
-        : "https://api.fluxcoin.tech/api/v1/download-flux-apk";
+        ? "https://api.COINCHIcoin.tech/api/v1/download-COINCHI-ios"
+        : "https://api.COINCHIcoin.tech/api/v1/download-COINCHI-apk";
 
     window.open(url, "_blank");
     setIsNoticeOpen(false);
   };
 
-  const appDownloadUrl = "https://api.fluxcoin.tech/api/v1/download-flux-apk";
+  const appDownloadUrl = "https://api.COINCHIcoin.tech/api/v1/download-COINCHI-apk";
 
   const handleAppDownload = () => {
     const directDownloadUrl = appDownloadUrl;
@@ -42,7 +42,7 @@ const DownloadPage = () => {
 
     const downloadLink = document.createElement("a");
     downloadLink.href = directDownloadUrl;
-    downloadLink.setAttribute("download", "flux.apk");
+    downloadLink.setAttribute("download", "COINCHI.apk");
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
@@ -123,7 +123,7 @@ const DownloadPage = () => {
               <span className="text-[#014EB2]">Unlimited</span> possibilities
             </h3>
             <p className="landing__description">
-              Download the FLUX app to trade crypto on the go. Gain access to
+              Download the COINCHI app to trade crypto on the go. Gain access to
               diverse tokens and trading pairs, advanced market data and more!
             </p>
           </div>
@@ -158,7 +158,7 @@ const DownloadPage = () => {
           <div className="landing__footer-brand">
             <div className="landing__logo">
               <img src={logo} alt="logo" className="object-contain" />
-              <h3 className="landing__logo-text">FLUX APP</h3>
+              <h3 className="landing__logo-text">COINCHI APP</h3>
             </div>
             <p className="landing__footer-tagline">Crypto exchange on the go</p>
           </div>

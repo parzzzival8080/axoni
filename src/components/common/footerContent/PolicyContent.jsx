@@ -186,7 +186,7 @@ const PrivacyPolicy = () => {
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">6. Indemnification</h2>
                 <div className="space-y-4 text-gray-800 leading-relaxed">
                   <p>
-                   You agree to indemnify and hold FLUXcoin, its affiliates, and their respective officers, directors, employees, and agents harmless from and against any claims, liabilities, damages, losses, and expenses arising from your use of our platform.
+                   You agree to indemnify and hold COINCHIcoin, its affiliates, and their respective officers, directors, employees, and agents harmless from and against any claims, liabilities, damages, losses, and expenses arising from your use of our platform.
                   </p>
                 
                 </div>
@@ -291,7 +291,7 @@ const PrivacyPolicy = () => {
                 If you have any questions about this Privacy Policy, please contact our support team.
               </p>
               <div className="space-y-1 text-sm text-gray-600">
-                <p>Email: customerservice@fluxcoin.tech</p>
+                <p>Email: customerservice@COINCHIcoin.tech</p>
                 <p>Support Center: Available 24/7</p>
               </div>
             </div>

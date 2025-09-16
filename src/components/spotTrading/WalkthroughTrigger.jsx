@@ -49,7 +49,7 @@ const WalkthroughTrigger = () => {
               <div className="w-5 h-5 bg-gradient-to-br from-orange-500 to-orange-400 rounded-full flex items-center justify-center">
                 <img 
                   src={logo} 
-                  alt="Flux Logo" 
+                  alt="COINCHI Logo" 
                   className="w-3 h-3 object-contain"
                 />
               </div>
@@ -66,7 +66,7 @@ const WalkthroughTrigger = () => {
           
           <div className="p-5">
             <p className="mb-5 text-sm leading-relaxed text-white/80">
-              New to Flux? Take our guided tour to learn all the features!
+              New to COINCHI? Take our guided tour to learn all the features!
             </p>
             
             <div className="space-y-4">

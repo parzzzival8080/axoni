@@ -19,7 +19,7 @@ export const CryptoProvider = ({ children }) => {
   useEffect(() => {
     const fetchCoins = async () => {
       try {
-        const response = await axios.get('https://api.fluxcoin.tech/api/v1/coins', {
+        const response = await axios.get('https://api.COINCHIcoin.tech/api/v1/coins', {
           params: {
             apikey: '5lPMMw7mIuyzQQDjlKJbe0dY'
           }

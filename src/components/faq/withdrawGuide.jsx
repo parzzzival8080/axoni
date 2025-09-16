@@ -76,7 +76,7 @@ const articleData = {
         steps: [
           {
             number: 1,
-            content: 'Log in to your account at <strong>fluxcoin.tech</strong>, go to the <strong class="text-gray-900">Assets</strong>, and select <strong class="text-orange-600">Withdrawal</strong>.'
+            content: 'Log in to your account at <strong>COINCHIcoin.tech</strong>, go to the <strong class="text-gray-900">Assets</strong>, and select <strong class="text-orange-600">Withdrawal</strong>.'
           },
           {
             number: 2,
@@ -84,7 +84,7 @@ const articleData = {
           },
           {
             number: 3,
-            content: 'Choose your withdrawal method: <strong class="text-orange-600">On-chain withdrawal</strong> (to external wallet) or <strong class="text-orange-600">Internal withdrawal</strong> (to another Flux account).'
+            content: 'Choose your withdrawal method: <strong class="text-orange-600">On-chain withdrawal</strong> (to external wallet) or <strong class="text-orange-600">Internal withdrawal</strong> (to another COINCHI account).'
           },
           {
             number: 4,
@@ -305,11 +305,11 @@ const articleData = {
         steps: [
           {
             number: 1,
-            content: '<strong class="text-green-600">Deposits are generally free</strong> on most platforms, including Flux. You only pay the network fee from your sending wallet.'
+            content: '<strong class="text-green-600">Deposits are generally free</strong> on most platforms, including COINCHI. You only pay the network fee from your sending wallet.'
           },
           {
             number: 2,
-            content: 'The network fee is paid to miners/validators and is <strong class="text-orange-600">not collected by Flux</strong>.'
+            content: 'The network fee is paid to miners/validators and is <strong class="text-orange-600">not collected by COINCHI</strong>.'
           },
           {
             number: 3,
@@ -364,7 +364,7 @@ const articleData = {
     ],
     notes: [
       'Fees are subject to change based on network conditions and platform policies.',
-      'Internal transfers (between Flux accounts) may have different fee structures.',
+      'Internal transfers (between COINCHI accounts) may have different fee structures.',
       'Always check the current fee before confirming your transaction.',
       'Choose networks with lower fees for smaller amounts to maximize efficiency.'
     ]

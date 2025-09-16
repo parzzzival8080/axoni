@@ -23,7 +23,7 @@ const Footer = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [showTradeOnGo, setShowTradeOnGo] = useState(true);
 
-  const appDownloadUrl = "https://api.fluxcoin.tech/api/v1/download-flux-apk";
+  const appDownloadUrl = "https://api.COINCHIcoin.tech/api/v1/download-COINCHI-apk";
 
   // Check if viewport is mobile
   useEffect(() => {
@@ -54,7 +54,7 @@ const Footer = () => {
 
   // Section titles for mobile accordion
   const sectionTitles = [
-    "More about FLUX",
+    "More about COINCHI",
     "Products",
     "Markets",
     "Account",
@@ -70,11 +70,11 @@ const Footer = () => {
           <div className="logo-container">
             <img
               src={Logo}
-              alt="flux-logo"
+              alt="COINCHI-logo"
               className="h-12 w-auto object-contain"
             />
           </div>
-          <p className="copyright">©2025 Fluxcoin.tech | All Rights Reserved</p>
+          <p className="copyright">©2025 COINCHIcoin.tech | All Rights Reserved</p>
         </div>
 
         {/* Language Selector */}
@@ -83,7 +83,7 @@ const Footer = () => {
         {isMobile ? (
           // Mobile Accordion Layout
           <div className="footer-accordion">
-            {/* More about FLUX */}
+            {/* More about COINCHI */}
             <div className="footer-column">
               <h3
                 className={`column-title ${
@@ -231,7 +231,7 @@ const Footer = () => {
                   <a href="#announcements">Announcements</a>
                 </li>
                 <li>
-                  <a href="#connect-with-okx">Connect with FLUX</a>
+                  <a href="#connect-with-okx">Connect with COINCHI</a>
                 </li> */}
                  <li>
                   <Link to="/signup">Sign Up</Link>
@@ -369,9 +369,9 @@ const Footer = () => {
         ) : (
           // Desktop Layout
           <div className="footer-columns">
-            {/* More about FLUX */}
+            {/* More about COINCHI */}
             <div className="footer-column">
-              <h3 className="column-title">More about FLUX</h3>
+              <h3 className="column-title">More about COINCHI</h3>
               <ul className="column-links">
                 <li>
                   <Link to="/about-us">About us</Link>
@@ -464,7 +464,7 @@ const Footer = () => {
               <div className="footer-column trade-on-go">
                 <h3 className="column-title flex flex-col items-start text-left">
                   <span>Trade on the go with</span>
-                  <span>FLUX</span>
+                  <span>COINCHI</span>
                 </h3>
                 {/* <button
                   to="/spot-trading"

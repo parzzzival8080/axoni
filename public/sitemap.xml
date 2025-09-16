@@ -1,92 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://fluxcoin.tech/</loc>
+    <loc>https://COINCHIcoin.tech/</loc>
     <priority>1.0</priority>
     <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/spot-trading</loc>
+    <loc>https://COINCHIcoin.tech/spot-trading</loc>
     <priority>0.9</priority>
     <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/future-trading</loc>
+    <loc>https://COINCHIcoin.tech/future-trading</loc>
     <priority>0.9</priority>
     <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/deposit</loc>
+    <loc>https://COINCHIcoin.tech/deposit</loc>
     <priority>0.9</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/withdraw</loc>
+    <loc>https://COINCHIcoin.tech/withdraw</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/transfer</loc>
+    <loc>https://COINCHIcoin.tech/transfer</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/conversion</loc>
+    <loc>https://COINCHIcoin.tech/conversion</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/earn</loc>
+    <loc>https://COINCHIcoin.tech/earn</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/my-assets</loc>
+    <loc>https://COINCHIcoin.tech/my-assets</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/about</loc>
+    <loc>https://COINCHIcoin.tech/about</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/download</loc>
+    <loc>https://COINCHIcoin.tech/download</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/help/deposit/</loc>
+    <loc>https://COINCHIcoin.tech/help/deposit/</loc>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/help/withdrawal/</loc>
+    <loc>https://COINCHIcoin.tech/help/withdrawal/</loc>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/announcement</loc>
+    <loc>https://COINCHIcoin.tech/announcement</loc>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/article</loc>
+    <loc>https://COINCHIcoin.tech/article</loc>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/pages/morePages/CampaignCenter</loc>
+    <loc>https://COINCHIcoin.tech/pages/morePages/CampaignCenter</loc>
     <priority>0.5</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/pages/morePages/MyRewards</loc>
+    <loc>https://COINCHIcoin.tech/pages/morePages/MyRewards</loc>
     <priority>0.5</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://fluxcoin.tech/pages/morePages/Referral</loc>
+    <loc>https://COINCHIcoin.tech/pages/morePages/Referral</loc>
     <priority>0.5</priority>
     <changefreq>monthly</changefreq>
   </url>

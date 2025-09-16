@@ -260,7 +260,7 @@ const Transfer = () => {
 
       console.log("Fetching fresh coins data...");
       const response = await axios.get(
-        "https://api.fluxcoin.tech/api/v1/coins?apikey=5lPMMw7mIuyzQQDjlKJbe0dY"
+        "https://api.COINCHIcoin.tech/api/v1/coins?apikey=5lPMMw7mIuyzQQDjlKJbe0dY"
       );
       const coinsData = response.data;
       console.log("Fresh coins data loaded:", coinsData.length, "coins");
@@ -324,7 +324,7 @@ const Transfer = () => {
 
       // Fetch transfer history from API
       const response = await axios.get(
-        `https://api.fluxcoin.tech/api/v1/transfer-history/${uid}?apikey=5lPMMw7mIuyzQQDjlKJbe0dY`
+        `https://api.COINCHIcoin.tech/api/v1/transfer-history/${uid}?apikey=5lPMMw7mIuyzQQDjlKJbe0dY`
       );
 
       console.log("Transfer history response status:", response.status);
@@ -420,7 +420,7 @@ const Transfer = () => {
       try {
         const apiKey = "5lPMMw7mIuyzQQDjlKJbe0dY";
         const uid = localStorage.getItem("uid");
-        const url = `https://api.fluxcoin.tech/api/v1/coin-balance/${uid}?apikey=${apiKey}&symbol=${selectedAsset}`;
+        const url = `https://api.COINCHIcoin.tech/api/v1/coin-balance/${uid}?apikey=${apiKey}&symbol=${selectedAsset}`;
         const response = await axios.get(url);
         setSpotBalance(Number(response.data.spot_wallet) || 0);
         setFutureBalance(Number(response.data.future_wallet) || 0);
@@ -446,7 +446,7 @@ const Transfer = () => {
     if (success && selectedAsset) {
       const apiKey = "5lPMMw7mIuyzQQDjlKJbe0dY";
       const uid = localStorage.getItem("uid");
-      const url = `https://api.fluxcoin.tech/api/v1/coin-balance/${uid}?apikey=${apiKey}&symbol=${selectedAsset}`;
+      const url = `https://api.COINCHIcoin.tech/api/v1/coin-balance/${uid}?apikey=${apiKey}&symbol=${selectedAsset}`;
       axios.get(url).then((response) => {
         setSpotBalance(Number(response.data.spot_wallet) || 0);
         setFutureBalance(Number(response.data.future_wallet) || 0);
@@ -605,7 +605,7 @@ const Transfer = () => {
         : toAccount.toLowerCase();
     const symbol = selectedAsset;
     const amount = parseFloat(transferAmount);
-    const url = `https://api.fluxcoin.tech/api/v1/transfers`;
+    const url = `https://api.COINCHIcoin.tech/api/v1/transfers`;
     const data = {
       apikey: apiKey,
       uid: uid,

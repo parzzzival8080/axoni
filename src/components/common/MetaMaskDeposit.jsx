@@ -17,8 +17,8 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
     provider,
     connectWallet,
     formatAddress,
-    FLUXWalletAddress,
-    fetchFLUXWalletAddress,
+    COINCHIWalletAddress,
+    fetchCOINCHIWalletAddress,
   } = useMetaMask();
 
   const [depositAmount, setDepositAmount] = useState("");
@@ -27,12 +27,12 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
   const [txHash, setTxHash] = useState("");
   const [error, setError] = useState("");
 
-  // Fetch FLUX wallet address when modal opens
+  // Fetch COINCHI wallet address when modal opens
   useEffect(() => {
-    if (isOpen && selectedCoin && !FLUXWalletAddress) {
-      fetchFLUXWalletAddress();
+    if (isOpen && selectedCoin && !COINCHIWalletAddress) {
+      fetchCOINCHIWalletAddress();
     }
-  }, [isOpen, selectedCoin, FLUXWalletAddress, fetchFLUXWalletAddress]);
+  }, [isOpen, selectedCoin, COINCHIWalletAddress, fetchCOINCHIWalletAddress]);
 
   const handleDeposit = async () => {
     if (!isConnected) {
@@ -50,8 +50,8 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
       return;
     }
 
-    if (!FLUXWalletAddress) {
-      setError("FLUX deposit address not found");
+    if (!COINCHIWalletAddress) {
+      setError("COINCHI deposit address not found");
       return;
     }
 
@@ -72,7 +72,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
 
       // Prepare transaction
       const transactionParameters = {
-        to: FLUXWalletAddress,
+        to: COINCHIWalletAddress,
         from: account,
         value: "0x" + amountInWei,
         gas: "0x5208", // Standard gas limit for ETH transfer (21000)
@@ -112,7 +112,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
 
       // Notify your backend about the pending deposit
       const response = await fetch(
-        `https://api.fluxcoin.tech/api/v1/metamask-deposit-notification?apikey=${apiKey}`,
+        `https://api.COINCHIcoin.tech/api/v1/metamask-deposit-notification?apikey=${apiKey}`,
         {
           method: "POST",
           headers: {
@@ -124,7 +124,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
             amount: amount,
             coin: coin,
             fromAddress: account,
-            toAddress: FLUXWalletAddress,
+            toAddress: COINCHIWalletAddress,
             timestamp: new Date().toISOString(),
             source: "metamask",
             network: "ethereum",
@@ -265,7 +265,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
               </div>
             </div>
 
-            {/* FLUX Deposit Address - Compact */}
+            {/* COINCHI Deposit Address - Compact */}
             <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 mb-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center">
@@ -273,7 +273,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
                     <span className="text-white text-xs font-bold">F</span>
                   </div>
                   <span className="text-white font-medium text-sm">
-                    FLUX Wallet
+                    COINCHI Wallet
                   </span>
                 </div>
                 <span className="text-green-400 text-xs">Ethereum</span>
@@ -283,12 +283,12 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
                 <span className="text-gray-400">Deposit to:</span>
                 <div className="flex items-center gap-2">
                   <span className="text-gray-300 font-mono">
-                    {FLUXWalletAddress ? FLUXWalletAddress : "Loading..."}
+                    {COINCHIWalletAddress ? COINCHIWalletAddress : "Loading..."}
                   </span>
-                  {FLUXWalletAddress && (
+                  {COINCHIWalletAddress && (
                     <button
                       onClick={() =>
-                        navigator.clipboard.writeText(FLUXWalletAddress)
+                        navigator.clipboard.writeText(COINCHIWalletAddress)
                       }
                       className="text-orange-400 hover:text-orange-300 transition-colors"
                       title="Copy address"
@@ -380,7 +380,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
                   !depositAmount ||
                   parseFloat(depositAmount) < 0.001 ||
                   parseFloat(depositAmount) > parseFloat(balance) ||
-                  !FLUXWalletAddress
+                  !COINCHIWalletAddress
                 }
                 className="flex-1 bg-orange-500 text-white py-2.5 rounded-lg hover:bg-orange-600 disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 font-medium text-sm"
               >

@@ -11,7 +11,7 @@ const TransferWalkthrough = ({ onClose, isOpen }) => {
   const walkthroughSteps = [
     {
       id: 'welcome',
-      title: 'Welcome to Flux Transfer',
+      title: 'Welcome to COINCHI Transfer',
       description: 'Learn how to transfer cryptocurrencies between your Spot and Futures accounts instantly. Master account management and balance optimization.',
       target: null,
       position: 'center',
@@ -317,7 +317,7 @@ const TransferWalkthrough = ({ onClose, isOpen }) => {
                 <div className="absolute inset-0 bg-gradient-to-br from-orange-500 to-orange-400 rounded-full flex items-center justify-center shadow-lg shadow-orange-500/40">
                   <img 
                     src={logo} 
-                    alt="Flux Logo" 
+                    alt="COINCHI Logo" 
                     className="w-8 h-8 object-contain"
                   />
                 </div>

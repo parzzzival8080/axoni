@@ -61,10 +61,10 @@ const Market = () => {
 
       let url;
       if (marketType === "ALL") {
-        url = `https://api.fluxcoin.tech/api/v1/coins?apikey=5lPMMw7mIuyzQQDjlKJbe0dY`;
+        url = `https://api.COINCHIcoin.tech/api/v1/coins?apikey=5lPMMw7mIuyzQQDjlKJbe0dY`;
       } else {
         const apiMarketType = marketType === "POS" ? "is_spot" : "is_future";
-        url = `https://api.fluxcoin.tech/api/v1/fetch-market?apikey=5lPMMw7mIuyzQQDjlKJbe0dY&pair_type=All&market_type=${apiMarketType}`;
+        url = `https://api.COINCHIcoin.tech/api/v1/fetch-market?apikey=5lPMMw7mIuyzQQDjlKJbe0dY&pair_type=All&market_type=${apiMarketType}`;
       }
 
       try {

@@ -19,12 +19,12 @@ export const MetaMaskProvider = ({ children }) => {
   const [error, setError] = useState('');
   const [sdk, setSdk] = useState(null);
   const [provider, setProvider] = useState(null);
-  const [FLUXWalletAddress, setFLUXWalletAddress] = useState('');
+  const [COINCHIWalletAddress, setCOINCHIWalletAddress] = useState('');
 
   // Debug state changes
   useEffect(() => {
-    console.log('🔍 FLUXWalletAddress state changed to:', FLUXWalletAddress);
-  }, [FLUXWalletAddress]);
+    console.log('🔍 COINCHIWalletAddress state changed to:', COINCHIWalletAddress);
+  }, [COINCHIWalletAddress]);
 
   // Check for stored connection state on mount
   useEffect(() => {
@@ -45,7 +45,7 @@ export const MetaMaskProvider = ({ children }) => {
       try {
         const MMSDK = new MetaMaskSDK({
           dappMetadata: {
-            name: "FLUX Trading Platform",
+            name: "COINCHI Trading Platform",
             url: window.location.href,
           },
           infuraAPIKey: import.meta.env.VITE_INFURA_API_KEY, // Optional - use Vite env variable
@@ -90,8 +90,8 @@ export const MetaMaskProvider = ({ children }) => {
           setIsConnected(true);
           await fetchBalance(currentAccount, provider);
           
-          // Fetch FLUX wallet address when connected
-          await fetchFLUXWalletAddress();
+          // Fetch COINCHI wallet address when connected
+          await fetchCOINCHIWalletAddress();
           
           // Update localStorage with current account
           localStorage.setItem('metamask_connected', 'true');
@@ -134,8 +134,8 @@ export const MetaMaskProvider = ({ children }) => {
         setIsConnected(true);
         await fetchBalance(accounts[0]);
         
-        // Fetch FLUX wallet address when connected
-        await fetchFLUXWalletAddress();
+        // Fetch COINCHI wallet address when connected
+        await fetchCOINCHIWalletAddress();
         
         // Store connection state
         localStorage.setItem('metamask_connected', 'true');
@@ -161,7 +161,7 @@ export const MetaMaskProvider = ({ children }) => {
     setAccount('');
     setBalance('0');
     setError('');
-    setFLUXWalletAddress('');
+    setCOINCHIWalletAddress('');
     
     // Clear stored connection state
     localStorage.removeItem('metamask_connected');
@@ -215,16 +215,16 @@ export const MetaMaskProvider = ({ children }) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
-  // Fetch FLUX wallet address
-  const fetchFLUXWalletAddress = async () => {
-    console.log('🔍 fetchFLUXWalletAddress called');
+  // Fetch COINCHI wallet address
+  const fetchCOINCHIWalletAddress = async () => {
+    console.log('🔍 fetchCOINCHIWalletAddress called');
     try {
       let uid = localStorage.getItem('uid');
       const user_id = localStorage.getItem('user_id');
       const authToken = localStorage.getItem('authToken');
       const apiKey = '5lPMMw7mIuyzQQDjlKJbe0dY';
       
-      console.log('🔍 Fetching FLUX wallet address with UID:', uid);
+      console.log('🔍 Fetching COINCHI wallet address with UID:', uid);
       console.log('🔍 All localStorage items:', {
         uid: localStorage.getItem('uid'),
         user_id: localStorage.getItem('user_id'),
@@ -243,7 +243,7 @@ export const MetaMaskProvider = ({ children }) => {
       if (!uid && user_id && authToken) {
         console.log('🔍 No UID found, attempting to fetch from user info API');
         try {
-          const userInfoUrl = `https://django.fluxcoin.tech/api/user_account/getUserInformation/?user_id=${user_id}`;
+          const userInfoUrl = `https://django.COINCHIcoin.tech/api/user_account/getUserInformation/?user_id=${user_id}`;
           console.log('🔍 Fetching user info from:', userInfoUrl);
           console.log('🔍 Auth token (first 20 chars):', authToken?.substring(0, 20) + '...');
           
@@ -277,21 +277,21 @@ export const MetaMaskProvider = ({ children }) => {
       
       if (!uid) {
         console.error('🔍 UID not found in localStorage and could not be fetched');
-        setFLUXWalletAddress(''); // Set empty to stop loading
+        setCOINCHIWalletAddress(''); // Set empty to stop loading
         return '';
       }
       
-      const url = `https://api.fluxcoin.tech/api/v1/metamask-address/${uid}?apikey=${apiKey}`;
-      console.log('🔍 Fetching FLUX address from URL:', url);
+      const url = `https://api.COINCHIcoin.tech/api/v1/metamask-address/${uid}?apikey=${apiKey}`;
+      console.log('🔍 Fetching COINCHI address from URL:', url);
       
       const response = await fetch(url);
       
-      console.log('🔍 FLUX API Response status:', response.status);
-      console.log('🔍 FLUX API Response headers:', Object.fromEntries(response.headers.entries()));
+      console.log('🔍 COINCHI API Response status:', response.status);
+      console.log('🔍 COINCHI API Response headers:', Object.fromEntries(response.headers.entries()));
       
       if (response.ok) {
         const responseText = await response.text();
-        console.log('🔍 FLUX wallet address response (raw):', responseText);
+        console.log('🔍 COINCHI wallet address response (raw):', responseText);
         console.log('🔍 Response text length:', responseText.length);
         
         // The API returns the address directly as a string
@@ -319,23 +319,23 @@ export const MetaMaskProvider = ({ children }) => {
         console.log('🔍 Address length:', address?.length);
         
         if (address) {
-          console.log('🔍 Setting FLUX wallet address to:', address);
-          setFLUXWalletAddress(address);
+          console.log('🔍 Setting COINCHI wallet address to:', address);
+          setCOINCHIWalletAddress(address);
           return address;
         } else {
           console.warn('🔍 No address received');
-          setFLUXWalletAddress('');
+          setCOINCHIWalletAddress('');
           return '';
         }
       } else {
         const errorText = await response.text();
-        console.error('🔍 ❌ Failed to fetch FLUX wallet address:', response.status, response.statusText, errorText);
-        setFLUXWalletAddress(''); // Set empty to stop loading
+        console.error('🔍 ❌ Failed to fetch COINCHI wallet address:', response.status, response.statusText, errorText);
+        setCOINCHIWalletAddress(''); // Set empty to stop loading
         return '';
       }
     } catch (err) {
-      console.error('🔍 ❌ Error fetching FLUX wallet address:', err);
-      setFLUXWalletAddress(''); // Set empty to stop loading
+      console.error('🔍 ❌ Error fetching COINCHI wallet address:', err);
+      setCOINCHIWalletAddress(''); // Set empty to stop loading
       return '';
     }
   };
@@ -405,8 +405,8 @@ export const MetaMaskProvider = ({ children }) => {
     formatAddress,
     restoreConnection,
     provider,
-    FLUXWalletAddress,
-    fetchFLUXWalletAddress,
+    COINCHIWalletAddress,
+    fetchCOINCHIWalletAddress,
   };
 
   return (

@@ -280,7 +280,7 @@ function App() {
           setIsLoading(false);
           return;
         }
-        const apiUrl = `https://api.fluxcoin.tech/api/v1/coin-transaction?apikey=${API_KEY}&uid=${uid}&transaction_type=deposit`;
+        const apiUrl = `https://api.COINCHIcoin.tech/api/v1/coin-transaction?apikey=${API_KEY}&uid=${uid}&transaction_type=deposit`;
         const response = await fetch(apiUrl);
         if (!response.ok) {
           if (response.status === 400) {
@@ -340,7 +340,7 @@ function App() {
           return;
         }
 
-        const apiUrl = `https://api.fluxcoin.tech/api/v1/address/${uid}?apikey=5lPMMw7mIuyzQQDjlKJbe0dY&symbol=${selectedNetwork}`;
+        const apiUrl = `https://api.COINCHIcoin.tech/api/v1/address/${uid}?apikey=5lPMMw7mIuyzQQDjlKJbe0dY&symbol=${selectedNetwork}`;
         console.log(
           `Fetching deposit address for ${selectedCryptoSymbol} on ${selectedNetwork}:`,
           apiUrl

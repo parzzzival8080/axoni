@@ -27,7 +27,7 @@ const Profile = () => {
           return;
         }
         const response = await axios.get(
-          `https://django.fluxcoin.tech/api/user_account/getUserInformation/?user_id=${userId}`
+          `https://django.COINCHIcoin.tech/api/user_account/getUserInformation/?user_id=${userId}`
         );
         if (response.data && response.data.user && response.data.user_detail) {
           setProfileData(response.data);

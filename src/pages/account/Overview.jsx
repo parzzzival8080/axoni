@@ -49,7 +49,7 @@ const Overview = () => {
         try {
           console.log("Fetching profile data...");
           const profileResponse = await axios.get(
-            `https://django.fluxcoin.tech/api/user_account/getUserInformation/?user_id=${uid}`,
+            `https://django.COINCHIcoin.tech/api/user_account/getUserInformation/?user_id=${uid}`,
           );
 
           if (
@@ -74,7 +74,7 @@ const Overview = () => {
         try {
           // API key - same as used in Assets.jsx
           const apiKey = "5lPMMw7mIuyzQQDjlKJbe0dY";
-          const apiUrl = `https://api.fluxcoin.tech/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
+          const apiUrl = `https://api.COINCHIcoin.tech/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
 
           console.log("Fetching wallet data from:", apiUrl);
           const walletResponse = await axios.get(apiUrl);

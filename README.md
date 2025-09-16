@@ -2,5 +2,5 @@
  
 </rewritten_file>
  
-# fluxcoin-web
-# flux-v2
+# COINCHIcoin-web
+# COINCHI-v2

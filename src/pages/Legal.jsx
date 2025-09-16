@@ -14,8 +14,8 @@ const Legal = () => {
               Licenses and Registrations
             </h2>
             <p className="text-lg text-gray-300 mb-8 leading-relaxed">
-              FLUX is committed to working closely and collaboratively with
-              regulators from around the world. FLUX currently holds the
+              COINCHI is committed to working closely and collaboratively with
+              regulators from around the world. COINCHI currently holds the
               following regulatory licenses, registrations and/or other legal
               matters:
             </p>
@@ -35,7 +35,7 @@ const Legal = () => {
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  FLUX Markets Ltd has been granted registration as a{" "}
+                  COINCHI Markets Ltd has been granted registration as a{" "}
                   <a
                     href="https://www.amf-france.org/en"
                     className="text-[#014EB2] underline hover:text-orange-400"
@@ -57,7 +57,7 @@ const Legal = () => {
                   F202).
                 </p>
                 <p>
-                  FLUX France Ltd will provide the following regulated services
+                  COINCHI France Ltd will provide the following regulated services
                   in France: digital assets custody services; exchange of
                   digital assets for legal tender; exchange of digital assets;
                   operating of a trading platform for digital assets.
@@ -72,7 +72,7 @@ const Legal = () => {
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  FLUX UAB S.A. has been granted a{" "}
+                  COINCHI UAB S.A. has been granted a{" "}
                   <a
                     href="https://www.lb.lt/en/"
                     className="text-[#014EB2] underline hover:text-orange-400"
@@ -107,7 +107,7 @@ const Legal = () => {
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  FLUX (Poland) Sp.z.o.o has obtained a{" "}
+                  COINCHI (Poland) Sp.z.o.o has obtained a{" "}
                   <a
                     href="#"
                     className="text-[#014EB2] underline hover:text-orange-400"
@@ -131,7 +131,7 @@ const Legal = () => {
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  FLUX (Italy) S.r.l obtained authorization from the Organismo
+                  COINCHI (Italy) S.r.l obtained authorization from the Organismo
                   per la gestione degli elenchi degli agenti in attività
                   finanziaria e dei mediatori creditizi (OAM) for the Republic
                   of Lithuania administered by the State Enterprise Centre of
@@ -150,7 +150,7 @@ const Legal = () => {
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  FLUX (Spain) Technologies, has obtained a{" "}
+                  COINCHI (Spain) Technologies, has obtained a{" "}
                   <a
                     href="https://www.bde.es/f/webbde/INF/MenuHorizontal/Normativa/Circulares_y_guias_especializadas/Ficheros/Circular_1_2021_en.pdf"
                     className="text-[#014EB2] underline hover:text-orange-400"
@@ -183,7 +183,7 @@ const Legal = () => {
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  The FLUX Group entities have been granted a category "A" type
+                  The COINCHI Group entities have been granted a category "A" type
                   1 license at an{" "}
                   <a
                     href="#"
@@ -206,7 +206,7 @@ const Legal = () => {
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  FLUX Australia Derivatives Pty Ltd holds an{" "}
+                  COINCHI Australia Derivatives Pty Ltd holds an{" "}
                   <a
                     href="https://asic.gov.au/for-business/your-business/financial-services/afsl/"
                     className="text-[#014EB2] underline hover:text-orange-400"
@@ -224,7 +224,7 @@ const Legal = () => {
                   >
                     wholesale clients
                   </a>
-                  . AFSL 001317. FLUX Australia and its{" "}
+                  . AFSL 001317. COINCHI Australia and its{" "}
                   <a
                     href="https://asic.gov.au/for-business/your-business/financial-services/afsl/authorised-representatives/"
                     className="text-[#014EB2] underline hover:text-orange-400"
@@ -246,7 +246,7 @@ const Legal = () => {
                   .
                 </p>
                 <p>
-                  FLUX (Australia) is registered as a reporting entity with the{" "}
+                  COINCHI (Australia) is registered as a reporting entity with the{" "}
                   <a
                     href="https://www.austrac.gov.au/"
                     className="text-[#014EB2] underline hover:text-orange-400"
@@ -294,7 +294,7 @@ const Legal = () => {
                   >
                     digital payment token services
                   </a>
-                  , FLUX operates under the regulatory framework established for
+                  , COINCHI operates under the regulatory framework established for
                   digital asset service providers in Singapore.
                 </p>
               </div>
@@ -307,7 +307,7 @@ const Legal = () => {
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  FLUX has obtained the required{" "}
+                  COINCHI has obtained the required{" "}
                   <a
                     href="https://www.bvifsc.vg/"
                     className="text-[#014EB2] underline hover:text-orange-400"
@@ -338,7 +338,7 @@ const Legal = () => {
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  FLUX Global Entity has been granted a Category 1 License by
+                  COINCHI Global Entity has been granted a Category 1 License by
                   the{" "}
                   <a
                     href="https://www.vara.ae/"
@@ -348,7 +348,7 @@ const Legal = () => {
                   >
                     Dubai Virtual Assets Regulatory Authority (VARA)
                   </a>{" "}
-                  to enable the business to operate the VARA FLUX platform to
+                  to enable the business to operate the VARA COINCHI platform to
                   licensed Virtual Assets Activities Providers.
                 </p>
               </div>
@@ -361,7 +361,7 @@ const Legal = () => {
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  The FLUX Group entities have been granted a category "A" type
+                  The COINCHI Group entities have been granted a category "A" type
                   1 license at an{" "}
                   <a
                     href="https://aifc.kz/"
@@ -401,14 +401,14 @@ const Legal = () => {
                   </h3>
                   <div className="space-y-4 text-gray-300">
                     <p>
-                      FLUX operates under the oversight of various regulatory
+                      COINCHI operates under the oversight of various regulatory
                       authorities across multiple jurisdictions. Our commitment
                       to regulatory compliance ensures that we meet the highest
                       standards of consumer protection and market integrity.
                     </p>
                     <p>
                       Please note that the regulatory landscape for digital
-                      assets is evolving rapidly, and FLUX continues to monitor
+                      assets is evolving rapidly, and COINCHI continues to monitor
                       developments and adapt its compliance framework
                       accordingly.
                     </p>
@@ -422,14 +422,14 @@ const Legal = () => {
                   </h3>
                   <div className="space-y-4 text-gray-300">
                     <p>
-                      FLUX services may not be available in all jurisdictions.
+                      COINCHI services may not be available in all jurisdictions.
                       We maintain a list of restricted countries and territories
                       where our services are not offered due to regulatory or
                       business considerations.
                     </p>
                     <p>
                       Users are responsible for ensuring their compliance with
-                      local laws and regulations. FLUX reserves the right to
+                      local laws and regulations. COINCHI reserves the right to
                       restrict or terminate access to services based on
                       jurisdiction-specific requirements.
                     </p>
@@ -451,28 +451,28 @@ const Legal = () => {
                       <li>
                         • Legal Department:{" "}
                         <a
-                          href="mailto:legal@fluxcoin.tech"
+                          href="mailto:legal@COINCHIcoin.tech"
                           className="text-[#014EB2] underline hover:text-orange-400"
                         >
-                          legal@fluxcoin.tech
+                          legal@COINCHIcoin.tech
                         </a>
                       </li>
                       <li>
                         • Compliance Team:{" "}
                         <a
-                          href="mailto:compliance@fluxcoin.tech"
+                          href="mailto:compliance@COINCHIcoin.tech"
                           className="text-[#014EB2] underline hover:text-orange-400"
                         >
-                          compliance@fluxcoin.tech
+                          compliance@COINCHIcoin.tech
                         </a>
                       </li>
                       <li>
                         • General Support:{" "}
                         <a
-                          href="mailto:support@fluxcoin.tech"
+                          href="mailto:support@COINCHIcoin.tech"
                           className="text-[#014EB2] underline hover:text-orange-400"
                         >
-                          support@fluxcoin.tech
+                          support@COINCHIcoin.tech
                         </a>
                       </li>
                     </ul>

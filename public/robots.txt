@@ -6,6 +6,6 @@ Allow: /
 # Disallow: /admin/
 # Disallow: /private/
 
-Sitemap: https://fluxcoin.tech/sitemap.xml
+Sitemap: https://COINCHIcoin.tech/sitemap.xml
 er-agent: *
 Disallow:

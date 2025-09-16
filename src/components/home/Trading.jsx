@@ -72,7 +72,7 @@ const Trading = () => {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch('https://api.fluxcoin.tech/api/v1/coins?apikey=5lPMMw7mIuyzQQDjlKJbe0dY');
+        const res = await fetch('https://api.COINCHIcoin.tech/api/v1/coins?apikey=5lPMMw7mIuyzQQDjlKJbe0dY');
         const data = await res.json();
         if (!isMounted) return;
         if (Array.isArray(data)) {

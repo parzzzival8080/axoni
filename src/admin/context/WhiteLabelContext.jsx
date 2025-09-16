@@ -65,46 +65,46 @@ const defaultConfig = {
     referralIllustration: '/public/images/referral-illustration.svg'
   },
   names: {
-    siteName: 'FLUX',
-    siteNameLong: 'FLUX COIN',
+    siteName: 'COINCHI',
+    siteNameLong: 'COINCHI COIN',
     tagline: 'Best Cryptocurrency Trading Platform for Futures & Spot',
     taglineShort: 'Your trusted crypto partner',
-    companyName: 'FLUXCoin Investments LLC',
-    companyNameLegal: 'Fluxcoin.tech',
-    supportEmail: 'support@FLUXcoin.tech',
-    contactEmail: 'contact@FLUXcoin.tech',
-    contactPhone: '+1-800-FLUX-COIN',
-    websiteUrl: 'https://FLUXcoin.tech',
-    description: 'FLUX is a secure, fast, and user-friendly cryptocurrency trading platform for spot and futures trading.',
-    metaKeywords: 'cryptocurrency, trading, bitcoin, ethereum, altcoins, futures, spot, exchange, FLUX, crypto platform',
+    companyName: 'COINCHICoin Investments LLC',
+    companyNameLegal: 'COINCHIcoin.tech',
+    supportEmail: 'support@COINCHIcoin.tech',
+    contactEmail: 'contact@COINCHIcoin.tech',
+    contactPhone: '+1-800-COINCHI-COIN',
+    websiteUrl: 'https://COINCHIcoin.tech',
+    description: 'COINCHI is a secure, fast, and user-friendly cryptocurrency trading platform for spot and futures trading.',
+    metaKeywords: 'cryptocurrency, trading, bitcoin, ethereum, altcoins, futures, spot, exchange, COINCHI, crypto platform',
     address: 'California, United States',
     socialMedia: {
-      twitter: '@FLUXCoin',
-      telegram: '@FLUXCoinOfficial',
-      discord: 'FLUXCoin Community',
-      facebook: 'FLUXCoin',
-      youtube: 'FLUXCoin',
-      linkedin: 'FLUXCoin',
-      instagram: 'FLUXCoin'
+      twitter: '@COINCHICoin',
+      telegram: '@COINCHICoinOfficial',
+      discord: 'COINCHICoin Community',
+      facebook: 'COINCHICoin',
+      youtube: 'COINCHICoin',
+      linkedin: 'COINCHICoin',
+      instagram: 'COINCHICoin'
     }
   },
   qr: {
     downloadQR: '',
     appStoreQR: '',
     playStoreQR: '',
-    downloadQRUrl: 'https://api.fluxcoin.tech/api/v1/download-flux-apk',
-    appStoreQRUrl: 'https://apps.apple.com/app/FLUX-coin',
-    playStoreQRUrl: 'https://play.google.com/store/apps/details?id=com.FLUXcoin',
-    iosDownloadUrl: 'https://api.fluxcoin.tech/api/v1/download-ios',
-    androidDownloadUrl: 'https://api.fluxcoin.tech/api/v1/download-apk'
+    downloadQRUrl: 'https://api.COINCHIcoin.tech/api/v1/download-COINCHI-apk',
+    appStoreQRUrl: 'https://apps.apple.com/app/COINCHI-coin',
+    playStoreQRUrl: 'https://play.google.com/store/apps/details?id=com.COINCHIcoin',
+    iosDownloadUrl: 'https://api.COINCHIcoin.tech/api/v1/download-ios',
+    androidDownloadUrl: 'https://api.COINCHIcoin.tech/api/v1/download-apk'
   },
   apis: {
     baseUrl: 'https://django.bhtokens.com/api',
-    secondaryUrl: 'https://api.fluxcoin.tech/api/v1',
-    socketUrl: 'wss://socket.FLUXcoin.tech',
-    chartDataUrl: 'https://api.fluxcoin.tech/api/v1',
-    supportUrl: 'https://support.FLUXcoin.tech',
-    tradingViewDatafeed: 'https://api.fluxcoin.tech/api/v1',
+    secondaryUrl: 'https://api.COINCHIcoin.tech/api/v1',
+    socketUrl: 'wss://socket.COINCHIcoin.tech',
+    chartDataUrl: 'https://api.COINCHIcoin.tech/api/v1',
+    supportUrl: 'https://support.COINCHIcoin.tech',
+    tradingViewDatafeed: 'https://api.COINCHIcoin.tech/api/v1',
     chartsStorageUrl: 'https://saveload.tradingview.com',
     userAccountUrl: 'https://django.bhtokens.com/api/user_account',
     metaMaskWidgetUrl: 'https://mpctoken.com/widget.js',
@@ -383,14 +383,14 @@ export const WhiteLabelProvider = ({ children }) => {
       metadata: {
         exportedAt: new Date().toISOString(),
         version: '1.0.0',
-        source: 'FLUX Admin Panel'
+        source: 'COINCHI Admin Panel'
       }
     };
     
     const dataStr = JSON.stringify(exportData, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = `FLUX-config-${new Date().toISOString().split('T')[0]}.json`;
+    const exportFileDefaultName = `COINCHI-config-${new Date().toISOString().split('T')[0]}.json`;
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);

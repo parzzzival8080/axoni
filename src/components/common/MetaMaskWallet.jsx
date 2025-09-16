@@ -14,8 +14,8 @@ const MetaMaskWallet = () => {
     disconnectWallet,
     refreshBalance,
     formatAddress,
-    FLUXWalletAddress,
-    fetchFLUXWalletAddress,
+    COINCHIWalletAddress,
+    fetchCOINCHIWalletAddress,
   } = useMetaMask();
 
   const [showDetails, setShowDetails] = useState(false);
@@ -33,13 +33,13 @@ const MetaMaskWallet = () => {
     setShowDetails(false);
   };
 
-  // Try to fetch FLUX address when connected and no address is available
+  // Try to fetch COINCHI address when connected and no address is available
   useEffect(() => {
-    if (isConnected && !FLUXWalletAddress) {
-      console.log('Attempting to fetch FLUX wallet address on mount');
-      fetchFLUXWalletAddress();
+    if (isConnected && !COINCHIWalletAddress) {
+      console.log('Attempting to fetch COINCHI wallet address on mount');
+      fetchCOINCHIWalletAddress();
     }
-  }, [isConnected, FLUXWalletAddress, fetchFLUXWalletAddress]);
+  }, [isConnected, COINCHIWalletAddress, fetchCOINCHIWalletAddress]);
 
 
 
@@ -198,14 +198,14 @@ const MetaMaskWallet = () => {
             </div>
           </div>
 
-          {/* FLUX Wallet Address */}
+          {/* COINCHI Wallet Address */}
           <div style={{ marginBottom: '16px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-              <span style={{ fontSize: '12px', color: '#9ca3af' }}>FLUX Deposit Address</span>
+              <span style={{ fontSize: '12px', color: '#9ca3af' }}>COINCHI Deposit Address</span>
               <div style={{ display: 'flex', gap: '8px' }}>
-                {FLUXWalletAddress && (
+                {COINCHIWalletAddress && (
                   <button
-                    onClick={() => navigator.clipboard.writeText(FLUXWalletAddress)}
+                    onClick={() => navigator.clipboard.writeText(COINCHIWalletAddress)}
                     style={{ fontSize: '12px', color: '#f97316', background: 'none', border: 'none', cursor: 'pointer' }}
                   >
                     Copy
@@ -214,16 +214,16 @@ const MetaMaskWallet = () => {
                 <button
                   onClick={() => {
                     console.log('🔄 Manual refresh clicked');
-                    console.log('🔄 Current FLUXWalletAddress state:', FLUXWalletAddress);
+                    console.log('🔄 Current COINCHIWalletAddress state:', COINCHIWalletAddress);
                     console.log('🔄 Current localStorage:', {
                       uid: localStorage.getItem('uid'),
                       user_id: localStorage.getItem('user_id'),
                       authToken: localStorage.getItem('authToken')
                     });
-                    fetchFLUXWalletAddress();
+                    fetchCOINCHIWalletAddress();
                   }}
                   style={{ fontSize: '12px', color: '#f97316', background: 'none', border: 'none', cursor: 'pointer' }}
-                  title="Refresh FLUX address"
+                  title="Refresh COINCHI address"
                 >
                   <FaSync style={{ fontSize: '10px' }} />
                 </button>
@@ -250,11 +250,11 @@ const MetaMaskWallet = () => {
                 <span style={{ fontSize: '10px', fontWeight: 'bold', color: 'white' }}>F</span>
               </div>
               <span style={{ fontSize: '13px', fontFamily: 'monospace', color: '#ffffff', flex: 1 }}>
-                {FLUXWalletAddress ? FLUXWalletAddress : 'Loading...'}
+                {COINCHIWalletAddress ? COINCHIWalletAddress : 'Loading...'}
               </span>
-              {FLUXWalletAddress && (
+              {COINCHIWalletAddress && (
                 <a
-                  href={`https://etherscan.io/address/${FLUXWalletAddress}`}
+                  href={`https://etherscan.io/address/${COINCHIWalletAddress}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ color: '#9ca3af', textDecoration: 'none', fontSize: '12px' }}
@@ -313,7 +313,7 @@ const MetaMaskWallet = () => {
               onMouseLeave={(e) => e.target.style.background = '#f97316'}
             >
               <FaArrowDown />
-              Deposit to FLUX
+              Deposit to COINCHI
             </button>
             <div className="secondary-actions" style={{ display: 'flex', gap: '8px' }}>
               <button

@@ -15,7 +15,7 @@ const EarnOverview = () => {
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch('https://api.fluxcoin.tech/api/v1/coins?apikey=5lPMMw7mIuyzQQDjlKJbe0dY');
+        const res = await fetch('https://api.COINCHIcoin.tech/api/v1/coins?apikey=5lPMMw7mIuyzQQDjlKJbe0dY');
         const data = await res.json();
         
         if (Array.isArray(data)) {
@@ -91,7 +91,7 @@ const EarnOverview = () => {
     { 
       question: 'What is Earn?', 
       isExpanded: true,
-      answer: 'FLUX Earn provides you with a way to generate interest on your assets through multiple investment choices. Products include Simple Earn, Loan, and On-chain Earn.'
+      answer: 'COINCHI Earn provides you with a way to generate interest on your assets through multiple investment choices. Products include Simple Earn, Loan, and On-chain Earn.'
     },
     { 
       question: 'What is annual percentage rate (APR)?', 
@@ -106,7 +106,7 @@ const EarnOverview = () => {
     { 
       question: 'What are the risks?', 
       isExpanded: false,
-      answer: 'FLUX accesses third party DeFi protocols, and only provides related services such as project display and revenue distribution, and does not take responsibility for any asset losses caused by potential risks such as contract vulnerabilities, hacking incidents, or termination of business.'
+      answer: 'COINCHI accesses third party DeFi protocols, and only provides related services such as project display and revenue distribution, and does not take responsibility for any asset losses caused by potential risks such as contract vulnerabilities, hacking incidents, or termination of business.'
     },
   ]);
 

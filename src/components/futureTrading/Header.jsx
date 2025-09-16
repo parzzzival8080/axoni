@@ -6,7 +6,7 @@ function Header() {
     <header className="header">
     <div className="header-left">
       <div className="logo">
-        <img src={logo} alt="FLUX" />
+        <img src={logo} alt="COINCHI" />
       </div>
       <nav className="nav">
         <div className="nav-item">Buy crypto <i className="fas fa-chevron-down"></i></div>
