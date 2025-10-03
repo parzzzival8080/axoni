@@ -167,7 +167,7 @@ function withdraw() {
           return;
         }
         const apiKey = '5lPMMw7mIuyzQQDjlKJbe0dY';
-        const apiUrl = `https://api.fluxcoin.tech/api/v1/coin-transaction?apikey=${apiKey}&uid=${uid}&transaction_type=withdrawal`;
+        const apiUrl = `https://api.coinchi.co/api/v1/coin-transaction?apikey=${apiKey}&uid=${uid}&transaction_type=withdrawal`;
         const response = await axios.get(apiUrl);
         setCoins(response.data);
       } catch (error) {
@@ -393,7 +393,7 @@ function withdraw() {
       
       // Simplified API call - send everything in the request body
       const response = await axios.post(
-        'https://api.fluxcoin.tech/api/v1/send-otp',
+        'https://api.coinchi.co/api/v1/send-otp',
         {
           uid: uid,
           apikey: apiKey
@@ -512,7 +512,7 @@ function withdraw() {
       
       // Simplified API call for resend
       const response = await axios.post(
-        'https://api.fluxcoin.tech/api/v1/send-otp',
+        'https://api.coinchi.co/api/v1/send-otp',
         {
           uid: uid,
           apikey: apiKey
@@ -567,7 +567,7 @@ function withdraw() {
     const wallet_id = selectedCoinDetails?.balance?.id;
     const initial_amount = parseFloat(withdrawalAmount);
     const network_id = selectedNetwork?.id;
-    const apiUrl = `https://api.fluxcoin.tech/api/v1/submit-withdrawal?wallet_id=${wallet_id}&initial_amount=${initial_amount}&apikey=${apiKey}&network_id=${network_id}&otp=${otpCode}&wallet_address=${withdrawalAddress}`;
+    const apiUrl = `https://api.coinchi.co/api/v1/submit-withdrawal?wallet_id=${wallet_id}&initial_amount=${initial_amount}&apikey=${apiKey}&network_id=${network_id}&otp=${otpCode}&wallet_address=${withdrawalAddress}`;
 
     // console.log("Submitting withdrawal with:", { wallet_id, initial_amount, network_id, apiKey, otp: otpCode });
 

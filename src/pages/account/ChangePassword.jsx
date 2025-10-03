@@ -48,7 +48,7 @@ const ChangePassword = () => {
     
     try {
       const otpResponse = await axios.post(
-        'https://django.fluxcoin.tech/api/user_account/password_reset/request',
+        'https://django.coinchi.co/api/user_account/password_reset/request',
         { email: email }
       );
       
@@ -96,7 +96,7 @@ const ChangePassword = () => {
     
     try {
       const otpResponse = await axios.post(
-        'https://django.fluxcoin.tech/api/user_account/password_reset/resend-otp',
+        'https://django.coinchi.co/api/user_account/password_reset/resend-otp',
         { email: userEmail }
       );
       
@@ -131,7 +131,7 @@ const ChangePassword = () => {
     }
     
     try {
-      const response = await axios.post('https://django.fluxcoin.tech/api/user_account/password_reset/verify_otp', {
+      const response = await axios.post('https://django.coinchi.co/api/user_account/password_reset/verify_otp', {
         email: userEmail,
         otp: otp
       });
@@ -182,7 +182,7 @@ const ChangePassword = () => {
     }
     
     try {
-      const response = await axios.post('https://django.fluxcoin.tech/api/user_account/password_reset/reset', {
+      const response = await axios.post('https://django.coinchi.co/api/user_account/password_reset/reset', {
         email: userEmail,
         otp: otp,
         new_password: newPassword,

@@ -225,7 +225,7 @@ const TradingChartWebView = () => {
     return {
       symbol: formattedSymbol,
       interval: timeframe,
-      datafeedUrl: "https://api.fluxcoin.tech/api/v1",
+      datafeedUrl: "https://api.coinchi.co/api/v1",
       libraryPath: "/charting_library/",
       chartsStorageUrl: "https://saveload.tradingview.com",
       chartsStorageApiVersion: "1.1",

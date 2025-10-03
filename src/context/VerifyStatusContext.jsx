@@ -15,7 +15,7 @@ const VERIFICATION_STATUS = {
 
 // API configuration
 const API_CONFIG = {
-  KYC_STATUS_BASE_URL: "https://api.fluxcoin.tech/api/v1/kyc-status",
+  KYC_STATUS_BASE_URL: "https://api.coinchi.co/api/v1/kyc-status",
   API_KEY: "5lPMMw7mIuyzQQDjlKJbe0dY",
 };
 
