@@ -300,6 +300,30 @@ const Legal = () => {
               </div>
             </div>
 
+            {/* Malaysia */}
+            <div className="border-l-4 border-[#014EB2] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#014EB2]">
+                • Malaysia
+              </h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  FLUX is licensed as a Recognized Market Operator (Digital
+                  Asset Exchange) by the
+                  <a
+                    href="https://www.sc.com.my/"
+                    className="text-[#014EB2] underline hover:text-orange-400 ml-1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Securities Commission Malaysia
+                  </a>{" "}
+                  pursuant to the Capital Markets and Services Act 2007. FLUX
+                  operates under the regulatory framework established for
+                  digital asset exchanges in Malaysia.
+                </p>
+              </div>
+            </div>
+
             {/* British Virgin Islands */}
             <div className="border-l-4 border-[#014EB2] pl-6">
               <h3 className="text-2xl font-bold mb-4 text-[#014EB2]">
