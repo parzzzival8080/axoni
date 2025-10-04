@@ -311,7 +311,7 @@ const Legal = () => {
                   Asset Exchange) by the
                   <a
                     href="https://www.sc.com.my/"
-                    className="text-[#014EB2] underline hover:text-orange-400 ml-1"
+                    className="text-[#014EB2] underline hover:text-blue-400 ml-1"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
