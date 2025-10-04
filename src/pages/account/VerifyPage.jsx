@@ -25,7 +25,7 @@ const API_CONFIG = {
   KYC_UPLOAD_URL: "https://django.coinchi.co/api/user_account/upload-kyc",
   KYC_SEND_DATA_URL:
     "https://django.coinchi.co/api/user_account/send-kyc-data",
-  API_KEY: "5lPMMw7mIuyzQQDjlKJbe0dY",
+  API_KEY: "A20RqFwVktRxxRqrKBtmi6ud",
   MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
   COMPRESSION_THRESHOLD: 2 * 1024 * 1024, // 2MB
   REQUEST_TIMEOUT: 30000, // 30 seconds
@@ -125,7 +125,6 @@ const countries = [
   { code: "US", name: "United States", flag: "🇺🇸" },
   { code: "VN", name: "Vietnam", flag: "🇻🇳" },
 ];
-
 const idTypes = [
   {
     name: "Driver's License",
@@ -208,6 +207,7 @@ const FileUploadButton = ({
         onClick={handleClick}
         disabled={disabled}
         className="w-full flex flex-col items-center justify-center p-6 border-2 border-dashed border-gray-300 rounded-lg hover:border-black transition-colors bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed"
+        translate="no"
       >
         {isCameraLoading ? (
           <Loader2 size={32} className="mb-2 text-gray-400 animate-spin" />
@@ -238,6 +238,7 @@ const FileUploadButton = ({
         className="hidden"
         accept={SUPPORTED_FILE_TYPES.join(",")}
         disabled={disabled}
+        translate="no"
       />
     </div>
   );
@@ -487,6 +488,9 @@ const VerifyPage = () => {
 
   const handleFileChange = useCallback(
     (e, fileType) => {
+      // Prevent event bubbling to avoid auto-translate interference
+      e.stopPropagation();
+
       const file = e.target.files?.[0];
       if (!file) return;
 
@@ -508,6 +512,9 @@ const VerifyPage = () => {
       } else if (fileType === "selfie") {
         setSelfie(file);
       }
+
+      // Clear the input value to allow re-uploading the same file
+      e.target.value = '';
     },
     [validateFile]
   );
@@ -696,17 +703,26 @@ const VerifyPage = () => {
     }
 
     const formData = new FormData();
-    formData.append("document_type", selectedIdInfo.apiValue);
-    formData.append("captured_selfie", compressedSelfie, compressedSelfie.name);
+
+    // Ensure field names are not affected by auto-translate
+    const fieldNames = {
+      documentType: "document_type",
+      capturedSelfie: "captured_selfie",
+      frontImage: "front_captured_image",
+      backImage: "back_captured_image"
+    };
+
+    formData.append(fieldNames.documentType, selectedIdInfo.apiValue);
+    formData.append(fieldNames.capturedSelfie, compressedSelfie, compressedSelfie.name);
     formData.append(
-      "front_captured_image",
+      fieldNames.frontImage,
       compressedIdFront,
       compressedIdFront.name
     );
 
     if (selectedIdInfo.needsBack && compressedIdBack) {
       formData.append(
-        "back_captured_image",
+        fieldNames.backImage,
         compressedIdBack,
         compressedIdBack.name
       );
@@ -1120,10 +1136,10 @@ const VerifyPage = () => {
           <ProfileNavBar />
         </div>
         <div className="w-full max-w-md flex flex-col items-center justify-center bg-white dark:bg-gray-800 rounded-xl p-8 mt-12 shadow">
-          <span className="inline-flex items-center px-6 py-2 rounded-full bg-blue-100 text-blue-700 font-semibold text-lg border border-blue-300 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700 animate-pulse mb-4">
+          <span className="inline-flex items-center px-6 py-2 rounded-full bg-orange-100 text-orange-700 font-semibold text-lg border border-orange-300 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-700 animate-pulse mb-4">
             <CheckCircle2
               size={28}
-              className="mr-2 text-blue-500"
+              className="mr-2 text-orange-500"
               strokeWidth={2}
             />
             Verification Pending
@@ -1138,7 +1154,7 @@ const VerifyPage = () => {
           </p>
           <Link
             to="/"
-            className="px-6 py-2 rounded-full bg-[#014EB2] text-white font-semibold text-sm hover:bg-blue-600 transition shadow-lg"
+            className="px-6 py-2 rounded-full bg-[#F88726] text-white font-semibold text-sm hover:bg-orange-600 transition shadow-lg"
             style={{ borderRadius: 9999 }}
           >
             Go to Home
@@ -1169,7 +1185,7 @@ const VerifyPage = () => {
           </p>
           <Link
             to="/account/profile"
-            className="px-6 py-2 rounded-lg bg-[#014EB2] text-white font-semibold text-sm hover:bg-blue-600 transition"
+            className="px-6 py-2 rounded-lg bg-[#F88726] text-white font-semibold text-sm hover:bg-orange-600 transition"
           >
             Go to Profile
           </Link>
@@ -1219,7 +1235,7 @@ const VerifyPage = () => {
               setSubmissionError("");
               cleanupImageUrls();
             }}
-            className="px-6 py-2 rounded-lg bg-[#014EB2] text-white font-semibold text-sm hover:bg-blue-600 transition"
+            className="px-6 py-2 rounded-lg bg-[#F88726] text-white font-semibold text-sm hover:bg-orange-600 transition"
           >
             Try Again
           </button>
@@ -1306,6 +1322,7 @@ const VerifyPage = () => {
                 }}
                 className="w-full p-3.5 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-black focus:border-black outline-none appearance-none text-sm"
                 disabled={isLoading}
+                translate="no"
               >
                 <option value="" disabled>
                   Select Country
@@ -1502,6 +1519,7 @@ const VerifyPage = () => {
                   autoPlay
                   playsInline
                   muted
+                  translate="no"
                   onLoadedMetadata={() => console.log("Video metadata loaded")}
                   onCanPlay={() => console.log("Video can play")}
                   onError={(e) => console.error("Video error:", e)}
@@ -1533,7 +1551,7 @@ const VerifyPage = () => {
             </div>
 
             {/* Hidden canvas for photo capture */}
-            <canvas ref={canvasRef} className="hidden" />
+            <canvas ref={canvasRef} className="hidden" translate="no" />
 
             {/* Action Buttons */}
             {!selfie && !isCameraMode && (
@@ -1596,10 +1614,10 @@ const VerifyPage = () => {
         return (
           <div className="w-full text-center py-12 flex flex-col items-center">
             <div className="flex items-center justify-center mb-4">
-              <span className="inline-flex items-center px-6 py-2 rounded-full bg-blue-100 text-blue-700 font-semibold text-lg border border-blue-300 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700 animate-pulse">
+              <span className="inline-flex items-center px-6 py-2 rounded-full bg-orange-100 text-orange-700 font-semibold text-lg border border-orange-300 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-700 animate-pulse">
                 <CheckCircle2
                   size={32}
-                  className="mr-2 text-blue-500"
+                  className="mr-2 text-orange-500"
                   strokeWidth={2}
                 />
                 Pending Review
@@ -1610,7 +1628,7 @@ const VerifyPage = () => {
             </h2>
             <p className="text-base text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto">
               Thank you! Your information has been submitted and is now{" "}
-              <span className="font-semibold text-blue-500 dark:text-blue-400">
+              <span className="font-semibold text-orange-500 dark:text-orange-400">
                 pending review
               </span>
               .<br />
@@ -1668,16 +1686,17 @@ const VerifyPage = () => {
 
         {/* Main content area */}
         <div
-          className={`w-full bg-white dark:bg-gray-800 rounded-xl 
+          className={`w-full bg-white dark:bg-gray-800 rounded-xl
              ${
                currentStep === 1 || currentStep === 6
                  ? "flex flex-col items-center"
                  : ""
              }
-             ${currentStep > 1 && currentStep < 6 ? "p-6 sm:p-8" : ""} 
-             ${currentStep === 1 ? "p-6 sm:p-8" : ""} 
-             ${currentStep === 6 ? "py-8" : ""}      
+             ${currentStep > 1 && currentStep < 6 ? "p-6 sm:p-8" : ""}
+             ${currentStep === 1 ? "p-6 sm:p-8" : ""}
+             ${currentStep === 6 ? "py-8" : ""}
              `}
+          translate="no"
         >
           {renderStepContent()}
           {showNavigation && (
