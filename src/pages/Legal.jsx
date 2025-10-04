@@ -307,7 +307,7 @@ const Legal = () => {
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  FLUX is licensed as a Recognized Market Operator (Digital
+                  COINCHI is licensed as a Recognized Market Operator (Digital
                   Asset Exchange) by the
                   <a
                     href="https://www.sc.com.my/"
@@ -317,7 +317,7 @@ const Legal = () => {
                   >
                     Securities Commission Malaysia
                   </a>{" "}
-                  pursuant to the Capital Markets and Services Act 2007. FLUX
+                  pursuant to the Capital Markets and Services Act 2007. COINCHI
                   operates under the regulatory framework established for
                   digital asset exchanges in Malaysia.
                 </p>
