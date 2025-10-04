@@ -27,8 +27,8 @@ const DownloadPage = () => {
     // You can customize alternative URLs per store if needed
     const url =
       noticeStore === "appstore"
-        ? "https://api.coinchi.co/api/v1/download-COINCHI-ios"
-        : "https://api.coinchi.co/api/v1/download-COINCHI-apk";
+        ? "https://api.coinchi.co/api/v1/download-coinchi-ios"
+        : "https://api.coinchi.co/api/v1/download-coinchi-apk";
 
     window.open(url, "_blank");
     setIsNoticeOpen(false);
