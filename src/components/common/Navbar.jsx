@@ -975,23 +975,6 @@ const Navbar = () => {
           </div>
 
           {/* Language icon with support dropdown */}
-          <div className="right-nav-item">
-            <button
-              className="navbar-icon-link"
-              type="button"
-              aria-label="Language"
-              style={{
-                background: "none",
-                border: "none",
-                padding: 0,
-                margin: 0,
-                cursor: "pointer",
-              }}
-              onClick={openModal}
-            >
-              <i className="fas fa-globe"></i>
-            </button>
-          </div>
         </div>
 
         {/* Mobile-only hamburger menu button */}
