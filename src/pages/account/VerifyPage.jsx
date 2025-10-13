@@ -98,6 +98,7 @@ const countries = [
   { code: "HU", name: "Hungary", flag: "🇭🇺" },
   { code: "IE", name: "Ireland", flag: "🇮🇪" },
   { code: "IN", name: "India", flag: "🇮🇳" },
+  { code: "ID", name: "Indonesia", flag: "🇮🇩" },
   { code: "IS", name: "Iceland", flag: "🇮🇸" },
   { code: "IT", name: "Italy", flag: "🇮🇹" },
   { code: "JP", name: "Japan", flag: "🇯🇵" },
@@ -514,7 +515,7 @@ const VerifyPage = () => {
       }
 
       // Clear the input value to allow re-uploading the same file
-      e.target.value = '';
+      e.target.value = "";
     },
     [validateFile]
   );
@@ -709,11 +710,15 @@ const VerifyPage = () => {
       documentType: "document_type",
       capturedSelfie: "captured_selfie",
       frontImage: "front_captured_image",
-      backImage: "back_captured_image"
+      backImage: "back_captured_image",
     };
 
     formData.append(fieldNames.documentType, selectedIdInfo.apiValue);
-    formData.append(fieldNames.capturedSelfie, compressedSelfie, compressedSelfie.name);
+    formData.append(
+      fieldNames.capturedSelfie,
+      compressedSelfie,
+      compressedSelfie.name
+    );
     formData.append(
       fieldNames.frontImage,
       compressedIdFront,
