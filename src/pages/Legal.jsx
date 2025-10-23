@@ -57,10 +57,10 @@ const Legal = () => {
                   F202).
                 </p>
                 <p>
-                  COINCHI France Ltd will provide the following regulated services
-                  in France: digital assets custody services; exchange of
-                  digital assets for legal tender; exchange of digital assets;
-                  operating of a trading platform for digital assets.
+                  COINCHI France Ltd will provide the following regulated
+                  services in France: digital assets custody services; exchange
+                  of digital assets for legal tender; exchange of digital
+                  assets; operating of a trading platform for digital assets.
                 </p>
               </div>
             </div>
@@ -131,14 +131,14 @@ const Legal = () => {
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  COINCHI (Italy) S.r.l obtained authorization from the Organismo
-                  per la gestione degli elenchi degli agenti in attività
-                  finanziaria e dei mediatori creditizi (OAM) for the Republic
-                  of Lithuania administered by the State Enterprise Centre of
-                  Registers under Ministry of Finance (Registration number:
-                  PSV-215). The registration enables the provision of digital
-                  assets services including custody services, exchange services
-                  and operating a digital assets trading platform.
+                  COINCHI (Italy) S.r.l obtained authorization from the
+                  Organismo per la gestione degli elenchi degli agenti in
+                  attività finanziaria e dei mediatori creditizi (OAM) for the
+                  Republic of Lithuania administered by the State Enterprise
+                  Centre of Registers under Ministry of Finance (Registration
+                  number: PSV-215). The registration enables the provision of
+                  digital assets services including custody services, exchange
+                  services and operating a digital assets trading platform.
                 </p>
               </div>
             </div>
@@ -183,8 +183,8 @@ const Legal = () => {
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  The COINCHI Group entities have been granted a category "A" type
-                  1 license at an{" "}
+                  The COINCHI Group entities have been granted a category "A"
+                  type 1 license at an{" "}
                   <a
                     href="#"
                     className="text-[#014EB2] underline hover:text-blue-400"
@@ -246,7 +246,8 @@ const Legal = () => {
                   .
                 </p>
                 <p>
-                  COINCHI (Australia) is registered as a reporting entity with the{" "}
+                  COINCHI (Australia) is registered as a reporting entity with
+                  the{" "}
                   <a
                     href="https://www.austrac.gov.au/"
                     className="text-[#014EB2] underline hover:text-blue-400"
@@ -294,11 +295,36 @@ const Legal = () => {
                   >
                     digital payment token services
                   </a>
-                  , COINCHI operates under the regulatory framework established for
-                  digital asset service providers in Singapore.
+                  , COINCHI operates under the regulatory framework established
+                  for digital asset service providers in Singapore.
                 </p>
               </div>
             </div>
+
+            {/* Netherlands and Amsterdam */}
+            <div className="border-l-4 border-[#014EB2] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#014EB2]">
+                • Netherlands & Amsterdam
+              </h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  COINCHI is registered with the Dutch Central Bank (DNB)
+                  as a provider of services for the exchange between virtual and
+                  fiat currencies and as a custodian wallet provider under
+                  registration number R378642. Registration can be verified on
+                  the official DNB register:
+                  <a
+                    href="https://www.dnb.nl/en/cryptoserviceproviders/"
+                    className="text-[#014EB2] underline hover:text-blue-400 ml-1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    DeNetherlandscheBank
+                  </a>{" "}
+                </p>
+              </div>
+            </div>
+
 
             {/* Malaysia */}
             <div className="border-l-4 border-[#014EB2] pl-6">
@@ -385,8 +411,8 @@ const Legal = () => {
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  The COINCHI Group entities have been granted a category "A" type
-                  1 license at an{" "}
+                  The COINCHI Group entities have been granted a category "A"
+                  type 1 license at an{" "}
                   <a
                     href="https://aifc.kz/"
                     className="text-[#014EB2] underline hover:text-blue-400"
@@ -432,8 +458,8 @@ const Legal = () => {
                     </p>
                     <p>
                       Please note that the regulatory landscape for digital
-                      assets is evolving rapidly, and COINCHI continues to monitor
-                      developments and adapt its compliance framework
+                      assets is evolving rapidly, and COINCHI continues to
+                      monitor developments and adapt its compliance framework
                       accordingly.
                     </p>
                   </div>
@@ -446,10 +472,10 @@ const Legal = () => {
                   </h3>
                   <div className="space-y-4 text-gray-300">
                     <p>
-                      COINCHI services may not be available in all jurisdictions.
-                      We maintain a list of restricted countries and territories
-                      where our services are not offered due to regulatory or
-                      business considerations.
+                      COINCHI services may not be available in all
+                      jurisdictions. We maintain a list of restricted countries
+                      and territories where our services are not offered due to
+                      regulatory or business considerations.
                     </p>
                     <p>
                       Users are responsible for ensuring their compliance with
