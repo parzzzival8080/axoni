@@ -190,13 +190,22 @@ function App() {
   const [copySuccess, setCopySuccess] = useState(false);
   const [isLoadingAddress, setIsLoadingAddress] = useState(false);
   const [addressError, setAddressError] = useState(null);
+  
+  // Deposit History State
+  const [depositHistory, setDepositHistory] = useState([]);
+  const [isLoadingHistory, setIsLoadingHistory] = useState(false);
+  const [historyError, setHistoryError] = useState(null);
+  
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   // --- Refs ---
   const cryptoDropdownRef = useRef(null); // Ref for crypto dropdown
   const networkDropdownRef = useRef(null); // Ref for network dropdown
 
   // --- Constants ---
-  const API_KEY = "5lPMMw7mIuyzQQDjlKJbe0dY";
+  const API_KEY = "A20RqFwVktRxxRqrKBtmi6ud";
   const headerTabs = [
     "Overview",
     "Funding",
@@ -252,6 +261,15 @@ function App() {
       id: net.id,
     }));
   }, [selectedCoinDetails]);
+
+  // Pagination logic for deposit history
+  const paginatedDepositHistory = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return depositHistory.slice(startIndex, endIndex);
+  }, [depositHistory, currentPage, itemsPerPage]);
+
+  const totalPages = Math.ceil(depositHistory.length / itemsPerPage);
 
   // --- Authentication Check ---
   useEffect(() => {
@@ -340,7 +358,7 @@ function App() {
           return;
         }
 
-        const apiUrl = `https://api.coinchi.co/api/v1/address/${uid}?apikey=5lPMMw7mIuyzQQDjlKJbe0dY&symbol=${selectedNetwork}`;
+        const apiUrl = `https://api.coinchi.co/api/v1/address/${uid}?apikey=A20RqFwVktRxxRqrKBtmi6ud&symbol=${selectedNetwork}`;
         console.log(
           `Fetching deposit address for ${selectedCryptoSymbol} on ${selectedNetwork}:`,
           apiUrl
@@ -374,6 +392,44 @@ function App() {
 
     fetchDepositAddress();
   }, [selectedCryptoSymbol, selectedNetwork, API_KEY]);
+
+  // --- Fetch Deposit History ---
+  useEffect(() => {
+    const fetchDepositHistory = async () => {
+      setIsLoadingHistory(true);
+      setHistoryError(null);
+      try {
+        const uid = localStorage.getItem("uid");
+        if (!uid) {
+          setHistoryError("User ID not found. Please log in again.");
+          setDepositHistory([]);
+          setIsLoadingHistory(false);
+          return;
+        }
+        
+        const apiUrl = `https://api.coinchi.co/api/v1/transaction-history/${uid}?apikey=${API_KEY}&transaction_type=deposit`;
+        console.log("Fetching deposit history:", apiUrl);
+        
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        const historyData = Array.isArray(data) ? data : [];
+        setDepositHistory(historyData);
+        console.log("Deposit history loaded:", historyData.length, "transactions");
+      } catch (err) {
+        console.error("Error fetching deposit history:", err);
+        setHistoryError(err.message || "Failed to load deposit history. Please try again.");
+        setDepositHistory([]);
+      } finally {
+        setIsLoadingHistory(false);
+      }
+    };
+
+    fetchDepositHistory();
+  }, [API_KEY]);
 
   // --- Close dropdowns when clicking outside ---
   useEffect(() => {
@@ -442,6 +498,19 @@ function App() {
       setAddressError("Failed to copy address.");
     }
   }, [depositAddress]);
+
+  // Pagination handlers
+  const handlePageChange = useCallback((page) => {
+    setCurrentPage(page);
+  }, []);
+
+  const handlePreviousPage = useCallback(() => {
+    setCurrentPage(prev => Math.max(prev - 1, 1));
+  }, []);
+
+  const handleNextPage = useCallback(() => {
+    setCurrentPage(prev => Math.min(prev + 1, totalPages));
+  }, [totalPages]);
 
   // --- Render Logic ---
   const activeStep = selectedNetwork ? 3 : selectedCryptoSymbol ? 2 : 1;
@@ -874,11 +943,34 @@ function App() {
             <h2 className="text-lg font-semibold text-gray-900">
               All deposits
             </h2>
-            <a
-              href="#"
+            <button
+              onClick={() => {
+                // Refresh deposit history
+                const fetchDepositHistory = async () => {
+                  setIsLoadingHistory(true);
+                  setHistoryError(null);
+                  setCurrentPage(1); // Reset to first page
+                  try {
+                    const uid = localStorage.getItem("uid");
+                    if (!uid) return;
+                    
+                    const apiUrl = `https://api.coinchi.co/api/v1/transaction-history/${uid}?apikey=${API_KEY}&transaction_type=deposit`;
+                    const response = await fetch(apiUrl);
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    
+                    const data = await response.json();
+                    setDepositHistory(Array.isArray(data) ? data : []);
+                  } catch (err) {
+                    setHistoryError(err.message || "Failed to refresh deposit history.");
+                  } finally {
+                    setIsLoadingHistory(false);
+                  }
+                };
+                fetchDepositHistory();
+              }}
               className="text-sm text-indigo-600 hover:text-indigo-800 font-medium flex items-center"
             >
-              Open history
+              Refresh history
               <svg
                 className="w-4 h-4 ml-1"
                 fill="none"
@@ -890,61 +982,210 @@ function App() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
-                  d="M9 5l7 7-7 7"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                 ></path>
               </svg>
-            </a>
+            </button>
           </div>
-          <div className="hidden md:grid grid-cols-5 gap-4 text-xs text-gray-500 uppercase px-4 mb-4">
-            <span>Time</span>
-            <span>Deposit address</span>
-            <span>Crypto</span>
-            <span>Amount</span>
-            <span>Progress</span>
-          </div>
-          <div className="text-center py-16">
-            <svg
-              className="mx-auto h-16 w-16 text-gray-400 mb-4"
-              fill="none"
-              viewBox="0 0 64 64"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M51 18H13C11.3431 18 10 19.3431 10 21V47C10 48.6569 11.3431 50 13 50H51C52.6569 50 54 48.6569 54 47V21C54 19.3431 52.6569 18 51 18Z"
+
+          {/* Loading State */}
+          {isLoadingHistory && (
+            <div className="flex justify-center items-center py-8">
+              <Spinner />
+              <span className="ml-2 text-gray-600">Loading deposit history...</span>
+            </div>
+          )}
+
+          {/* Error State */}
+          {historyError && !isLoadingHistory && (
+            <div className="flex items-start p-4 bg-red-50 border border-red-200 rounded-md text-red-800 text-sm">
+              <svg
+                className="w-5 h-5 text-red-600 mr-2 flex-shrink-0"
+                fill="none"
                 stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M18 18V14C18 12.3431 19.3431 11 21 11H43C44.6569 11 46 12.3431 46 14V18"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M37.001 37.5C38.3817 37.5 39.501 36.3807 39.501 35C39.501 33.6193 38.3817 32.5 37.001 32.5C35.6203 32.5 34.501 33.6193 34.501 35C34.501 36.3807 35.6203 37.5 37.001 37.5Z"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M43.001 43.5L39.501 40"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <h3 className="text-sm font-medium text-gray-900 mb-1">
-              No records found
-            </h3>
-            <p className="text-sm text-gray-500">
-              Get started with your first transaction
-            </p>
-          </div>
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              <div className="flex-1">
+                <span>{historyError}</span>
+                <button
+                  onClick={() => {
+                    setHistoryError(null);
+                    // Trigger refetch
+                    const fetchDepositHistory = async () => {
+                      setIsLoadingHistory(true);
+                      try {
+                        const uid = localStorage.getItem("uid");
+                        if (!uid) return;
+                        
+                        const apiUrl = `https://api.coinchi.co/api/v1/transaction-history/${uid}?apikey=${API_KEY}&transaction_type=deposit`;
+                        const response = await fetch(apiUrl);
+                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                        
+                        const data = await response.json();
+                        setDepositHistory(Array.isArray(data) ? data : []);
+                      } catch (err) {
+                        setHistoryError(err.message || "Failed to load deposit history.");
+                      } finally {
+                        setIsLoadingHistory(false);
+                      }
+                    };
+                    fetchDepositHistory();
+                  }}
+                  className="ml-2 text-red-600 hover:text-red-800 underline font-medium"
+                >
+                  Try again
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Deposit History Table */}
+          {!isLoadingHistory && !historyError && (
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900 rounded shadow-md">
+                <thead className="bg-gray-100 dark:bg-gray-800">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Date</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Coin</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Amount</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-100 dark:divide-gray-800">
+                  {depositHistory.length === 0 ? (
+                    <tr>
+                      <td colSpan={4} className="text-center text-gray-500 dark:text-gray-400 py-8">
+                        No deposit history found.
+                      </td>
+                    </tr>
+                  ) : (
+                    paginatedDepositHistory.map((transaction, index) => (
+                      <tr key={transaction.id || index} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                        <td className="px-4 py-3 text-xs text-gray-700 dark:text-gray-200 whitespace-nowrap">
+                          {transaction.date ? new Date(transaction.date).toLocaleString() : '-'}
+                        </td>
+                        <td className="px-4 py-3 text-xs text-gray-700 dark:text-gray-200 whitespace-nowrap">
+                          <div className="flex items-center gap-2">
+                            {transaction.image_path && (
+                              <img 
+                                src={transaction.image_path} 
+                                alt={transaction.coin_name} 
+                                className="w-5 h-5 rounded-full"
+                                onError={(e) => {
+                                  e.target.style.display = 'none';
+                                }}
+                              />
+                            )}
+                            <span>{transaction.coin_name || '-'}</span>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 text-xs text-gray-700 dark:text-gray-200 whitespace-nowrap font-medium">
+                          {transaction.final_amount ? 
+                            (transaction.coin_name === 'USDT' || transaction.coin_name === 'FBC' ? 
+                              parseFloat(transaction.final_amount).toFixed(2) : 
+                              parseFloat(transaction.final_amount).toFixed(8)
+                            ) : '-'
+                          }
+                        </td>
+                        <td className="px-4 py-3 text-xs text-gray-700 dark:text-gray-200 whitespace-nowrap">
+                          <span
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                              transaction.status === 'approved' || transaction.status === 'completed' || transaction.status === 'confirmed'
+                                ? 'bg-green-100 text-green-800'
+                                : transaction.status === 'pending'
+                                ? 'bg-yellow-100 text-yellow-800'
+                                : transaction.status === 'failed' || transaction.status === 'rejected'
+                                ? 'bg-red-100 text-red-800'
+                                : 'bg-gray-100 text-gray-800'
+                            }`}
+                          >
+                            {transaction.status ? transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1) : 'Unknown'}
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {/* Pagination Controls */}
+          {!isLoadingHistory && !historyError && depositHistory.length > 0 && totalPages > 1 && (
+            <div className="flex items-center justify-between mt-6 px-4">
+              {/* Pagination Info */}
+              <div className="text-sm text-gray-700">
+                Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, depositHistory.length)} of {depositHistory.length} results
+              </div>
+
+              {/* Pagination Controls */}
+              <div className="flex items-center space-x-2">
+                {/* Previous Button */}
+                <button
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1}
+                  className={`px-3 py-1.5 text-sm font-medium rounded-md border transition-colors ${
+                    currentPage === 1
+                      ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
+                  }`}
+                >
+                  Previous
+                </button>
+
+                {/* Page Numbers */}
+                <div className="flex items-center space-x-1">
+                  {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                    let pageNum;
+                    if (totalPages <= 5) {
+                      pageNum = i + 1;
+                    } else if (currentPage <= 3) {
+                      pageNum = i + 1;
+                    } else if (currentPage >= totalPages - 2) {
+                      pageNum = totalPages - 4 + i;
+                    } else {
+                      pageNum = currentPage - 2 + i;
+                    }
+
+                    return (
+                      <button
+                        key={pageNum}
+                        onClick={() => handlePageChange(pageNum)}
+                        className={`px-3 py-1.5 text-sm font-medium rounded-md border transition-colors ${
+                          currentPage === pageNum
+                            ? 'bg-indigo-600 text-white border-indigo-600'
+                            : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Next Button */}
+                <button
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
+                  className={`px-3 py-1.5 text-sm font-medium rounded-md border transition-colors ${
+                    currentPage === totalPages
+                      ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
+                  }`}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
+
         </section>
       </main>
     </div>
