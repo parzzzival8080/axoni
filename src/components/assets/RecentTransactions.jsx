@@ -42,7 +42,7 @@ const RecentTransactions = () => {
       pair: `${order.coin_name || order.symbol || order.asset}/USDT`,
       price: parseFloat(order.price || order.amount || 0),
       amount: parseFloat(order.amount || 0),
-      total: parseFloat(order.account_balance || order.total || 0),
+      total: parseFloat(order.total_in_usdt || 0),
       date: order.date,
       status: order.status,
       source: 'Spot',
