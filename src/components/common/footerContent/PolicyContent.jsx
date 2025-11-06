@@ -500,9 +500,15 @@ const PrivacyPolicy = () => {
                   10. ACCOUNT TIERS AND CORRESPONDING LIMITS
                 </h2>
                 <div className="space-y-4 text-gray-800 leading-relaxed">
-                  {/* <p>
-                    You acknowledge and agree that, under any circumstances, we shall not be held responsible for the following:
-                  </p> */}
+                  <p>
+                    For newly created accounts, the maximum withdrawal amount is
+                    limited to 500 USDT. This policy applies uniformly to all
+                    new users to ensure a secure and consistent experience
+                    across the platform. Users may increase their withdrawal
+                    limits by availing the account tiering system, which
+                    provides higher withdrawal thresholds according to the
+                    selected tier level.{" "}
+                  </p>
 
                   <ul className="space-y-2 ml-4">
                     <li>
