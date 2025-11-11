@@ -899,7 +899,38 @@ const Navbar = () => {
                   <div className="user-details">
                     <p className="user-email">{userName}</p>
                     <p className="user-id">
-                      UID: {localStorage.getItem("uid") || "N/A"}
+                      UID: {localStorage.getItem("uid") || "N/A"} <br />
+                      {/* Tier display with badge */}
+                      {(() => {
+                        const tier = (
+                          localStorage.getItem("tier") || "N/A"
+                        ).toLowerCase();
+                        const tierBadges = {
+                          bronze: "🟤", // Bronze — brushed metal texture
+                          silver: "⚪", // Silver — metallic card
+                          gold: "🟡", // Gold — shiny coin
+                          diamond: "💎", // Diamond — crystal icon
+                          platinum: "👑", // Platinum — glowing crown
+                          "n/a": "⚫", // Inactive or no tier
+                        };
+                        const badge = tierBadges[tier] || "⚫";
+
+                        return (
+                          <strong
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "6px",
+                            }}
+                          >
+                            <span>{badge}</span>
+                            <span style={{ textTransform: "capitalize" }}>
+                              {tier}
+                            </span>
+                            Account
+                          </strong>
+                        );
+                      })()}
                     </p>
                   </div>
                 </div>

@@ -345,9 +345,11 @@ const LoginForm = () => {
           // Check if we got the user data and store full name
           if (profileResponse.data && profileResponse.data.user && profileResponse.data.user.name) {
             localStorage.setItem('fullName', profileResponse.data.user.name);
+            localStorage.setItem("tier", profileResponse.data.user.tiering);
           } else {
             // Set a default name if name is not available
             localStorage.setItem('fullName', 'User');
+            localStorage.setItem("tier", profileResponse.data.user.tiering);
           }
           // Save is_verified to localStorage and log it for debugging
           if (profileResponse.data && profileResponse.data.user_detail && typeof profileResponse.data.user_detail.is_verified !== 'undefined') {
