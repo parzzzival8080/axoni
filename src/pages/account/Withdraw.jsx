@@ -140,7 +140,7 @@ const TimesIcon = () => (
 
 const ShieldCheckIcon = () => (
   <svg
-    className="w-6 h-6 text-blue-500"
+    className="w-6 h-6 text-yellow-500"
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
@@ -293,7 +293,7 @@ function withdraw() {
           return;
         }
         const apiKey = "A20RqFwVktRxxRqrKBtmi6ud";
-        const apiUrl = `https://api.coinchi.co/api/v1/coin-transaction?apikey=${apiKey}&uid=${uid}&transaction_type=withdrawal`;
+        const apiUrl = `https://api.axoni.co/api/v1/coin-transaction?apikey=${apiKey}&uid=${uid}&transaction_type=withdrawal`;
         const response = await axios.get(apiUrl);
         setCoins(response.data);
       } catch (error) {
@@ -579,7 +579,7 @@ function withdraw() {
 
       // Simplified API call - send everything in the request body
       const response = await axios.post(
-        "https://api.coinchi.co/api/v1/send-otp",
+        "https://api.axoni.co/api/v1/send-otp",
         {
           uid: uid,
           apikey: apiKey,
@@ -679,7 +679,7 @@ function withdraw() {
       console.log('Submitting withdrawal with OTP:', otpCode);
       
       // The withdrawal API itself validates the OTP
-      const apiUrl = `https://api.coinchi.co/api/v1/submit-withdrawal?wallet_id=${wallet_id}&initial_amount=${initial_amount}&apikey=${apiKey}&network_id=${network_id}&otp=${otpCode}&wallet_address=${withdrawalAddress}`;
+      const apiUrl = `https://api.axoni.co/api/v1/submit-withdrawal?wallet_id=${wallet_id}&initial_amount=${initial_amount}&apikey=${apiKey}&network_id=${network_id}&otp=${otpCode}&wallet_address=${withdrawalAddress}`;
       
       const response = await axios.post(
         apiUrl,
@@ -783,7 +783,7 @@ function withdraw() {
 
       // Simplified API call for resend
       const response = await axios.post(
-        "https://api.coinchi.co/api/v1/send-otp",
+        "https://api.axoni.co/api/v1/send-otp",
         {
           uid: uid,
           apikey: apiKey,
@@ -1090,7 +1090,7 @@ function withdraw() {
                           addressValidation.error
                             ? "border-red-200 focus:ring-red-100 focus:border-red-300 bg-red-50"
                             : addressValidation.warning
-                              ? "border-blue-200 focus:ring-blue-100 focus:border-blue-300 bg-blue-50"
+                              ? "border-yellow-200 focus:ring-yellow-100 focus:border-yellow-300 bg-yellow-50"
                               : withdrawalAddress &&
                                   addressValidation.isValid &&
                                   !addressValidation.error &&
@@ -1173,9 +1173,9 @@ function withdraw() {
                         <div className="mt-2 flex items-start space-x-2">
                           <FontAwesomeIcon
                             icon={faQuestionCircle}
-                            className="text-blue-400 mt-0.5 text-xs flex-shrink-0"
+                            className="text-yellow-400 mt-0.5 text-xs flex-shrink-0"
                           />
-                          <p className="text-xs text-blue-600 leading-relaxed">
+                          <p className="text-xs text-yellow-600 leading-relaxed">
                             {addressValidation.warning}
                           </p>
                         </div>
@@ -1298,7 +1298,7 @@ function withdraw() {
                         !addressValidation.isValid ||
                         addressValidation.error
                       }
-                      className="w-full h-11 flex items-center justify-center px-4 py-2 bg-[#014EB2] text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#014EB2] hover:bg-[#014EB2] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="w-full h-11 flex items-center justify-center px-4 py-2 bg-[#F0B90B] text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F0B90B] hover:bg-[#F0B90B] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                       {isSubmitting || isSendingOtp ? <Spinner /> : "Next"}
                     </button>
@@ -1353,14 +1353,14 @@ function withdraw() {
                     </span>
                   </div>
 
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-6">
                     <div className="flex items-start space-x-3">
                       <ShieldCheckIcon />
                       <div className="flex-1">
-                        <h3 className="text-sm font-medium text-blue-900 mb-2">
+                        <h3 className="text-sm font-medium text-yellow-900 mb-2">
                           Security Verification Required
                         </h3>
-                        <p className="text-sm text-blue-700 mb-4">
+                        <p className="text-sm text-yellow-700 mb-4">
                           For your security, we've sent a 6-character
                           verification code to your registered email address.
                           Please enter the code below to complete your
@@ -1371,7 +1371,7 @@ function withdraw() {
                           <div>
                             <label
                               htmlFor="otpInput"
-                              className="block text-sm font-medium text-blue-900 mb-2"
+                              className="block text-sm font-medium text-yellow-900 mb-2"
                             >
                               Verification Code
                             </label>
@@ -1383,7 +1383,7 @@ function withdraw() {
                               value={otpCode}
                               onChange={handleOtpChange}
                               maxLength="6"
-                              className="w-full h-12 px-4 text-center text-lg font-mono tracking-widest bg-white border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              className="w-full h-12 px-4 text-center text-lg font-mono tracking-widest bg-white border border-yellow-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
                             />
                             {otpError && (
                               <p className="mt-2 text-sm text-red-600">
@@ -1393,14 +1393,14 @@ function withdraw() {
                           </div>
 
                           <div className="flex items-center justify-between text-sm">
-                            <div className="text-blue-700">
+                            <div className="text-yellow-700">
                               {otpTimer > 0 ? (
                                 <span>Resend code in {otpTimer}s</span>
                               ) : (
                                 <button
                                   onClick={handleResendOtp}
                                   disabled={!canResendOtp}
-                                  className="text-blue-600 hover:text-blue-800 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                                  className="text-yellow-600 hover:text-yellow-800 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                   Resend verification code
                                 </button>
@@ -1412,14 +1412,14 @@ function withdraw() {
                             <button
                               onClick={handleBackFromOtp}
                               disabled={isVerifyingOtp}
-                              className="flex-1 h-11 px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                              className="flex-1 h-11 px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                             >
                               Back
                             </button>
                             <button
                               onClick={handleVerifyOtp}
                               disabled={isVerifyingOtp || otpCode.length !== 6}
-                              className="flex-1 h-11 flex items-center justify-center px-4 py-2 bg-[#014EB2] text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#014EB2] hover:bg-[#014EB2] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                              className="flex-1 h-11 flex items-center justify-center px-4 py-2 bg-[#F0B90B] text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F0B90B] hover:bg-[#F0B90B] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                             >
                               {isVerifyingOtp ? (
                                 <Spinner />

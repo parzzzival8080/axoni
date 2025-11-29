@@ -10,12 +10,12 @@ const Legal = () => {
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Licenses, Registrations and Other Legal Matters
             </h1>
-            <h2 className="text-2xl font-semibold text-[#014EB2] mb-6">
+            <h2 className="text-2xl font-semibold text-[#F0B90B] mb-6">
               Licenses and Registrations
             </h2>
             <p className="text-lg text-gray-300 mb-8 leading-relaxed">
-              COINCHI is committed to working closely and collaboratively with
-              regulators from around the world. COINCHI currently holds the
+              AXONI is committed to working closely and collaboratively with
+              regulators from around the world. AXONI currently holds the
               following regulatory licenses, registrations and/or other legal
               matters:
             </p>
@@ -29,16 +29,16 @@ const Legal = () => {
           {/* Regional Licenses */}
           <div className="space-y-12">
             {/* France */}
-            <div className="border-l-4 border-[#014EB2] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#014EB2]">
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
                 • France
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  COINCHI Markets Ltd has been granted registration as a{" "}
+                  AXONI Markets Ltd has been granted registration as a{" "}
                   <a
                     href="https://www.amf-france.org/en"
-                    className="text-[#014EB2] underline hover:text-blue-400"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -47,7 +47,7 @@ const Legal = () => {
                   by the{" "}
                   <a
                     href="https://www.amf-france.org/en"
-                    className="text-[#014EB2] underline hover:text-blue-400"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -57,7 +57,7 @@ const Legal = () => {
                   F202).
                 </p>
                 <p>
-                  COINCHI France Ltd will provide the following regulated
+                  AXONI France Ltd will provide the following regulated
                   services in France: digital assets custody services; exchange
                   of digital assets for legal tender; exchange of digital
                   assets; operating of a trading platform for digital assets.
@@ -66,16 +66,16 @@ const Legal = () => {
             </div>
 
             {/* Lithuania */}
-            <div className="border-l-4 border-[#014EB2] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#014EB2]">
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
                 • Lithuania
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  COINCHI UAB S.A. has been granted a{" "}
+                  AXONI UAB S.A. has been granted a{" "}
                   <a
                     href="https://www.lb.lt/en/"
-                    className="text-[#014EB2] underline hover:text-blue-400"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -84,7 +84,7 @@ const Legal = () => {
                   registration by the{" "}
                   <a
                     href="https://www.registrucentras.lt/en/"
-                    className="text-[#014EB2] underline hover:text-blue-400"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -101,16 +101,16 @@ const Legal = () => {
             </div>
 
             {/* Poland */}
-            <div className="border-l-4 border-[#014EB2] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#014EB2]">
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
                 • Poland
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  COINCHI (Poland) Sp.z.o.o has obtained a{" "}
+                  AXONI (Poland) Sp.z.o.o has obtained a{" "}
                   <a
                     href="#"
-                    className="text-[#014EB2] underline hover:text-blue-400"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
                   >
                     Virtual Asset Service Provider (VASP)
                   </a>{" "}
@@ -125,13 +125,13 @@ const Legal = () => {
             </div>
 
             {/* Italy */}
-            <div className="border-l-4 border-[#014EB2] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#014EB2]">
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
                 • Italy
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  COINCHI (Italy) S.r.l obtained authorization from the
+                  AXONI (Italy) S.r.l obtained authorization from the
                   Organismo per la gestione degli elenchi degli agenti in
                   attività finanziaria e dei mediatori creditizi (OAM) for the
                   Republic of Lithuania administered by the State Enterprise
@@ -144,16 +144,16 @@ const Legal = () => {
             </div>
 
             {/* Spain */}
-            <div className="border-l-4 border-[#014EB2] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#014EB2]">
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
                 • Spain
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  COINCHI (Spain) Technologies, has obtained a{" "}
+                  AXONI (Spain) Technologies, has obtained a{" "}
                   <a
                     href="https://www.bde.es/f/webbde/INF/MenuHorizontal/Normativa/Circulares_y_guias_especializadas/Ficheros/Circular_1_2021_en.pdf"
-                    className="text-[#014EB2] underline hover:text-blue-400"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -162,7 +162,7 @@ const Legal = () => {
                   license under PSAV from the
                   <a
                     href="https://www.bde.es/wbe/en/"
-                    className="text-[#014EB2] underline hover:text-blue-400"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -177,17 +177,17 @@ const Legal = () => {
             </div>
 
             {/* Kazakhstan */}
-            <div className="border-l-4 border-[#014EB2] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#014EB2]">
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
                 • Kazakhstan
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  The COINCHI Group entities have been granted a category "A"
+                  The AXONI Group entities have been granted a category "A"
                   type 1 license at an{" "}
                   <a
                     href="#"
-                    className="text-[#014EB2] underline hover:text-blue-400"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
                   >
                     Astana International Financial Centre
                   </a>{" "}
@@ -200,16 +200,16 @@ const Legal = () => {
             </div>
 
             {/* Australia */}
-            <div className="border-l-4 border-[#014EB2] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#014EB2]">
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
                 • Australia
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  COINCHI Australia Derivatives Pty Ltd holds an{" "}
+                  AXONI Australia Derivatives Pty Ltd holds an{" "}
                   <a
                     href="https://asic.gov.au/for-business/your-business/financial-services/afsl/"
-                    className="text-[#014EB2] underline hover:text-blue-400"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -218,16 +218,16 @@ const Legal = () => {
                   (AFSL) to provide derivative intermediary services to{" "}
                   <a
                     href="https://asic.gov.au/regulatory-resources/financial-services/giving-financial-product-advice/wholesale-and-retail-clients/"
-                    className="text-[#014EB2] underline hover:text-blue-400"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     wholesale clients
                   </a>
-                  . AFSL 001317. COINCHI Australia and its{" "}
+                  . AFSL 001317. AXONI Australia and its{" "}
                   <a
                     href="https://asic.gov.au/for-business/your-business/financial-services/afsl/authorised-representatives/"
-                    className="text-[#014EB2] underline hover:text-blue-400"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -237,7 +237,7 @@ const Legal = () => {
                   Further details about AFSL can be obtained from{" "}
                   <a
                     href="https://asic.gov.au/"
-                    className="text-[#014EB2] underline hover:text-blue-400"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -246,11 +246,11 @@ const Legal = () => {
                   .
                 </p>
                 <p>
-                  COINCHI (Australia) is registered as a reporting entity with
+                  AXONI (Australia) is registered as a reporting entity with
                   the{" "}
                   <a
                     href="https://www.austrac.gov.au/"
-                    className="text-[#014EB2] underline hover:text-blue-400"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -262,8 +262,8 @@ const Legal = () => {
             </div>
 
             {/* Singapore */}
-            <div className="border-l-4 border-[#014EB2] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#014EB2]">
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
                 • Singapore
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -271,7 +271,7 @@ const Legal = () => {
                   As per{" "}
                   <a
                     href="https://www.mas.gov.sg/"
-                    className="text-[#014EB2] underline hover:text-blue-400"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -280,7 +280,7 @@ const Legal = () => {
                   (MAS){" "}
                   <a
                     href="https://www.mas.gov.sg/regulation/guidelines"
-                    className="text-[#014EB2] underline hover:text-blue-400"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -289,33 +289,33 @@ const Legal = () => {
                   for the provision of{" "}
                   <a
                     href="https://www.mas.gov.sg/regulation/explainers/explainer-on-digital-payment-tokens"
-                    className="text-[#014EB2] underline hover:text-blue-400"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     digital payment token services
                   </a>
-                  , COINCHI operates under the regulatory framework established
+                  , AXONI operates under the regulatory framework established
                   for digital asset service providers in Singapore.
                 </p>
               </div>
             </div>
 
             {/* Netherlands and Amsterdam */}
-            <div className="border-l-4 border-[#014EB2] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#014EB2]">
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
                 • Netherlands & Amsterdam
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  COINCHI is registered with the Dutch Central Bank (DNB)
+                  AXONI is registered with the Dutch Central Bank (DNB)
                   as a provider of services for the exchange between virtual and
                   fiat currencies and as a custodian wallet provider under
                   registration number R378642. Registration can be verified on
                   the official DNB register:
                   <a
                     href="https://www.dnb.nl/en/cryptoserviceproviders/"
-                    className="text-[#014EB2] underline hover:text-blue-400 ml-1"
+                    className="text-[#F0B90B] underline hover:text-yellow-400 ml-1"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -327,23 +327,23 @@ const Legal = () => {
 
 
             {/* Malaysia */}
-            <div className="border-l-4 border-[#014EB2] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#014EB2]">
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
                 • Malaysia
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  COINCHI is licensed as a Recognized Market Operator (Digital
+                  AXONI is licensed as a Recognized Market Operator (Digital
                   Asset Exchange) by the
                   <a
                     href="https://www.sc.com.my/"
-                    className="text-[#014EB2] underline hover:text-blue-400 ml-1"
+                    className="text-[#F0B90B] underline hover:text-yellow-400 ml-1"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     Securities Commission Malaysia
                   </a>{" "}
-                  pursuant to the Capital Markets and Services Act 2007. COINCHI
+                  pursuant to the Capital Markets and Services Act 2007. AXONI
                   operates under the regulatory framework established for
                   digital asset exchanges in Malaysia.
                 </p>
@@ -351,16 +351,16 @@ const Legal = () => {
             </div>
 
             {/* British Virgin Islands */}
-            <div className="border-l-4 border-[#014EB2] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#014EB2]">
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
                 • British Virgin Islands
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  COINCHI has obtained the required{" "}
+                  AXONI has obtained the required{" "}
                   <a
                     href="https://www.bvifsc.vg/"
-                    className="text-[#014EB2] underline hover:text-blue-400"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -369,7 +369,7 @@ const Legal = () => {
                   (VASP) registration in{" "}
                   <a
                     href="https://www.bvifsc.vg/"
-                    className="text-[#014EB2] underline hover:text-blue-400"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -382,40 +382,40 @@ const Legal = () => {
             </div>
 
             {/* Dubai */}
-            <div className="border-l-4 border-[#014EB2] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#014EB2]">
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
                 • Dubai
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  COINCHI Global Entity has been granted a Category 1 License by
+                  AXONI Global Entity has been granted a Category 1 License by
                   the{" "}
                   <a
                     href="https://www.vara.ae/"
-                    className="text-[#014EB2] underline hover:text-blue-400"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     Dubai Virtual Assets Regulatory Authority (VARA)
                   </a>{" "}
-                  to enable the business to operate the VARA COINCHI platform to
+                  to enable the business to operate the VARA AXONI platform to
                   licensed Virtual Assets Activities Providers.
                 </p>
               </div>
             </div>
 
             {/* Kazakhstan */}
-            <div className="border-l-4 border-[#014EB2] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#014EB2]">
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
                 • Kazakhstan
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  The COINCHI Group entities have been granted a category "A"
+                  The AXONI Group entities have been granted a category "A"
                   type 1 license at an{" "}
                   <a
                     href="https://aifc.kz/"
-                    className="text-[#014EB2] underline hover:text-blue-400"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -424,7 +424,7 @@ const Legal = () => {
                   by the{" "}
                   <a
                     href="https://www.afsa.kz/"
-                    className="text-[#014EB2] underline hover:text-blue-400"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -439,7 +439,7 @@ const Legal = () => {
 
             {/* Other Legal Matters */}
             <div className="border-t border-gray-700 pt-8">
-              <h2 className="text-2xl font-semibold text-[#014EB2] mb-6">
+              <h2 className="text-2xl font-semibold text-[#F0B90B] mb-6">
                 Other Legal Matters
               </h2>
 
@@ -451,14 +451,14 @@ const Legal = () => {
                   </h3>
                   <div className="space-y-4 text-gray-300">
                     <p>
-                      COINCHI operates under the oversight of various regulatory
+                      AXONI operates under the oversight of various regulatory
                       authorities across multiple jurisdictions. Our commitment
                       to regulatory compliance ensures that we meet the highest
                       standards of consumer protection and market integrity.
                     </p>
                     <p>
                       Please note that the regulatory landscape for digital
-                      assets is evolving rapidly, and COINCHI continues to
+                      assets is evolving rapidly, and AXONI continues to
                       monitor developments and adapt its compliance framework
                       accordingly.
                     </p>
@@ -472,14 +472,14 @@ const Legal = () => {
                   </h3>
                   <div className="space-y-4 text-gray-300">
                     <p>
-                      COINCHI services may not be available in all
+                      AXONI services may not be available in all
                       jurisdictions. We maintain a list of restricted countries
                       and territories where our services are not offered due to
                       regulatory or business considerations.
                     </p>
                     <p>
                       Users are responsible for ensuring their compliance with
-                      local laws and regulations. COINCHI reserves the right to
+                      local laws and regulations. AXONI reserves the right to
                       restrict or terminate access to services based on
                       jurisdiction-specific requirements.
                     </p>
@@ -502,7 +502,7 @@ const Legal = () => {
                         • Legal Department:{" "}
                         <a
                           href="mailto:legal@coinchi.co"
-                          className="text-[#014EB2] underline hover:text-blue-400"
+                          className="text-[#F0B90B] underline hover:text-yellow-400"
                         >
                           legal@coinchi.co
                         </a>
@@ -511,7 +511,7 @@ const Legal = () => {
                         • Compliance Team:{" "}
                         <a
                           href="mailto:compliance@coinchi.co"
-                          className="text-[#014EB2] underline hover:text-blue-400"
+                          className="text-[#F0B90B] underline hover:text-yellow-400"
                         >
                           compliance@coinchi.co
                         </a>
@@ -520,7 +520,7 @@ const Legal = () => {
                         • General Support:{" "}
                         <a
                           href="mailto:support@coinchi.co"
-                          className="text-[#014EB2] underline hover:text-blue-400"
+                          className="text-[#F0B90B] underline hover:text-yellow-400"
                         >
                           support@coinchi.co
                         </a>

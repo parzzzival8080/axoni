@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp, faStar, faPlus, faSync, faHeart, faEllipsisH, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-const USER_WALLETS_API_URL = 'https://api.coinchi.co/api/v1/user-wallets';
+const USER_WALLETS_API_URL = 'https://api.axoni.co/api/v1/user-wallets';
 const API_KEY = '5lPMMw7mIuyzQQDjlKJbe0dY';
 const CACHE_KEY = 'favorites_bar_data';
 const CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes in milliseconds
@@ -62,7 +62,7 @@ const FavoriteItem = ({ coin, isActive, onClick, compact = false }) => {
   
   return (
     <div
-      className={`flex items-center space-x-3 py-2 px-3 transition-colors duration-150 hover:bg-[#131722] ${isActive ? 'border-b-2 border-blue-500' : ''}`}
+      className={`flex items-center space-x-3 py-2 px-3 transition-colors duration-150 hover:bg-[#131722] ${isActive ? 'border-b-2 border-yellow-500' : ''}`}
       onClick={onClick}
       style={{ cursor: 'pointer' }}
     >
@@ -84,7 +84,7 @@ const FavoriteItem = ({ coin, isActive, onClick, compact = false }) => {
       {/* Pair Name */}
       <div className="flex items-center text-sm font-medium text-white">
         {symbol}/{pairName}
-        <span className="ml-1 text-xs py-0.5 px-1 bg-[#014EB2] rounded text-white font-medium">10x</span>
+        <span className="ml-1 text-xs py-0.5 px-1 bg-[#F0B90B] rounded text-white font-medium">10x</span>
       </div>
       
   
@@ -195,7 +195,7 @@ const MoreModal = ({ remainingCoins, activeId, onCoinSelect, isOpen, onClose }) 
             <div
               key={coin.crypto_symbol + 'USDT'}
               className={`flex items-center space-x-3 py-3 px-4 cursor-pointer transition-colors duration-150 hover:bg-[#131722] border-b border-[#1a1a1a] last:border-b-0 ${
-                coin.coin_id === activeId ? 'bg-[#131722] border-l-4 border-blue-500' : ''
+                coin.coin_id === activeId ? 'bg-[#131722] border-l-4 border-yellow-500' : ''
               }`}
               onClick={() => {
                 onCoinSelect(coin);

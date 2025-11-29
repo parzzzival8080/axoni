@@ -2362,24 +2362,24 @@ header[class*="bg-"] {
     border-color: #6b7280 !important;
 }
 
-/* blue accent colors for consistency */
-.metamask-deposit-modal .bg-blue-600 {
+/* yellow accent colors for consistency */
+.metamask-deposit-modal .bg-yellow-600 {
     background-color: #f97316 !important;
 }
 
-.metamask-deposit-modal .hover\\:bg-blue-700:hover {
+.metamask-deposit-modal .hover\\:bg-yellow-700:hover {
     background-color: #ea580c !important;
 }
 
-.metamask-deposit-modal .text-blue-600 {
+.metamask-deposit-modal .text-yellow-600 {
     color: #f97316 !important;
 }
 
-.metamask-deposit-modal .focus\\:ring-blue-500:focus {
+.metamask-deposit-modal .focus\\:ring-yellow-500:focus {
     --tw-ring-color: #f97316 !important;
 }
 
-.metamask-deposit-modal .focus\\:border-blue-500:focus {
+.metamask-deposit-modal .focus\\:border-yellow-500:focus {
     border-color: #f97316 !important;
 }
 

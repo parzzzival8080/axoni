@@ -20,7 +20,7 @@ const FavoriteItem = ({ coin, isActive, onClick }) => {
   
   return (
     <div
-      className={`flex items-center space-x-3 py-2 px-3 transition-colors duration-150 hover:bg-[#131722] ${isActive ? 'border-b-2 border-blue-500' : ''}`}
+      className={`flex items-center space-x-3 py-2 px-3 transition-colors duration-150 hover:bg-[#131722] ${isActive ? 'border-b-2 border-yellow-500' : ''}`}
       onClick={onClick}
       style={{ cursor: 'pointer' }}
     >

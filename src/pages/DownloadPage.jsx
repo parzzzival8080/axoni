@@ -27,14 +27,14 @@ const DownloadPage = () => {
     // You can customize alternative URLs per store if needed
     const url =
       noticeStore === "appstore"
-        ? "https://api.coinchi.co/api/v1/download-coinchi-ios"
-        : "https://api.coinchi.co/api/v1/download-coinchi-apk";
+        ? "https://api.axoni.co/api/v1/download-coinchi-ios"
+        : "https://api.axoni.co/api/v1/download-coinchi-apk";
 
     window.open(url, "_blank");
     setIsNoticeOpen(false);
   };
 
-  const appDownloadUrl = "https://api.coinchi.co/api/v1/download-COINCHI-apk";
+  const appDownloadUrl = "https://api.axoni.co/api/v1/download-AXONI-apk";
 
   const handleAppDownload = () => {
     const directDownloadUrl = appDownloadUrl;
@@ -42,7 +42,7 @@ const DownloadPage = () => {
 
     const downloadLink = document.createElement("a");
     downloadLink.href = directDownloadUrl;
-    downloadLink.setAttribute("download", "COINCHI.apk");
+    downloadLink.setAttribute("download", "AXONI.apk");
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
@@ -120,10 +120,10 @@ const DownloadPage = () => {
           <div className="landing__features-content">
             <h2 className="landing__section-title">One app</h2>
             <h3 className="landing__section-subtitle">
-              <span className="text-[#014EB2]">Unlimited</span> possibilities
+              <span className="text-[#F0B90B]">Unlimited</span> possibilities
             </h3>
             <p className="landing__description">
-              Download the COINCHI app to trade crypto on the go. Gain access to
+              Download the AXONI app to trade crypto on the go. Gain access to
               diverse tokens and trading pairs, advanced market data and more!
             </p>
           </div>
@@ -135,10 +135,10 @@ const DownloadPage = () => {
         <div className="landing__container">
           <div className="landing__platform-content">
             <h2 className="landing__section-title">
-              <span className="text-[#014EB2]">Powerful</span> platform
+              <span className="text-[#F0B90B]">Powerful</span> platform
             </h2>
             <h3 className="landing__section-subtitle">
-              Trade like a <span className="text-[#014EB2]">pro</span>
+              Trade like a <span className="text-[#F0B90B]">pro</span>
             </h3>
             <p className="landing__description">
               Trade crypto like a pro with our crypto trading platform on your
@@ -158,7 +158,7 @@ const DownloadPage = () => {
           <div className="landing__footer-brand">
             <div className="landing__logo">
               <img src={logo} alt="logo" className="object-contain" />
-              <h3 className="landing__logo-text">COINCHI APP</h3>
+              <h3 className="landing__logo-text">AXONI APP</h3>
             </div>
             <p className="landing__footer-tagline">Crypto exchange on the go</p>
           </div>

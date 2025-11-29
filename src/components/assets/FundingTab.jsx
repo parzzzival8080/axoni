@@ -18,7 +18,7 @@ const FundingTab = () => {
         setLoading(true);
         const uid = localStorage.getItem("uid") || "QEaIjLlY";
         const apiKey = "5lPMMw7mIuyzQQDjlKJbe0dY";
-        const apiUrl = `https://api.coinchi.co/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
+        const apiUrl = `https://api.axoni.co/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
 
         const response = await axios.get(apiUrl);
 
@@ -67,7 +67,7 @@ const FundingTab = () => {
 
           {loading ? (
             <div className="text-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500 mx-auto"></div>
               <p className="text-gray-500 mt-2">Loading...</p>
             </div>
           ) : error ? (
@@ -102,7 +102,7 @@ const FundingTab = () => {
             Quick Actions
           </h3>
           <div className="grid grid-cols-2 gap-4">
-            <button className="bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-medium transition-colors">
+            <button className="bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-4 rounded-lg font-medium transition-colors">
               Deposit
             </button>
             <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-medium transition-colors border border-gray-300">

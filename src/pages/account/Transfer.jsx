@@ -260,7 +260,7 @@ const Transfer = () => {
 
       console.log("Fetching fresh coins data...");
       const response = await axios.get(
-        "https://api.coinchi.co/api/v1/coins?apikey=5lPMMw7mIuyzQQDjlKJbe0dY"
+        "https://api.axoni.co/api/v1/coins?apikey=5lPMMw7mIuyzQQDjlKJbe0dY"
       );
       const coinsData = response.data;
       console.log("Fresh coins data loaded:", coinsData.length, "coins");
@@ -324,7 +324,7 @@ const Transfer = () => {
 
       // Fetch transfer history from API
       const response = await axios.get(
-        `https://api.coinchi.co/api/v1/transfer-history/${uid}?apikey=5lPMMw7mIuyzQQDjlKJbe0dY`
+        `https://api.axoni.co/api/v1/transfer-history/${uid}?apikey=5lPMMw7mIuyzQQDjlKJbe0dY`
       );
 
       console.log("Transfer history response status:", response.status);
@@ -420,7 +420,7 @@ const Transfer = () => {
       try {
         const apiKey = "5lPMMw7mIuyzQQDjlKJbe0dY";
         const uid = localStorage.getItem("uid");
-        const url = `https://api.coinchi.co/api/v1/coin-balance/${uid}?apikey=${apiKey}&symbol=${selectedAsset}`;
+        const url = `https://api.axoni.co/api/v1/coin-balance/${uid}?apikey=${apiKey}&symbol=${selectedAsset}`;
         const response = await axios.get(url);
         setSpotBalance(Number(response.data.spot_wallet) || 0);
         setFutureBalance(Number(response.data.future_wallet) || 0);
@@ -446,7 +446,7 @@ const Transfer = () => {
     if (success && selectedAsset) {
       const apiKey = "5lPMMw7mIuyzQQDjlKJbe0dY";
       const uid = localStorage.getItem("uid");
-      const url = `https://api.coinchi.co/api/v1/coin-balance/${uid}?apikey=${apiKey}&symbol=${selectedAsset}`;
+      const url = `https://api.axoni.co/api/v1/coin-balance/${uid}?apikey=${apiKey}&symbol=${selectedAsset}`;
       axios.get(url).then((response) => {
         setSpotBalance(Number(response.data.spot_wallet) || 0);
         setFutureBalance(Number(response.data.future_wallet) || 0);
@@ -605,7 +605,7 @@ const Transfer = () => {
         : toAccount.toLowerCase();
     const symbol = selectedAsset;
     const amount = parseFloat(transferAmount);
-    const url = `https://api.coinchi.co/api/v1/transfers`;
+    const url = `https://api.axoni.co/api/v1/transfers`;
     const data = {
       apikey: apiKey,
       uid: uid,
@@ -696,7 +696,7 @@ const Transfer = () => {
                         <input
                           type="text"
                           placeholder="Search assets..."
-                          className="w-full h-11 flex items-center justify-center px-4 py-2 bg-[#014EB2] text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#014EB2] hover:bg-[#014EB2] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                          className="w-full h-11 flex items-center justify-center px-4 py-2 bg-[#F0B90B] text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F0B90B] hover:bg-[#F0B90B] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                           value={searchTerm}
                           onChange={(e) => setSearchTerm(e.target.value)}
                           onClick={(e) => e.stopPropagation()} // Prevent dropdown from closing
@@ -902,7 +902,7 @@ const Transfer = () => {
                 <div className="transfer-balance-display flex flex-row gap-4 mt-2">
                   <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-full px-4 py-2 shadow-sm border border-gray-200 dark:border-gray-700 min-w-[150px]">
                     <svg
-                      className="w-4 h-4 mr-2 text-blue-600 dark:text-blue-400"
+                      className="w-4 h-4 mr-2 text-yellow-600 dark:text-yellow-400"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -952,7 +952,7 @@ const Transfer = () => {
                   parseFloat(transferAmount) <= 0 ||
                   parseFloat(transferAmount) > availableBalance
                     ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                    : "bg-[#014EB2] text-white hover:bg-[#014EB2]"
+                    : "bg-[#F0B90B] text-white hover:bg-[#F0B90B]"
                 }`}
                 onClick={handleTransfer}
                 disabled={
@@ -986,7 +986,7 @@ const Transfer = () => {
           <div className="transfer-history-section mt-12">
             <div className="flex border-b border-gray-200 dark:border-gray-700 mb-6">
               <button
-                className={`py-4 mr-6 text-sm font-medium border-b-2 border-blue-500 text-blue-500 dark:text-blue-400`}
+                className={`py-4 mr-6 text-sm font-medium border-b-2 border-yellow-500 text-yellow-500 dark:text-yellow-400`}
                 style={{ pointerEvents: "none" }}
               >
                 Transfer history <InfoIcon />
@@ -1005,7 +1005,7 @@ const Transfer = () => {
             {/* Loading State */}
             {isHistoryLoading && (
               <div className="flex justify-center items-center py-16">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 dark:border-blue-400"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500 dark:border-yellow-400"></div>
               </div>
             )}
 
@@ -1036,7 +1036,7 @@ const Transfer = () => {
                 </p>
                 <button
                   onClick={fetchTransferHistory}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors dark:bg-blue-600 dark:hover:bg-blue-700"
+                  className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition-colors dark:bg-yellow-600 dark:hover:bg-yellow-700"
                 >
                   Try Again
                 </button>

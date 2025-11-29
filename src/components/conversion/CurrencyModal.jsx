@@ -15,7 +15,7 @@ const CurrencyModal = ({ onClose, onSelectCurrency }) => {
         
         // Using your API to fetch currencies
         const response = await fetch(
-          'https://api.coinchi.co/api/v1/coin-conversions?apikey=5lPMMw7mIuyzQQDjlKJbe0dY'
+          'https://api.axoni.co/api/v1/coin-conversions?apikey=5lPMMw7mIuyzQQDjlKJbe0dY'
         );
         
         if (!response.ok) {

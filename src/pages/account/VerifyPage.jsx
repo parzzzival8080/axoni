@@ -21,10 +21,10 @@ import axios from "axios";
 // Configuration constants
 // Update the API_CONFIG with CORS headers
 const API_CONFIG = {
-  KYC_STATUS_BASE_URL: "https://api.coinchi.co/api/v1/kyc-status",
-  KYC_UPLOAD_URL: "https://django.coinchi.co/api/user_account/upload-kyc",
+  KYC_STATUS_BASE_URL: "https://api.axoni.co/api/v1/kyc-status",
+  KYC_UPLOAD_URL: "https://django.axoni.co/api/user_account/upload-kyc",
   KYC_SEND_DATA_URL:
-    "https://django.coinchi.co/api/user_account/send-kyc-data",
+    "https://django.axoni.co/api/user_account/send-kyc-data",
   API_KEY: "A20RqFwVktRxxRqrKBtmi6ud",
   MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
   COMPRESSION_THRESHOLD: 2 * 1024 * 1024, // 2MB
@@ -227,7 +227,7 @@ const FileUploadButton = ({
           <span className="text-xs text-gray-500 mt-1">{subtext}</span>
         )}
         {!fileName && !isCameraLoading && isCameraAvailable && (
-          <span className="text-xs text-blue-600 mt-1">
+          <span className="text-xs text-yellow-600 mt-1">
             Camera will open first, or choose file
           </span>
         )}
@@ -1141,10 +1141,10 @@ const VerifyPage = () => {
           <ProfileNavBar />
         </div>
         <div className="w-full max-w-md flex flex-col items-center justify-center bg-white dark:bg-gray-800 rounded-xl p-8 mt-12 shadow">
-          <span className="inline-flex items-center px-6 py-2 rounded-full bg-blue-100 text-blue-700 font-semibold text-lg border border-blue-300 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700 animate-pulse mb-4">
+          <span className="inline-flex items-center px-6 py-2 rounded-full bg-yellow-100 text-yellow-700 font-semibold text-lg border border-yellow-300 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-700 animate-pulse mb-4">
             <CheckCircle2
               size={28}
-              className="mr-2 text-blue-500"
+              className="mr-2 text-yellow-500"
               strokeWidth={2}
             />
             Verification Pending
@@ -1159,7 +1159,7 @@ const VerifyPage = () => {
           </p>
           <Link
             to="/"
-            className="px-6 py-2 rounded-full bg-[#014EB2] text-white font-semibold text-sm hover:bg-blue-600 transition shadow-lg"
+            className="px-6 py-2 rounded-full bg-[#F0B90B] text-white font-semibold text-sm hover:bg-yellow-600 transition shadow-lg"
             style={{ borderRadius: 9999 }}
           >
             Go to Home
@@ -1190,7 +1190,7 @@ const VerifyPage = () => {
           </p>
           <Link
             to="/account/profile"
-            className="px-6 py-2 rounded-lg bg-[#014EB2] text-white font-semibold text-sm hover:bg-blue-600 transition"
+            className="px-6 py-2 rounded-lg bg-[#F0B90B] text-white font-semibold text-sm hover:bg-yellow-600 transition"
           >
             Go to Profile
           </Link>
@@ -1240,7 +1240,7 @@ const VerifyPage = () => {
               setSubmissionError("");
               cleanupImageUrls();
             }}
-            className="px-6 py-2 rounded-lg bg-[#014EB2] text-white font-semibold text-sm hover:bg-blue-600 transition"
+            className="px-6 py-2 rounded-lg bg-[#F0B90B] text-white font-semibold text-sm hover:bg-yellow-600 transition"
           >
             Try Again
           </button>
@@ -1619,10 +1619,10 @@ const VerifyPage = () => {
         return (
           <div className="w-full text-center py-12 flex flex-col items-center">
             <div className="flex items-center justify-center mb-4">
-              <span className="inline-flex items-center px-6 py-2 rounded-full bg-blue-100 text-blue-700 font-semibold text-lg border border-blue-300 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700 animate-pulse">
+              <span className="inline-flex items-center px-6 py-2 rounded-full bg-yellow-100 text-yellow-700 font-semibold text-lg border border-yellow-300 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-700 animate-pulse">
                 <CheckCircle2
                   size={32}
-                  className="mr-2 text-blue-500"
+                  className="mr-2 text-yellow-500"
                   strokeWidth={2}
                 />
                 Pending Review
@@ -1633,7 +1633,7 @@ const VerifyPage = () => {
             </h2>
             <p className="text-base text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto">
               Thank you! Your information has been submitted and is now{" "}
-              <span className="font-semibold text-blue-500 dark:text-blue-400">
+              <span className="font-semibold text-yellow-500 dark:text-yellow-400">
                 pending review
               </span>
               .<br />

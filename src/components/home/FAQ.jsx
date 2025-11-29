@@ -8,10 +8,10 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => (
     >
       <span className="text-white text-base sm:text-lg font-medium pr-8">{question}</span>
       <div className="flex-shrink-0">
-        <div className={`w-6 h-6 rounded-full border-2 border-blue-500 flex items-center justify-center transition-transform ${
+        <div className={`w-6 h-6 rounded-full border-2 border-yellow-500 flex items-center justify-center transition-transform ${
           isOpen ? 'rotate-45' : ''
         }`}>
-          <span className="text-blue-500 text-lg font-bold">+</span>
+          <span className="text-yellow-500 text-lg font-bold">+</span>
         </div>
       </div>
     </button>

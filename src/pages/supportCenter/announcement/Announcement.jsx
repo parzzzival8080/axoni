@@ -24,7 +24,7 @@ const Announcement = () => {
       date: 'Apr 21, 2025'
     },
     {
-      title: 'COINCHI to adjust options trading fees',
+      title: 'AXONI to adjust options trading fees',
       date: 'Jan 28, 2025'
     },
     {
@@ -32,23 +32,23 @@ const Announcement = () => {
       date: 'Jan 21, 2025'
     },
     {
-      title: 'COINCHI will further adjust portfolio margin parameters',
+      title: 'AXONI will further adjust portfolio margin parameters',
       date: 'Jan 2, 2025'
     },
     {
-      title: 'COINCHI to adjust funding rate interval for MOVEUSD perpetual futures',
+      title: 'AXONI to adjust funding rate interval for MOVEUSD perpetual futures',
       date: 'May 2, 2025'
     },
     {
-      title: 'Important notice: Changes to THB trading on COINCHI P2P',
+      title: 'Important notice: Changes to THB trading on AXONI P2P',
       date: 'Apr 30, 2025'
     },
     {
-      title: 'COINCHI to adjust discount rate tiers for multiple tokens',
+      title: 'AXONI to adjust discount rate tiers for multiple tokens',
       date: 'Apr 29, 2025'
     },
     {
-      title: 'COINCHI to adjust tick size of spot, margin, and perpetual futures',
+      title: 'AXONI to adjust tick size of spot, margin, and perpetual futures',
       date: 'Apr 29, 2025'
     },
     {
@@ -56,27 +56,27 @@ const Announcement = () => {
       date: 'Apr 29, 2025'
     },
     {
-      title: 'COINCHI to list perpetual futures for SIGN crypto',
+      title: 'AXONI to list perpetual futures for SIGN crypto',
       date: 'Apr 28, 2025'
     },
     {
-      title: 'COINCHI to delist ZKJ margin trading pair and perpetual future',
+      title: 'AXONI to delist ZKJ margin trading pair and perpetual future',
       date: 'Apr 28, 2025'
     },
     {
-      title: 'COINCHI to enable margin trading and Simple Earn for LAYER crypto',
+      title: 'AXONI to enable margin trading and Simple Earn for LAYER crypto',
       date: 'Apr 25, 2025'
     },
     {
-      title: 'COINCHI to list LAYER (Solayer) for spot trading',
+      title: 'AXONI to list LAYER (Solayer) for spot trading',
       date: 'Apr 25, 2025'
     },
     {
-      title: 'COINCHI to adjust components for several indexes',
+      title: 'AXONI to adjust components for several indexes',
       date: 'Apr 24, 2025'
     },
     {
-      title: 'COINCHI to list perpetual futures for INIT crypto',
+      title: 'AXONI to list perpetual futures for INIT crypto',
       date: 'Apr 24, 2025'
     }
   ];

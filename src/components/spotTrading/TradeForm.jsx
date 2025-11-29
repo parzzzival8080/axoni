@@ -630,7 +630,7 @@ const TradeForm = ({
             style={
               localIsBuy
                 ? {
-                    backgroundColor: "#014EB2",
+                    backgroundColor: "#F0B90B",
                     color: "white",
                     fontWeight: "bold",
                   }
@@ -674,7 +674,7 @@ const TradeForm = ({
       <div
         className="relative mb-6"
         style={{
-          "--slider-color": effectiveIsBuy ? "#014EB2" : "#F23645",
+          "--slider-color": effectiveIsBuy ? "#F0B90B" : "#F23645",
         }}
       >
         {/* Slider Track */}
@@ -689,7 +689,7 @@ const TradeForm = ({
             className="enhanced-slider w-full h-2 bg-transparent cursor-pointer focus:outline-none"
             style={{
               background: `linear-gradient(90deg, ${
-                effectiveIsBuy ? "#014EB2" : "#F23645"
+                effectiveIsBuy ? "#F0B90B" : "#F23645"
               } ${sliderValue}%, #232323 ${sliderValue}%)`,
               borderRadius: "12px",
               WebkitAppearance: "none",
@@ -802,7 +802,7 @@ const TradeForm = ({
               isLoading || !amount || !isAmountValid()
                 ? "#666 !important"
                 : effectiveIsBuy
-                ? "#014EB2 !important"
+                ? "#F0B90B !important"
                 : "#F23645 !important",
             backgroundImage: "none !important",
             color: "white !important",

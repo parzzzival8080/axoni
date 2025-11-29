@@ -18,7 +18,7 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
   const walkthroughSteps = [
     {
       id: "welcome",
-      title: "Welcome to COINCHI Conversion",
+      title: "Welcome to AXONI Conversion",
       description:
         'Convert between cryptocurrencies instantly with zero trading fees and no slippage. Learn how to use our simple conversion tools. Click "Start Tour" to begin.',
       target: null,
@@ -90,7 +90,7 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
       id: "features",
       title: "Platform Benefits",
       description:
-        "COINCHI offers zero trading fees, no slippage, and supports many trading pairs. These features make conversions cost-effective and reliable.",
+        "AXONI offers zero trading fees, no slippage, and supports many trading pairs. These features make conversions cost-effective and reliable.",
       target: ".max-w-4xl.mx-auto.px-4.mb-16",
       position: "top",
       type: "highlight",
@@ -100,7 +100,7 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
       id: "complete",
       title: "Ready to Convert!",
       description:
-        "You're now equipped to convert cryptocurrencies efficiently on COINCHI. Start with small amounts to familiarize yourself with the process.",
+        "You're now equipped to convert cryptocurrencies efficiently on AXONI. Start with small amounts to familiarize yourself with the process.",
       target: null,
       position: "center",
       type: "completion",
@@ -303,7 +303,7 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
       {/* Main tooltip/modal */}
       <div
         ref={overlayRef}
-        className={`fixed z-[10001] bg-gradient-to-br from-zinc-900 to-zinc-800 border border-blue-500/40 rounded-3xl shadow-2xl backdrop-blur-xl text-white animate-in slide-in-from-bottom-4 zoom-in-95 duration-300 ${
+        className={`fixed z-[10001] bg-gradient-to-br from-zinc-900 to-zinc-800 border border-yellow-500/40 rounded-3xl shadow-2xl backdrop-blur-xl text-white animate-in slide-in-from-bottom-4 zoom-in-95 duration-300 ${
           currentStepData.type === "welcome" ||
           currentStepData.type === "completion"
             ? "w-[400px] min-w-[320px]"
@@ -318,12 +318,12 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
         {/* Header */}
         <div className="flex justify-between items-center px-4 py-3 border-b border-white/10">
           <div className="flex-1">
-            <span className="block text-xs font-semibold text-blue-500 uppercase tracking-wider mb-1">
+            <span className="block text-xs font-semibold text-yellow-500 uppercase tracking-wider mb-1">
               {currentStep + 1} of {walkthroughSteps.length}
             </span>
             <div className="w-full h-0.5 bg-white/10 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full transition-all duration-500 relative"
+                className="h-full bg-gradient-to-r from-yellow-500 to-yellow-400 rounded-full transition-all duration-500 relative"
                 style={{
                   width: `${
                     ((currentStep + 1) / walkthroughSteps.length) * 100
@@ -348,19 +348,19 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
             <div className="text-center py-4">
               <div className="relative w-20 h-20 mx-auto mb-6">
                 {/* Pulse rings */}
-                <div className="absolute inset-0 border-2 border-blue-500 rounded-full animate-ping" />
-                <div className="absolute inset-0 border-2 border-blue-500 rounded-full animate-ping animation-delay-300" />
-                <div className="absolute inset-0 border-2 border-blue-500 rounded-full animate-ping animation-delay-600" />
+                <div className="absolute inset-0 border-2 border-yellow-500 rounded-full animate-ping" />
+                <div className="absolute inset-0 border-2 border-yellow-500 rounded-full animate-ping animation-delay-300" />
+                <div className="absolute inset-0 border-2 border-yellow-500 rounded-full animate-ping animation-delay-600" />
                 {/* Logo */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-400 rounded-full flex items-center justify-center shadow-lg shadow-blue-500/40">
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-500 to-yellow-400 rounded-full flex items-center justify-center shadow-lg shadow-yellow-500/40">
                   <img
                     src={logo}
-                    alt="COINCHI Logo"
+                    alt="AXONI Logo"
                     className="w-8 h-8 object-contain"
                   />
                 </div>
               </div>
-              <h2 className="text-xl font-bold mb-3 bg-gradient-to-r from-blue-500 to-blue-400 bg-clip-text text-transparent">
+              <h2 className="text-xl font-bold mb-3 bg-gradient-to-r from-yellow-500 to-yellow-400 bg-clip-text text-transparent">
                 {currentStepData.title}
               </h2>
               <p className="text-sm text-white/80 mb-6 leading-relaxed">
@@ -368,7 +368,7 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
               </p>
               <div className="flex justify-center gap-8 mb-3">
                 <div className="text-center">
-                  <span className="block text-lg font-bold text-blue-500 mb-0.5">
+                  <span className="block text-lg font-bold text-yellow-500 mb-0.5">
                     8
                   </span>
                   <span className="text-xs text-white/60 uppercase tracking-wide">
@@ -376,7 +376,7 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
                   </span>
                 </div>
                 <div className="text-center">
-                  <span className="block text-lg font-bold text-blue-500 mb-0.5">
+                  <span className="block text-lg font-bold text-yellow-500 mb-0.5">
                     ~2min
                   </span>
                   <span className="text-xs text-white/60 uppercase tracking-wide">
@@ -390,7 +390,7 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
           {currentStepData.type === "completion" && (
             <div className="text-center py-4">
               <div className="w-20 h-20 mx-auto mb-6 relative">
-                <div className="w-full h-full bg-blue-500 rounded-full flex items-center justify-center animate-in zoom-in duration-500">
+                <div className="w-full h-full bg-yellow-500 rounded-full flex items-center justify-center animate-in zoom-in duration-500">
                   <svg
                     className="w-8 h-8 text-white"
                     fill="none"
@@ -406,23 +406,23 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
                   </svg>
                 </div>
               </div>
-              <h2 className="text-lg font-bold text-blue-500 mb-3">
+              <h2 className="text-lg font-bold text-yellow-500 mb-3">
                 {currentStepData.title}
               </h2>
               <p className="text-sm text-white/80 mb-5 leading-relaxed">
                 {currentStepData.description}
               </p>
-              <div className="text-left bg-blue-500/10 border border-blue-500/20 rounded-2xl p-3 space-y-1.5">
+              <div className="text-left bg-yellow-500/10 border border-yellow-500/20 rounded-2xl p-3 space-y-1.5">
                 <div className="text-xs text-white/90 leading-tight">
-                  <strong className="text-blue-500">💡 Pro Tip:</strong> Always
+                  <strong className="text-yellow-500">💡 Pro Tip:</strong> Always
                   verify conversion amounts before confirming
                 </div>
                 <div className="text-xs text-white/90 leading-tight">
-                  <strong className="text-blue-500">🔄 Remember:</strong> Check
+                  <strong className="text-yellow-500">🔄 Remember:</strong> Check
                   exchange rates for the best conversion timing
                 </div>
                 <div className="text-xs text-white/90 leading-tight">
-                  <strong className="text-blue-500">📊 Track:</strong> Monitor
+                  <strong className="text-yellow-500">📊 Track:</strong> Monitor
                   your conversion history for better planning
                 </div>
               </div>
@@ -441,7 +441,7 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
                 <div className="mt-3 pt-3 border-t border-white/10">
                   <div className="w-full h-0.5 bg-white/10 rounded-full overflow-hidden mb-1.5">
                     <div
-                      className="h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full origin-left transform scale-x-0"
+                      className="h-full bg-gradient-to-r from-yellow-500 to-yellow-400 rounded-full origin-left transform scale-x-0"
                       style={{
                         animation: `scaleProgress ${currentStepData.duration}ms linear forwards`,
                       }}
@@ -468,7 +468,7 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
               </button>
               <button
                 onClick={handleStart}
-                className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-blue-400 text-white rounded-xl text-xs font-semibold hover:shadow-lg hover:shadow-blue-500/25 hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2"
+                className="px-5 py-2.5 bg-gradient-to-r from-yellow-500 to-yellow-400 text-white rounded-xl text-xs font-semibold hover:shadow-lg hover:shadow-yellow-500/25 hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2"
               >
                 <FiPlay size={14} /> Start Tour
               </button>
@@ -485,7 +485,7 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
               </button>
               <button
                 onClick={onClose}
-                className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-blue-400 text-white rounded-xl text-xs font-semibold hover:shadow-lg hover:shadow-blue-500/25 hover:-translate-y-0.5 transition-all duration-200"
+                className="px-5 py-2.5 bg-gradient-to-r from-yellow-500 to-yellow-400 text-white rounded-xl text-xs font-semibold hover:shadow-lg hover:shadow-yellow-500/25 hover:-translate-y-0.5 transition-all duration-200"
               >
                 Start Converting
               </button>
@@ -505,7 +505,7 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
 
                 <button
                   onClick={handlePlayPause}
-                  className="p-1.5 bg-blue-500/10 text-blue-500 border border-blue-500/30 rounded-xl hover:bg-blue-500/20 hover:border-blue-500/40 transition-all duration-200"
+                  className="p-1.5 bg-yellow-500/10 text-yellow-500 border border-yellow-500/30 rounded-xl hover:bg-yellow-500/20 hover:border-yellow-500/40 transition-all duration-200"
                   title={isPlaying ? "Pause auto-advance" : "Play auto-advance"}
                 >
                   {isPlaying ? <FiPause size={12} /> : <FiPlay size={12} />}

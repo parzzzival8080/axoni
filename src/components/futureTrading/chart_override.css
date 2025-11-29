@@ -21,7 +21,7 @@
   background-color: #000000 !important;
 }
 
-/* Target the specific navy blue background */
+/* Target the specific navy yellow background */
 body .chart-page,
 body .chart-container,
 body .chart-container__chartarea,
@@ -138,7 +138,7 @@ iframe {
   background-color: #000000 !important;
 }
 
-/* Fix for navy blue background in TradingView */
+/* Fix for navy yellow background in TradingView */
 .tv-chart-container__bg {
   fill: #000000 !important;
 }

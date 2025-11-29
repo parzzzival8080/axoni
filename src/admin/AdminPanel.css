@@ -92,7 +92,7 @@
 }
 
 .status-action {
-  color: #014EB2;
+  color: #F0B90B;
   font-weight: 500;
 }
 
@@ -106,7 +106,7 @@
 }
 
 .auto-save-toggle input[type="checkbox"] {
-  accent-color: #014EB2;
+  accent-color: #F0B90B;
 }
 
 .status-button {
@@ -189,7 +189,7 @@
   font-size: 1.75rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, #014EB2, #2ebd85);
+  background: linear-gradient(135deg, #F0B90B, #2ebd85);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -226,7 +226,7 @@
   width: 40px;
   height: 40px;
   border: 3px solid rgba(255, 255, 255, 0.1);
-  border-top: 3px solid #014EB2;
+  border-top: 3px solid #F0B90B;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -269,7 +269,7 @@
 }
 
 .debug-content strong {
-  color: #014EB2;
+  color: #F0B90B;
   font-weight: 600;
 }
 
@@ -332,7 +332,7 @@
 .status-button:focus-visible,
 .auto-save-toggle:focus-visible,
 .error-retry:focus-visible {
-  outline: 2px solid #014EB2;
+  outline: 2px solid #F0B90B;
   outline-offset: 2px;
 }
 

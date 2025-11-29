@@ -28,7 +28,7 @@ const OverviewTab = () => {
         setLoading(true);
         const uid = localStorage.getItem("uid") || "QEaIjLlY";
         const apiKey = "5lPMMw7mIuyzQQDjlKJbe0dY";
-        const apiUrl = `https://api.coinchi.co/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
+        const apiUrl = `https://api.axoni.co/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
 
         const response = await axios.get(apiUrl);
 
@@ -81,7 +81,7 @@ const OverviewTab = () => {
 
             {loading ? (
               <div className="text-center py-4">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500 mx-auto"></div>
                 <p className="text-gray-500 mt-2">Loading...</p>
               </div>
             ) : error ? (
@@ -99,7 +99,7 @@ const OverviewTab = () => {
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <button
-                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg font-medium transition-colors"
+                className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg font-medium transition-colors"
                 onClick={() => navigate("/deposit")}
               >
                 Deposit
@@ -143,7 +143,7 @@ const OverviewTab = () => {
 
             <div className="flex flex-col items-center mb-6">
               <div className="relative w-32 h-32 mb-4">
-                <div className="w-full h-full rounded-full border-8 border-blue-500 flex items-center justify-center">
+                <div className="w-full h-full rounded-full border-8 border-yellow-500 flex items-center justify-center">
                   <div className="text-center">
                     <div className="text-xl font-bold text-gray-900">100%</div>
                     <div className="text-sm text-gray-500">Trading</div>
@@ -155,7 +155,7 @@ const OverviewTab = () => {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
                   <span className="text-gray-600">Spot Wallet:</span>
                 </div>
                 <span className="text-gray-900 font-medium">
@@ -164,7 +164,7 @@ const OverviewTab = () => {
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
                   <span className="text-gray-600">Future Wallet:</span>
                 </div>
                 <span className="text-gray-900 font-medium">

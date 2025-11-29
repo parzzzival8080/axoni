@@ -47,7 +47,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
     return {
       symbol: formattedSymbol,
       interval: timeframe,
-      datafeedUrl: "https://api.coinchi.co/api/v1",
+      datafeedUrl: "https://api.axoni.co/api/v1",
       libraryPath: "/charting_library/",
       chartsStorageUrl: "https://saveload.tradingview.com",
       chartsStorageApiVersion: "1.1",
@@ -142,7 +142,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
         background-color: #000000 !important;
       }
       
-      /* Target any element with navy blue background */
+      /* Target any element with navy yellow background */
       *[style*="background-color: rgb(19, 23, 34)"],
       *[style*="background-color: #131722"],
       *[style*="background-color: rgb(27, 32, 48)"],
@@ -326,13 +326,13 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
 						.tv-chart-container { background-color: #000000 !important; }
 						.chart-markup-table { background-color: #000000 !important; }
 						
-						/* Target the navy blue background specifically */
+						/* Target the navy yellow background specifically */
 						[style*="background-color: rgb(19, 23, 34)"] { background-color: #000000 !important; }
 						[style*="background-color: #131722"] { background-color: #000000 !important; }
 						[style*="background-color: rgb(27, 32, 48)"] { background-color: #000000 !important; }
 						[style*="background-color: #1b2030"] { background-color: #000000 !important; }
 						
-						/* Target any element with navy blue background */
+						/* Target any element with navy yellow background */
 						*[style*="background-color: rgb(19, 23, 34)"],
 						*[style*="background-color: #131722"],
 						*[style*="background-color: rgb(27, 32, 48)"],
@@ -350,13 +350,13 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
                 // Create a style element for the iframe
                 const iframeStyle = document.createElement("style");
                 iframeStyle.textContent = `
-									/* Target the navy blue background specifically in iframe */
+									/* Target the navy yellow background specifically in iframe */
 									body, html, .chart-page, .chart-container, .tv-chart-container, 
 									.layout__area--center, .chart-markup-table {
 										background-color: #000000 !important;
 									}
 									
-									/* Target any element with navy blue background */
+									/* Target any element with navy yellow background */
 									*[style*="background-color: rgb(19, 23, 34)"],
 									*[style*="background-color: #131722"],
 									*[style*="background-color: rgb(27, 32, 48)"],
@@ -386,7 +386,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
           button.addEventListener("click", () => {
             console.log("API Check button clicked");
             // Example of checking API status
-            fetch("https://api.coinchi.co/api/v1/status")
+            fetch("https://api.axoni.co/api/v1/status")
               .then((response) => response.json())
               .then((data) => {
                 console.log("API Status:", data);

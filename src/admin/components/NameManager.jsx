@@ -19,7 +19,7 @@ const NameManager = () => {
       {/* Platform Name Section */}
       <div className="bg-gray-900 border border-gray-700 rounded-lg p-6">
         <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
-          <svg className="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 mr-2 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
           </svg>
           Platform Name
@@ -33,7 +33,7 @@ const NameManager = () => {
               type="text"
               value={config?.names?.displayName || ''}
               onChange={(e) => handleInputChange('names', 'displayName', e.target.value)}
-              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
               placeholder="Enter platform display name"
             />
           </div>
@@ -45,7 +45,7 @@ const NameManager = () => {
               type="text"
               value={config?.names?.shortName || ''}
               onChange={(e) => handleInputChange('names', 'shortName', e.target.value)}
-              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
               placeholder="Enter short name"
             />
           </div>
@@ -69,7 +69,7 @@ const NameManager = () => {
               type="text"
               value={config?.names?.mainTagline || ''}
               onChange={(e) => handleInputChange('names', 'mainTagline', e.target.value)}
-              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
               placeholder="Enter main tagline"
             />
           </div>
@@ -81,7 +81,7 @@ const NameManager = () => {
               type="text"
               value={config?.names?.subTagline || ''}
               onChange={(e) => handleInputChange('names', 'subTagline', e.target.value)}
-              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
               placeholder="Enter sub tagline"
             />
           </div>
@@ -105,7 +105,7 @@ const NameManager = () => {
               type="text"
               value={config?.names?.companyName || ''}
               onChange={(e) => handleInputChange('names', 'companyName', e.target.value)}
-              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
               placeholder="Enter company name"
             />
           </div>
@@ -117,7 +117,7 @@ const NameManager = () => {
               type="text"
               value={config?.names?.legalName || ''}
               onChange={(e) => handleInputChange('names', 'legalName', e.target.value)}
-              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
               placeholder="Enter legal company name"
             />
           </div>
@@ -141,7 +141,7 @@ const NameManager = () => {
               type="text"
               value={config?.names?.pageTitle || ''}
               onChange={(e) => handleInputChange('names', 'pageTitle', e.target.value)}
-              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
               placeholder="Enter page title"
             />
           </div>
@@ -153,7 +153,7 @@ const NameManager = () => {
               value={config?.names?.metaDescription || ''}
               onChange={(e) => handleInputChange('names', 'metaDescription', e.target.value)}
               rows={3}
-              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
               placeholder="Enter meta description"
             />
           </div>
@@ -174,7 +174,7 @@ const NameManager = () => {
               {config?.names?.displayName || 'Platform Name'}
             </h2>
             {config?.names?.mainTagline && (
-              <p className="text-lg text-blue-400 mb-1">{config.names.mainTagline}</p>
+              <p className="text-lg text-yellow-400 mb-1">{config.names.mainTagline}</p>
             )}
             {config?.names?.subTagline && (
               <p className="text-sm text-gray-400">{config.names.subTagline}</p>

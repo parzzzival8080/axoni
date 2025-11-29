@@ -35,7 +35,7 @@ const ErrorText = styled.div`
 const LoadingSpinner = () => (
   <div className="order-book-loading" style={{ textAlign: 'center', padding: '20px' }}>
     <SpinnerIcon icon={faSpinner} size="2x" />
-    <LoadingText>Loading COINCHI order book data...</LoadingText>
+    <LoadingText>Loading AXONI order book data...</LoadingText>
   </div>
 );
 
@@ -43,7 +43,7 @@ const ConnectionError = ({ connectionStatus, reconnectAttempts, maxReconnectAtte
   <div className="order-book-error" style={{ textAlign: 'center', padding: '20px' }}>
     <ErrorIconStyled icon={faExclamationTriangle} size="2x" />
     <ErrorText>
-      Connection to COINCHI failed.
+      Connection to AXONI failed.
       {connectionStatus === 'error' ? ' An error occurred.' : ''}
       <br />
       {reconnectAttempts >= maxReconnectAttempts && connectionStatus !== 'fallback' ? 'Max retries reached. ' : ''}
@@ -81,7 +81,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   const lastUpdateRef = useRef(Date.now());
   const pendingUpdateRef = useRef(null);
 
-  // Derive instId (instrument ID for COINCHI, e.g., BTC-USDT)
+  // Derive instId (instrument ID for AXONI, e.g., BTC-USDT)
   // Use websocket_name if available, otherwise fall back to cryptoSymbol or symbol
   const getWebSocketSymbol = () => {
     if (cryptoData?.websocket_name) {
@@ -113,13 +113,13 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
 
   const processOrderBookData = useCallback((asks, bids) => {
     if (!asks || !bids || !Array.isArray(asks) || !Array.isArray(bids)) {
-      console.error('[OrderBook] Invalid order book data structure for COINCHI', { asks, bids });
+      console.error('[OrderBook] Invalid order book data structure for AXONI', { asks, bids });
       return null;
     }
 
     const processedAsks = asks
       .map(item => ({
-        price: parseFloat(item[0]), // COINCHI: [price, size, liquidations, orders]
+        price: parseFloat(item[0]), // AXONI: [price, size, liquidations, orders]
         amount: parseFloat(item[1]),
         total: 0
       }))
@@ -163,7 +163,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     return {
       asks: processedAsks,
       bids: processedBids,
-      lastUpdateId: Date.now() // COINCHI provides 'ts' in the data payload, could use that
+      lastUpdateId: Date.now() // AXONI provides 'ts' in the data payload, could use that
     };
   }, []);
 
@@ -191,13 +191,13 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
       clearInterval(restFallbackRef.current);
       restFallbackRef.current = null;
     }
-    setDataSource('REST API (COINCHI)');
+    setDataSource('REST API (AXONI)');
     setIsLoading(true);
 
     const fetchData = async () => {
       try {
         const apiUrl = `https://orderbookCOINCHI.devweb09.workers.dev/api/okx/api/v5/market/books?instId=${instId}&sz=5`; // Proxied via Cloudflare Worker; top 5 levels for fast loading
-        console.log('[OrderBook] Fetching from COINCHI REST API:', apiUrl);
+        console.log('[OrderBook] Fetching from AXONI REST API:', apiUrl);
         const response = await axios.get(apiUrl);
 
         if (response.data && response.data.code === "0" && response.data.data && response.data.data[0]) {
@@ -238,20 +238,20 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
               setIsLoading(false);
               setConnectionStatus('fallback');
               lastUpdateTimeRef.current = now; // Or use bookData.ts
-              console.log('[OrderBook] Data updated from COINCHI REST API');
+              console.log('[OrderBook] Data updated from AXONI REST API');
             }
           } else {
-            throw new Error('Malformed COINCHI REST API response data structure');
+            throw new Error('Malformed AXONI REST API response data structure');
           }
         } else {
-          throw new Error(`COINCHI REST API Error: ${response.data.msg || 'Unknown error'} (Code: ${response.data.code})`);
+          throw new Error(`AXONI REST API Error: ${response.data.msg || 'Unknown error'} (Code: ${response.data.code})`);
         }
       } catch (error) {
-        console.error(`[OrderBook] COINCHI REST API fetch error (attempt ${retry + 1}):`, error);
+        console.error(`[OrderBook] AXONI REST API fetch error (attempt ${retry + 1}):`, error);
         if (retry < MAX_REST_RETRIES) {
           setTimeout(() => fetchOrderBookREST(retry + 1), REST_BACKOFF_BASE * Math.pow(2, retry));
         } else {
-          console.error('[OrderBook] Max REST retries reached for COINCHI.');
+          console.error('[OrderBook] Max REST retries reached for AXONI.');
           setConnectionStatus('error'); // Or 'failed' if it's persistent
           setIsLoading(false);
           // Optionally, display mock data or a more persistent error message
@@ -267,7 +267,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
 
   const connectWebSocket = useCallback(() => {
     if (wsRef.current) {
-      console.log('[OrderBook] Closing existing COINCHI WebSocket connection.');
+      console.log('[OrderBook] Closing existing AXONI WebSocket connection.');
       wsRef.current.onclose = null; // Prevent reconnect logic on manual close
       wsRef.current.close();
       wsRef.current = null;
@@ -275,17 +275,17 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
 
     setConnectionStatus('connecting');
     setIsLoading(true);
-    setDataSource('WebSocket (COINCHI)');
+    setDataSource('WebSocket (AXONI)');
 
     const wsUrl = 'https://wssorderbook.devweb09.workers.dev/';
-    console.log('[OrderBook] Attempting to connect to COINCHI WebSocket:', wsUrl);
+    console.log('[OrderBook] Attempting to connect to AXONI WebSocket:', wsUrl);
 
     try {
       const socket = new WebSocket(wsUrl);
       wsRef.current = socket;
 
       socket.onopen = () => {
-        console.log('[OrderBook] Connected to COINCHI WebSocket');
+        console.log('[OrderBook] Connected to AXONI WebSocket');
         setConnectionStatus('connected');
         // setIsLoading(false); // Wait for first data message
         setReconnectAttempts(0); // Reset on successful connection
@@ -300,29 +300,29 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
           ],
         };
         socket.send(JSON.stringify(subscriptionMessage));
-        console.log('[OrderBook] Sent COINCHI subscription message:', subscriptionMessage);
+        console.log('[OrderBook] Sent AXONI subscription message:', subscriptionMessage);
         lastUpdateTimeRef.current = Date.now(); // Reset last update time on new connection
       };
 
       socket.onerror = (error) => {
-        console.error('[OrderBook] COINCHI WebSocket error:', error);
+        console.error('[OrderBook] AXONI WebSocket error:', error);
         // Don't set to 'error' immediately, onclose will handle reconnect or fallback
         // setIsLoading(false); // Let onclose handle this
       };
 
       socket.onclose = (event) => {
-        console.log('[OrderBook] COINCHI WebSocket closed:', event.code, event.reason);
+        console.log('[OrderBook] AXONI WebSocket closed:', event.code, event.reason);
         wsRef.current = null; // Clear the ref
 
         if (connectionStatus !== 'disconnected' && connectionStatus !== 'failed') { // Avoid if manually closed or already failed
           if (reconnectAttempts < maxReconnectAttempts) {
             setReconnectAttempts(prev => prev + 1);
             const backoffTime = Math.min(1000 * Math.pow(2, reconnectAttempts), 10000);
-            console.log(`[OrderBook] Attempting to reconnect to COINCHI in ${backoffTime / 1000}s (attempt ${reconnectAttempts + 1})...`);
+            console.log(`[OrderBook] Attempting to reconnect to AXONI in ${backoffTime / 1000}s (attempt ${reconnectAttempts + 1})...`);
             setConnectionStatus('reconnecting');
             reconnectTimeoutRef.current = setTimeout(connectWebSocket, backoffTime);
           } else {
-            console.error('[OrderBook] Max reconnect attempts to COINCHI reached. Falling back to REST.');
+            console.error('[OrderBook] Max reconnect attempts to AXONI reached. Falling back to REST.');
             setConnectionStatus('failed'); // Explicitly set to failed before fallback
             fetchOrderBookREST();
           }
@@ -336,11 +336,11 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
           const message = JSON.parse(event.data);
 
           if (message.event === 'subscribe') {
-            console.log('[OrderBook] COINCHI Subscription confirmed:', message.arg);
+            console.log('[OrderBook] AXONI Subscription confirmed:', message.arg);
             return;
           }
           if (message.event === 'error') {
-            console.error('[OrderBook] COINCHI API Error Message:', message.msg, 'Code:', message.code);
+            console.error('[OrderBook] AXONI API Error Message:', message.msg, 'Code:', message.code);
             // Depending on the error code, you might want to close the socket or try to resubscribe.
             // For critical errors, closing might trigger the reconnect/fallback logic.
             if (socket.readyState === WebSocket.OPEN) {
@@ -351,7 +351,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
             return;
           }
 
-          // COINCHI 'books5' channel sends full snapshots for both 'snapshot' and 'update' actions
+          // AXONI 'books5' channel sends full snapshots for both 'snapshot' and 'update' actions
           if (message.arg && (message.arg.channel === 'books5' || message.arg.channel === 'books') && message.data && Array.isArray(message.data) && message.data.length > 0) {
             const orderBookUpdate = message.data[0];
             if (orderBookUpdate && orderBookUpdate.asks && orderBookUpdate.bids) {
@@ -392,18 +392,18 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
                 if (connectionStatus !== 'connected') setConnectionStatus('connected');
               }
             }
-          } else if (message.op === 'ping') { // COINCHI sends pings
+          } else if (message.op === 'ping') { // AXONI sends pings
             socket.send(JSON.stringify({ op: 'pong' }));
           } else {
-            // console.warn('[OrderBook] Unknown COINCHI WebSocket message format:', message);
+            // console.warn('[OrderBook] Unknown AXONI WebSocket message format:', message);
           }
         } catch (error) {
-          console.error('[OrderBook] Error processing COINCHI WebSocket message:', error, event.data);
+          console.error('[OrderBook] Error processing AXONI WebSocket message:', error, event.data);
         }
       };
 
     } catch (error) {
-      console.error('[OrderBook] Error creating COINCHI WebSocket:', error);
+      console.error('[OrderBook] Error creating AXONI WebSocket:', error);
       setConnectionStatus('failed'); // Connection attempt itself failed
       setIsLoading(false);
       fetchOrderBookREST(); // Fallback if WebSocket object cannot even be created
@@ -416,7 +416,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     if (canUseWebSocket) {
       connectWebSocket();
     } else {
-      console.log('[OrderBook] WebSocket not supported, falling back to REST for COINCHI.');
+      console.log('[OrderBook] WebSocket not supported, falling back to REST for AXONI.');
       setConnectionStatus('fallback');
       fetchOrderBookREST();
     }
@@ -424,10 +424,10 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     // Stale connection checker
     staleConnectionCheckRef.current = setInterval(() => {
       if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN && (Date.now() - lastUpdateTimeRef.current > 20000)) { // 20s no data
-        console.warn('[OrderBook] COINCHI WebSocket connection appears stale (no data for >20s). Closing to trigger reconnect.');
+        console.warn('[OrderBook] AXONI WebSocket connection appears stale (no data for >20s). Closing to trigger reconnect.');
         wsRef.current.close(); // This will trigger the onclose logic for reconnection
       } else if (connectionStatus === 'fallback' && (Date.now() - lastUpdateTimeRef.current > 30000)) { // 30s for REST
-         console.warn('[OrderBook] COINCHI REST connection appears stale. Re-fetching.');
+         console.warn('[OrderBook] AXONI REST connection appears stale. Re-fetching.');
          fetchOrderBookREST(); // Re-initiate fetch
       }
     }, 10000); // Check every 10 seconds
@@ -435,7 +435,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     return () => {
       console.log('[OrderBook] Cleaning up for', instId);
       if (wsRef.current) {
-        console.log('[OrderBook] Closing COINCHI WebSocket on unmount.');
+        console.log('[OrderBook] Closing AXONI WebSocket on unmount.');
         wsRef.current.onclose = null; // Prevent reconnect logic on unmount
         wsRef.current.close();
         wsRef.current = null;
@@ -459,14 +459,14 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
 
   useEffect(() => {
     if (forceRefresh > 0) {
-      console.log('[OrderBook] Force refresh triggered for COINCHI');
+      console.log('[OrderBook] Force refresh triggered for AXONI');
       handleManualReconnect();
     }
   }, [forceRefresh]);
 
 
   const handleManualReconnect = () => {
-    console.log('[OrderBook] Manual reconnect triggered for COINCHI');
+    console.log('[OrderBook] Manual reconnect triggered for AXONI');
     setConnectionStatus('disconnected'); // Set to disconnected to allow fresh connection attempt sequence
     setReconnectAttempts(0); // Reset attempts
 
@@ -505,7 +505,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
 
   // Use websocket_name for display if available, otherwise fall back to other options
   const cryptoSymbol = cryptoData?.websocket_name || cryptoData?.cryptoSymbol || cryptoData?.symbol || 'BTC';
-  const usdtSymbol = 'USDT'; // Typically USDT for COINCHI pairs like BTC-USDT
+  const usdtSymbol = 'USDT'; // Typically USDT for AXONI pairs like BTC-USDT
 
   // Ensure we always display exactly 8 rows each for asks and bids
   const ensureExactRows = useCallback((data, count, isAsk) => {
@@ -642,7 +642,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
         </div>
       ) : (
         <div className="trades-container" style={{ padding: '20px', textAlign: 'center', color: '#aaa' }}>
-          Trade data display is not yet implemented for COINCHI.
+          Trade data display is not yet implemented for AXONI.
         </div>
       )}
 
@@ -651,11 +651,11 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
         <span className="status-text">
           {connectionStatus === 'connected' && `Live via ${dataSource}`}
           {connectionStatus === 'fallback' && `Live via ${dataSource}`}
-          {connectionStatus === 'connecting' && 'Connecting to COINCHI...'}
-          {connectionStatus === 'reconnecting' && `Reconnecting to COINCHI (Attempt ${reconnectAttempts})...`}
-          {connectionStatus === 'disconnected' && 'Disconnected from COINCHI'}
-          {connectionStatus === 'error' && 'COINCHI Connection Error'}
-          {connectionStatus === 'failed' && 'Failed to connect to COINCHI'}
+          {connectionStatus === 'connecting' && 'Connecting to AXONI...'}
+          {connectionStatus === 'reconnecting' && `Reconnecting to AXONI (Attempt ${reconnectAttempts})...`}
+          {connectionStatus === 'disconnected' && 'Disconnected from AXONI'}
+          {connectionStatus === 'error' && 'AXONI Connection Error'}
+          {connectionStatus === 'failed' && 'Failed to connect to AXONI'}
         </span>
       </div>
     </div>

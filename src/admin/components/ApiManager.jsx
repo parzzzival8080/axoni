@@ -87,7 +87,7 @@ const ApiManager = () => {
             type="url"
             value={value || ''}
             onChange={(e) => handleSettingChange(setting.setting_key, e.target.value)}
-            className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
             placeholder={`Enter ${setting.display_name}`}
           />
         );
@@ -98,7 +98,7 @@ const ApiManager = () => {
             type="text"
             value={value || ''}
             onChange={(e) => handleSettingChange(setting.setting_key, e.target.value)}
-            className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
             placeholder={`Enter ${setting.display_name}`}
           />
         );
@@ -110,7 +110,7 @@ const ApiManager = () => {
               type="checkbox"
               checked={value || false}
               onChange={(e) => handleSettingChange(setting.setting_key, e.target.checked)}
-              className="w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 focus:ring-2"
+              className="w-4 h-4 text-yellow-600 bg-gray-800 border-gray-600 rounded focus:ring-yellow-500 focus:ring-2"
             />
             <span className="ml-2 text-sm text-gray-300">Enable</span>
           </div>
@@ -122,7 +122,7 @@ const ApiManager = () => {
             type="number"
             value={value || ''}
             onChange={(e) => handleSettingChange(setting.setting_key, parseInt(e.target.value))}
-            className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
             placeholder={`Enter ${setting.display_name}`}
           />
         );
@@ -133,7 +133,7 @@ const ApiManager = () => {
             type="text"
             value={value || ''}
             onChange={(e) => handleSettingChange(setting.setting_key, e.target.value)}
-            className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
             placeholder={`Enter ${setting.display_name}`}
           />
         );
@@ -169,7 +169,7 @@ const ApiManager = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500"></div>
         <span className="ml-2 text-white">Loading API settings...</span>
       </div>
     );
@@ -208,7 +208,7 @@ const ApiManager = () => {
           <div key={groupName} className="bg-gray-900 border border-gray-700 rounded-lg p-6">
             <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
               {groupName === 'Trading APIs' && (
-                <svg className="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 mr-2 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               )}
@@ -223,7 +223,7 @@ const ApiManager = () => {
                 </svg>
               )}
               {groupName === 'External Services' && (
-                <svg className="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 mr-2 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9" />
                 </svg>
               )}
@@ -310,7 +310,7 @@ const ApiManager = () => {
         <button
           onClick={saveApiSettings}
           disabled={saving}
-          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-6 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {saving ? (
             <>

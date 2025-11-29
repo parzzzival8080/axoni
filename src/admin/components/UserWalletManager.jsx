@@ -239,7 +239,7 @@ const UserWalletManager = () => {
               {/* View Wallets Button */}
               <button
                 onClick={() => setWalletsModalUser(user)}
-                className="flex items-center gap-1 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-xs font-semibold shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-accent"
+                className="flex items-center gap-1 px-3 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-full text-xs font-semibold shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-accent"
                 title="View Wallets"
               >
                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 9V7a5 5 0 00-10 0v2a2 2 0 00-2 2v7a2 2 0 002 2h10a2 2 0 002-2v-7a2 2 0 00-2-2z" /><circle cx="12" cy="13" r="2" stroke="currentColor" strokeWidth={2} /></svg>
@@ -296,7 +296,7 @@ const UserWalletManager = () => {
                     <tr>
                       <th className="px-3 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Coin</th>
                       <th className="px-3 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Spot <span className="bg-green-900 text-green-400 px-2 py-0.5 rounded-full text-[10px] ml-1">SPOT</span></th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Future <span className="bg-blue-900 text-blue-400 px-2 py-0.5 rounded-full text-[10px] ml-1">FUTURE</span></th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Future <span className="bg-yellow-900 text-yellow-400 px-2 py-0.5 rounded-full text-[10px] ml-1">FUTURE</span></th>
                       <th className="px-3 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Funding <span className="bg-yellow-900 text-yellow-400 px-2 py-0.5 rounded-full text-[10px] ml-1">FUND</span></th>
                       <th className="px-3 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Credit <span className="bg-purple-900 text-purple-400 px-2 py-0.5 rounded-full text-[10px] ml-1">CREDIT</span></th>
                       <th className="px-3 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Actions</th>
@@ -310,13 +310,13 @@ const UserWalletManager = () => {
                           <span className="font-semibold">{getCoinName(wallet.coin_id)}</span>
                         </td>
                         <td className="px-3 py-2 text-green-300 font-mono">{wallet.spot_wallet}</td>
-                        <td className="px-3 py-2 text-blue-300 font-mono">{wallet.future_wallet}</td>
+                        <td className="px-3 py-2 text-yellow-300 font-mono">{wallet.future_wallet}</td>
                         <td className="px-3 py-2 text-yellow-300 font-mono">{wallet.funding_wallet}</td>
                         <td className="px-3 py-2 text-purple-300 font-mono">{wallet.credit}</td>
                         <td className="px-3 py-2">
                           <button
                             onClick={() => openEditWallet(wallet)}
-                            className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-colors focus:outline-none focus:ring-2 focus:ring-accent group-hover:scale-110 group-hover:shadow-lg"
+                            className="flex items-center justify-center w-8 h-8 rounded-full bg-yellow-600 hover:bg-yellow-700 text-white transition-colors focus:outline-none focus:ring-2 focus:ring-accent group-hover:scale-110 group-hover:shadow-lg"
                             aria-label="Edit Wallet"
                             title="Edit Wallet"
                           >
@@ -398,7 +398,7 @@ const UserWalletManager = () => {
                 <button
                   type="submit"
                   disabled={updating}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:opacity-50 text-white rounded-lg transition-colors flex items-center"
+                  className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 disabled:bg-gray-700 disabled:opacity-50 text-white rounded-lg transition-colors flex items-center"
                 >
                   {editSuccess ? (
                     <svg className="w-5 h-5 text-green-400 mr-1 animate-bounceIn" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
@@ -444,7 +444,7 @@ const UserWalletManager = () => {
                 <button
                   type="submit"
                   disabled={updating}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:opacity-50 text-white rounded-lg transition-colors"
+                  className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 disabled:bg-gray-700 disabled:opacity-50 text-white rounded-lg transition-colors"
                 >
                   {updating ? 'Confirming...' : 'Confirm'}
                 </button>

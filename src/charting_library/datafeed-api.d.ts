@@ -1017,7 +1017,7 @@ export type ErrorCallback = (reason: string) => void;
 export type GetMarksCallback<T> = (marks: T[]) => void;
 export type HistoryCallback = (bars: Bar[], meta?: HistoryMetadata) => void;
 export type LibrarySessionId = "regular" | "extended" | "premarket" | "postmarket";
-export type MarkConstColors = "red" | "green" | "blue" | "yellow";
+export type MarkConstColors = "red" | "green" | "yellow" | "yellow";
 export type OnReadyCallback = (configuration: DatafeedConfiguration) => void;
 export type QuoteData = QuoteOkData | QuoteErrorData;
 /**

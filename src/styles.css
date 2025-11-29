@@ -1245,3 +1245,19 @@ h1, h2, h3, h4 {
 .signup-btn:hover, a.signup-btn:hover, Link.signup-btn:hover, [to="/signup"]:hover {
   background-color: rgba(255, 255, 255, 0.1) !important;
 }
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}

@@ -298,7 +298,7 @@ function App() {
           setIsLoading(false);
           return;
         }
-        const apiUrl = `https://api.coinchi.co/api/v1/coin-transaction?apikey=${API_KEY}&uid=${uid}&transaction_type=deposit`;
+        const apiUrl = `https://api.axoni.co/api/v1/coin-transaction?apikey=${API_KEY}&uid=${uid}&transaction_type=deposit`;
         const response = await fetch(apiUrl);
         if (!response.ok) {
           if (response.status === 400) {
@@ -358,7 +358,7 @@ function App() {
           return;
         }
 
-        const apiUrl = `https://api.coinchi.co/api/v1/address/${uid}?apikey=A20RqFwVktRxxRqrKBtmi6ud&symbol=${selectedNetwork}`;
+        const apiUrl = `https://api.axoni.co/api/v1/address/${uid}?apikey=A20RqFwVktRxxRqrKBtmi6ud&symbol=${selectedNetwork}`;
         console.log(
           `Fetching deposit address for ${selectedCryptoSymbol} on ${selectedNetwork}:`,
           apiUrl
@@ -407,7 +407,7 @@ function App() {
           return;
         }
         
-        const apiUrl = `https://api.coinchi.co/api/v1/transaction-history/${uid}?apikey=${API_KEY}&transaction_type=deposit`;
+        const apiUrl = `https://api.axoni.co/api/v1/transaction-history/${uid}?apikey=${API_KEY}&transaction_type=deposit`;
         console.log("Fetching deposit history:", apiUrl);
         
         const response = await fetch(apiUrl);
@@ -954,7 +954,7 @@ function App() {
                     const uid = localStorage.getItem("uid");
                     if (!uid) return;
                     
-                    const apiUrl = `https://api.coinchi.co/api/v1/transaction-history/${uid}?apikey=${API_KEY}&transaction_type=deposit`;
+                    const apiUrl = `https://api.axoni.co/api/v1/transaction-history/${uid}?apikey=${API_KEY}&transaction_type=deposit`;
                     const response = await fetch(apiUrl);
                     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                     
@@ -1024,7 +1024,7 @@ function App() {
                         const uid = localStorage.getItem("uid");
                         if (!uid) return;
                         
-                        const apiUrl = `https://api.coinchi.co/api/v1/transaction-history/${uid}?apikey=${API_KEY}&transaction_type=deposit`;
+                        const apiUrl = `https://api.axoni.co/api/v1/transaction-history/${uid}?apikey=${API_KEY}&transaction_type=deposit`;
                         const response = await fetch(apiUrl);
                         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                         

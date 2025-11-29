@@ -5,16 +5,16 @@ import styles from './TradingGame.module.css';
 const TradingGame = () => {
   return (
     <div className="relative z-0 min-h-[75vh] bg-black overflow-hidden">
-      {/* Blurry blue Background Effect */}
+      {/* Blurry yellow Background Effect */}
       <div className="absolute inset-0">
-        {/* Main blue blur in the center-right */}
-        <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl transform -translate-y-1/2" />
+        {/* Main yellow blur in the center-right */}
+        <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-yellow-500/30 rounded-full blur-3xl transform -translate-y-1/2" />
         
-        {/* Secondary blue blur for more depth */}
+        {/* Secondary yellow blur for more depth */}
         <div className="absolute top-1/3 right-1/3 w-80 h-80 bg-amber-600/20 rounded-full blur-3xl" />
         
         {/* Additional subtle blur on the left */}
-        <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-blue-700/15 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-yellow-700/15 rounded-full blur-3xl" />
       </div>
 
       {/* Content */}

@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // A simple spinner component
 const Spinner = () => (
-  <div className="border-4 border-gray-200 border-t-blue-500 rounded-full w-8 h-8 animate-spin"></div>
+  <div className="border-4 border-gray-200 border-t-yellow-500 rounded-full w-8 h-8 animate-spin"></div>
 );
 
 // The component logic, wrapped in forwardRef
@@ -25,7 +25,7 @@ const WithdrawalHistoryTableBase = forwardRef((props, ref) => {
         return;
       }
       const apiKey = '5lPMMw7mIuyzQQDjlKJbe0dY';
-      const url = `https://api.coinchi.co/api/v1/transaction-history/${uid}?apikey=${apiKey}&transaction_type=withdraw`;
+      const url = `https://api.axoni.co/api/v1/transaction-history/${uid}?apikey=${apiKey}&transaction_type=withdraw`;
       const response = await axios.get(url);
       const data = Array.isArray(response.data) ? response.data : [];
       setHistory(data);
@@ -71,7 +71,7 @@ const WithdrawalHistoryTableBase = forwardRef((props, ref) => {
           <div className="text-red-500 mb-4">{error}</div>
           <button
             onClick={handleRefresh}
-            className="text-sm px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+            className="text-sm px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition"
           >
             Try Again
           </button>

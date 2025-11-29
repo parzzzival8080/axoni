@@ -91,7 +91,7 @@ const TradingTab = ({
               </p>
               <Link
                 to="/deposit"
-                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 sm:px-6 rounded-lg font-medium transition-colors text-sm sm:text-base "
+                className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 sm:px-6 rounded-lg font-medium transition-colors text-sm sm:text-base "
               >
                 <span>Deposit</span>
               </Link>
@@ -106,7 +106,7 @@ const TradingTab = ({
           <button
             className={`px-4 sm:px-6 py-3 font-medium transition-colors text-sm sm:text-base ${
               activeSubTab === "coins"
-                ? "text-blue-500 border-b-2 border-blue-500"
+                ? "text-yellow-500 border-b-2 border-yellow-500"
                 : "text-gray-600 hover:text-gray-800"
             }`}
             onClick={() => setActiveSubTab("coins")}
@@ -116,7 +116,7 @@ const TradingTab = ({
           <button
             className={`px-4 sm:px-6 py-3 font-medium transition-colors text-sm sm:text-base ${
               activeSubTab === "earn"
-                ? "text-blue-500 border-b-2 border-blue-500"
+                ? "text-yellow-500 border-b-2 border-yellow-500"
                 : "text-gray-600 hover:text-gray-800"
             }`}
             onClick={() => setActiveSubTab("earn")}
@@ -137,7 +137,7 @@ const TradingTab = ({
                   placeholder="Search coin"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 sm:py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors text-sm sm:text-base"
+                  className="w-full pl-10 pr-4 py-2 sm:py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 outline-none transition-colors text-sm sm:text-base"
                 />
               </div>
 
@@ -146,7 +146,7 @@ const TradingTab = ({
                 <button
                   className={`flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors border text-sm sm:text-base ${
                     showZeroBalance
-                      ? "bg-blue-500 text-white border-blue-500"
+                      ? "bg-yellow-500 text-white border-yellow-500"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200 border-gray-300"
                   }`}
                   onClick={() => setShowZeroBalance(true)}
@@ -156,7 +156,7 @@ const TradingTab = ({
                 <button
                   className={`flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors border text-sm sm:text-base ${
                     !showZeroBalance
-                      ? "bg-blue-500 text-white border-blue-500"
+                      ? "bg-yellow-500 text-white border-yellow-500"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200 border-gray-300"
                   }`}
                   onClick={() => setShowZeroBalance(false)}
@@ -170,7 +170,7 @@ const TradingTab = ({
             <div className="overflow-hidden">
               {loading ? (
                 <div className="text-center py-8">
-                  <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-blue-500 mx-auto"></div>
+                  <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-yellow-500 mx-auto"></div>
                   <p className="text-gray-500 mt-2 text-sm sm:text-base">
                     Loading assets...
                   </p>
@@ -218,7 +218,7 @@ const TradingTab = ({
                                     className="w-8 h-8 rounded-full mr-3"
                                   />
                                 ) : (
-                                  <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium mr-3">
+                                  <div className="w-8 h-8 bg-yellow-500 text-white rounded-full flex items-center justify-center text-sm font-medium mr-3">
                                     {coin.symbol.charAt(0)}
                                   </div>
                                 )}
@@ -277,7 +277,7 @@ const TradingTab = ({
                                 className="w-10 h-10 rounded-full mr-3"
                               />
                             ) : (
-                              <div className="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium mr-3">
+                              <div className="w-10 h-10 bg-yellow-500 text-white rounded-full flex items-center justify-center text-sm font-medium mr-3">
                                 {coin.symbol.charAt(0)}
                               </div>
                             )}
@@ -369,7 +369,7 @@ const TradingTab = ({
                       key={pageNum}
                       className={`px-2 sm:px-3 py-2 rounded-lg border transition-colors text-sm ${
                         page === pageNum
-                          ? "bg-blue-500 text-white border-blue-500"
+                          ? "bg-yellow-500 text-white border-yellow-500"
                           : "border-gray-300 text-gray-600 hover:bg-gray-50"
                       }`}
                       onClick={() => setPage(pageNum)}

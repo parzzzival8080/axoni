@@ -1,7 +1,7 @@
 /* TradeForm - Spot Trading Specific Styles */
 
 .spot-trading-container .trade-form {
-  --buy-color: #014EB2;
+  --buy-color: #F0B90B;
   --sell-color: #F23645;
   --primary-bg: #000000;
   --secondary-bg: #1A1A1A;
@@ -12,7 +12,7 @@
   --text-secondary: #8A8A8A;
   --text-tertiary: #555555;
   --warning-color: #F0B90B;
-  --success-color: #014EB2;
+  --success-color: #F0B90B;
   --error-color: #F23645;
   --divider-color: #232323;
   --spacing-xs: 4px;
@@ -153,7 +153,7 @@
 
 .spot-trading-container .trade-form .buy-sell-tabs .tab.buy.active {
   background: linear-gradient(to bottom, rgba(248, 135, 38, 0.3), rgba(248, 135, 38, 0.2));
-  color: #014EB2;
+  color: #F0B90B;
   font-weight: var(--font-weight-bold);
 }
 
@@ -270,7 +270,7 @@
 
 .spot-trading-container .trade-form .trade-button.buy,
 .spot-trading-container .trade-form .buy-btn {
-  background: linear-gradient(135deg, #014EB2, #014EB2) !important;
+  background: linear-gradient(135deg, #F0B90B, #F0B90B) !important;
   color: white !important;
 }
 
@@ -556,7 +556,7 @@
   height: 20px;
   border-radius: 50%;
   background: #FFFFFF;
-  border: 2px solid var(--slider-color, #014EB2);
+  border: 2px solid var(--slider-color, #F0B90B);
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   transition: all 0.2s ease;
@@ -580,7 +580,7 @@
   height: 20px;
   border-radius: 50%;
   background: #FFFFFF;
-  border: 2px solid var(--slider-color, #014EB2);
+  border: 2px solid var(--slider-color, #F0B90B);
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   transition: all 0.2s ease;
@@ -642,7 +642,7 @@
 }
 
 .spot-trading-container .trade-form .buy-btn {
-  background: #014EB2 !important;
+  background: #F0B90B !important;
   color: #fff !important;
   border-radius: 8px !important;
   border: none;

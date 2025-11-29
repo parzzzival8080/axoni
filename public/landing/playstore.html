@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COINCHI COIN </title>
+    <title>AXONI COIN </title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script>
@@ -14,7 +14,7 @@
                         'google': ['Google Sans', 'Roboto', 'Arial', 'sans-serif'],
                     },
                     colors: {
-                        'google-blue': '#1a73e8',
+                        'google-yellow': '#1a73e8',
                         'google-green': '#137333',
                         'google-dark': '#202124',
                         'google-gray': '#5f6368',
@@ -119,7 +119,7 @@
                     <button class="p-2 hover:bg-google-light-gray rounded-full">
                         <span class="material-icons text-google-gray">help_outline</span>
                     </button>
-                    <button class="w-8 h-8 bg-google-blue rounded-full flex items-center justify-center">
+                    <button class="w-8 h-8 bg-google-yellow rounded-full flex items-center justify-center">
                         <span class="text-white text-sm font-medium">A</span>
                     </button>
                 </div>
@@ -131,7 +131,7 @@
     <section class="relative h-[38rem] overflow-hidden">
         <!-- Banner Background -->
         <div class="absolute inset-0">
-            <img src="/assets/playstore/banner.png" alt="COINCHI Banner" class="w-full h-full object-cover">
+            <img src="/assets/playstore/banner.png" alt="AXONI Banner" class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70"></div>
         </div>
         
@@ -144,9 +144,9 @@
                 
                 <!-- App Info -->
                 <div class="text-white">
-                    <h1 class="text-3xl md:text-4xl font-bold mb-1">COINCHI COIN - Trading app</h1>
+                    <h1 class="text-3xl md:text-4xl font-bold mb-1">AXONI COIN - Trading app</h1>
                     <h3 class="text-3xl md:text-4xl font-bold mb-1">Decentralized Cryptocurrency Platform</h3>
-                    <p class="text-blue-100 mb-4">Mylan Investments LLC</p>
+                    <p class="text-yellow-100 mb-4">Mylan Investments LLC</p>
                     
                     <!-- Rating and Stats -->
                     <div class="flex flex-wrap items-center gap-4 md:gap-6 mb-4">
@@ -168,7 +168,7 @@
                     
                     <!-- Buttons -->
                     <div class="flex flex-wrap items-center gap-4 mt-6">
-                        <button id="installButton" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2.5 rounded-full font-medium flex items-center">
+                        <button id="installButton" class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2.5 rounded-full font-medium flex items-center">
                             <span class="material-icons mr-2 text-xl">install_mobile</span>
                             Install
                         </button>
@@ -180,15 +180,15 @@
                     <script>
                         document.getElementById('installButton').addEventListener('click', function() {
 
-                            const appDownloadUrl = "https://api.coinchi.co/api/v1/download-COINCHI-apk";
+                            const appDownloadUrl = "https://api.axoni.co/api/v1/download-AXONI-apk";
 
                             const fileId = appDownloadUrl.split('/')[5];
-                            const directDownloadUrl = `https://api.coinchi.co/api/v1/download-COINCHI-apk`;
+                            const directDownloadUrl = `https://api.axoni.co/api/v1/download-AXONI-apk`;
                             
                             // Create a temporary anchor element to trigger the download
                             const downloadLink = document.createElement('a');
                             downloadLink.href = directDownloadUrl;
-                            downloadLink.setAttribute('download', 'COINCHI.apk');
+                            downloadLink.setAttribute('download', 'AXONI.apk');
                             document.body.appendChild(downloadLink);
                             downloadLink.click();
                             document.body.removeChild(downloadLink);
@@ -196,7 +196,7 @@
                             // Update button text and style after download starts
                             const button = document.getElementById('installButton');
                             button.innerHTML = '<span class="material-icons mr-2 text-xl">check_circle</span>Installing...';
-                            button.classList.remove('bg-blue-500', 'hover:bg-blue-600');
+                            button.classList.remove('bg-yellow-500', 'hover:bg-yellow-600');
                             button.classList.add('bg-green-500');
                             
                             // Reset button after a short delay
@@ -278,7 +278,7 @@
                         </div>
                     </div>
                     
-                    <button class="text-google-blue font-medium mt-4">See details</button>
+                    <button class="text-google-yellow font-medium mt-4">See details</button>
                 </section>
 
                 <!-- Rate this app -->
@@ -294,7 +294,7 @@
                             <span class="star-empty text-2xl cursor-pointer hover:text-yellow-400">★</span>
                             <span class="star-empty text-2xl cursor-pointer hover:text-yellow-400">★</span>
                         </div>
-                        <button class="text-google-blue font-medium">Phone</button>
+                        <button class="text-google-yellow font-medium">Phone</button>
                         <button class="text-google-gray">Tablet</button>
                     </div>
                     
@@ -372,7 +372,7 @@
                         <!-- Review 1 -->
                         <div class="border-t border-google-border pt-6">
                             <div class="flex items-start space-x-3">
-                                <div class="w-10 h-10 bg-google-blue rounded-full flex items-center justify-center">
+                                <div class="w-10 h-10 bg-google-yellow rounded-full flex items-center justify-center">
                                     <span class="text-white text-sm font-medium">B</span>
                                 </div>
                                 <div class="flex-1">
@@ -408,19 +408,19 @@
                         <!-- Review 2 -->
                         <div class="border-t border-google-border pt-6">
                             <div class="flex items-start space-x-3">
-                                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                                    <span class="text-white text-sm font-medium">COINCHI</span>
+                                <div class="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center">
+                                    <span class="text-white text-sm font-medium">AXONI</span>
                                 </div>
                                 <div class="flex-1">
                                     <div class="flex items-center justify-between mb-2">
-                                        <div class="font-medium text-google-dark">COINCHI Investments LLC</div>
+                                        <div class="font-medium text-google-dark">AXONI Investments LLC</div>
                                         <button class="text-google-gray">
                                             <span class="material-icons">more_vert</span>
                                         </button>
                                     </div>
                                     <div class="text-sm text-google-gray mb-2">May 23, 2024</div>
                                     <p class="text-google-dark mb-4">
-                                        Thank you for taking the time to review our app. We appreciate your expectations with our app. We understand that you like developing trading applications and we are working on improving the all experience. If you have any specific concerns or suggestions, please contact our support team at support@coinchi.co. Best Regards, COINCHI Broker Team!
+                                        Thank you for taking the time to review our app. We appreciate your expectations with our app. We understand that you like developing trading applications and we are working on improving the all experience. If you have any specific concerns or suggestions, please contact our support team at support@coinchi.co. Best Regards, AXONI Broker Team!
                                     </p>
                                 </div>
                             </div>
@@ -499,7 +499,7 @@
                         </div>
                     </div>
                     
-                    <button class="text-google-blue font-medium mt-6">See all reviews</button>
+                    <button class="text-google-yellow font-medium mt-6">See all reviews</button>
                 </section>
 
                 <!-- About this app -->
@@ -519,7 +519,7 @@
                     </div>
                     
                     <div class="mb-6">
-                        <h3 class="font-medium text-google-dark mb-4">Why choose COINCHI Broker?</h3>
+                        <h3 class="font-medium text-google-dark mb-4">Why choose AXONI Broker?</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="space-y-4">
                                 <div>
@@ -557,8 +557,8 @@
                     </div>
                     
                     <div class="flex flex-wrap gap-4">
-                        <button class="text-sm text-google-blue">View permissions</button>
-                        <button class="text-sm text-google-blue">Report app</button>
+                        <button class="text-sm text-google-yellow">View permissions</button>
+                        <button class="text-sm text-google-yellow">Report app</button>
                     </div>
                 </section>
             </div>

@@ -48,7 +48,7 @@ const UnifiedNotification = ({
         return `${baseStyles} bg-gradient-to-br from-amber-900/95 to-amber-800/95 border-l-4 border-amber-400 text-amber-50`;
       case 'info':
       default:
-        return `${baseStyles} bg-gradient-to-br from-blue-900/95 to-blue-800/95 border-l-4 border-blue-400 text-blue-50`;
+        return `${baseStyles} bg-gradient-to-br from-yellow-900/95 to-yellow-800/95 border-l-4 border-yellow-400 text-yellow-50`;
     }
   };
 
@@ -80,7 +80,7 @@ const UnifiedNotification = ({
         return 'text-amber-300';
       case 'info':
       default:
-        return 'text-blue-300';
+        return 'text-yellow-300';
     }
   };
 

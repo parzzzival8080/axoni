@@ -14,7 +14,7 @@ const defaultConfig = {
   colors: {
     primary: '#000000',      // Main background
     secondary: '#1E1E1E',    // Secondary background
-    accent: '#014EB2',       // blue accent color
+    accent: '#F0B90B',       // yellow accent color
     accentSecondary: '#2EBD85', // Green accent color
     background: '#000000',   // Page background
     cardBackground: '#121212', // Card backgrounds
@@ -23,7 +23,7 @@ const defaultConfig = {
     textMuted: '#5E6673',    // Muted text
     border: '#2A2A2A',       // Border color
     success: '#2EBD85',      // Success color
-    warning: '#014EB2',      // Warning color
+    warning: '#F0B90B',      // Warning color
     error: '#FF4747'         // Error color
   },
   assets: {
@@ -65,18 +65,18 @@ const defaultConfig = {
     referralIllustration: '/public/images/referral-illustration.svg'
   },
   names: {
-    siteName: 'COINCHI',
-    siteNameLong: 'COINCHI COIN',
+    siteName: 'AXONI',
+    siteNameLong: 'AXONI COIN',
     tagline: 'Best Cryptocurrency Trading Platform for Futures & Spot',
     taglineShort: 'Your trusted crypto partner',
     companyName: 'COINCHICoin Investments LLC',
     companyNameLegal: 'coinchi.co',
     supportEmail: 'support@coinchi.co',
     contactEmail: 'contact@coinchi.co',
-    contactPhone: '+1-800-COINCHI-COIN',
+    contactPhone: '+1-800-AXONI-COIN',
     websiteUrl: 'https://coinchi.co',
-    description: 'COINCHI is a secure, fast, and user-friendly cryptocurrency trading platform for spot and futures trading.',
-    metaKeywords: 'cryptocurrency, trading, bitcoin, ethereum, altcoins, futures, spot, exchange, COINCHI, crypto platform',
+    description: 'AXONI is a secure, fast, and user-friendly cryptocurrency trading platform for spot and futures trading.',
+    metaKeywords: 'cryptocurrency, trading, bitcoin, ethereum, altcoins, futures, spot, exchange, AXONI, crypto platform',
     address: 'California, United States',
     socialMedia: {
       twitter: '@COINCHICoin',
@@ -92,19 +92,19 @@ const defaultConfig = {
     downloadQR: '',
     appStoreQR: '',
     playStoreQR: '',
-    downloadQRUrl: 'https://api.coinchi.co/api/v1/download-COINCHI-apk',
-    appStoreQRUrl: 'https://apps.apple.com/app/COINCHI-coin',
+    downloadQRUrl: 'https://api.axoni.co/api/v1/download-AXONI-apk',
+    appStoreQRUrl: 'https://apps.apple.com/app/AXONI-coin',
     playStoreQRUrl: 'https://play.google.com/store/apps/details?id=com.COINCHIcoin',
-    iosDownloadUrl: 'https://api.coinchi.co/api/v1/download-ios',
-    androidDownloadUrl: 'https://api.coinchi.co/api/v1/download-apk'
+    iosDownloadUrl: 'https://api.axoni.co/api/v1/download-ios',
+    androidDownloadUrl: 'https://api.axoni.co/api/v1/download-apk'
   },
   apis: {
     baseUrl: 'https://django.bhtokens.com/api',
-    secondaryUrl: 'https://api.coinchi.co/api/v1',
+    secondaryUrl: 'https://api.axoni.co/api/v1',
     socketUrl: 'wss://socket.coinchi.co',
-    chartDataUrl: 'https://api.coinchi.co/api/v1',
+    chartDataUrl: 'https://api.axoni.co/api/v1',
     supportUrl: 'https://support.coinchi.co',
-    tradingViewDatafeed: 'https://api.coinchi.co/api/v1',
+    tradingViewDatafeed: 'https://api.axoni.co/api/v1',
     chartsStorageUrl: 'https://saveload.tradingview.com',
     userAccountUrl: 'https://django.bhtokens.com/api/user_account',
     metaMaskWidgetUrl: 'https://mpctoken.com/widget.js',
@@ -383,14 +383,14 @@ export const WhiteLabelProvider = ({ children }) => {
       metadata: {
         exportedAt: new Date().toISOString(),
         version: '1.0.0',
-        source: 'COINCHI Admin Panel'
+        source: 'AXONI Admin Panel'
       }
     };
     
     const dataStr = JSON.stringify(exportData, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = `COINCHI-config-${new Date().toISOString().split('T')[0]}.json`;
+    const exportFileDefaultName = `AXONI-config-${new Date().toISOString().split('T')[0]}.json`;
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);

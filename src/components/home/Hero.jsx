@@ -28,7 +28,7 @@ const Hero = () => {
 
   // API configuration (same as VerifyPage)
   const API_CONFIG = {
-    KYC_STATUS_BASE_URL: "https://api.coinchi.co/api/v1/kyc-status",
+    KYC_STATUS_BASE_URL: "https://api.axoni.co/api/v1/kyc-status",
     API_KEY: "5lPMMw7mIuyzQQDjlKJbe0dY",
   };
 
@@ -133,7 +133,7 @@ const Hero = () => {
   // Content for non-logged in users
   const renderGuestContent = () => (
     <div className="flex-1 space-y-6">
-      <p className="text-[#014EB2] font-semibold">
+      <p className="text-[#F0B90B] font-semibold">
         Better Liquidity, Better Trading
       </p>
       <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-tight">
@@ -149,7 +149,7 @@ const Hero = () => {
         />
         <Link
           to="/signup"
-          className="bg-[#014EB2] text-black px-8 py-3 rounded-full font-semibold bg:hover-[#014EB2] transition-colors w-full sm:w-auto"
+          className="bg-[#F0B90B] text-black px-8 py-3 rounded-full font-semibold bg:hover-[#F0B90B] transition-colors w-full sm:w-auto"
         >
           Sign up now
         </Link>
@@ -187,13 +187,13 @@ const Hero = () => {
       <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-tight">
         Welcome,
         <br />
-        <span className="text-[#014EB2]">{userName}!</span>
+        <span className="text-[#F0B90B]">{userName}!</span>
       </h1>
       {isCheckingVerification ? (
-        <div className="bg-blue-900/20 border border-blue-600 rounded-lg p-6">
+        <div className="bg-yellow-900/20 border border-yellow-600 rounded-lg p-6">
           <div className="flex items-center justify-center space-x-3">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-400"></div>
-            <p className="text-blue-400 font-medium">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-yellow-400"></div>
+            <p className="text-yellow-400 font-medium">
               Checking your verification status...
             </p>
           </div>
@@ -210,7 +210,7 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             <Link
               to="/account/profile/verify"
-              className="bg-[#014EB2] text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors text-center"
+              className="bg-[#F0B90B] text-white px-6 py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors text-center"
             >
               Verify Account
             </Link>
@@ -252,19 +252,19 @@ const Hero = () => {
     <div className="flex-1 space-y-6">
       <div className="flex items-center gap-3">
         <div className="animate-pulse">
-          <FaShieldAlt className="text-blue-500 text-2xl" />
+          <FaShieldAlt className="text-yellow-500 text-2xl" />
         </div>
-        <p className="text-blue-500 font-semibold">
+        <p className="text-yellow-500 font-semibold">
           Verification Under Review
         </p>
       </div>
       <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-tight">
         Almost There,
         <br />
-        <span className="text-[#014EB2]">{userName}!</span>
+        <span className="text-[#F0B90B]">{userName}!</span>
       </h1>
-      <div className="bg-blue-900/20 border border-blue-600 rounded-lg p-6">
-        <h3 className="text-blue-400 font-semibold mb-2">
+      <div className="bg-yellow-900/20 border border-yellow-600 rounded-lg p-6">
+        <h3 className="text-yellow-400 font-semibold mb-2">
           Verification Under Review
         </h3>
         <p className="text-gray-300 mb-4">
@@ -275,7 +275,7 @@ const Hero = () => {
         <div className="flex flex-col sm:flex-row gap-4">
           <Link
             to="/account/profile/verify"
-            className="bg-[#014EB2] text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors text-center"
+            className="bg-[#F0B90B] text-white px-6 py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors text-center"
           >
             Check Status
           </Link>
@@ -321,7 +321,7 @@ const Hero = () => {
       <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-tight">
         Ready to Trade,
         <br />
-        <span className="text-[#014EB2]">{userName}!</span>
+        <span className="text-[#F0B90B]">{userName}!</span>
       </h1>
       <p className="text-gray-300 text-lg">
         Your account is fully verified. Access all features and start trading
@@ -331,7 +331,7 @@ const Hero = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
         <Link
           to="/spot-trading"
-          className="bg-[#014EB2] text-white px-6 py-4 rounded-lg font-semibold hover:bg-blue-600 transition-colors text-center"
+          className="bg-[#F0B90B] text-white px-6 py-4 rounded-lg font-semibold hover:bg-yellow-600 transition-colors text-center"
         >
           Start Trading
         </Link>
@@ -348,7 +348,7 @@ const Hero = () => {
           to="/deposit"
           className="bg-gray-800/50 hover:bg-gray-700/50 p-4 rounded-lg transition-colors text-center"
         >
-          <FaWallet className="text-[#014EB2] text-xl mx-auto mb-2" />
+          <FaWallet className="text-[#F0B90B] text-xl mx-auto mb-2" />
           <h4 className="text-white font-medium text-sm">Deposit</h4>
         </Link>
         <Link
@@ -356,7 +356,7 @@ const Hero = () => {
           className="bg-gray-800/50 hover:bg-gray-700/50 p-4 rounded-lg transition-colors text-center"
         >
           <svg
-            className="w-5 h-5 text-[#014EB2] mx-auto mb-2"
+            className="w-5 h-5 text-[#F0B90B] mx-auto mb-2"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -375,7 +375,7 @@ const Hero = () => {
           className="bg-gray-800/50 hover:bg-gray-700/50 p-4 rounded-lg transition-colors text-center"
         >
           <svg
-            className="w-5 h-5 text-[#014EB2] mx-auto mb-2"
+            className="w-5 h-5 text-[#F0B90B] mx-auto mb-2"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -394,7 +394,7 @@ const Hero = () => {
           className="bg-gray-800/50 hover:bg-gray-700/50 p-4 rounded-lg transition-colors text-center"
         >
           <svg
-            className="w-5 h-5 text-[#014EB2] mx-auto mb-2"
+            className="w-5 h-5 text-[#F0B90B] mx-auto mb-2"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -419,12 +419,12 @@ const Hero = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center sm:space-x-4 space-y-3 sm:space-y-0 max-w-4xl mx-auto">
           <p className="text-gray-300 text-sm sm:text-base sm:mr-2">
             Register now and receive up to{" "}
-            <span className="text-[#014EB2] font-semibold">$2,000</span> worth
+            <span className="text-[#F0B90B] font-semibold">$2,000</span> worth
             of exclusive gifts for newcomers!
           </p>
           <Link
             to="/signup"
-            className="bg-[#014EB2] text-black px-6 py-2 rounded-md text-sm font-semibold hover:bg-blue-600 transition-colors whitespace-nowrap w-full sm:w-auto"
+            className="bg-[#F0B90B] text-black px-6 py-2 rounded-md text-sm font-semibold hover:bg-yellow-600 transition-colors whitespace-nowrap w-full sm:w-auto"
           >
             Sign up
           </Link>
@@ -435,12 +435,12 @@ const Hero = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center sm:space-x-4 space-y-3 sm:space-y-0 max-w-4xl mx-auto">
           <p className="text-gray-300 text-sm sm:text-base sm:mr-2">
             Your verification is{" "}
-            <span className="text-blue-500 font-semibold">under review</span>.
+            <span className="text-yellow-500 font-semibold">under review</span>.
             You'll be notified once approved!
           </p>
           <Link
             to="/account/profile/verify"
-            className="bg-[#014EB2] text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-blue-600 transition-colors whitespace-nowrap w-full sm:w-auto"
+            className="bg-[#F0B90B] text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-yellow-600 transition-colors whitespace-nowrap w-full sm:w-auto"
           >
             Check Status
           </Link>
@@ -451,14 +451,14 @@ const Hero = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center sm:space-x-4 space-y-3 sm:space-y-0 max-w-4xl mx-auto">
           <p className="text-gray-300 text-sm sm:text-base sm:mr-2">
             Complete your verification to unlock{" "}
-            <span className="text-[#014EB2] font-semibold">
+            <span className="text-[#F0B90B] font-semibold">
               all trading features
             </span>{" "}
             and higher withdrawal limits!
           </p>
           <Link
             to="/account/profile/verify"
-            className="bg-[#014EB2] text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-blue-600 transition-colors whitespace-nowrap w-full sm:w-auto"
+            className="bg-[#F0B90B] text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-yellow-600 transition-colors whitespace-nowrap w-full sm:w-auto"
           >
             Verify Now
           </Link>
@@ -469,12 +469,12 @@ const Hero = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center sm:space-x-4 space-y-3 sm:space-y-0 max-w-4xl mx-auto">
           <p className="text-gray-300 text-sm sm:text-base sm:mr-2">
             Welcome back! Your account is fully verified.{" "}
-            <span className="text-[#014EB2] font-semibold">Start trading</span>{" "}
+            <span className="text-[#F0B90B] font-semibold">Start trading</span>{" "}
             with access to all features.
           </p>
           <Link
             to="/spot-trading"
-            className="bg-[#014EB2] text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-blue-600 transition-colors whitespace-nowrap w-full sm:w-auto"
+            className="bg-[#F0B90B] text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-yellow-600 transition-colors whitespace-nowrap w-full sm:w-auto"
           >
             Start Trading
           </Link>

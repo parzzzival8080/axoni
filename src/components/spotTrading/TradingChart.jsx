@@ -78,7 +78,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
     return {
       symbol: formattedSymbol,
       interval: interval,
-      datafeedUrl: "https://api.coinchi.co/api/v1",
+      datafeedUrl: "https://api.axoni.co/api/v1",
       libraryPath: "/charting_library/",
       chartsStorageUrl: "https://saveload.tradingview.com",
       chartsStorageApiVersion: "1.1",
@@ -192,7 +192,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
         background-color: #000000 !important;
       }
       
-      /* Target any element with navy blue background */
+      /* Target any element with navy yellow background */
       *[style*="background-color: rgb(19, 23, 34)"],
       *[style*="background-color: #131722"],
       *[style*="background-color: rgb(27, 32, 48)"],
@@ -397,13 +397,13 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
 						.tv-chart-container { background-color: #000000 !important; }
 						.chart-markup-table { background-color: #000000 !important; }
 						
-						/* Target the navy blue background specifically */
+						/* Target the navy yellow background specifically */
 						[style*="background-color: rgb(19, 23, 34)"] { background-color: #000000 !important; }
 						[style*="background-color: #131722"] { background-color: #000000 !important; }
 						[style*="background-color: rgb(27, 32, 48)"] { background-color: #000000 !important; }
 						[style*="background-color: #1b2030"] { background-color: #000000 !important; }
 						
-						/* Target any element with navy blue background */
+						/* Target any element with navy yellow background */
 						*[style*="background-color: rgb(19, 23, 34)"],
 						*[style*="background-color: #131722"],
 						*[style*="background-color: rgb(27, 32, 48)"],
@@ -421,13 +421,13 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
                 // Create a style element for the iframe
                 const iframeStyle = document.createElement("style");
                 iframeStyle.textContent = `
-									/* Target the navy blue background specifically in iframe */
+									/* Target the navy yellow background specifically in iframe */
 									body, html, .chart-page, .chart-container, .tv-chart-container, 
 									.layout__area--center, .chart-markup-table {
 										background-color: #000000 !important;
 									}
 									
-									/* Target any element with navy blue background */
+									/* Target any element with navy yellow background */
 									*[style*="background-color: rgb(19, 23, 34)"],
 									*[style*="background-color: #131722"],
 									*[style*="background-color: rgb(27, 32, 48)"],
@@ -457,7 +457,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
           button.addEventListener("click", () => {
             console.log("API Check button clicked");
             // Example of checking API status
-            fetch("https://api.coinchi.co/api/v1/status")
+            fetch("https://api.axoni.co/api/v1/status")
               .then((response) => response.json())
               .then((data) => {
                 console.log("API Status:", data);
@@ -495,15 +495,15 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
     <div className="trading-chart trading-chart-container md:relative md:z-auto z-0 overflow-hidden">
       {/* Timeframe Tabs */}
       <div className="timeframe-tabs mb-6">
-        <div className="flex space-x-1 bg-black border border-blue-500/20 rounded-lg p-1 w-fit">
+        <div className="flex space-x-1 bg-black border border-yellow-500/20 rounded-lg p-1 w-fit">
           {timeframes.map((tf) => (
             <button
               key={tf.value}
               onClick={() => handleTimeframeChange(tf.value)}
               className={`px-4 py-2 rounded-md font-semibold text-sm transition-all duration-200 min-w-[60px] ${
                 timeframe === tf.value
-                  ? "bg-gradient-to-r from-blue-500 to-blue-600 text-black shadow-lg shadow-blue-500/25 border border-blue-400"
-                  : "bg-transparent text-blue-300 hover:text-blue-200 hover:bg-blue-500/10 border border-transparent"
+                  ? "bg-gradient-to-r from-yellow-500 to-yellow-600 text-black shadow-lg shadow-yellow-500/25 border border-yellow-400"
+                  : "bg-transparent text-yellow-300 hover:text-yellow-200 hover:bg-yellow-500/10 border border-transparent"
               }`}
             >
               {tf.label}

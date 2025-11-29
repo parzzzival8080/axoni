@@ -23,7 +23,7 @@ const Footer = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [showTradeOnGo, setShowTradeOnGo] = useState(true);
 
-  const appDownloadUrl = "https://api.coinchi.co/api/v1/download-COINCHI-apk";
+  const appDownloadUrl = "https://api.axoni.co/api/v1/download-AXONI-apk";
 
   // Check if viewport is mobile
   useEffect(() => {
@@ -54,7 +54,7 @@ const Footer = () => {
 
   // Section titles for mobile accordion
   const sectionTitles = [
-    "More about COINCHI",
+    "More about AXONI",
     "Products",
     "Markets",
     "Account",
@@ -70,7 +70,7 @@ const Footer = () => {
           <div className="logo-container">
             <img
               src={Logo}
-              alt="COINCHI-logo"
+              alt="AXONI-logo"
               className="h-12 w-auto object-contain"
             />
           </div>
@@ -83,7 +83,7 @@ const Footer = () => {
         {isMobile ? (
           // Mobile Accordion Layout
           <div className="footer-accordion">
-            {/* More about COINCHI */}
+            {/* More about AXONI */}
             <div className="footer-column">
               <h3
                 className={`column-title ${
@@ -231,7 +231,7 @@ const Footer = () => {
                   <a href="#announcements">Announcements</a>
                 </li>
                 <li>
-                  <a href="#connect-with-okx">Connect with COINCHI</a>
+                  <a href="#connect-with-okx">Connect with AXONI</a>
                 </li> */}
                  <li>
                   <Link to="/signup">Sign Up</Link>
@@ -369,9 +369,9 @@ const Footer = () => {
         ) : (
           // Desktop Layout
           <div className="footer-columns">
-            {/* More about COINCHI */}
+            {/* More about AXONI */}
             <div className="footer-column">
-              <h3 className="column-title">More about COINCHI</h3>
+              <h3 className="column-title">More about AXONI</h3>
               <ul className="column-links">
                 <li>
                   <Link to="/about-us">About us</Link>
@@ -464,7 +464,7 @@ const Footer = () => {
               <div className="footer-column trade-on-go">
                 <h3 className="column-title flex flex-col items-start text-left">
                   <span>Trade on the go with</span>
-                  <span>COINCHI</span>
+                  <span>AXONI</span>
                 </h3>
                 {/* <button
                   to="/spot-trading"
@@ -472,7 +472,7 @@ const Footer = () => {
                   Trade Now
                 </button> */}
                 <Link
-                  className="bg-[#014EB2] hover:bg-[#e67615] text-white font-medium py-2 px-6 rounded-full transition-colors duration-200 mb-2"
+                  className="bg-[#F0B90B] hover:bg-[#e67615] text-white font-medium py-2 px-6 rounded-full transition-colors duration-200 mb-2"
                   to="/spot-trading"
                 >
                   Trade Now

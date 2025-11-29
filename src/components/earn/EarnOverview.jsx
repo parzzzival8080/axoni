@@ -15,7 +15,7 @@ const EarnOverview = () => {
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch('https://api.coinchi.co/api/v1/coins?apikey=5lPMMw7mIuyzQQDjlKJbe0dY');
+        const res = await fetch('https://api.axoni.co/api/v1/coins?apikey=5lPMMw7mIuyzQQDjlKJbe0dY');
         const data = await res.json();
         
         if (Array.isArray(data)) {
@@ -91,7 +91,7 @@ const EarnOverview = () => {
     { 
       question: 'What is Earn?', 
       isExpanded: true,
-      answer: 'COINCHI Earn provides you with a way to generate interest on your assets through multiple investment choices. Products include Simple Earn, Loan, and On-chain Earn.'
+      answer: 'AXONI Earn provides you with a way to generate interest on your assets through multiple investment choices. Products include Simple Earn, Loan, and On-chain Earn.'
     },
     { 
       question: 'What is annual percentage rate (APR)?', 
@@ -106,7 +106,7 @@ const EarnOverview = () => {
     { 
       question: 'What are the risks?', 
       isExpanded: false,
-      answer: 'COINCHI accesses third party DeFi protocols, and only provides related services such as project display and revenue distribution, and does not take responsibility for any asset losses caused by potential risks such as contract vulnerabilities, hacking incidents, or termination of business.'
+      answer: 'AXONI accesses third party DeFi protocols, and only provides related services such as project display and revenue distribution, and does not take responsibility for any asset losses caused by potential risks such as contract vulnerabilities, hacking incidents, or termination of business.'
     },
   ]);
 
@@ -133,12 +133,12 @@ const EarnOverview = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                Put your crypto to <span className="text-blue-500">work</span>
+                Put your crypto to <span className="text-yellow-500">work</span>
               </h1>
               <p className="text-xl text-gray-300 mb-8 leading-relaxed">
                 Earn daily rewards on 100+ tokens including USDT, USDC and ETH.
               </p>
-              <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-8 py-4 rounded-lg transition-colors duration-200 shadow-lg">
+              <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-8 py-4 rounded-lg transition-colors duration-200 shadow-lg">
                 Activate Auto-earn
               </button>
           </div>
@@ -163,8 +163,8 @@ const EarnOverview = () => {
                 key={index} 
                 className="bg-gray-800/50 rounded-xl p-6 text-center hover:bg-gray-800/70 transition-colors border border-gray-700 cursor-pointer"
               >
-                <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <i className={`${option.icon} text-xl text-blue-500`}></i>
+                <div className="w-12 h-12 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <i className={`${option.icon} text-xl text-yellow-500`}></i>
                 </div>
                 <span className="text-white font-medium">{option.label}</span>
             </div>
@@ -183,7 +183,7 @@ const EarnOverview = () => {
               <select 
                 value={selectedProduct} 
                 onChange={(e) => setSelectedProduct(e.target.value)}
-                className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-4 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-4 focus:outline-none focus:ring-1 focus:ring-yellow-500"
               >
               <option value="All products">All products</option>
               <option value="USDT">USDT</option>
@@ -194,7 +194,7 @@ const EarnOverview = () => {
               <select 
                 value={selectedTerm} 
                 onChange={(e) => setSelectedTerm(e.target.value)}
-                className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-4 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-4 focus:outline-none focus:ring-1 focus:ring-yellow-500"
               >
               <option value="All terms">All terms</option>
               <option value="3 days">3 days</option>
@@ -215,7 +215,7 @@ const EarnOverview = () => {
               placeholder="Search crypto"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 pl-10 pr-4 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 placeholder-gray-400"
+                className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 pl-10 pr-4 w-full focus:outline-none focus:ring-1 focus:ring-yellow-500 placeholder-gray-400"
             />
           </div>
         </div>
@@ -240,7 +240,7 @@ const EarnOverview = () => {
                   <tr>
                     <td colSpan={4} className="py-12 text-center text-gray-400">
                       <div className="flex justify-center items-center">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500"></div>
                         <span className="ml-3">Loading products...</span>
                       </div>
                     </td>
@@ -282,7 +282,7 @@ const EarnOverview = () => {
                           <div className="flex items-center gap-2">
                             <span className="text-white font-medium">{coin.symbol}</span>
                             {coin.label && (
-                              <span className="bg-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded-full">
+                              <span className="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-1 rounded-full">
                                 {coin.label}
                               </span>
                             )}
@@ -298,7 +298,7 @@ const EarnOverview = () => {
                     </td>
                     <td className="px-6 py-4 text-center">
                       {coin.action ? (
-                        <button className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-4 py-2 rounded-lg transition-colors">
+                        <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-medium px-4 py-2 rounded-lg transition-colors">
                           {coin.action}
                         </button>
                   ) : (
@@ -316,7 +316,7 @@ const EarnOverview = () => {
 
             {!loading && !error && filteredCoins.length > 0 && (
               <div className="px-6 py-4 border-t border-gray-800 text-center">
-                <button className="text-blue-500 hover:text-blue-400 font-medium transition-colors">
+                <button className="text-yellow-500 hover:text-yellow-400 font-medium transition-colors">
                   View more
                 </button>
               </div>

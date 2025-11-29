@@ -61,7 +61,7 @@ const ChangeEmail = () => {
     
     try {
       const response = await axios.post(
-        'https://django.coinchi.co/api/user_account/email_reset/request',
+        'https://django.axoni.co/api/user_account/email_reset/request',
         { email: currentEmail }
       );
       
@@ -93,7 +93,7 @@ const ChangeEmail = () => {
     
     try {
       const response = await axios.post(
-        'https://django.coinchi.co/api/user_account/email_reset/resend_otp',
+        'https://django.axoni.co/api/user_account/email_reset/resend_otp',
         { email: currentEmail }
       );
       
@@ -129,7 +129,7 @@ const ChangeEmail = () => {
     
     try {
       const response = await axios.post(
-        'https://django.coinchi.co/api/user_account/email_reset/verify_otp',
+        'https://django.axoni.co/api/user_account/email_reset/verify_otp',
         { email: currentEmail, otp: otp }
       );
       
@@ -172,7 +172,7 @@ const ChangeEmail = () => {
     
     try {
       const response = await axios.post(
-        'https://django.coinchi.co/api/user_account/email_reset/change',
+        'https://django.axoni.co/api/user_account/email_reset/change',
         {
           email: currentEmail,
           otp: otp,
@@ -210,7 +210,7 @@ const ChangeEmail = () => {
       <div className="max-w-2xl mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-8">
-          <Link to="/account/profile/security" className="hover:text-blue-500 transition-colors">
+          <Link to="/account/profile/security" className="hover:text-yellow-500 transition-colors">
             Security center
           </Link>
           <FiChevronRight className="mx-2" />
@@ -286,7 +286,7 @@ const ChangeEmail = () => {
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
                   placeholder="Enter verification code"
-                  className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                  className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-yellow-500 outline-none transition-all"
                   disabled={loading}
                 />
               </div>
@@ -334,7 +334,7 @@ const ChangeEmail = () => {
                 value={newEmail}
                 onChange={(e) => setNewEmail(e.target.value)}
                 placeholder="Enter new email address"
-                className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-yellow-500 outline-none transition-all"
                 disabled={loading}
               />
             </div>
@@ -347,7 +347,7 @@ const ChangeEmail = () => {
                   type="checkbox"
                   checked={agreeToWithdrawalRestriction}
                   onChange={() => setAgreeToWithdrawalRestriction(!agreeToWithdrawalRestriction)}
-                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  className="w-4 h-4 text-yellow-600 border-gray-300 rounded focus:ring-yellow-500"
                   disabled={loading}
                 />
               </div>

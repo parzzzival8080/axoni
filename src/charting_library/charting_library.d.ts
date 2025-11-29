@@ -4210,7 +4210,7 @@ export interface ChartingLibraryWidgetOptions {
 	 *
 	 * ```javascript
 	 * settings_overrides: {
-	 *     "linetooltrendline.linecolor": "blue"
+	 *     "linetooltrendline.linecolor": "yellow"
 	 * }
 	 * ```
 	 */
@@ -27182,7 +27182,7 @@ export type LineStudyPlotStyleName = "line" | "histogram" | "cross" | "area" | "
  * Usually, the 'mainSeriesLineTools' is the requested type that is important for implementing the restoration of drawings associated with a chart.
  */
 export type LineToolsAndGroupsLoadRequestType = "allLineTools" | "lineToolsWithoutSymbol" | "studiesLineTools" | "mainSeriesLineTools";
-export type MarkConstColors = "red" | "green" | "blue" | "yellow";
+export type MarkConstColors = "red" | "green" | "yellow" | "yellow";
 export type MultipleChartsLayoutType = "2h" | "2v" | "2-1" | "3s" | "3h" | "3v" | "4" | "6" | "8" | "1-2" | "3r" | "4h" | "4v" | "4s" | "5h" | "6h" | "7h" | "8h" | "1-3" | "2-2" | "2-3" | "1-4" | "5s" | "6c" | "8c";
 export type OmitActionId<T extends {
 	actionId: ActionId;

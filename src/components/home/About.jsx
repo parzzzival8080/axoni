@@ -26,7 +26,7 @@ const Services = () => {
       isActive: false
     },
     {
-      title: 'COINCHI Earn',
+      title: 'AXONI Earn',
       description: 'One-click pledge for daily income increase.',
       isActive: false
     },

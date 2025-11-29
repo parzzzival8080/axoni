@@ -289,8 +289,8 @@ const AdminContent = () => {
 
     if (hasChanges) {
       return (
-        <div className="flex items-center space-x-2 text-sm text-blue-400">
-          <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+        <div className="flex items-center space-x-2 text-sm text-yellow-400">
+          <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
           <span>Unsaved Changes</span>
         </div>
       );

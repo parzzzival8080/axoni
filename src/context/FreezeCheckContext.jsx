@@ -69,7 +69,7 @@ export const FreezeCheckProvider = ({ children }) => {
             width: '100%',
             padding: '10px',
             marginTop: '20px',
-            backgroundColor: '#014EB2',
+            backgroundColor: '#F0B90B',
             color: 'white',
             border: 'none',
             borderRadius: '5px',

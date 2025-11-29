@@ -19,7 +19,7 @@ const QRManager = () => {
       {/* App Download QR Codes */}
       <div className="bg-gray-900 border border-gray-700 rounded-lg p-6">
         <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
-          <svg className="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 mr-2 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
           </svg>
           App Download QR Codes
@@ -33,7 +33,7 @@ const QRManager = () => {
               type="url"
               value={config?.qr?.iosUrl || ''}
               onChange={(e) => handleInputChange('qr', 'iosUrl', e.target.value)}
-              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
               placeholder="https://apps.apple.com/app/your-app"
             />
             <p className="text-xs text-gray-500 mt-1">QR code will be generated automatically</p>
@@ -46,7 +46,7 @@ const QRManager = () => {
               type="url"
               value={config?.qr?.androidUrl || ''}
               onChange={(e) => handleInputChange('qr', 'androidUrl', e.target.value)}
-              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
               placeholder="https://play.google.com/store/apps/details?id=your.app"
             />
             <p className="text-xs text-gray-500 mt-1">QR code will be generated automatically</p>
@@ -71,7 +71,7 @@ const QRManager = () => {
               type="url"
               value={config?.qr?.websiteUrl || ''}
               onChange={(e) => handleInputChange('qr', 'websiteUrl', e.target.value)}
-              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
               placeholder="https://yourwebsite.com"
             />
           </div>
@@ -83,7 +83,7 @@ const QRManager = () => {
               type="url"
               value={config?.qr?.supportUrl || ''}
               onChange={(e) => handleInputChange('qr', 'supportUrl', e.target.value)}
-              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
               placeholder="https://support.yourwebsite.com"
             />
           </div>
@@ -95,7 +95,7 @@ const QRManager = () => {
               type="url"
               value={config?.qr?.socialUrl || ''}
               onChange={(e) => handleInputChange('qr', 'socialUrl', e.target.value)}
-              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
               placeholder="https://twitter.com/yourhandle"
             />
           </div>
@@ -120,7 +120,7 @@ const QRManager = () => {
               type="number"
               value={config?.qr?.size || 200}
               onChange={(e) => handleInputChange('qr', 'size', parseInt(e.target.value))}
-              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
               placeholder="200"
               min="100"
               max="500"
@@ -133,7 +133,7 @@ const QRManager = () => {
             <select
               value={config?.qr?.errorCorrection || 'M'}
               onChange={(e) => handleInputChange('qr', 'errorCorrection', e.target.value)}
-              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
             >
               <option value="L">Low (7%)</option>
               <option value="M">Medium (15%)</option>

@@ -49,7 +49,7 @@ const Overview = () => {
         try {
           console.log("Fetching profile data...");
           const profileResponse = await axios.get(
-            `https://django.coinchi.co/api/user_account/getUserInformation/?user_id=${uid}`,
+            `https://django.axoni.co/api/user_account/getUserInformation/?user_id=${uid}`,
           );
 
           if (
@@ -74,7 +74,7 @@ const Overview = () => {
         try {
           // API key - same as used in Assets.jsx
           const apiKey = "5lPMMw7mIuyzQQDjlKJbe0dY";
-          const apiUrl = `https://api.coinchi.co/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
+          const apiUrl = `https://api.axoni.co/api/v1/user-wallets/${uid}?apikey=${apiKey}`;
 
           console.log("Fetching wallet data from:", apiUrl);
           const walletResponse = await axios.get(apiUrl);
@@ -228,7 +228,7 @@ const Overview = () => {
         <ProfileNavBar currentPath="/profile/overview" />
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="flex justify-center items-center py-16">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#014EB2]"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#F0B90B]"></div>
             <span className="ml-3 text-gray-600 dark:text-gray-300">
               Loading overview...
             </span>
@@ -267,7 +267,7 @@ const Overview = () => {
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="px-4 py-2 bg-[#014EB2] text-white rounded-md hover:bg-blue-600 transition-colors"
+              className="px-4 py-2 bg-[#F0B90B] text-white rounded-md hover:bg-yellow-600 transition-colors"
             >
               Try Again
             </button>
@@ -291,7 +291,7 @@ const Overview = () => {
           {!isVerified && (
             <Link
               to="/account/verify"
-              className="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 bg-[#014EB2] text-white rounded-lg hover:bg-blue-600 transition-colors font-medium"
+              className="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 bg-[#F0B90B] text-white rounded-lg hover:bg-yellow-600 transition-colors font-medium"
             >
               <FiShield className="mr-2" />
               Verify Account
@@ -331,7 +331,7 @@ const Overview = () => {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                   <div className="flex items-center mb-2">
-                    <div className="w-3 h-3 bg-[#014EB2] rounded-full mr-2"></div>
+                    <div className="w-3 h-3 bg-[#F0B90B] rounded-full mr-2"></div>
                     <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
                       Spot Wallet
                     </span>
@@ -345,7 +345,7 @@ const Overview = () => {
 
                 <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                   <div className="flex items-center mb-2">
-                    <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                    <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
                     <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
                       Future Wallet
                     </span>
@@ -381,7 +381,7 @@ const Overview = () => {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <Link
                   to="/deposit"
-                  className="flex flex-col items-center p-4 bg-[#014EB2] text-white rounded-lg hover:bg-blue-600 transition-colors"
+                  className="flex flex-col items-center p-4 bg-[#F0B90B] text-white rounded-lg hover:bg-yellow-600 transition-colors"
                 >
                   <svg
                     className="w-6 h-6 mb-2"
@@ -469,7 +469,7 @@ const Overview = () => {
                 </h2>
                 <Link
                   to="/my-assets"
-                  className="text-[#014EB2] hover:text-blue-600 text-sm font-medium flex items-center"
+                  className="text-[#F0B90B] hover:text-yellow-600 text-sm font-medium flex items-center"
                 >
                   View All <FiArrowRight className="ml-1" />
                 </Link>

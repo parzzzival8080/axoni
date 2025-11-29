@@ -66,7 +66,7 @@ const Conversion = () => {
         const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
         
         const response = await fetch(
-          `https://api.coinchi.co/api/v1/coin-balance/${uid}?apikey=${apiKey}&symbol=BTC`,
+          `https://api.axoni.co/api/v1/coin-balance/${uid}?apikey=${apiKey}&symbol=BTC`,
           { signal: controller.signal }
         );
         
@@ -103,7 +103,7 @@ const Conversion = () => {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
         
-        const url = `https://api.coinchi.co/api/v1/user-wallet/${uid}/1?apikey=${apiKey}`;
+        const url = `https://api.axoni.co/api/v1/user-wallet/${uid}/1?apikey=${apiKey}`;
         const response = await fetch(url, { signal: controller.signal });
         
         clearTimeout(timeoutId);
@@ -186,7 +186,7 @@ const Conversion = () => {
         const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
         
         // Use the same API endpoint but with GET method to fetch history
-        const url = `https://api.coinchi.co/api/v1/conversions?apikey=${apiKey}&uid=${uid}`;
+        const url = `https://api.axoni.co/api/v1/conversions?apikey=${apiKey}&uid=${uid}`;
         
         console.log('Fetching conversion history:', url);
         
@@ -261,7 +261,7 @@ const Conversion = () => {
         const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout for conversion
         
         // Use the URL format from the image but with POST method
-        const url = 'https://api.coinchi.co/api/v1/conversions';
+        const url = 'https://api.axoni.co/api/v1/conversions';
         
         const params = {
           apikey: apiKey,
@@ -344,7 +344,7 @@ const Conversion = () => {
     <div className="min-h-screen bg-black text-white">
       {/* Header */}
       <div className="flex flex-col items-center justify-center text-center py-12 bg-black">
-        <h1 className="text-5xl font-bold mb-3 text-[#014EB2]">Convert</h1>
+        <h1 className="text-5xl font-bold mb-3 text-[#F0B90B]">Convert</h1>
         <div className="flex items-center space-x-3 text-gray-500 text-sm">
           <span>Zero trading fees</span>
           <span className="w-1 h-1 rounded-full bg-gray-500"></span>
@@ -408,7 +408,7 @@ const Conversion = () => {
             ) : (
               <div className="flex items-center">
                 <span>Available: {formatNumber(balance.spotWallet)} {fromCurrency.symbol}</span>
-                <button className="ml-2 text-[#014EB2] hover:underline">Deposit</button>
+                <button className="ml-2 text-[#F0B90B] hover:underline">Deposit</button>
               </div>
             )}
           </div>
@@ -451,7 +451,7 @@ const Conversion = () => {
         
         {/* Convert button */}
         <button 
-          className={`w-full py-3.5 px-6 rounded-full font-medium text-white transition-colors duration-200 ${isSubmitting || (!isAuthenticated ? '' : (!fromAmount || !toAmount || !!conversionError)) ? 'bg-gray-700 cursor-not-allowed' : 'bg-[#014EB2] hover:bg-[#014EB2]'}`}
+          className={`w-full py-3.5 px-6 rounded-full font-medium text-white transition-colors duration-200 ${isSubmitting || (!isAuthenticated ? '' : (!fromAmount || !toAmount || !!conversionError)) ? 'bg-gray-700 cursor-not-allowed' : 'bg-[#F0B90B] hover:bg-[#F0B90B]'}`}
           onClick={handleConvert}
           disabled={isSubmitting || (!isAuthenticated ? false : (!fromAmount || !toAmount || !!conversionError))}
         >
@@ -476,8 +476,8 @@ const Conversion = () => {
       <div className="max-w-4xl mx-auto px-4 mb-16">
         <div className="flex flex-wrap justify-center gap-16 md:gap-24">
           <div className="flex flex-col items-center">
-            <div className="w-12 h-12 rounded-full bg-[#014EB2]/10 flex items-center justify-center mb-3">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#014EB2]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="w-12 h-12 rounded-full bg-[#F0B90B]/10 flex items-center justify-center mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#F0B90B]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
@@ -485,8 +485,8 @@ const Conversion = () => {
           </div>
           
           <div className="flex flex-col items-center">
-            <div className="w-12 h-12 rounded-full bg-[#014EB2]/10 flex items-center justify-center mb-3">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#014EB2]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="w-12 h-12 rounded-full bg-[#F0B90B]/10 flex items-center justify-center mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#F0B90B]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
@@ -494,8 +494,8 @@ const Conversion = () => {
           </div>
           
           <div className="flex flex-col items-center">
-            <div className="w-12 h-12 rounded-full bg-[#014EB2]/10 flex items-center justify-center mb-3">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#014EB2]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="w-12 h-12 rounded-full bg-[#F0B90B]/10 flex items-center justify-center mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#F0B90B]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
               </svg>
             </div>
@@ -516,14 +516,14 @@ const Conversion = () => {
               className="flex justify-between items-center w-full text-left py-2"
               onClick={() => setOpenFAQIndex(openFAQIndex === 0 ? null : 0)}
             >
-              <span className="text-base font-medium">How do I convert crypto on COINCHI?</span>
+              <span className="text-base font-medium">How do I convert crypto on AXONI?</span>
               <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-gray-500 transform ${openFAQIndex === 0 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
             {openFAQIndex === 0 && (
               <div className="pt-2 pb-4 text-gray-300 text-sm">
-                <p>To convert crypto on COINCHI, navigate to the 'Convert' page. Select the cryptocurrency you want to convert from (e.g., USDT) and the cryptocurrency you want to convert to (e.g., BTC). Enter the amount you wish to convert, review the exchange rate, and confirm the transaction. Conversion on COINCHI is designed to be quick and straightforward, with zero trading fees.</p>
+                <p>To convert crypto on AXONI, navigate to the 'Convert' page. Select the cryptocurrency you want to convert from (e.g., USDT) and the cryptocurrency you want to convert to (e.g., BTC). Enter the amount you wish to convert, review the exchange rate, and confirm the transaction. Conversion on AXONI is designed to be quick and straightforward, with zero trading fees.</p>
               </div>
             )}
           </div>
@@ -533,14 +533,14 @@ const Conversion = () => {
               className="flex justify-between items-center w-full text-left py-2"
               onClick={() => setOpenFAQIndex(openFAQIndex === 1 ? null : 1)}
             >
-              <span className="text-base font-medium">Which crypto can I convert on COINCHI?</span>
+              <span className="text-base font-medium">Which crypto can I convert on AXONI?</span>
               <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-gray-500 transform ${openFAQIndex === 1 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
             {openFAQIndex === 1 && (
               <div className="pt-2 pb-4 text-gray-300 text-sm">
-                <p>COINCHI supports a wide range of cryptocurrencies for conversion, including major assets like BTC, ETH, USDT, and many altcoins. Our platform continuously updates its supported list, so you can check the 'From' and 'To' currency selectors on the Convert page for the most current options available for your region.</p>
+                <p>AXONI supports a wide range of cryptocurrencies for conversion, including major assets like BTC, ETH, USDT, and many altcoins. Our platform continuously updates its supported list, so you can check the 'From' and 'To' currency selectors on the Convert page for the most current options available for your region.</p>
               </div>
             )}
           </div>
@@ -557,7 +557,7 @@ const Conversion = () => {
             </button>
             {openFAQIndex === 2 && (
               <div className="pt-2 pb-4 text-gray-300 text-sm">
-                <p>Crypto conversion on COINCHI offers a simpler, more direct way to exchange one cryptocurrency for another, typically at a fixed rate with zero trading fees and no slippage. It's ideal for users who want to quickly swap assets without engaging in complex order book trading. Trading, on the other hand, involves buying and selling assets on a spot or futures market, where prices fluctuate based on supply and demand, and may involve various order types and fees.</p>
+                <p>Crypto conversion on AXONI offers a simpler, more direct way to exchange one cryptocurrency for another, typically at a fixed rate with zero trading fees and no slippage. It's ideal for users who want to quickly swap assets without engaging in complex order book trading. Trading, on the other hand, involves buying and selling assets on a spot or futures market, where prices fluctuate based on supply and demand, and may involve various order types and fees.</p>
               </div>
             )}
           </div>
@@ -574,7 +574,7 @@ const Conversion = () => {
             </button>
             {openFAQIndex === 3 && (
               <div className="pt-2 pb-4 text-gray-300 text-sm">
-                <p>The COINCHI crypto converter is designed for ease of use. Key conditions include: zero trading fees, no slippage (you get exactly the quoted amount), and lower limits for smaller transactions. While there are minimum and maximum conversion amounts per transaction, these are clearly displayed on the conversion interface. Ensure you have sufficient balance in your spot wallet for the conversion.</p>
+                <p>The AXONI crypto converter is designed for ease of use. Key conditions include: zero trading fees, no slippage (you get exactly the quoted amount), and lower limits for smaller transactions. While there are minimum and maximum conversion amounts per transaction, these are clearly displayed on the conversion interface. Ensure you have sufficient balance in your spot wallet for the conversion.</p>
               </div>
             )}
           </div>
@@ -591,7 +591,7 @@ const Conversion = () => {
             </button>
             {openFAQIndex === 4 && (
               <div className="pt-2 pb-4 text-gray-300 text-sm">
-                <p>After a successful conversion on COINCHI, the converted cryptocurrency will be immediately credited to your Spot Wallet. You can view your updated balances and transaction history in the 'Assets' section of your account. The conversion history also provides a detailed record of all your past conversions.</p>
+                <p>After a successful conversion on AXONI, the converted cryptocurrency will be immediately credited to your Spot Wallet. You can view your updated balances and transaction history in the 'Assets' section of your account. The conversion history also provides a detailed record of all your past conversions.</p>
               </div>
             )}
           </div>
@@ -625,7 +625,7 @@ const Conversion = () => {
             </button>
             {openFAQIndex === 6 && (
               <div className="pt-2 pb-4 text-gray-300 text-sm">
-                <p>Once your crypto is converted and credited to your Spot Wallet, you can easily deposit or withdraw it from the 'Assets' section of your COINCHI account. Navigate to 'Assets', select the cryptocurrency, and choose between 'Deposit' or 'Withdraw' to proceed with your transaction. Follow the on-screen instructions, ensuring all details are correct for secure transfers.</p>
+                <p>Once your crypto is converted and credited to your Spot Wallet, you can easily deposit or withdraw it from the 'Assets' section of your AXONI account. Navigate to 'Assets', select the cryptocurrency, and choose between 'Deposit' or 'Withdraw' to proceed with your transaction. Follow the on-screen instructions, ensuring all details are correct for secure transfers.</p>
               </div>
             )}
           </div>
@@ -668,7 +668,7 @@ const Conversion = () => {
             <div className="p-4 overflow-y-auto max-h-[calc(80vh-120px)]">
               {historyLoading ? (
                 <div className="flex justify-center items-center py-10">
-                  <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#014EB2]"></div>
+                  <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#F0B90B]"></div>
                 </div>
               ) : historyError ? (
                 <div className="text-red-500 text-center py-6">{historyError}</div>

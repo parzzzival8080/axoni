@@ -3,7 +3,7 @@ import { LogContext } from '../context/LogContext';
 
 const actionColors = {
   CREATE: 'text-green-400',
-  READ: 'text-blue-400',
+  READ: 'text-yellow-400',
   UPDATE: 'text-yellow-400',
   DELETE: 'text-red-400',
   ERROR: 'text-red-500',

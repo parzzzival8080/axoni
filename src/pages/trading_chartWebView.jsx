@@ -45,7 +45,7 @@ class CORSCompatibleDatafeed {
       session: "24x7",
       timezone: "Etc/UTC",
       ticker: symbolName,
-      exchange: "COINCHI",
+      exchange: "AXONI",
       minmov: 1,
       pricescale: 100000000,
       has_intraday: true,
@@ -225,7 +225,7 @@ const TradingChartWebView = () => {
     return {
       symbol: formattedSymbol,
       interval: timeframe,
-      datafeedUrl: "https://api.coinchi.co/api/v1",
+      datafeedUrl: "https://api.axoni.co/api/v1",
       libraryPath: "/charting_library/",
       chartsStorageUrl: "https://saveload.tradingview.com",
       chartsStorageApiVersion: "1.1",

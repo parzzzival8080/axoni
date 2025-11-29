@@ -15,33 +15,33 @@ import Logo from "../../assets/logo/logo.png";
 const notifications = [
   {
     id: 1,
-    title: "COINCHI to list perpetual futures for SIGN crypto",
+    title: "AXONI to list perpetual futures for SIGN crypto",
     time: "04/28/2025, 14:00:00",
-    path: "/help/COINCHI-to-list-perpetual-futures-for-sign-crypto",
+    path: "/help/AXONI-to-list-perpetual-futures-for-sign-crypto",
   },
   {
     id: 2,
-    title: "COINCHI to delist ZKJ margin trading pair and perpetual future",
+    title: "AXONI to delist ZKJ margin trading pair and perpetual future",
     time: "04/28/2025, 11:10:00",
-    path: "/help/COINCHI-to-delist-zkj-margin-trading-pair-and-perpetual-future",
+    path: "/help/AXONI-to-delist-zkj-margin-trading-pair-and-perpetual-future",
   },
   {
     id: 3,
-    title: "COINCHI to enable margin trading and Simple Earn for LAYER crypto",
+    title: "AXONI to enable margin trading and Simple Earn for LAYER crypto",
     time: "04/25/2025, 19:20:00",
-    path: "/help/COINCHI-to-enable-margin-trading-and-simple-earn-for-layer-crypto",
+    path: "/help/AXONI-to-enable-margin-trading-and-simple-earn-for-layer-crypto",
   },
   {
     id: 4,
-    title: "COINCHI to list LAYER (Solayer) for spot trading",
+    title: "AXONI to list LAYER (Solayer) for spot trading",
     time: "04/25/2025, 14:00:00",
-    path: "/help/COINCHI-to-list-layer-solayer-for-spot-trading",
+    path: "/help/AXONI-to-list-layer-solayer-for-spot-trading",
   },
   {
     id: 5,
-    title: "COINCHI to list perpetual futures for INIT crypto",
+    title: "AXONI to list perpetual futures for INIT crypto",
     time: "04/24/2025, 14:00:00",
-    path: "/help/COINCHI-to-list-perpetual-futures-for-init-crypto",
+    path: "/help/AXONI-to-list-perpetual-futures-for-init-crypto",
   },
 ];
 
@@ -137,7 +137,7 @@ const Navbar = () => {
         } else if (userId) {
           try {
             const response = await axios.get(
-              `https://django.coinchi.co/api/user_account/getUserInformation/?user_id=${userId}`,
+              `https://django.axoni.co/api/user_account/getUserInformation/?user_id=${userId}`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
@@ -230,7 +230,7 @@ const Navbar = () => {
   };
 
   const appDownloadUrl =
-    "https://api.coinchi.co/api/v1/download-COINCHI-apk";
+    "https://api.axoni.co/api/v1/download-AXONI-apk";
 
   const openComingSoon = () => setIsComingSoonOpen(true);
   const closeComingSoon = () => setIsComingSoonOpen(false);
@@ -459,7 +459,7 @@ const Navbar = () => {
                   </div>
                   <div className="dropdown-content">
                     <h3>About Us</h3>
-                    <p>Learn more about COINCHI and our mission</p>
+                    <p>Learn more about AXONI and our mission</p>
                   </div>
                   <i className="fas fa-chevron-right"></i>
                 </div>
@@ -472,7 +472,7 @@ const Navbar = () => {
                   </div>
                   <div className="dropdown-content">
                     <h3>Download App</h3>
-                    <p>Get the COINCHI app for desktop and mobile</p>
+                    <p>Get the AXONI app for desktop and mobile</p>
                   </div>
                   <i className="fas fa-chevron-right"></i>
                 </div>
@@ -1028,7 +1028,7 @@ const Navbar = () => {
               <div className="mobile-auth-links p-4 border-b border-gray-700">
                 <Link
                   to="/login"
-                  className="block text-center py-3 px-4 mb-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md text-sm font-medium transition-colors"
+                  className="block text-center py-3 px-4 mb-2 text-white bg-yellow-500 hover:bg-yellow-600 rounded-md text-sm font-medium transition-colors"
                   onClick={toggleMobileMenu}
                 >
                   Log In
@@ -1133,7 +1133,7 @@ const Navbar = () => {
                 className="footer-download-button"
                 onClick={toggleMobileMenu}
               >
-                Download COINCHI app
+                Download AXONI app
               </Link>
             </div>
           </div>

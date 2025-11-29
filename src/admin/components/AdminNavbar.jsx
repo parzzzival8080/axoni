@@ -99,11 +99,11 @@ const AdminNavbar = ({
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Auto-save:</span>
-                    <span className="text-blue-400">Enabled</span>
+                    <span className="text-yellow-400">Enabled</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Unsaved Changes:</span>
-                    <span className={hasChanges ? "text-blue-400" : "text-green-400"}>
+                    <span className={hasChanges ? "text-yellow-400" : "text-green-400"}>
                       {hasChanges ? "Yes" : "No"}
                     </span>
                   </div>
@@ -113,14 +113,14 @@ const AdminNavbar = ({
               {/* Saving Progress */}
               <div className="bg-gray-800 rounded-lg p-4">
                 <h4 className="text-white font-medium mb-3 flex items-center">
-                  <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+                  <span className="w-2 h-2 bg-yellow-400 rounded-full mr-2"></span>
                   Saving Progress
                 </h4>
                 <div className="space-y-3">
                   {saving ? (
                     <div className="flex items-center space-x-3">
-                      <div className="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
-                      <span className="text-blue-400 text-sm">Saving configuration...</span>
+                      <div className="w-4 h-4 border-2 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
+                      <span className="text-yellow-400 text-sm">Saving configuration...</span>
                     </div>
                   ) : (
                     <div className="flex items-center space-x-3">
@@ -150,7 +150,7 @@ const AdminNavbar = ({
                   Quick Actions
                 </h4>
                 <div className="grid grid-cols-2 gap-2">
-                  <button className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded text-sm transition-colors">
+                  <button className="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-2 rounded text-sm transition-colors">
                     Save Changes
                   </button>
                   <button className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-2 rounded text-sm transition-colors">

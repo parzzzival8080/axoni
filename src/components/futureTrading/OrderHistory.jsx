@@ -76,7 +76,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
         return;
       }
       
-      const apiUrl = `https://api.coinchi.co/api/v1/user-futures/${uid}?apikey=${apiKey}`;
+      const apiUrl = `https://api.axoni.co/api/v1/user-futures/${uid}?apikey=${apiKey}`;
       const response = await axios.get(apiUrl);
 
       if (response.data && Array.isArray(response.data)) {
@@ -409,7 +409,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
             
             {/* Background refresh indicator */}
             {isBackgroundRefresh && (
-              <div className="flex items-center bg-blue-800 bg-opacity-90 px-3 py-1 rounded-full text-xs text-blue-300">
+              <div className="flex items-center bg-yellow-800 bg-opacity-90 px-3 py-1 rounded-full text-xs text-yellow-300">
                 <FontAwesomeIcon icon={faSyncAlt} className="animate-spin mr-2" size="xs" />
                 Auto-updating...
               </div>
@@ -701,7 +701,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                             value={marginAmount}
                             onChange={(e) => setMarginAmount(e.target.value)}
                             placeholder="0.00"
-                            className="w-full bg-[#12141C] border border-gray-700 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full bg-[#12141C] border border-gray-700 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:border-yellow-500"
                           />
                           <button
                             onClick={handleMaxAmount}

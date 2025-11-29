@@ -52,7 +52,7 @@ const OrderHistory = ({ refreshTrigger = 0 }) => {
       const apiKey = localStorage.getItem('apiKey') || '5lPMMw7mIuyzQQDjlKJbe0dY';
       
       // API endpoint for order history
-      const apiUrl = `https://api.coinchi.co/api/v1/order-history/${uid}?apikey=${apiKey}`;
+      const apiUrl = `https://api.axoni.co/api/v1/order-history/${uid}?apikey=${apiKey}`;
       
       const response = await axios.get(apiUrl);
       

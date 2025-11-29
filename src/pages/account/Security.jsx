@@ -29,7 +29,7 @@ const Security = () => {
           return;
         }
         const response = await axios.get(
-          `https://django.coinchi.co/api/user_account/getUserInformation/?user_id=${userId}`
+          `https://django.axoni.co/api/user_account/getUserInformation/?user_id=${userId}`
         );
         if (response.data && response.data.user) {
           setProfileData(response.data);
@@ -99,7 +99,7 @@ const Security = () => {
         <ProfileNavBar />
         <div className="max-w-4xl mx-auto px-4 py-8">
           <div className="flex justify-center items-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 dark:border-blue-400"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500 dark:border-yellow-400"></div>
             <span className="ml-3 text-sm">Loading security settings...</span>
           </div>
         </div>
@@ -125,7 +125,7 @@ const Security = () => {
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="px-6 py-3 bg-[#014EB2] text-white rounded-md hover:bg-blue-600 transition-colors"
+              className="px-6 py-3 bg-[#F0B90B] text-white rounded-md hover:bg-yellow-600 transition-colors"
             >
               Try Again
             </button>
@@ -162,8 +162,8 @@ const Security = () => {
 
         <div className="mb-12">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-              <FiAlertCircle className="text-blue-500 w-5 h-5" />
+            <div className="w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
+              <FiAlertCircle className="text-yellow-500 w-5 h-5" />
             </div>
             <div>
               <h3 className="font-medium text-lg">Pending security features</h3>
@@ -183,7 +183,7 @@ const Security = () => {
                 </div>
               </div>
               <button 
-                className="text-blue-500 text-sm font-medium hover:underline"
+                className="text-yellow-500 text-sm font-medium hover:underline"
                 onClick={handleComingSoonClick}
               >
                 Set up
@@ -203,7 +203,7 @@ const Security = () => {
                 </div>
               </div>
               <button 
-                className="text-blue-500 text-sm font-medium hover:underline"
+                className="text-yellow-500 text-sm font-medium hover:underline"
                 onClick={handleComingSoonClick}
               >
                 Set up
@@ -233,7 +233,7 @@ const Security = () => {
               <div className="flex items-center gap-2">
                 <span className="text-gray-400 text-sm">{displayData.email}</span>
                 <button 
-                  className="text-blue-500 text-sm font-medium hover:underline"
+                  className="text-yellow-500 text-sm font-medium hover:underline"
                   onClick={handleChangeEmail}
                 >
                   Change email
@@ -257,7 +257,7 @@ const Security = () => {
               <div className="flex items-center gap-2">
                 <span className="text-gray-400 text-sm">********</span>
                 <button 
-                  className="text-blue-500 text-sm font-medium hover:underline"
+                  className="text-yellow-500 text-sm font-medium hover:underline"
                   onClick={handleChangePassword}
                 >
                   Change password

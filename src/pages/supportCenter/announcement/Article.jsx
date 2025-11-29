@@ -7,42 +7,42 @@ import { FaSearch, FaTwitter, FaFacebook, FaLinkedin, FaTelegram, FaLink } from 
 export const notifications = [
   {
     id: 1,
-    title: "COINCHI to list perpetual futures for SIGN crypto",
+    title: "AXONI to list perpetual futures for SIGN crypto",
     time: "04/28/2025, 14:00:00",
-    path: "/help/COINCHI-to-list-perpetual-futures-for-sign-crypto",
+    path: "/help/AXONI-to-list-perpetual-futures-for-sign-crypto",
     publishDate: "Apr 28, 2025",
     readTime: "2 min read",
     // You can add more article-specific content here
   },
   {
     id: 2,
-    title: "COINCHI to delist ZKJ margin trading pair and perpetual future",
+    title: "AXONI to delist ZKJ margin trading pair and perpetual future",
     time: "04/28/2025, 11:10:00",
-    path: "/help/COINCHI-to-delist-zkj-margin-trading-pair-and-perpetual-future",
+    path: "/help/AXONI-to-delist-zkj-margin-trading-pair-and-perpetual-future",
     publishDate: "Apr 28, 2025",
     readTime: "1 min read",
   },
   {
     id: 3,
-    title: "COINCHI to enable margin trading and Simple Earn for LAYER crypto",
+    title: "AXONI to enable margin trading and Simple Earn for LAYER crypto",
     time: "04/25/2025, 19:20:00",
-    path: "/help/COINCHI-to-enable-margin-trading-and-simple-earn-for-layer-crypto",
+    path: "/help/AXONI-to-enable-margin-trading-and-simple-earn-for-layer-crypto",
     publishDate: "Apr 25, 2025",
     readTime: "3 min read",
   },
   {
     id: 4,
-    title: "COINCHI to list LAYER (Solayer) for spot trading",
+    title: "AXONI to list LAYER (Solayer) for spot trading",
     time: "04/25/2025, 14:00:00",
-    path: "/help/COINCHI-to-list-layer-solayer-for-spot-trading",
+    path: "/help/AXONI-to-list-layer-solayer-for-spot-trading",
     publishDate: "Apr 25, 2025",
     readTime: "2 min read",
   },
   {
     id: 5,
-    title: "COINCHI to list perpetual futures for INIT crypto",
+    title: "AXONI to list perpetual futures for INIT crypto",
     time: "04/24/2025, 14:00:00",
-    path: "/help/COINCHI-to-list-perpetual-futures-for-init-crypto",
+    path: "/help/AXONI-to-list-perpetual-futures-for-init-crypto",
     publishDate: "Apr 24, 2025",
     readTime: "2 min read",
   }
@@ -107,7 +107,7 @@ const Article = () => {
         </div>
 
         {/* Article content - This will need to be customized per article or loaded dynamically */}
-        {article.path === "/help/COINCHI-to-list-perpetual-futures-for-sign-crypto" && (
+        {article.path === "/help/AXONI-to-list-perpetual-futures-for-sign-crypto" && (
           <>
             {/* Introduction paragraph */}
             <div className="article-section">
@@ -212,14 +212,14 @@ const Article = () => {
               </p>
 
               <p>
-                USDT-margined perpetual futures trading: <a href="#" className="article-link green-link">COINCHI Perpetual Futures Trading User Agreement</a>
+                USDT-margined perpetual futures trading: <a href="#" className="article-link green-link">AXONI Perpetual Futures Trading User Agreement</a>
               </p>
             </div>
           </>
         )}
         
         {/* Add conditional rendering for other articles */}
-        {article.path === "/help/COINCHI-to-delist-zkj-margin-trading-pair-and-perpetual-future" && (
+        {article.path === "/help/AXONI-to-delist-zkj-margin-trading-pair-and-perpetual-future" && (
           <div className="article-section">
             <p>
               We regret to inform you that ZKJ margin trading pair and perpetual future will be delisted from our platform effective April 30, 2025.
@@ -232,7 +232,7 @@ const Article = () => {
         {/* Add similar conditions for other articles */}
         
         <div className="signature">
-          <p>COINCHI team</p>
+          <p>AXONI team</p>
           <p>{article.publishDate}</p>
         </div>
       </div>
@@ -240,12 +240,12 @@ const Article = () => {
       {/* Footer links */}
       <div className="article-footer">
         <div className="footer-links">
-          <a href="#" className="footer-link green-link">Download COINCHI app for iOS, Android, macOS, and Windows &gt;&gt;&gt;</a>
+          <a href="#" className="footer-link green-link">Download AXONI app for iOS, Android, macOS, and Windows &gt;&gt;&gt;</a>
           <a href="#" className="footer-link green-link">Follow us on X (formerly Twitter) &gt;&gt;&gt;</a>
           <a href="#" className="footer-link green-link">Join us on Telegram &gt;&gt;&gt;</a>
           <a href="#" className="footer-link green-link">Join us on Discord &gt;&gt;&gt;</a>
           <a href="#" className="footer-link green-link">Subscribe to our channel on YouTube &gt;&gt;&gt;</a>
-          <a href="#" className="footer-link green-link">Join other COINCHI global communities &gt;&gt;&gt;</a>
+          <a href="#" className="footer-link green-link">Join other AXONI global communities &gt;&gt;&gt;</a>
         </div>
       </div>
     </div>

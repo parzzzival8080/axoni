@@ -96,7 +96,7 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await axios.post('https://django.coinchi.co/api/user_account/password_reset/request', {
+      const response = await axios.post('https://django.axoni.co/api/user_account/password_reset/request', {
         email: resetEmail
       });
 
@@ -136,7 +136,7 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await axios.post('https://django.coinchi.co/api/user_account/password_reset/verify_otp', {
+      const response = await axios.post('https://django.axoni.co/api/user_account/password_reset/verify_otp', {
         email: resetEmail,
         otp: otp
       });
@@ -172,7 +172,7 @@ const LoginForm = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('https://django.coinchi.co/api/user_account/password_reset/resend-otp', {
+      const response = await axios.post('https://django.axoni.co/api/user_account/password_reset/resend-otp', {
         email: resetEmail
       });
 
@@ -227,7 +227,7 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await axios.post('https://django.coinchi.co/api/user_account/password_reset/reset', {
+      const response = await axios.post('https://django.axoni.co/api/user_account/password_reset/reset', {
         email: resetEmail,
         otp: otp,
         new_password: newPassword,
@@ -305,7 +305,7 @@ const LoginForm = () => {
 
     try {
       // Replace with your actual API endpoint
-      const response = await axios.post('https://django.coinchi.co/api/user_account/login', credentials);
+      const response = await axios.post('https://django.axoni.co/api/user_account/login', credentials);
 
       // Handle successful login based on your specific response format
       const { success, user_id, email, uid, jwt_token } = response.data;
@@ -334,7 +334,7 @@ const LoginForm = () => {
         try {
           // Fetch user profile to get the full name using the getUserInformation API
           const profileResponse = await axios.get(
-            `https://django.coinchi.co/api/user_account/getUserInformation/?user_id=${user_id || uid}`,
+            `https://django.axoni.co/api/user_account/getUserInformation/?user_id=${user_id || uid}`,
             {
               headers: {
                 'Authorization': `Bearer ${jwt_token}`
@@ -537,7 +537,7 @@ const LoginForm = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-[#014EB2] text-white font-medium py-3 rounded-md hover:bg-[#014EB2] transition-colors"
+                  className="w-full bg-[#F0B90B] text-white font-medium py-3 rounded-md hover:bg-[#F0B90B] transition-colors"
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Send OTP'}
@@ -565,7 +565,7 @@ const LoginForm = () => {
                     <a
                       href="#"
                       onClick={(e) => { e.preventDefault(); handleResendOtp(); }}
-                      className={`${canResendOtp ? 'text-blue-500 hover:text-blue-400' : 'text-gray-500 cursor-not-allowed'}`}
+                      className={`${canResendOtp ? 'text-yellow-500 hover:text-yellow-400' : 'text-gray-500 cursor-not-allowed'}`}
                     >
                       Resend OTP
                     </a>
@@ -574,7 +574,7 @@ const LoginForm = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-[#014EB2] text-white font-medium py-3 rounded-md hover:bg-[#014EB2] transition-colors"
+                  className="w-full bg-[#F0B90B] text-white font-medium py-3 rounded-md hover:bg-[#F0B90B] transition-colors"
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Verify OTP'}
@@ -615,7 +615,7 @@ const LoginForm = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-[#014EB2] text-white font-medium py-3 rounded-md hover:bg-[#014EB2] transition-colors"
+                  className="w-full bg-[#F0B90B] text-white font-medium py-3 rounded-md hover:bg-[#F0B90B] transition-colors"
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Reset Password'}
@@ -624,7 +624,7 @@ const LoginForm = () => {
             )}
 
             <div className="text-xs text-center text-gray-400 mt-8">
-              This site is protected by Google reCAPTCHA to ensure you're not a bot. <a href="#" className="text-blue-500 hover:text-blue-400">Learn more</a>
+              This site is protected by Google reCAPTCHA to ensure you're not a bot. <a href="#" className="text-yellow-500 hover:text-yellow-400">Learn more</a>
             </div>
           </div>
         ) : (
@@ -659,7 +659,7 @@ const LoginForm = () => {
 
             <button
               type="submit"
-              className="w-full bg-[#014EB2] text-white font-bold py-3 px-4 rounded-full hover:bg-[#014EB2] transition-colors"
+              className="w-full bg-[#F0B90B] text-white font-bold py-3 px-4 rounded-full hover:bg-[#F0B90B] transition-colors"
               disabled={loading}
             >
               {loading ? 'Processing...' : showPassword ? 'Log in' : 'Next'}
@@ -683,7 +683,7 @@ const LoginForm = () => {
       ) : (
         <div className="qr-code-container">
           <img src="/assets/login/qr-code.png" alt="Login QR Code" className="qr-code" />
-          <p>Scan with the COINCHI App to log in</p>
+          <p>Scan with the AXONI App to log in</p>
         </div>
       )}
       <br />

@@ -136,7 +136,7 @@ const ColorManager = () => {
             type="text"
             value={value || ''}
             onChange={(e) => handleColorChange(setting.setting_key, e.target.value)}
-            className="flex-1 px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="flex-1 px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
             placeholder={`Enter ${setting.display_name}`}
           />
         </div>
@@ -150,7 +150,7 @@ const ColorManager = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500"></div>
         <span className="ml-2 text-white">Loading color settings...</span>
       </div>
     );
@@ -174,7 +174,7 @@ const ColorManager = () => {
         <button
           onClick={saveColorSettings}
           disabled={saving}
-          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-6 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {saving ? (
             <>
@@ -223,7 +223,7 @@ const ColorManager = () => {
           <div key={groupName} className="bg-gray-900 border border-gray-700 rounded-lg p-6">
             <h3 className="text-lg font-semibold text-white mb-6 flex items-center">
               {groupName === 'Primary Colors' && (
-                <svg className="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 mr-2 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" />
                 </svg>
               )}
@@ -278,7 +278,7 @@ const ColorManager = () => {
                 className="text-2xl font-bold mb-2"
                 style={{ color: getSettingValue(colorSettings.find(s => s.setting_key === 'color_text')) || '#FFFFFF' }}
               >
-                COINCHI Platform
+                AXONI Platform
               </h2>
               <p 
                 className="text-sm"
@@ -296,7 +296,7 @@ const ColorManager = () => {
                   <span className="text-sm">Trading Card</span>
                   <span 
                     className="text-sm font-semibold"
-                    style={{ color: getSettingValue(colorSettings.find(s => s.setting_key === 'color_accent')) || '#014EB2' }}
+                    style={{ color: getSettingValue(colorSettings.find(s => s.setting_key === 'color_accent')) || '#F0B90B' }}
                   >
                     $50,000
                   </span>
@@ -306,7 +306,7 @@ const ColorManager = () => {
                 <button 
                   className="px-4 py-2 rounded-lg text-sm font-medium"
                   style={{ 
-                    backgroundColor: getSettingValue(colorSettings.find(s => s.setting_key === 'color_accent')) || '#014EB2',
+                    backgroundColor: getSettingValue(colorSettings.find(s => s.setting_key === 'color_accent')) || '#F0B90B',
                     color: '#FFFFFF'
                   }}
                 >
@@ -360,7 +360,7 @@ const ColorManager = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
           <div className="space-y-3">
             <div className="flex items-center space-x-3">
-              <div className="w-4 h-4 rounded bg-blue-500"></div>
+              <div className="w-4 h-4 rounded bg-yellow-500"></div>
               <span className="text-gray-300">Primary Colors: Main brand colors and accents</span>
             </div>
             <div className="flex items-center space-x-3">

@@ -5,7 +5,7 @@ const Header = () => {
     <header className="header">
       <div className="header-left">
         <div className="logo">
-          <img src={logo} alt="COINCHI" />
+          <img src={logo} alt="AXONI" />
         </div>
         <nav className="nav">
           <div className="nav-item">Buy crypto <i className="fas fa-chevron-down"></i></div>

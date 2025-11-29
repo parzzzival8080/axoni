@@ -175,7 +175,7 @@ const UserManager = () => {
                         onClick={() => openEditModal(user)}
                         disabled={updating}
                         aria-label="Edit"
-                        className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-colors focus:outline-none focus:ring-2 focus:ring-accent"
+                        className="flex items-center justify-center w-8 h-8 rounded-full bg-yellow-600 hover:bg-yellow-700 text-white transition-colors focus:outline-none focus:ring-2 focus:ring-accent"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a4 4 0 01-2.828 1.172H7v-2a4 4 0 011.172-2.828z" /></svg>
                       </button>
@@ -289,7 +289,7 @@ const UserManager = () => {
                 <button
                   type="submit"
                   disabled={updating}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:opacity-50 text-white rounded-lg transition-colors"
+                  className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 disabled:bg-gray-700 disabled:opacity-50 text-white rounded-lg transition-colors"
                 >
                   {updating ? 'Updating...' : 'Update User'}
                 </button>

@@ -211,7 +211,7 @@
   border-radius: 50%;
   background: conic-gradient(
     #ffc107 0% 95%, /* Spot - yellow/gold */
-    #4169e1 95% 99%, /* Future - blue */
+    #4169e1 95% 99%, /* Future - yellow */
     #4caf50 99% 100% /* Funding - green */
   );
   position: relative;
@@ -254,7 +254,7 @@
 }
 
 .color-indicator.future {
-  background-color: #4169e1; /* blue */
+  background-color: #4169e1; /* yellow */
 }
 
 .color-indicator.funding {
