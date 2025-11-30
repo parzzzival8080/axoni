@@ -405,7 +405,7 @@ const TermsAndConditions = () => {
                 If you have any questions about these Terms of Service, please contact our support team.
               </p>
               <div className="space-y-1 text-sm text-gray-600">
-                <p>Email: legal@coinchi.co</p>
+                <p>Email: legal@axoni.co</p>
                 <p>Support Center: Available 24/7</p>
               </div>
             </div>

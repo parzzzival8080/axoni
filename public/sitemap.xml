@@ -1,92 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://coinchi.co/</loc>
+    <loc>https://axoni.co/</loc>
     <priority>1.0</priority>
     <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://coinchi.co/spot-trading</loc>
+    <loc>https://axoni.co/spot-trading</loc>
     <priority>0.9</priority>
     <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://coinchi.co/future-trading</loc>
+    <loc>https://axoni.co/future-trading</loc>
     <priority>0.9</priority>
     <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://coinchi.co/deposit</loc>
+    <loc>https://axoni.co/deposit</loc>
     <priority>0.9</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://coinchi.co/withdraw</loc>
+    <loc>https://axoni.co/withdraw</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://coinchi.co/transfer</loc>
+    <loc>https://axoni.co/transfer</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://coinchi.co/conversion</loc>
+    <loc>https://axoni.co/conversion</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://coinchi.co/earn</loc>
+    <loc>https://axoni.co/earn</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://coinchi.co/my-assets</loc>
+    <loc>https://axoni.co/my-assets</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://coinchi.co/about</loc>
+    <loc>https://axoni.co/about</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://coinchi.co/download</loc>
+    <loc>https://axoni.co/download</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://coinchi.co/help/deposit/</loc>
+    <loc>https://axoni.co/help/deposit/</loc>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://coinchi.co/help/withdrawal/</loc>
+    <loc>https://axoni.co/help/withdrawal/</loc>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://coinchi.co/announcement</loc>
+    <loc>https://axoni.co/announcement</loc>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://coinchi.co/article</loc>
+    <loc>https://axoni.co/article</loc>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://coinchi.co/pages/morePages/CampaignCenter</loc>
+    <loc>https://axoni.co/pages/morePages/CampaignCenter</loc>
     <priority>0.5</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://coinchi.co/pages/morePages/MyRewards</loc>
+    <loc>https://axoni.co/pages/morePages/MyRewards</loc>
     <priority>0.5</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://coinchi.co/pages/morePages/Referral</loc>
+    <loc>https://axoni.co/pages/morePages/Referral</loc>
     <priority>0.5</priority>
     <changefreq>monthly</changefreq>
   </url>

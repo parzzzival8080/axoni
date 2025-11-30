@@ -6,6 +6,6 @@ Allow: /
 # Disallow: /admin/
 # Disallow: /private/
 
-Sitemap: https://coinchi.co/sitemap.xml
+Sitemap: https://axoni.co/sitemap.xml
 er-agent: *
 Disallow:

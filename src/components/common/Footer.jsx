@@ -74,7 +74,7 @@ const Footer = () => {
               className="h-12 w-auto object-contain"
             />
           </div>
-          <p className="copyright">©2025 coinchi.co | All Rights Reserved</p>
+          <p className="copyright">©2025 axoni.co | All Rights Reserved</p>
         </div>
 
         {/* Language Selector */}

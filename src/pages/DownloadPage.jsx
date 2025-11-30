@@ -27,8 +27,8 @@ const DownloadPage = () => {
     // You can customize alternative URLs per store if needed
     const url =
       noticeStore === "appstore"
-        ? "https://api.axoni.co/api/v1/download-coinchi-ios"
-        : "https://api.axoni.co/api/v1/download-coinchi-apk";
+        ? "https://api.axoni.co/api/v1/download-axoni-ios"
+        : "https://api.axoni.co/api/v1/download-axoni-apk";
 
     window.open(url, "_blank");
     setIsNoticeOpen(false);

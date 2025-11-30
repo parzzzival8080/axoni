@@ -80,7 +80,7 @@ const articleData = {
         steps: [
           {
             number: 1,
-            content: 'Log in to your account at <strong class="text-yellow-600">coinchi.co</strong>, navigate to the <strong class="text-gray-900">Assets</strong> section, and click on <strong class="text-yellow-600">Deposit</strong>.'
+            content: 'Log in to your account at <strong class="text-yellow-600">axoni.co</strong>, navigate to the <strong class="text-gray-900">Assets</strong> section, and click on <strong class="text-yellow-600">Deposit</strong>.'
           },
           {
             number: 2,
