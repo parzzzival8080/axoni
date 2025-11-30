@@ -130,7 +130,7 @@ const TermsAndConditions = () => {
               <section id="introduction">
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">1. INTRODUCTION</h2>
                 <div className="space-y-4 text-gray-800 leading-relaxed">
-                    <p>Welcome to COINCHIcoin ("Exchange," "We," "Us," or "Our"). By using our website and services, you agree to be bound by these Terms of Service ("Terms"). 
+                    <p>Welcome to AXONI coin ("Exchange," "We," "Us," or "Our"). By using our website and services, you agree to be bound by these Terms of Service ("Terms"). 
                         Please read them carefully before accessing or using our platform. If you do not agree with any part of these Terms, you should not use our services.
                     </p>
                 </div>
@@ -174,8 +174,8 @@ const TermsAndConditions = () => {
                         entitled to vote for election of directors or other managing authority.
                     </li>
                     <li>
-                        <strong>Application:</strong> means the software program provided by the Company downloaded by You on any electronic device, named COINCHIcoin Company (referred to as either 'the Company,' 'we,' 'Us,' or 'Our' in this Agreement)
-                         refers to COINCHIcoin.
+                        <strong>Application:</strong> means the software program provided by the Company downloaded by You on any electronic device, named AXONI coin Company (referred to as either 'the Company,' 'we,' 'Us,' or 'Our' in this Agreement)
+                         refers to AXONI coin.
                     </li>
                     <li>
                         <strong>Country:</strong> refers to: California, United States.
@@ -304,7 +304,7 @@ const TermsAndConditions = () => {
                  <div className="space-y-4 text-gray-800 leading-relaxed">
                   <ul className="space-y-3">
                     <li>
-                        <strong>Risks:</strong> COINCHIcoin trading involves significant risks, and the value of COINCHIcoin and other cryptocurrencies can be highly volatile. 
+                        <strong>Risks:</strong> AXONI coin trading involves significant risks, and the value of AXONI coin and other cryptocurrencies can be highly volatile. 
                         You acknowledge and understand the risks associated with trading digital assets.
                     </li>
                     <li>
@@ -312,7 +312,7 @@ const TermsAndConditions = () => {
                          financial advisor before making any trading decisions.
                     </li>
                     <li>
-                        <strong>Fees:</strong> Fees and charges related to COINCHIcoin trading are outlined in a separate fee schedule available on our website.
+                        <strong>Fees:</strong> Fees and charges related to AXONI coin trading are outlined in a separate fee schedule available on our website.
                     </li>
                   </ul>
                 </div>
@@ -323,11 +323,11 @@ const TermsAndConditions = () => {
                  <div className="space-y-4 text-gray-800 leading-relaxed">
                   <ul className="space-y-3">
                     <li>
-                        <strong>Availability:</strong> We will make reasonable efforts to ensure the availability of COINCHIcoin and a wide range of services on our platform. 
-                        However, we do not guarantee the availability of COINCHIcoin or specific services.
+                        <strong>Availability:</strong> We will make reasonable efforts to ensure the availability of AXONI coin and a wide range of services on our platform. 
+                        However, we do not guarantee the availability of AXONI coin or specific services.
                     </li>
                     <li>
-                        <strong>Modifications:</strong> We reserve the right to modify or discontinue COINCHIcoin or any services at any time without prior notice.
+                        <strong>Modifications:</strong> We reserve the right to modify or discontinue AXONI coin or any services at any time without prior notice.
                     </li>
                   </ul>
                 </div>
@@ -339,7 +339,7 @@ const TermsAndConditions = () => {
                   <ul className="space-y-3">
                     <li>
                         <strong>Ownership:</strong> All content and materials on our platform, including logos, trademarks, graphics, and software, are the property of 
-                        COINCHIcoin and are protected by intellectual property laws.
+                        AXONI coin and are protected by intellectual property laws.
                     </li>
                     <li>
                         <strong>Limited License:</strong> You are granted a limited, non-exclusive, non-transferable license to access and use our platform for personal, non-commercial purposes.
@@ -373,7 +373,7 @@ const TermsAndConditions = () => {
               <section id="indemnification">
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">10. INDEMNIFICATION</h2>
                 <div className="space-y-4 text-gray-800 leading-relaxed">
-                  <p>You agree to indemnify and hold COINCHIcoin, its affiliates, and their respective officers, directors, employees, and agents harmless from and against any claims, liabilities, damages, losses, and expenses arising from your use of our platform.</p>
+                  <p>You agree to indemnify and hold AXONI coin, its affiliates, and their respective officers, directors, employees, and agents harmless from and against any claims, liabilities, damages, losses, and expenses arising from your use of our platform.</p>
                 </div>
               </section>
 

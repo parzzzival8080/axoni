@@ -2,6 +2,6 @@
  
 </rewritten_file>
  
-# COINCHIcoin-web
+# AXONI coin-web
 # AXONI-v2
 # axoni

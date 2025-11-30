@@ -94,7 +94,7 @@ const defaultConfig = {
     playStoreQR: '',
     downloadQRUrl: 'https://api.axoni.co/api/v1/download-AXONI-apk',
     appStoreQRUrl: 'https://apps.apple.com/app/AXONI-coin',
-    playStoreQRUrl: 'https://play.google.com/store/apps/details?id=com.COINCHIcoin',
+    playStoreQRUrl: 'https://play.google.com/store/apps/details?id=com.AXONI coin',
     iosDownloadUrl: 'https://api.axoni.co/api/v1/download-ios',
     androidDownloadUrl: 'https://api.axoni.co/api/v1/download-apk'
   },

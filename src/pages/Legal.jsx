@@ -501,28 +501,28 @@ const Legal = () => {
                       <li>
                         • Legal Department:{" "}
                         <a
-                          href="mailto:legal@coinchi.co"
+                          href="mailto:legal@axoni.co"
                           className="text-[#F0B90B] underline hover:text-yellow-400"
                         >
-                          legal@coinchi.co
+                          legal@axoni.co
                         </a>
                       </li>
                       <li>
                         • Compliance Team:{" "}
                         <a
-                          href="mailto:compliance@coinchi.co"
+                          href="mailto:compliance@axoni.co"
                           className="text-[#F0B90B] underline hover:text-yellow-400"
                         >
-                          compliance@coinchi.co
+                          compliance@axoni.co
                         </a>
                       </li>
                       <li>
                         • General Support:{" "}
                         <a
-                          href="mailto:support@coinchi.co"
+                          href="mailto:support@axoni.co"
                           className="text-[#F0B90B] underline hover:text-yellow-400"
                         >
-                          support@coinchi.co
+                          support@axoni.co
                         </a>
                       </li>
                     </ul>
