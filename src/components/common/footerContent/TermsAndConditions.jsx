@@ -41,7 +41,7 @@ const TermsAndConditions = () => {
     { id: 'definitions', title: 'DEFINITION OF TERMS', number: '3.' },
     { id: 'compliance', title: 'COMPLIANCE WITH BOT AND AUTOMATED TRADING RESTRICTIONS', number: '4.' },
     { id: 'trading', title: 'CRYPTOCURRENCY TRADING', number: '5.' },
-    { id: 'services', title: 'COINCHICOIN AND SERVICES', number: '6.' },
+    { id: 'services', title: 'AXONI COIN AND SERVICES', number: '6.' },
     { id: 'intellectual-property', title: 'INTELLECTUAL PROPERTY', number: '7.' },
     { id: 'privacy', title: 'PRIVACY POLICY', number: '8.' },
     { id: 'liability', title: 'LIMITATION OF LIABILITY', number: '9.' },
@@ -319,7 +319,7 @@ const TermsAndConditions = () => {
               </section>
 
               <section id="services">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">6. COINCHICOIN AND SERVICES</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">6. AXONI COIN AND SERVICES</h2>
                  <div className="space-y-4 text-gray-800 leading-relaxed">
                   <ul className="space-y-3">
                     <li>
