@@ -230,7 +230,7 @@ const Navbar = () => {
   };
 
   const appDownloadUrl =
-    "https://api.axoni.co/api/v1/download-AXONI-apk";
+    "https://api.axoni.co/api/v1/download-axoni-apk";
 
   const openComingSoon = () => setIsComingSoonOpen(true);
   const closeComingSoon = () => setIsComingSoonOpen(false);

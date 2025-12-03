@@ -34,7 +34,7 @@ const DownloadPage = () => {
     setIsNoticeOpen(false);
   };
 
-  const appDownloadUrl = "https://api.axoni.co/api/v1/download-AXONI-apk";
+  const appDownloadUrl = "https://api.axoni.co/api/v1/download-axoni-apk";
 
   const handleAppDownload = () => {
     const directDownloadUrl = appDownloadUrl;

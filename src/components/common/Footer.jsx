@@ -23,7 +23,7 @@ const Footer = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [showTradeOnGo, setShowTradeOnGo] = useState(true);
 
-  const appDownloadUrl = "https://api.axoni.co/api/v1/download-AXONI-apk";
+  const appDownloadUrl = "https://api.axoni.co/api/v1/download-axoni-apk";
 
   // Check if viewport is mobile
   useEffect(() => {
