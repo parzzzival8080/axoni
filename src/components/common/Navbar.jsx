@@ -16,31 +16,31 @@ const notifications = [
   {
     id: 1,
     title: "AXONI to list perpetual futures for SIGN crypto",
-    time: "04/28/2025, 14:00:00",
+    time: "04/28/2026, 14:00:00",
     path: "/help/AXONI-to-list-perpetual-futures-for-sign-crypto",
   },
   {
     id: 2,
     title: "AXONI to delist ZKJ margin trading pair and perpetual future",
-    time: "04/28/2025, 11:10:00",
+    time: "04/28/2026, 11:10:00",
     path: "/help/AXONI-to-delist-zkj-margin-trading-pair-and-perpetual-future",
   },
   {
     id: 3,
     title: "AXONI to enable margin trading and Simple Earn for LAYER crypto",
-    time: "04/25/2025, 19:20:00",
+    time: "04/25/2026, 19:20:00",
     path: "/help/AXONI-to-enable-margin-trading-and-simple-earn-for-layer-crypto",
   },
   {
     id: 4,
     title: "AXONI to list LAYER (Solayer) for spot trading",
-    time: "04/25/2025, 14:00:00",
+    time: "04/25/2026, 14:00:00",
     path: "/help/AXONI-to-list-layer-solayer-for-spot-trading",
   },
   {
     id: 5,
     title: "AXONI to list perpetual futures for INIT crypto",
-    time: "04/24/2025, 14:00:00",
+    time: "04/24/2026, 14:00:00",
     path: "/help/AXONI-to-list-perpetual-futures-for-init-crypto",
   },
 ];

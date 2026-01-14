@@ -21,63 +21,63 @@ const Announcement = () => {
   const announcements = [
     {
       title: 'About SOLV Exclusive Airdrop Campaign Extension',
-      date: 'Apr 21, 2025'
+      date: 'Apr 21, 2026'
     },
     {
       title: 'AXONI to adjust options trading fees',
-      date: 'Jan 28, 2025'
+      date: 'Jan 28, 2026'
     },
     {
       title: 'About SOLV Exclusive Airdrop Campaign',
-      date: 'Jan 21, 2025'
+      date: 'Jan 21, 2026'
     },
     {
       title: 'AXONI will further adjust portfolio margin parameters',
-      date: 'Jan 2, 2025'
+      date: 'Jan 2, 2026'
     },
     {
       title: 'AXONI to adjust funding rate interval for MOVEUSD perpetual futures',
-      date: 'May 2, 2025'
+      date: 'May 2, 2026'
     },
     {
       title: 'Important notice: Changes to THB trading on AXONI P2P',
-      date: 'Apr 30, 2025'
+      date: 'Apr 30, 2026'
     },
     {
       title: 'AXONI to adjust discount rate tiers for multiple tokens',
-      date: 'Apr 29, 2025'
+      date: 'Apr 29, 2026'
     },
     {
       title: 'AXONI to adjust tick size of spot, margin, and perpetual futures',
-      date: 'Apr 29, 2025'
+      date: 'Apr 29, 2026'
     },
     {
       title: 'IP and PARTI now available for Dual Investment!',
-      date: 'Apr 29, 2025'
+      date: 'Apr 29, 2026'
     },
     {
       title: 'AXONI to list perpetual futures for SIGN crypto',
-      date: 'Apr 28, 2025'
+      date: 'Apr 28, 2026'
     },
     {
       title: 'AXONI to delist ZKJ margin trading pair and perpetual future',
-      date: 'Apr 28, 2025'
+      date: 'Apr 28, 2026'
     },
     {
       title: 'AXONI to enable margin trading and Simple Earn for LAYER crypto',
-      date: 'Apr 25, 2025'
+      date: 'Apr 25, 2026'
     },
     {
       title: 'AXONI to list LAYER (Solayer) for spot trading',
-      date: 'Apr 25, 2025'
+      date: 'Apr 25, 2026'
     },
     {
       title: 'AXONI to adjust components for several indexes',
-      date: 'Apr 24, 2025'
+      date: 'Apr 24, 2026'
     },
     {
       title: 'AXONI to list perpetual futures for INIT crypto',
-      date: 'Apr 24, 2025'
+      date: 'Apr 24, 2026'
     }
   ];
 

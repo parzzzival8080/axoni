@@ -90,7 +90,7 @@ const AboutUs = () => {
             <div className="flex-1">
               <h2 className="text-3xl font-bold mb-6">Global <span className="text-[#F0B90B]">Presence</span></h2>
               <p className="text-lg text-gray-300 mb-6">
-                AXONI operates globally with a presence in major financial hubs across Asia, Europe, and the Americas. 
+                AXONI operates globally with a presence in major financial hubs across Asia, Europe, and the America. 
                 Our diverse team works around the clock to provide 24/7 support and ensure seamless trading experiences 
                 for users worldwide.
               </p>
@@ -115,13 +115,9 @@ const AboutUs = () => {
             the next generation of cryptocurrency trading.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/signup" className="bg-[#F0B90B] hover:bg-[#e56800] text-white font-bold py-3 px-8 rounded-full text-lg">
-              Create Account
+            <a href="/spot-trading" className="bg-[#F0B90B] hover:bg-[#e56800] text-white font-bold py-3 px-8 rounded-full text-lg">
+              Trade Now
             </a>
-            <a href="/download" className="bg-transparent border border-[#F0B90B] hover:bg-[#F0B90B]/10 text-white font-bold py-3 px-8 rounded-full text-lg">
-              Download App
-            </a>
-          </div>
         </div>
       </section>
     </div>

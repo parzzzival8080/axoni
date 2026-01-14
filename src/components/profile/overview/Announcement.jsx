@@ -4,19 +4,19 @@ import './Announcement.css';
 const Announcements = () => {
   const announcements = [
     {
-      date: '04/28/2025',
+      date: '04/28/2026',
       text: 'OKX to list perpetual futures for SIGN crypto'
     },
     {
-      date: '04/28/2025',
+      date: '04/28/2026',
       text: 'OKX to delist ZKJ margin trading pair and perpetual future'
     },
     {
-      date: '04/25/2025',
+      date: '04/25/2026',
       text: 'OKX to enable margin trading and Simple Earn for LAYER crypto'
     },
     {
-      date: '04/25/2025',
+      date: '04/25/2026',
       text: 'OKX to list LAYER (Solayer) for spot trading'
     }
   ];

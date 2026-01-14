@@ -8,42 +8,42 @@ export const notifications = [
   {
     id: 1,
     title: "AXONI to list perpetual futures for SIGN crypto",
-    time: "04/28/2025, 14:00:00",
+    time: "04/28/2026, 14:00:00",
     path: "/help/AXONI-to-list-perpetual-futures-for-sign-crypto",
-    publishDate: "Apr 28, 2025",
+    publishDate: "Apr 28, 2026",
     readTime: "2 min read",
     // You can add more article-specific content here
   },
   {
     id: 2,
     title: "AXONI to delist ZKJ margin trading pair and perpetual future",
-    time: "04/28/2025, 11:10:00",
+    time: "04/28/2026, 11:10:00",
     path: "/help/AXONI-to-delist-zkj-margin-trading-pair-and-perpetual-future",
-    publishDate: "Apr 28, 2025",
+    publishDate: "Apr 28, 2026",
     readTime: "1 min read",
   },
   {
     id: 3,
     title: "AXONI to enable margin trading and Simple Earn for LAYER crypto",
-    time: "04/25/2025, 19:20:00",
+    time: "04/25/2026, 19:20:00",
     path: "/help/AXONI-to-enable-margin-trading-and-simple-earn-for-layer-crypto",
-    publishDate: "Apr 25, 2025",
+    publishDate: "Apr 25, 2026",
     readTime: "3 min read",
   },
   {
     id: 4,
     title: "AXONI to list LAYER (Solayer) for spot trading",
-    time: "04/25/2025, 14:00:00",
+    time: "04/25/2026, 14:00:00",
     path: "/help/AXONI-to-list-layer-solayer-for-spot-trading",
-    publishDate: "Apr 25, 2025",
+    publishDate: "Apr 25, 2026",
     readTime: "2 min read",
   },
   {
     id: 5,
     title: "AXONI to list perpetual futures for INIT crypto",
-    time: "04/24/2025, 14:00:00",
+    time: "04/24/2026, 14:00:00",
     path: "/help/AXONI-to-list-perpetual-futures-for-init-crypto",
-    publishDate: "Apr 24, 2025",
+    publishDate: "Apr 24, 2026",
     readTime: "2 min read",
   }
 ];
@@ -112,7 +112,7 @@ const Article = () => {
             {/* Introduction paragraph */}
             <div className="article-section">
               <p>
-                We are pleased to announce that USDT-margined perpetual futures for SIGN will be enabled at 11:30 am UTC on April 28, 2025. 
+                We are pleased to announce that USDT-margined perpetual futures for SIGN will be enabled at 11:30 am UTC on April 28, 2026. 
                 The updates will cover both the web and app interfaces as well as the API. The details are as follows:
               </p>
             </div>
@@ -121,7 +121,7 @@ const Article = () => {
             <div className="article-section">
               <h2 className="section-title">I. Listing schedule</h2>
               <ul className="bullet-list">
-                <li>SIGN/USDT perpetual futures trading will open at 11:30 am UTC on April 28, 2025.</li>
+                <li>SIGN/USDT perpetual futures trading will open at 11:30 am UTC on April 28, 2026.</li>
               </ul>
             </div>
             
@@ -200,9 +200,9 @@ const Article = () => {
             <div className="article-section">
               <p className="note">
                 Note: To avoid unreasonable fees arising from significant premium fluctuations of a newly launched contract, the upper limit of 
-                the funding fee before 4:00 pm UTC on April 28, 2025 is 0.5%. After 4:00 pm UTC on April 28, 2025, the upper limit of the 
+                the funding fee before 4:00 pm UTC on April 28, 2026 is 0.5%. After 4:00 pm UTC on April 28, 2026, the upper limit of the 
                 predicted funding fee will be adjusted back to the regular rate of 1.5%. (The funding fee for this period will be charged at 8:00 
-                pm UTC on April 28, 2025.) <strong>If there is a deviation from the contract price, the funding fee limit will be adjusted according to 
+                pm UTC on April 28, 2026.) <strong>If there is a deviation from the contract price, the funding fee limit will be adjusted according to 
                 market conditions.</strong>
               </p>
 
@@ -222,7 +222,7 @@ const Article = () => {
         {article.path === "/help/AXONI-to-delist-zkj-margin-trading-pair-and-perpetual-future" && (
           <div className="article-section">
             <p>
-              We regret to inform you that ZKJ margin trading pair and perpetual future will be delisted from our platform effective April 30, 2025.
+              We regret to inform you that ZKJ margin trading pair and perpetual future will be delisted from our platform effective April 30, 2026.
               Please ensure all positions are closed before the delisting date to avoid automatic liquidation.
             </p>
             {/* Add more content specific to this article */}

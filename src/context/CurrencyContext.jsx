@@ -35,7 +35,7 @@ const CURRENCY_SYMBOLS = {
   AUD: "A$", // Australia - developed internet market
   NZD: "NZ$", // New Zealand - high internet penetration
 
-  // Americas
+  // America
   CAD: "C$", // Canada - mature digital market
   BRL: "R$", // Brazil - largest Latin American market
   MXN: "$", // Mexico - growing e-commerce
@@ -89,7 +89,7 @@ const CURRENCY_SYMBOLS = {
 // Comprehensive list of internet-popular currencies
 const POPULAR_CURRENCIES = [
   // Tier 1: Global Reserve & Major Internet Currencies
-  { code: "USD", name: "US Dollar", symbol: "$", region: "Americas", tier: 1 },
+  { code: "USD", name: "US Dollar", symbol: "$", region: "America", tier: 1 },
   { code: "EUR", name: "Euro", symbol: "€", region: "Europe", tier: 1 },
   {
     code: "GBP",
@@ -114,7 +114,7 @@ const POPULAR_CURRENCIES = [
     code: "CAD",
     name: "Canadian Dollar",
     symbol: "C$",
-    region: "Americas",
+    region: "America",
     tier: 2,
   },
   {
@@ -128,7 +128,7 @@ const POPULAR_CURRENCIES = [
     code: "BRL",
     name: "Brazilian Real",
     symbol: "R$",
-    region: "Americas",
+    region: "America",
     tier: 2,
   },
 
@@ -186,7 +186,7 @@ const POPULAR_CURRENCIES = [
     code: "MXN",
     name: "Mexican Peso",
     symbol: "$",
-    region: "Americas",
+    region: "America",
     tier: 3,
   },
 
@@ -288,21 +288,21 @@ const POPULAR_CURRENCIES = [
     code: "ARS",
     name: "Argentine Peso",
     symbol: "$",
-    region: "Americas",
+    region: "America",
     tier: 4,
   },
   {
     code: "COP",
     name: "Colombian Peso",
     symbol: "$",
-    region: "Americas",
+    region: "America",
     tier: 4,
   },
   {
     code: "CLP",
     name: "Chilean Peso",
     symbol: "$",
-    region: "Americas",
+    region: "America",
     tier: 4,
   },
 
@@ -402,7 +402,7 @@ const POPULAR_CURRENCIES = [
     code: "PEN",
     name: "Peruvian Sol",
     symbol: "S/",
-    region: "Americas",
+    region: "America",
     tier: 5,
   },
   {
