@@ -118,6 +118,8 @@ const AboutUs = () => {
             <a href="/spot-trading" className="bg-[#F0B90B] hover:bg-[#e56800] text-white font-bold py-3 px-8 rounded-full text-lg">
               Trade Now
             </a>
+           
+          </div>
         </div>
       </section>
     </div>
