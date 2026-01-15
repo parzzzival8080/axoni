@@ -57,10 +57,10 @@ const Legal = () => {
                   F202).
                 </p>
                 <p>
-                  AXONI France Ltd will provide the following regulated
-                  services in France: digital assets custody services; exchange
-                  of digital assets for legal tender; exchange of digital
-                  assets; operating of a trading platform for digital assets.
+                  AXONI France Ltd will provide the following regulated services
+                  in France: digital assets custody services; exchange of
+                  digital assets for legal tender; exchange of digital assets;
+                  operating of a trading platform for digital assets.
                 </p>
               </div>
             </div>
@@ -131,14 +131,14 @@ const Legal = () => {
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  AXONI (Italy) S.r.l obtained authorization from the
-                  Organismo per la gestione degli elenchi degli agenti in
-                  attività finanziaria e dei mediatori creditizi (OAM) for the
-                  Republic of Lithuania administered by the State Enterprise
-                  Centre of Registers under Ministry of Finance (Registration
-                  number: PSV-215). The registration enables the provision of
-                  digital assets services including custody services, exchange
-                  services and operating a digital assets trading platform.
+                  AXONI (Italy) S.r.l obtained authorization from the Organismo
+                  per la gestione degli elenchi degli agenti in attività
+                  finanziaria e dei mediatori creditizi (OAM) for the Republic
+                  of Lithuania administered by the State Enterprise Centre of
+                  Registers under Ministry of Finance (Registration number:
+                  PSV-215). The registration enables the provision of digital
+                  assets services including custody services, exchange services
+                  and operating a digital assets trading platform.
                 </p>
               </div>
             </div>
@@ -183,8 +183,8 @@ const Legal = () => {
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  The AXONI Group entities have been granted a category "A"
-                  type 1 license at an{" "}
+                  The AXONI Group entities have been granted a category "A" type
+                  1 license at an{" "}
                   <a
                     href="#"
                     className="text-[#F0B90B] underline hover:text-yellow-400"
@@ -246,8 +246,7 @@ const Legal = () => {
                   .
                 </p>
                 <p>
-                  AXONI (Australia) is registered as a reporting entity with
-                  the{" "}
+                  AXONI (Australia) is registered as a reporting entity with the{" "}
                   <a
                     href="https://www.austrac.gov.au/"
                     className="text-[#F0B90B] underline hover:text-yellow-400"
@@ -308,9 +307,9 @@ const Legal = () => {
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  AXONI is registered with the Dutch Central Bank (DNB)
-                  as a provider of services for the exchange between virtual and
-                  fiat currencies and as a custodian wallet provider under
+                  AXONI is registered with the Dutch Central Bank (DNB) as a
+                  provider of services for the exchange between virtual and fiat
+                  currencies and as a custodian wallet provider under
                   registration number R378642. Registration can be verified on
                   the official DNB register:
                   <a
@@ -324,7 +323,6 @@ const Legal = () => {
                 </p>
               </div>
             </div>
-
 
             {/* Malaysia */}
             <div className="border-l-4 border-[#F0B90B] pl-6">
@@ -411,8 +409,8 @@ const Legal = () => {
               </h3>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  The AXONI Group entities have been granted a category "A"
-                  type 1 license at an{" "}
+                  The AXONI Group entities have been granted a category "A" type
+                  1 license at an{" "}
                   <a
                     href="https://aifc.kz/"
                     className="text-[#F0B90B] underline hover:text-yellow-400"
@@ -433,6 +431,283 @@ const Legal = () => {
                   to conduct digital asset activities in respect of the
                   regulated activities of Operating a Multilateral Trading
                   Facility (MTF), Providing Custody and related services.
+                </p>
+              </div>
+            </div>
+
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+                • Luxembourg
+              </h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  AXONI operates in compliance with Luxembourg’s regulatory
+                  framework for digital asset service providers. Relevant AXONI
+                  entities engaged in virtual asset activities are subject to
+                  registration and supervision by the{" "}
+                  <a
+                    href="https://www.cssf.lu"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Commission de Surveillance du Secteur Financier (CSSF)
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+                • Czech Republic
+              </h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  AXONI operates in accordance with the Czech Republic’s
+                  regulatory framework governing virtual asset service
+                  providers. Relevant entities are subject to registration and
+                  ongoing compliance obligations under the oversight of the{" "}
+                  <a
+                    href="https://www.cnb.cz/en/"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Czech National Bank (ČNB)
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+                • Denmark
+              </h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  AXONI conducts digital asset–related activities in Denmark in
+                  compliance with the Danish Anti-Money Laundering Act and
+                  related financial regulations. Virtual asset services are
+                  registered and supervised by the{" "}
+                  <a
+                    href="https://www.finanstilsynet.dk/en"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Danish Financial Supervisory Authority (Finanstilsynet)
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+                • Finland
+              </h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  AXONI operates under Finland’s regulatory regime for virtual
+                  asset service providers. Relevant entities are subject to
+                  registration and supervision by the{" "}
+                  <a
+                    href="https://www.finanssivalvonta.fi/en/"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Finnish Financial Supervisory Authority (FIN-FSA)
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+                • Germany
+              </h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  AXONI conducts digital asset activities in Germany in
+                  accordance with the German Banking Act and related financial
+                  regulations. Crypto-asset custody and related services fall
+                  under the supervision of{" "}
+                  <a
+                    href="https://www.bafin.de/EN"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    BaFin
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+                • Greece
+              </h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  AXONI complies with Greece’s regulatory framework for virtual
+                  asset service providers, including AML and financial market
+                  obligations, under the oversight of the{" "}
+                  <a
+                    href="https://www.hcmc.gr/en"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Hellenic Capital Market Commission (HCMC)
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+                • Hungary
+              </h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  AXONI operates in compliance with Hungary’s regulatory and AML
+                  framework governing virtual asset service providers, under the
+                  supervision of the{" "}
+                  <a
+                    href="https://www.mnb.hu/en"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    National Bank of Hungary (MNB)
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+                • Portugal
+              </h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  AXONI conducts virtual asset–related activities in Portugal in
+                  accordance with applicable AML and financial regulations,
+                  under the supervision of the{" "}
+                  <a
+                    href="https://www.bportugal.pt/en"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Bank of Portugal
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+                • Romania
+              </h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  AXONI operates in Romania under the applicable regulatory
+                  framework for digital and virtual asset services, subject to
+                  oversight by the{" "}
+                  <a
+                    href="https://www.asfromania.ro"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Romanian Financial Supervisory Authority (ASF)
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+                • Sweden
+              </h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  AXONI operates in accordance with Sweden’s regulatory
+                  framework governing virtual asset service providers. Relevant
+                  entities are supervised by{" "}
+                  <a
+                    href="https://www.fi.se/en/"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Finansinspektionen (FI)
+                  </a>{" "}
+                  with AML/CTF oversight involving{" "}
+                  <a
+                    href="https://polisen.se/en/laws-and-regulations/financial-intelligence/"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Finanspolisen
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+                • Switzerland
+              </h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  AXONI conducts digital asset–related activities in Switzerland
+                  in accordance with Swiss financial market and blockchain
+                  regulations, under the oversight of{" "}
+                  <a
+                    href="https://www.finma.ch/en/"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    FINMA
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+                • Belgium
+              </h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  AXONI operates in Belgium in compliance with the regulatory
+                  framework applicable to virtual asset service providers, under
+                  the supervision of the{" "}
+                  <a
+                    href="https://www.fsma.be/en"
+                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Financial Services and Markets Authority (FSMA)
+                  </a>
+                  .
                 </p>
               </div>
             </div>
@@ -458,8 +733,8 @@ const Legal = () => {
                     </p>
                     <p>
                       Please note that the regulatory landscape for digital
-                      assets is evolving rapidly, and AXONI continues to
-                      monitor developments and adapt its compliance framework
+                      assets is evolving rapidly, and AXONI continues to monitor
+                      developments and adapt its compliance framework
                       accordingly.
                     </p>
                   </div>
@@ -472,10 +747,10 @@ const Legal = () => {
                   </h3>
                   <div className="space-y-4 text-gray-300">
                     <p>
-                      AXONI services may not be available in all
-                      jurisdictions. We maintain a list of restricted countries
-                      and territories where our services are not offered due to
-                      regulatory or business considerations.
+                      AXONI services may not be available in all jurisdictions.
+                      We maintain a list of restricted countries and territories
+                      where our services are not offered due to regulatory or
+                      business considerations.
                     </p>
                     <p>
                       Users are responsible for ensuring their compliance with
