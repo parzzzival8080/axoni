@@ -30,21 +30,21 @@ const News = () => {
     {
       title: 'Bitcoin ETF: The Next Big Wave?',
       description: 'Analysts discuss the potential impact of Bitcoin ETFs on the global crypto market and what investors should expect in 2026.',
-      date: '29 May 2026',
+      date: '29 November 2025',
       category: 'Markets',
       image: news1
     },
     {
       title: 'DeFi Security: Staying Safe in 2026',
       description: 'Explore the latest DeFi security trends and learn practical tips to keep your assets secure in the evolving landscape.',
-      date: '27 May 2026',
+      date: '21 December 2025',
       category: 'DeFi',
       image: news2
     },
     {
       title: 'AXONI Launches New Trading Tools',
       description: 'AXONI introduces advanced analytics and automation features to help traders maximize performance and efficiency.',
-      date: '25 May 2026',
+      date: '03 January 2026',
       category: 'Platform',
       image: news3
     }
