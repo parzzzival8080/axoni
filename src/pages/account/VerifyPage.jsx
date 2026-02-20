@@ -102,6 +102,7 @@ const countries = [
   { code: "IS", name: "Iceland", flag: "🇮🇸" },
   { code: "IT", name: "Italy", flag: "🇮🇹" },
   { code: "JP", name: "Japan", flag: "🇯🇵" },
+  { code: "LB", name: "Lebanon", flag: "🇱🇧" },
   { code: "LU", name: "Luxembourg", flag: "🇱🇺" },
   { code: "MC", name: "Monaco", flag: "🇲🇨" },
   { code: "MD", name: "Moldova", flag: "🇲🇩" },
