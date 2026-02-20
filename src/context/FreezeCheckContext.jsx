@@ -42,7 +42,7 @@ export const FreezeCheckProvider = ({ children }) => {
       }
     };
 
-    const interval = setInterval(checkStatus, 5000); // Check every 5 seconds
+    const interval = setInterval(checkStatus, 600000); // Check every 5 seconds
 
     return () => clearInterval(interval);
   }, []);
