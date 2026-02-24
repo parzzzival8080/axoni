@@ -163,28 +163,6 @@ const articleData = {
       },
       {
         type: 'section',
-        title: 'Steps to Track Your Withdrawal',
-        steps: [
-          {
-            number: 1,
-            content: 'Go to <strong class="text-yellow-600">Assets</strong> > <strong class="text-yellow-600">Transaction History</strong> to view your withdrawal status.'
-          },
-          {
-            number: 2,
-            content: 'Copy the <strong class="text-yellow-600">Transaction Hash (TXID)</strong> from your withdrawal record.'
-          },
-          {
-            number: 3,
-            content: 'Search for your transaction on the appropriate blockchain explorer (e.g., Etherscan for Ethereum, Blockchain.info for Bitcoin).'
-          },
-          {
-            number: 4,
-            content: 'Check the confirmation status on the blockchain explorer. If confirmed, contact your destination wallet support.'
-          }
-        ]
-      },
-      {
-        type: 'section',
         title: 'When to Contact Support',
         steps: [
           {
@@ -206,7 +184,6 @@ const articleData = {
       'Bitcoin transactions typically require 1-6 confirmations, while Ethereum usually requires 12-35 confirmations.',
       'Network fees during peak times can significantly delay transactions if set too low.',
       'Some exchanges and wallets have their own processing times separate from blockchain confirmations.',
-      'Always keep your transaction hash (TXID) for tracking and support purposes.'
     ]
   },
   'select-correct-network': {
