@@ -1,22 +1,23 @@
 import { createContext, useState, useEffect, useContext, useRef } from 'react';
 import Modal from '../components/common/Modal';
+import { API_BASE_URL, API_KEY } from '../config';
 
 const VerifyStatusContext = createContext();
 
 export const useVerifyStatus = () => useContext(VerifyStatusContext);
 
-// Verification status constants (matching API response values)
+// Verification status constants (matching VerifyPage.jsx values)
 const VERIFICATION_STATUS = {
   NOT_STARTED: 'not_started',
   PENDING: 'pending',
-  APPROVED: 'approved',
-  DECLINED: 'declined'
+  VERIFIED: 'verified',
+  REJECTED: 'rejected'
 };
 
 // API configuration
 const API_CONFIG = {
-  KYC_STATUS_BASE_URL: "https://api.axoni.co/api/v1/kyc-status",
-  API_KEY: "5lPMMw7mIuyzQQDjlKJbe0dY",
+  KYC_STATUS_BASE_URL: `${API_BASE_URL}/kyc-status`,
+  API_KEY: API_KEY,
 };
 
 export const VerifyStatusProvider = ({ children }) => {
@@ -65,7 +66,13 @@ export const VerifyStatusProvider = ({ children }) => {
       );
 
       if (!response.ok) {
-        console.log(`KYC status API returned ${response.status}, treating as not started`);
+        if (response.status === 401 || response.status === 403) {
+          console.warn(`KYC status API returned ${response.status}, authentication issue`);
+        } else if (response.status >= 500) {
+          console.error(`KYC status API server error: ${response.status}`);
+        } else {
+          console.log(`KYC status API returned ${response.status}, treating as not started`);
+        }
         setVerificationStatus(VERIFICATION_STATUS.NOT_STARTED);
         return;
       }
@@ -81,11 +88,13 @@ export const VerifyStatusProvider = ({ children }) => {
           case 'pending':
             currentStatus = VERIFICATION_STATUS.PENDING;
             break;
+          case 'verified':
           case 'approved':
-            currentStatus = VERIFICATION_STATUS.APPROVED;
+            currentStatus = VERIFICATION_STATUS.VERIFIED;
             break;
+          case 'rejected':
           case 'declined':
-            currentStatus = VERIFICATION_STATUS.DECLINED;
+            currentStatus = VERIFICATION_STATUS.REJECTED;
             break;
           default:
             currentStatus = VERIFICATION_STATUS.NOT_STARTED;
@@ -97,7 +106,7 @@ export const VerifyStatusProvider = ({ children }) => {
       if (
         (previousVerificationStatus === VERIFICATION_STATUS.PENDING || 
          previousVerificationStatus === VERIFICATION_STATUS.NOT_STARTED) && 
-        currentStatus === VERIFICATION_STATUS.APPROVED
+        currentStatus === VERIFICATION_STATUS.VERIFIED
       ) {
         setShowVerificationModal(true);
       }
@@ -107,7 +116,7 @@ export const VerifyStatusProvider = ({ children }) => {
       setVerificationStatus(currentStatus);
 
       // Update localStorage for backward compatibility
-      const isVerified = currentStatus === VERIFICATION_STATUS.APPROVED;
+      const isVerified = currentStatus === VERIFICATION_STATUS.VERIFIED;
       localStorage.setItem('is_verified', isVerified.toString());
 
       console.log('KYC verification status checked:', currentStatus);
@@ -128,7 +137,7 @@ export const VerifyStatusProvider = ({ children }) => {
     const storedVerifyStatus = localStorage.getItem('is_verified');
     if (storedVerifyStatus !== null) {
       const initialIsVerified = storedVerifyStatus === 'true';
-      const initialStatus = initialIsVerified ? VERIFICATION_STATUS.APPROVED : VERIFICATION_STATUS.NOT_STARTED;
+      const initialStatus = initialIsVerified ? VERIFICATION_STATUS.VERIFIED : VERIFICATION_STATUS.NOT_STARTED;
       setVerificationStatus(initialStatus);
       setPreviousVerificationStatus(initialStatus);
     }
@@ -156,7 +165,7 @@ export const VerifyStatusProvider = ({ children }) => {
 
   const contextValue = {
     verificationStatus,
-    isVerified: verificationStatus === VERIFICATION_STATUS.APPROVED,
+    isVerified: verificationStatus === VERIFICATION_STATUS.VERIFIED,
     checkVerificationStatus,
     isCheckingStatus
   };

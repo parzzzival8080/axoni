@@ -439,7 +439,7 @@ const LoginForm = () => {
         if (isVerified) {
           window.location.href = '/';
         } else {
-          window.location.href = '/';
+          window.location.href = '/account/profile/verify';
         }
       } else {
         // In case 'success' is false but no error was thrown

@@ -8,27 +8,42 @@ import RegistrationSuccessModal from "../components/common/RegistrationSuccessMo
 const SignUpPage = () => {
   const navigate = useNavigate();
 
-  // State for form steps
-  const [currentStep, setCurrentStep] = useState(1);
+  // State for form steps — restore from localStorage on refresh
+  const [currentStep, setCurrentStep] = useState(() => {
+    const savedStep = localStorage.getItem("signupStep");
+    const savedUserId = localStorage.getItem("user_id");
+    // Only restore step if user has a saved user_id (meaning they started registration)
+    if (savedStep && savedUserId) {
+      return parseInt(savedStep, 10);
+    }
+    return 1;
+  });
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-  // State for form values
-  const [formData, setFormData] = useState({
-    country: "",
-    termsAccepted: false,
-    email: "",
-    password: "",
-    confirmPassword: "",
-    fullName: "",
-    phone: "",
-    profilePic: defaultProfileImage,
-    otp: ["", "", "", "", "", ""],
+  // State for form values — restore persisted fields on refresh
+  const [formData, setFormData] = useState(() => {
+    const savedCountry = localStorage.getItem("signupCountry");
+    const savedEmail = localStorage.getItem("tempEmail");
+    return {
+      country: savedCountry || "",
+      termsAccepted: !!savedCountry,
+      email: savedEmail || "",
+      password: "",
+      confirmPassword: "",
+      fullName: "",
+      phone: "",
+      phoneCode: "+1",
+      profilePic: defaultProfileImage,
+      otp: ["", "", "", "", "", ""],
+    };
   });
 
   // State for error and loading
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState(() => {
+    return localStorage.getItem("user_id") || null;
+  });
   const [resendTimer, setResendTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
 
@@ -569,6 +584,8 @@ const SignUpPage = () => {
         setError("Please agree to the terms and conditions");
         return;
       }
+      localStorage.setItem("signupStep", "2");
+      localStorage.setItem("signupCountry", formData.country);
       setCurrentStep(2);
     } else if (step === 2) {
       // Validate step 2
@@ -640,6 +657,7 @@ const SignUpPage = () => {
         // Store initial data
         localStorage.setItem("user_id", data.user_id);
         localStorage.setItem("tempEmail", formData.email.trim().toLowerCase());
+        localStorage.setItem("signupStep", "3");
 
         setCurrentStep(3);
         setResendTimer(60);
@@ -715,6 +733,7 @@ const SignUpPage = () => {
             );
           }
 
+          localStorage.setItem("signupStep", "4");
           setCurrentStep(4);
         } else {
           // Show backend error or fallback error
@@ -820,16 +839,18 @@ const SignUpPage = () => {
       const storedToken =
         localStorage.getItem("authToken") || localStorage.getItem("jwt_token");
 
-      if (!storedUserId) {
+      if (!storedUserId || !storedToken) {
         setError("Session expired. Please try signing up again.");
+        localStorage.removeItem("signupStep");
         setCurrentStep(1);
         return;
       }
 
       // Prepare profile data according to Django API expectations
+      const fullPhoneNumber = `${formData.phoneCode}${formData.phone.trim()}`;
       const profileData = {
         name: formData.fullName.trim(),
-        phone_number: formData.phone.trim(),
+        phone_number: fullPhoneNumber,
         // Add any additional fields that need to be updated
       };
 
@@ -990,7 +1011,7 @@ const SignUpPage = () => {
           const countryPayload = {
             user_id: parseInt(storedUserId),
             country: formData.country,
-            phone_number: formData.phone,
+            phone_number: fullPhoneNumber,
           };
 
           const countryResult = await makeApiCall(
@@ -1083,6 +1104,11 @@ const SignUpPage = () => {
 
       // Success - redirect user
       console.log("Registration completed successfully");
+
+      // Clear signup step persistence
+      localStorage.removeItem("signupStep");
+      localStorage.removeItem("signupCountry");
+      localStorage.removeItem("tempEmail");
 
       // Show success message
       console.log("Registration completed successfully");
@@ -1572,7 +1598,9 @@ const SignUpPage = () => {
                 <div className="flex">
                   <select
                     className="w-24 px-3 py-3 border border-r-0 border-gray-300 rounded-l-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F0B90B] focus:border-transparent text-sm"
-                    defaultValue="+1"
+                    name="phoneCode"
+                    value={formData.phoneCode}
+                    onChange={handleChange}
                   >
                     <option value="+376">+376 (AD)</option>
                     <option value="+374">+374 (AM)</option>

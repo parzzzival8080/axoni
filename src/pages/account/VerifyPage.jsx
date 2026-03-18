@@ -17,15 +17,16 @@ import {
 } from "lucide-react";
 import ProfileNavBar from "../../components/profile/ProfileNavBar";
 import axios from "axios";
+import { API_BASE_URL, API_KEY } from "../../config";
 
 // Configuration constants
 // Update the API_CONFIG with CORS headers
 const API_CONFIG = {
-  KYC_STATUS_BASE_URL: "https://api.axoni.co/api/v1/kyc-status",
+  KYC_STATUS_BASE_URL: `${API_BASE_URL}/kyc-status`,
   KYC_UPLOAD_URL: "https://django.axoni.co/api/user_account/upload-kyc",
   KYC_SEND_DATA_URL:
     "https://django.axoni.co/api/user_account/send-kyc-data",
-  API_KEY: "A20RqFwVktRxxRqrKBtmi6ud",
+  API_KEY: API_KEY,
   MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
   COMPRESSION_THRESHOLD: 2 * 1024 * 1024, // 2MB
   REQUEST_TIMEOUT: 30000, // 30 seconds
@@ -268,6 +269,7 @@ const VerifyPage = () => {
   const [verificationStatus, setVerificationStatus] = useState(
     VERIFICATION_STATUS.NOT_STARTED
   );
+  const [isRetrying, setIsRetrying] = useState(false);
   const [isCheckingStatus, setIsCheckingStatus] = useState(true);
 
   // Camera states
@@ -653,6 +655,9 @@ const VerifyPage = () => {
 
       const result = await response.json();
       console.log("Fetch upload successful:", result);
+      if (result.success === false) {
+        throw new Error(result.message || "Upload was rejected by the server");
+      }
       return true;
     } catch (error) {
       if (error.name === "AbortError") {
@@ -893,6 +898,7 @@ const VerifyPage = () => {
         console.warn("KYC notification failed:", notificationError);
       }
 
+      setIsRetrying(false);
       setVerificationStatus(VERIFICATION_STATUS.PENDING);
       setCurrentStep(6);
 
@@ -1106,8 +1112,9 @@ const VerifyPage = () => {
     };
   }, [fetchVerificationStatus, cleanupImageUrls, checkCameraAvailability]);
 
-  // Sync context verification status with local state
+  // Sync context verification status with local state (skip during retry)
   useEffect(() => {
+    if (isRetrying) return;
     if (
       contextVerificationStatus &&
       contextVerificationStatus !== verificationStatus
@@ -1118,7 +1125,7 @@ const VerifyPage = () => {
       );
       setVerificationStatus(contextVerificationStatus);
     }
-  }, [contextVerificationStatus, verificationStatus]);
+  }, [contextVerificationStatus, verificationStatus, isRetrying]);
 
   // Show loading state while checking verification status
   if (isCheckingStatus) {
@@ -1231,6 +1238,7 @@ const VerifyPage = () => {
           </p>
           <button
             onClick={() => {
+              setIsRetrying(true);
               setVerificationStatus(VERIFICATION_STATUS.NOT_STARTED);
               setCurrentStep(1);
               setIdFront(null);
