@@ -484,8 +484,8 @@ const Hero = () => {
   };
 
   return (
-    <div className="bg-black text-white relative z-0 pt-16 pb-20 md:pb-24 overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-8 md:py-12">
+    <div className="bg-black text-white relative z-0 pt-2 md:pt-16 pb-10 md:pb-24 overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-4 md:py-12">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Render content based on user status */}
           {!isLoggedIn && renderGuestContent()}
@@ -498,7 +498,7 @@ const Hero = () => {
             renderUnverifiedContent()}
           {isLoggedIn && isVerified && renderVerifiedContent()}
 
-          <div className="flex-1 relative">
+          <div className="flex-1 relative hidden md:block">
             <img
               src={mobileApp}
               alt="Mobile Trading App"

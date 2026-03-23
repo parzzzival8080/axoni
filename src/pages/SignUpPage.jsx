@@ -1,12 +1,15 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ChevronLeft } from "lucide-react";
 import Navbar from "../components/common/Navbar";
 import defaultProfileImage from "../assets/assets/default.png";
 import RegistrationSuccessModal from "../components/common/RegistrationSuccessModal";
+import { useIsMobile } from "../hooks/useIsMobile";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   // State for form steps — restore from localStorage on refresh
   const [currentStep, setCurrentStep] = useState(() => {
@@ -1128,7 +1131,16 @@ const SignUpPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-black">
-      <Navbar />
+      {isMobile ? (
+        <div className="flex items-center px-4 h-12 bg-black">
+          <button onClick={() => navigate("/login")} className="flex items-center gap-1 text-white">
+            <ChevronLeft size={20} />
+            <span className="text-sm">Log in</span>
+          </button>
+        </div>
+      ) : (
+        <Navbar />
+      )}
       <div className="flex flex-1 overflow-hidden">
         {/* Left Section (Dark) */}
         <div className="hidden md:flex md:w-2/5 bg-black p-0 justify-center items-center overflow-y-auto">
@@ -1212,7 +1224,7 @@ const SignUpPage = () => {
                   <input
                     type="text"
                     id="country"
-                    className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F0B90B] focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 pr-10 text-base border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F0B90B] focus:border-transparent transition-all duration-200"
                     placeholder={
                       loadingCountries
                         ? "Loading countries..."
@@ -1376,7 +1388,7 @@ const SignUpPage = () => {
                 </label>
                 <input
                   type="email"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F0B90B] focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F0B90B] focus:border-transparent transition-all duration-200"
                   id="email"
                   name="email"
                   placeholder="Enter your email"
@@ -1396,7 +1408,7 @@ const SignUpPage = () => {
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
-                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F0B90B] focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 pr-12 text-base border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F0B90B] focus:border-transparent transition-all duration-200"
                     id="password"
                     name="password"
                     placeholder="Create a password (min 8 characters)"
@@ -1428,7 +1440,7 @@ const SignUpPage = () => {
                 <div className="relative">
                   <input
                     type={showConfirmPassword ? "text" : "password"}
-                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F0B90B] focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 pr-12 text-base border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F0B90B] focus:border-transparent transition-all duration-200"
                     id="confirmPassword"
                     name="confirmPassword"
                     placeholder="Confirm your password"
@@ -1577,7 +1589,7 @@ const SignUpPage = () => {
                 </label>
                 <input
                   type="text"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F0B90B] focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F0B90B] focus:border-transparent transition-all duration-200"
                   id="fullName"
                   name="fullName"
                   placeholder="Enter your full name"

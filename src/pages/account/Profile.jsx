@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom';
 import ProfileNavBar from '../../components/profile/ProfileNavBar';
 import { FiEdit, FiCopy, FiCheck, FiShield } from 'react-icons/fi';
 import axios from 'axios';
+import { useIsMobile } from '../../hooks/useIsMobile';
+import MobileSettingsPanel from '../../components/mobile/MobileSettingsPanel';
 
 const Profile = () => {
+  const isMobile = useIsMobile();
   // Loading and error state
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
@@ -484,6 +487,9 @@ const Profile = () => {
           </div>
         </div>
       )}
+
+      {/* Mobile Settings (dark mode, language/currency) */}
+      {isMobile && <MobileSettingsPanel />}
     </div>
   );
 };

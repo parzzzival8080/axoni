@@ -32,6 +32,18 @@ export default {
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'slide-down': 'slideDown 0.3s ease-out',
+        'slide-up': 'slideUp 0.3s ease-out',
+      },
+      keyframes: {
+        slideDown: {
+          '0%': { transform: 'translateY(-100%)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(100%)' },
+          '100%': { transform: 'translateY(0)' },
+        },
       },
       boxShadow: {
         'okx': '0 4px 6px -1px rgba(0, 0, 0, 0.5)',

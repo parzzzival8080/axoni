@@ -8,7 +8,8 @@ import SubHeader from '../components/spotTrading/SubHeader';
 import FavoritesBar from '../components/spotTrading/FavoritesBar';
 import OrdersSection from '../components/spotTrading/OrdersSection';
 import WalkthroughTrigger from '../components/spotTrading/WalkthroughTrigger';
-import { 
+import { useIsMobile } from '../hooks/useIsMobile';
+import {
   getSpotWallet, 
   fetchAllCoins, 
   getCoinFromCache,
@@ -18,6 +19,7 @@ import {
 import '../components/spotTrading/SpotTrading.css';
 
 const SpotTrading = () => {
+  const isMobile = useIsMobile();
   const [searchParams, setSearchParams] = useSearchParams();
   const [userBalance, setUserBalance] = useState({
     cryptoSpotBalance: 0,
@@ -706,8 +708,8 @@ const SpotTrading = () => {
       </div>
       {renderMobileTradeForm()}
       
-      {/* Walkthrough Trigger */}
-      <WalkthroughTrigger />
+      {/* Walkthrough Trigger — hidden on mobile */}
+      {!isMobile && <WalkthroughTrigger />}
     </div>
   );
 };

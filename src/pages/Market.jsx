@@ -150,10 +150,10 @@ const Market = () => {
     <div className="w-full min-h-screen bg-black text-white pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Title and Subtitle */}
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+        <h1 className="text-2xl md:text-4xl font-bold text-white mb-1 md:mb-2">
           Markets
         </h1>
-        <p className="text-gray-400 mb-8 text-base md:text-lg max-w-2xl">
+        <p className="text-gray-400 mb-4 md:mb-8 text-sm md:text-lg max-w-2xl">
           Live prices, changes, and trading actions for all available markets.
         </p>
 
@@ -220,7 +220,7 @@ const Market = () => {
                 <th className="px-4 py-3 text-right text-xs font-semibold text-gray-400 uppercase tracking-wider">
                   24H Change
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                <th className="px-4 py-3 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider hidden sm:table-cell">
                   Actions
                 </th>
               </tr>
@@ -241,7 +241,7 @@ const Market = () => {
                       <td className="text-right px-4">
                         <div className="h-4 w-12 bg-gray-700 rounded ml-auto"></div>
                       </td>
-                      <td className="text-center px-4">
+                      <td className="text-center px-4 hidden sm:table-cell">
                         <div className="h-6 w-20 bg-gray-700 rounded mx-auto"></div>
                       </td>
                     </tr>
@@ -283,8 +283,17 @@ const Market = () => {
               {!loading &&
                 !error &&
                 filteredCoins.map((coin, idx) => (
-                  <tr key={coin.symbol + (coin.pair_name || "") || idx}>
-                    <td className="flex items-center gap-3 py-2 px-4 min-w-0">
+                  <tr
+                    key={coin.symbol + (coin.pair_name || "") || idx}
+                    className="cursor-pointer sm:cursor-default"
+                    onClick={() => {
+                      if (window.innerWidth < 640 && coin.coin_pair) {
+                        const tradePath = activeMarketTab === "POW" ? "/future-trading" : "/spot-trading";
+                        navigate(`${tradePath}?coin_pair_id=${coin.coin_pair}`);
+                      }
+                    }}
+                  >
+                    <td className="flex items-center gap-3 py-2 px-2 sm:px-4 min-w-0">
                       {coin.logo_path ? (
                         <img
                           src={coin.logo_path}
@@ -292,8 +301,7 @@ const Market = () => {
                           className="w-7 h-7 rounded-full bg-gray-800 object-contain shadow"
                           onError={(e) => {
                             e.target.onerror = null;
-                            e.target.src =
-                              "https://via.placeholder.com/28/222/fff?text=?";
+                            e.target.style.display = "none";
                           }}
                         />
                       ) : (
@@ -303,11 +311,16 @@ const Market = () => {
                           </span>
                         </div>
                       )}
-                      <span className="text-white font-medium truncate max-w-[110px]">
-                        {coin.symbol && coin.pair_name
-                          ? `${coin.symbol}/${coin.pair_name}`
-                          : coin.symbol || coin.name || "-"}
-                      </span>
+                      <div className="flex flex-col">
+                        <span className="text-white font-medium text-sm">
+                          {coin.symbol || coin.name || "-"}
+                        </span>
+                        {coin.pair_name && (
+                          <span className="text-gray-500 text-xs">
+                            /{coin.pair_name}
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="text-white font-medium text-right px-4">
                       {coin.price
@@ -325,7 +338,7 @@ const Market = () => {
                         %
                       </span>
                     </td>
-                    <td className="text-center px-4">
+                    <td className="text-center px-4 hidden sm:table-cell">
                       <button
                         className="text-yellow-500 text-xs font-semibold hover:text-yellow-400 transition-colors px-3 py-1 rounded-full bg-white/5 border border-yellow-500/20 shadow-sm mr-2"
                         onClick={() => {

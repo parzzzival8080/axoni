@@ -30,3 +30,7 @@ yarn-error.log*
 # claude
 /.claude/
 CLAUDE.md
+
+# capacitor native projects
+/ios/
+/android/
