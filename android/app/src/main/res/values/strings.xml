@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Axoni</string>
+    <string name="title_activity_main">Axoni</string>
+    <string name="package_name">co.axoni.app</string>
+    <string name="custom_url_scheme">co.axoni.app</string>
+</resources>
