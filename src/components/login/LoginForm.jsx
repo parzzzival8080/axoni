@@ -434,13 +434,8 @@ const LoginForm = () => {
         // Clear the rewards popup flag so it shows on next homepage visit
         localStorage.removeItem('hasSeenRewardsPopup');
 
-        // Redirect based on verification status
-        const isVerified = localStorage.getItem('is_verified') === 'true';
-        if (isVerified) {
-          window.location.href = '/';
-        } else {
-          window.location.href = '/account/profile/verify';
-        }
+        // Always redirect to home after successful login
+        window.location.href = '/';
       } else {
         // In case 'success' is false but no error was thrown
         setError('Login failed. Please check your credentials and try again.');
@@ -462,15 +457,9 @@ const LoginForm = () => {
   // Check if user is already logged in on component mount
   useEffect(() => {
     const authToken = localStorage.getItem('authToken');
-    const isVerified = localStorage.getItem('is_verified') === 'true';
-    
     if (authToken) {
-      // User is already logged in, redirect based on verification status
-      if (isVerified) {
-        navigate('/spot-trading');
-      } else {
-        navigate('/account/profile/verify');
-      }
+      // User is already logged in, redirect to home
+      navigate('/');
     }
   }, [navigate]);
 
