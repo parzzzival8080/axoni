@@ -14,7 +14,7 @@
     
     --futures-buy-color: #00b897;
     --futures-sell-color: #f23645;
-    --futures-warning-color: #f0b90b;
+    --futures-warning-color: #F5A623;
     /* --futures-accent-color: #3772FF; */
     
     /* Status colors with transparency */
@@ -700,7 +700,7 @@
 }
 
 .future-trading-container .pending-status {
-    color: #f0b90b !important;
+    color: #F5A623 !important;
 }
 
 .future-trading-container .filled-status {

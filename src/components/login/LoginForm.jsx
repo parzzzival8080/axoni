@@ -434,13 +434,8 @@ const LoginForm = () => {
         // Clear the rewards popup flag so it shows on next homepage visit
         localStorage.removeItem('hasSeenRewardsPopup');
 
-        // Redirect based on verification status
-        const isVerified = localStorage.getItem('is_verified') === 'true';
-        if (isVerified) {
-          window.location.href = '/';
-        } else {
-          window.location.href = '/account/profile/verify';
-        }
+        // Always redirect to home after successful login
+        window.location.href = '/';
       } else {
         // In case 'success' is false but no error was thrown
         setError('Login failed. Please check your credentials and try again.');
@@ -462,15 +457,9 @@ const LoginForm = () => {
   // Check if user is already logged in on component mount
   useEffect(() => {
     const authToken = localStorage.getItem('authToken');
-    const isVerified = localStorage.getItem('is_verified') === 'true';
-    
     if (authToken) {
-      // User is already logged in, redirect based on verification status
-      if (isVerified) {
-        navigate('/spot-trading');
-      } else {
-        navigate('/account/profile/verify');
-      }
+      // User is already logged in, redirect to home
+      navigate('/');
     }
   }, [navigate]);
 
@@ -509,7 +498,7 @@ const LoginForm = () => {
               </a>
             </div>
 
-            <h3 className="text-xl font-medium text-white mb-4">Reset your password</h3>
+            <h3 className="text-xl font-semibold text-white mb-6">Reset your password</h3>
 
             {/* Only show one message at a time - prioritize error */}
             {error ? (
@@ -531,13 +520,13 @@ const LoginForm = () => {
                     value={resetEmail}
                     onChange={(e) => setResetEmail(e.target.value)}
                     required
-                    className="w-full bg-gray-100 border border-gray-300 rounded-md p-3 text-black focus:outline-none focus:ring-2 focus:ring-gray-500"
+                    className="w-full bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg p-3 text-white placeholder-[#5E6673] focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-transparent"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-[#F0B90B] text-white font-medium py-3 rounded-md hover:bg-[#F0B90B] transition-colors"
+                  className="w-full bg-[#2EBD85] text-white font-medium py-3 rounded-lg hover:bg-[#259A6C] transition-colors"
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Send OTP'}
@@ -554,7 +543,7 @@ const LoginForm = () => {
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
                     required
-                    className="w-full bg-gray-100 border border-gray-300 rounded-md p-3 text-black focus:outline-none focus:ring-2 focus:ring-gray-500"
+                    className="w-full bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg p-3 text-white placeholder-[#5E6673] focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-transparent"
                   />
                 </div>
 
@@ -574,7 +563,7 @@ const LoginForm = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-[#F0B90B] text-white font-medium py-3 rounded-md hover:bg-[#F0B90B] transition-colors"
+                  className="w-full bg-[#2EBD85] text-white font-medium py-3 rounded-lg hover:bg-[#259A6C] transition-colors"
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Verify OTP'}
@@ -598,7 +587,7 @@ const LoginForm = () => {
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     required
-                    className="w-full bg-gray-100 border border-gray-300 rounded-md p-3 text-black focus:outline-none focus:ring-2 focus:ring-gray-500"
+                    className="w-full bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg p-3 text-white placeholder-[#5E6673] focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-transparent"
                   />
                 </div>
 
@@ -609,13 +598,13 @@ const LoginForm = () => {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
-                    className="w-full bg-gray-100 border border-gray-300 rounded-md p-3 text-black focus:outline-none focus:ring-2 focus:ring-gray-500"
+                    className="w-full bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg p-3 text-white placeholder-[#5E6673] focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-transparent"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-[#F0B90B] text-white font-medium py-3 rounded-md hover:bg-[#F0B90B] transition-colors"
+                  className="w-full bg-[#2EBD85] text-white font-medium py-3 rounded-lg hover:bg-[#259A6C] transition-colors"
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Reset Password'}
@@ -624,7 +613,7 @@ const LoginForm = () => {
             )}
 
             <div className="text-xs text-center text-gray-400 mt-8">
-              This site is protected by Google reCAPTCHA to ensure you're not a bot. <a href="#" className="text-yellow-500 hover:text-yellow-400">Learn more</a>
+              This site is protected by Google reCAPTCHA to ensure you're not a bot. <a href="#" className="text-[#2EBD85] hover:text-[#259A6C]">Learn more</a>
             </div>
           </div>
         ) : (
@@ -659,7 +648,7 @@ const LoginForm = () => {
 
             <button
               type="submit"
-              className="w-full bg-[#F0B90B] text-white font-bold py-3 px-4 rounded-full hover:bg-[#F0B90B] transition-colors"
+              className="w-full bg-[#2EBD85] text-white font-semibold py-3 px-4 rounded-lg hover:bg-[#259A6C] transition-colors"
               disabled={loading}
             >
               {loading ? 'Processing...' : showPassword ? 'Log in' : 'Next'}

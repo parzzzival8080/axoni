@@ -173,25 +173,25 @@ const MobileHomeScreen = () => {
       <div className="px-4 pb-2 grid grid-cols-4 gap-2">
         <button onClick={() => navigate("/deposit")} className="flex flex-col items-center gap-1.5 py-2">
           <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center">
-            <ArrowDownToLine size={18} className="text-[#F0B90B]" />
+            <ArrowDownToLine size={18} className="text-[#2EBD85]" />
           </div>
           <span className="text-[11px] text-gray-300">Deposit</span>
         </button>
         <button onClick={() => navigate("/withdraw")} className="flex flex-col items-center gap-1.5 py-2">
           <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center">
-            <ArrowUpFromLine size={18} className="text-[#F0B90B]" />
+            <ArrowUpFromLine size={18} className="text-[#2EBD85]" />
           </div>
           <span className="text-[11px] text-gray-300">Withdraw</span>
         </button>
         <button onClick={() => navigate("/conversion")} className="flex flex-col items-center gap-1.5 py-2">
           <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center">
-            <ArrowLeftRight size={18} className="text-[#F0B90B]" />
+            <ArrowLeftRight size={18} className="text-[#2EBD85]" />
           </div>
           <span className="text-[11px] text-gray-300">Convert</span>
         </button>
         <button onClick={() => navigate("/earn")} className="flex flex-col items-center gap-1.5 py-2">
           <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center">
-            <TrendingUp size={18} className="text-[#F0B90B]" />
+            <TrendingUp size={18} className="text-[#2EBD85]" />
           </div>
           <span className="text-[11px] text-gray-300">Earn</span>
         </button>
@@ -229,7 +229,7 @@ const MobileHomeScreen = () => {
                 key={index}
                 onClick={() => setActiveBanner(index)}
                 className={`rounded-full transition-all ${
-                  index === activeBanner ? "w-4 h-1.5 bg-[#F0B90B]" : "w-1.5 h-1.5 bg-gray-600"
+                  index === activeBanner ? "w-4 h-1.5 bg-[#2EBD85]" : "w-1.5 h-1.5 bg-gray-600"
                 }`}
               />
             ))}

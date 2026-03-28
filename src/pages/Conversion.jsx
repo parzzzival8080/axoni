@@ -344,7 +344,7 @@ const Conversion = () => {
     <div className="min-h-screen bg-black text-white">
       {/* Header */}
       <div className="flex flex-col items-center justify-center text-center py-12 bg-black">
-        <h1 className="text-5xl font-bold mb-3 text-[#F0B90B]">Convert</h1>
+        <h1 className="text-5xl font-bold mb-3 text-[#2EBD85]">Convert</h1>
         <div className="flex items-center space-x-3 text-gray-500 text-sm">
           <span>Zero trading fees</span>
           <span className="w-1 h-1 rounded-full bg-gray-500"></span>
@@ -408,7 +408,7 @@ const Conversion = () => {
             ) : (
               <div className="flex items-center">
                 <span>Available: {formatNumber(balance.spotWallet)} {fromCurrency.symbol}</span>
-                <button className="ml-2 text-[#F0B90B] hover:underline">Deposit</button>
+                <button className="ml-2 text-[#2EBD85] hover:underline">Deposit</button>
               </div>
             )}
           </div>
@@ -451,7 +451,7 @@ const Conversion = () => {
         
         {/* Convert button */}
         <button 
-          className={`w-full py-3.5 px-6 rounded-full font-medium text-white transition-colors duration-200 ${isSubmitting || (!isAuthenticated ? '' : (!fromAmount || !toAmount || !!conversionError)) ? 'bg-gray-700 cursor-not-allowed' : 'bg-[#F0B90B] hover:bg-[#F0B90B]'}`}
+          className={`w-full py-3.5 px-6 rounded-full font-medium text-white transition-colors duration-200 ${isSubmitting || (!isAuthenticated ? '' : (!fromAmount || !toAmount || !!conversionError)) ? 'bg-gray-700 cursor-not-allowed' : 'bg-[#2EBD85] hover:bg-[#2EBD85]'}`}
           onClick={handleConvert}
           disabled={isSubmitting || (!isAuthenticated ? false : (!fromAmount || !toAmount || !!conversionError))}
         >
@@ -476,8 +476,8 @@ const Conversion = () => {
       <div className="max-w-4xl mx-auto px-4 mb-16">
         <div className="flex flex-wrap justify-center gap-16 md:gap-24">
           <div className="flex flex-col items-center">
-            <div className="w-12 h-12 rounded-full bg-[#F0B90B]/10 flex items-center justify-center mb-3">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#F0B90B]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="w-12 h-12 rounded-full bg-[#2EBD85]/10 flex items-center justify-center mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#2EBD85]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
@@ -485,8 +485,8 @@ const Conversion = () => {
           </div>
           
           <div className="flex flex-col items-center">
-            <div className="w-12 h-12 rounded-full bg-[#F0B90B]/10 flex items-center justify-center mb-3">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#F0B90B]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="w-12 h-12 rounded-full bg-[#2EBD85]/10 flex items-center justify-center mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#2EBD85]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
@@ -494,8 +494,8 @@ const Conversion = () => {
           </div>
           
           <div className="flex flex-col items-center">
-            <div className="w-12 h-12 rounded-full bg-[#F0B90B]/10 flex items-center justify-center mb-3">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#F0B90B]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="w-12 h-12 rounded-full bg-[#2EBD85]/10 flex items-center justify-center mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#2EBD85]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
               </svg>
             </div>
@@ -668,7 +668,7 @@ const Conversion = () => {
             <div className="p-4 overflow-y-auto max-h-[calc(80vh-120px)]">
               {historyLoading ? (
                 <div className="flex justify-center items-center py-10">
-                  <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#F0B90B]"></div>
+                  <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#2EBD85]"></div>
                 </div>
               ) : historyError ? (
                 <div className="text-red-500 text-center py-6">{historyError}</div>

@@ -1028,7 +1028,7 @@ const Navbar = () => {
               <div className="mobile-auth-links p-4 border-b border-gray-700">
                 <Link
                   to="/login"
-                  className="block text-center py-3 px-4 mb-2 text-white bg-yellow-500 hover:bg-yellow-600 rounded-md text-sm font-medium transition-colors"
+                  className="block text-center py-3 px-4 mb-2 text-white bg-[#2EBD85] hover:bg-[#259A6C] rounded-md text-sm font-medium transition-colors"
                   onClick={toggleMobileMenu}
                 >
                   Log In

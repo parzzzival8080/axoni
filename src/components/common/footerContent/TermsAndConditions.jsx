@@ -100,7 +100,7 @@ const TermsAndConditions = () => {
                           }}
                           className={`w-full text-left p-2 rounded text-sm transition-colors ${
                             activeSection === item.id
-                              ? 'bg-yellow-50 text-[#F0B90B] font-medium'
+                              ? 'bg-yellow-50 text-[#2EBD85] font-medium'
                               : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                           }`}
                         >
@@ -423,7 +423,7 @@ const TermsAndConditions = () => {
                       onClick={() => scrollToSection(item.id)}
                       className={`w-full text-left py-1.5 px-2 rounded text-sm transition-colors block ${
                         activeSection === item.id
-                          ? 'bg-yellow-50 text-[#F0B90B] font-medium'
+                          ? 'bg-yellow-50 text-[#2EBD85] font-medium'
                           : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                       }`}
                     >

@@ -143,7 +143,7 @@ nav {
 }
 
 .green {
-    color: #F0B90B;
+    color: #2EBD85;
 }
 
 .red {
@@ -258,7 +258,7 @@ nav {
   margin-left: 3px;
   font-weight: 500;
 }
-.fav-change.green { color: #F0B90B; }
+.fav-change.green { color: #2EBD85; }
 .fav-change.red { color: #F23645; }
 .fav-price {
   color: #8A8A8A;
@@ -1725,12 +1725,12 @@ body, html {
     
     --buy-color: #00b897;
     --sell-color: #f23645;
-    --warning-color: #f0b90b;
+    --warning-color: #F5A623;
     --accent-color: #4B4DED;
     
     --buy-bg: #00b57420;
     --sell-bg: #f2364520;
-    --warning-bg: #f0b90b20;
+    --warning-bg: #F5A62320;
     
     --transition-speed: 0.2s;
 }

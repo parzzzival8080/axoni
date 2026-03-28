@@ -125,7 +125,7 @@ const Security = () => {
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="px-6 py-3 bg-[#F0B90B] text-white rounded-md hover:bg-yellow-600 transition-colors"
+              className="px-6 py-3 bg-[#2EBD85] text-white rounded-md hover:bg-yellow-600 transition-colors"
             >
               Try Again
             </button>

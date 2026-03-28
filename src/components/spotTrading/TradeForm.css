@@ -1,7 +1,7 @@
 /* TradeForm - Spot Trading Specific Styles */
 
 .spot-trading-container .trade-form {
-  --buy-color: #F0B90B;
+  --buy-color: #2EBD85;
   --sell-color: #F23645;
   --primary-bg: #000000;
   --secondary-bg: #1A1A1A;
@@ -11,8 +11,8 @@
   --text-primary: #FFFFFF;
   --text-secondary: #8A8A8A;
   --text-tertiary: #555555;
-  --warning-color: #F0B90B;
-  --success-color: #F0B90B;
+  --warning-color: #2EBD85;
+  --success-color: #2EBD85;
   --error-color: #F23645;
   --divider-color: #232323;
   --spacing-xs: 4px;
@@ -153,7 +153,7 @@
 
 .spot-trading-container .trade-form .buy-sell-tabs .tab.buy.active {
   background: linear-gradient(to bottom, rgba(248, 135, 38, 0.3), rgba(248, 135, 38, 0.2));
-  color: #F0B90B;
+  color: #2EBD85;
   font-weight: var(--font-weight-bold);
 }
 
@@ -270,7 +270,7 @@
 
 .spot-trading-container .trade-form .trade-button.buy,
 .spot-trading-container .trade-form .buy-btn {
-  background: linear-gradient(135deg, #F0B90B, #F0B90B) !important;
+  background: linear-gradient(135deg, #2EBD85, #2EBD85) !important;
   color: white !important;
 }
 
@@ -556,7 +556,7 @@
   height: 20px;
   border-radius: 50%;
   background: #FFFFFF;
-  border: 2px solid var(--slider-color, #F0B90B);
+  border: 2px solid var(--slider-color, #2EBD85);
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   transition: all 0.2s ease;
@@ -580,7 +580,7 @@
   height: 20px;
   border-radius: 50%;
   background: #FFFFFF;
-  border: 2px solid var(--slider-color, #F0B90B);
+  border: 2px solid var(--slider-color, #2EBD85);
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   transition: all 0.2s ease;
@@ -642,7 +642,7 @@
 }
 
 .spot-trading-container .trade-form .buy-btn {
-  background: #F0B90B !important;
+  background: #2EBD85 !important;
   color: #fff !important;
   border-radius: 8px !important;
   border: none;
@@ -662,49 +662,6 @@
 }
 .spot-trading-container .trade-form .sell-btn:hover {
   background: #FF5B6B !important;
-}
-
-/* --- OKX-style Buy/Sell Tabs --- */
-.spot-trading-container .trade-form .okx-form-tabs {
-  display: flex;
-  gap: 0;
-  margin-bottom: 14px;
-  background: transparent;
-  border-radius: 18px;
-  overflow: hidden;
-  height: 38px;
-}
-.spot-trading-container .trade-form .okx-tab {
-  flex: 1;
-  padding: 0;
-  font-size: 15px;
-  font-weight: 600;
-  border: none;
-  background: #232323;
-  color: #8A8A8A;
-  cursor: pointer;
-  transition: background 0.18s, color 0.18s;
-  border-radius: 18px;
-  height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.spot-trading-container .trade-form .okx-tab.buy.active {
-  background: #00B574;
-  color: #fff;
-  box-shadow: 0 2px 8px 0 rgba(0,181,116,0.08);
-  z-index: 1;
-}
-.spot-trading-container .trade-form .okx-tab.sell.active {
-  background: #F23645;
-  color: #fff;
-  box-shadow: 0 2px 8px 0 rgba(242,54,69,0.10);
-  z-index: 1;
-}
-.spot-trading-container .trade-form .okx-tab:not(.active):hover {
-  background: #232323cc;
-  color: #fff;
 }
 
 /* Pill-shaped Login Button Override */
@@ -779,40 +736,9 @@
   border-color: #23262f !important;
 }
 
-/* FORCE pill shape for spot login button */
+/* Pill shape for spot login button */
 .spot-login-pill-btn, .spot-login-pill-btn *, .trade-form .spot-login-pill-btn, .trade-form .spot-login-pill-btn * {
   border-radius: 9999px !important;
-  -webkit-border-radius: 9999px !important;
-  -moz-border-radius: 9999px !important;
-  -ms-border-radius: 9999px !important;
-  -o-border-radius: 9999px !important;
-}
-
-.spot-login-pill-btn {
-  width: 90% !important;
-  max-width: 320px !important;
-  height: 48px !important;
-  margin: 20px auto 10px auto !important;
-  display: block !important;
-  font-weight: 700 !important;
-  font-size: 16px !important;
-  letter-spacing: 0.5px !important;
-  text-transform: uppercase !important;
-  background-color: #fff !important;
-  color: #181A20 !important;
-  border: 1.5px solid #fff !important;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15) !important;
-  cursor: pointer !important;
-  outline: none !important;
-  overflow: hidden !important;
-  transition: background 0.2s, color 0.2s;
-  z-index: 9999 !important;
-  position: relative !important;
-}
-.spot-login-pill-btn:hover {
-  background: #23262f !important;
-  color: #fff !important;
-  border-color: #23262f !important;
 }
 
 @keyframes slideIn {

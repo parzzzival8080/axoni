@@ -23,157 +23,26 @@ import {
   getNetworkDescription,
 } from "../../utils/addressValidation";
 
+import { Spinner, ChevronDownIcon, ChevronRightIcon, SearchIcon, TimesIcon, ShieldCheckIcon, ImageWithFallback } from "../../components/common/Icons";
+
 // Custom scrollbar styles
 const scrollbarStyles = `
   .custom-scrollbar::-webkit-scrollbar {
     width: 8px;
   }
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: #1E1E1E;
     border-radius: 4px;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
+    background: #2A2A2A;
+    border: 1px solid #3A3A3A;
     border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #f5f5f5;
+    background: #3A3A3A;
   }
 `;
-
-// Simple SVG Loader/Spinner
-const Spinner = () => (
-  <div className="flex justify-center items-center p-4">
-    <svg
-      className="animate-spin h-6 w-6 text-gray-600"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-    >
-      <circle
-        className="opacity-25"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="4"
-      ></circle>
-      <path
-        className="opacity-75"
-        fill="currentColor"
-        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-      ></path>
-    </svg>
-  </div>
-);
-
-// Simple SVG Icon Components
-const ChevronDownIcon = () => (
-  <svg
-    className="w-5 h-5 text-gray-500"
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      d="M19 9l-7 7-7-7"
-    ></path>
-  </svg>
-);
-
-const ChevronRightIcon = () => (
-  <svg
-    className="w-4 h-4 ml-1"
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      d="M9 5l7 7-7 7"
-    ></path>
-  </svg>
-);
-
-const SearchIcon = () => (
-  <svg
-    className="w-5 h-5 text-gray-400 mr-2"
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-    ></path>
-  </svg>
-);
-
-const TimesIcon = () => (
-  <svg
-    className="w-4 h-4"
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      d="M6 18L18 6M6 6l12 12"
-    ></path>
-  </svg>
-);
-
-const ShieldCheckIcon = () => (
-  <svg
-    className="w-6 h-6 text-yellow-500"
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-    ></path>
-  </svg>
-);
-
-// Fallback Image Component
-const ImageWithFallback = ({ src, alt, className, symbol }) => {
-  const [error, setError] = useState(false);
-  const handleImageError = () => setError(true);
-  useEffect(() => setError(false), [src]); // Reset error on src change
-
-  if (error || !src) {
-    return (
-      <span
-        className={`${className} flex items-center justify-center bg-gray-300 text-gray-600 font-bold text-xs rounded-full`}
-      >
-        {symbol?.substring(0, 1)?.toUpperCase() || "?"}
-      </span>
-    );
-  }
-  return (
-    <img src={src} alt={alt} className={className} onError={handleImageError} />
-  );
-};
 
 // --- Main Withdrawal Component ---
 
@@ -1298,7 +1167,7 @@ function withdraw() {
                         !addressValidation.isValid ||
                         addressValidation.error
                       }
-                      className="w-full h-11 flex items-center justify-center px-4 py-2 bg-[#F0B90B] text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F0B90B] hover:bg-[#F0B90B] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="w-full h-11 flex items-center justify-center px-4 py-2 bg-[#2EBD85] text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2EBD85] hover:bg-[#2EBD85] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                       {isSubmitting || isSendingOtp ? <Spinner /> : "Next"}
                     </button>
@@ -1419,7 +1288,7 @@ function withdraw() {
                             <button
                               onClick={handleVerifyOtp}
                               disabled={isVerifyingOtp || otpCode.length !== 6}
-                              className="flex-1 h-11 flex items-center justify-center px-4 py-2 bg-[#F0B90B] text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F0B90B] hover:bg-[#F0B90B] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                              className="flex-1 h-11 flex items-center justify-center px-4 py-2 bg-[#2EBD85] text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2EBD85] hover:bg-[#2EBD85] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                             >
                               {isVerifyingOtp ? (
                                 <Spinner />

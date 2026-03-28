@@ -10,7 +10,7 @@ const Legal = () => {
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Licenses, Registrations and Other Legal Matters
             </h1>
-            <h2 className="text-2xl font-semibold text-[#F0B90B] mb-6">
+            <h2 className="text-2xl font-semibold text-[#2EBD85] mb-6">
               Licenses and Registrations
             </h2>
             <p className="text-lg text-gray-300 mb-8 leading-relaxed">
@@ -29,8 +29,8 @@ const Legal = () => {
           {/* Regional Licenses */}
           <div className="space-y-12">
             {/* France */}
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • France
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -38,7 +38,7 @@ const Legal = () => {
                   AXONI Markets Ltd has been granted registration as a{" "}
                   <a
                     href="https://www.amf-france.org/en"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -47,7 +47,7 @@ const Legal = () => {
                   by the{" "}
                   <a
                     href="https://www.amf-france.org/en"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -66,8 +66,8 @@ const Legal = () => {
             </div>
 
             {/* Lithuania */}
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Lithuania
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -75,7 +75,7 @@ const Legal = () => {
                   AXONI UAB S.A. has been granted a{" "}
                   <a
                     href="https://www.lb.lt/en/"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -84,7 +84,7 @@ const Legal = () => {
                   registration by the{" "}
                   <a
                     href="https://www.registrucentras.lt/en/"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -101,8 +101,8 @@ const Legal = () => {
             </div>
 
             {/* Poland */}
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Poland
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -110,7 +110,7 @@ const Legal = () => {
                   AXONI (Poland) Sp.z.o.o has obtained a{" "}
                   <a
                     href="#"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                   >
                     Virtual Asset Service Provider (VASP)
                   </a>{" "}
@@ -125,8 +125,8 @@ const Legal = () => {
             </div>
 
             {/* Italy */}
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Italy
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -144,8 +144,8 @@ const Legal = () => {
             </div>
 
             {/* Spain */}
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Spain
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -153,7 +153,7 @@ const Legal = () => {
                   AXONI (Spain) Technologies, has obtained a{" "}
                   <a
                     href="https://www.bde.es/f/webbde/INF/MenuHorizontal/Normativa/Circulares_y_guias_especializadas/Ficheros/Circular_1_2021_en.pdf"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -162,7 +162,7 @@ const Legal = () => {
                   license under PSAV from the
                   <a
                     href="https://www.bde.es/wbe/en/"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -177,8 +177,8 @@ const Legal = () => {
             </div>
 
             {/* Kazakhstan */}
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Kazakhstan
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -187,7 +187,7 @@ const Legal = () => {
                   1 license at an{" "}
                   <a
                     href="#"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                   >
                     Astana International Financial Centre
                   </a>{" "}
@@ -200,8 +200,8 @@ const Legal = () => {
             </div>
 
             {/* Australia */}
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Australia
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -209,7 +209,7 @@ const Legal = () => {
                   AXONI Australia Derivatives Pty Ltd holds an{" "}
                   <a
                     href="https://asic.gov.au/for-business/your-business/financial-services/afsl/"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -218,7 +218,7 @@ const Legal = () => {
                   (AFSL) to provide derivative intermediary services to{" "}
                   <a
                     href="https://asic.gov.au/regulatory-resources/financial-services/giving-financial-product-advice/wholesale-and-retail-clients/"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -227,7 +227,7 @@ const Legal = () => {
                   . AFSL 001317. AXONI Australia and its{" "}
                   <a
                     href="https://asic.gov.au/for-business/your-business/financial-services/afsl/authorised-representatives/"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -237,7 +237,7 @@ const Legal = () => {
                   Further details about AFSL can be obtained from{" "}
                   <a
                     href="https://asic.gov.au/"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -249,7 +249,7 @@ const Legal = () => {
                   AXONI (Australia) is registered as a reporting entity with the{" "}
                   <a
                     href="https://www.austrac.gov.au/"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -261,8 +261,8 @@ const Legal = () => {
             </div>
 
             {/* Singapore */}
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Singapore
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -270,7 +270,7 @@ const Legal = () => {
                   As per{" "}
                   <a
                     href="https://www.mas.gov.sg/"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -279,7 +279,7 @@ const Legal = () => {
                   (MAS){" "}
                   <a
                     href="https://www.mas.gov.sg/regulation/guidelines"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -288,7 +288,7 @@ const Legal = () => {
                   for the provision of{" "}
                   <a
                     href="https://www.mas.gov.sg/regulation/explainers/explainer-on-digital-payment-tokens"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -301,8 +301,8 @@ const Legal = () => {
             </div>
 
             {/* Netherlands and Amsterdam */}
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Netherlands & Amsterdam
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -314,7 +314,7 @@ const Legal = () => {
                   the official DNB register:
                   <a
                     href="https://www.dnb.nl/en/cryptoserviceproviders/"
-                    className="text-[#F0B90B] underline hover:text-yellow-400 ml-1"
+                    className="text-[#2EBD85] underline hover:text-yellow-400 ml-1"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -325,8 +325,8 @@ const Legal = () => {
             </div>
 
             {/* Malaysia */}
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Malaysia
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -335,7 +335,7 @@ const Legal = () => {
                   Asset Exchange) by the
                   <a
                     href="https://www.sc.com.my/"
-                    className="text-[#F0B90B] underline hover:text-yellow-400 ml-1"
+                    className="text-[#2EBD85] underline hover:text-yellow-400 ml-1"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -349,8 +349,8 @@ const Legal = () => {
             </div>
 
             {/* British Virgin Islands */}
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • British Virgin Islands
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -358,7 +358,7 @@ const Legal = () => {
                   AXONI has obtained the required{" "}
                   <a
                     href="https://www.bvifsc.vg/"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -367,7 +367,7 @@ const Legal = () => {
                   (VASP) registration in{" "}
                   <a
                     href="https://www.bvifsc.vg/"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -380,8 +380,8 @@ const Legal = () => {
             </div>
 
             {/* Dubai */}
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Dubai
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -390,7 +390,7 @@ const Legal = () => {
                   the{" "}
                   <a
                     href="https://www.vara.ae/"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -403,8 +403,8 @@ const Legal = () => {
             </div>
 
             {/* Kazakhstan */}
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Kazakhstan
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -413,7 +413,7 @@ const Legal = () => {
                   1 license at an{" "}
                   <a
                     href="https://aifc.kz/"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -422,7 +422,7 @@ const Legal = () => {
                   by the{" "}
                   <a
                     href="https://www.afsa.kz/"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -435,8 +435,8 @@ const Legal = () => {
               </div>
             </div>
 
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Luxembourg
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -447,7 +447,7 @@ const Legal = () => {
                   registration and supervision by the{" "}
                   <a
                     href="https://www.cssf.lu"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -458,8 +458,8 @@ const Legal = () => {
               </div>
             </div>
 
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Czech Republic
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -470,7 +470,7 @@ const Legal = () => {
                   ongoing compliance obligations under the oversight of the{" "}
                   <a
                     href="https://www.cnb.cz/en/"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -481,8 +481,8 @@ const Legal = () => {
               </div>
             </div>
 
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Denmark
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -493,7 +493,7 @@ const Legal = () => {
                   registered and supervised by the{" "}
                   <a
                     href="https://www.finanstilsynet.dk/en"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -504,8 +504,8 @@ const Legal = () => {
               </div>
             </div>
 
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Finland
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -515,7 +515,7 @@ const Legal = () => {
                   registration and supervision by the{" "}
                   <a
                     href="https://www.finanssivalvonta.fi/en/"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -526,8 +526,8 @@ const Legal = () => {
               </div>
             </div>
 
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Germany
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -538,7 +538,7 @@ const Legal = () => {
                   under the supervision of{" "}
                   <a
                     href="https://www.bafin.de/EN"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -549,8 +549,8 @@ const Legal = () => {
               </div>
             </div>
 
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Greece
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -560,7 +560,7 @@ const Legal = () => {
                   obligations, under the oversight of the{" "}
                   <a
                     href="https://www.hcmc.gr/en"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -571,8 +571,8 @@ const Legal = () => {
               </div>
             </div>
 
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Hungary
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -582,7 +582,7 @@ const Legal = () => {
                   supervision of the{" "}
                   <a
                     href="https://www.mnb.hu/en"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -593,8 +593,8 @@ const Legal = () => {
               </div>
             </div>
 
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Portugal
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -604,7 +604,7 @@ const Legal = () => {
                   under the supervision of the{" "}
                   <a
                     href="https://www.bportugal.pt/en"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -615,8 +615,8 @@ const Legal = () => {
               </div>
             </div>
 
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Romania
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -626,7 +626,7 @@ const Legal = () => {
                   oversight by the{" "}
                   <a
                     href="https://www.asfromania.ro"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -637,8 +637,8 @@ const Legal = () => {
               </div>
             </div>
 
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Sweden
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -648,7 +648,7 @@ const Legal = () => {
                   entities are supervised by{" "}
                   <a
                     href="https://www.fi.se/en/"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -657,7 +657,7 @@ const Legal = () => {
                   with AML/CTF oversight involving{" "}
                   <a
                     href="https://polisen.se/en/laws-and-regulations/financial-intelligence/"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -668,8 +668,8 @@ const Legal = () => {
               </div>
             </div>
 
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Switzerland
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -679,7 +679,7 @@ const Legal = () => {
                   regulations, under the oversight of{" "}
                   <a
                     href="https://www.finma.ch/en/"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -690,8 +690,8 @@ const Legal = () => {
               </div>
             </div>
 
-            <div className="border-l-4 border-[#F0B90B] pl-6">
-              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+            <div className="border-l-4 border-[#2EBD85] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Belgium
               </h3>
               <div className="space-y-4 text-gray-300">
@@ -701,7 +701,7 @@ const Legal = () => {
                   the supervision of the{" "}
                   <a
                     href="https://www.fsma.be/en"
-                    className="text-[#F0B90B] underline hover:text-yellow-400"
+                    className="text-[#2EBD85] underline hover:text-yellow-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -714,7 +714,7 @@ const Legal = () => {
 
             {/* Other Legal Matters */}
             <div className="border-t border-gray-700 pt-8">
-              <h2 className="text-2xl font-semibold text-[#F0B90B] mb-6">
+              <h2 className="text-2xl font-semibold text-[#2EBD85] mb-6">
                 Other Legal Matters
               </h2>
 
@@ -777,7 +777,7 @@ const Legal = () => {
                         • Legal Department:{" "}
                         <a
                           href="mailto:legal@axoni.co"
-                          className="text-[#F0B90B] underline hover:text-yellow-400"
+                          className="text-[#2EBD85] underline hover:text-yellow-400"
                         >
                           legal@axoni.co
                         </a>
@@ -786,7 +786,7 @@ const Legal = () => {
                         • Compliance Team:{" "}
                         <a
                           href="mailto:compliance@axoni.co"
-                          className="text-[#F0B90B] underline hover:text-yellow-400"
+                          className="text-[#2EBD85] underline hover:text-yellow-400"
                         >
                           compliance@axoni.co
                         </a>
@@ -795,7 +795,7 @@ const Legal = () => {
                         • General Support:{" "}
                         <a
                           href="mailto:support@axoni.co"
-                          className="text-[#F0B90B] underline hover:text-yellow-400"
+                          className="text-[#2EBD85] underline hover:text-yellow-400"
                         >
                           support@axoni.co
                         </a>

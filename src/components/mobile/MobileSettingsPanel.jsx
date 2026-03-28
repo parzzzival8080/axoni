@@ -21,7 +21,7 @@ const MobileSettingsPanel = () => {
           >
             <div className="flex items-center gap-3">
               {isDark ? (
-                <Moon size={20} className="text-[#F0B90B]" />
+                <Moon size={20} className="text-[#2EBD85]" />
               ) : (
                 <Sun size={20} className="text-gray-600" />
               )}
@@ -31,7 +31,7 @@ const MobileSettingsPanel = () => {
             </div>
             <div
               className={`w-10 h-6 rounded-full relative transition-colors ${
-                isDark ? "bg-[#F0B90B]" : "bg-gray-300"
+                isDark ? "bg-[#2EBD85]" : "bg-gray-300"
               }`}
             >
               <div

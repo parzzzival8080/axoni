@@ -71,16 +71,16 @@ const MobileTabBar = () => {
                     }`}
                   >
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                      active ? "bg-[#F0B90B]/20" : "bg-gray-800"
+                      active ? "bg-[#2EBD85]/20" : "bg-gray-800"
                     }`}>
-                      <Icon size={20} className={active ? "text-[#F0B90B]" : "text-gray-300"} />
+                      <Icon size={20} className={active ? "text-[#2EBD85]" : "text-gray-300"} />
                     </div>
                     <div className="flex-1 text-left">
                       <p className={`text-sm font-medium ${active ? "text-white" : "text-gray-200"}`}>{label}</p>
                       <p className="text-xs text-gray-500">{description}</p>
                     </div>
                     {active && (
-                      <div className="w-5 h-5 rounded-full bg-[#F0B90B] flex items-center justify-center">
+                      <div className="w-5 h-5 rounded-full bg-[#2EBD85] flex items-center justify-center">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                           <polyline points="20 6 9 17 4 12" />
                         </svg>
@@ -109,7 +109,7 @@ const MobileTabBar = () => {
               key={path}
               onClick={() => handleTabClick(path)}
               className={`flex flex-col items-center justify-center flex-1 h-full pt-1 ${
-                active ? "text-[#F0B90B]" : "text-gray-400"
+                active ? "text-[#2EBD85]" : "text-gray-400"
               }`}
             >
               <Icon size={22} strokeWidth={active ? 2.5 : 1.5} />

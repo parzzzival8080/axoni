@@ -1130,9 +1130,9 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-black">
+    <div className="min-h-screen flex flex-col bg-[#121212]">
       {isMobile ? (
-        <div className="flex items-center px-4 h-12 bg-black">
+        <div className="flex items-center px-4 h-12 bg-[#121212]">
           <button onClick={() => navigate("/login")} className="flex items-center gap-1 text-white">
             <ChevronLeft size={20} />
             <span className="text-sm">Log in</span>
@@ -1142,8 +1142,8 @@ const SignUpPage = () => {
         <Navbar />
       )}
       <div className="flex flex-1 overflow-hidden">
-        {/* Left Section (Dark) */}
-        <div className="hidden md:flex md:w-2/5 bg-black p-0 justify-center items-center overflow-y-auto">
+        {/* Left Section */}
+        <div className="hidden md:flex md:w-2/5 bg-[#121212] p-0 justify-center items-center overflow-y-auto border-r border-[#2A2A2A]">
           <img
             src="/assets/login/signup.png"
             alt="Sign up illustration"
@@ -1156,23 +1156,23 @@ const SignUpPage = () => {
           />
         </div>
 
-        {/* Right Section (White) */}
-        <div className="w-full md:w-3/5 bg-white text-black p-8 md:p-12 lg:p-16 overflow-y-auto">
+        {/* Right Section */}
+        <div className="w-full md:w-3/5 bg-[#121212] text-white p-8 md:p-12 lg:p-16 overflow-y-auto">
           <div className="max-w-md mx-auto w-full">
-            <h2 className="text-3xl font-medium mb-9">Let's get you started</h2>
+            <h2 className="text-3xl font-semibold mb-9 text-white">Let's get you started</h2>
 
             {/* Progress Bar */}
             <div className="relative mb-9">
-              <div className="absolute top-1/2 left-0 w-full h-px bg-gray-200 -translate-y-1/2"></div>
+              <div className="absolute top-1/2 left-0 w-full h-px bg-[#2A2A2A] -translate-y-1/2"></div>
               <div className="flex justify-between relative z-0">
                 {[1, 2, 3, 4].map((step) => (
                   <div key={step} className="flex flex-col items-center">
                     <div
-                      className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-medium transition-colors duration-200
+                      className={`w-6 h-6 rounded-lg flex items-center justify-center text-sm font-medium transition-colors duration-200
                                      ${
                                        currentStep >= step
-                                         ? "bg-[#F0B90B] text-white border-[#F0B90B]"
-                                         : "bg-white text-gray-400 border border-gray-300"
+                                         ? "bg-[#2EBD85] text-white border-[#F0B90B]"
+                                         : "bg-[#1E1E1E] text-[#5E6673] border border-[#2A2A2A]"
                                      }`}
                     >
                       {step}
@@ -1180,8 +1180,8 @@ const SignUpPage = () => {
                     <span
                       className={`text-xs mt-2 whitespace-nowrap transition-colors duration-200 ${
                         currentStep >= step
-                          ? "text-black font-medium"
-                          : "text-gray-400"
+                          ? "text-white font-medium"
+                          : "text-[#5E6673]"
                       }`}
                     >
                       {step === 1
@@ -1199,9 +1199,9 @@ const SignUpPage = () => {
 
             {/* Error Message */}
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-5 flex items-start">
-                <i className="fas fa-exclamation-circle text-red-500 mr-2 mt-0.5 flex-shrink-0"></i>
-                <span className="text-red-700 text-sm leading-relaxed">
+              <div className="bg-red-900/20 border border-red-800 rounded-lg px-4 py-3 mb-5 flex items-start">
+                <i className="fas fa-exclamation-circle text-red-400 mr-2 mt-0.5 flex-shrink-0"></i>
+                <span className="text-red-400 text-sm leading-relaxed">
                   {error}
                 </span>
               </div>
@@ -1209,14 +1209,14 @@ const SignUpPage = () => {
 
             {/* Step 1: Country Selection */}
             <div className={currentStep !== 1 ? "hidden" : ""}>
-              <h3 className="text-gray-700 text-base mb-6 leading-relaxed">
+              <h3 className="text-[#848E9C] text-base mb-6 leading-relaxed">
                 Select the country/region that exactly matches the one on your
                 ID or proof of address.
               </h3>
               <div className="mb-6 relative">
                 <label
                   htmlFor="country"
-                  className="block text-sm font-medium text-gray-600 mb-2"
+                  className="block text-sm font-medium text-[#848E9C] mb-2"
                 >
                   Country/region *
                 </label>
@@ -1224,7 +1224,7 @@ const SignUpPage = () => {
                   <input
                     type="text"
                     id="country"
-                    className="w-full px-4 py-3 pr-10 text-base border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F0B90B] focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 pr-10 text-base border border-[#2A2A2A] rounded-lg bg-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-transparent transition-all duration-200"
                     placeholder={
                       loadingCountries
                         ? "Loading countries..."
@@ -1239,20 +1239,20 @@ const SignUpPage = () => {
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                     {loadingCountries ? (
-                      <i className="fas fa-spinner fa-spin text-gray-400"></i>
+                      <i className="fas fa-spinner fa-spin text-[#5E6673]"></i>
                     ) : (
-                      <i className="fas fa-chevron-down text-gray-400"></i>
+                      <i className="fas fa-chevron-down text-[#5E6673]"></i>
                     )}
                   </div>
 
                   {/* Country Dropdown */}
                   {showCountryDropdown && !loadingCountries && (
-                    <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                    <div className="absolute z-50 w-full mt-1 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg shadow-lg max-h-60 overflow-y-auto">
                       {filteredCountries.length > 0 ? (
                         filteredCountries.map((country, index) => (
                           <div
                             key={`${country.name.common}-${index}`}
-                            className="flex items-center px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors duration-150"
+                            className="flex items-center px-4 py-3 hover:bg-[#2A2A2A] cursor-pointer transition-colors duration-150"
                             onClick={() => handleCountrySelect(country)}
                           >
                             {country.flags && country.flags.png && (
@@ -1269,13 +1269,13 @@ const SignUpPage = () => {
                               />
                             )}
                             <div className="flex-1 min-w-0">
-                              <div className="text-sm font-medium text-gray-900 truncate">
+                              <div className="text-sm font-medium text-white truncate">
                                 {country.name.common}
                               </div>
                               {country.name.official &&
                                 country.name.official !==
                                   country.name.common && (
-                                  <div className="text-xs text-gray-500 truncate">
+                                  <div className="text-xs text-[#5E6673] truncate">
                                     {country.name.official}
                                   </div>
                                 )}
@@ -1283,11 +1283,11 @@ const SignUpPage = () => {
                           </div>
                         ))
                       ) : countrySearchTerm.trim() ? (
-                        <div className="px-4 py-3 text-sm text-gray-500 text-center">
+                        <div className="px-4 py-3 text-sm text-[#5E6673] text-center">
                           No countries found matching "{countrySearchTerm}"
                         </div>
                       ) : (
-                        <div className="px-4 py-3 text-sm text-gray-500 text-center">
+                        <div className="px-4 py-3 text-sm text-[#5E6673] text-center">
                           Start typing to search for countries
                         </div>
                       )}
@@ -1316,26 +1316,26 @@ const SignUpPage = () => {
                 />
                 <label
                   htmlFor="terms"
-                  className="text-sm text-gray-600 leading-relaxed"
+                  className="text-sm text-[#848E9C] leading-relaxed"
                 >
                   By creating an account, I agree to AXONI{" "}
                   <a
                     href="#"
-                    className="text-[#F0B90B] hover:underline font-medium"
+                    className="text-[#2EBD85] hover:underline font-medium"
                   >
                     Terms of Service
                   </a>
                   ,{" "}
                   <a
                     href="#"
-                    className="text-[#F0B90B] hover:underline font-medium"
+                    className="text-[#2EBD85] hover:underline font-medium"
                   >
                     Risk and Compliance Disclosure
                   </a>
                   , and{" "}
                   <a
                     href="#"
-                    className="text-[#F0B90B] hover:underline font-medium"
+                    className="text-[#2EBD85] hover:underline font-medium"
                   >
                     Privacy Notice
                   </a>
@@ -1344,7 +1344,7 @@ const SignUpPage = () => {
               </div>
 
               <button
-                className="w-full py-3.5 px-6 rounded-full bg-[#F0B90B] text-white font-medium hover:bg-[#F0B90B] transition-colors duration-200 mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3.5 px-6 rounded-lg bg-[#2EBD85] text-white font-medium hover:bg-[#259A6C] transition-colors duration-200 mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={() => goToNextStep(1)}
                 disabled={
                   loading ||
@@ -1363,11 +1363,11 @@ const SignUpPage = () => {
                 )}
               </button>
 
-              <div className="text-center text-sm text-gray-500 mt-6">
+              <div className="text-center text-sm text-[#5E6673] mt-6">
                 Already have an account?{" "}
                 <Link
                   to="/login"
-                  className="text-[#F0B90B] font-medium hover:underline"
+                  className="text-[#2EBD85] font-medium hover:underline"
                 >
                   Log in
                 </Link>
@@ -1376,19 +1376,19 @@ const SignUpPage = () => {
 
             {/* Step 2: Email and Password */}
             <div className={currentStep !== 2 ? "hidden" : ""}>
-              <h3 className="text-gray-700 text-base mb-6">
+              <h3 className="text-[#848E9C] text-base mb-6">
                 Tell us your email
               </h3>
               <div className="mb-4">
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-600 mb-2"
+                  className="block text-sm font-medium text-[#848E9C] mb-2"
                 >
                   Email address *
                 </label>
                 <input
                   type="email"
-                  className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F0B90B] focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 text-base border border-[#2A2A2A] rounded-lg bg-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-transparent transition-all duration-200"
                   id="email"
                   name="email"
                   placeholder="Enter your email"
@@ -1401,14 +1401,14 @@ const SignUpPage = () => {
               <div className="mb-4">
                 <label
                   htmlFor="password"
-                  className="block text-sm font-medium text-gray-600 mb-2"
+                  className="block text-sm font-medium text-[#848E9C] mb-2"
                 >
                   Password *
                 </label>
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
-                    className="w-full px-4 py-3 pr-12 text-base border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F0B90B] focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 pr-12 text-base border border-[#2A2A2A] rounded-lg bg-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-transparent transition-all duration-200"
                     id="password"
                     name="password"
                     placeholder="Create a password (min 8 characters)"
@@ -1419,7 +1419,7 @@ const SignUpPage = () => {
                   />
                   <button
                     type="button"
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#5E6673] hover:text-[#848E9C] transition-colors duration-200"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
@@ -1433,14 +1433,14 @@ const SignUpPage = () => {
               <div className="mb-6">
                 <label
                   htmlFor="confirmPassword"
-                  className="block text-sm font-medium text-gray-600 mb-2"
+                  className="block text-sm font-medium text-[#848E9C] mb-2"
                 >
                   Confirm password *
                 </label>
                 <div className="relative">
                   <input
                     type={showConfirmPassword ? "text" : "password"}
-                    className="w-full px-4 py-3 pr-12 text-base border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F0B90B] focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 pr-12 text-base border border-[#2A2A2A] rounded-lg bg-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-transparent transition-all duration-200"
                     id="confirmPassword"
                     name="confirmPassword"
                     placeholder="Confirm your password"
@@ -1451,7 +1451,7 @@ const SignUpPage = () => {
                   />
                   <button
                     type="button"
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#5E6673] hover:text-[#848E9C] transition-colors duration-200"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
                     {showConfirmPassword ? (
@@ -1463,7 +1463,7 @@ const SignUpPage = () => {
                 </div>
               </div>
               <button
-                className="w-full py-3.5 px-6 rounded-full bg-[#F0B90B] text-white font-medium hover:bg-[#F0B90B] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3.5 px-6 rounded-lg bg-[#2EBD85] text-white font-medium hover:bg-[#259A6C] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={() => goToNextStep(2)}
                 disabled={
                   loading ||
@@ -1485,8 +1485,8 @@ const SignUpPage = () => {
 
             {/* Step 3: OTP Verification */}
             <div className={currentStep !== 3 ? "hidden" : ""}>
-              <h3 className="text-gray-700 text-base mb-2">Verify it's you</h3>
-              <p className="text-gray-500 text-sm mb-6 text-center">
+              <h3 className="text-[#848E9C] text-base mb-2">Verify it's you</h3>
+              <p className="text-[#5E6673] text-sm mb-6 text-center">
                 Look out for the code we've sent to {formData.email}
               </p>
               <div className="flex justify-between gap-2 mb-6">
@@ -1495,7 +1495,7 @@ const SignUpPage = () => {
                     key={index}
                     type="text"
                     maxLength="1"
-                    className="w-12 h-14 text-center text-lg border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F0B90B] focus:border-transparent transition-all duration-200"
+                    className="w-12 h-14 text-center text-lg border border-[#2A2A2A] rounded-lg bg-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-transparent transition-all duration-200"
                     value={digit}
                     onChange={(e) => handleOtpChange(index, e.target.value)}
                     onKeyDown={(e) => handleOtpKeyDown(index, e)}
@@ -1513,8 +1513,8 @@ const SignUpPage = () => {
                 <button
                   className={`text-sm font-medium transition-colors ${
                     canResend
-                      ? "text-[#F0B90B] hover:underline cursor-pointer"
-                      : "text-gray-400 cursor-not-allowed"
+                      ? "text-[#2EBD85] hover:underline cursor-pointer"
+                      : "text-[#5E6673] cursor-not-allowed"
                   }`}
                   onClick={handleResendOtp}
                   disabled={!canResend || loading}
@@ -1530,7 +1530,7 @@ const SignUpPage = () => {
                 </button>
               </div>
               <button
-                className="w-full py-3.5 px-6 rounded-full bg-[#F0B90B] text-white font-medium hover:bg-[#F0B90B] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3.5 px-6 rounded-lg bg-[#2EBD85] text-white font-medium hover:bg-[#259A6C] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={() => goToNextStep(3)}
                 disabled={loading || formData.otp.join("").length !== 6}
               >
@@ -1547,11 +1547,11 @@ const SignUpPage = () => {
 
             {/* Step 4: Profile Details */}
             <div className={currentStep !== 4 ? "hidden" : ""}>
-              <h3 className="text-gray-700 text-base mb-6">
+              <h3 className="text-[#848E9C] text-base mb-6">
                 Complete your profile
               </h3>
               <div
-                className="w-28 h-28 rounded-full bg-gray-100 mx-auto mb-5 relative cursor-pointer overflow-hidden group hover:bg-gray-200 transition-colors duration-200"
+                className="w-28 h-28 rounded-lg bg-[#1E1E1E] mx-auto mb-5 relative cursor-pointer overflow-hidden group hover:bg-[#2A2A2A] transition-colors duration-200"
                 onClick={triggerFileInput}
               >
                 <img
@@ -1564,7 +1564,7 @@ const SignUpPage = () => {
                     e.target.src = defaultProfileImage;
                   }}
                 />
-                <div className="absolute bottom-0 right-0 w-8 h-8 bg-[#F0B90B] rounded-full flex items-center justify-center transform translate-x-1 -translate-y-1 group-hover:scale-110 transition-transform duration-200">
+                <div className="absolute bottom-0 right-0 w-8 h-8 bg-[#2EBD85] rounded-lg flex items-center justify-center transform translate-x-1 -translate-y-1 group-hover:scale-110 transition-transform duration-200">
                   <i className="fas fa-camera text-white text-sm"></i>
                 </div>
                 <input
@@ -1576,20 +1576,20 @@ const SignUpPage = () => {
                   className="hidden"
                 />
               </div>
-              <p className="text-center text-gray-500 text-sm mb-6">
+              <p className="text-center text-[#5E6673] text-sm mb-6">
                 Click to upload a profile picture (optional)
               </p>
 
               <div className="mb-6">
                 <label
                   htmlFor="fullName"
-                  className="block text-sm font-medium text-gray-600 mb-2"
+                  className="block text-sm font-medium text-[#848E9C] mb-2"
                 >
                   Full Name *
                 </label>
                 <input
                   type="text"
-                  className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F0B90B] focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 text-base border border-[#2A2A2A] rounded-lg bg-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-transparent transition-all duration-200"
                   id="fullName"
                   name="fullName"
                   placeholder="Enter your full name"
@@ -1603,13 +1603,13 @@ const SignUpPage = () => {
               <div className="mb-8">
                 <label
                   htmlFor="phone"
-                  className="block text-sm font-medium text-gray-600 mb-2"
+                  className="block text-sm font-medium text-[#848E9C] mb-2"
                 >
                   Phone Number *
                 </label>
                 <div className="flex">
                   <select
-                    className="w-24 px-3 py-3 border border-r-0 border-gray-300 rounded-l-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F0B90B] focus:border-transparent text-sm"
+                    className="w-24 px-3 py-3 border border-r-0 border-[#2A2A2A] rounded-l-lg bg-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-transparent text-sm"
                     name="phoneCode"
                     value={formData.phoneCode}
                     onChange={handleChange}
@@ -1665,7 +1665,7 @@ const SignUpPage = () => {
                   </select>
                   <input
                     type="tel"
-                    className="flex-1 px-4 py-3 border border-l-0 border-gray-300 rounded-r-lg bg-[#f5f6fa] focus:outline-none focus:ring-2 focus:ring-[#F0B90B] focus:border-transparent transition-all duration-200"
+                    className="flex-1 px-4 py-3 border border-l-0 border-[#2A2A2A] rounded-r-lg bg-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-transparent transition-all duration-200"
                     id="phone"
                     name="phone"
                     placeholder="Enter your phone number"
@@ -1680,7 +1680,7 @@ const SignUpPage = () => {
               </div>
 
               <button
-                className="w-full py-3.5 px-6 rounded-full bg-[#F0B90B] text-white font-medium hover:bg-[#F0B90B] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3.5 px-6 rounded-lg bg-[#2EBD85] text-white font-medium hover:bg-[#259A6C] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={handleSubmit}
                 disabled={loading || !formData.fullName || !formData.phone}
               >
