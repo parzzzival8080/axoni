@@ -124,6 +124,22 @@ const Legal = () => {
               </div>
             </div>
 
+            <div className="border-l-4 border-[#F0B90B] pl-6">
+              <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
+                • Japan
+              </h3>
+              <div className="space-y-4 text-gray-300">
+                <p>
+                  AXONI (Japan) K.K. is registered with the Financial Services
+                  Agency (FSA) of Japan as a Crypto Asset Exchange Service
+                  Provider under the Payment Services Act. This registration
+                  enables the provision of digital asset services including
+                  custody, exchange services, and the operation of a digital
+                  asset trading platform in Japan.
+                </p>
+              </div>
+            </div>
+
             {/* Italy */}
             <div className="border-l-4 border-[#F0B90B] pl-6">
               <h3 className="text-2xl font-bold mb-4 text-[#F0B90B]">
