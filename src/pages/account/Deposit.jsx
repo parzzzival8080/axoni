@@ -357,10 +357,10 @@ function App() {
   const activeStep = selectedNetwork ? 3 : selectedCryptoSymbol ? 2 : 1;
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 font-sans">
+    <div className="min-h-screen bg-[#121212] text-white font-sans">
       {/* Main Content Area */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-2xl font-semibold mb-6 text-gray-900">Deposit</h1>
+        <h1 className="text-2xl font-semibold mb-6 text-white">Deposit</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column: Deposit Steps */}
@@ -376,15 +376,15 @@ function App() {
                 <span
                   className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 ${
                     activeStep >= 1
-                      ? "bg-gray-900 text-white"
-                      : "border border-gray-300 bg-white text-gray-500"
+                      ? "bg-[#121212] text-white"
+                      : "border border-[#2A2A2A] bg-[#121212] text-[#5E6673]"
                   }`}
                 >
                   1
                 </span>
                 <span
                   className={`font-medium ${
-                    activeStep >= 1 ? "text-gray-900" : "text-gray-500"
+                    activeStep >= 1 ? "text-white" : "text-[#5E6673]"
                   }`}
                 >
                   Select crypto
@@ -399,10 +399,10 @@ function App() {
                       setIsCryptoDropdownOpen(!isCryptoDropdownOpen)
                     }
                     disabled={isLoading}
-                    className="flex items-center justify-between w-full h-12 px-3 bg-gray-50 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-300"
+                    className="flex items-center justify-between w-full h-12 px-3 bg-[#1E1E1E] border border-[#2A2A2A] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed hover:border-[#2A2A2A]"
                   >
                     {isLoading ? (
-                      <span className="text-gray-500">Loading...</span>
+                      <span className="text-[#5E6673]">Loading...</span>
                     ) : selectedCoinDetails ? (
                       <div className="flex items-center">
                         <ImageWithFallback
@@ -411,32 +411,32 @@ function App() {
                           className="w-5 h-5 mr-2 rounded-full"
                           symbol={selectedCoinDetails.symbol}
                         />
-                        <span className="font-medium text-gray-800">
+                        <span className="font-medium text-white">
                           {selectedCoinDetails.symbol}
                         </span>
-                        <span className="text-gray-500 ml-2 hidden sm:inline">
+                        <span className="text-[#5E6673] ml-2 hidden sm:inline">
                           {selectedCoinDetails.name}
                         </span>
                       </div>
                     ) : (
-                      <span className="text-gray-500">Select crypto</span>
+                      <span className="text-[#5E6673]">Select crypto</span>
                     )}
                     <ChevronDownIcon />
                   </button>
 
                   {/* Crypto Selection Dropdown Modal */}
                   {isCryptoDropdownOpen && (
-                    <div className="absolute top-full left-0 mt-1 w-full max-w-md bg-white border border-gray-200 rounded-lg shadow-lg z-20">
+                    <div className="absolute top-full left-0 mt-1 w-full max-w-md bg-[#121212] border border-[#2A2A2A] rounded-lg shadow-lg z-20">
                       {/* Search Input inside Dropdown */}
-                      <div className="p-3 border-b border-gray-200">
-                        <div className="flex items-center bg-gray-100 rounded-md px-3 py-1.5">
+                      <div className="p-3 border-b border-[#2A2A2A]">
+                        <div className="flex items-center bg-[#1E1E1E] rounded-md px-3 py-1.5">
                           <SearchIcon />
                           <input
                             type="text"
                             placeholder="Search crypto"
                             value={searchTerm}
                             onChange={handleSearchChange}
-                            className="w-full bg-transparent text-sm text-gray-900 placeholder-gray-500 focus:outline-none ml-1"
+                            className="w-full bg-transparent text-sm text-white placeholder-gray-500 focus:outline-none ml-1"
                             autoFocus // Focus on search when dropdown opens
                           />
                         </div>
@@ -455,9 +455,9 @@ function App() {
                             <div
                               key={coin.symbol}
                               onClick={() => handleCryptoSelect(coin.symbol)}
-                              className={`flex items-center px-4 py-2.5 cursor-pointer hover:bg-gray-100 ${
+                              className={`flex items-center px-4 py-2.5 cursor-pointer hover:bg-[#1E1E1E] ${
                                 selectedCryptoSymbol === coin.symbol
-                                  ? "bg-gray-100"
+                                  ? "bg-[#1E1E1E]"
                                   : ""
                               }`}
                             >
@@ -467,16 +467,16 @@ function App() {
                                 className="w-6 h-6 mr-3 rounded-full"
                                 symbol={coin.symbol}
                               />
-                              <span className="font-medium text-sm text-gray-800 mr-2">
+                              <span className="font-medium text-sm text-white mr-2">
                                 {coin.symbol}
                               </span>
-                              <span className="text-sm text-gray-500">
+                              <span className="text-sm text-[#5E6673]">
                                 {coin.name}
                               </span>
                             </div>
                           ))
                         ) : (
-                          <p className="text-sm text-gray-500 p-4 text-center">
+                          <p className="text-sm text-[#5E6673] p-4 text-center">
                             No matching crypto found.
                           </p>
                         )}
@@ -499,7 +499,7 @@ function App() {
                         className={`inline-flex items-center px-3 py-1.5 border rounded-full text-sm font-medium transition-colors duration-150 focus:outline-none ${
                           selectedCryptoSymbol === symbol
                             ? "bg-indigo-100 border-indigo-300 text-indigo-800"
-                            : "bg-white border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+                            : "bg-[#121212] border-[#2A2A2A] text-[#848E9C] hover:bg-[#1E1E1E] hover:border-[#3A3A3A]"
                         }`}
                       >
                         <ImageWithFallback
@@ -526,15 +526,15 @@ function App() {
                 <span
                   className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 ${
                     activeStep >= 2
-                      ? "bg-gray-900 text-white"
-                      : "border border-gray-300 bg-white text-gray-500"
+                      ? "bg-[#121212] text-white"
+                      : "border border-[#2A2A2A] bg-[#121212] text-[#5E6673]"
                   }`}
                 >
                   2
                 </span>
                 <span
                   className={`font-medium ${
-                    activeStep >= 2 ? "text-gray-900" : "text-gray-500"
+                    activeStep >= 2 ? "text-white" : "text-[#5E6673]"
                   }`}
                 >
                   Select network
@@ -549,11 +549,11 @@ function App() {
                     disabled={
                       !selectedCryptoSymbol || networkOptions.length === 0
                     } // Disable if no crypto or no networks
-                    className="flex items-center justify-between w-full h-12 px-3 bg-gray-50 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-300"
+                    className="flex items-center justify-between w-full h-12 px-3 bg-[#1E1E1E] border border-[#2A2A2A] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed hover:border-[#2A2A2A]"
                   >
                     <span
                       className={
-                        selectedNetwork ? "text-gray-900" : "text-gray-500"
+                        selectedNetwork ? "text-white" : "text-[#5E6673]"
                       }
                     >
                       {selectedNetwork
@@ -567,15 +567,15 @@ function App() {
 
                   {/* Network Dropdown */}
                   {isNetworkDropdownOpen && networkOptions.length > 0 && (
-                    <div className="absolute top-full left-0 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
+                    <div className="absolute top-full left-0 mt-1 w-full bg-[#121212] border border-[#2A2A2A] rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
                       {networkOptions.map((option) => (
                         <div
                           key={option.value}
                           onClick={() => handleNetworkSelect(option.value)}
-                          className={`px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 ${
+                          className={`px-4 py-2 text-sm cursor-pointer hover:bg-[#1E1E1E] ${
                             selectedNetwork === option.value
-                              ? "bg-gray-100 font-medium"
-                              : "text-gray-700"
+                              ? "bg-[#1E1E1E] font-medium"
+                              : "text-[#848E9C]"
                           }`}
                         >
                           {option.label}
@@ -583,7 +583,7 @@ function App() {
                       ))}
                     </div>
                   )}
-                  <div className="flex items-center mt-2 text-gray-500 text-xs cursor-pointer hover:text-gray-700 w-fit">
+                  <div className="flex items-center mt-2 text-[#5E6673] text-xs cursor-pointer hover:text-[#848E9C] w-fit">
                     <QuestionCircleIcon />
                     <span>What's network?</span>
                   </div>
@@ -601,22 +601,22 @@ function App() {
                 <span
                   className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 ${
                     activeStep >= 3
-                      ? "bg-gray-900 text-white"
-                      : "border border-gray-300 bg-white text-gray-500"
+                      ? "bg-[#121212] text-white"
+                      : "border border-[#2A2A2A] bg-[#121212] text-[#5E6673]"
                   }`}
                 >
                   3
                 </span>
                 <span
                   className={`font-medium ${
-                    activeStep >= 3 ? "text-gray-900" : "text-gray-500"
+                    activeStep >= 3 ? "text-white" : "text-[#5E6673]"
                   }`}
                 >
                   Deposit details
                 </span>
               </div>
               {activeStep === 3 && selectedCoinDetails && (
-                <div className="border border-gray-200 rounded-lg p-4 md:p-6 space-y-4">
+                <div className="border border-[#2A2A2A] rounded-lg p-4 md:p-6 space-y-4">
                   {/* Warning Message */}
                   <div className="flex items-start p-3 bg-yellow-50 border border-yellow-200 rounded-md text-yellow-800 text-sm">
                     <InfoCircleIcon />
@@ -632,7 +632,7 @@ function App() {
                   {isLoadingAddress && (
                     <div className="flex flex-col items-center justify-center py-8">
                       <Spinner />
-                      <p className="text-sm text-gray-600 mt-2">
+                      <p className="text-sm text-[#848E9C] mt-2">
                         Generating deposit address...
                       </p>
                     </div>
@@ -694,8 +694,8 @@ function App() {
                       </div>
 
                       {/* Deposit Address and Copy Button */}
-                      <div className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-md p-3">
-                        <span className="font-mono text-sm text-gray-800 break-all mr-2">
+                      <div className="flex items-center justify-between bg-[#1E1E1E] border border-[#2A2A2A] rounded-md p-3">
+                        <span className="font-mono text-sm text-white break-all mr-2">
                           {depositAddress}
                         </span>
                         <button
@@ -703,7 +703,7 @@ function App() {
                           className={`flex items-center justify-center px-3 py-1.5 rounded-md text-xs font-medium transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-1 ${
                             copySuccess
                               ? "bg-green-600 text-white focus:ring-green-500"
-                              : "bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-gray-400"
+                              : "bg-[#2A2A2A] text-[#848E9C] hover:bg-gray-300 focus:ring-gray-400"
                           }`}
                         >
                           {copySuccess ? <CheckIcon /> : <CopyIcon />}
@@ -720,30 +720,30 @@ function App() {
                     <div className="space-y-2 text-sm">
                       {/* Replace with dynamic data */}
                       <div className="flex justify-between py-2 border-b border-gray-100">
-                        <span className="text-gray-500">Minimum deposit</span>
-                        <span className="font-medium text-gray-900">
+                        <span className="text-[#5E6673]">Minimum deposit</span>
+                        <span className="font-medium text-white">
                           0.00003 {selectedCryptoSymbol}
                         </span>
                       </div>
                       <div className="flex justify-between py-2 border-b border-gray-100">
-                        <span className="text-gray-500">Deposit account</span>
-                        <span className="font-medium text-gray-900">
+                        <span className="text-[#5E6673]">Deposit account</span>
+                        <span className="font-medium text-white">
                           Funding
                         </span>
                       </div>
                       <div className="flex justify-between py-2 border-b border-gray-100">
-                        <span className="text-gray-500">
+                        <span className="text-[#5E6673]">
                           Deposit arrival time
                         </span>
-                        <span className="font-medium text-gray-900">
+                        <span className="font-medium text-white">
                           ~18 minutes
                         </span>
                       </div>
                       <div className="flex justify-between py-2">
-                        <span className="text-gray-500">
+                        <span className="text-[#5E6673]">
                           Withdrawal enabled time
                         </span>
-                        <span className="font-medium text-gray-900">
+                        <span className="font-medium text-white">
                           ~27 minutes
                         </span>
                       </div>
@@ -756,8 +756,8 @@ function App() {
 
           {/* Right Column: FAQ */}
           <aside className="lg:col-span-1">
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 sticky top-8">
-              <h2 className="text-base font-semibold mb-4 text-gray-900">
+            <div className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg p-6 sticky top-8">
+              <h2 className="text-base font-semibold mb-4 text-white">
                 FAQ
               </h2>
               <ul className="space-y-3">
@@ -767,7 +767,7 @@ function App() {
                       href={`/help/deposit/${faq.slug}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm text-gray-700 hover:text-gray-900 hover:underline"
+                      className="text-sm text-[#848E9C] hover:text-white hover:underline"
                     >
                       {faq.question}
                     </a>
@@ -780,8 +780,8 @@ function App() {
 
         {/* Deposit History Section */}
         <section className="mt-12">
-          <div className="flex justify-between items-center border-b border-gray-200 mb-6 pb-2">
-            <h2 className="text-lg font-semibold text-gray-900">
+          <div className="flex justify-between items-center border-b border-[#2A2A2A] mb-6 pb-2">
+            <h2 className="text-lg font-semibold text-white">
               All deposits
             </h2>
             <button
@@ -833,7 +833,7 @@ function App() {
           {isLoadingHistory && (
             <div className="flex justify-center items-center py-8">
               <Spinner />
-              <span className="ml-2 text-gray-600">Loading deposit history...</span>
+              <span className="ml-2 text-[#848E9C]">Loading deposit history...</span>
             </div>
           )}
 
@@ -890,29 +890,29 @@ function App() {
           {/* Deposit History Table */}
           {!isLoadingHistory && !historyError && (
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900 rounded shadow-md">
-                <thead className="bg-gray-100 dark:bg-gray-800">
+              <table className="min-w-full divide-y divide-[#2A2A2A] dark:divide-gray-700 bg-[#121212] dark:bg-[#121212] rounded shadow-md">
+                <thead className="bg-[#1E1E1E] dark:bg-gray-800">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Date</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Coin</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Amount</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-gray-300 uppercase tracking-wider">Date</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-gray-300 uppercase tracking-wider">Coin</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-gray-300 uppercase tracking-wider">Amount</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-gray-300 uppercase tracking-wider">Status</th>
                   </tr>
                 </thead>
-                <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-100 dark:divide-gray-800">
+                <tbody className="bg-[#121212] dark:bg-[#121212] divide-y divide-gray-100 dark:divide-gray-800">
                   {depositHistory.length === 0 ? (
                     <tr>
-                      <td colSpan={4} className="text-center text-gray-500 dark:text-gray-400 py-8">
+                      <td colSpan={4} className="text-center text-[#5E6673] dark:text-[#5E6673] py-8">
                         No deposit history found.
                       </td>
                     </tr>
                   ) : (
                     paginatedDepositHistory.map((transaction, index) => (
-                      <tr key={transaction.id || index} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                        <td className="px-4 py-3 text-xs text-gray-700 dark:text-gray-200 whitespace-nowrap">
+                      <tr key={transaction.id || index} className="hover:bg-[#1E1E1E] dark:hover:bg-gray-800 transition-colors">
+                        <td className="px-4 py-3 text-xs text-[#848E9C] dark:text-gray-200 whitespace-nowrap">
                           {transaction.date ? new Date(transaction.date).toLocaleString() : '-'}
                         </td>
-                        <td className="px-4 py-3 text-xs text-gray-700 dark:text-gray-200 whitespace-nowrap">
+                        <td className="px-4 py-3 text-xs text-[#848E9C] dark:text-gray-200 whitespace-nowrap">
                           <div className="flex items-center gap-2">
                             {transaction.image_path && (
                               <img 
@@ -927,7 +927,7 @@ function App() {
                             <span>{transaction.coin_name || '-'}</span>
                           </div>
                         </td>
-                        <td className="px-4 py-3 text-xs text-gray-700 dark:text-gray-200 whitespace-nowrap font-medium">
+                        <td className="px-4 py-3 text-xs text-[#848E9C] dark:text-gray-200 whitespace-nowrap font-medium">
                           {transaction.final_amount ? 
                             (transaction.coin_name === 'USDT' || transaction.coin_name === 'FBC' ? 
                               parseFloat(transaction.final_amount).toFixed(2) : 
@@ -935,7 +935,7 @@ function App() {
                             ) : '-'
                           }
                         </td>
-                        <td className="px-4 py-3 text-xs text-gray-700 dark:text-gray-200 whitespace-nowrap">
+                        <td className="px-4 py-3 text-xs text-[#848E9C] dark:text-gray-200 whitespace-nowrap">
                           <span
                             className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                               transaction.status === 'approved' || transaction.status === 'completed' || transaction.status === 'confirmed'
@@ -944,7 +944,7 @@ function App() {
                                 ? 'bg-yellow-100 text-yellow-800'
                                 : transaction.status === 'failed' || transaction.status === 'rejected'
                                 ? 'bg-red-100 text-red-800'
-                                : 'bg-gray-100 text-gray-800'
+                                : 'bg-[#1E1E1E] text-white'
                             }`}
                           >
                             {transaction.status ? transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1) : 'Unknown'}
@@ -962,7 +962,7 @@ function App() {
           {!isLoadingHistory && !historyError && depositHistory.length > 0 && totalPages > 1 && (
             <div className="flex items-center justify-between mt-6 px-4">
               {/* Pagination Info */}
-              <div className="text-sm text-gray-700">
+              <div className="text-sm text-[#848E9C]">
                 Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, depositHistory.length)} of {depositHistory.length} results
               </div>
 
@@ -974,8 +974,8 @@ function App() {
                   disabled={currentPage === 1}
                   className={`px-3 py-1.5 text-sm font-medium rounded-md border transition-colors ${
                     currentPage === 1
-                      ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
+                      ? 'bg-[#1E1E1E] text-[#5E6673] border-[#2A2A2A] cursor-not-allowed'
+                      : 'bg-[#121212] text-[#848E9C] border-[#2A2A2A] hover:bg-[#1E1E1E] hover:border-[#3A3A3A]'
                   }`}
                 >
                   Previous
@@ -1002,7 +1002,7 @@ function App() {
                         className={`px-3 py-1.5 text-sm font-medium rounded-md border transition-colors ${
                           currentPage === pageNum
                             ? 'bg-indigo-600 text-white border-indigo-600'
-                            : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
+                            : 'bg-[#121212] text-[#848E9C] border-[#2A2A2A] hover:bg-[#1E1E1E] hover:border-[#3A3A3A]'
                         }`}
                       >
                         {pageNum}
@@ -1017,8 +1017,8 @@ function App() {
                   disabled={currentPage === totalPages}
                   className={`px-3 py-1.5 text-sm font-medium rounded-md border transition-colors ${
                     currentPage === totalPages
-                      ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
+                      ? 'bg-[#1E1E1E] text-[#5E6673] border-[#2A2A2A] cursor-not-allowed'
+                      : 'bg-[#121212] text-[#848E9C] border-[#2A2A2A] hover:bg-[#1E1E1E] hover:border-[#3A3A3A]'
                   }`}
                 >
                   Next

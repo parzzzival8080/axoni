@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import ProfileNavBar from "../../components/profile/ProfileNavBar";
+import { useIsMobile } from "../../hooks/useIsMobile";
 import {
   FiEye,
   FiEyeOff,
@@ -14,6 +15,7 @@ import {
 } from "react-icons/fi";
 
 const Overview = () => {
+  const isMobile = useIsMobile();
   const [profileData, setProfileData] = useState(null);
   const [walletData, setWalletData] = useState([]);
   const [overviewData, setOverviewData] = useState({
@@ -224,12 +226,12 @@ const Overview = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <ProfileNavBar currentPath="/profile/overview" />
+      <div className="min-h-screen bg-[#1E1E1E]">
+        {!isMobile && <ProfileNavBar currentPath="/profile/overview" />}
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="flex justify-center items-center py-16">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#2EBD85]"></div>
-            <span className="ml-3 text-gray-600 dark:text-gray-300">
+            <span className="ml-3 text-[#848E9C]">
               Loading overview...
             </span>
           </div>
@@ -240,8 +242,8 @@ const Overview = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <ProfileNavBar currentPath="/profile/overview" />
+      <div className="min-h-screen bg-[#1E1E1E]">
+        {!isMobile && <ProfileNavBar currentPath="/profile/overview" />}
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="flex flex-col items-center justify-center py-16">
             <div className="text-red-500 mb-2">
@@ -259,15 +261,15 @@ const Overview = () => {
                 ></path>
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">
+            <h3 className="text-lg font-medium text-white mb-1">
               Error loading overview
             </h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            <p className="text-sm text-[#5E6673] mb-4">
               {error}
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="px-4 py-2 bg-[#2EBD85] text-white rounded-md hover:bg-yellow-600 transition-colors"
+              className="px-4 py-2 bg-[#2EBD85] text-white rounded-md hover:bg-[#259A6C] transition-colors"
             >
               Try Again
             </button>
@@ -278,20 +280,20 @@ const Overview = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white relative">
-      <ProfileNavBar currentPath="/profile/overview" />
+    <div className="min-h-screen bg-[#121212] text-white relative">
+      {!isMobile && <ProfileNavBar currentPath="/profile/overview" />}
 
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
         {/* <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Overview</h1>
-            <p className="text-gray-600 dark:text-gray-400">Welcome back, {user.name || 'User'}!</p>
+            <h1 className="text-2xl font-bold text-white">Overview</h1>
+            <p className="text-[#848E9C]">Welcome back, {user.name || 'User'}!</p>
           </div>
           {!isVerified && (
             <Link
               to="/account/verify"
-              className="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 bg-[#2EBD85] text-white rounded-lg hover:bg-yellow-600 transition-colors font-medium"
+              className="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 bg-[#2EBD85] text-white rounded-lg hover:bg-[#259A6C] transition-colors font-medium"
             >
               <FiShield className="mr-2" />
               Verify Account
@@ -304,67 +306,67 @@ const Overview = () => {
           {/* Left Column - 2/3 width */}
           <div className="lg:col-span-2 space-y-6">
             {/* Portfolio Overview */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <div className="bg-[#121212] rounded-xl shadow-sm border border-[#2A2A2A] p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <h2 className="text-lg font-semibold text-white">
                   Portfolio Overview
                 </h2>
                 <button
                   onClick={() => setShowBalance(!showBalance)}
-                  className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+                  className="p-2 text-[#5E6673] hover:text-[#848E9C]"
                 >
                   {showBalance ? <FiEye /> : <FiEyeOff />}
                 </button>
               </div>
 
               <div className="mb-6">
-                <div className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                <div className="text-3xl font-bold text-white mb-2">
                   {showBalance
                     ? formatCurrency(overviewData.overview)
                     : "••••••"}
                 </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">
+                <div className="text-sm text-[#5E6673]">
                   Total Portfolio Value
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                <div className="bg-[#1E1E1E] rounded-lg p-4">
                   <div className="flex items-center mb-2">
                     <div className="w-3 h-3 bg-[#2EBD85] rounded-full mr-2"></div>
-                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                    <span className="text-sm font-medium text-[#848E9C]">
                       Spot Wallet
                     </span>
                   </div>
-                  <div className="text-lg font-semibold text-gray-900 dark:text-white">
+                  <div className="text-lg font-semibold text-white">
                     {showBalance
                       ? formatCurrency(overviewData.spot_wallet)
                       : "••••••"}
                   </div>
                 </div>
 
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                <div className="bg-[#1E1E1E] rounded-lg p-4">
                   <div className="flex items-center mb-2">
-                    <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
-                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                    <div className="w-3 h-3 bg-[#F5A623] rounded-full mr-2"></div>
+                    <span className="text-sm font-medium text-[#848E9C]">
                       Future Wallet
                     </span>
                   </div>
-                  <div className="text-lg font-semibold text-gray-900 dark:text-white">
+                  <div className="text-lg font-semibold text-white">
                     {showBalance
                       ? formatCurrency(overviewData.future_wallet)
                       : "••••••"}
                   </div>
                 </div>
 
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                <div className="bg-[#1E1E1E] rounded-lg p-4">
                   <div className="flex items-center mb-2">
                     <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
-                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                    <span className="text-sm font-medium text-[#848E9C]">
                       Funding Wallet
                     </span>
                   </div>
-                  <div className="text-lg font-semibold text-gray-900 dark:text-white">
+                  <div className="text-lg font-semibold text-white">
                     {showBalance
                       ? formatCurrency(overviewData.funding_wallet)
                       : "••••••"}
@@ -374,14 +376,14 @@ const Overview = () => {
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <div className="bg-[#121212] rounded-xl shadow-sm border border-[#2A2A2A] p-6">
+              <h2 className="text-lg font-semibold text-white mb-4">
                 Quick Actions
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <Link
                   to="/deposit"
-                  className="flex flex-col items-center p-4 bg-[#2EBD85] text-white rounded-lg hover:bg-yellow-600 transition-colors"
+                  className="flex flex-col items-center p-4 bg-[#2EBD85] text-white rounded-lg hover:bg-[#259A6C] transition-colors"
                 >
                   <svg
                     className="w-6 h-6 mb-2"
@@ -401,7 +403,7 @@ const Overview = () => {
 
                 <Link
                   to="/withdraw"
-                  className="flex flex-col items-center p-4 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                  className="flex flex-col items-center p-4 bg-[#1E1E1E] text-[#848E9C] rounded-lg hover:bg-[#2A2A2A] transition-colors"
                 >
                   <svg
                     className="w-6 h-6 mb-2"
@@ -421,7 +423,7 @@ const Overview = () => {
 
                 <Link
                   to="/transfer"
-                  className="flex flex-col items-center p-4 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                  className="flex flex-col items-center p-4 bg-[#1E1E1E] text-[#848E9C] rounded-lg hover:bg-[#2A2A2A] transition-colors"
                 >
                   <svg
                     className="w-6 h-6 mb-2"
@@ -441,7 +443,7 @@ const Overview = () => {
 
                 <Link
                   to="/spot-trading"
-                  className="flex flex-col items-center p-4 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                  className="flex flex-col items-center p-4 bg-[#1E1E1E] text-[#848E9C] rounded-lg hover:bg-[#2A2A2A] transition-colors"
                 >
                   <svg
                     className="w-6 h-6 mb-2"
@@ -462,9 +464,9 @@ const Overview = () => {
             </div>
 
             {/* Top Assets */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <div className="bg-[#121212] rounded-xl shadow-sm border border-[#2A2A2A] p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <h2 className="text-lg font-semibold text-white">
                   Top Assets
                 </h2>
                 <Link
@@ -490,23 +492,23 @@ const Overview = () => {
                             className="w-8 h-8 rounded-full mr-3"
                           />
                         ) : (
-                          <div className="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded-full mr-3 flex items-center justify-center">
+                          <div className="w-8 h-8 bg-gray-300 rounded-full mr-3 flex items-center justify-center">
                             <span className="text-xs font-bold">
                               {asset.symbol.charAt(0)}
                             </span>
                           </div>
                         )}
                         <div>
-                          <div className="font-medium text-gray-900 dark:text-white">
+                          <div className="font-medium text-white">
                             {asset.symbol}
                           </div>
-                          <div className="text-sm text-gray-500 dark:text-gray-400">
+                          <div className="text-sm text-[#5E6673]">
                             {asset.name}
                           </div>
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="font-medium text-gray-900 dark:text-white">
+                        <div className="font-medium text-white">
                           {showBalance
                             ? formatNumber(
                                 asset.spot_balance +
@@ -515,7 +517,7 @@ const Overview = () => {
                               )
                             : "••••••"}
                         </div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                        <div className="text-sm text-[#5E6673]">
                           {showBalance
                             ? formatCurrency(
                                 asset.spot_value +
@@ -529,7 +531,7 @@ const Overview = () => {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                <div className="text-center py-8 text-[#5E6673]">
                   <div className="text-4xl mb-2">🪙</div>
                   <p>No assets found</p>
                   <p className="text-sm">Start by depositing some crypto</p>

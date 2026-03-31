@@ -711,10 +711,10 @@ function withdraw() {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: scrollbarStyles }} />
-      <div className="min-h-screen bg-white text-gray-900 font-sans">
+      <div className="min-h-screen bg-[#121212] text-white font-sans">
         {/* Main Content */}
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-2xl font-semibold mb-6 text-gray-900">
+          <h1 className="text-2xl font-semibold mb-6 text-white">
             Withdrawal
           </h1>
 
@@ -727,12 +727,12 @@ function withdraw() {
                   className={`flex items-center mb-4 ${activeStep >= 1 ? "opacity-100" : "opacity-50"}`}
                 >
                   <span
-                    className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 ${activeStep >= 1 ? "bg-gray-900 text-white" : "border border-gray-300 bg-white text-gray-500"}`}
+                    className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 ${activeStep >= 1 ? "bg-[#121212] text-white" : "border border-[#2A2A2A] bg-[#121212] text-[#5E6673]"}`}
                   >
                     1
                   </span>
                   <span
-                    className={`font-medium ${activeStep >= 1 ? "text-gray-900" : "text-gray-500"}`}
+                    className={`font-medium ${activeStep >= 1 ? "text-white" : "text-[#5E6673]"}`}
                   >
                     Select crypto
                   </span>
@@ -746,10 +746,10 @@ function withdraw() {
                         setIsCryptoDropdownOpen(!isCryptoDropdownOpen)
                       }
                       disabled={isLoadingCoins || showOtpStep}
-                      className="flex items-center justify-between w-full h-12 px-3 bg-gray-100 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-300"
+                      className="flex items-center justify-between w-full h-12 px-3 bg-[#1E1E1E] border border-[#2A2A2A] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed hover:border-[#2A2A2A]"
                     >
                       {isLoadingCoins ? (
-                        <span className="text-gray-500">Loading coins...</span>
+                        <span className="text-[#5E6673]">Loading coins...</span>
                       ) : selectedCoinDetails ? (
                         <div className="flex items-center">
                           <ImageWithFallback
@@ -758,26 +758,26 @@ function withdraw() {
                             className="w-5 h-5 mr-2 rounded-full"
                             symbol={selectedCoinDetails.symbol}
                           />
-                          <span className="font-medium text-gray-800">
+                          <span className="font-medium text-white">
                             {selectedCoinDetails.symbol}
                           </span>
                         </div>
                       ) : (
-                        <span className="text-gray-500">Select crypto</span>
+                        <span className="text-[#5E6673]">Select crypto</span>
                       )}
                       <ChevronDownIcon />
                     </button>
                     {isCryptoDropdownOpen && (
-                      <div className="absolute top-full left-0 mt-1 w-full max-w-md bg-white border border-gray-200 rounded-lg shadow-lg z-20">
-                        <div className="p-3 border-b border-gray-200">
-                          <div className="flex items-center bg-gray-100 rounded-md px-3 py-1.5">
+                      <div className="absolute top-full left-0 mt-1 w-full max-w-md bg-[#121212] border border-[#2A2A2A] rounded-lg shadow-lg z-20">
+                        <div className="p-3 border-b border-[#2A2A2A]">
+                          <div className="flex items-center bg-[#1E1E1E] rounded-md px-3 py-1.5">
                             <SearchIcon />
                             <input
                               type="text"
                               placeholder="Search crypto"
                               value={searchTerm}
                               onChange={(e) => setSearchTerm(e.target.value)}
-                              className="w-full bg-transparent text-sm text-gray-900 placeholder-gray-500 focus:outline-none ml-1"
+                              className="w-full bg-transparent text-sm text-white placeholder-gray-500 focus:outline-none ml-1"
                               autoFocus
                             />
                           </div>
@@ -794,7 +794,7 @@ function withdraw() {
                               <div
                                 key={coin.symbol}
                                 onClick={() => handleCryptoSelect(coin.symbol)}
-                                className={`flex items-center px-4 py-2.5 cursor-pointer hover:bg-gray-100 ${selectedCryptoSymbol === coin.symbol ? "bg-gray-100" : ""}`}
+                                className={`flex items-center px-4 py-2.5 cursor-pointer hover:bg-[#1E1E1E] ${selectedCryptoSymbol === coin.symbol ? "bg-[#1E1E1E]" : ""}`}
                               >
                                 <ImageWithFallback
                                   src={coin.logo_path}
@@ -802,16 +802,16 @@ function withdraw() {
                                   className="w-6 h-6 mr-3 rounded-full"
                                   symbol={coin.symbol}
                                 />
-                                <span className="font-medium text-sm text-gray-800 mr-2">
+                                <span className="font-medium text-sm text-white mr-2">
                                   {coin.symbol}
                                 </span>
-                                <span className="text-sm text-gray-500">
+                                <span className="text-sm text-[#5E6673]">
                                   {coin.name}
                                 </span>
                               </div>
                             ))
                           ) : (
-                            <p className="text-sm text-gray-500 p-4 text-center">
+                            <p className="text-sm text-[#5E6673] p-4 text-center">
                               No matching crypto found.
                             </p>
                           )}
@@ -828,12 +828,12 @@ function withdraw() {
                   className={`flex items-center mb-4 ${activeStep >= 2 ? "opacity-100" : "opacity-50"}`}
                 >
                   <span
-                    className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 ${activeStep >= 2 ? "bg-gray-900 text-white" : "border border-gray-300 bg-white text-gray-500"}`}
+                    className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 ${activeStep >= 2 ? "bg-[#121212] text-white" : "border border-[#2A2A2A] bg-[#121212] text-[#5E6673]"}`}
                   >
                     2
                   </span>
                   <span
-                    className={`font-medium ${activeStep >= 2 ? "text-gray-900" : "text-gray-500"}`}
+                    className={`font-medium ${activeStep >= 2 ? "text-white" : "text-[#5E6673]"}`}
                   >
                     Set destination
                   </span>
@@ -841,7 +841,7 @@ function withdraw() {
                 <div
                   className={`${activeStep >= 2 && !showOtpStep ? "opacity-100" : "opacity-50 pointer-events-none"}`}
                 >
-                  <div className="flex border-b border-gray-200 mb-6">
+                  <div className="flex border-b border-[#2A2A2A] mb-6">
                     {" "}
                     {/* Increased mb */}
                     <button
@@ -849,8 +849,8 @@ function withdraw() {
                       disabled={showOtpStep}
                       className={`py-2.5 px-4 text-sm font-medium focus:outline-none relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:transition-all after:duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
                         withdrawalDestination === "on-chain"
-                          ? "text-gray-900 after:bg-gray-900 after:w-full" // Active tab style
-                          : "text-gray-500 hover:text-gray-700 after:bg-gray-700 after:w-0 hover:after:w-full" // Inactive tab style
+                          ? "text-white after:bg-[#121212] after:w-full" // Active tab style
+                          : "text-[#5E6673] hover:text-[#848E9C] after:bg-gray-700 after:w-0 hover:after:w-full" // Inactive tab style
                       }`}
                     >
                       On-chain withdrawal
@@ -860,8 +860,8 @@ function withdraw() {
                       disabled={showOtpStep}
                       className={`py-2.5 px-4 text-sm font-medium focus:outline-none relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:transition-all after:duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
                         withdrawalDestination === "internal"
-                          ? "text-gray-900 after:bg-gray-900 after:w-full"
-                          : "text-gray-500 hover:text-gray-700 after:bg-gray-700 after:w-0 hover:after:w-full"
+                          ? "text-white after:bg-[#121212] after:w-full"
+                          : "text-[#5E6673] hover:text-[#848E9C] after:bg-gray-700 after:w-0 hover:after:w-full"
                       }`}
                     >
                       Internal withdrawal
@@ -873,7 +873,7 @@ function withdraw() {
                     {/* Increased mb */}
                     <label
                       htmlFor="networkSelect"
-                      className="block text-sm font-medium text-gray-700 mb-1.5"
+                      className="block text-sm font-medium text-[#848E9C] mb-1.5"
                     >
                       Network
                     </label>{" "}
@@ -889,11 +889,11 @@ function withdraw() {
                           networkOptions.length === 0 ||
                           showOtpStep
                         }
-                        className="flex items-center justify-between w-full h-12 px-3 bg-gray-100 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-300"
+                        className="flex items-center justify-between w-full h-12 px-3 bg-[#1E1E1E] border border-[#2A2A2A] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed hover:border-[#2A2A2A]"
                       >
                         <span
                           className={
-                            selectedNetwork ? "text-gray-900" : "text-gray-500"
+                            selectedNetwork ? "text-white" : "text-[#5E6673]"
                           }
                         >
                           {selectedNetwork
@@ -903,12 +903,12 @@ function withdraw() {
                         <ChevronDownIcon />
                       </button>
                       {isNetworkDropdownOpen && networkOptions.length > 0 && (
-                        <div className="absolute top-full left-0 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
+                        <div className="absolute top-full left-0 mt-1 w-full bg-[#121212] border border-[#2A2A2A] rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
                           {networkOptions.map((option) => (
                             <div
                               key={option.value}
                               onClick={() => handleNetworkSelect(option)}
-                              className={`px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 ${selectedNetwork?.value === option.value ? "bg-gray-100 font-medium" : "text-gray-700"}`}
+                              className={`px-4 py-2 text-sm cursor-pointer hover:bg-[#1E1E1E] ${selectedNetwork?.value === option.value ? "bg-[#1E1E1E] font-medium" : "text-[#848E9C]"}`}
                             >
                               {option.label}
                             </div>
@@ -922,24 +922,24 @@ function withdraw() {
                     <div className="flex justify-between items-center mb-1.5">
                       <label
                         htmlFor="withdrawalAddress"
-                        className="block text-sm font-medium text-gray-700"
+                        className="block text-sm font-medium text-[#848E9C]"
                       >
                         Address
                       </label>
                       <button
                         onClick={() => setIsAddressBookOpen(!isAddressBookOpen)}
-                        className="text-sm text-black hover:text-gray-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                        className="text-sm text-black hover:text-[#848E9C] font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                         disabled={!selectedNetwork || showOtpStep}
                       >
                         Manage address book <ChevronRightIcon />
                       </button>
                     </div>
                     {selectedNetwork && (
-                      <div className="mb-2 p-3 bg-gray-50 border border-gray-200 rounded-lg">
-                        <p className="text-xs text-gray-600">
+                      <div className="mb-2 p-3 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg">
+                        <p className="text-xs text-[#848E9C]">
                           <FontAwesomeIcon
                             icon={faInfoCircle}
-                            className="mr-2 text-gray-400"
+                            className="mr-2 text-[#5E6673]"
                           />
                           {getNetworkDescription(
                             selectedNetwork.symbol || selectedNetwork.value,
@@ -955,7 +955,7 @@ function withdraw() {
                         value={withdrawalAddress}
                         onChange={(e) => setWithdrawalAddress(e.target.value)}
                         disabled={!selectedNetwork || showOtpStep}
-                        className={`flex items-center justify-between w-full h-12 px-3 bg-gray-100 border rounded-lg text-sm focus:outline-none focus:ring-1 disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${
+                        className={`flex items-center justify-between w-full h-12 px-3 bg-[#1E1E1E] border rounded-lg text-sm focus:outline-none focus:ring-1 disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${
                           addressValidation.error
                             ? "border-red-200 focus:ring-red-100 focus:border-red-300 bg-red-50"
                             : addressValidation.warning
@@ -965,7 +965,7 @@ function withdraw() {
                                   !addressValidation.error &&
                                   !addressValidation.warning
                                 ? "border-green-200 focus:ring-green-100 focus:border-green-300 bg-green-50"
-                                : "border-gray-200 focus:ring-gray-100 focus:border-gray-300"
+                                : "border-[#2A2A2A] focus:ring-gray-100 focus:border-[#2A2A2A]"
                         }`}
                       />
                       {/* Simple Chevron for visual cue, actual dropdown is separate for address book */}
@@ -974,7 +974,7 @@ function withdraw() {
                           onClick={() =>
                             setIsAddressBookOpen(!isAddressBookOpen)
                           }
-                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#5E6673]"
                           disabled={!selectedNetwork || showOtpStep}
                         >
                           <ChevronDownIcon />
@@ -984,14 +984,14 @@ function withdraw() {
                         !showOtpStep && ( // Show clear button if address is entered
                           <button
                             onClick={() => setWithdrawalAddress("")}
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#5E6673] hover:text-[#848E9C]"
                           >
                             <TimesIcon />
                           </button>
                         )}
                       {/* Address Book Dropdown */}
                       {isAddressBookOpen && !showOtpStep && (
-                        <div className="absolute top-full left-0 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
+                        <div className="absolute top-full left-0 mt-1 w-full bg-[#121212] border border-[#2A2A2A] rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
                           {addressBookEntries.filter(
                             (entry) =>
                               !selectedNetwork ||
@@ -1007,7 +1007,7 @@ function withdraw() {
                                 <div
                                   key={entry.address}
                                   onClick={() => handleAddressBookSelect(entry)}
-                                  className="px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 text-gray-700"
+                                  className="px-4 py-2 text-sm cursor-pointer hover:bg-[#1E1E1E] text-[#848E9C]"
                                 >
                                   <span className="font-medium">
                                     {entry.label}
@@ -1016,7 +1016,7 @@ function withdraw() {
                                 </div>
                               ))
                           ) : (
-                            <p className="p-3 text-sm text-gray-500">
+                            <p className="p-3 text-sm text-[#5E6673]">
                               No addresses for this network or add new.
                             </p>
                           )}
@@ -1059,12 +1059,12 @@ function withdraw() {
                   className={`flex items-center mb-4 ${activeStep >= 3 ? "opacity-100" : "opacity-50"}`}
                 >
                   <span
-                    className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 ${activeStep >= 3 ? "bg-gray-900 text-white" : "border border-gray-300 bg-white text-gray-500"}`}
+                    className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 ${activeStep >= 3 ? "bg-[#121212] text-white" : "border border-[#2A2A2A] bg-[#121212] text-[#5E6673]"}`}
                   >
                     3
                   </span>
                   <span
-                    className={`font-medium ${activeStep >= 3 ? "text-gray-900" : "text-gray-500"}`}
+                    className={`font-medium ${activeStep >= 3 ? "text-white" : "text-[#5E6673]"}`}
                   >
                     Set withdrawal amount
                   </span>
@@ -1082,10 +1082,10 @@ function withdraw() {
                         disabled={!withdrawalAddress || showOtpStep}
                         min={networkFee > 0 ? networkFee : 0}
                         step="any"
-                        className="w-full h-12 px-3 pr-24 bg-gray-100 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full h-12 px-3 pr-24 bg-[#1E1E1E] border border-[#2A2A2A] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
                       />
                       <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
-                        <span className="text-sm font-medium text-gray-500">
+                        <span className="text-sm font-medium text-[#5E6673]">
                           {selectedCryptoSymbol || "---"}
                         </span>
                         <button
@@ -1095,14 +1095,14 @@ function withdraw() {
                             availableBalance <= 0 ||
                             showOtpStep
                           }
-                          className="text-xs bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded font-medium text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="text-xs bg-[#2A2A2A] hover:bg-gray-300 px-2 py-1 rounded font-medium text-[#848E9C] disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           Max
                         </button>
                       </div>
                     </div>
                     <div className="flex justify-between items-center text-sm mt-2">
-                      <span className="text-gray-500">
+                      <span className="text-[#5E6673]">
                         Available: {availableBalance.toFixed(4)}{" "}
                         {selectedCryptoSymbol || ""}
                       </span>
@@ -1112,18 +1112,18 @@ function withdraw() {
                             setIsAccountDropdownOpen(!isAccountDropdownOpen)
                           }
                           disabled={!withdrawalAddress || showOtpStep}
-                          className="text-black hover:text-gray-700 font-medium flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="text-black hover:text-[#848E9C] font-medium flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           {selectedAccount} ({accountOptions.length}){" "}
                           <ChevronDownIcon />
                         </button>
                         {isAccountDropdownOpen && !showOtpStep && (
-                          <div className="absolute right-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+                          <div className="absolute right-0 mt-1 w-40 bg-[#121212] border border-[#2A2A2A] rounded-md shadow-lg z-10">
                             {accountOptions.map((acc) => (
                               <div
                                 key={acc}
                                 onClick={() => handleAccountSelect(acc)}
-                                className={`px-3 py-2 text-sm cursor-pointer hover:bg-gray-100 ${selectedAccount === acc ? "bg-gray-100 font-medium" : "text-gray-700"}`}
+                                className={`px-3 py-2 text-sm cursor-pointer hover:bg-[#1E1E1E] ${selectedAccount === acc ? "bg-[#1E1E1E] font-medium" : "text-[#848E9C]"}`}
                               >
                                 {acc}
                               </div>
@@ -1136,16 +1136,16 @@ function withdraw() {
 
                   <div className="space-y-2 text-sm mb-6">
                     <div className="flex justify-between py-2 border-b border-gray-100">
-                      <span className="text-gray-500">Network fee</span>
-                      <span className="font-medium text-gray-900">
+                      <span className="text-[#5E6673]">Network fee</span>
+                      <span className="font-medium text-white">
                         {networkFee > 0
                           ? `${networkFee} ${selectedCryptoSymbol || ""}`
                           : "-"}
                       </span>
                     </div>
                     <div className="flex justify-between py-2">
-                      <span className="text-gray-500">Amount received</span>
-                      <span className="font-medium text-gray-900">
+                      <span className="text-[#5E6673]">Amount received</span>
+                      <span className="font-medium text-white">
                         {amountReceived > 0
                           ? `${amountReceived.toFixed(4)} ${selectedCryptoSymbol || ""}`
                           : "-"}
@@ -1214,10 +1214,10 @@ function withdraw() {
               {showOtpStep && (
                 <section>
                   <div className="flex items-center mb-4">
-                    <span className="flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 bg-gray-900 text-white">
+                    <span className="flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 bg-[#121212] text-white">
                       4
                     </span>
-                    <span className="font-medium text-gray-900">
+                    <span className="font-medium text-white">
                       Verify your withdrawal
                     </span>
                   </div>
@@ -1252,7 +1252,7 @@ function withdraw() {
                               value={otpCode}
                               onChange={handleOtpChange}
                               maxLength="6"
-                              className="w-full h-12 px-4 text-center text-lg font-mono tracking-widest bg-white border border-yellow-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+                              className="w-full h-12 px-4 text-center text-lg font-mono tracking-widest bg-[#121212] border border-yellow-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
                             />
                             {otpError && (
                               <p className="mt-2 text-sm text-red-600">
@@ -1281,7 +1281,7 @@ function withdraw() {
                             <button
                               onClick={handleBackFromOtp}
                               disabled={isVerifyingOtp}
-                              className="flex-1 h-11 px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                              className="flex-1 h-11 px-4 py-2 border border-[#2A2A2A] text-[#848E9C] text-sm font-medium rounded-md hover:bg-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                             >
                               Back
                             </button>
@@ -1303,40 +1303,40 @@ function withdraw() {
                   </div>
 
                   {/* Withdrawal Summary in OTP Step */}
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                    <h4 className="text-sm font-medium text-gray-900 mb-3">
+                  <div className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg p-4">
+                    <h4 className="text-sm font-medium text-white mb-3">
                       Withdrawal Summary
                     </h4>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Cryptocurrency</span>
+                        <span className="text-[#5E6673]">Cryptocurrency</span>
                         <span className="font-medium">
                           {selectedCryptoSymbol}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Network</span>
+                        <span className="text-[#5E6673]">Network</span>
                         <span>{selectedNetwork?.label}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Destination</span>
+                        <span className="text-[#5E6673]">Destination</span>
                         <span className="font-mono text-xs break-all">
                           {withdrawalAddress}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Amount</span>
+                        <span className="text-[#5E6673]">Amount</span>
                         <span className="font-medium">
                           {withdrawalAmount} {selectedCryptoSymbol}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Network Fee</span>
+                        <span className="text-[#5E6673]">Network Fee</span>
                         <span>
                           {networkFee} {selectedCryptoSymbol}
                         </span>
                       </div>
-                      <div className="flex justify-between border-t border-gray-300 pt-2 font-medium">
+                      <div className="flex justify-between border-t border-[#2A2A2A] pt-2 font-medium">
                         <span>You will receive</span>
                         <span>
                           {amountReceived.toFixed(4)} {selectedCryptoSymbol}
@@ -1352,8 +1352,8 @@ function withdraw() {
 
             {/* Right Column: FAQ & Limits */}
             <aside className="lg:col-span-1 space-y-6">
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 sticky top-8">
-                <h2 className="text-base font-semibold mb-4 text-gray-900">
+              <div className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg p-6 sticky top-8">
+                <h2 className="text-base font-semibold mb-4 text-white">
                   FAQ
                 </h2>
                 <ul className="space-y-3">
@@ -1363,7 +1363,7 @@ function withdraw() {
                         href={`/help/withdrawal/${faq.slug}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm text-gray-700 hover:text-gray-900 hover:underline"
+                        className="text-sm text-[#848E9C] hover:text-white hover:underline"
                       >
                         {faq.question}
                       </a>

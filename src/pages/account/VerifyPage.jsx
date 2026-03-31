@@ -16,6 +16,7 @@ import {
  Loader2,
 } from "lucide-react";
 import ProfileNavBar from "../../components/profile/ProfileNavBar";
+import { useIsMobile } from "../../hooks/useIsMobile";
 import axios from "axios";
 import { API_BASE_URL, API_KEY } from "../../config";
 import { countries, idTypes, VERIFICATION_STATUS, SUPPORTED_FILE_TYPES } from "./verifyConstants";
@@ -61,6 +62,7 @@ const InitialVerifyIllustration = () => (
 );
 
 const VerifyPage = () => {
+ const isMobile = useIsMobile();
  // ALL HOOKS MUST BE DECLARED AT THE TOP LEVEL - NO CONDITIONAL HOOKS
  // Verification status context
  const {
@@ -959,7 +961,7 @@ const VerifyPage = () => {
  return (
  <div className="min-h-screen bg-[#121212] flex flex-col items-center py-8 px-4 font-sans">
  <div className="w-full max-w-4xl mb-6">
- <ProfileNavBar />
+ {!isMobile && <ProfileNavBar />}
  </div>
  <div className="w-full max-w-md flex flex-col items-center justify-center bg-[#1E1E1E] rounded-xl p-8 mt-12 shadow">
  <span className="inline-flex items-center px-6 py-2 rounded-full bg-yellow-100 text-yellow-700 font-semibold text-lg border border-yellow-300 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-700 animate-pulse mb-4">
@@ -994,7 +996,7 @@ const VerifyPage = () => {
  return (
  <div className="min-h-screen bg-[#121212] flex flex-col items-center py-8 px-4 font-sans">
  <div className="w-full max-w-4xl mb-6">
- <ProfileNavBar />
+ {!isMobile && <ProfileNavBar />}
  </div>
  <div className="w-full max-w-md flex flex-col items-center justify-center bg-[#1E1E1E] rounded-xl p-8 mt-12 shadow">
  <CheckCircle2
@@ -1024,7 +1026,7 @@ const VerifyPage = () => {
  return (
  <div className="min-h-screen bg-[#121212] flex flex-col items-center py-8 px-4 font-sans">
  <div className="w-full max-w-4xl mb-6">
- <ProfileNavBar />
+ {!isMobile && <ProfileNavBar />}
  </div>
  <div className="w-full max-w-md flex flex-col items-center justify-center bg-[#1E1E1E] rounded-xl p-8 mt-12 shadow">
  <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4">
@@ -1487,7 +1489,7 @@ const VerifyPage = () => {
  return (
  <div className="min-h-screen bg-[#121212] flex flex-col items-center py-8 px-4 font-sans">
  <div className="w-full max-w-4xl mb-6">
- <ProfileNavBar />
+ {!isMobile && <ProfileNavBar />}
  </div>
  <div className="w-full max-w-md">
  {currentStep > 1 && currentStep < 6 && (

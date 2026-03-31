@@ -51,21 +51,21 @@ const TermsAndConditions = () => {
   ];
 
   const SocialButton = ({ icon: Icon, label }) => (
-    <button className="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-lg flex items-center justify-center transition-colors">
-      <Icon className="w-4 h-4 text-gray-600" />
+    <button className="w-10 h-10 bg-[#1E1E1E] hover:bg-[#2A2A2A] rounded-lg flex items-center justify-center transition-colors">
+      <Icon className="w-4 h-4 text-[#848E9C]" />
     </button>
   );
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#121212]">
       {/* Breadcrumb */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-        <nav className="flex items-center space-x-2 text-sm text-gray-500">
-          <span className="hover:text-gray-700 cursor-pointer">Support center</span>
+        <nav className="flex items-center space-x-2 text-sm text-[#5E6673]">
+          <span className="hover:text-[#848E9C] cursor-pointer">Support center</span>
           <ChevronRight className="w-4 h-4" />
-          <span className="hover:text-gray-700 cursor-pointer">Terms of agreement</span>
+          <span className="hover:text-[#848E9C] cursor-pointer">Terms of agreement</span>
           <ChevronRight className="w-4 h-4" />
-          <span className="text-gray-900">Article</span>
+          <span className="text-white">Article</span>
         </nav>
       </div>
 
@@ -76,20 +76,20 @@ const TermsAndConditions = () => {
             {/* Header */}
             <div className="mb-8">
               <h1 className="text-3xl sm:text-4xl font-bold text-black mb-6">Terms of Service</h1>
-              <p className="text-gray-500 text-sm mb-6">Published on January 01, 2024</p>
+              <p className="text-[#5E6673] text-sm mb-6">Published on January 01, 2024</p>
               
               {/* Mobile Table of Contents Toggle */}
               <div className="xl:hidden mb-6">
                 <button
                   onClick={() => setShowMobileTOC(!showMobileTOC)}
-                  className="w-full bg-gray-100 hover:bg-gray-200 p-3 rounded-lg flex items-center justify-between transition-colors"
+                  className="w-full bg-[#1E1E1E] hover:bg-[#2A2A2A] p-3 rounded-lg flex items-center justify-between transition-colors"
                 >
-                  <span className="font-medium text-gray-900">Table of Contents</span>
-                  <ChevronRight className={`w-5 h-5 text-gray-600 transform transition-transform ${showMobileTOC ? 'rotate-90' : ''}`} />
+                  <span className="font-medium text-white">Table of Contents</span>
+                  <ChevronRight className={`w-5 h-5 text-[#848E9C] transform transition-transform ${showMobileTOC ? 'rotate-90' : ''}`} />
                 </button>
                 
                 {showMobileTOC && (
-                  <div className="mt-3 bg-white border border-gray-200 rounded-lg p-4">
+                  <div className="mt-3 bg-[#121212] border border-[#2A2A2A] rounded-lg p-4">
                     <nav className="flex flex-col space-y-1">
                       {tableOfContents.map((item) => (
                         <button
@@ -101,7 +101,7 @@ const TermsAndConditions = () => {
                           className={`w-full text-left p-2 rounded text-sm transition-colors ${
                             activeSection === item.id
                               ? 'bg-yellow-50 text-[#2EBD85] font-medium'
-                              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                              : 'text-[#848E9C] hover:text-white hover:bg-[#1E1E1E]'
                           }`}
                         >
                           <div className="flex items-start w-full">
@@ -129,7 +129,7 @@ const TermsAndConditions = () => {
             <div className="space-y-8 sm:space-y-12">
               <section id="introduction">
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">1. INTRODUCTION</h2>
-                <div className="space-y-4 text-gray-800 leading-relaxed">
+                <div className="space-y-4 text-white leading-relaxed">
                     <p>Welcome to AXONI coin ("Exchange," "We," "Us," or "Our"). By using our website and services, you agree to be bound by these Terms of Service ("Terms"). 
                         Please read them carefully before accessing or using our platform. If you do not agree with any part of these Terms, you should not use our services.
                     </p>
@@ -138,7 +138,7 @@ const TermsAndConditions = () => {
 
               <section id="special-reminder">
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">2. SPECIAL REMINDER</h2>
-                <div className="space-y-4 text-gray-800 leading-relaxed">
+                <div className="space-y-4 text-white leading-relaxed">
                     <div className="bg-amber-50 border-l-4 border-amber-400 p-4 sm:p-6 mb-6">
                       <div className="flex items-start">
                         <AlertTriangle className="w-6 h-6 text-amber-600 mr-3 mt-1 flex-shrink-0" />
@@ -163,7 +163,7 @@ const TermsAndConditions = () => {
 
               <section id="definitions">
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">3. DEFINITION OF TERMS</h2>
-                <div className="space-y-4 text-gray-800 leading-relaxed">
+                <div className="space-y-4 text-white leading-relaxed">
                   <ul className="space-y-4">
                     <li>
                         <strong>Account:</strong> means a unique account created for You to access our Service or parts of our Service. Any duplication of accounts, upon getting caught, may result in account banning and/or penalties. 
@@ -202,7 +202,7 @@ const TermsAndConditions = () => {
 
               <section id="compliance">
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">4. COMPREHENSIVE TERMS OF SERVICE: COMPLIANCE WITH BOT AND AUTOMATED TRADING RESTRICTIONS</h2>
-                <div className="space-y-6 text-gray-800 leading-relaxed">
+                <div className="space-y-6 text-white leading-relaxed">
                   <p>
                     The Terms of Service (ToS) for trading platforms establish the rules and responsibilities of users to ensure fair, lawful, and secure operations. 
                     These rules include strict prohibitions on using unauthorized bots or automated trading systems, with compliance essential for avoiding penalties under platform policies 
@@ -301,7 +301,7 @@ const TermsAndConditions = () => {
 
               <section id="trading">
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">5. CRYPTOCURRENCY TRADING</h2>
-                 <div className="space-y-4 text-gray-800 leading-relaxed">
+                 <div className="space-y-4 text-white leading-relaxed">
                   <ul className="space-y-3">
                     <li>
                         <strong>Risks:</strong> AXONI coin trading involves significant risks, and the value of AXONI coin and other cryptocurrencies can be highly volatile. 
@@ -320,7 +320,7 @@ const TermsAndConditions = () => {
 
               <section id="services">
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">6. AXONI COIN AND SERVICES</h2>
-                 <div className="space-y-4 text-gray-800 leading-relaxed">
+                 <div className="space-y-4 text-white leading-relaxed">
                   <ul className="space-y-3">
                     <li>
                         <strong>Availability:</strong> We will make reasonable efforts to ensure the availability of AXONI coin and a wide range of services on our platform. 
@@ -335,7 +335,7 @@ const TermsAndConditions = () => {
 
               <section id="intellectual-property">
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">7. INTELLECTUAL PROPERTY</h2>
-                 <div className="space-y-4 text-gray-800 leading-relaxed">
+                 <div className="space-y-4 text-white leading-relaxed">
                   <ul className="space-y-3">
                     <li>
                         <strong>Ownership:</strong> All content and materials on our platform, including logos, trademarks, graphics, and software, are the property of 
@@ -350,14 +350,14 @@ const TermsAndConditions = () => {
 
               <section id="privacy">
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">8. PRIVACY POLICY</h2>
-                <div className="space-y-4 text-gray-800 leading-relaxed">
+                <div className="space-y-4 text-white leading-relaxed">
                   <p>Please refer to our Privacy Policy, which outlines how we collect, use, and protect your personal information.</p>
                 </div>
               </section>
 
               <section id="liability">
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">9. LIMITATION OF LIABILITY</h2>
-                <div className="space-y-4 text-gray-800 leading-relaxed">
+                <div className="space-y-4 text-white leading-relaxed">
                   <ul className="space-y-3">
                     <li>
                         <strong>No Liability for Losses:</strong> We are not responsible for any losses or damages resulting from your use of our platform or any actions 
@@ -372,14 +372,14 @@ const TermsAndConditions = () => {
 
               <section id="indemnification">
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">10. INDEMNIFICATION</h2>
-                <div className="space-y-4 text-gray-800 leading-relaxed">
+                <div className="space-y-4 text-white leading-relaxed">
                   <p>You agree to indemnify and hold AXONI coin, its affiliates, and their respective officers, directors, employees, and agents harmless from and against any claims, liabilities, damages, losses, and expenses arising from your use of our platform.</p>
                 </div>
               </section>
 
               <section id="governing-law">
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">11. GOVERNING LAW AND DISPUTE RESOLUTION</h2>
-                <div className="space-y-4 text-gray-800 leading-relaxed">
+                <div className="space-y-4 text-white leading-relaxed">
                   <p>
                     These Terms shall be governed by and construed in accordance with the laws of California, United States. Any disputes arising out of or relating to these Terms
                      shall be resolved through arbitration in accordance with the rules of the American Arbitration Association, held in California, with each party bearing its own costs.
@@ -389,7 +389,7 @@ const TermsAndConditions = () => {
 
               <section id="changes">
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">12. CHANGES TO TERMS</h2>
-                <div className="space-y-4 text-gray-800 leading-relaxed">
+                <div className="space-y-4 text-white leading-relaxed">
                   <p>
                     We may update or modify these Terms at any time. Any changes will be posted on our website, and your continued use of our platform after the 
                     changes constitute your acceptance of the modified Terms.
@@ -399,12 +399,12 @@ const TermsAndConditions = () => {
             </div>
 
             {/* Contact Information */}
-            <div className="mt-16 p-6 bg-gray-50 rounded-lg">
+            <div className="mt-16 p-6 bg-[#1E1E1E] rounded-lg">
               <h3 className="text-lg font-semibold text-black mb-3">Questions About These Terms?</h3>
-              <p className="text-gray-700 mb-3">
+              <p className="text-[#848E9C] mb-3">
                 If you have any questions about these Terms of Service, please contact our support team.
               </p>
-              <div className="space-y-1 text-sm text-gray-600">
+              <div className="space-y-1 text-sm text-[#848E9C]">
                 <p>Email: legal@axoni.co</p>
                 <p>Support Center: Available 24/7</p>
               </div>
@@ -414,8 +414,8 @@ const TermsAndConditions = () => {
           {/* Table of Contents Sidebar - Hidden on mobile and tablet */}
           <div className="hidden xl:block w-80 flex-shrink-0">
             <div className="sticky top-6">
-              <div className="bg-white border border-gray-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">Table of Contents</h3>
+              <div className="bg-[#121212] border border-[#2A2A2A] rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-white mb-3">Table of Contents</h3>
                 <nav className="flex flex-col">
                   {tableOfContents.map((item) => (
                     <button
@@ -424,7 +424,7 @@ const TermsAndConditions = () => {
                       className={`w-full text-left py-1.5 px-2 rounded text-sm transition-colors block ${
                         activeSection === item.id
                           ? 'bg-yellow-50 text-[#2EBD85] font-medium'
-                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                          : 'text-[#848E9C] hover:text-white hover:bg-[#1E1E1E]'
                       }`}
                     >
                       <div className="flex items-start w-full">

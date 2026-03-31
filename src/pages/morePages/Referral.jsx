@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Referral.css';
 import referralImage1 from '../../assets/referral/0DEDDD03AB730CD5.webp';
 import referralImage2 from '../../assets/referral/D664C8EB85A43D97.webp';
@@ -10,7 +10,11 @@ const Referral = () => {
   const [activeTab, setActiveTab] = useState('all');
   const [expandedFaq, setExpandedFaq] = useState(null);
 
-  const referralLink = "https://www.okx.com/join/12345";
+  // Build referral link from user's stored referral code
+  const referralCode = localStorage.getItem('referral_code') || '';
+  const referralLink = referralCode
+    ? `${window.location.origin}/signup?ref=${referralCode}`
+    : `${window.location.origin}/signup`;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(referralLink);

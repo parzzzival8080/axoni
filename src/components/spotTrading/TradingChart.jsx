@@ -32,7 +32,6 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
 
   // Format the symbol for TradingView (use just the base symbol without USDT suffix)
   const formatSymbolForChart = (sym) => {
-    console.log("Formatting symbol:", sym);
     if (!sym) return "BTC";
 
     // Convert to uppercase and remove any trading pair suffixes
@@ -65,16 +64,8 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
   // Default props with dynamic symbol - ensure symbol is never empty
   const getChartConfig = (currentSymbol) => {
     const formattedSymbol = formatSymbolForChart(currentSymbol);
-    console.log("Current Symbol in getChartConfig:", currentSymbol);
-    console.log("Formatted Symbol for Chart:", formattedSymbol);
     const currentTimeframe = sessionStorage.getItem("slTimeFrame") || timeframe;
     const interval = mapTimeframeToInterval(currentTimeframe);
-    console.log(
-      "Using timeframe:",
-      currentTimeframe,
-      "mapped to interval:",
-      interval
-    );
     return {
       symbol: formattedSymbol,
       interval: interval,
@@ -108,39 +99,21 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
 
   // Handle timeframe changes with session storage
   const handleTimeframeChange = (newTimeframe) => {
-    console.log("=== TIMEFRAME CHANGE DEBUG ===");
-    console.log("Previous timeframe state:", timeframe);
-    console.log("New timeframe selected:", newTimeframe);
-    console.log(
-      "Previous slTimeFrame in sessionStorage:",
-      sessionStorage.getItem("slTimeFrame")
-    );
 
     // Update both sessionStorage and component state
     setTimeframe(newTimeframe);
     sessionStorage.setItem("slTimeFrame", newTimeframe);
 
-    console.log(
-      "Updated slTimeFrame in sessionStorage:",
-      sessionStorage.getItem("slTimeFrame")
-    );
-    console.log("Component timeframe state updated to:", newTimeframe);
-    console.log("Chart will reinitialize automatically via useEffect");
-    console.log("=== END TIMEFRAME DEBUG ===");
   };
 
   // Effect to handle symbol changes
   useEffect(() => {
-    console.log("Symbol Effect - selectedSymbol:", selectedSymbol);
-    console.log("Symbol Effect - current symbol state:", symbol);
 
     if (selectedSymbol && selectedSymbol !== symbol) {
-      console.log("Symbol change detected:", selectedSymbol);
       setSymbol(selectedSymbol);
 
       // Force chart reinitialization
       if (tvWidgetRef.current) {
-        console.log("Removing existing chart for reinitialization");
         tvWidgetRef.current.remove();
         tvWidgetRef.current = null;
         setShouldReinitialize(true);
@@ -150,17 +123,13 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
 
   // Effect to initialize or reinitialize chart
   useEffect(() => {
-    console.log("Chart Init Effect - using symbol:", symbol);
-    console.log("Chart Init Effect - dependencies:", [symbol]);
     if (!chartContainerRef.current) {
-      console.log("Chart container ref not available");
       return;
     }
 
     // Cleanup previous widget if it exists
     if (tvWidgetRef.current) {
       try {
-        console.log("Removing previous chart widget");
         tvWidgetRef.current.remove();
         tvWidgetRef.current = null;
       } catch (e) {
@@ -171,8 +140,6 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
     try {
       // Format the symbol for the chart
       const formattedSymbol = formatSymbolForChart(symbol);
-      console.log("Initializing chart with formatted symbol:", formattedSymbol);
-      console.log("Initializing chart with config:", getChartConfig(symbol));
 
       // Inject styles to force black background
       const styleElement = document.createElement("style");
@@ -368,7 +335,6 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
       tvWidgetRef.current = tvWidget;
 
       tvWidget.onChartReady(() => {
-        console.log("Chart is ready with symbol:", formattedSymbol);
 
         // Set chart background to black using the chart's API
         tvWidget.activeChart().applyOverrides({
@@ -455,12 +421,10 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
           const button = tvWidget.createButton();
           button.setAttribute("title", "Click to check API");
           button.addEventListener("click", () => {
-            console.log("API Check button clicked");
             // Example of checking API status
             fetch("https://api.axoni.co/api/v1/status")
               .then((response) => response.json())
               .then((data) => {
-                console.log("API Status:", data);
                 alert(`API Status: ${data.status || "Connected"}`);
               })
               .catch((error) => {
@@ -480,7 +444,6 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
     return () => {
       if (tvWidgetRef.current) {
         try {
-          console.log("Removing chart widget on cleanup");
           tvWidgetRef.current.remove();
           tvWidgetRef.current = null;
         } catch (err) {

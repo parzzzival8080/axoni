@@ -430,7 +430,7 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
                             display: 'inline-block',
                             minWidth: '70px',
                             textAlign: 'right',
-                            color: (coin.price_change_24h || 0) >= 0 ? '#00b574' : '#f23645'
+                            color: (coin.price_change_24h || 0) >= 0 ? '#2EBD85' : '#f23645'
                           }}
                         >
                           {(coin.price_change_24h || 0) >= 0 ? '+' : ''}{(coin.price_change_24h || 0).toFixed(2)}%
@@ -461,7 +461,7 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
             onClick={handleFavoriteClick}
             onMouseOver={(e) => {
               e.currentTarget.style.backgroundColor = '#1a1a1a';
-              e.currentTarget.style.color = '#00b574';
+              e.currentTarget.style.color = '#2EBD85';
             }}
             onMouseOut={(e) => {
               e.currentTarget.style.backgroundColor = 'transparent';
@@ -640,7 +640,7 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
                  onClick={isFavorite ? handleRemoveFromFavorites : handleAddToFavorites}
                  disabled={isUpdatingFavorite}
                  style={{
-                   background: isUpdatingFavorite ? '#666' : (isFavorite ? '#f23645' : '#00b574'),
+                   background: isUpdatingFavorite ? '#666' : (isFavorite ? '#f23645' : '#2EBD85'),
                    border: 'none',
                    color: '#fff',
                    padding: '10px 20px',
@@ -661,7 +661,7 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
                  }}
                  onMouseOut={(e) => {
                    if (!isUpdatingFavorite) {
-                     e.target.style.backgroundColor = isFavorite ? '#f23645' : '#00b574';
+                     e.target.style.backgroundColor = isFavorite ? '#f23645' : '#2EBD85';
                    }
                  }}
                >
@@ -700,7 +700,7 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
           <div className="value">
             <div className="flex items-center">
               <span 
-                className={priceChange24h >= 0 ? 'text-[#00b574]' : 'text-[#f23645]'} 
+                className={priceChange24h >= 0 ? 'text-[#2EBD85]' : 'text-[#f23645]'} 
                 style={{ fontSize: '24px', fontWeight: '500' }}
               >
                 {livePrice?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 8 })}
@@ -724,7 +724,7 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
         </div>
         <div className="stat">
           <div className="value">
-            <span className={`text ${priceChange24h >= 0 ? 'text-[#00b574]' : 'text-[#f23645]'}`}> 
+            <span className={`text ${priceChange24h >= 0 ? 'text-[#2EBD85]' : 'text-[#f23645]'}`}> 
               {liveChange >= 0 ? '+' : ''}{liveChange?.toFixed(2)}%
             </span>
           </div>

@@ -1,26 +1,18 @@
-/* Assets.css */
-body.assets-page {
-  color: black !important;
-}
+/* Assets.css — Dark Theme */
 
 .assets-container {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  color: #000;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #fff;
   width: 100%;
   margin: 0;
   padding: 0;
-  background-color: #fff;
+  background-color: #121212;
   min-height: 100vh;
 }
 
-/* Override global dark theme */
-.assets-container * {
-  color: inherit;
-}
-
 .assets-header {
-  background-color: #fff;
-  border-bottom: 1px solid #eee;
+  background-color: #121212;
+  border-bottom: 1px solid #2A2A2A;
   margin-bottom: 24px;
   width: 100%;
   padding: 0;
@@ -30,22 +22,29 @@ body.assets-page {
   display: flex;
   overflow-x: auto;
   white-space: nowrap;
-  background-color: #fff;
+  background-color: #121212;
   width: 100%;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #2A2A2A;
   padding-left: 96px;
+}
+
+@media (max-width: 768px) {
+  .header-tabs {
+    padding-left: 16px;
+  }
 }
 
 .header-tab {
   padding: 16px 12px;
   font-size: 14px;
-  color: #666;
+  color: #848E9C;
   cursor: pointer;
   position: relative;
+  transition: color 0.2s;
 }
 
 .header-tab.active {
-  color: #000;
+  color: #fff;
   font-weight: 500;
 }
 
@@ -56,13 +55,13 @@ body.assets-page {
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: #000;
+  background-color: #2EBD85;
 }
 
 /* Assets content */
 .assets-content {
   padding: 0 16px;
-  background-color: #fff;
+  background-color: #121212;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -70,19 +69,17 @@ body.assets-page {
 /* Cards */
 .assets-cards {
   display: flex;
-  gap: 24px;
-  margin-bottom: 36px;
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
 .asset-card {
   flex: 1;
-  background: #fff;
-  border: 1px solid #eee;
+  background: #1E1E1E;
+  border: 1px solid #2A2A2A;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
   padding: 0;
-  min-height: 180px;
-  position: relative;
+  min-height: 160px;
 }
 
 .card-content {
@@ -93,7 +90,7 @@ body.assets-page {
   justify-content: flex-start;
   align-items: flex-start;
   text-align: left;
-  padding: 24px;
+  padding: 20px;
 }
 
 .asset-value-container {
@@ -104,24 +101,24 @@ body.assets-page {
 }
 
 .asset-title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
-  color: #333;
-  margin-bottom: 12px;
+  color: #848E9C;
+  margin-bottom: 10px;
 }
 
 .asset-value {
   font-size: 24px;
   font-weight: 600;
-  color: #000;
+  color: #fff;
   margin-bottom: 8px;
 }
 
 .asset-description {
   font-size: 12px;
-  color: #888;
+  color: #5E6673;
   line-height: 1.4;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   max-width: 80%;
 }
 
@@ -130,16 +127,16 @@ body.assets-page {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 30px 20px;
+  padding: 24px 16px;
   width: 100%;
   text-align: center;
 }
 
 .card-icon {
-  width: 60px;
-  height: 60px;
-  margin-bottom: 16px;
-  opacity: 1;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+  opacity: 0.7;
 }
 
 .coin-logo {
@@ -148,41 +145,46 @@ body.assets-page {
   border-radius: 50%;
   margin-right: 8px;
   object-fit: cover;
-  border: 1px solid #eee;
+  border: 1px solid #2A2A2A;
 }
 
 .card-heading {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
-  color: #000;
-  margin-bottom: 8px;
+  color: #fff;
+  margin-bottom: 6px;
 }
 
 .card-subtext {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 20px;
-  max-width: 300px;
+  font-size: 13px;
+  color: #848E9C;
+  margin-bottom: 16px;
+  max-width: 280px;
 }
 
 .deposit-button {
-  background: #000;
+  background: #2EBD85;
   color: #fff !important;
   border: none;
-  border-radius: 20px;
+  border-radius: 8px;
   padding: 8px 24px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 8px;
+  transition: background 0.2s;
+}
+
+.deposit-button:hover {
+  background: #259A6C;
 }
 
 /* Tabs */
 .assets-tabs {
   display: flex;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #2A2A2A;
   margin-bottom: 16px;
-  background-color: #fff;
+  background-color: #121212;
 }
 
 .tab {
@@ -190,14 +192,15 @@ body.assets-page {
   font-weight: 500;
   padding: 12px 0;
   margin-right: 24px;
-  color: #888;
+  color: #848E9C;
   cursor: pointer;
   border-bottom: 2px solid transparent;
+  transition: color 0.2s;
 }
 
 .tab.active {
-  color: #000;
-  border-bottom: 2px solid #000;
+  color: #fff;
+  border-bottom: 2px solid #2EBD85;
 }
 
 /* Filters */
@@ -206,34 +209,34 @@ body.assets-page {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
-  background-color: #fff;
 }
 
-.search-box input {
-  padding: 8px 16px;
-  border: 1px solid #eee;
-  border-radius: 16px;
-  font-size: 14px;
-  width: 200px;
-  background: #fafafa;
-  color: #000;
-}
-
+.search-box input,
 .assets-search-box input {
   padding: 8px 16px;
-  border: 1px solid #eee;
-  border-radius: 16px;
+  border: 1px solid #2A2A2A;
+  border-radius: 8px;
   font-size: 14px;
   width: 200px;
-  background: #fff;
-  color: #000;
+  background: #1E1E1E;
+  color: #fff;
+}
+
+.search-box input::placeholder,
+.assets-search-box input::placeholder {
+  color: #5E6673;
+}
+
+.search-box input:focus,
+.assets-search-box input:focus {
+  outline: none;
+  border-color: #2EBD85;
 }
 
 .search-input-white {
-  background: #fff !important;
-  border: 1px solid #ddd !important;
-  color: #000 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  background: #1E1E1E !important;
+  border: 1px solid #2A2A2A !important;
+  color: #fff !important;
 }
 
 .filter-buttons {
@@ -242,21 +245,26 @@ body.assets-page {
 }
 
 .filter-button {
-  background: #f5f5f5;
-  border: 1px solid #eee;
-  border-radius: 16px;
-  color: #222;
+  background: #1E1E1E;
+  border: 1px solid #2A2A2A;
+  border-radius: 8px;
+  color: #fff;
   font-size: 14px;
   padding: 6px 16px;
   cursor: pointer;
   font-weight: 500;
+  transition: background 0.2s;
+}
+
+.filter-button:hover {
+  background: #2A2A2A;
 }
 
 /* Table */
 .assets-table {
   margin-bottom: 24px;
   overflow-x: auto;
-  background-color: #fff;
+  background-color: #121212;
 }
 
 .assets-table table {
@@ -264,22 +272,22 @@ body.assets-page {
   border-collapse: collapse;
 }
 
-.assets-table th, 
+.assets-table th,
 .assets-table td {
   padding: 12px 8px;
   text-align: left;
   font-size: 14px;
-  border-bottom: 1px solid #f2f2f2;
-  color: #000;
+  border-bottom: 1px solid #2A2A2A;
+  color: #fff;
 }
 
 .assets-table th {
-  font-weight: 600;
-  color: #666;
+  font-weight: 500;
+  color: #5E6673;
 }
 
 .assets-table tr:hover {
-  background-color: #f9f9f9;
+  background-color: #1E1E1E;
 }
 
 .right-align {
@@ -295,8 +303,8 @@ body.assets-page {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background-color: #f0f0f0;
-  color: #666;
+  background-color: #1E1E1E;
+  color: #848E9C;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -312,7 +320,7 @@ body.assets-page {
 .action-button {
   background: transparent;
   border: none;
-  color: #666;
+  color: #848E9C;
   font-size: 16px;
   cursor: pointer;
 }
@@ -324,33 +332,31 @@ body.assets-page {
   gap: 4px;
   margin-bottom: 60px;
   padding-bottom: 20px;
-  background-color: #fff;
 }
 
 .page-button {
   width: 32px;
   height: 32px;
-  border-radius: 50%;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
-  border: 1px solid #eee;
-  background: #fff;
+  border: 1px solid #2A2A2A;
+  background: #1E1E1E;
   cursor: pointer;
-  color: #000;
+  color: #fff;
   transition: all 0.2s ease;
 }
 
 .page-button:hover:not(:disabled) {
-  background: #f5f5f5;
-  border-color: #ddd;
+  background: #2A2A2A;
 }
 
 .page-button.active {
-  background: #000;
+  background: #2EBD85;
   color: #fff;
-  border: 1px solid #000;
+  border: 1px solid #2EBD85;
 }
 
 .page-button.nav-button {
@@ -358,7 +364,7 @@ body.assets-page {
 }
 
 .page-button:disabled {
-  opacity: 0.5;
+  opacity: 0.3;
   cursor: not-allowed;
 }
 
@@ -366,9 +372,22 @@ body.assets-page {
 @media (max-width: 768px) {
   .assets-cards {
     flex-direction: column;
+    gap: 12px;
   }
-  
+
   .asset-card {
     width: 100%;
+    min-height: auto;
+  }
+
+  .search-box input,
+  .assets-search-box input {
+    width: 100%;
+  }
+
+  .assets-filters {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
   }
 }

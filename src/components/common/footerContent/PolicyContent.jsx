@@ -88,25 +88,25 @@ const PrivacyPolicy = () => {
   ];
 
   //   const SocialButton = ({ icon: Icon, label }) => (
-  //     <button className="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-lg flex items-center justify-center transition-colors">
-  //       <Icon className="w-4 h-4 text-gray-600" />
+  //     <button className="w-10 h-10 bg-[#1E1E1E] hover:bg-[#2A2A2A] rounded-lg flex items-center justify-center transition-colors">
+  //       <Icon className="w-4 h-4 text-[#848E9C]" />
   //     </button>
   //   );
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#121212]">
       {/* Breadcrumb */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-        <nav className="flex items-center space-x-2 text-sm text-gray-500">
-          <span className="hover:text-gray-700 cursor-pointer">
+        <nav className="flex items-center space-x-2 text-sm text-[#5E6673]">
+          <span className="hover:text-[#848E9C] cursor-pointer">
             Support center
           </span>
           <ChevronRight className="w-4 h-4" />
-          <span className="hover:text-gray-700 cursor-pointer">
+          <span className="hover:text-[#848E9C] cursor-pointer">
             Privacy agreement
           </span>
           <ChevronRight className="w-4 h-4" />
-          <span className="text-gray-900">Article</span>
+          <span className="text-white">Article</span>
         </nav>
       </div>
 
@@ -119,7 +119,7 @@ const PrivacyPolicy = () => {
               <h1 className="text-3xl sm:text-4xl font-bold text-black mb-6">
                 Privacy Policy
               </h1>
-              <p className="text-gray-500 text-sm mb-6">
+              <p className="text-[#5E6673] text-sm mb-6">
                 Published on January 01, 2024
               </p>
 
@@ -127,20 +127,20 @@ const PrivacyPolicy = () => {
               <div className="xl:hidden mb-6">
                 <button
                   onClick={() => setShowMobileTOC(!showMobileTOC)}
-                  className="w-full bg-gray-100 hover:bg-gray-200 p-3 rounded-lg flex items-center justify-between transition-colors"
+                  className="w-full bg-[#1E1E1E] hover:bg-[#2A2A2A] p-3 rounded-lg flex items-center justify-between transition-colors"
                 >
-                  <span className="font-medium text-gray-900">
+                  <span className="font-medium text-white">
                     Table of Contents
                   </span>
                   <ChevronRight
-                    className={`w-5 h-5 text-gray-600 transform transition-transform ${
+                    className={`w-5 h-5 text-[#848E9C] transform transition-transform ${
                       showMobileTOC ? "rotate-90" : ""
                     }`}
                   />
                 </button>
 
                 {showMobileTOC && (
-                  <div className="mt-3 bg-white border border-gray-200 rounded-lg p-4">
+                  <div className="mt-3 bg-[#121212] border border-[#2A2A2A] rounded-lg p-4">
                     <nav className="flex flex-col space-y-1">
                       {tableOfContents.map((item) => (
                         <button
@@ -152,7 +152,7 @@ const PrivacyPolicy = () => {
                           className={`w-full text-left p-2 rounded text-sm transition-colors ${
                             activeSection === item.id
                               ? "bg-yellow-50 text-[#2EBD85] font-medium"
-                              : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                              : "text-[#848E9C] hover:text-white hover:bg-[#1E1E1E]"
                           }`}
                         >
                           <div className="flex items-start w-full">
@@ -177,7 +177,7 @@ const PrivacyPolicy = () => {
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">
                   1. PRIVACY AGREEMENT AND DISCLAIMER
                 </h2>
-                <div className="space-y-4 text-gray-800 leading-relaxed">
+                <div className="space-y-4 text-white leading-relaxed">
                   <p>
                     The platform (hereinafter referred to as the 'platform') is
                     committed to respecting and protecting the personal privacy
@@ -207,7 +207,7 @@ const PrivacyPolicy = () => {
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">
                   2. SCOPE OF APPLICATION
                 </h2>
-                <div className="space-y-4 text-gray-800 leading-relaxed">
+                <div className="space-y-4 text-white leading-relaxed">
                   <ul className="space-y-3 ml-4 list-disc list-inside">
                     <li>
                       When you register for an account on the platform, you
@@ -251,7 +251,7 @@ const PrivacyPolicy = () => {
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">
                   3. INFORMATION USE
                 </h2>
-                <div className="space-y-4 text-gray-800 leading-relaxed">
+                <div className="space-y-4 text-white leading-relaxed">
                   <p>
                     To better serve users, the platform may use your personal
                     information to provide you with content that interests you.
@@ -277,7 +277,7 @@ const PrivacyPolicy = () => {
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">
                   4. INFORMATION STORAGE AND EXCHANGE
                 </h2>
-                <div className="space-y-4 text-gray-800 leading-relaxed">
+                <div className="space-y-4 text-white leading-relaxed">
                   <p>
                     The information and data collected by the platform about you
                     will be stored on the servers of the platform and/or its
@@ -293,7 +293,7 @@ const PrivacyPolicy = () => {
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">
                   5. USE OF COOKIES
                 </h2>
-                <div className="space-y-4 text-gray-800 leading-relaxed">
+                <div className="space-y-4 text-white leading-relaxed">
                   <p>
                     If you do not decline Cookies, the platform will set or
                     access Cookies on your computer to enable you to log in or
@@ -316,7 +316,7 @@ const PrivacyPolicy = () => {
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">
                   6. Indemnification
                 </h2>
-                <div className="space-y-4 text-gray-800 leading-relaxed">
+                <div className="space-y-4 text-white leading-relaxed">
                   <p>
                     You agree to indemnify and hold AXONI coin, its affiliates,
                     and their respective officers, directors, employees, and
@@ -331,7 +331,7 @@ const PrivacyPolicy = () => {
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">
                   7. INFORMATION SECURITY
                 </h2>
-                <div className="space-y-4 text-gray-800 leading-relaxed">
+                <div className="space-y-4 text-white leading-relaxed">
                   <p>
                     The platform account includes security protection features.
                     Please ensure you keep your username and password secure.
@@ -381,7 +381,7 @@ const PrivacyPolicy = () => {
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">
                   8. PROTECTION OF PERSONAL DATA
                 </h2>
-                <div className="space-y-4 text-gray-800 leading-relaxed">
+                <div className="space-y-4 text-white leading-relaxed">
                   <p>
                     We employ appropriate physical, electronic, managerial, and
                     technical measures to safeguard your personal information.
@@ -465,7 +465,7 @@ const PrivacyPolicy = () => {
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">
                   9. DISCLAIMER
                 </h2>
-                <div className="space-y-4 text-gray-800 leading-relaxed">
+                <div className="space-y-4 text-white leading-relaxed">
                   <p>
                     You acknowledge and agree that, under any circumstances, we
                     shall not be held responsible for the following:
@@ -499,7 +499,7 @@ const PrivacyPolicy = () => {
                 <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">
                   10. ACCOUNT TIERS AND CORRESPONDING LIMITS
                 </h2>
-                <div className="space-y-4 text-gray-800 leading-relaxed">
+                <div className="space-y-4 text-white leading-relaxed">
                   <p>
                     For newly created accounts, the maximum withdrawal amount is
                     limited to 500 USDT. This policy applies uniformly to all
@@ -537,15 +537,15 @@ const PrivacyPolicy = () => {
             </div>
 
             {/* Contact Information */}
-            <div className="mt-16 p-6 bg-gray-50 rounded-lg">
+            <div className="mt-16 p-6 bg-[#1E1E1E] rounded-lg">
               <h3 className="text-lg font-semibold text-black mb-3">
                 Questions About This Privacy Policy?
               </h3>
-              <p className="text-gray-700 mb-3">
+              <p className="text-[#848E9C] mb-3">
                 If you have any questions about this Privacy Policy, please
                 contact our support team.
               </p>
-              <div className="space-y-1 text-sm text-gray-600">
+              <div className="space-y-1 text-sm text-[#848E9C]">
                 <p>Email: customerservice@axoni.co</p>
                 <p>Support Center: Available 24/7</p>
               </div>
@@ -555,8 +555,8 @@ const PrivacyPolicy = () => {
           {/* Table of Contents Sidebar - Hidden on mobile and tablet */}
           <div className="hidden xl:block w-80 flex-shrink-0">
             <div className="sticky top-6">
-              <div className="bg-white border border-gray-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              <div className="bg-[#121212] border border-[#2A2A2A] rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-white mb-3">
                   Table of Contents
                 </h3>
                 <nav className="flex flex-col">
@@ -567,7 +567,7 @@ const PrivacyPolicy = () => {
                       className={`w-full text-left py-1.5 px-2 rounded text-sm transition-colors block ${
                         activeSection === item.id
                           ? "bg-yellow-50 text-[#2EBD85] font-medium"
-                          : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                          : "text-[#848E9C] hover:text-white hover:bg-[#1E1E1E]"
                       }`}
                     >
                       <div className="flex items-start w-full">

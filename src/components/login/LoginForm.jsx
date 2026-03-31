@@ -514,12 +514,15 @@ const LoginForm = () => {
             {forgotPasswordStep === 'request' && (
               <form onSubmit={handleRequestPasswordReset} className="space-y-4">
                 <div className="w-full">
+                  <label htmlFor="reset-email" className="sr-only">Email address</label>
                   <input
+                    id="reset-email"
                     type="email"
                     placeholder="Email address"
                     value={resetEmail}
                     onChange={(e) => setResetEmail(e.target.value)}
                     required
+                    aria-label="Email address"
                     className="w-full bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg p-3 text-white placeholder-[#5E6673] focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-transparent"
                   />
                 </div>
@@ -537,12 +540,15 @@ const LoginForm = () => {
             {forgotPasswordStep === 'verify' && (
               <form onSubmit={handleVerifyOtp} className="space-y-4">
                 <div className="w-full">
+                  <label htmlFor="reset-otp" className="sr-only">OTP Code</label>
                   <input
+                    id="reset-otp"
                     type="text"
                     placeholder="Enter OTP"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
                     required
+                    aria-label="OTP Code"
                     className="w-full bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg p-3 text-white placeholder-[#5E6673] focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-transparent"
                   />
                 </div>
@@ -581,23 +587,29 @@ const LoginForm = () => {
                 )}
 
                 <div className="w-full">
+                  <label htmlFor="new-password" className="sr-only">New password</label>
                   <input
+                    id="new-password"
                     type="password"
                     placeholder="New password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     required
+                    aria-label="New password"
                     className="w-full bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg p-3 text-white placeholder-[#5E6673] focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-transparent"
                   />
                 </div>
 
                 <div className="w-full">
+                  <label htmlFor="confirm-password" className="sr-only">Confirm new password</label>
                   <input
+                    id="confirm-password"
                     type="password"
                     placeholder="Confirm new password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
+                    aria-label="Confirm new password"
                     className="w-full bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg p-3 text-white placeholder-[#5E6673] focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-transparent"
                   />
                 </div>
@@ -619,28 +631,34 @@ const LoginForm = () => {
         ) : (
           <form onSubmit={handleSubmit}>
             <div className="email-input">
+              <label htmlFor="login-email" className="sr-only">Email address</label>
               <div className="email-field">
                 <input
+                  id="login-email"
                   type="email"
                   name="email"
                   placeholder="Email address"
                   value={credentials.email}
                   onChange={handleInputChange}
                   required
+                  aria-label="Email address"
                 />
               </div>
             </div>
 
             {showPassword && (
               <div className="password-input">
+                <label htmlFor="login-password" className="sr-only">Password</label>
                 <div className="password-field">
                   <input
+                    id="login-password"
                     type="password"
                     name="password"
                     placeholder="Password"
                     value={credentials.password}
                     onChange={handleInputChange}
                     required
+                    aria-label="Password"
                   />
                 </div>
               </div>

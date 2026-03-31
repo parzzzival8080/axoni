@@ -1,20 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ProfileNavBar from '../../components/profile/ProfileNavBar';
-import { FiEdit, FiCopy, FiCheck, FiShield } from 'react-icons/fi';
 import axios from 'axios';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import MobileSettingsPanel from '../../components/mobile/MobileSettingsPanel';
 
 const Profile = () => {
   const isMobile = useIsMobile();
-  // Loading and error state
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
   const [profileData, setProfileData] = React.useState(null);
   const [showTradingFeeModal, setShowTradingFeeModal] = React.useState(false);
+  const [copiedField, setCopiedField] = React.useState(null);
 
-  // Get user ID from localStorage
   const storedUser = localStorage.getItem('user');
   const localUser = storedUser ? JSON.parse(storedUser) : {};
   const userId = localStorage.getItem('user_id');
@@ -46,452 +45,266 @@ const Profile = () => {
     fetchUserData();
   }, [userId]);
 
-  // Fallback if API fails
   const fallbackData = {
     user: {
       name: localUser.username || 'User',
       email: localUser.email || 'user@example.com',
-      uid: localUser.uid || 'Not provided',
-      referral_code: localUser.referral_code || 'Not available',
-      role: localUser.role || 'client',
+      uid: localUser.uid || 'N/A',
+      referral_code: localUser.referral_code || 'N/A',
     },
     user_detail: {
       phone_number: localUser.phone || null,
       user_country: localUser.country || null,
       user_profile: localUser.profileImage || null,
-      tier: localUser.tradingLevel === 'Premium Tier',
-      is_verified:
-        localUser.is_verified === true ||
-        localStorage.getItem('is_verified') === 'true',
+      is_verified: localUser.is_verified === true || localStorage.getItem('is_verified') === 'true',
     },
   };
 
-
-
-  // Use API data or fallback
   const user = profileData?.user || fallbackData.user;
   const userDetail = profileData?.user_detail || fallbackData.user_detail;
-
-  // Verification status logic
   const isVerified = userDetail.is_verified === true;
-  const isPending =
-    !isVerified && localStorage.getItem('is_verified') === 'pending';
 
-  // Display data with proper null handling
   const displayData = {
     username: user.name || 'Not provided',
-    userId: userId || 'Not provided',
-    uid: user.uid || 'Not provided',
+    userId: userId || 'N/A',
+    uid: user.uid || 'N/A',
     email: user.email || 'Not provided',
     phone: userDetail.phone_number || 'Not provided',
     country: userDetail.user_country || 'Not specified',
-    tradingLevel: userDetail.tier ? 'Premium Tier' : 'Level 1',
     profileImage: userDetail.user_profile || null,
-    referralCode: user.referral_code || 'Not available',
-    role: user.role || 'client',
+    referralCode: user.referral_code || 'N/A',
   };
 
-  const handleCopy = (text) => {
+  const handleCopy = (text, field) => {
     navigator.clipboard.writeText(text);
-    alert('Copied to clipboard!');
+    setCopiedField(field);
+    setTimeout(() => setCopiedField(null), 2000);
   };
 
-  // Loading state
+  const handleLogout = () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.href = '/';
+  };
+
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white relative">
-        <ProfileNavBar />
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-          <div className="flex justify-center items-center py-12 sm:py-16">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500 dark:border-yellow-400"></div>
-            <span className="ml-3 text-sm sm:text-base">Loading profile...</span>
-          </div>
-        </div>
+      <div className="min-h-screen bg-[#121212] flex items-center justify-center">
+        {!isMobile && <ProfileNavBar />}
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#2EBD85] border-t-transparent"></div>
       </div>
     );
   }
 
-  // Error state
   if (error) {
     return (
-      <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white relative">
-        <ProfileNavBar />
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-          <div className="flex flex-col items-center justify-center py-12 sm:py-16">
-            <div className="text-red-500 mb-4">
-              <svg
-                className="w-10 h-10 sm:w-12 sm:h-12"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                ></path>
-              </svg>
+      <div className="min-h-screen bg-[#121212] flex flex-col items-center justify-center px-6">
+        {!isMobile && <ProfileNavBar />}
+        <p className="text-[#848E9C] text-sm mb-4">{error}</p>
+        <button onClick={() => window.location.reload()} className="px-5 py-2.5 bg-[#2EBD85] text-white rounded-lg text-sm font-medium">
+          Try Again
+        </button>
+      </div>
+    );
+  }
+
+  // Mobile Account Screen
+  if (isMobile) {
+    return (
+      <div className="min-h-screen bg-[#121212] text-white pb-20">
+        {/* Profile Card */}
+        <div className="px-4 pt-2 pb-4">
+          <div className="flex items-center gap-4 mb-5">
+            <div className="w-14 h-14 bg-[#1E1E1E] rounded-full flex items-center justify-center flex-shrink-0">
+              {displayData.profileImage ? (
+                <img src={displayData.profileImage} alt="Profile" className="w-full h-full rounded-full object-cover" />
+              ) : (
+                <span className="text-[#848E9C] text-2xl">
+                  {displayData.username.charAt(0).toUpperCase()}
+                </span>
+              )}
             </div>
-            <h3 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-gray-100 mb-2 text-center">
-              Error loading profile
-            </h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-6 text-center px-4">
-              {error}
-            </p>
-            <button
-              onClick={() => window.location.reload()}
-              className="px-4 py-2 sm:px-6 sm:py-3 bg-[#2EBD85] text-white rounded-md hover:bg-yellow-600 transition-colors text-sm sm:text-base"
-            >
-              Try Again
+            <div className="flex-1 min-w-0">
+              <h2 className="text-lg font-semibold truncate">{displayData.username}</h2>
+              <p className="text-[#5E6673] text-xs">UID: {displayData.uid}</p>
+            </div>
+            {isVerified && (
+              <span className="px-2 py-1 bg-[#2EBD85]/15 text-[#2EBD85] text-[10px] font-medium rounded-md">Verified</span>
+            )}
+          </div>
+
+          {/* Quick Actions */}
+          <div className="grid grid-cols-4 gap-2 mb-4">
+            <button onClick={() => navigate('/deposit')} className="flex flex-col items-center gap-1.5 py-3 bg-[#1E1E1E] rounded-xl">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 5v14M5 12l7 7 7-7" />
+              </svg>
+              <span className="text-[10px] text-[#848E9C]">Deposit</span>
+            </button>
+            <button onClick={() => navigate('/withdraw')} className="flex flex-col items-center gap-1.5 py-3 bg-[#1E1E1E] rounded-xl">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 19V5M5 12l7-7 7 7" />
+              </svg>
+              <span className="text-[10px] text-[#848E9C]">Withdraw</span>
+            </button>
+            <button onClick={() => navigate('/account/overview')} className="flex flex-col items-center gap-1.5 py-3 bg-[#1E1E1E] rounded-xl">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" />
+              </svg>
+              <span className="text-[10px] text-[#848E9C]">Overview</span>
+            </button>
+            <button onClick={() => navigate('/account/profile/security')} className="flex flex-col items-center gap-1.5 py-3 bg-[#1E1E1E] rounded-xl">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+              <span className="text-[10px] text-[#848E9C]">Security</span>
             </button>
           </div>
         </div>
+
+        {/* Menu Sections */}
+        <div className="px-4 space-y-3">
+          {/* Personal Info */}
+          <div className="bg-[#1E1E1E] rounded-xl overflow-hidden">
+            <h3 className="px-4 pt-3 pb-1 text-xs font-medium text-[#5E6673] uppercase tracking-wider">Personal Info</h3>
+            <MenuItem label="Email" value={displayData.email} />
+            <MenuItem label="Phone" value={displayData.phone} />
+            <MenuItem label="Country" value={displayData.country} />
+          </div>
+
+          {/* Account */}
+          <div className="bg-[#1E1E1E] rounded-xl overflow-hidden">
+            <h3 className="px-4 pt-3 pb-1 text-xs font-medium text-[#5E6673] uppercase tracking-wider">Account</h3>
+            <MenuItem label="User ID" value={displayData.userId} copyable onCopy={() => handleCopy(displayData.userId, 'userId')} copied={copiedField === 'userId'} />
+            <MenuItem label="UID" value={displayData.uid} copyable onCopy={() => handleCopy(displayData.uid, 'uid')} copied={copiedField === 'uid'} />
+            <MenuItem label="Referral Code" value={displayData.referralCode} copyable onCopy={() => handleCopy(displayData.referralCode, 'referral')} copied={copiedField === 'referral'} />
+          </div>
+
+          {/* Actions */}
+          <div className="bg-[#1E1E1E] rounded-xl overflow-hidden">
+            <h3 className="px-4 pt-3 pb-1 text-xs font-medium text-[#5E6673] uppercase tracking-wider">Settings</h3>
+            <MenuLink label="Change Password" to="/account/profile/security/change-password" />
+            <MenuLink label="Change Email" to="/account/profile/security/change-email" />
+            <MenuLink label="Verification" to="/account/profile/verify" badge={isVerified ? 'Verified' : 'Verify'} badgeColor={isVerified ? '#2EBD85' : '#F5A623'} />
+          </div>
+
+          {/* Settings Panel */}
+          <MobileSettingsPanel />
+
+          {/* Logout */}
+          <button
+            onClick={handleLogout}
+            className="w-full py-3.5 bg-[#1E1E1E] rounded-xl text-[#F6465D] text-sm font-medium"
+          >
+            Log Out
+          </button>
+        </div>
       </div>
     );
   }
 
+  // Desktop layout (unchanged)
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white relative">
+    <div className="min-h-screen bg-[#121212] text-white relative">
       <ProfileNavBar />
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 className="text-2xl font-semibold mb-8">Profile</h1>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-        <h1 className="text-xl sm:text-2xl font-semibold mb-6 sm:mb-8">Profile</h1>
-
-        {/* Profile Avatar Section */}
-        <div className="mb-8 sm:mb-10">
-          <div className="flex flex-col sm:flex-row sm:items-start gap-6 sm:gap-8">
-            <div className="relative flex justify-center sm:justify-start">
-              <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">
-                {displayData.profileImage ? (
-                  <img
-                    src={displayData.profileImage}
-                    alt="Profile"
-                    className="w-full h-full rounded-full object-cover"
-                  />
-                ) : (
-                  <span className="text-gray-400 text-3xl sm:text-4xl">👤</span>
-                )}
-              </div>
-           
+        {/* Avatar */}
+        <div className="mb-10">
+          <div className="flex items-start gap-8">
+            <div className="w-24 h-24 bg-[#2A2A2A] rounded-full flex items-center justify-center">
+              {displayData.profileImage ? (
+                <img src={displayData.profileImage} alt="Profile" className="w-full h-full rounded-full object-cover" />
+              ) : (
+                <span className="text-[#5E6673] text-4xl">{displayData.username.charAt(0).toUpperCase()}</span>
+              )}
             </div>
-
             <div className="flex-1">
-              <h2 className="text-lg sm:text-xl font-semibold mb-4 text-center sm:text-left">Personal info</h2>
-
-              {/* Nickname */}
-                            {/* Nickname */}
-              <div className="border-b border-gray-200 dark:border-gray-700 py-3 sm:py-4">
-                <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
-                  <div className="sm:w-1/3">
-                    <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">
-                      Nickname
-                    </span>
-                  </div>
-                  <div className="flex-1 sm:w-1/3 flex justify-between items-center">
-                    <span className="text-sm sm:text-base font-medium sm:font-normal">{displayData.username}</span>
-                    {/* <Link
-                      to="/account/profile/change-nickname"
-                      className="inline-block text-sm py-1.5 px-3 sm:py-1 sm:px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-2 sm:hidden"
-                    >
-                      Change
-                    </Link> */}
-                  </div>
-                  {/* <div className="hidden sm:block sm:w-1/3 sm:text-right">
-                    <Link
-                      to="/account/profile/change-nickname"
-                      className="inline-block text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                    >
-                      Change
-                    </Link>
-                  </div> */}
-                </div>
-              </div>
-
-
-              {/* User ID */}
-              <div className="border-b border-gray-200 dark:border-gray-700 py-3 sm:py-4">
-                <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
-                  <div className="sm:w-1/3">
-                    <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">
-                      User ID
-                    </span>
-                  </div>
-                  <div className="flex-1 sm:w-1/3 flex justify-between items-center">
-                    <span className="text-sm sm:text-base font-medium sm:font-normal break-all">{displayData.userId}</span>
-                    <button
-                      onClick={() => handleCopy(displayData.userId)}
-                      className="inline-block text-sm py-1.5 px-3 sm:py-1 sm:px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-2 sm:hidden"
-                    >
-                      Copy
-                    </button>
-                  </div>
-                  <div className="hidden sm:block sm:w-1/3 sm:text-right">
-                    <button
-                      onClick={() => handleCopy(displayData.userId)}
-                      className="inline-block text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                    >
-                      Copy
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* UID */}
-              <div className="border-b border-gray-200 dark:border-gray-700 py-3 sm:py-4">
-                <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
-                  <div className="sm:w-1/3">
-                    <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">UID</span>
-                  </div>
-                  <div className="flex-1 sm:w-1/3 flex justify-between items-center">
-                    <span className="text-sm sm:text-base font-medium sm:font-normal break-all">{displayData.uid}</span>
-                    <button
-                      onClick={() => handleCopy(displayData.uid)}
-                      className="inline-block text-sm py-1.5 px-3 sm:py-1 sm:px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-2 sm:hidden"
-                    >
-                      Copy
-                    </button>
-                  </div>
-                  <div className="hidden sm:block sm:w-1/3 sm:text-right">
-                    <button
-                      onClick={() => handleCopy(displayData.uid)}
-                      className="inline-block text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                    >
-                      Copy
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <h2 className="text-xl font-semibold mb-4">Personal info</h2>
+              <DesktopRow label="Nickname" value={displayData.username} />
+              <DesktopRow label="User ID" value={displayData.userId} copyable onCopy={() => handleCopy(displayData.userId, 'userId')} copied={copiedField === 'userId'} />
+              <DesktopRow label="UID" value={displayData.uid} copyable onCopy={() => handleCopy(displayData.uid, 'uid')} copied={copiedField === 'uid'} />
             </div>
           </div>
         </div>
 
-        {/* Verification Info Section */}
-        <div className="mb-8 sm:mb-10">
-          <h2 className="text-lg sm:text-xl font-semibold mb-4">Verification info</h2>
-
-          {/* Country/Region */}
-          <div className="border-b border-gray-200 dark:border-gray-700 py-3 sm:py-4">
-            <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
-              <div className="sm:w-1/3">
-                <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">
-                  Country/Region
-                </span>
-              </div>
-              <div className="flex-1 sm:w-1/3 flex justify-between items-center">
-                <span className="text-sm sm:text-base font-medium sm:font-normal">{displayData.country}</span>
-                <button className="inline-block text-sm py-1.5 px-3 sm:py-1 sm:px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-2 sm:hidden">
-                  View details
-                </button>
-              </div>
-              
-            </div>
-          </div>
+        {/* Verification */}
+        <div className="mb-10">
+          <h2 className="text-xl font-semibold mb-4">Verification info</h2>
+          <DesktopRow label="Country/Region" value={displayData.country} />
+          <DesktopRow label="Status" value={isVerified ? 'Verified' : 'Not verified'} valueColor={isVerified ? '#2EBD85' : '#F5A623'} />
         </div>
 
-        {/* Account Details Section */}
-        <div className="mb-8 sm:mb-10">
-          <h2 className="text-lg sm:text-xl font-semibold mb-4">Account details</h2>
-
-           {/* Password Field */}
-          <div className="border-b border-gray-200 dark:border-gray-700 py-3 sm:py-4">
-            <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
-              <div className="sm:w-1/3">
-                <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">Password</span>
-              </div>
-              <div className="flex-1 sm:w-1/3 flex justify-between items-center">
-                <span className="text-sm sm:text-base font-medium sm:font-normal">••••••••</span>
-                <Link
-                  to="/account/profile/security/change-password"
-                  className="inline-block text-sm py-1.5 px-3 sm:py-1 sm:px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-2 sm:hidden"
-                >
-                  Change
-                </Link>
-              </div>
-              <div className="hidden sm:block sm:w-1/3 sm:text-right">
-                <Link
-                  to="/account/profile/security/change-password"
-                  className="inline-block text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                >
-                  Change
-                </Link>
-              </div>
-            </div>
-          </div>
-
-         {/* Email */}
-          <div className="border-b border-gray-200 dark:border-gray-700 py-3 sm:py-4">
-            <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
-              <div className="sm:w-1/3">
-                <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">Email</span>
-              </div>
-              <div className="flex-1 sm:w-1/3 flex justify-between items-center">
-                <span className="text-sm sm:text-base font-medium sm:font-normal break-all">{displayData.email}</span>
-                <Link
-                  to="/account/profile/security/change-email"
-                  className="inline-block text-sm py-1.5 px-3 sm:py-1 sm:px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-2 sm:hidden"
-                >
-                  Change
-                </Link>
-              </div>
-              <div className="hidden sm:block sm:w-1/3 sm:text-right">
-                <Link
-                  to="/account/profile/security/change-email"
-                  className="inline-block text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                >
-                  Change
-                </Link>
-              </div>
-            </div>
-          </div>
-
-           {/* Phone */}
-          <div className="border-b border-gray-200 dark:border-gray-700 py-3 sm:py-4">
-            <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
-              <div className="sm:w-1/3">
-                <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">Phone</span>
-              </div>
-              <div className="flex-1 sm:w-1/3 flex justify-between items-center">
-                <span className="text-sm sm:text-base font-medium sm:font-normal break-all">{displayData.phone}</span>
-                <button className="inline-block text-sm py-1.5 px-3 sm:py-1 sm:px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-2 sm:hidden">
-                  Change
-                </button>
-              </div>
-              <div className="hidden sm:block sm:w-1/3 sm:text-right">
-                <button className="inline-block text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                  Change
-                </button>
-              </div>
-            </div>
-          </div>
-
-         {/* Referral Code */}
-          <div className="border-b border-gray-200 dark:border-gray-700 py-3 sm:py-4">
-            <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
-              <div className="sm:w-1/3">
-                <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">
-                  Referral Code
-                </span>
-              </div>
-              <div className="flex-1 sm:w-1/3 flex justify-between items-center">
-                <span className="text-sm sm:text-base font-medium sm:font-normal break-all">{displayData.referralCode}</span>
-                <button
-                  onClick={() => handleCopy(displayData.referralCode)}
-                  className="inline-block text-sm py-1.5 px-3 sm:py-1 sm:px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-2 sm:hidden"
-                >
-                  Copy
-                </button>
-              </div>
-              <div className="hidden sm:block sm:w-1/3 sm:text-right">
-                <button
-                  onClick={() => handleCopy(displayData.referralCode)}
-                  className="inline-block text-sm py-1 px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                >
-                  Copy
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Trading Fee Tier */}
-          <div className="border-b border-gray-200 dark:border-gray-700 py-3 sm:py-4">
-            <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
-              <div className="sm:w-1/3">
-                <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">
-                  Trading fee tier
-                </span>
-              </div>
-              <div className="flex-1 sm:w-1/3 flex justify-between items-center">
-                <span className="text-sm sm:text-base font-medium sm:font-normal">{displayData.tradingLevel}</span>
-                <button 
-                  onClick={() => setShowTradingFeeModal(true)}
-                  className="inline-block text-sm py-1.5 px-3 sm:py-1 sm:px-3 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-2 sm:hidden"
-                >
-                  View details
-                </button>
-              </div>
-              <div className="hidden sm:block sm:w-1/3 sm:text-right">
-             
-              </div>
-            </div>
-          </div>
+        {/* Account Details */}
+        <div className="mb-10">
+          <h2 className="text-xl font-semibold mb-4">Account details</h2>
+          <DesktopRow label="Password" value="••••••••" action={<Link to="/account/profile/security/change-password" className="text-sm py-1 px-3 rounded-md border border-[#2A2A2A] hover:bg-[#1E1E1E] transition-colors">Change</Link>} />
+          <DesktopRow label="Email" value={displayData.email} action={<Link to="/account/profile/security/change-email" className="text-sm py-1 px-3 rounded-md border border-[#2A2A2A] hover:bg-[#1E1E1E] transition-colors">Change</Link>} />
+          <DesktopRow label="Phone" value={displayData.phone} />
+          <DesktopRow label="Referral Code" value={displayData.referralCode} copyable onCopy={() => handleCopy(displayData.referralCode, 'referral')} copied={copiedField === 'referral'} />
         </div>
       </div>
-
-      {/* Trading Fee Tier Modal */}
-      {showTradingFeeModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 sm:bg-gray-600 sm:bg-opacity-50 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
-          <div className="bg-white dark:bg-gray-800 w-full sm:max-w-lg sm:w-full rounded-t-2xl sm:rounded-lg shadow-xl max-h-[85vh] sm:max-h-[90vh] overflow-y-auto relative">
-            {/* Mobile handle bar */}
-            <div className="sm:hidden flex justify-center pt-2 pb-1">
-              <div className="w-10 h-1 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
-            </div>
-            
-            <div className="p-4 sm:p-6 lg:p-8">
-              <div className="flex justify-between items-start mb-4 sm:mb-6">
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white pr-4 leading-tight">
-                  Trading Fee Tier Details
-                </h3>
-                <button
-                  onClick={() => setShowTradingFeeModal(false)}
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1 sm:p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                >
-                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                  </svg>
-                </button>
-              </div>
-              
-              <div className="space-y-3 sm:space-y-4 text-sm sm:text-base leading-relaxed">
-                <p className="text-gray-700 dark:text-gray-300">
-                  Your current trading fee tier is <strong className="text-gray-900 dark:text-white">{displayData.tradingLevel}</strong>.
-                </p>
-                <div className="bg-gray-50 dark:bg-gray-700/50 p-3 sm:p-4 rounded-lg">
-                  <p className="text-gray-700 dark:text-gray-300 mb-2">
-                    <strong className="text-gray-900 dark:text-white">Level 1:</strong> Enjoy standard trading fees.
-                  </p>
-                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-                    This tier applies to users with a 30-day trading volume below $5,000,000 USDT or total assets below $100,000 USDT.
-                  </p>
-                </div>
-                <div className="bg-yellow-50 dark:bg-yellow-900/20 p-3 sm:p-4 rounded-lg border border-yellow-200 dark:border-yellow-800">
-                  <p className="text-gray-700 dark:text-gray-300 mb-2">
-                    <strong className="text-yellow-600 dark:text-yellow-400">Premium Tier:</strong> Benefit from reduced trading fees.
-                  </p>
-                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-                    This tier is for users with a 30-day trading volume exceeding $5,000,000 USDT or total assets above $100,000 USDT.
-                  </p>
-                </div>
-                <div className="bg-yellow-50 dark:bg-yellow-900/20 p-3 sm:p-4 rounded-lg border border-yellow-200 dark:border-yellow-800">
-                  <p className="text-sm text-yellow-700 dark:text-yellow-300 font-medium">
-                    💡 Pro Tip
-                  </p>
-                  <p className="text-xs sm:text-sm text-yellow-600 dark:text-yellow-400 mt-1">
-                    Fees are calculated daily based on your 30-day trading volume and daily asset balance. Trade more to unlock better rates!
-                  </p>
-                </div>
-              </div>
-              
-              <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-0 sm:justify-end">
-                <button
-                  onClick={() => setShowTradingFeeModal(false)}
-                  className="w-full sm:w-auto px-6 py-3 sm:px-6 sm:py-2 bg-[#2EBD85] text-white rounded-lg sm:rounded-md hover:bg-yellow-600 active:bg-yellow-700 transition-colors text-sm sm:text-base font-medium"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-            
-            {/* Safe area padding for mobile */}
-            <div className="sm:hidden h-safe-area-inset-bottom"></div>
-          </div>
-        </div>
-      )}
-
-      {/* Mobile Settings (dark mode, language/currency) */}
-      {isMobile && <MobileSettingsPanel />}
     </div>
   );
 };
+
+// Mobile menu item
+const MenuItem = ({ label, value, copyable, onCopy, copied }) => (
+  <div className="flex items-center justify-between px-4 py-3 border-b border-[#2A2A2A] last:border-b-0">
+    <span className="text-[#5E6673] text-sm">{label}</span>
+    <div className="flex items-center gap-2">
+      <span className="text-sm text-white truncate max-w-[180px]">{value}</span>
+      {copyable && (
+        <button onClick={onCopy} className="text-[#5E6673] active:text-[#2EBD85]">
+          {copied ? (
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+          ) : (
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2" /><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+            </svg>
+          )}
+        </button>
+      )}
+    </div>
+  </div>
+);
+
+// Mobile menu link
+const MenuLink = ({ label, to, badge, badgeColor }) => (
+  <Link to={to} className="flex items-center justify-between px-4 py-3.5 border-b border-[#2A2A2A] last:border-b-0 active:bg-[#2A2A2A]">
+    <span className="text-sm text-white">{label}</span>
+    <div className="flex items-center gap-2">
+      {badge && (
+        <span className="text-[10px] font-medium px-2 py-0.5 rounded-md" style={{ color: badgeColor, backgroundColor: `${badgeColor}20` }}>
+          {badge}
+        </span>
+      )}
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5E6673" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 18l6-6-6-6" />
+      </svg>
+    </div>
+  </Link>
+);
+
+// Desktop row
+const DesktopRow = ({ label, value, copyable, onCopy, copied, action, valueColor }) => (
+  <div className="border-b border-[#2A2A2A] py-4">
+    <div className="flex items-center">
+      <div className="w-1/3">
+        <span className="text-[#5E6673] text-base">{label}</span>
+      </div>
+      <div className="flex-1 flex justify-between items-center">
+        <span className="text-base break-all" style={valueColor ? { color: valueColor } : undefined}>{value}</span>
+        {copyable && (
+          <button onClick={onCopy} className="text-sm py-1 px-3 rounded-md border border-[#2A2A2A] hover:bg-[#1E1E1E] transition-colors ml-2">
+            {copied ? 'Copied!' : 'Copy'}
+          </button>
+        )}
+        {action && <div className="ml-2">{action}</div>}
+      </div>
+    </div>
+  </div>
+);
 
 export default Profile;

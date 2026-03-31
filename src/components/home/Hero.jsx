@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import mobileApp from "../../assets/homepage/mobile-app.png";
 import {
   FaGoogle,
@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 
 const Hero = () => {
+  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [userName, setUserName] = useState("");
@@ -132,43 +133,116 @@ const Hero = () => {
 
   // Content for non-logged in users
   const renderGuestContent = () => (
-    <div className="flex-1 space-y-6">
-      <p className="text-[#2EBD85] font-semibold">
-        Better Liquidity, Better Trading
-      </p>
-      <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-tight">
-        Global Cryptocurrency
-        <br />
-        Derivatives Exchange
-      </h1>
-      <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
-        <input
-          type="text"
-          placeholder="Email / Mobile"
-          className="bg-gray-800 text-white p-3 rounded-full focus:outline-none w-full sm:flex-1 sm:max-w-xs"
-        />
-        <Link
-          to="/signup"
-          className="bg-[#2EBD85] text-black px-8 py-3 rounded-full font-semibold bg:hover-[#2EBD85] transition-colors w-full sm:w-auto"
-        >
-          Sign up now
-        </Link>
+    <div className="flex-1 space-y-5 md:space-y-6">
+      {/* Desktop layout */}
+      <div className="hidden md:block">
+        <p className="text-[#2EBD85] font-semibold mb-4">
+          Better Liquidity, Better Trading
+        </p>
+        <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+          Global Cryptocurrency
+          <br />
+          Derivatives Exchange
+        </h1>
+        <div className="flex flex-row items-center gap-4 mt-6">
+          <input
+            type="text"
+            placeholder="Email / Mobile"
+            aria-label="Email or mobile number"
+            className="bg-gray-800 text-white p-3 rounded-full focus:outline-none flex-1 max-w-xs"
+          />
+          <Link
+            to="/signup"
+            className="bg-[#2EBD85] text-white px-8 py-3 rounded-full font-semibold hover:bg-[#259A6C] transition-colors"
+          >
+            Sign up now
+          </Link>
+        </div>
+        <p className="text-gray-400 mt-3 text-sm">Sign up now to win rewards</p>
+        <div className="flex flex-row gap-4 mt-6">
+          <Link
+            to="/login"
+            className="border border-[#2A2A2A] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#1E1E1E] transition-colors text-center"
+          >
+            Log in
+          </Link>
+          <Link
+            to="/spot-trading"
+            className="bg-[#1E1E1E] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#2A2A2A] transition-colors text-center"
+          >
+            Trade Demo
+          </Link>
+        </div>
       </div>
-      <p className="text-gray-400 mt-2">Sign up now to win rewards</p>
 
-      <div className="flex flex-col sm:flex-row gap-4 mt-6">
-        <Link
-          to="/login"
-          className="border border-gray-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-800 transition-colors text-center"
+      {/* Mobile app-like layout */}
+      <div className="md:hidden px-1 pt-2">
+        <div className="text-center mb-4">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#2EBD85] to-[#259A6C] flex items-center justify-center mx-auto mb-3">
+            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            </svg>
+          </div>
+          <h1 className="text-2xl font-bold leading-tight mb-2">
+            Trade Crypto with
+            <br />
+            <span className="text-[#2EBD85]">Confidence</span>
+          </h1>
+          <p className="text-[#848E9C] text-sm">
+            Fast, secure, and reliable trading platform
+          </p>
+        </div>
+
+        <div className="space-y-3">
+          <Link
+            to="/signup"
+            className="flex items-center justify-center w-full bg-[#2EBD85] text-white py-3.5 rounded-xl font-semibold text-sm hover:bg-[#259A6C] transition-colors"
+          >
+            Create Account
+          </Link>
+          <Link
+            to="/login"
+            className="flex items-center justify-center w-full bg-[#1E1E1E] border border-[#2A2A2A] text-white py-3.5 rounded-xl font-semibold text-sm hover:bg-[#2A2A2A] transition-colors"
+          >
+            Log In
+          </Link>
+        </div>
+
+        {/* Feature cards */}
+        <div className="grid grid-cols-3 gap-3 mt-6">
+          <div className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-xl p-3 text-center">
+            <div className="w-9 h-9 rounded-full bg-[#2EBD85]/10 flex items-center justify-center mx-auto mb-2">
+              <svg className="w-4 h-4 text-[#2EBD85]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <p className="text-[10px] text-[#848E9C] font-medium">Secure</p>
+          </div>
+          <div className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-xl p-3 text-center">
+            <div className="w-9 h-9 rounded-full bg-[#2EBD85]/10 flex items-center justify-center mx-auto mb-2">
+              <svg className="w-4 h-4 text-[#2EBD85]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <p className="text-[10px] text-[#848E9C] font-medium">Fast</p>
+          </div>
+          <div className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-xl p-3 text-center">
+            <div className="w-9 h-9 rounded-full bg-[#2EBD85]/10 flex items-center justify-center mx-auto mb-2">
+              <svg className="w-4 h-4 text-[#2EBD85]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </div>
+            <p className="text-[10px] text-[#848E9C] font-medium">Low Fees</p>
+          </div>
+        </div>
+
+        {/* Demo button */}
+        <button
+          onClick={() => navigate("/spot-trading")}
+          className="w-full mt-4 text-[#2EBD85] text-sm font-medium py-2"
         >
-          Log in
-        </Link>
-        <Link
-          to="/spot-trading"
-          className="bg-gray-800 text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-700 transition-colors text-center"
-        >
-          Trade Demo
-        </Link>
+          Try Demo Trading &rarr;
+        </button>
       </div>
     </div>
   );
@@ -484,8 +558,8 @@ const Hero = () => {
   };
 
   return (
-    <div className="bg-black text-white relative z-0 pt-2 md:pt-16 pb-10 md:pb-24 overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-4 md:py-12">
+    <div className="bg-[#121212] text-white relative z-0 pt-0 md:pt-16 pb-2 md:pb-24 overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-0 md:py-12">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Render content based on user status */}
           {!isLoggedIn && renderGuestContent()}
@@ -508,8 +582,8 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Bottom Banner - Changes based on user status */}
-      <div className="w-full bg-gray-800/80 backdrop-blur-sm py-3 px-4 text-center mt-8 rounded-lg mx-auto max-w-7xl">
+      {/* Bottom Banner - Changes based on user status (desktop only) */}
+      <div className="hidden md:block w-full bg-gray-800/80 backdrop-blur-sm py-3 px-4 text-center mt-8 rounded-lg mx-auto max-w-7xl">
         {renderBottomBanner()}
       </div>
     </div>

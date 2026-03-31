@@ -62,10 +62,10 @@ const OverviewTab = () => {
   };
 
   return (
-    <div className="bg-gray-50 text-gray-900 p-6 min-h-screen">
+    <div className="bg-[#1E1E1E] text-white p-6 min-h-screen">
       {/* Breadcrumb */}
-      <div className="flex items-center text-gray-500 text-sm mb-6">
-        <span className="text-gray-900 font-medium">Overview</span>
+      <div className="flex items-center text-[#5E6673] text-sm mb-6">
+        <span className="text-white font-medium">Overview</span>
         <span className="mx-2">/</span>
         <span>{selectedCurrency}</span>
       </div>
@@ -74,24 +74,24 @@ const OverviewTab = () => {
         {/* Left Section */}
         <div className="lg:col-span-2 space-y-6">
           {/* Estimated Value Section */}
-          <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+          <div className="bg-[#121212] rounded-lg p-6 shadow-sm border border-[#2A2A2A]">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-gray-600">Estimated total value</span>
+              <span className="text-[#848E9C]">Estimated total value</span>
             </div>
 
             {loading ? (
               <div className="text-center py-4">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500 mx-auto"></div>
-                <p className="text-gray-500 mt-2">Loading...</p>
+                <p className="text-[#5E6673] mt-2">Loading...</p>
               </div>
             ) : error ? (
               <div className="text-red-500 text-center py-4">{error}</div>
             ) : (
               <>
-                <div className="text-3xl font-bold text-gray-900 mb-2">
+                <div className="text-3xl font-bold text-white mb-2">
                   {formatNumber(overviewData.overview)}
                 </div>
-                <div className="text-gray-500 mb-6">
+                <div className="text-[#5E6673] mb-6">
                   Total assets in your account
                 </div>
               </>
@@ -106,19 +106,19 @@ const OverviewTab = () => {
               </button>
 
               <button
-                className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg font-medium transition-colors border border-gray-300"
+                className="bg-[#1E1E1E] hover:bg-[#2A2A2A] text-[#848E9C] py-2 px-4 rounded-lg font-medium transition-colors border border-[#2A2A2A]"
                 onClick={() => navigate("/withdraw")}
               >
                 Withdraw
               </button>
               <button
-                className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg font-medium transition-colors border border-gray-300"
+                className="bg-[#1E1E1E] hover:bg-[#2A2A2A] text-[#848E9C] py-2 px-4 rounded-lg font-medium transition-colors border border-[#2A2A2A]"
                 onClick={() => navigate("/conversion")}
               >
                 Convert
               </button>
               <button
-                className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg font-medium transition-colors border border-gray-300"
+                className="bg-[#1E1E1E] hover:bg-[#2A2A2A] text-[#848E9C] py-2 px-4 rounded-lg font-medium transition-colors border border-[#2A2A2A]"
                 onClick={() => navigate("/transfer")}
               >
                 Transfer
@@ -136,8 +136,8 @@ const OverviewTab = () => {
         {/* Right Section */}
         <div className="space-y-6">
           {/* Allocation Section */}
-          <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900 mb-6">
+          <div className="bg-[#121212] rounded-lg p-6 shadow-sm border border-[#2A2A2A]">
+            <h3 className="text-lg font-semibold text-white mb-6">
               Allocation
             </h3>
 
@@ -145,8 +145,8 @@ const OverviewTab = () => {
               <div className="relative w-32 h-32 mb-4">
                 <div className="w-full h-full rounded-full border-8 border-yellow-500 flex items-center justify-center">
                   <div className="text-center">
-                    <div className="text-xl font-bold text-gray-900">100%</div>
-                    <div className="text-sm text-gray-500">Trading</div>
+                    <div className="text-xl font-bold text-white">100%</div>
+                    <div className="text-sm text-[#5E6673]">Trading</div>
                   </div>
                 </div>
               </div>
@@ -156,33 +156,33 @@ const OverviewTab = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
-                  <span className="text-gray-600">Spot Wallet:</span>
+                  <span className="text-[#848E9C]">Spot Wallet:</span>
                 </div>
-                <span className="text-gray-900 font-medium">
+                <span className="text-white font-medium">
                   {formatNumber(overviewData.spot_wallet)}
                 </span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
-                  <span className="text-gray-600">Future Wallet:</span>
+                  <span className="text-[#848E9C]">Future Wallet:</span>
                 </div>
-                <span className="text-gray-900 font-medium">
+                <span className="text-white font-medium">
                   {formatNumber(overviewData.future_wallet)}
                 </span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
-                  <span className="text-gray-600">Funding Wallet:</span>
+                  <span className="text-[#848E9C]">Funding Wallet:</span>
                 </div>
-                <span className="text-gray-900 font-medium">
+                <span className="text-white font-medium">
                   {formatNumber(overviewData.funding_wallet)}
                 </span>
               </div>
-              <div className="flex items-center justify-between pt-3 border-t border-gray-200">
-                <span className="text-gray-900 font-medium">Total:</span>
-                <span className="text-gray-900 font-bold">
+              <div className="flex items-center justify-between pt-3 border-t border-[#2A2A2A]">
+                <span className="text-white font-medium">Total:</span>
+                <span className="text-white font-bold">
                   {formatNumber(overviewData.overview)}
                 </span>
               </div>

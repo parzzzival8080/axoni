@@ -109,6 +109,8 @@ const Navbar = () => {
   const searchInputRef = useRef(null);
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showChat, setShowChat] = useState(false);
+  const [isChatLoaded, setIsChatLoaded] = useState(false);
 
   const signupButtonStyle = {
     backgroundColor: "black",
@@ -1139,6 +1141,64 @@ const Navbar = () => {
           </div>
         </div>
       )}
+
+      {/* Floating chat FAB + popup */}
+      <div className="hidden sm:block">
+        {/* Chat panel */}
+        {showChat && (
+          <div
+            className="fixed bottom-24 right-6 z-[9998] flex flex-col shadow-2xl"
+            style={{ borderRadius: 14, overflow: 'hidden', width: 380 }}
+          >
+            <div className="flex items-center justify-between px-4 py-3" style={{ background: '#1E1E1E', borderBottom: '1px solid #2A2A2A' }}>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-[#2EBD85]" style={{ boxShadow: '0 0 6px #2EBD85' }}></div>
+                <span className="text-white text-sm font-semibold">Customer Support</span>
+              </div>
+              <button onClick={() => { setShowChat(false); setIsChatLoaded(false); }} className="text-gray-400 hover:text-white transition-colors p-1">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Loading skeleton */}
+            {!isChatLoaded && (
+              <div className="flex flex-col items-center justify-center gap-4 bg-[#121212]" style={{ width: 380, height: 560 }}>
+                <div className="w-12 h-12 rounded-full border-2 border-[#2A2A2A] border-t-[#2EBD85] animate-spin" />
+                <span className="text-sm text-gray-500">Connecting to support...</span>
+              </div>
+            )}
+
+            <iframe
+              src="https://bot-chatter.vercel.app/livechat/widget?color=2EBD85&source=axoni.co"
+              width="380"
+              height="560"
+              style={{ border: 'none', borderRadius: 12, boxShadow: '0 4px 24px rgba(0,0,0,0.15)', display: isChatLoaded ? 'block' : 'none' }}
+              title="Customer Support Chat"
+              onLoad={() => setIsChatLoaded(true)}
+            />
+          </div>
+        )}
+
+        {/* FAB button */}
+        <button
+          onClick={() => setShowChat(v => !v)}
+          title="Customer Support"
+          className="fixed bottom-6 right-6 z-[9999] flex items-center justify-center w-14 h-14 rounded-full shadow-lg transition-all duration-200"
+          style={{ background: '#2EBD85', boxShadow: '0 4px 20px rgba(46,189,133,0.4)' }}
+        >
+          {showChat ? (
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          ) : (
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+            </svg>
+          )}
+        </button>
+      </div>
     </header>
   );
 };

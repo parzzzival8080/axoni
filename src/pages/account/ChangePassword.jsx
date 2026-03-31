@@ -211,10 +211,10 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white">
+    <div className="min-h-screen bg-[#121212] dark:bg-black text-black dark:text-white">
       <div className="max-w-2xl mx-auto px-4 py-8">
         {/* Breadcrumb */}
-        <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-8">
+        <div className="flex items-center text-sm text-[#5E6673] dark:text-[#5E6673] mb-8">
           <Link to="/account/profile/security" className="hover:text-yellow-500 transition-colors">
             Security center
           </Link>
@@ -261,17 +261,17 @@ const ChangePassword = () => {
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
                     placeholder="Enter verification code sent to your email"
-                    className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-yellow-500 outline-none transition-all"
+                    className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-yellow-500 outline-none transition-all"
                     disabled={loading}
                   />
                 </div>
                 <div className="mt-2 flex justify-between items-center">
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                  <span className="text-xs text-[#5E6673] dark:text-[#5E6673]">
                     {otpTimer > 0 ? `Resend code in ${otpTimer}s` : ''}
                   </span>
                   <button
                     type="button"
-                    className={`text-sm ${canResendOtp ? 'text-yellow-500 hover:text-yellow-600 cursor-pointer' : 'text-gray-400 cursor-not-allowed'}`}
+                    className={`text-sm ${canResendOtp ? 'text-yellow-500 hover:text-yellow-600 cursor-pointer' : 'text-[#5E6673] cursor-not-allowed'}`}
                     onClick={handleResendOTP}
                     disabled={!canResendOtp || loading}
                   >
@@ -286,7 +286,7 @@ const ChangePassword = () => {
                   className={`w-32 py-3 rounded-md font-medium transition-colors ${
                     otp && !loading
                       ? 'bg-yellow-600 text-white hover:bg-yellow-700'
-                      : 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                      : 'bg-gray-300 dark:bg-gray-700 text-[#5E6673] dark:text-[#5E6673] cursor-not-allowed'
                   }`}
                   disabled={!otp || loading}
                 >
@@ -313,18 +313,18 @@ const ChangePassword = () => {
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="Enter your new password"
-                    className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-yellow-500 outline-none transition-all"
+                    className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-yellow-500 outline-none transition-all"
                     disabled={loading}
                   />
                   <button
                     type="button"
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#5E6673]"
                     onClick={() => setShowNewPassword(!showNewPassword)}
                   >
                     {showNewPassword ? <FiEyeOff /> : <FiEye />}
                   </button>
                 </div>
-                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                <p className="mt-1 text-xs text-[#5E6673] dark:text-[#5E6673]">
                   Password must be at least 8 characters long
                 </p>
               </div>
@@ -341,12 +341,12 @@ const ChangePassword = () => {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Enter your new password again"
-                    className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-yellow-500 outline-none transition-all"
+                    className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-yellow-500 outline-none transition-all"
                     disabled={loading}
                   />
                   <button
                     type="button"
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#5E6673]"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
                     {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
@@ -362,11 +362,11 @@ const ChangePassword = () => {
                     type="checkbox"
                     checked={agreeToWithdrawalRestriction}
                     onChange={() => setAgreeToWithdrawalRestriction(!agreeToWithdrawalRestriction)}
-                    className="w-4 h-4 text-yellow-600 border-gray-300 rounded focus:ring-yellow-500"
+                    className="w-4 h-4 text-yellow-600 border-[#2A2A2A] rounded focus:ring-yellow-500"
                     disabled={loading}
                   />
                 </div>
-                <label htmlFor="withdrawalRestriction" className="ml-2 text-xs text-gray-600 dark:text-gray-400">
+                <label htmlFor="withdrawalRestriction" className="ml-2 text-xs text-[#848E9C] dark:text-[#5E6673]">
                   To protect your account, you won't be able to withdraw funds or use P2P to buy/sell crypto for 24 hours after you reset or change your account password.
                 </label>
               </div>
@@ -378,7 +378,7 @@ const ChangePassword = () => {
                   className={`w-32 py-3 rounded-md font-medium transition-colors ${
                     newPassword && confirmPassword && agreeToWithdrawalRestriction && !loading
                       ? 'bg-yellow-600 text-white hover:bg-yellow-700'
-                      : 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                      : 'bg-gray-300 dark:bg-gray-700 text-[#5E6673] dark:text-[#5E6673] cursor-not-allowed'
                   }`}
                   disabled={!newPassword || !confirmPassword || !agreeToWithdrawalRestriction || loading}
                 >
@@ -390,9 +390,9 @@ const ChangePassword = () => {
         )}
 
         {/* Passkey Promotion */}
-        <div className="fixed bottom-0 right-0 bg-white dark:bg-gray-900 p-4 rounded-tl-lg shadow-lg max-w-xs">
+        <div className="fixed bottom-0 right-0 bg-[#121212] dark:bg-[#121212] p-4 rounded-tl-lg shadow-lg max-w-xs">
           <h3 className="font-bold text-lg">Passkeys</h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400">One-click verification for secure login</p>
+          <p className="text-sm text-[#848E9C] dark:text-[#5E6673]">One-click verification for secure login</p>
         </div>
       </div>
     </div>

@@ -50,45 +50,45 @@ const FundingTab = () => {
   };
 
   return (
-    <div className="bg-gray-50 text-gray-900 p-6 min-h-screen">
+    <div className="bg-[#1E1E1E] text-white p-6 min-h-screen">
       {/* Breadcrumb */}
-      <div className="flex items-center text-gray-500 text-sm mb-6">
-        <span className="text-gray-900 font-medium">Funding</span>
+      <div className="flex items-center text-[#5E6673] text-sm mb-6">
+        <span className="text-white font-medium">Funding</span>
         <span className="mx-2">/</span>
         <span>{selectedCurrency}</span>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Funding Wallet Overview */}
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900 mb-6">
+        <div className="bg-[#121212] rounded-lg p-6 shadow-sm border border-[#2A2A2A]">
+          <h3 className="text-lg font-semibold text-white mb-6">
             Funding Wallet
           </h3>
 
           {loading ? (
             <div className="text-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500 mx-auto"></div>
-              <p className="text-gray-500 mt-2">Loading...</p>
+              <p className="text-[#5E6673] mt-2">Loading...</p>
             </div>
           ) : error ? (
             <div className="text-red-500 text-center py-8">{error}</div>
           ) : (
             <div className="space-y-4">
-              <div className="flex items-center justify-between py-3 border-b border-gray-200">
-                <span className="text-gray-600">Total Balance:</span>
-                <span className="text-2xl font-bold text-gray-900">
+              <div className="flex items-center justify-between py-3 border-b border-[#2A2A2A]">
+                <span className="text-[#848E9C]">Total Balance:</span>
+                <span className="text-2xl font-bold text-white">
                   {formatNumber(fundingData.funding_wallet)}
                 </span>
               </div>
               <div className="flex items-center justify-between py-2">
-                <span className="text-gray-600">Available:</span>
-                <span className="text-gray-900 font-medium">
+                <span className="text-[#848E9C]">Available:</span>
+                <span className="text-white font-medium">
                   {formatNumber(fundingData.available_balance)}
                 </span>
               </div>
               <div className="flex items-center justify-between py-2">
-                <span className="text-gray-600">Locked:</span>
-                <span className="text-gray-900 font-medium">
+                <span className="text-[#848E9C]">Locked:</span>
+                <span className="text-white font-medium">
                   {formatNumber(fundingData.locked_balance)}
                 </span>
               </div>
@@ -97,32 +97,32 @@ const FundingTab = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900 mb-6">
+        <div className="bg-[#121212] rounded-lg p-6 shadow-sm border border-[#2A2A2A]">
+          <h3 className="text-lg font-semibold text-white mb-6">
             Quick Actions
           </h3>
           <div className="grid grid-cols-2 gap-4">
             <button className="bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-4 rounded-lg font-medium transition-colors">
               Deposit
             </button>
-            <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-medium transition-colors border border-gray-300">
+            <button className="bg-[#1E1E1E] hover:bg-[#2A2A2A] text-[#848E9C] py-3 px-4 rounded-lg font-medium transition-colors border border-[#2A2A2A]">
               Withdraw
             </button>
-            <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-medium transition-colors border border-gray-300">
+            <button className="bg-[#1E1E1E] hover:bg-[#2A2A2A] text-[#848E9C] py-3 px-4 rounded-lg font-medium transition-colors border border-[#2A2A2A]">
               Transfer
             </button>
-            <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-medium transition-colors border border-gray-300">
+            <button className="bg-[#1E1E1E] hover:bg-[#2A2A2A] text-[#848E9C] py-3 px-4 rounded-lg font-medium transition-colors border border-[#2A2A2A]">
               Convert
             </button>
           </div>
         </div>
 
         {/* Recent Funding Activity */}
-        <div className="lg:col-span-2 bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900 mb-6">
+        <div className="lg:col-span-2 bg-[#121212] rounded-lg p-6 shadow-sm border border-[#2A2A2A]">
+          <h3 className="text-lg font-semibold text-white mb-6">
             Recent Activity
           </h3>
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-8 text-[#5E6673]">
             <i className="fas fa-history text-4xl mb-4"></i>
             <p>No recent funding activity</p>
             <p className="text-sm">

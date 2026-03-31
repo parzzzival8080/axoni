@@ -42,7 +42,7 @@ const HomePage = () => {
 
   // Desktop or mobile guest: show full landing page
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-[#121212]">
       <Hero />
       {!isMobile && (
         <>

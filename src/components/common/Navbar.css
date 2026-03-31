@@ -1,12 +1,12 @@
-/* Base header styles */
-header {
+/* Base header styles — scoped to desktop navbar only */
+header.navbar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 32px;
     height: 56px;
-    background-color: #fff;
-    border-bottom: 1px solid #1a1a1a;
+    background-color: #121212;
+    border-bottom: 1px solid #2A2A2A;
     position: relative;
     z-index: 1000;
 }
@@ -2089,15 +2089,10 @@ header *,
     box-sizing: border-box !important;
 }
 
-/* Most aggressive header background override */
-header,
-header.navbar-header,
-header[class],
-header[class*="navbar"],
-header[class*="header"] {
-    background-color: #ffffff !important;
-    background: #000000 !important;
-    border-bottom: 1px solid #1a1a1a !important;
+/* Desktop navbar header only */
+header.navbar-header {
+    background-color: #121212 !important;
+    border-bottom: 1px solid #2A2A2A !important;
     padding: 0 32px !important;
     height: 56px !important;
     display: flex !important;
@@ -2105,26 +2100,6 @@ header[class*="header"] {
     align-items: center !important;
     position: relative !important;
     z-index: 1000 !important;
-}
-
-/* Ensure header always has black background regardless of other classes */
-header {
-    background-color: #ffffff !important;
-    border-bottom: 1px solid #1a1a1a !important;
-}
-
-/* Force override for any potential conflicting background colors */
-.navbar-container header,
-.navbar-container header.navbar-header,
-header.navbar,
-header.main-header {
-    background-color: #ffffff !important;
-    background: #000000 !important;
-}
-
-/* Override Tailwind classes if they exist */
-header[class*="bg-"] {
-    background-color: #ffffff !important;
 }
 
 /* MetaMask wallet container overrides */

@@ -165,7 +165,7 @@ const Market = () => {
               onClick={() => setActiveMarketTab(tab)}
               className={`px-4 py-2 text-sm font-medium transition-colors ${
                 activeMarketTab === tab
-                  ? "border-b-2 border-yellow-500 text-white"
+                  ? "border-b-2 border-[#2EBD85] text-white"
                   : "text-gray-400 hover:text-white"
               }`}
             >
@@ -178,7 +178,7 @@ const Market = () => {
         <div className="mb-6 flex justify-between items-center">
           <input
             type="text"
-            className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-4 w-full max-w-xs focus:outline-none focus:ring-1 focus:ring-yellow-500 placeholder-gray-500"
+            className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-4 w-full max-w-xs focus:outline-none focus:ring-1 focus:ring-[#2EBD85] placeholder-gray-500"
             placeholder="Search by symbol or name..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -340,7 +340,7 @@ const Market = () => {
                     </td>
                     <td className="text-center px-4 hidden sm:table-cell">
                       <button
-                        className="text-yellow-500 text-xs font-semibold hover:text-yellow-400 transition-colors px-3 py-1 rounded-full bg-white/5 border border-yellow-500/20 shadow-sm mr-2"
+                        className="text-[#2EBD85] text-xs font-semibold hover:text-[#2EBD85] transition-colors px-3 py-1 rounded-full bg-white/5 border border-[#2EBD85]/20 shadow-sm mr-2"
                         onClick={() => {
                           if (coin.coin_pair) {
                             const params = new URLSearchParams(location.search);
@@ -360,7 +360,7 @@ const Market = () => {
                         Trade
                       </button>
                       <button
-                        className="text-yellow-500 text-xs font-semibold hover:text-yellow-400 transition-colors px-3 py-1 rounded-full bg-white/5 border border-yellow-500/20 shadow-sm"
+                        className="text-[#2EBD85] text-xs font-semibold hover:text-[#2EBD85] transition-colors px-3 py-1 rounded-full bg-white/5 border border-[#2EBD85]/20 shadow-sm"
                         onClick={() => navigate("/conversion")}
                       >
                         Convert

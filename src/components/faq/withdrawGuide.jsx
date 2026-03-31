@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import DOMPurify from 'dompurify';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Share2, Facebook, Linkedin, MessageCircle, Link2, ChevronRight, Eye, Clock, Calendar } from 'lucide-react';
 
@@ -14,9 +15,9 @@ const ImageWithFallback = ({ src, alt, description, className = "" }) => {
   return (
     <div className="my-6">
       {!imageError ? (
-        <div className="rounded-lg overflow-hidden border border-gray-200 bg-white">
+        <div className="rounded-lg overflow-hidden border border-[#2A2A2A] bg-[#121212]">
           {imageLoading && (
-            <div className="w-full h-64 md:h-80 bg-gray-50 flex items-center justify-center">
+            <div className="w-full h-64 md:h-80 bg-[#1E1E1E] flex items-center justify-center">
               <div className="animate-spin rounded-full h-6 w-6 border-2 border-yellow-500 border-t-transparent"></div>
             </div>
           )}
@@ -32,9 +33,9 @@ const ImageWithFallback = ({ src, alt, description, className = "" }) => {
           />
         </div>
       ) : (
-        <div className="p-6 bg-gray-50 rounded-lg border border-gray-200">
-          <div className="text-center text-gray-400">
-            <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center mx-auto mb-3">
+        <div className="p-6 bg-[#1E1E1E] rounded-lg border border-[#2A2A2A]">
+          <div className="text-center text-[#5E6673]">
+            <div className="w-12 h-12 bg-[#2A2A2A] rounded-lg flex items-center justify-center mx-auto mb-3">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
               </svg>
@@ -44,7 +45,7 @@ const ImageWithFallback = ({ src, alt, description, className = "" }) => {
         </div>
       )}
       {description && (
-        <p className="mt-3 text-sm text-gray-600">{description}</p>
+        <p className="mt-3 text-sm text-[#848E9C]">{description}</p>
       )}
     </div>
   );
@@ -76,11 +77,11 @@ const articleData = {
         steps: [
           {
             number: 1,
-            content: 'Log in to your account at <strong>axoni.co</strong>, go to the <strong class="text-gray-900">Assets</strong>, and select <strong class="text-yellow-600">Withdrawal</strong>.'
+            content: 'Log in to your account at <strong>axoni.co</strong>, go to the <strong class="text-white">Assets</strong>, and select <strong class="text-yellow-600">Withdrawal</strong>.'
           },
           {
             number: 2,
-            content: 'In the <strong class="text-gray-900">Select crypto</strong> dropdown, choose the cryptocurrency you want to withdraw.'
+            content: 'In the <strong class="text-white">Select crypto</strong> dropdown, choose the cryptocurrency you want to withdraw.'
           },
           {
             number: 3,
@@ -88,19 +89,19 @@ const articleData = {
           },
           {
             number: 4,
-            content: 'Select the appropriate <strong class="text-gray-900">Network</strong> for your withdrawal. Make sure this matches the network supported by your destination wallet or exchange.'
+            content: 'Select the appropriate <strong class="text-white">Network</strong> for your withdrawal. Make sure this matches the network supported by your destination wallet or exchange.'
           },
           {
             number: 5,
-            content: 'Enter the destination <strong class="text-gray-900">Address</strong> where you want to send your crypto. You can also select from your saved addresses using <strong class="text-yellow-600">Manage address book</strong>.'
+            content: 'Enter the destination <strong class="text-white">Address</strong> where you want to send your crypto. You can also select from your saved addresses using <strong class="text-yellow-600">Manage address book</strong>.'
           },
           {
             number: 6,
-            content: 'Set the <strong class="text-gray-900">withdrawal amount</strong>. You can see your available balance and use the <strong class="text-yellow-600">Max</strong> button to withdraw the maximum amount.'
+            content: 'Set the <strong class="text-white">withdrawal amount</strong>. You can see your available balance and use the <strong class="text-yellow-600">Max</strong> button to withdraw the maximum amount.'
           },
           {
             number: 7,
-            content: 'Review the <strong class="text-gray-900">Network fee</strong> and <strong class="text-gray-900">Amount received</strong> details.'
+            content: 'Review the <strong class="text-white">Network fee</strong> and <strong class="text-white">Amount received</strong> details.'
           },
           {
             number: 8,
@@ -449,23 +450,23 @@ const WithdrawalGuide = () => {
   );
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#121212]">
       {/* Subtle yellow Header Section */}
       <div className="bg-gradient-to-r from-gray-50 to-yellow-50 border-b border-yellow-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           {/* Breadcrumb Navigation */}
           <nav className="mb-3 sm:mb-4">
             {/* Mobile: Show only last 2 breadcrumbs */}
-            <div className="flex items-center space-x-1 text-gray-500 text-xs sm:hidden overflow-hidden">
+            <div className="flex items-center space-x-1 text-[#5E6673] text-xs sm:hidden overflow-hidden">
               {article.breadcrumbs.length > 2 && (
                 <>
-                  <span className="text-gray-400">...</span>
-                  <ChevronRight className="w-3 h-3 text-gray-400 flex-shrink-0" />
+                  <span className="text-[#5E6673]">...</span>
+                  <ChevronRight className="w-3 h-3 text-[#5E6673] flex-shrink-0" />
                 </>
               )}
               {article.breadcrumbs.slice(-2).map((crumb, idx, arr) => (
                 <React.Fragment key={idx}>
-                  {idx > 0 && <ChevronRight className="w-3 h-3 text-gray-400 flex-shrink-0" />}
+                  {idx > 0 && <ChevronRight className="w-3 h-3 text-[#5E6673] flex-shrink-0" />}
                   <span 
                     className={`hover:text-yellow-600 cursor-pointer transition-colors truncate ${
                       idx === arr.length - 1 ? 'max-w-[120px]' : 'max-w-[80px]'
@@ -479,11 +480,11 @@ const WithdrawalGuide = () => {
             </div>
             
             {/* Desktop: Show all breadcrumbs with horizontal scroll */}
-            <div className="hidden sm:flex items-center space-x-2 text-gray-500 text-sm overflow-x-auto pb-1 scrollbar-hide">
+            <div className="hidden sm:flex items-center space-x-2 text-[#5E6673] text-sm overflow-x-auto pb-1 scrollbar-hide">
               <div className="flex items-center space-x-2 whitespace-nowrap">
                 {article.breadcrumbs.map((crumb, idx) => (
                   <React.Fragment key={idx}>
-                    {idx > 0 && <ChevronRight className="w-4 h-4 text-gray-400" />}
+                    {idx > 0 && <ChevronRight className="w-4 h-4 text-[#5E6673]" />}
                     <span className="hover:text-yellow-600 cursor-pointer transition-colors">{crumb}</span>
                   </React.Fragment>
                 ))}
@@ -502,12 +503,12 @@ const WithdrawalGuide = () => {
           </div>
           
           {/* Title */}
-          <h1 className="text-3xl font-bold mb-4 text-gray-900">
+          <h1 className="text-3xl font-bold mb-4 text-white">
             {article.title}
           </h1>
           
           {/* Meta Information */}
-          <div className="flex flex-wrap items-center gap-6 text-gray-600 mb-6">
+          <div className="flex flex-wrap items-center gap-6 text-[#848E9C] mb-6">
             <div className="flex items-center space-x-2">
               <Eye className="w-4 h-4" />
               <span className="text-sm">{formatViews(currentViews)} views</span>
@@ -524,42 +525,42 @@ const WithdrawalGuide = () => {
 
           {/* Social Share */}
           {/* <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-gray-600">Share:</span>
+            <span className="text-sm font-medium text-[#848E9C]">Share:</span>
             <div className="flex gap-2">
               <button
                 onClick={() => handleShare('native')}
-                className="p-2 bg-white hover:bg-yellow-50 rounded-lg transition-colors border border-gray-200 hover:border-yellow-200"
+                className="p-2 bg-[#121212] hover:bg-yellow-50 rounded-lg transition-colors border border-[#2A2A2A] hover:border-yellow-200"
                 title="Share"
               >
-                <Share2 className="w-4 h-4 text-gray-500 hover:text-yellow-600" />
+                <Share2 className="w-4 h-4 text-[#5E6673] hover:text-yellow-600" />
               </button>
               <button
                 onClick={() => handleShare('facebook')}
-                className="p-2 bg-white hover:bg-yellow-50 rounded-lg transition-colors border border-gray-200 hover:border-yellow-200"
+                className="p-2 bg-[#121212] hover:bg-yellow-50 rounded-lg transition-colors border border-[#2A2A2A] hover:border-yellow-200"
                 title="Share on Facebook"
               >
-                <Facebook className="w-4 h-4 text-gray-500 hover:text-yellow-600" />
+                <Facebook className="w-4 h-4 text-[#5E6673] hover:text-yellow-600" />
               </button>
               <button
                 onClick={() => handleShare('linkedin')}
-                className="p-2 bg-white hover:bg-yellow-50 rounded-lg transition-colors border border-gray-200 hover:border-yellow-200"
+                className="p-2 bg-[#121212] hover:bg-yellow-50 rounded-lg transition-colors border border-[#2A2A2A] hover:border-yellow-200"
                 title="Share on LinkedIn"
               >
-                <Linkedin className="w-4 h-4 text-gray-500 hover:text-yellow-600" />
+                <Linkedin className="w-4 h-4 text-[#5E6673] hover:text-yellow-600" />
               </button>
               <button
                 onClick={() => handleShare('twitter')}
-                className="p-2 bg-white hover:bg-yellow-50 rounded-lg transition-colors border border-gray-200 hover:border-yellow-200"
+                className="p-2 bg-[#121212] hover:bg-yellow-50 rounded-lg transition-colors border border-[#2A2A2A] hover:border-yellow-200"
                 title="Share on Twitter"
               >
-                <MessageCircle className="w-4 h-4 text-gray-500 hover:text-yellow-400" />
+                <MessageCircle className="w-4 h-4 text-[#5E6673] hover:text-yellow-400" />
               </button>
               <button
                 onClick={() => handleShare('copy')}
-                className="p-2 bg-white hover:bg-gray-50 rounded-lg transition-colors border border-gray-200 hover:border-gray-300"
+                className="p-2 bg-[#121212] hover:bg-[#1E1E1E] rounded-lg transition-colors border border-[#2A2A2A] hover:border-[#2A2A2A]"
                 title="Copy Link"
               >
-                <Link2 className="w-4 h-4 text-gray-500 hover:text-gray-700" />
+                <Link2 className="w-4 h-4 text-[#5E6673] hover:text-[#848E9C]" />
               </button>
             </div>
           </div> */}
@@ -577,7 +578,7 @@ const WithdrawalGuide = () => {
               {/* Article Sections */}
               {article.sections.map((section, sectionIndex) => (
                 <section key={sectionIndex}>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                  <h2 className="text-xl font-semibold text-white mb-6">
                     {section.title}
                   </h2>
                   
@@ -590,8 +591,8 @@ const WithdrawalGuide = () => {
                         </div>
                         <div className="flex-1 pt-0.5">
                           <p 
-                            className="text-gray-700 leading-relaxed"
-                            dangerouslySetInnerHTML={{ __html: step.content }} 
+                            className="text-[#848E9C] leading-relaxed"
+                            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(step.content) }} 
                           />
                         </div>
                       </div>
@@ -613,14 +614,14 @@ const WithdrawalGuide = () => {
               {/* Note Section */}
               {article.notes && article.notes.length > 0 && (
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-                  <h3 className="text-base font-semibold text-gray-900 mb-4">Note:</h3>
+                  <h3 className="text-base font-semibold text-white mb-4">Note:</h3>
                   <div className="space-y-3">
                     {article.notes.map((note, noteIndex) => (
                       <div key={noteIndex} className="flex gap-2">
                         <span className="text-yellow-600 mt-1 text-sm">•</span>
                         <p 
-                          className="text-gray-700 text-sm leading-relaxed"
-                          dangerouslySetInnerHTML={{ __html: note }} 
+                          className="text-[#848E9C] text-sm leading-relaxed"
+                          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(note) }} 
                         />
                       </div>
                     ))}
@@ -630,11 +631,11 @@ const WithdrawalGuide = () => {
 
               {/* Disclaimer */}
               {article.disclaimer && (
-                <div className="border border-gray-200 rounded-lg p-6 bg-gray-50">
-                  <h3 className="text-base font-semibold text-gray-900 mb-3">
+                <div className="border border-[#2A2A2A] rounded-lg p-6 bg-[#1E1E1E]">
+                  <h3 className="text-base font-semibold text-white mb-3">
                     Disclaimer
                   </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
+                  <p className="text-sm text-[#848E9C] leading-relaxed">
                     {article.disclaimer}
                   </p>
                 </div>
@@ -644,8 +645,8 @@ const WithdrawalGuide = () => {
 
           {/* FAQ Sidebar */}
           <aside className="lg:col-span-1">
-            <div className="bg-gray-50 rounded-lg p-6 sticky top-8">
-              <h2 className="text-base font-semibold text-gray-900 mb-4">
+            <div className="bg-[#1E1E1E] rounded-lg p-6 sticky top-8">
+              <h2 className="text-base font-semibold text-white mb-4">
                 FAQ
               </h2>
               
@@ -654,7 +655,7 @@ const WithdrawalGuide = () => {
                 <input
                   type="text"
                   placeholder="Search FAQs..."
-                  className="w-full pl-3 pr-3 py-2 text-sm border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 bg-white"
+                  className="w-full pl-3 pr-3 py-2 text-sm border border-[#2A2A2A] rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 bg-[#121212]"
                   value={faqSearch}
                   onChange={(e) => setFaqSearch(e.target.value)}
                 />
@@ -666,10 +667,10 @@ const WithdrawalGuide = () => {
                   <button
                     key={faq.id}
                     onClick={() => handleFaqClick(faq.slug)}
-                    className={`w-full text-left text-sm hover:text-gray-900 transition-colors ${
+                    className={`w-full text-left text-sm hover:text-white transition-colors ${
                       currentSlug === faq.slug 
                         ? 'text-yellow-600 font-medium' 
-                        : 'text-gray-700'
+                        : 'text-[#848E9C]'
                     }`}
                   >
                     {faq.question}
@@ -677,7 +678,7 @@ const WithdrawalGuide = () => {
                 ))}
                 
                 {filteredFaqQuestions.length === 0 && (
-                  <div className="text-center py-4 text-gray-500">
+                  <div className="text-center py-4 text-[#5E6673]">
                     <p className="text-sm">No results found for "{faqSearch}"</p>
                   </div>
                 )}

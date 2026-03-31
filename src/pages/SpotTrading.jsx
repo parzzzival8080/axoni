@@ -45,8 +45,6 @@ const SpotTrading = () => {
   // Get coin_pair_id from URL params, default to 1 if not provided
   const coinPairId = searchParams.get('coin_pair_id') || '1';
   
-  console.log('Current coinPairId from URL:', coinPairId);
-
   // Initialize cryptoData with null - will be set from cache/API data
   const [cryptoData, setCryptoData] = useState(null);
   // For polling price/price_change_24h

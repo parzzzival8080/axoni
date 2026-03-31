@@ -13,6 +13,7 @@ import { FreezeCheckProvider } from "./context/FreezeCheckContext";
 import { VerifyStatusProvider } from "./context/VerifyStatusContext";
 import { useIsMobile } from "./hooks/useIsMobile";
 import MobileLayout from "./layouts/MobileLayout";
+import ErrorBoundary from "./components/common/ErrorBoundary";
 
 // Initialize dark mode from localStorage before first render
 if (typeof window !== 'undefined') {
@@ -26,6 +27,7 @@ if (typeof window !== 'undefined') {
 
 // Lazy-loaded page components (code splitting)
 const HomePage = React.lazy(() => import("./pages/HomePage"));
+const NotFound = React.lazy(() => import("./pages/NotFound"));
 const SpotTrading = React.lazy(() => import("./pages/SpotTrading"));
 const LoginPage = React.lazy(() => import("./pages/login/LoginPage"));
 const SignUpPage = React.lazy(() => import("./pages/SignUpPage"));
@@ -90,6 +92,7 @@ const LayoutWrapper = ({ children, showFooter = true, showChat = true, darkBg = 
 
 function App() {
   return (
+    <ErrorBoundary>
     <MetaMaskProvider>
       <CurrencyProvider>
         <CryptoProvider>
@@ -116,8 +119,8 @@ function App() {
                       {/* === Layout routes (LayoutWrapper handles mobile/desktop) === */}
 
                       {/* Trading — hideHeader because trading has its own SubHeader, keep tabBar for navigation */}
-                      <Route path="/spot-trading" element={<LayoutWrapper showFooter={false} showChat={false} darkBg hideHeader><SpotTrading /></LayoutWrapper>} />
-                      <Route path="/future-trading" element={<LayoutWrapper showFooter={false} showChat={false} darkBg hideHeader><FutureTrading /></LayoutWrapper>} />
+                      <Route path="/spot-trading" element={<LayoutWrapper showFooter={false} showChat={false} darkBg><SpotTrading /></LayoutWrapper>} />
+                      <Route path="/future-trading" element={<LayoutWrapper showFooter={false} showChat={false} darkBg><FutureTrading /></LayoutWrapper>} />
 
                       {/* Finance */}
                       <Route path="/deposit" element={<LayoutWrapper showChat={false} darkBg><Deposit /></LayoutWrapper>} />
@@ -149,7 +152,7 @@ function App() {
                       <Route path="/about-us" element={<LayoutWrapper showChat={false}><AboutUs /></LayoutWrapper>} />
                       <Route path="/legal" element={<LayoutWrapper showChat={false}><Legal /></LayoutWrapper>} />
                       <Route path="/get-started" element={<LayoutWrapper showChat={false}><GetStarted /></LayoutWrapper>} />
-                      <Route path="/terms-condtions" element={<LayoutWrapper showChat={false}><TermsAndConditions /></LayoutWrapper>} />
+                      <Route path="/terms-conditions" element={<LayoutWrapper showChat={false}><TermsAndConditions /></LayoutWrapper>} />
                       <Route path="/privacy-policy" element={<LayoutWrapper showChat={false}><PrivacyPolicy /></LayoutWrapper>} />
 
                       {/* Help/Support */}
@@ -167,8 +170,11 @@ function App() {
                       <Route path="/coming-soon" element={<LayoutWrapper showFooter={false}><ComingSoon /></LayoutWrapper>} />
                       <Route path="/my-assets" element={<LayoutWrapper darkBg><Assets /></LayoutWrapper>} />
 
-                      {/* Home (catch-all last) — hideHeader because MobileHomeScreen has its own interactive header */}
-                      <Route path="/" element={<LayoutWrapper darkBg hideHeader><HomePage /></LayoutWrapper>} />
+                      {/* Home */}
+                      <Route path="/" element={<LayoutWrapper darkBg><HomePage /></LayoutWrapper>} />
+
+                      {/* 404 catch-all — must be last */}
+                      <Route path="*" element={<NotFound />} />
                     </Routes>
                   </React.Suspense>
                 </div>
@@ -178,6 +184,7 @@ function App() {
         </CryptoProvider>
       </CurrencyProvider>
     </MetaMaskProvider>
+    </ErrorBoundary>
   );
 }
 

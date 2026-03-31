@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import DOMPurify from 'dompurify';
 import './FAQAccording.css';
 
 const FAQAccordion = () => {
@@ -69,7 +70,7 @@ const FAQAccordion = () => {
             </div>
             {openItems[item.id] && (
               <div className="faq-answer">
-                <p dangerouslySetInnerHTML={{ __html: item.answer }}></p>
+                <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.answer) }}></p>
               </div>
             )}
           </div>

@@ -126,19 +126,19 @@ const EarnOverview = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div className="min-h-screen bg-[#121212] text-white pb-20">
       {/* Hero Section */}
       <section className="relative px-4 sm:px-6 lg:px-8 py-12 lg:py-20 bg-[#000000]">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                Put your crypto to <span className="text-yellow-500">work</span>
+                Put your crypto to <span className="text-[#2EBD85]">work</span>
               </h1>
               <p className="text-xl text-gray-300 mb-8 leading-relaxed">
                 Earn daily rewards on 100+ tokens including USDT, USDC and ETH.
               </p>
-              <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-8 py-4 rounded-lg transition-colors duration-200 shadow-lg">
+              <button className="bg-[#2EBD85] hover:bg-[#259A6C] text-white font-semibold px-8 py-4 rounded-lg transition-colors duration-200 shadow-lg">
                 Activate Auto-earn
               </button>
           </div>
@@ -163,8 +163,8 @@ const EarnOverview = () => {
                 key={index} 
                 className="bg-gray-800/50 rounded-xl p-6 text-center hover:bg-gray-800/70 transition-colors border border-gray-700 cursor-pointer"
               >
-                <div className="w-12 h-12 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <i className={`${option.icon} text-xl text-yellow-500`}></i>
+                <div className="w-12 h-12 bg-[#2EBD85]/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <i className={`${option.icon} text-xl text-[#2EBD85]`}></i>
                 </div>
                 <span className="text-white font-medium">{option.label}</span>
             </div>
@@ -183,7 +183,7 @@ const EarnOverview = () => {
               <select 
                 value={selectedProduct} 
                 onChange={(e) => setSelectedProduct(e.target.value)}
-                className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-4 focus:outline-none focus:ring-1 focus:ring-yellow-500"
+                className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-4 focus:outline-none focus:ring-1 focus:ring-[#2EBD85]"
               >
               <option value="All products">All products</option>
               <option value="USDT">USDT</option>
@@ -194,7 +194,7 @@ const EarnOverview = () => {
               <select 
                 value={selectedTerm} 
                 onChange={(e) => setSelectedTerm(e.target.value)}
-                className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-4 focus:outline-none focus:ring-1 focus:ring-yellow-500"
+                className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-4 focus:outline-none focus:ring-1 focus:ring-[#2EBD85]"
               >
               <option value="All terms">All terms</option>
               <option value="3 days">3 days</option>
@@ -215,7 +215,7 @@ const EarnOverview = () => {
               placeholder="Search crypto"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 pl-10 pr-4 w-full focus:outline-none focus:ring-1 focus:ring-yellow-500 placeholder-gray-400"
+                className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 pl-10 pr-4 w-full focus:outline-none focus:ring-1 focus:ring-[#2EBD85] placeholder-gray-400"
             />
           </div>
         </div>
@@ -240,7 +240,7 @@ const EarnOverview = () => {
                   <tr>
                     <td colSpan={4} className="py-12 text-center text-gray-400">
                       <div className="flex justify-center items-center">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500"></div>
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#2EBD85]"></div>
                         <span className="ml-3">Loading products...</span>
                       </div>
                     </td>
@@ -282,7 +282,7 @@ const EarnOverview = () => {
                           <div className="flex items-center gap-2">
                             <span className="text-white font-medium">{coin.symbol}</span>
                             {coin.label && (
-                              <span className="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-1 rounded-full">
+                              <span className="bg-[#2EBD85]/20 text-[#2EBD85] text-xs px-2 py-1 rounded-full">
                                 {coin.label}
                               </span>
                             )}
@@ -298,7 +298,7 @@ const EarnOverview = () => {
                     </td>
                     <td className="px-6 py-4 text-center">
                       {coin.action ? (
-                        <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-medium px-4 py-2 rounded-lg transition-colors">
+                        <button className="bg-[#2EBD85] hover:bg-[#259A6C] text-white font-medium px-4 py-2 rounded-lg transition-colors">
                           {coin.action}
                         </button>
                   ) : (
@@ -316,7 +316,7 @@ const EarnOverview = () => {
 
             {!loading && !error && filteredCoins.length > 0 && (
               <div className="px-6 py-4 border-t border-gray-800 text-center">
-                <button className="text-yellow-500 hover:text-yellow-400 font-medium transition-colors">
+                <button className="text-[#2EBD85] hover:text-[#2EBD85] font-medium transition-colors">
                   View more
                 </button>
               </div>

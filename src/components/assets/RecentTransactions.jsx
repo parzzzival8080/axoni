@@ -67,46 +67,46 @@ const RecentTransactions = () => {
   }, [spotOrders, futureOrders]);
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+    <div className="bg-[#121212] rounded-lg shadow-sm border border-[#2A2A2A] p-6 mb-6">
+      <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
         Recent Transactions
         <span className="ml-2 px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-600">Live</span>
       </h3>
       {loading ? (
         <div className="flex items-center justify-center py-8">
           <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-yellow-500 mr-3"></div>
-          <span className="text-gray-500">Loading recent transactions...</span>
+          <span className="text-[#5E6673]">Loading recent transactions...</span>
         </div>
       ) : error ? (
         <div className="text-red-500 text-center py-4">{error}</div>
       ) : transactions.length === 0 ? (
-        <div className="text-gray-400 text-center py-4">No recent transactions found.</div>
+        <div className="text-[#5E6673] text-center py-4">No recent transactions found.</div>
       ) : (
         <div className="overflow-x-auto hide-scrollbar" style={{ maxHeight: '400px' }}>
           <table className="min-w-full text-sm">
             <thead>
-              <tr className="bg-gray-50">
-                <th className="px-3 py-2 text-left text-gray-500 font-medium">Date</th>
-                <th className="px-3 py-2 text-left text-gray-500 font-medium">Pair</th>
-                <th className="px-3 py-2 text-left text-gray-500 font-medium">Type</th>
-                <th className="px-3 py-2 text-left text-gray-500 font-medium">Price</th>
-                <th className="px-3 py-2 text-left text-gray-500 font-medium">Amount</th>
-                <th className="px-3 py-2 text-left text-gray-500 font-medium">Total</th>
-                <th className="px-3 py-2 text-left text-gray-500 font-medium">Status</th>
-                <th className="px-3 py-2 text-left text-gray-500 font-medium">Source</th>
+              <tr className="bg-[#1E1E1E]">
+                <th className="px-3 py-2 text-left text-[#5E6673] font-medium">Date</th>
+                <th className="px-3 py-2 text-left text-[#5E6673] font-medium">Pair</th>
+                <th className="px-3 py-2 text-left text-[#5E6673] font-medium">Type</th>
+                <th className="px-3 py-2 text-left text-[#5E6673] font-medium">Price</th>
+                <th className="px-3 py-2 text-left text-[#5E6673] font-medium">Amount</th>
+                <th className="px-3 py-2 text-left text-[#5E6673] font-medium">Total</th>
+                <th className="px-3 py-2 text-left text-[#5E6673] font-medium">Status</th>
+                <th className="px-3 py-2 text-left text-[#5E6673] font-medium">Source</th>
               </tr>
             </thead>
             <tbody>
               {transactions.map((tx) => (
                 <tr key={tx.id} className="hover:bg-yellow-50 transition-colors">
-                  <td className="px-3 py-2 whitespace-nowrap text-gray-700">{tx.date ? new Date(tx.date).toLocaleString() : '-'}</td>
-                  <td className="px-3 py-2 whitespace-nowrap text-gray-900 font-medium">{tx.pair}</td>
+                  <td className="px-3 py-2 whitespace-nowrap text-[#848E9C]">{tx.date ? new Date(tx.date).toLocaleString() : '-'}</td>
+                  <td className="px-3 py-2 whitespace-nowrap text-white font-medium">{tx.pair}</td>
                   <td className={`px-3 py-2 whitespace-nowrap font-semibold ${tx.side === 'buy' ? 'text-green-600' : 'text-red-500'}`}>{tx.type}</td>
                   <td className="px-3 py-2 whitespace-nowrap">{tx.price?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</td>
                   <td className="px-3 py-2 whitespace-nowrap">{tx.amount?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</td>
                   <td className="px-3 py-2 whitespace-nowrap">{tx.total?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</td>
                   <td className="px-3 py-2 whitespace-nowrap">
-                    <span className={`px-2 py-0.5 rounded text-xs font-semibold ${tx.status?.toLowerCase() === 'pending' ? 'bg-yellow-100 text-yellow-600' : tx.status?.toLowerCase() === 'canceled' ? 'bg-gray-200 text-gray-500' : 'bg-green-100 text-green-700'}`}>{tx.status}</span>
+                    <span className={`px-2 py-0.5 rounded text-xs font-semibold ${tx.status?.toLowerCase() === 'pending' ? 'bg-yellow-100 text-yellow-600' : tx.status?.toLowerCase() === 'canceled' ? 'bg-[#2A2A2A] text-[#5E6673]' : 'bg-green-100 text-green-700'}`}>{tx.status}</span>
                   </td>
                   <td className="px-3 py-2 whitespace-nowrap">
                     <span className={`px-2 py-0.5 rounded text-xs font-medium ${tx.source === 'Spot' ? 'bg-yellow-50 text-yellow-500' : 'bg-yellow-50 text-yellow-500'}`}>{tx.source}</span>

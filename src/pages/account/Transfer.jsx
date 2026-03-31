@@ -31,7 +31,7 @@ const scrollbarStyles = `
 // SVG Icons
 const ChevronDownIcon = () => (
   <svg
-    className="w-5 h-5 text-gray-500"
+    className="w-5 h-5 text-[#5E6673]"
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
@@ -48,7 +48,7 @@ const ChevronDownIcon = () => (
 
 const InfoIcon = () => (
   <svg
-    className="w-4 h-4 text-gray-400"
+    className="w-4 h-4 text-[#5E6673]"
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
@@ -65,7 +65,7 @@ const InfoIcon = () => (
 
 const ArrowsIcon = () => (
   <svg
-    className="w-5 h-5 text-gray-500"
+    className="w-5 h-5 text-[#5E6673]"
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
@@ -124,7 +124,7 @@ const ImageWithFallback = ({ src, alt, className, symbol }) => {
   if (error || !src) {
     return (
       <span
-        className={`${className} flex items-center justify-center bg-gray-300 text-gray-600 font-bold text-xs rounded-full`}
+        className={`${className} flex items-center justify-center bg-gray-300 text-[#848E9C] font-bold text-xs rounded-full`}
       >
         {symbol?.substring(0, 1)?.toUpperCase() || "?"}
       </span>
@@ -135,7 +135,7 @@ const ImageWithFallback = ({ src, alt, className, symbol }) => {
     <>
       {!loaded && (
         <span
-          className={`${className} flex items-center justify-center bg-gray-200 text-gray-600 font-bold text-xs rounded-full`}
+          className={`${className} flex items-center justify-center bg-[#2A2A2A] text-[#848E9C] font-bold text-xs rounded-full`}
         >
           {symbol?.substring(0, 1)?.toUpperCase() || "?"}
         </span>
@@ -644,7 +644,7 @@ const Transfer = () => {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: scrollbarStyles }} />
-      <div className="min-h-screen bg-white text-gray-900 font-sans">
+      <div className="min-h-screen bg-[#121212] text-white font-sans">
         {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 py-8">
           <h1 className="text-2xl font-bold mb-8 text-black">Transfer</h1>
@@ -654,12 +654,12 @@ const Transfer = () => {
             <div className="max-w-md">
               {/* Asset Dropdown */}
               <div className="transfer-asset-section mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-[#848E9C] mb-2">
                   Asset
                 </label>
                 <div className="relative" ref={assetDropdownRef}>
                   <button
-                    className="w-full bg-gray-100 border border-gray-200 rounded-lg px-4 py-3 flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-gray-200"
+                    className="w-full bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg px-4 py-3 flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-gray-200"
                     onClick={() => setIsAssetDropdownOpen(!isAssetDropdownOpen)}
                   >
                     {selectedAsset ? (
@@ -683,16 +683,16 @@ const Transfer = () => {
                         <span>{selectedAsset}</span>
                       </div>
                     ) : (
-                      <span className="text-gray-500">Select an asset</span>
+                      <span className="text-[#5E6673]">Select an asset</span>
                     )}
                     <ChevronDownIcon />
                   </button>
                   {isAssetDropdownOpen && (
-                    <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
+                    <div className="absolute z-10 mt-1 w-full bg-[#121212] border border-[#2A2A2A] rounded-lg shadow-lg overflow-hidden">
                       <style>{scrollbarStyles}</style>
 
                       {/* Search input */}
-                      <div className="p-2 border-b border-gray-200">
+                      <div className="p-2 border-b border-[#2A2A2A]">
                         <input
                           type="text"
                           placeholder="Search assets..."
@@ -726,11 +726,11 @@ const Transfer = () => {
                         }}
                       >
                         {isLoading && coins.length === 0 ? (
-                          <div className="p-4 text-center text-gray-500">
+                          <div className="p-4 text-center text-[#5E6673]">
                             Loading assets...
                           </div>
                         ) : filteredCoins.length === 0 ? (
-                          <div className="p-4 text-center text-gray-500">
+                          <div className="p-4 text-center text-[#5E6673]">
                             No assets found
                           </div>
                         ) : (
@@ -751,7 +751,7 @@ const Transfer = () => {
                                 .map((coin, index) => (
                                   <button
                                     key={coin.id || coin.symbol}
-                                    className="w-full flex items-center px-4 py-3 hover:bg-gray-100 transition-colors text-left absolute left-0 right-0"
+                                    className="w-full flex items-center px-4 py-3 hover:bg-[#1E1E1E] transition-colors text-left absolute left-0 right-0"
                                     style={{
                                       top: `${
                                         (index + visibleCoinsRange.start) * 48
@@ -765,9 +765,9 @@ const Transfer = () => {
                                   >
                                     {coin.isPlaceholder ? (
                                       <>
-                                        <div className="w-6 h-6 rounded-full bg-gray-200 animate-pulse mr-2"></div>
-                                        <div className="h-4 bg-gray-200 animate-pulse rounded w-16"></div>
-                                        <div className="ml-2 h-3 bg-gray-200 animate-pulse rounded w-24"></div>
+                                        <div className="w-6 h-6 rounded-full bg-[#2A2A2A] animate-pulse mr-2"></div>
+                                        <div className="h-4 bg-[#2A2A2A] animate-pulse rounded w-16"></div>
+                                        <div className="ml-2 h-3 bg-[#2A2A2A] animate-pulse rounded w-24"></div>
                                       </>
                                     ) : (
                                       <>
@@ -778,7 +778,7 @@ const Transfer = () => {
                                           symbol={coin.symbol}
                                         />
                                         <span>{coin.symbol}</span>
-                                        <span className="ml-2 text-xs text-gray-500">
+                                        <span className="ml-2 text-xs text-[#5E6673]">
                                           {coin.name}
                                         </span>
                                       </>
@@ -798,12 +798,12 @@ const Transfer = () => {
               <div className="transfer-accounts-section flex items-center mb-6">
                 {/* From Account */}
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-[#848E9C] mb-2">
                     From
                   </label>
                   <div className="relative" ref={fromDropdownRef}>
                     <button
-                      className="w-full bg-gray-100 border border-gray-200 rounded-lg flex items-center justify-between px-4 py-3 text-left"
+                      className="w-full bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg flex items-center justify-between px-4 py-3 text-left"
                       onClick={() => setIsFromDropdownOpen(!isFromDropdownOpen)}
                     >
                       <span className="font-medium">{fromAccount}</span>
@@ -812,12 +812,12 @@ const Transfer = () => {
 
                     {/* From Dropdown */}
                     {isFromDropdownOpen && (
-                      <div className="absolute left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                      <div className="absolute left-0 right-0 mt-2 bg-[#121212] border border-[#2A2A2A] rounded-lg shadow-lg z-50">
                         {accountOptions.map((account) => (
                           <button
                             key={account}
-                            className={`w-full text-left px-4 py-3 hover:bg-gray-100 transition-colors ${
-                              account === fromAccount ? "bg-gray-100" : ""
+                            className={`w-full text-left px-4 py-3 hover:bg-[#1E1E1E] transition-colors ${
+                              account === fromAccount ? "bg-[#1E1E1E]" : ""
                             }`}
                             onClick={() => handleFromAccountSelect(account)}
                           >
@@ -831,7 +831,7 @@ const Transfer = () => {
 
                 {/* Swap Button */}
                 <button
-                  className="mx-4 p-2 rounded-full hover:bg-gray-100 transition-colors"
+                  className="mx-4 p-2 rounded-full hover:bg-[#1E1E1E] transition-colors"
                   onClick={handleSwapAccounts}
                   aria-label="Swap accounts"
                 >
@@ -840,12 +840,12 @@ const Transfer = () => {
 
                 {/* To Account */}
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-[#848E9C] mb-2">
                     To
                   </label>
                   <div className="relative" ref={toDropdownRef}>
                     <button
-                      className="w-full bg-gray-100 border border-gray-200 rounded-lg flex items-center justify-between px-4 py-3 text-left"
+                      className="w-full bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg flex items-center justify-between px-4 py-3 text-left"
                       onClick={() => setIsToDropdownOpen(!isToDropdownOpen)}
                     >
                       <span className="font-medium">{toAccount}</span>
@@ -854,12 +854,12 @@ const Transfer = () => {
 
                     {/* To Dropdown */}
                     {isToDropdownOpen && (
-                      <div className="absolute left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                      <div className="absolute left-0 right-0 mt-2 bg-[#121212] border border-[#2A2A2A] rounded-lg shadow-lg z-50">
                         {accountOptions.map((account) => (
                           <button
                             key={account}
-                            className={`w-full text-left px-4 py-3 hover:bg-gray-100 transition-colors ${
-                              account === toAccount ? "bg-gray-100" : ""
+                            className={`w-full text-left px-4 py-3 hover:bg-[#1E1E1E] transition-colors ${
+                              account === toAccount ? "bg-[#1E1E1E]" : ""
                             }`}
                             onClick={() => handleToAccountSelect(account)}
                           >
@@ -874,14 +874,14 @@ const Transfer = () => {
 
               {/* Amount Input */}
               <div className="transfer-amount-section mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-[#848E9C] mb-2">
                   Amount
                 </label>
                 <div className="relative">
                   <input
                     type="number"
                     placeholder="0.00"
-                    className="w-full bg-gray-100 border border-gray-200 rounded-lg px-4 py-3 pr-16 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                    className="w-full bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg px-4 py-3 pr-16 focus:outline-none focus:ring-2 focus:ring-gray-200"
                     value={transferAmount}
                     onChange={(e) => setTransferAmount(e.target.value)}
                     disabled={!selectedAsset}
@@ -889,9 +889,9 @@ const Transfer = () => {
                     step="any"
                   />
                   <div className="absolute right-4 top-1/2 transform -translate-y-1/2 flex items-center">
-                    <span className="text-gray-500 mr-2">{selectedAsset}</span>
+                    <span className="text-[#5E6673] mr-2">{selectedAsset}</span>
                     <button
-                      className="text-xs bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded transition-colors"
+                      className="text-xs bg-[#2A2A2A] hover:bg-gray-300 px-2 py-1 rounded transition-colors"
                       onClick={handleMaxAmount}
                       disabled={!selectedAsset || availableBalance <= 0}
                     >
@@ -900,7 +900,7 @@ const Transfer = () => {
                   </div>
                 </div>
                 <div className="transfer-balance-display flex flex-row gap-4 mt-2">
-                  <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-full px-4 py-2 shadow-sm border border-gray-200 dark:border-gray-700 min-w-[150px]">
+                  <div className="flex items-center bg-[#1E1E1E] dark:bg-gray-800 rounded-full px-4 py-2 shadow-sm border border-[#2A2A2A] dark:border-gray-700 min-w-[150px]">
                     <svg
                       className="w-4 h-4 mr-2 text-yellow-600 dark:text-yellow-400"
                       fill="none"
@@ -910,17 +910,17 @@ const Transfer = () => {
                       <circle cx="12" cy="12" r="10" strokeWidth="2" />
                       <path d="M8 12h8" strokeWidth="2" />
                     </svg>
-                    <span className="text-xs text-gray-600 dark:text-gray-300 font-semibold mr-1">
+                    <span className="text-xs text-[#848E9C] dark:text-gray-300 font-semibold mr-1">
                       Spot
                     </span>
-                    <span className="text-sm text-gray-900 dark:text-white font-bold">
+                    <span className="text-sm text-white dark:text-white font-bold">
                       {isBalanceLoading ? "..." : spotBalance}
                     </span>
-                    <span className="ml-1 text-xs text-gray-500 dark:text-gray-400">
+                    <span className="ml-1 text-xs text-[#5E6673] dark:text-[#5E6673]">
                       {selectedAsset}
                     </span>
                   </div>
-                  <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-full px-4 py-2 shadow-sm border border-gray-200 dark:border-gray-700 min-w-[150px]">
+                  <div className="flex items-center bg-[#1E1E1E] dark:bg-gray-800 rounded-full px-4 py-2 shadow-sm border border-[#2A2A2A] dark:border-gray-700 min-w-[150px]">
                     <svg
                       className="w-4 h-4 mr-2 text-purple-600 dark:text-purple-400"
                       fill="none"
@@ -930,13 +930,13 @@ const Transfer = () => {
                       <circle cx="12" cy="12" r="10" strokeWidth="2" />
                       <path d="M16 12H8" strokeWidth="2" />
                     </svg>
-                    <span className="text-xs text-gray-600 dark:text-gray-300 font-semibold mr-1">
+                    <span className="text-xs text-[#848E9C] dark:text-gray-300 font-semibold mr-1">
                       Future
                     </span>
-                    <span className="text-sm text-gray-900 dark:text-white font-bold">
+                    <span className="text-sm text-white dark:text-white font-bold">
                       {isBalanceLoading ? "..." : futureBalance}
                     </span>
-                    <span className="ml-1 text-xs text-gray-500 dark:text-gray-400">
+                    <span className="ml-1 text-xs text-[#5E6673] dark:text-[#5E6673]">
                       {selectedAsset}
                     </span>
                   </div>
@@ -951,7 +951,7 @@ const Transfer = () => {
                   !transferAmount ||
                   parseFloat(transferAmount) <= 0 ||
                   parseFloat(transferAmount) > availableBalance
-                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                    ? "bg-[#2A2A2A] text-[#5E6673] cursor-not-allowed"
                     : "bg-[#2EBD85] text-white hover:bg-[#2EBD85]"
                 }`}
                 onClick={handleTransfer}
@@ -984,7 +984,7 @@ const Transfer = () => {
 
           {/* Transfer History */}
           <div className="transfer-history-section mt-12">
-            <div className="flex border-b border-gray-200 dark:border-gray-700 mb-6">
+            <div className="flex border-b border-[#2A2A2A] dark:border-gray-700 mb-6">
               <button
                 className={`py-4 mr-6 text-sm font-medium border-b-2 border-yellow-500 text-yellow-500 dark:text-yellow-400`}
                 style={{ pointerEvents: "none" }}
@@ -994,7 +994,7 @@ const Transfer = () => {
             </div>
 
             {/* Table Headers */}
-            <div className="grid grid-cols-5 gap-4 py-3 border-b border-gray-200 dark:border-gray-700 text-sm text-gray-500 dark:text-gray-400">
+            <div className="grid grid-cols-5 gap-4 py-3 border-b border-[#2A2A2A] dark:border-gray-700 text-sm text-[#5E6673] dark:text-[#5E6673]">
               <div>Asset</div>
               <div>Amount</div>
               <div>From</div>
@@ -1028,10 +1028,10 @@ const Transfer = () => {
                     ></path>
                   </svg>
                 </div>
-                <h3 className="text-base font-medium text-gray-900 dark:text-gray-100 mb-1">
+                <h3 className="text-base font-medium text-white dark:text-gray-100 mb-1">
                   Error loading transfer history
                 </h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                <p className="text-sm text-[#5E6673] dark:text-[#5E6673] mb-4">
                   {historyError}
                 </p>
                 <button
@@ -1048,9 +1048,9 @@ const Transfer = () => {
               !historyError &&
               transferHistory.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-16">
-                  <div className="w-20 h-20 mb-4 flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-full">
+                  <div className="w-20 h-20 mb-4 flex items-center justify-center bg-[#1E1E1E] dark:bg-gray-800 rounded-full">
                     <svg
-                      className="w-10 h-10 text-gray-400 dark:text-gray-500"
+                      className="w-10 h-10 text-[#5E6673] dark:text-[#5E6673]"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -1064,10 +1064,10 @@ const Transfer = () => {
                       ></path>
                     </svg>
                   </div>
-                  <h3 className="text-base font-medium text-gray-900 dark:text-gray-100 mb-1">
+                  <h3 className="text-base font-medium text-white dark:text-gray-100 mb-1">
                     No records found
                   </h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <p className="text-sm text-[#5E6673] dark:text-[#5E6673]">
                     Get started with your first transaction
                   </p>
                 </div>
@@ -1086,7 +1086,7 @@ const Transfer = () => {
                     return (
                       <div
                         key={index}
-                        className="grid grid-cols-5 gap-4 py-4 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
+                        className="grid grid-cols-5 gap-4 py-4 border-b border-gray-100 dark:border-gray-800 hover:bg-[#1E1E1E] dark:hover:bg-[#121212] transition-colors"
                       >
                         {/* Asset */}
                         <div className="flex items-center">
@@ -1102,20 +1102,20 @@ const Transfer = () => {
                               {transfer.symbol?.substring(0, 1) || "?"}
                             </span>
                           )}
-                          <span className="font-medium text-gray-900 dark:text-gray-100">
+                          <span className="font-medium text-white dark:text-gray-100">
                             {transfer.symbol || "—"}
                           </span>
                         </div>
                         {/* Amount */}
-                        <div className="text-gray-900 dark:text-gray-100 font-medium">
+                        <div className="text-white dark:text-gray-100 font-medium">
                           {parseFloat(transfer.amount).toFixed(2)}
                         </div>
                         {/* From */}
-                        <div className="text-gray-700 dark:text-gray-300 capitalize">
+                        <div className="text-[#848E9C] dark:text-gray-300 capitalize">
                           {transfer.transfer_from || "—"}
                         </div>
                         {/* To */}
-                        <div className="text-gray-700 dark:text-gray-300 capitalize">
+                        <div className="text-[#848E9C] dark:text-gray-300 capitalize">
                           {transfer.transfer_to || "—"}
                         </div>
                         {/* Status */}

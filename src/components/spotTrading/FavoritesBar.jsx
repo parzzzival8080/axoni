@@ -99,7 +99,7 @@ const FavoriteItem = ({ coin, isActive, onClick, compact = false }) => {
 
 // --- Skeleton Loader for Favorites ---
 const FavoritesSkeleton = () => (
-  <div className="flex items-center space-x-4 py-2 px-4 bg-black overflow-x-auto scrollbar-hide">
+  <div className="flex items-center space-x-4 py-2 px-4 bg-[#121212] overflow-x-auto scrollbar-hide">
     <span className="text-sm font-medium text-gray-300 whitespace-nowrap">Favorites:</span>
     {Array.from({ length: 8 }).map((_, i) => (
       <div className="flex items-center space-x-3 py-2 px-3 animate-pulse" key={i}>
@@ -113,18 +113,20 @@ const FavoritesSkeleton = () => (
 );
 
 // --- Empty Favorites Component ---
-const EmptyFavorites = () => (
-  <div className="flex items-center justify-center py-4 px-6 bg-black">
-    <div className="flex items-center space-x-3 text-gray-400">
-      <FontAwesomeIcon icon={faHeart} className="w-5 h-5 text-gray-500" />
-      <span className="text-sm font-medium">No favorites yet</span>
-      <div className="flex items-center space-x-2 ml-4">
-        <FontAwesomeIcon icon={faStar} className="w-4 h-4 text-yellow-500" />
-        <span className="text-xs text-gray-500">Click the star icon to add coins to your favorites</span>
+const EmptyFavorites = () => {
+  // Hide on mobile — takes up too much space for nothing
+  if (typeof window !== 'undefined' && window.innerWidth < 768) return null;
+  return (
+    <div className="flex items-center justify-center py-3 px-6 bg-[#121212]">
+      <div className="flex items-center space-x-3 text-[#5E6673]">
+        <FontAwesomeIcon icon={faHeart} className="w-4 h-4 text-[#5E6673]" />
+        <span className="text-xs">No favorites yet</span>
+        <FontAwesomeIcon icon={faStar} className="w-3 h-3 text-[#2EBD85] ml-2" />
+        <span className="text-xs text-[#5E6673]">Click the star to add</span>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 // --- More Modal Component ---
 const MoreModal = ({ remainingCoins, activeId, onCoinSelect, isOpen, onClose }) => {
@@ -171,7 +173,7 @@ const MoreModal = ({ remainingCoins, activeId, onCoinSelect, isOpen, onClose }) 
 
   return (
     <div 
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+      className="fixed inset-0 bg-[#121212] bg-opacity-50 flex items-center justify-center"
       style={{ zIndex: 2147483647 }}
     >
       <div 
@@ -401,7 +403,7 @@ const FavoritesBar = ({ activeCoinPairId }) => {
   };
 
   return (
-    <div className="favorites-bar-container flex items-center space-x-4 py-2 px-4 bg-black overflow-x-auto scrollbar-hide relative">
+    <div className="favorites-bar-container flex items-center space-x-4 py-2 px-4 bg-[#121212] overflow-x-auto scrollbar-hide relative">
       <span className="text-sm font-medium text-gray-300 whitespace-nowrap">Favorites:</span>
       
       {/* Show first 4 favorites */}

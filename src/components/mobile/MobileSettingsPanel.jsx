@@ -9,15 +9,15 @@ const MobileSettingsPanel = () => {
 
   return (
     <>
-      <div className="px-4 py-3 border-t border-gray-200 dark:border-gray-700">
-        <h3 className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+      <div className="px-4 py-3 border-t border-gray-200 dark:border-[#2A2A2A]">
+        <h3 className="text-xs font-medium text-gray-500 dark:text-[#5E6673] uppercase tracking-wider mb-3">
           Settings
         </h3>
         <div className="space-y-2">
           {/* Dark Mode Toggle */}
           <button
             onClick={toggleDarkMode}
-            className="flex items-center justify-between w-full px-3 py-3 rounded-lg bg-gray-50 dark:bg-gray-800"
+            className="flex items-center justify-between w-full px-3 py-3 rounded-lg bg-gray-50 dark:bg-[#1E1E1E]"
           >
             <div className="flex items-center gap-3">
               {isDark ? (
@@ -45,10 +45,10 @@ const MobileSettingsPanel = () => {
           {/* Language / Currency */}
           <button
             onClick={() => setShowLanguageModal(true)}
-            className="flex items-center justify-between w-full px-3 py-3 rounded-lg bg-gray-50 dark:bg-gray-800"
+            className="flex items-center justify-between w-full px-3 py-3 rounded-lg bg-gray-50 dark:bg-[#1E1E1E]"
           >
             <div className="flex items-center gap-3">
-              <Globe size={20} className="text-gray-600 dark:text-gray-400" />
+              <Globe size={20} className="text-gray-600 dark:text-[#5E6673]" />
               <span className="text-sm font-medium text-gray-900 dark:text-white">
                 Language / Currency
               </span>

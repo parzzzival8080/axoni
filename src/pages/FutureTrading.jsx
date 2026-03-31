@@ -8,6 +8,7 @@ import TradeForm from '../components/futureTrading/TradeForm';
 import OrdersSection from '../components/futureTrading/OrdersSection';
 import FutureTradingWalkthroughTrigger from '../components/futureTrading/FutureTradingWalkthroughTrigger';
 import { fetchTradableCoins, fetchWalletData } from '../services/futureTradingApi';
+import { useIsMobile } from '../hooks/useIsMobile';
 import '../components/futureTrading/FutureTrading.css';
 import UnifiedNotification from '../components/common/UnifiedNotification';
 import '../components/common/UnifiedNotification.css';
@@ -18,10 +19,12 @@ import { useNotification } from '../hooks/useNotification';
  * Manages the overall state and data flow for the futures trading interface
  */
 const FutureTrading = () => {
+  const isMobile = useIsMobile();
+
   // URL parameters
   const [searchParams, setSearchParams] = useSearchParams();
   const coinPairId = Number(searchParams.get('coin_pair_id')) || 1;
-  
+
   // Core state
   const [tradableCoins, setTradableCoins] = useState([]);
   const [walletData, setWalletData] = useState(null);
@@ -334,8 +337,8 @@ const FutureTrading = () => {
         />
       </>
       
-      {/* Walkthrough Trigger */}
-      <FutureTradingWalkthroughTrigger />
+      {/* Walkthrough Trigger — desktop only */}
+      {!isMobile && <FutureTradingWalkthroughTrigger />}
     </div>
   );
 };

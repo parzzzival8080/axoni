@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, ArrowDownToLine, ArrowUpFromLine, ArrowLeftRight, TrendingUp, Search, Bell, MessageCircle, User } from "lucide-react";
+import { Eye, EyeOff, ArrowDownToLine, ArrowUpFromLine, ArrowLeftRight, TrendingUp } from "lucide-react";
 import { useCurrency } from "../../context/CurrencyContext";
 import { PROMO_BANNERS } from "./banners";
 import axios from "axios";
@@ -77,63 +77,20 @@ const MobileHomeScreen = () => {
 
   const formatChange = (change) => {
     const num = parseFloat(change);
-    if (isNaN(num)) return { text: "0.00%", color: "text-gray-400", bg: "bg-gray-700" };
+    if (isNaN(num)) return { text: "0.00%", color: "text-[#5E6673]", bg: "bg-[#2A2A2A]" };
     const sign = num >= 0 ? "+" : "";
     const color = num >= 0 ? "text-green-400" : "text-red-400";
     const bg = num >= 0 ? "bg-green-500/20" : "bg-red-500/20";
     return { text: `${sign}${num.toFixed(2)}%`, color, bg };
   };
 
-  const openLiveChat = () => {
-    if (window.LiveChatWidget) {
-      window.LiveChatWidget.call("maximize");
-    } else if (window.__lc) {
-      // Fallback: try to show the widget
-      const chatWidget = document.getElementById("chat-widget-container");
-      if (chatWidget) {
-        chatWidget.style.display = "block";
-        chatWidget.style.visibility = "visible";
-      }
-    }
-  };
 
   return (
-    <div className="bg-black text-white min-h-screen">
-
-      {/* === Interactive Header === */}
-      <div className="flex items-center justify-between px-4 py-2">
-        <button onClick={() => navigate("/account/profile")} className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
-            <User size={16} className="text-gray-300" />
-          </div>
-        </button>
-
-        <div className="flex items-center gap-1">
-          <button
-            onClick={() => navigate("/market")}
-            className="w-9 h-9 rounded-full flex items-center justify-center"
-          >
-            <Search size={20} className="text-gray-300" />
-          </button>
-          <button
-            onClick={openLiveChat}
-            className="w-9 h-9 rounded-full flex items-center justify-center"
-          >
-            <MessageCircle size={20} className="text-gray-300" />
-          </button>
-          <button
-            onClick={() => navigate("/help/category/announcements")}
-            className="w-9 h-9 rounded-full flex items-center justify-center relative"
-          >
-            <Bell size={20} className="text-gray-300" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
-        </div>
-      </div>
+    <div className="bg-[#121212] text-white min-h-screen">
 
       {/* === Portfolio Section === */}
       <div className="px-4 pt-1 pb-3">
-        <p className="text-gray-400 text-xs mb-1">Est total value</p>
+        <p className="text-[#5E6673] text-xs mb-1">Est total value</p>
         <div className="flex items-center gap-3">
           <h2 className="text-3xl font-bold">
             {showBalance
@@ -141,14 +98,14 @@ const MobileHomeScreen = () => {
               : "****"
             }
           </h2>
-          <button onClick={() => setShowBalance(!showBalance)} className="text-gray-400">
+          <button onClick={() => setShowBalance(!showBalance)} className="text-[#5E6673]">
             {showBalance ? <Eye size={18} /> : <EyeOff size={18} />}
           </button>
         </div>
         {showBalance && !loading && (
           <div className="flex items-center gap-4 mt-1">
-            <span className="text-xs text-gray-500">Spot: {formatCurrency(walletData.spot_wallet)}</span>
-            <span className="text-xs text-gray-500">Futures: {formatCurrency(walletData.future_wallet)}</span>
+            <span className="text-xs text-[#5E6673]">Spot: {formatCurrency(walletData.spot_wallet)}</span>
+            <span className="text-xs text-[#5E6673]">Futures: {formatCurrency(walletData.future_wallet)}</span>
           </div>
         )}
       </div>
@@ -163,7 +120,7 @@ const MobileHomeScreen = () => {
         </Link>
         <Link
           to="/spot-trading"
-          className="flex items-center justify-center gap-2 bg-gray-800 text-white py-3 rounded-lg font-semibold text-sm"
+          className="flex items-center justify-center gap-2 bg-[#1E1E1E] text-white py-3 rounded-lg font-semibold text-sm"
         >
           Start trading
         </Link>
@@ -172,28 +129,28 @@ const MobileHomeScreen = () => {
       {/* === Action Grid === */}
       <div className="px-4 pb-2 grid grid-cols-4 gap-2">
         <button onClick={() => navigate("/deposit")} className="flex flex-col items-center gap-1.5 py-2">
-          <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full bg-[#1E1E1E] flex items-center justify-center">
             <ArrowDownToLine size={18} className="text-[#2EBD85]" />
           </div>
-          <span className="text-[11px] text-gray-300">Deposit</span>
+          <span className="text-[11px] text-[#848E9C]">Deposit</span>
         </button>
         <button onClick={() => navigate("/withdraw")} className="flex flex-col items-center gap-1.5 py-2">
-          <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full bg-[#1E1E1E] flex items-center justify-center">
             <ArrowUpFromLine size={18} className="text-[#2EBD85]" />
           </div>
-          <span className="text-[11px] text-gray-300">Withdraw</span>
+          <span className="text-[11px] text-[#848E9C]">Withdraw</span>
         </button>
         <button onClick={() => navigate("/conversion")} className="flex flex-col items-center gap-1.5 py-2">
-          <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full bg-[#1E1E1E] flex items-center justify-center">
             <ArrowLeftRight size={18} className="text-[#2EBD85]" />
           </div>
-          <span className="text-[11px] text-gray-300">Convert</span>
+          <span className="text-[11px] text-[#848E9C]">Convert</span>
         </button>
         <button onClick={() => navigate("/earn")} className="flex flex-col items-center gap-1.5 py-2">
-          <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full bg-[#1E1E1E] flex items-center justify-center">
             <TrendingUp size={18} className="text-[#2EBD85]" />
           </div>
-          <span className="text-[11px] text-gray-300">Earn</span>
+          <span className="text-[11px] text-[#848E9C]">Earn</span>
         </button>
       </div>
 
@@ -214,9 +171,9 @@ const MobileHomeScreen = () => {
                     <span className="text-2xl">{banner.emoji}</span>
                     <div className="flex-1">
                       <h4 className="text-sm font-bold text-white mb-1">{banner.title}</h4>
-                      <p className="text-xs text-gray-300 leading-relaxed">{banner.subtitle}</p>
+                      <p className="text-xs text-[#848E9C] leading-relaxed">{banner.subtitle}</p>
                     </div>
-                    <span className="text-xs text-gray-500 whitespace-nowrap">{index + 1}/{PROMO_BANNERS.length}</span>
+                    <span className="text-xs text-[#5E6673] whitespace-nowrap">{index + 1}/{PROMO_BANNERS.length}</span>
                   </div>
                 </div>
               </div>
@@ -229,7 +186,7 @@ const MobileHomeScreen = () => {
                 key={index}
                 onClick={() => setActiveBanner(index)}
                 className={`rounded-full transition-all ${
-                  index === activeBanner ? "w-4 h-1.5 bg-[#2EBD85]" : "w-1.5 h-1.5 bg-gray-600"
+                  index === activeBanner ? "w-4 h-1.5 bg-[#2EBD85]" : "w-1.5 h-1.5 bg-[#3A3A3A]"
                 }`}
               />
             ))}
@@ -241,7 +198,7 @@ const MobileHomeScreen = () => {
       <div className="px-4 pt-1">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-base font-semibold">Markets</h3>
-          <button onClick={() => navigate("/market")} className="text-xs text-gray-400">
+          <button onClick={() => navigate("/market")} className="text-xs text-[#5E6673]">
             See all &gt;
           </button>
         </div>
@@ -256,14 +213,14 @@ const MobileHomeScreen = () => {
                 className="flex items-center justify-between w-full py-3 px-1"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-gray-800 flex items-center justify-center text-xs font-bold text-white">
+                  <div className="w-9 h-9 rounded-full bg-[#1E1E1E] flex items-center justify-center text-xs font-bold text-white">
                     {(coin.crypto_symbol || coin.symbol || "?").substring(0, 3)}
                   </div>
                   <div className="text-left">
                     <p className="text-sm font-medium text-white">
-                      {coin.crypto_symbol || coin.symbol} <span className="text-gray-500">/ USDT</span>
+                      {coin.crypto_symbol || coin.symbol} <span className="text-[#5E6673]">/ USDT</span>
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-[#5E6673]">
                       Vol {coin.volume_24h ? parseFloat(coin.volume_24h).toLocaleString(undefined, { maximumFractionDigits: 0 }) : "—"}
                     </p>
                   </div>
@@ -279,7 +236,7 @@ const MobileHomeScreen = () => {
               </button>
             );
           }) : (
-            <div className="py-8 text-center text-gray-500 text-sm">Loading markets...</div>
+            <div className="py-8 text-center text-[#5E6673] text-sm">Loading markets...</div>
           )}
         </div>
       </div>
