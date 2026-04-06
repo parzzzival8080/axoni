@@ -61,8 +61,8 @@ function App() {
                 path="/trading_chartWebView"
                 element={<TradingChartWebView />}
               />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/login" element={<><LoginPage /><ChatBubble /></>} />
+              <Route path="/signup" element={<><SignUpPage /><ChatBubble /></>} />
 
             <Route
               path="/appstore"
