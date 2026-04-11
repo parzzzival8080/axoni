@@ -1,8 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+
+const CHAT_URL = "https://bot-chatter.vercel.app/livechat/widget?color=F0B90B&source=axoni.tech";
+const LOAD_TIMEOUT = 15000; // 15 seconds
 
 const ChatBubble = () => {
   const [showChat, setShowChat] = useState(false);
   const [isChatLoaded, setIsChatLoaded] = useState(false);
+  const [loadFailed, setLoadFailed] = useState(false);
+  const [iframeKey, setIframeKey] = useState(0);
+  const timeoutRef = useRef(null);
+
+  // Start timeout when chat opens
+  useEffect(() => {
+    if (showChat && !isChatLoaded && !loadFailed) {
+      timeoutRef.current = setTimeout(() => {
+        if (!isChatLoaded) setLoadFailed(true);
+      }, LOAD_TIMEOUT);
+    }
+    return () => clearTimeout(timeoutRef.current);
+  }, [showChat, isChatLoaded, loadFailed]);
+
+  const handleClose = () => {
+    setShowChat(false);
+    setIsChatLoaded(false);
+    setLoadFailed(false);
+    clearTimeout(timeoutRef.current);
+  };
+
+  const handleRetry = () => {
+    setLoadFailed(false);
+    setIsChatLoaded(false);
+    setIframeKey((k) => k + 1);
+  };
+
+  const handleLoad = () => {
+    clearTimeout(timeoutRef.current);
+    setIsChatLoaded(true);
+    setLoadFailed(false);
+  };
 
   return (
     <>
@@ -19,36 +54,28 @@ const ChatBubble = () => {
           >
             <div className="flex items-center gap-2">
               <div
-                className="w-2 h-2 rounded-full bg-[#2EBD85]"
-                style={{ boxShadow: "0 0 6px #2EBD85" }}
+                className="w-2 h-2 rounded-full"
+                style={{
+                  background: loadFailed ? "#F6465D" : "#2EBD85",
+                  boxShadow: loadFailed ? "0 0 6px #F6465D" : "0 0 6px #2EBD85",
+                }}
               />
               <span className="text-white text-sm font-semibold">
                 Customer Support
               </span>
             </div>
             <button
-              onClick={() => {
-                setShowChat(false);
-                setIsChatLoaded(false);
-              }}
+              onClick={handleClose}
               className="text-gray-400 hover:text-white transition-colors p-1"
             >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                 <path d="M18 6L6 18M6 6l12 12" />
               </svg>
             </button>
           </div>
 
           {/* Loading state */}
-          {!isChatLoaded && (
+          {!isChatLoaded && !loadFailed && (
             <div
               className="flex flex-col items-center justify-center gap-4 bg-[#121212] sm:w-[380px] w-full"
               style={{ height: 560 }}
@@ -60,9 +87,39 @@ const ChatBubble = () => {
             </div>
           )}
 
+          {/* Failed state */}
+          {loadFailed && (
+            <div
+              className="flex flex-col items-center justify-center gap-4 bg-[#121212] sm:w-[380px] w-full px-6 text-center"
+              style={{ height: 560 }}
+            >
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#F6465D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 8v4M12 16h.01" />
+              </svg>
+              <span className="text-sm text-gray-400">
+                Unable to connect to support.<br />This may be due to your network or region.
+              </span>
+              <button
+                onClick={handleRetry}
+                className="px-6 py-2.5 rounded-full text-sm font-medium text-white transition-colors"
+                style={{ background: "#F0B90B" }}
+              >
+                Try again
+              </button>
+              <a
+                href="mailto:customerservice@axoni.tech"
+                className="text-xs text-gray-500 hover:text-gray-300 transition-colors underline"
+              >
+                Or email us at customerservice@axoni.tech
+              </a>
+            </div>
+          )}
+
           {/* Iframe */}
           <iframe
-            src="https://bot-chatter.vercel.app/livechat/widget?color=F0B90B&source=axoni.co"
+            key={iframeKey}
+            src={CHAT_URL}
             className="sm:w-[380px] w-full"
             height="560"
             style={{
@@ -72,7 +129,8 @@ const ChatBubble = () => {
               boxShadow: "0 4px 24px rgba(0,0,0,0.15)",
             }}
             title="Customer Support Chat"
-            onLoad={() => setIsChatLoaded(true)}
+            onLoad={handleLoad}
+            onError={() => setLoadFailed(true)}
           />
         </div>
       )}
@@ -88,28 +146,11 @@ const ChatBubble = () => {
         }}
       >
         {showChat ? (
-          <svg
-            width="22"
-            height="22"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="white"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
             <path d="M18 6L6 18M6 6l12 12" />
           </svg>
         ) : (
-          <svg
-            width="22"
-            height="22"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="white"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
           </svg>
         )}
