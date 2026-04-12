@@ -107,6 +107,12 @@ const ChatBubble = () => {
               >
                 Try again
               </button>
+              <button
+                onClick={handleRetry}
+                className="text-xs text-gray-500 hover:text-gray-300 transition-colors underline"
+              >
+                Refresh chat support
+              </button>
               <a
                 href="mailto:customerservice@axoni.tech"
                 className="text-xs text-gray-500 hover:text-gray-300 transition-colors underline"
