@@ -31,7 +31,7 @@ const HeroBanner = ({ isLoggedIn = false }) => {
     : { background: banner.gradient || "linear-gradient(135deg, #1E1E1E 0%, #121212 100%)" };
 
   return (
-    <div className="relative w-full overflow-hidden group" style={{ minHeight: 360 }}>
+    <div className="relative w-full overflow-hidden group" style={{ minHeight: 400 }}>
       {/* Background */}
       <div className="absolute inset-0 transition-all duration-1000 ease-in-out" style={bgStyle} />
 
@@ -47,7 +47,7 @@ const HeroBanner = ({ isLoggedIn = false }) => {
       )}
 
       {/* Content */}
-      <div className="relative z-10 h-full container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 flex items-center" style={{ minHeight: 360 }}>
+      <div className="relative z-10 h-full container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 flex items-center pt-8 pb-8" style={{ minHeight: 400 }}>
         <div className="flex items-center justify-between w-full gap-12">
           {/* Left — Main content */}
           <div className="flex-1 max-w-xl">

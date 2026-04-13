@@ -574,14 +574,14 @@ const Hero = () => {
     }
 
     return (
-      <div className="relative w-full overflow-hidden bg-[#0a0a0a]" style={{ minHeight: 360 }}>
+      <div className="relative w-full overflow-hidden bg-[#0a0a0a]" style={{ minHeight: 400 }}>
         {/* Background */}
         <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, #0d1f17 0%, #0a0a0a 40%, #0a1e14 100%)" }} />
         <div className="absolute -top-40 right-0 w-[600px] h-[600px] bg-[#2EBD85]/[0.04] rounded-full blur-[150px]" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#2EBD85]/[0.03] rounded-full blur-[120px]" />
 
         {/* Content */}
-        <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 flex items-center pt-10 pb-6" style={{ minHeight: 360 }}>
+        <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 flex items-center pt-12 pb-8" style={{ minHeight: 400 }}>
           <div className="flex items-start justify-between w-full gap-12">
             {/* Left */}
             <div className="flex-1 max-w-xl">
