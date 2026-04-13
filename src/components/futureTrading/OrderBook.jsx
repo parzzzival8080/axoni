@@ -35,7 +35,7 @@ const ErrorText = styled.div`
 const LoadingSpinner = () => (
   <div className="order-book-loading" style={{ textAlign: 'center', padding: '20px' }}>
     <SpinnerIcon icon={faSpinner} size="2x" />
-    <LoadingText>Loading AXONI order book data...</LoadingText>
+    <LoadingText>Loading GLD order book data...</LoadingText>
   </div>
 );
 
@@ -43,7 +43,7 @@ const ConnectionError = ({ connectionStatus, reconnectAttempts, maxReconnectAtte
   <div className="order-book-error" style={{ textAlign: 'center', padding: '20px' }}>
     <ErrorIconStyled icon={faExclamationTriangle} size="2x" />
     <ErrorText>
-      Connection to AXONI failed.
+      Connection to GLD failed.
       {connectionStatus === 'error' ? ' An error occurred.' : ''}
       <br />
       {reconnectAttempts >= maxReconnectAttempts && connectionStatus !== 'fallback' ? 'Max retries reached. ' : ''}
@@ -81,7 +81,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   const lastUpdateRef = useRef(Date.now());
   const pendingUpdateRef = useRef(null);
 
-  // Derive instId (instrument ID for AXONI, e.g., BTC-USDT)
+  // Derive instId (instrument ID for GLD, e.g., BTC-USDT)
   // Use websocket_name if available, otherwise fall back to cryptoSymbol or symbol
   const getWebSocketSymbol = () => {
     if (cryptoData?.websocket_name) {
@@ -113,18 +113,18 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
 
   const processOrderBookData = useCallback((asks, bids) => {
     if (!asks || !bids || !Array.isArray(asks) || !Array.isArray(bids)) {
-      console.error('[OrderBook] Invalid order book data structure for AXONI', { asks, bids });
+      console.error('[OrderBook] Invalid order book data structure for GLD', { asks, bids });
       return null;
     }
 
     const processedAsks = asks
       .map(item => ({
-        price: parseFloat(item[0]), // AXONI: [price, size, liquidations, orders]
+        price: parseFloat(item[0]), // GLD: [price, size, liquidations, orders]
         amount: parseFloat(item[1]),
         total: 0
       }))
       .sort((a, b) => a.price - b.price)
-      .slice(0, 8); // Process exactly 8 asks
+      .slice(0, 12); // Fill the column
 
     const processedBids = bids
       .map(item => ({
@@ -133,18 +133,14 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
         total: 0
       }))
       .sort((a, b) => b.price - a.price)
-      .slice(0, 8); // Process exactly 8 bids
+      .slice(0, 12); // Fill the column
 
-    let askTotal = 0;
     processedAsks.forEach(ask => {
-      askTotal += ask.amount;
-      ask.total = askTotal;
+      ask.total = ask.price * ask.amount;
     });
 
-    let bidTotal = 0;
     processedBids.forEach(bid => {
-      bidTotal += bid.amount;
-      bid.total = bidTotal;
+      bid.total = bid.price * bid.amount;
     });
 
     const maxTotal = Math.max(
@@ -163,7 +159,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     return {
       asks: processedAsks,
       bids: processedBids,
-      lastUpdateId: Date.now() // AXONI provides 'ts' in the data payload, could use that
+      lastUpdateId: Date.now() // GLD provides 'ts' in the data payload, could use that
     };
   }, []);
 
@@ -191,13 +187,13 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
       clearInterval(restFallbackRef.current);
       restFallbackRef.current = null;
     }
-    setDataSource('REST API (AXONI)');
+    setDataSource('REST API (GLD)');
     setIsLoading(true);
 
     const fetchData = async () => {
       try {
         const apiUrl = `https://orderbookCOINCHI.devweb09.workers.dev/api/okx/api/v5/market/books?instId=${instId}&sz=5`; // Proxied via Cloudflare Worker; top 5 levels for fast loading
-        console.log('[OrderBook] Fetching from AXONI REST API:', apiUrl);
+        console.log('[OrderBook] Fetching from GLD REST API:', apiUrl);
         const response = await axios.get(apiUrl);
 
         if (response.data && response.data.code === "0" && response.data.data && response.data.data[0]) {
@@ -238,20 +234,20 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
               setIsLoading(false);
               setConnectionStatus('fallback');
               lastUpdateTimeRef.current = now; // Or use bookData.ts
-              console.log('[OrderBook] Data updated from AXONI REST API');
+              console.log('[OrderBook] Data updated from GLD REST API');
             }
           } else {
-            throw new Error('Malformed AXONI REST API response data structure');
+            throw new Error('Malformed GLD REST API response data structure');
           }
         } else {
-          throw new Error(`AXONI REST API Error: ${response.data.msg || 'Unknown error'} (Code: ${response.data.code})`);
+          throw new Error(`GLD REST API Error: ${response.data.msg || 'Unknown error'} (Code: ${response.data.code})`);
         }
       } catch (error) {
-        console.error(`[OrderBook] AXONI REST API fetch error (attempt ${retry + 1}):`, error);
+        console.error(`[OrderBook] GLD REST API fetch error (attempt ${retry + 1}):`, error);
         if (retry < MAX_REST_RETRIES) {
           setTimeout(() => fetchOrderBookREST(retry + 1), REST_BACKOFF_BASE * Math.pow(2, retry));
         } else {
-          console.error('[OrderBook] Max REST retries reached for AXONI.');
+          console.error('[OrderBook] Max REST retries reached for GLD.');
           setConnectionStatus('error'); // Or 'failed' if it's persistent
           setIsLoading(false);
           // Optionally, display mock data or a more persistent error message
@@ -267,7 +263,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
 
   const connectWebSocket = useCallback(() => {
     if (wsRef.current) {
-      console.log('[OrderBook] Closing existing AXONI WebSocket connection.');
+      console.log('[OrderBook] Closing existing GLD WebSocket connection.');
       wsRef.current.onclose = null; // Prevent reconnect logic on manual close
       wsRef.current.close();
       wsRef.current = null;
@@ -275,17 +271,17 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
 
     setConnectionStatus('connecting');
     setIsLoading(true);
-    setDataSource('WebSocket (AXONI)');
+    setDataSource('WebSocket (GLD)');
 
     const wsUrl = 'https://wssorderbook.devweb09.workers.dev/';
-    console.log('[OrderBook] Attempting to connect to AXONI WebSocket:', wsUrl);
+    console.log('[OrderBook] Attempting to connect to GLD WebSocket:', wsUrl);
 
     try {
       const socket = new WebSocket(wsUrl);
       wsRef.current = socket;
 
       socket.onopen = () => {
-        console.log('[OrderBook] Connected to AXONI WebSocket');
+        console.log('[OrderBook] Connected to GLD WebSocket');
         setConnectionStatus('connected');
         // setIsLoading(false); // Wait for first data message
         setReconnectAttempts(0); // Reset on successful connection
@@ -300,29 +296,29 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
           ],
         };
         socket.send(JSON.stringify(subscriptionMessage));
-        console.log('[OrderBook] Sent AXONI subscription message:', subscriptionMessage);
+        console.log('[OrderBook] Sent GLD subscription message:', subscriptionMessage);
         lastUpdateTimeRef.current = Date.now(); // Reset last update time on new connection
       };
 
       socket.onerror = (error) => {
-        console.error('[OrderBook] AXONI WebSocket error:', error);
+        console.error('[OrderBook] GLD WebSocket error:', error);
         // Don't set to 'error' immediately, onclose will handle reconnect or fallback
         // setIsLoading(false); // Let onclose handle this
       };
 
       socket.onclose = (event) => {
-        console.log('[OrderBook] AXONI WebSocket closed:', event.code, event.reason);
+        console.log('[OrderBook] GLD WebSocket closed:', event.code, event.reason);
         wsRef.current = null; // Clear the ref
 
         if (connectionStatus !== 'disconnected' && connectionStatus !== 'failed') { // Avoid if manually closed or already failed
           if (reconnectAttempts < maxReconnectAttempts) {
             setReconnectAttempts(prev => prev + 1);
             const backoffTime = Math.min(1000 * Math.pow(2, reconnectAttempts), 10000);
-            console.log(`[OrderBook] Attempting to reconnect to AXONI in ${backoffTime / 1000}s (attempt ${reconnectAttempts + 1})...`);
+            console.log(`[OrderBook] Attempting to reconnect to GLD in ${backoffTime / 1000}s (attempt ${reconnectAttempts + 1})...`);
             setConnectionStatus('reconnecting');
             reconnectTimeoutRef.current = setTimeout(connectWebSocket, backoffTime);
           } else {
-            console.error('[OrderBook] Max reconnect attempts to AXONI reached. Falling back to REST.');
+            console.error('[OrderBook] Max reconnect attempts to GLD reached. Falling back to REST.');
             setConnectionStatus('failed'); // Explicitly set to failed before fallback
             fetchOrderBookREST();
           }
@@ -336,11 +332,11 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
           const message = JSON.parse(event.data);
 
           if (message.event === 'subscribe') {
-            console.log('[OrderBook] AXONI Subscription confirmed:', message.arg);
+            console.log('[OrderBook] GLD Subscription confirmed:', message.arg);
             return;
           }
           if (message.event === 'error') {
-            console.error('[OrderBook] AXONI API Error Message:', message.msg, 'Code:', message.code);
+            console.error('[OrderBook] GLD API Error Message:', message.msg, 'Code:', message.code);
             // Depending on the error code, you might want to close the socket or try to resubscribe.
             // For critical errors, closing might trigger the reconnect/fallback logic.
             if (socket.readyState === WebSocket.OPEN) {
@@ -351,7 +347,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
             return;
           }
 
-          // AXONI 'books5' channel sends full snapshots for both 'snapshot' and 'update' actions
+          // GLD 'books5' channel sends full snapshots for both 'snapshot' and 'update' actions
           if (message.arg && (message.arg.channel === 'books5' || message.arg.channel === 'books') && message.data && Array.isArray(message.data) && message.data.length > 0) {
             const orderBookUpdate = message.data[0];
             if (orderBookUpdate && orderBookUpdate.asks && orderBookUpdate.bids) {
@@ -392,18 +388,18 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
                 if (connectionStatus !== 'connected') setConnectionStatus('connected');
               }
             }
-          } else if (message.op === 'ping') { // AXONI sends pings
+          } else if (message.op === 'ping') { // GLD sends pings
             socket.send(JSON.stringify({ op: 'pong' }));
           } else {
-            // console.warn('[OrderBook] Unknown AXONI WebSocket message format:', message);
+            // console.warn('[OrderBook] Unknown GLD WebSocket message format:', message);
           }
         } catch (error) {
-          console.error('[OrderBook] Error processing AXONI WebSocket message:', error, event.data);
+          console.error('[OrderBook] Error processing GLD WebSocket message:', error, event.data);
         }
       };
 
     } catch (error) {
-      console.error('[OrderBook] Error creating AXONI WebSocket:', error);
+      console.error('[OrderBook] Error creating GLD WebSocket:', error);
       setConnectionStatus('failed'); // Connection attempt itself failed
       setIsLoading(false);
       fetchOrderBookREST(); // Fallback if WebSocket object cannot even be created
@@ -416,7 +412,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     if (canUseWebSocket) {
       connectWebSocket();
     } else {
-      console.log('[OrderBook] WebSocket not supported, falling back to REST for AXONI.');
+      console.log('[OrderBook] WebSocket not supported, falling back to REST for GLD.');
       setConnectionStatus('fallback');
       fetchOrderBookREST();
     }
@@ -424,10 +420,10 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     // Stale connection checker
     staleConnectionCheckRef.current = setInterval(() => {
       if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN && (Date.now() - lastUpdateTimeRef.current > 20000)) { // 20s no data
-        console.warn('[OrderBook] AXONI WebSocket connection appears stale (no data for >20s). Closing to trigger reconnect.');
+        console.warn('[OrderBook] GLD WebSocket connection appears stale (no data for >20s). Closing to trigger reconnect.');
         wsRef.current.close(); // This will trigger the onclose logic for reconnection
       } else if (connectionStatus === 'fallback' && (Date.now() - lastUpdateTimeRef.current > 30000)) { // 30s for REST
-         console.warn('[OrderBook] AXONI REST connection appears stale. Re-fetching.');
+         console.warn('[OrderBook] GLD REST connection appears stale. Re-fetching.');
          fetchOrderBookREST(); // Re-initiate fetch
       }
     }, 10000); // Check every 10 seconds
@@ -435,7 +431,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
     return () => {
       console.log('[OrderBook] Cleaning up for', instId);
       if (wsRef.current) {
-        console.log('[OrderBook] Closing AXONI WebSocket on unmount.');
+        console.log('[OrderBook] Closing GLD WebSocket on unmount.');
         wsRef.current.onclose = null; // Prevent reconnect logic on unmount
         wsRef.current.close();
         wsRef.current = null;
@@ -459,14 +455,14 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
 
   useEffect(() => {
     if (forceRefresh > 0) {
-      console.log('[OrderBook] Force refresh triggered for AXONI');
+      console.log('[OrderBook] Force refresh triggered for GLD');
       handleManualReconnect();
     }
   }, [forceRefresh]);
 
 
   const handleManualReconnect = () => {
-    console.log('[OrderBook] Manual reconnect triggered for AXONI');
+    console.log('[OrderBook] Manual reconnect triggered for GLD');
     setConnectionStatus('disconnected'); // Set to disconnected to allow fresh connection attempt sequence
     setReconnectAttempts(0); // Reset attempts
 
@@ -505,7 +501,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
 
   // Use websocket_name for display if available, otherwise fall back to other options
   const cryptoSymbol = cryptoData?.websocket_name || cryptoData?.cryptoSymbol || cryptoData?.symbol || 'BTC';
-  const usdtSymbol = 'USDT'; // Typically USDT for AXONI pairs like BTC-USDT
+  const usdtSymbol = 'USDT'; // Typically USDT for GLD pairs like BTC-USDT
 
   // Ensure we always display exactly 8 rows each for asks and bids
   const ensureExactRows = useCallback((data, count, isAsk) => {
@@ -532,8 +528,8 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
   }, []);
   
   // Memoize the processed display data to prevent unnecessary recalculations
-  const displayAsks = useMemo(() => ensureExactRows(orderBook.asks, 8, true), [orderBook.asks, ensureExactRows]);
-  const displayBids = useMemo(() => ensureExactRows(orderBook.bids, 8, false), [orderBook.bids, ensureExactRows]);
+  const displayAsks = useMemo(() => ensureExactRows(orderBook.asks, 12, true), [orderBook.asks, ensureExactRows]);
+  const displayBids = useMemo(() => ensureExactRows(orderBook.bids, 12, false), [orderBook.bids, ensureExactRows]);
 
   return (
     <div className="order-book-container md:relative md:z-auto z-10 bg-okx-primary border-t border-okx-border md:border-t-0">
@@ -599,12 +595,13 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
                   <div className="order-row" key={`ask-${ask?.price || index}-${index}`}>
                     <div className="order-bar sell" style={{ width: `${ask?.percentage || 0}%` }}></div>
                     <div className="order-price sell" style={{ opacity: ask?.isEmpty ? 0.5 : 1 }}>
- {(cryptoData.cryptoPrice - ((cryptoData.cryptoPrice * 0.0002) / 2)) ? formatNumber(cryptoData.cryptoPrice, decimalPrecision) : '—'}                    </div>
+                      {(cryptoData.cryptoPrice - ((cryptoData.cryptoPrice * 0.0002) / 2)) ? formatNumber(cryptoData.cryptoPrice, decimalPrecision) : '—'}
+                    </div>
                     <div className="order-amount" style={{ opacity: ask?.isEmpty ? 0.5 : 1 }}>
                       {ask ? formatNumber(ask.amount, 8) : '—'}
                     </div>
                     <div className="order-total" style={{ opacity: ask?.isEmpty ? 0.5 : 1 }}>
-                      {ask ? formatNumber(ask.total, 8) : '—'}
+                      {ask ? formatNumber(ask.total, 2) : '—'}
                     </div>
                   </div>
                 ))}
@@ -631,7 +628,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
                       {bid ? formatNumber(bid.amount, 8) : '—'}
                     </div>
                     <div className="order-total" style={{ opacity: bid?.isEmpty ? 0.5 : 1 }}>
-                      {bid ? formatNumber(bid.total, 8) : '—'}
+                      {bid ? formatNumber(bid.total, 2) : '—'}
                     </div>
                   </div>
                 ))}
@@ -642,7 +639,7 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
         </div>
       ) : (
         <div className="trades-container" style={{ padding: '20px', textAlign: 'center', color: '#aaa' }}>
-          Trade data display is not yet implemented for AXONI.
+          Trade data display is not yet implemented for GLD.
         </div>
       )}
 
@@ -651,12 +648,43 @@ const OrderBook = ({ cryptoData, forceRefresh = 0 }) => {
         <span className="status-text">
           {connectionStatus === 'connected' && `Live via ${dataSource}`}
           {connectionStatus === 'fallback' && `Live via ${dataSource}`}
-          {connectionStatus === 'connecting' && 'Connecting to AXONI...'}
-          {connectionStatus === 'reconnecting' && `Reconnecting to AXONI (Attempt ${reconnectAttempts})...`}
-          {connectionStatus === 'disconnected' && 'Disconnected from AXONI'}
-          {connectionStatus === 'error' && 'AXONI Connection Error'}
-          {connectionStatus === 'failed' && 'Failed to connect to AXONI'}
+          {connectionStatus === 'connecting' && 'Connecting to GLD...'}
+          {connectionStatus === 'reconnecting' && `Reconnecting to GLD (Attempt ${reconnectAttempts})...`}
+          {connectionStatus === 'disconnected' && 'Disconnected from GLD'}
+          {connectionStatus === 'error' && 'GLD Connection Error'}
+          {connectionStatus === 'failed' && 'Failed to connect to GLD'}
         </span>
+      </div>
+
+      {/* Market stats filler */}
+      <div style={{ padding: '10px 8px', borderTop: '1px solid #1E1E1E' }}>
+        <div style={{ fontSize: 10, color: '#5E6673', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Market Stats</div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
+          <span style={{ fontSize: 10, color: '#848E9C' }}>Spread</span>
+          <span style={{ fontSize: 10, color: '#fff', fontFamily: 'monospace' }}>
+            {orderBook.asks[0] && orderBook.bids[0] ? formatNumber(Math.abs(parseFloat(orderBook.asks[0].price) - parseFloat(orderBook.bids[0].price)), 2) : '--'}
+          </span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
+          <span style={{ fontSize: 10, color: '#848E9C' }}>Best Ask</span>
+          <span style={{ fontSize: 10, color: '#F6465D', fontFamily: 'monospace' }}>
+            {orderBook.asks[0] ? formatNumber(orderBook.asks[0].price, 2) : '--'}
+          </span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
+          <span style={{ fontSize: 10, color: '#848E9C' }}>Best Bid</span>
+          <span style={{ fontSize: 10, color: '#2EBD85', fontFamily: 'monospace' }}>
+            {orderBook.bids[0] ? formatNumber(orderBook.bids[0].price, 2) : '--'}
+          </span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
+          <span style={{ fontSize: 10, color: '#848E9C' }}>Ask Depth</span>
+          <span style={{ fontSize: 10, color: '#fff', fontFamily: 'monospace' }}>{orderBook.asks.length} levels</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <span style={{ fontSize: 10, color: '#848E9C' }}>Bid Depth</span>
+          <span style={{ fontSize: 10, color: '#fff', fontFamily: 'monospace' }}>{orderBook.bids.length} levels</span>
+        </div>
       </div>
     </div>
   );

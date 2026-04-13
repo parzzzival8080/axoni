@@ -1,6 +1,6 @@
 /* Root layout */
 .campaign-center-root {
-  min-height: 100vh;
+  min-height: auto;
   background: #fff;
   display: flex;
   flex-direction: column;

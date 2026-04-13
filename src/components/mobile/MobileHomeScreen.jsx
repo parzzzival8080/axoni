@@ -86,7 +86,7 @@ const MobileHomeScreen = () => {
 
 
   return (
-    <div className="bg-[#121212] text-white min-h-screen">
+    <div className="bg-[#121212] text-white">
 
       {/* === Portfolio Section === */}
       <div className="px-4 pt-1 pb-3">

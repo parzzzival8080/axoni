@@ -11,7 +11,7 @@
   border-radius: 8px;
   background-color: rgba(22, 22, 22, 0.95);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
-  border-left: 3px solid #00b897;
+  border-left: 3px solid #2EBD85;
   z-index: 10000;
   display: flex;
   align-items: center;
@@ -20,7 +20,7 @@
 }
 
 .future-notification.error {
-  border-left-color: #f23645;
+  border-left-color: #F6465D;
 }
 
 .future-notification-content {
@@ -38,13 +38,13 @@
   height: 20px;
   border-radius: 50%;
   background-color: rgba(0, 184, 151, 0.15);
-  color: #00b897;
+  color: #2EBD85;
   font-size: 14px;
 }
 
 .future-notification.error .future-notification-icon {
   background-color: rgba(242, 54, 69, 0.15);
-  color: #f23645;
+  color: #F6465D;
 }
 
 .future-notification-message {

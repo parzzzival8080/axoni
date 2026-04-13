@@ -50,7 +50,7 @@ const TradingTab = ({
   };
 
   return (
-    <div className="bg-[#1E1E1E] text-white p-3 sm:p-6 min-h-screen">
+    <div className="bg-[#1E1E1E] text-white p-3 sm:p-6">
       {/* Breadcrumb */}
       <div className="flex items-center text-[#5E6673] text-xs sm:text-sm mb-4 sm:mb-6">
         <span className="text-white font-medium">Trading</span>

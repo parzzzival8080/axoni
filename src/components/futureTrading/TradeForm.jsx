@@ -44,7 +44,6 @@ const MobileTradeActionBar = styled.div`
 const ScrollableFormContent = styled.div`
   flex: 1 1 auto;
   overflow-y: auto;
-  max-height: 420px;
   min-height: 0;
   padding-right: 4px;
   scrollbar-width: thin;
@@ -724,6 +723,28 @@ function TradeForm({
             Position builder
           </div>
         </div>
+
+        {/* Contract Info */}
+        <div style={{ marginTop: 8, padding: '10px', background: '#121212', borderRadius: 6, border: '1px solid #1E1E1E' }}>
+          <div style={{ fontSize: 9, color: '#5E6673', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Contract</div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+            <span style={{ fontSize: 10, color: '#848E9C' }}>Type</span>
+            <span style={{ fontSize: 10, color: '#fff' }}>Perpetual</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+            <span style={{ fontSize: 10, color: '#848E9C' }}>Leverage</span>
+            <span style={{ fontSize: 10, color: '#2EBD85' }}>{leverage}x</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+            <span style={{ fontSize: 10, color: '#848E9C' }}>Funding</span>
+            <span style={{ fontSize: 10, color: '#fff', fontFamily: 'monospace' }}>0.01%</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span style={{ fontSize: 10, color: '#848E9C' }}>Settle</span>
+            <span style={{ fontSize: 10, color: '#fff' }}>USDT</span>
+          </div>
+        </div>
+
       </ScrollableFormContent>
     </div>
   );

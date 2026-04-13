@@ -62,7 +62,7 @@ const OverviewTab = () => {
   };
 
   return (
-    <div className="bg-[#1E1E1E] text-white p-6 min-h-screen">
+    <div className="bg-[#1E1E1E] text-white p-6">
       {/* Breadcrumb */}
       <div className="flex items-center text-[#5E6673] text-sm mb-6">
         <span className="text-white font-medium">Overview</span>
@@ -81,7 +81,7 @@ const OverviewTab = () => {
 
             {loading ? (
               <div className="text-center py-4">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500 mx-auto"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#2EBD85] mx-auto"></div>
                 <p className="text-[#5E6673] mt-2">Loading...</p>
               </div>
             ) : error ? (
@@ -99,7 +99,7 @@ const OverviewTab = () => {
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <button
-                className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg font-medium transition-colors"
+                className="bg-[#2EBD85]/50 hover:bg-[#2EBD85] text-white py-2 px-4 rounded-lg font-medium transition-colors"
                 onClick={() => navigate("/deposit")}
               >
                 Deposit
@@ -143,7 +143,7 @@ const OverviewTab = () => {
 
             <div className="flex flex-col items-center mb-6">
               <div className="relative w-32 h-32 mb-4">
-                <div className="w-full h-full rounded-full border-8 border-yellow-500 flex items-center justify-center">
+                <div className="w-full h-full rounded-full border-8 border-[#2EBD85] flex items-center justify-center">
                   <div className="text-center">
                     <div className="text-xl font-bold text-white">100%</div>
                     <div className="text-sm text-[#5E6673]">Trading</div>
@@ -155,7 +155,7 @@ const OverviewTab = () => {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                  <div className="w-3 h-3 bg-[#2EBD85]/50 rounded-full mr-2"></div>
                   <span className="text-[#848E9C]">Spot Wallet:</span>
                 </div>
                 <span className="text-white font-medium">
@@ -164,7 +164,7 @@ const OverviewTab = () => {
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                  <div className="w-3 h-3 bg-[#2EBD85]/50 rounded-full mr-2"></div>
                   <span className="text-[#848E9C]">Future Wallet:</span>
                 </div>
                 <span className="text-white font-medium">

@@ -656,7 +656,7 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
                  }}
                  onMouseOver={(e) => {
                    if (!isUpdatingFavorite) {
-                     e.target.style.backgroundColor = isFavorite ? '#d63031' : '#00a65a';
+                     e.target.style.backgroundColor = isFavorite ? '#c93b3b' : '#259A6C';
                    }
                  }}
                  onMouseOut={(e) => {
@@ -685,10 +685,9 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
         </div>
       )}
       
-      <div className="price-stats">
+      <div className="price-stats" style={{ display: 'flex', gap: 20, alignItems: 'center', flex: 1, overflow: 'hidden' }}>
         {statsLoading ? (
           <div className="price-stats-skeleton">
-            <div className="skeleton-stat" />
             <div className="skeleton-stat" />
             <div className="skeleton-stat" />
             <div className="skeleton-stat" />
@@ -697,76 +696,34 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
         ) : (
         <>
         <div className="stat">
-          <div className="value">
-            <div className="flex items-center">
-              <span 
-                className={priceChange24h >= 0 ? 'text-[#2EBD85]' : 'text-[#f23645]'} 
-                style={{ fontSize: '24px', fontWeight: '500' }}
-              >
-                {livePrice?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 8 })}
-              </span>
-              {/* Price polling status indicator */}
-              {isPolling && !pricePollingError && (
-                <span style={{marginLeft:8}} title="Live price updating">
-                  <i className="fas fa-sync fa-spin" style={{color:'#aaa', fontSize:'16px'}}></i>
-                </span>
-              )}
-              {pricePollingError && (
-                <span style={{marginLeft:8}} title={pricePollingError}>
-                  <i className="fas fa-exclamation-triangle" style={{color:'#f23645', fontSize:'16px'}}></i>
-                </span>
-              )}
-            </div>
+          <div style={{ fontSize: 14, fontWeight: 600, fontFamily: 'monospace', color: priceChange24h >= 0 ? '#2EBD85' : '#F6465D' }}>
+            {livePrice?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 8 })}
           </div>
-          <div className="label">
-            {cryptoName} price <FontAwesomeIcon icon={faExternalLinkAlt} className="ml-1" />
-          </div>
+          <div style={{ fontSize: 10, color: '#5E6673', marginTop: 1 }}>{cryptoSymbol} price</div>
         </div>
         <div className="stat">
-          <div className="value">
-            <span className={`text ${priceChange24h >= 0 ? 'text-[#2EBD85]' : 'text-[#f23645]'}`}> 
-              {liveChange >= 0 ? '+' : ''}{liveChange?.toFixed(2)}%
-            </span>
+          <div style={{ fontSize: 13, fontWeight: 500, fontFamily: 'monospace', color: priceChange24h >= 0 ? '#2EBD85' : '#F6465D' }}>
+            {liveChange >= 0 ? '+' : ''}{liveChange?.toFixed(2)}%
           </div>
-          <div className="label">24h change</div>
-        </div>
-        {/* <div className="stat">
-          <div className="value yellow">
-            {parseFloat(low24h).toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2
-            })}
-          </div>
-          <div className="label">24h low</div>
-        </div> */}
-        <div className="stat">
-          <div className="value green">
-            {parseFloat(high24h).toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2
-            })}
-          </div>
-          <div className="label">24h high</div>
+          <div style={{ fontSize: 10, color: '#5E6673', marginTop: 1 }}>24h change</div>
         </div>
         <div className="stat">
-          <div className="value">
-            {parseFloat(volume24h).toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2
-            })}
+          <div style={{ fontSize: 13, fontWeight: 500, fontFamily: 'monospace', color: '#fff' }}>
+            {parseFloat(high24h).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
-          <div className="label">24h volume ({cryptoSymbol})</div>
+          <div style={{ fontSize: 10, color: '#5E6673', marginTop: 1 }}>24h high</div>
+        </div>
+        <div className="stat">
+          <div style={{ fontSize: 13, fontWeight: 500, fontFamily: 'monospace', color: '#fff' }}>
+            {parseFloat(volume24h).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </div>
+          <div style={{ fontSize: 10, color: '#5E6673', marginTop: 1 }}>24h vol ({cryptoSymbol})</div>
         </div>
         </>
         )}
       </div>
-      
+
       <div className="leverage">10x</div>
-    
-      
-      <div className="trading-actions">
-       
-      </div>
     </div>
   );
 };

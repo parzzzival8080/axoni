@@ -1,9 +1,6 @@
 .TVChartContainer {
 	width: 100%;
-	max-height: auto;
-	/* overflow: hidden; */
-	height: 60vh;
-	/* Ensure the chart doesn't overflow */
+	height: 100%;
 }
 
 /* Force black background on TradingView chart */
@@ -65,7 +62,7 @@
 	left: 0;
 	width: 100%;
 	height: 2px;
-	background-color: #00b897;
+	background-color: #2EBD85;
 }
 
 .orders-tabs .more-options {

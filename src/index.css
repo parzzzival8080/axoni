@@ -8,7 +8,7 @@
   }
   
   body {
-    @apply bg-okx-primary text-okx-text-primary min-h-screen antialiased;
+    @apply bg-okx-primary text-okx-text-primary antialiased;
   }
 }
 

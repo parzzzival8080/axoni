@@ -22,7 +22,7 @@ const ImageWithFallback = ({ src, alt, description, className = "" }) => {
         <div className="rounded-lg overflow-hidden border border-[#2A2A2A] bg-[#121212]">
           {imageLoading && (
             <div className="w-full h-64 md:h-80 bg-[#1E1E1E] flex items-center justify-center">
-              <div className="animate-spin rounded-full h-6 w-6 border-2 border-yellow-500 border-t-transparent"></div>
+              <div className="animate-spin rounded-full h-6 w-6 border-2 border-[#2EBD85] border-t-transparent"></div>
             </div>
           )}
           <img 
@@ -81,11 +81,11 @@ const articleData = {
         steps: [
           {
             number: 1,
-            content: 'Log in to your account at <strong class="text-yellow-600">axoni.co</strong>, navigate to the <strong class="text-white">Assets</strong> section, and click on <strong class="text-yellow-600">Deposit</strong>.'
+            content: 'Log in to your account at <strong class="text-[#2EBD85]">axoni.co</strong>, navigate to the <strong class="text-white">Assets</strong> section, and click on <strong class="text-[#2EBD85]">Deposit</strong>.'
           },
           {
             number: 2,
-            content: 'Choose the cryptocurrency you want to deposit from the <strong class="text-white">Select crypto</strong> dropdown and select your preferred network in the <strong class="text-white">Deposit network</strong> field, then click <strong class="text-yellow-600">Next</strong>.'
+            content: 'Choose the cryptocurrency you want to deposit from the <strong class="text-white">Select crypto</strong> dropdown and select your preferred network in the <strong class="text-white">Deposit network</strong> field, then click <strong class="text-[#2EBD85]">Next</strong>.'
           }
         ],
         images: [
@@ -102,7 +102,7 @@ const articleData = {
           },
           {
             number: 4,
-            content: 'Complete your deposit by either <strong class="text-yellow-600">copying</strong> the deposit address to your sending platform, or <strong class="text-yellow-600">scanning the QR code</strong> with your mobile wallet app.'
+            content: 'Complete your deposit by either <strong class="text-[#2EBD85]">copying</strong> the deposit address to your sending platform, or <strong class="text-[#2EBD85]">scanning the QR code</strong> with your mobile wallet app.'
           }
         ],
         additionalImages: [
@@ -116,7 +116,7 @@ const articleData = {
     ],
     notes: [
       'Make sure the selected crypto and network on both platforms are the same to ensure a successful deposit. Otherwise, you\'ll lose your assets.',
-      'You can find the minimum deposit for connection numbers, and contract address in the <strong class="text-yellow-600">Deposit</strong> page.',
+      'You can find the minimum deposit for connection numbers, and contract address in the <strong class="text-[#2EBD85]">Deposit</strong> page.',
       'You won\'t receive your assets if you deposited the crypto amount less than the minimum amount.',
       'Some crypto (for example, XRP) generates a tag/memo which is usually a string of numbers. You need to enter both the deposit address and tag/memo when you\'re depositing. Otherwise, you\'ll lose your assets.'
     ],
@@ -138,19 +138,19 @@ const articleData = {
         steps: [
           {
             number: 1,
-            content: 'Check if you\'ve sent the deposit to the correct <strong class="text-yellow-600">network</strong> and <strong class="text-yellow-600">address</strong>. Sending to the wrong network is the most common cause of lost deposits.'
+            content: 'Check if you\'ve sent the deposit to the correct <strong class="text-[#2EBD85]">network</strong> and <strong class="text-[#2EBD85]">address</strong>. Sending to the wrong network is the most common cause of lost deposits.'
           },
           {
             number: 2,
-            content: 'Verify that the deposit amount meets the <strong class="text-yellow-600">minimum deposit requirement</strong>. Deposits below the minimum threshold will not be credited to your account.'
+            content: 'Verify that the deposit amount meets the <strong class="text-[#2EBD85]">minimum deposit requirement</strong>. Deposits below the minimum threshold will not be credited to your account.'
           },
           {
             number: 3,
-            content: 'Check the <strong class="text-yellow-600">network confirmation status</strong> - some networks require multiple confirmations before the deposit is credited.'
+            content: 'Check the <strong class="text-[#2EBD85]">network confirmation status</strong> - some networks require multiple confirmations before the deposit is credited.'
           },
           {
             number: 4,
-            content: 'Verify that you included the correct <strong class="text-yellow-600">tag/memo</strong> if required for your chosen cryptocurrency (XRP, XLM, EOS, etc.).'
+            content: 'Verify that you included the correct <strong class="text-[#2EBD85]">tag/memo</strong> if required for your chosen cryptocurrency (XRP, XLM, EOS, etc.).'
           }
         ],
         images: [
@@ -203,7 +203,7 @@ const articleData = {
         steps: [
           {
             number: 1,
-            content: 'Navigate to <strong class="text-yellow-600">Assets</strong> > <strong class="text-yellow-600">Deposit</strong> in your account dashboard.'
+            content: 'Navigate to <strong class="text-[#2EBD85]">Assets</strong> > <strong class="text-[#2EBD85]">Deposit</strong> in your account dashboard.'
           },
           {
             number: 2,
@@ -276,15 +276,15 @@ const articleData = {
         steps: [
           {
             number: 1,
-            content: 'Go to <strong class="text-yellow-600">Assets</strong> > <strong class="text-yellow-600">Transaction History</strong> in your account.'
+            content: 'Go to <strong class="text-[#2EBD85]">Assets</strong> > <strong class="text-[#2EBD85]">Transaction History</strong> in your account.'
           },
           {
             number: 2,
-            content: 'Filter by <strong class="text-yellow-600">Deposit</strong> to see all your deposit transactions.'
+            content: 'Filter by <strong class="text-[#2EBD85]">Deposit</strong> to see all your deposit transactions.'
           },
           {
             number: 3,
-            content: 'Check the status column to see if your deposit is <strong class="text-green-600">Completed</strong>, <strong class="text-yellow-600">Pending</strong>, or <strong class="text-red-600">Failed</strong>.'
+            content: 'Check the status column to see if your deposit is <strong class="text-green-600">Completed</strong>, <strong class="text-[#2EBD85]">Pending</strong>, or <strong class="text-red-600">Failed</strong>.'
           },
           {
             number: 4,
@@ -298,11 +298,11 @@ const articleData = {
         steps: [
           {
             number: 1,
-            content: '<strong class="text-yellow-600">Pending:</strong> Your deposit is being processed on the blockchain.'
+            content: '<strong class="text-[#2EBD85]">Pending:</strong> Your deposit is being processed on the blockchain.'
           },
           {
             number: 2,
-            content: '<strong class="text-yellow-600">Confirming:</strong> Your deposit has been detected and is awaiting network confirmations.'
+            content: '<strong class="text-[#2EBD85]">Confirming:</strong> Your deposit has been detected and is awaiting network confirmations.'
           },
           {
             number: 3,
@@ -425,7 +425,7 @@ const DepositGuide = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#121212]">
+    <div className="bg-[#121212]">
       {/* Subtle yellow Header Section */}
       <div className="bg-gradient-to-r from-gray-50 to-yellow-50 border-b border-yellow-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -443,7 +443,7 @@ const DepositGuide = () => {
                 <React.Fragment key={idx}>
                   {idx > 0 && <ChevronRight className="w-3 h-3 text-[#5E6673] flex-shrink-0" />}
                   <span 
-                    className={`hover:text-yellow-600 cursor-pointer transition-colors truncate ${
+                    className={`hover:text-[#2EBD85] cursor-pointer transition-colors truncate ${
                       idx === arr.length - 1 ? 'max-w-[120px]' : 'max-w-[80px]'
                     }`}
                     title={crumb}
@@ -460,7 +460,7 @@ const DepositGuide = () => {
                 {article.breadcrumbs.map((crumb, idx) => (
                   <React.Fragment key={idx}>
                     {idx > 0 && <ChevronRight className="w-4 h-4 text-[#5E6673] flex-shrink-0" />}
-                    <span className="hover:text-yellow-600 cursor-pointer transition-colors">{crumb}</span>
+                    <span className="hover:text-[#2EBD85] cursor-pointer transition-colors">{crumb}</span>
                   </React.Fragment>
                 ))}
               </div>
@@ -469,10 +469,10 @@ const DepositGuide = () => {
           
           {/* Category and Difficulty Tags */}
           <div className="flex items-center space-x-3 mb-4">
-            <span className="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">
+            <span className="px-3 py-1 bg-[#2EBD85]/10 text-[#2EBD85] rounded-full text-xs font-medium">
               {article.category}
             </span>
-            <span className="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">
+            <span className="px-3 py-1 bg-[#2EBD85]/10 text-[#2EBD85] rounded-full text-xs font-medium">
               {article.difficulty}
             </span>
           </div>
@@ -504,31 +504,31 @@ const DepositGuide = () => {
             <div className="flex gap-2">
               <button
                 onClick={() => handleShare('native')}
-                className="p-2 bg-[#121212] hover:bg-yellow-50 rounded-lg transition-colors border border-[#2A2A2A] hover:border-yellow-200"
+                className="p-2 bg-[#121212] hover:bg-[#2EBD85]/5 rounded-lg transition-colors border border-[#2A2A2A] hover:border-[#2EBD85]/20"
                 title="Share"
               >
-                <Share2 className="w-4 h-4 text-[#5E6673] hover:text-yellow-600" />
+                <Share2 className="w-4 h-4 text-[#5E6673] hover:text-[#2EBD85]" />
               </button>
               <button
                 onClick={() => handleShare('facebook')}
-                className="p-2 bg-[#121212] hover:bg-yellow-50 rounded-lg transition-colors border border-[#2A2A2A] hover:border-yellow-200"
+                className="p-2 bg-[#121212] hover:bg-[#2EBD85]/5 rounded-lg transition-colors border border-[#2A2A2A] hover:border-[#2EBD85]/20"
                 title="Share on Facebook"
               >
-                <Facebook className="w-4 h-4 text-[#5E6673] hover:text-yellow-600" />
+                <Facebook className="w-4 h-4 text-[#5E6673] hover:text-[#2EBD85]" />
               </button>
               <button
                 onClick={() => handleShare('linkedin')}
-                className="p-2 bg-[#121212] hover:bg-yellow-50 rounded-lg transition-colors border border-[#2A2A2A] hover:border-yellow-200"
+                className="p-2 bg-[#121212] hover:bg-[#2EBD85]/5 rounded-lg transition-colors border border-[#2A2A2A] hover:border-[#2EBD85]/20"
                 title="Share on LinkedIn"
               >
-                <Linkedin className="w-4 h-4 text-[#5E6673] hover:text-yellow-600" />
+                <Linkedin className="w-4 h-4 text-[#5E6673] hover:text-[#2EBD85]" />
               </button>
               <button
                 onClick={() => handleShare('twitter')}
-                className="p-2 bg-[#121212] hover:bg-yellow-50 rounded-lg transition-colors border border-[#2A2A2A] hover:border-yellow-200"
+                className="p-2 bg-[#121212] hover:bg-[#2EBD85]/5 rounded-lg transition-colors border border-[#2A2A2A] hover:border-[#2EBD85]/20"
                 title="Share on Twitter"
               >
-                <MessageCircle className="w-4 h-4 text-[#5E6673] hover:text-yellow-400" />
+                <MessageCircle className="w-4 h-4 text-[#5E6673] hover:text-[#2EBD85]" />
               </button>
               <button
                 onClick={() => handleShare('copy')}
@@ -561,7 +561,7 @@ const DepositGuide = () => {
                   <div className="space-y-4 mb-6">
                     {section.steps.map((step, stepIndex) => (
                       <div key={stepIndex} className="flex gap-3">
-                        <div className="flex-shrink-0 w-6 h-6 bg-yellow-500 text-white rounded-full flex items-center justify-center text-sm font-medium">
+                        <div className="flex-shrink-0 w-6 h-6 bg-[#2EBD85]/50 text-white rounded-full flex items-center justify-center text-sm font-medium">
                           {step.number}
                         </div>
                         <div className="flex-1 pt-0.5">
@@ -589,7 +589,7 @@ const DepositGuide = () => {
                     <div className="space-y-4 mb-6">
                       {section.additionalSteps.map((step, stepIndex) => (
                         <div key={stepIndex} className="flex gap-3">
-                          <div className="flex-shrink-0 w-6 h-6 bg-yellow-500 text-white rounded-full flex items-center justify-center text-sm font-medium">
+                          <div className="flex-shrink-0 w-6 h-6 bg-[#2EBD85]/50 text-white rounded-full flex items-center justify-center text-sm font-medium">
                             {step.number}
                           </div>
                           <div className="flex-1 pt-0.5">
@@ -617,12 +617,12 @@ const DepositGuide = () => {
 
               {/* Note Section */}
               {article.notes && article.notes.length > 0 && (
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+                <div className="bg-[#2EBD85]/5 border border-[#2EBD85]/20 rounded-lg p-6">
                   <h3 className="text-base font-semibold text-white mb-4">Note:</h3>
                   <div className="space-y-3">
                     {article.notes.map((note, noteIndex) => (
                       <div key={noteIndex} className="flex gap-2">
-                        <span className="text-yellow-600 mt-1 text-sm">•</span>
+                        <span className="text-[#2EBD85] mt-1 text-sm">•</span>
                         <p 
                           className="text-[#848E9C] text-sm leading-relaxed"
                           dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(note) }} 
@@ -659,7 +659,7 @@ const DepositGuide = () => {
                 <input
                   type="text"
                   placeholder="Search FAQs..."
-                  className="w-full pl-3 pr-3 py-2 text-sm border border-[#2A2A2A] rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 bg-[#121212]"
+                  className="w-full pl-3 pr-3 py-2 text-sm border border-[#2A2A2A] rounded-md focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-[#2EBD85] bg-[#121212]"
                   value={faqSearch}
                   onChange={(e) => setFaqSearch(e.target.value)}
                 />
@@ -673,7 +673,7 @@ const DepositGuide = () => {
                     onClick={() => handleFaqClick(faq.slug)}
                     className={`w-full text-left text-sm hover:text-white transition-colors ${
                       currentSlug === faq.slug 
-                        ? 'text-yellow-600 font-medium' 
+                        ? 'text-[#2EBD85] font-medium' 
                         : 'text-[#848E9C]'
                     }`}
                   >

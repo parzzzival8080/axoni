@@ -30,6 +30,7 @@ const SpotTrading = () => {
   const [availableCoins, setAvailableCoins] = useState([]);
   const [orderHistoryRefreshTrigger, setOrderHistoryRefreshTrigger] = useState(0);
   const [mobileTradeTab, setMobileTradeTab] = useState('');
+  const [mobileView, setMobileView] = useState('orderbook'); // 'chart' | 'orderbook' | 'orders'
   const [statsLoading, setStatsLoading] = useState(false);
   const [coinsLoading, setCoinsLoading] = useState(true);
 
@@ -644,8 +645,17 @@ const SpotTrading = () => {
     };
   }, [cryptoData]);
 
+  const orderBookCryptoData = {
+    ...cryptoData,
+    websocket_name: cryptoData?.websocket_name,
+    symbol: cryptoData?.symbol || cryptoData?.crypto_symbol || cryptoData?.cryptoSymbol || 'BTC',
+    selectedSymbol: cryptoData?.crypto_symbol || cryptoData?.cryptoSymbol || 'BTC',
+    cryptoSymbol: cryptoData?.crypto_symbol || cryptoData?.cryptoSymbol || 'BTC',
+    instId: `${cryptoData?.websocket_name || cryptoData?.crypto_symbol || cryptoData?.cryptoSymbol || 'BTC'}-USDT`
+  };
+
   return (
-    <div className="spot-trading-container">
+    <div className="spot-trading-container" style={{ background: '#0a0a0a', minHeight: '100vh' }}>
       <SubHeader
         cryptoData={subHeaderData}
         coinPairId={coinPairId}
@@ -657,57 +667,76 @@ const SpotTrading = () => {
         pricePollingError={pricePollingError}
         isPolling={isPolling}
       />
-      <FavoritesBar
-        activeCoinPairId={coinPairId}
-        availableCoins={availableCoins}
-        onCoinSelect={handleCoinSelect}
-      />
-      <div className="main-container flex flex-col md:grid">
-        <TradingChart
-          selectedSymbol={cryptoData?.crypto_symbol || cryptoData?.cryptoSymbol || 'BTC'}
-        />
-        <OrderBook
-          cryptoData={{
-            ...cryptoData,
-            // Map the correct fields for OrderBook - PRESERVE websocket_name from API
-            websocket_name: cryptoData?.websocket_name, // Keep original websocket_name (e.g., 'ETC' for SMT)
-            symbol: cryptoData?.symbol || cryptoData?.crypto_symbol || cryptoData?.cryptoSymbol || 'BTC',
-            selectedSymbol: cryptoData?.crypto_symbol || cryptoData?.cryptoSymbol || 'BTC',
-            cryptoSymbol: cryptoData?.crypto_symbol || cryptoData?.cryptoSymbol || 'BTC',
-            instId: `${cryptoData?.websocket_name || cryptoData?.crypto_symbol || cryptoData?.cryptoSymbol || 'BTC'}-USDT`
-          }}
-        />
-        <div className="hidden md:block">
-          <TradeForm
-            cryptoData={cryptoData}
-            userBalance={userBalance}
-            coinPairId={coinPairId}
-            onTradeSuccess={fetchUserBalance}
-          />
+
+      {/* Desktop: 3-column layout */}
+      <div className="hidden md:flex" style={{ borderTop: '1px solid #1E1E1E', height: 'calc(100vh - 120px)', minHeight: 450 }}>
+        <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', borderRight: '1px solid #1E1E1E' }}>
+          <TradingChart selectedSymbol={cryptoData?.crypto_symbol || cryptoData?.cryptoSymbol || 'BTC'} />
+        </div>
+
+        <div style={{ width: 280, flexShrink: 0, borderRight: '1px solid #1E1E1E', overflow: 'hidden', background: '#0a0a0a' }}>
+          <OrderBook cryptoData={orderBookCryptoData} />
+        </div>
+
+        <div style={{ width: 300, flexShrink: 0, overflow: 'auto', background: '#0a0a0a', borderLeft: '1px solid #1E1E1E' }}>
+          <TradeForm cryptoData={cryptoData} userBalance={userBalance} coinPairId={coinPairId} onTradeSuccess={fetchUserBalance} />
         </div>
       </div>
-      <div className="orders-container">
+
+      {/* Desktop: Orders table below */}
+      <div className="hidden md:block orders-container">
         <OrdersSection refreshTrigger={orderHistoryRefreshTrigger} />
       </div>
-      
+
+      {/* Mobile: chart + orderbook stacked */}
+      <div className="md:hidden" style={{ paddingBottom: 120 }}>
+        {/* Chart */}
+        <div style={{ height: '45vh', minHeight: 250 }}>
+          <TradingChart selectedSymbol={cryptoData?.crypto_symbol || cryptoData?.cryptoSymbol || 'BTC'} />
+        </div>
+
+        {/* Tabs: Order Book / Orders */}
+        <div style={{ display: 'flex', borderBottom: '1px solid #1E1E1E', background: '#0a0a0a' }}>
+          {[
+            { key: 'orderbook', label: 'Order Book' },
+            { key: 'orders', label: 'Orders' },
+          ].map(tab => (
+            <button
+              key={tab.key}
+              onClick={() => setMobileView(tab.key)}
+              style={{
+                padding: '8px 16px',
+                fontSize: 12,
+                fontWeight: mobileView === tab.key ? 600 : 400,
+                color: mobileView === tab.key ? '#fff' : '#5E6673',
+                background: 'transparent',
+                border: 'none',
+                borderBottom: mobileView === tab.key ? '2px solid #2EBD85' : '2px solid transparent',
+                cursor: 'pointer',
+              }}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Tab content */}
+        {mobileView === 'orderbook' && (
+          <OrderBook cryptoData={orderBookCryptoData} />
+        )}
+        {mobileView === 'orders' && (
+          <div className="orders-container">
+            <OrdersSection refreshTrigger={orderHistoryRefreshTrigger} />
+          </div>
+        )}
+      </div>
+
+      {/* Mobile trade bar */}
       <div className="mobile-trade-bar">
-        <button 
-          className="mobile-trade-btn buy" 
-          onClick={() => handleMobileTradeTab('buy')}
-        >
-          Buy
-        </button>
-        <button 
-          className="mobile-trade-btn sell" 
-          onClick={() => handleMobileTradeTab('sell')}
-        >
-          Sell
-        </button>
+        <button className="mobile-trade-btn buy" onClick={() => handleMobileTradeTab('buy')}>Buy</button>
+        <button className="mobile-trade-btn sell" onClick={() => handleMobileTradeTab('sell')}>Sell</button>
       </div>
       {renderMobileTradeForm()}
-      
-      {/* Walkthrough Trigger — hidden on mobile */}
-      {!isMobile && <WalkthroughTrigger />}
     </div>
   );
 };

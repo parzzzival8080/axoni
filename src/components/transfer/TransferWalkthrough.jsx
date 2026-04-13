@@ -18,7 +18,7 @@ const TransferWalkthrough = ({ onClose, isOpen }) => {
   const walkthroughSteps = [
     {
       id: "welcome",
-      title: "Welcome to AXONI Transfer",
+      title: "Welcome to GLD Transfer",
       description:
         "Learn how to transfer cryptocurrencies between your Spot and Futures accounts instantly. Master account management and balance optimization.",
       target: null,
@@ -303,7 +303,7 @@ const TransferWalkthrough = ({ onClose, isOpen }) => {
       {/* Main tooltip/modal */}
       <div
         ref={overlayRef}
-        className={`fixed z-[10001] bg-gradient-to-br from-zinc-900 to-zinc-800 border border-yellow-500/40 rounded-3xl shadow-2xl backdrop-blur-xl text-white animate-in slide-in-from-bottom-4 zoom-in-95 duration-300 ${
+        className={`fixed z-[10001] bg-gradient-to-br from-zinc-900 to-zinc-800 border border-[#2EBD85]/40 rounded-3xl shadow-2xl backdrop-blur-xl text-white animate-in slide-in-from-bottom-4 zoom-in-95 duration-300 ${
           currentStepData.type === "welcome" ||
           currentStepData.type === "completion"
             ? "w-[400px] min-w-[320px]"
@@ -318,12 +318,12 @@ const TransferWalkthrough = ({ onClose, isOpen }) => {
         {/* Header */}
         <div className="flex justify-between items-center px-4 py-3 border-b border-white/10">
           <div className="flex-1">
-            <span className="block text-xs font-semibold text-yellow-500 uppercase tracking-wider mb-1">
+            <span className="block text-xs font-semibold text-[#2EBD85] uppercase tracking-wider mb-1">
               {currentStep + 1} of {walkthroughSteps.length}
             </span>
             <div className="w-full h-0.5 bg-white/10 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-yellow-500 to-yellow-400 rounded-full transition-all duration-500 relative"
+                className="h-full bg-gradient-to-r from-[#2EBD85] to-[#259A6C] rounded-full transition-all duration-500 relative"
                 style={{
                   width: `${
                     ((currentStep + 1) / walkthroughSteps.length) * 100
@@ -348,19 +348,19 @@ const TransferWalkthrough = ({ onClose, isOpen }) => {
             <div className="text-center py-4">
               <div className="relative w-20 h-20 mx-auto mb-6">
                 {/* Pulse rings */}
-                <div className="absolute inset-0 border-2 border-yellow-500 rounded-full animate-ping" />
-                <div className="absolute inset-0 border-2 border-yellow-500 rounded-full animate-ping animation-delay-300" />
-                <div className="absolute inset-0 border-2 border-yellow-500 rounded-full animate-ping animation-delay-600" />
+                <div className="absolute inset-0 border-2 border-[#2EBD85] rounded-full animate-ping" />
+                <div className="absolute inset-0 border-2 border-[#2EBD85] rounded-full animate-ping animation-delay-300" />
+                <div className="absolute inset-0 border-2 border-[#2EBD85] rounded-full animate-ping animation-delay-600" />
                 {/* Logo */}
-                <div className="absolute inset-0 bg-gradient-to-br from-yellow-500 to-yellow-400 rounded-full flex items-center justify-center shadow-lg shadow-yellow-500/40">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#2EBD85] to-[#259A6C] rounded-full flex items-center justify-center shadow-lg shadow-[#2EBD85]/40">
                   <img
                     src={logo}
-                    alt="AXONI Logo"
+                    alt="GLD Logo"
                     className="w-8 h-8 object-contain"
                   />
                 </div>
               </div>
-              <h2 className="text-xl font-bold mb-3 bg-gradient-to-r from-yellow-500 to-yellow-400 bg-clip-text text-transparent">
+              <h2 className="text-xl font-bold mb-3 bg-gradient-to-r from-[#2EBD85] to-[#259A6C] bg-clip-text text-transparent">
                 {currentStepData.title}
               </h2>
               <p className="text-sm text-white/80 mb-6 leading-relaxed">
@@ -368,7 +368,7 @@ const TransferWalkthrough = ({ onClose, isOpen }) => {
               </p>
               <div className="flex justify-center gap-8 mb-3">
                 <div className="text-center">
-                  <span className="block text-lg font-bold text-yellow-500 mb-0.5">
+                  <span className="block text-lg font-bold text-[#2EBD85] mb-0.5">
                     8
                   </span>
                   <span className="text-xs text-white/60 uppercase tracking-wide">
@@ -376,7 +376,7 @@ const TransferWalkthrough = ({ onClose, isOpen }) => {
                   </span>
                 </div>
                 <div className="text-center">
-                  <span className="block text-lg font-bold text-yellow-500 mb-0.5">
+                  <span className="block text-lg font-bold text-[#2EBD85] mb-0.5">
                     ~2min
                   </span>
                   <span className="text-xs text-white/60 uppercase tracking-wide">
@@ -390,7 +390,7 @@ const TransferWalkthrough = ({ onClose, isOpen }) => {
           {currentStepData.type === "completion" && (
             <div className="text-center py-4">
               <div className="w-20 h-20 mx-auto mb-6 relative">
-                <div className="w-full h-full bg-yellow-500 rounded-full flex items-center justify-center animate-in zoom-in duration-500">
+                <div className="w-full h-full bg-[#2EBD85] rounded-full flex items-center justify-center animate-in zoom-in duration-500">
                   <svg
                     className="w-8 h-8 text-white"
                     fill="none"
@@ -406,23 +406,23 @@ const TransferWalkthrough = ({ onClose, isOpen }) => {
                   </svg>
                 </div>
               </div>
-              <h2 className="text-lg font-bold text-yellow-500 mb-3">
+              <h2 className="text-lg font-bold text-[#2EBD85] mb-3">
                 {currentStepData.title}
               </h2>
               <p className="text-sm text-white/80 mb-5 leading-relaxed">
                 {currentStepData.description}
               </p>
-              <div className="text-left bg-yellow-500/10 border border-yellow-500/20 rounded-2xl p-3 space-y-1.5">
+              <div className="text-left bg-[#2EBD85]/10 border border-[#2EBD85]/20 rounded-2xl p-3 space-y-1.5">
                 <div className="text-xs text-white/90 leading-tight">
-                  <strong className="text-yellow-500">💡 Pro Tip:</strong> Always
+                  <strong className="text-[#2EBD85]">💡 Pro Tip:</strong> Always
                   check balances before making large transfers
                 </div>
                 <div className="text-xs text-white/90 leading-tight">
-                  <strong className="text-yellow-500">🔄 Strategy:</strong> Keep
+                  <strong className="text-[#2EBD85]">🔄 Strategy:</strong> Keep
                   funds balanced between Spot and Futures for flexibility
                 </div>
                 <div className="text-xs text-white/90 leading-tight">
-                  <strong className="text-yellow-500">📊 Track:</strong> Monitor
+                  <strong className="text-[#2EBD85]">📊 Track:</strong> Monitor
                   transfer history for better account management
                 </div>
               </div>
@@ -441,7 +441,7 @@ const TransferWalkthrough = ({ onClose, isOpen }) => {
                 <div className="mt-3 pt-3 border-t border-white/10">
                   <div className="w-full h-0.5 bg-white/10 rounded-full overflow-hidden mb-1.5">
                     <div
-                      className="h-full bg-gradient-to-r from-yellow-500 to-yellow-400 rounded-full origin-left transform scale-x-0"
+                      className="h-full bg-gradient-to-r from-[#2EBD85] to-[#259A6C] rounded-full origin-left transform scale-x-0"
                       style={{
                         animation: `scaleProgress ${currentStepData.duration}ms linear forwards`,
                       }}
@@ -468,7 +468,7 @@ const TransferWalkthrough = ({ onClose, isOpen }) => {
               </button>
               <button
                 onClick={handleStart}
-                className="px-5 py-2.5 bg-gradient-to-r from-yellow-500 to-yellow-400 text-white rounded-xl text-xs font-semibold hover:shadow-lg hover:shadow-yellow-500/25 hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2"
+                className="px-5 py-2.5 bg-gradient-to-r from-[#2EBD85] to-[#259A6C] text-white rounded-xl text-xs font-semibold hover:shadow-lg hover:shadow-[#2EBD85]/25 hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2"
               >
                 <FiPlay size={14} /> Start Tour
               </button>
@@ -485,7 +485,7 @@ const TransferWalkthrough = ({ onClose, isOpen }) => {
               </button>
               <button
                 onClick={onClose}
-                className="px-5 py-2.5 bg-gradient-to-r from-yellow-500 to-yellow-400 text-white rounded-xl text-xs font-semibold hover:shadow-lg hover:shadow-yellow-500/25 hover:-translate-y-0.5 transition-all duration-200"
+                className="px-5 py-2.5 bg-gradient-to-r from-[#2EBD85] to-[#259A6C] text-white rounded-xl text-xs font-semibold hover:shadow-lg hover:shadow-[#2EBD85]/25 hover:-translate-y-0.5 transition-all duration-200"
               >
                 Start Transferring
               </button>
@@ -505,7 +505,7 @@ const TransferWalkthrough = ({ onClose, isOpen }) => {
 
                 <button
                   onClick={handlePlayPause}
-                  className="p-1.5 bg-yellow-500/10 text-yellow-500 border border-yellow-500/30 rounded-xl hover:bg-yellow-500/20 hover:border-yellow-500/40 transition-all duration-200"
+                  className="p-1.5 bg-[#2EBD85]/10 text-[#2EBD85] border border-[#2EBD85]/30 rounded-xl hover:bg-[#2EBD85]/20 hover:border-[#2EBD85]/40 transition-all duration-200"
                   title={isPlaying ? "Pause auto-advance" : "Play auto-advance"}
                 >
                   {isPlaying ? <FiPause size={12} /> : <FiPlay size={12} />}

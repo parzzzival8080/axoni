@@ -82,7 +82,7 @@ const SimpleEarn = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#121212] text-white pb-20">
+    <div className="bg-[#121212] text-white pb-20">
       <EarnNavBar/>
       
       {/* Hero Section */}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import mobileApp from "../../assets/homepage/mobile-app.png";
+import HeroBanner from "./HeroBanner";
 import {
   FaGoogle,
   FaApple,
@@ -134,43 +134,24 @@ const Hero = () => {
   // Content for non-logged in users
   const renderGuestContent = () => (
     <div className="flex-1 space-y-5 md:space-y-6">
-      {/* Desktop layout */}
-      <div className="hidden md:block">
-        <p className="text-[#2EBD85] font-semibold mb-4">
-          Better Liquidity, Better Trading
-        </p>
-        <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-          Global Cryptocurrency
-          <br />
-          Derivatives Exchange
-        </h1>
-        <div className="flex flex-row items-center gap-4 mt-6">
+      {/* Desktop signup bar */}
+      <div className="hidden md:flex items-center gap-4 bg-[#1E1E1E] border border-[#2A2A2A] rounded-xl p-5">
+        <div className="flex-1">
+          <h3 className="text-white text-lg font-semibold mb-1">Start your crypto journey</h3>
+          <p className="text-[#848E9C] text-sm">Register now and receive up to <span className="text-[#2EBD85] font-medium">$2,000</span> in rewards</p>
+        </div>
+        <div className="flex items-center gap-3">
           <input
             type="text"
             placeholder="Email / Mobile"
             aria-label="Email or mobile number"
-            className="bg-gray-800 text-white p-3 rounded-full focus:outline-none flex-1 max-w-xs"
+            className="bg-[#121212] border border-[#2A2A2A] text-white px-4 py-2.5 rounded-lg focus:outline-none focus:border-[#2EBD85] text-sm w-56"
           />
           <Link
             to="/signup"
-            className="bg-[#2EBD85] text-white px-8 py-3 rounded-full font-semibold hover:bg-[#259A6C] transition-colors"
+            className="bg-[#2EBD85] text-white px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-[#259A6C] transition-colors whitespace-nowrap"
           >
-            Sign up now
-          </Link>
-        </div>
-        <p className="text-gray-400 mt-3 text-sm">Sign up now to win rewards</p>
-        <div className="flex flex-row gap-4 mt-6">
-          <Link
-            to="/login"
-            className="border border-[#2A2A2A] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#1E1E1E] transition-colors text-center"
-          >
-            Log in
-          </Link>
-          <Link
-            to="/spot-trading"
-            className="bg-[#1E1E1E] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#2A2A2A] transition-colors text-center"
-          >
-            Trade Demo
+            Sign up
           </Link>
         </div>
       </div>
@@ -251,8 +232,8 @@ const Hero = () => {
   const renderUnverifiedContent = () => (
     <div className="flex-1 space-y-6">
       <div className="flex items-center gap-3">
-        <FaShieldAlt className="text-yellow-500 text-2xl" />
-        <p className="text-yellow-500 font-semibold">
+        <FaShieldAlt className="text-[#2EBD85] text-2xl" />
+        <p className="text-[#2EBD85] font-semibold">
           {isCheckingVerification
             ? "Checking Verification Status..."
             : "Account Verification Required"}
@@ -264,17 +245,17 @@ const Hero = () => {
         <span className="text-[#2EBD85]">{userName}!</span>
       </h1>
       {isCheckingVerification ? (
-        <div className="bg-yellow-900/20 border border-yellow-600 rounded-lg p-6">
+        <div className="bg-[#2EBD85]/10 border border-[#2EBD85] rounded-lg p-6">
           <div className="flex items-center justify-center space-x-3">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-yellow-400"></div>
-            <p className="text-yellow-400 font-medium">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#2EBD85]"></div>
+            <p className="text-[#2EBD85] font-medium">
               Checking your verification status...
             </p>
           </div>
         </div>
       ) : (
-        <div className="bg-yellow-900/20 border border-yellow-600 rounded-lg p-6">
-          <h3 className="text-yellow-400 font-semibold mb-2">
+        <div className="bg-[#2EBD85]/10 border border-[#2EBD85] rounded-lg p-6">
+          <h3 className="text-[#2EBD85] font-semibold mb-2">
             Complete Your Verification
           </h3>
           <p className="text-gray-300 mb-4">
@@ -284,7 +265,7 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             <Link
               to="/account/profile/verify"
-              className="bg-[#2EBD85] text-white px-6 py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors text-center"
+              className="bg-[#2EBD85] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#259A6C] transition-colors text-center"
             >
               Verify Account
             </Link>
@@ -326,9 +307,9 @@ const Hero = () => {
     <div className="flex-1 space-y-6">
       <div className="flex items-center gap-3">
         <div className="animate-pulse">
-          <FaShieldAlt className="text-yellow-500 text-2xl" />
+          <FaShieldAlt className="text-[#2EBD85] text-2xl" />
         </div>
-        <p className="text-yellow-500 font-semibold">
+        <p className="text-[#2EBD85] font-semibold">
           Verification Under Review
         </p>
       </div>
@@ -337,8 +318,8 @@ const Hero = () => {
         <br />
         <span className="text-[#2EBD85]">{userName}!</span>
       </h1>
-      <div className="bg-yellow-900/20 border border-yellow-600 rounded-lg p-6">
-        <h3 className="text-yellow-400 font-semibold mb-2">
+      <div className="bg-[#2EBD85]/10 border border-[#2EBD85] rounded-lg p-6">
+        <h3 className="text-[#2EBD85] font-semibold mb-2">
           Verification Under Review
         </h3>
         <p className="text-gray-300 mb-4">
@@ -349,7 +330,7 @@ const Hero = () => {
         <div className="flex flex-col sm:flex-row gap-4">
           <Link
             to="/account/profile/verify"
-            className="bg-[#2EBD85] text-white px-6 py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors text-center"
+            className="bg-[#2EBD85] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#259A6C] transition-colors text-center"
           >
             Check Status
           </Link>
@@ -405,7 +386,7 @@ const Hero = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
         <Link
           to="/spot-trading"
-          className="bg-[#2EBD85] text-white px-6 py-4 rounded-lg font-semibold hover:bg-yellow-600 transition-colors text-center"
+          className="bg-[#2EBD85] text-white px-6 py-4 rounded-lg font-semibold hover:bg-[#259A6C] transition-colors text-center"
         >
           Start Trading
         </Link>
@@ -498,7 +479,7 @@ const Hero = () => {
           </p>
           <Link
             to="/signup"
-            className="bg-[#2EBD85] text-black px-6 py-2 rounded-md text-sm font-semibold hover:bg-yellow-600 transition-colors whitespace-nowrap w-full sm:w-auto"
+            className="bg-[#2EBD85] text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-[#259A6C] transition-colors whitespace-nowrap w-full sm:w-auto"
           >
             Sign up
           </Link>
@@ -509,12 +490,12 @@ const Hero = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center sm:space-x-4 space-y-3 sm:space-y-0 max-w-4xl mx-auto">
           <p className="text-gray-300 text-sm sm:text-base sm:mr-2">
             Your verification is{" "}
-            <span className="text-yellow-500 font-semibold">under review</span>.
+            <span className="text-[#2EBD85] font-semibold">under review</span>.
             You'll be notified once approved!
           </p>
           <Link
             to="/account/profile/verify"
-            className="bg-[#2EBD85] text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-yellow-600 transition-colors whitespace-nowrap w-full sm:w-auto"
+            className="bg-[#2EBD85] text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-[#259A6C] transition-colors whitespace-nowrap w-full sm:w-auto"
           >
             Check Status
           </Link>
@@ -532,7 +513,7 @@ const Hero = () => {
           </p>
           <Link
             to="/account/profile/verify"
-            className="bg-[#2EBD85] text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-yellow-600 transition-colors whitespace-nowrap w-full sm:w-auto"
+            className="bg-[#2EBD85] text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-[#259A6C] transition-colors whitespace-nowrap w-full sm:w-auto"
           >
             Verify Now
           </Link>
@@ -548,7 +529,7 @@ const Hero = () => {
           </p>
           <Link
             to="/spot-trading"
-            className="bg-[#2EBD85] text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-yellow-600 transition-colors whitespace-nowrap w-full sm:w-auto"
+            className="bg-[#2EBD85] text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-[#259A6C] transition-colors whitespace-nowrap w-full sm:w-auto"
           >
             Start Trading
           </Link>
@@ -557,34 +538,144 @@ const Hero = () => {
     }
   };
 
-  return (
-    <div className="bg-[#121212] text-white relative z-0 pt-0 md:pt-16 pb-2 md:pb-24 overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-0 md:py-12">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-          {/* Render content based on user status */}
-          {!isLoggedIn && renderGuestContent()}
-          {isLoggedIn &&
-            verificationStatus === VERIFICATION_STATUS.PENDING &&
-            renderPendingContent()}
-          {isLoggedIn &&
-            !isVerified &&
-            verificationStatus !== VERIFICATION_STATUS.PENDING &&
-            renderUnverifiedContent()}
-          {isLoggedIn && isVerified && renderVerifiedContent()}
+  // Determine which logged-in banner to show
+  const getLoggedInHero = () => {
+    if (!isLoggedIn) return null;
 
-          <div className="flex-1 relative hidden md:block">
-            <img
-              src={mobileApp}
-              alt="Mobile Trading App"
-              className="w-full max-w-xs mx-auto md:max-w-[530px] animate-float"
-            />
+    let status = "verified";
+    let heading = `Ready to Trade, ${userName}!`;
+    let subtext = "Your account is fully verified. Access all features and start trading with confidence.";
+    let statusLabel = "Account Verified";
+    let statusColor = "#2EBD85";
+    let primaryCta = { label: "Start Trading", link: "/spot-trading" };
+    let secondaryCta = { label: "Dashboard", link: "/account/overview" };
+
+    if (isCheckingVerification) {
+      status = "checking";
+      heading = `Welcome, ${userName}!`;
+      subtext = "Checking your verification status...";
+      statusLabel = "Checking...";
+    } else if (verificationStatus === VERIFICATION_STATUS.PENDING) {
+      status = "pending";
+      heading = `Almost There, ${userName}!`;
+      subtext = "Your documents are under review. You'll be notified by email once approved — usually within 24 hours.";
+      statusLabel = "Under Review";
+      statusColor = "#F0B90B";
+      primaryCta = { label: "Check Status", link: "/account/profile/verify" };
+      secondaryCta = { label: "View Profile", link: "/account/profile" };
+    } else if (!isVerified) {
+      status = "unverified";
+      heading = `Welcome, ${userName}!`;
+      subtext = "Complete identity verification to unlock all trading features and higher withdrawal limits.";
+      statusLabel = "Verification Required";
+      statusColor = "#F0B90B";
+      primaryCta = { label: "Verify Account", link: "/account/profile/verify" };
+      secondaryCta = { label: "View Profile", link: "/account/profile" };
+    }
+
+    return (
+      <div className="relative w-full overflow-hidden bg-[#0a0a0a]" style={{ minHeight: 360 }}>
+        {/* Background */}
+        <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, #0d1f17 0%, #0a0a0a 40%, #0a1e14 100%)" }} />
+        <div className="absolute -top-40 right-0 w-[600px] h-[600px] bg-[#2EBD85]/[0.04] rounded-full blur-[150px]" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#2EBD85]/[0.03] rounded-full blur-[120px]" />
+
+        {/* Content */}
+        <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 flex items-center pt-10 pb-6" style={{ minHeight: 360 }}>
+          <div className="flex items-start justify-between w-full gap-12">
+            {/* Left */}
+            <div className="flex-1 max-w-xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-5" style={{ background: `${statusColor}15`, border: `1px solid ${statusColor}30` }}>
+                {status === "checking" ? (
+                  <div className="w-2 h-2 rounded-full bg-[#2EBD85] animate-pulse" />
+                ) : status === "verified" ? (
+                  <FaCheckCircle className="text-[#2EBD85] text-xs" />
+                ) : (
+                  <FaShieldAlt style={{ color: statusColor }} className="text-xs" />
+                )}
+                <span className="text-xs font-semibold" style={{ color: statusColor }}>{statusLabel}</span>
+              </div>
+
+              <h1 className="text-3xl lg:text-5xl font-bold text-white mb-3 leading-[1.1]">{heading}</h1>
+              <p className="text-[#848E9C] text-base mb-8 leading-relaxed max-w-md">{subtext}</p>
+
+              <div className="flex items-center gap-3">
+                <Link to={primaryCta.link} className="bg-[#2EBD85] hover:bg-[#259A6C] text-white px-7 py-3 rounded-xl text-sm font-semibold transition-colors">
+                  {primaryCta.label}
+                </Link>
+                <Link to={secondaryCta.link} className="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-6 py-3 rounded-xl text-sm font-medium transition-colors">
+                  {secondaryCta.label}
+                </Link>
+              </div>
+            </div>
+
+            {/* Right — Quick actions */}
+            <div className="hidden lg:flex flex-col gap-3 w-72">
+              <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-5">
+                <p className="text-[#5E6673] text-xs font-medium mb-4">Quick Actions</p>
+                <div className="grid grid-cols-2 gap-2">
+                  <Link to="/deposit" className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.06] transition-colors">
+                    <FaWallet className="text-[#2EBD85]" />
+                    <span className="text-white text-xs">Deposit</span>
+                  </Link>
+                  <Link to="/transfer" className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.06] transition-colors">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="2" strokeLinecap="round"><path d="M8 7h12l-4-4M16 17H4l4 4"/></svg>
+                    <span className="text-white text-xs">Transfer</span>
+                  </Link>
+                  <Link to="/my-assets" className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.06] transition-colors">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+                    <span className="text-white text-xs">Assets</span>
+                  </Link>
+                  <Link to="/account/profile" className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.06] transition-colors">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 10-16 0"/></svg>
+                    <span className="text-white text-xs">Profile</span>
+                  </Link>
+                </div>
+              </div>
+              {isVerified && (
+                <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-2 h-2 rounded-full bg-[#2EBD85] animate-pulse" />
+                    <span className="text-[#848E9C] text-xs font-medium">Live Market</span>
+                  </div>
+                  <div className="space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-white text-sm font-medium">BTC/USDT</span>
+                      <span className="text-[#2EBD85] text-xs font-medium">+2.34%</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-white text-sm font-medium">ETH/USDT</span>
+                      <span className="text-[#F6465D] text-xs font-medium">-1.12%</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-white text-sm font-medium">SOL/USDT</span>
+                      <span className="text-[#2EBD85] text-xs font-medium">+5.67%</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
+
+        {/* Bottom fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#121212] to-transparent" />
+      </div>
+    );
+  };
+
+  return (
+    <div className="text-white relative z-0">
+      {/* Desktop */}
+      <div className="hidden md:block">
+        {isLoggedIn ? getLoggedInHero() : <HeroBanner isLoggedIn={false} />}
       </div>
 
-      {/* Bottom Banner - Changes based on user status (desktop only) */}
-      <div className="hidden md:block w-full bg-gray-800/80 backdrop-blur-sm py-3 px-4 text-center mt-8 rounded-lg mx-auto max-w-7xl">
-        {renderBottomBanner()}
+      {/* Mobile guest view */}
+      <div className="md:hidden pb-2">
+        <div className="container mx-auto px-4">
+          {!isLoggedIn && renderGuestContent()}
+        </div>
       </div>
     </div>
   );

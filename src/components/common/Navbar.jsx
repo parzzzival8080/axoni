@@ -15,33 +15,33 @@ import Logo from "../../assets/logo/logo.png";
 const notifications = [
   {
     id: 1,
-    title: "AXONI to list perpetual futures for SIGN crypto",
+    title: "GLD to list perpetual futures for SIGN crypto",
     time: "04/28/2026, 14:00:00",
-    path: "/help/AXONI-to-list-perpetual-futures-for-sign-crypto",
+    path: "/help/GLD-to-list-perpetual-futures-for-sign-crypto",
   },
   {
     id: 2,
-    title: "AXONI to delist ZKJ margin trading pair and perpetual future",
+    title: "GLD to delist ZKJ margin trading pair and perpetual future",
     time: "04/28/2026, 11:10:00",
-    path: "/help/AXONI-to-delist-zkj-margin-trading-pair-and-perpetual-future",
+    path: "/help/GLD-to-delist-zkj-margin-trading-pair-and-perpetual-future",
   },
   {
     id: 3,
-    title: "AXONI to enable margin trading and Simple Earn for LAYER crypto",
+    title: "GLD to enable margin trading and Simple Earn for LAYER crypto",
     time: "04/25/2026, 19:20:00",
-    path: "/help/AXONI-to-enable-margin-trading-and-simple-earn-for-layer-crypto",
+    path: "/help/GLD-to-enable-margin-trading-and-simple-earn-for-layer-crypto",
   },
   {
     id: 4,
-    title: "AXONI to list LAYER (Solayer) for spot trading",
+    title: "GLD to list LAYER (Solayer) for spot trading",
     time: "04/25/2026, 14:00:00",
-    path: "/help/AXONI-to-list-layer-solayer-for-spot-trading",
+    path: "/help/GLD-to-list-layer-solayer-for-spot-trading",
   },
   {
     id: 5,
-    title: "AXONI to list perpetual futures for INIT crypto",
+    title: "GLD to list perpetual futures for INIT crypto",
     time: "04/24/2026, 14:00:00",
-    path: "/help/AXONI-to-list-perpetual-futures-for-init-crypto",
+    path: "/help/GLD-to-list-perpetual-futures-for-init-crypto",
   },
 ];
 
@@ -461,7 +461,7 @@ const Navbar = () => {
                   </div>
                   <div className="dropdown-content">
                     <h3>About Us</h3>
-                    <p>Learn more about AXONI and our mission</p>
+                    <p>Learn more about GLD and our mission</p>
                   </div>
                   <i className="fas fa-chevron-right"></i>
                 </div>
@@ -474,7 +474,7 @@ const Navbar = () => {
                   </div>
                   <div className="dropdown-content">
                     <h3>Download App</h3>
-                    <p>Get the AXONI app for desktop and mobile</p>
+                    <p>Get the GLD app for desktop and mobile</p>
                   </div>
                   <i className="fas fa-chevron-right"></i>
                 </div>
@@ -1135,7 +1135,7 @@ const Navbar = () => {
                 className="footer-download-button"
                 onClick={toggleMobileMenu}
               >
-                Download AXONI app
+                Download GLD app
               </Link>
             </div>
           </div>

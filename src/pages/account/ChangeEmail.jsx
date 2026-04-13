@@ -206,11 +206,11 @@ const ChangeEmail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#121212] dark:bg-black text-black dark:text-white">
+    <div className="bg-[#121212] dark:bg-black text-white dark:text-white">
       <div className="max-w-2xl mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <div className="flex items-center text-sm text-[#5E6673] dark:text-[#5E6673] mb-8">
-          <Link to="/account/profile/security" className="hover:text-yellow-500 transition-colors">
+          <Link to="/account/profile/security" className="hover:text-[#2EBD85] transition-colors">
             Security center
           </Link>
           <FiChevronRight className="mx-2" />
@@ -224,7 +224,7 @@ const ChangeEmail = () => {
         <div className="bg-[#1E1E1E] dark:bg-gray-800 rounded-md p-4 mb-8">
           <div className="flex items-start">
             <div className="flex-shrink-0 mt-0.5">
-              <FiAlertCircle className="h-5 w-5 text-black dark:text-white" />
+              <FiAlertCircle className="h-5 w-5 text-white dark:text-white" />
             </div>
             <p className="ml-3 text-sm text-[#848E9C] dark:text-gray-300">
               To protect your account, you won't be able to withdraw funds or use P2P trading to sell crypto for 24 hours after you reset or change your account email.
@@ -286,7 +286,7 @@ const ChangeEmail = () => {
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
                   placeholder="Enter verification code"
-                  className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-yellow-500 outline-none transition-all"
+                  className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-[#2EBD85] outline-none transition-all"
                   disabled={loading}
                 />
               </div>
@@ -296,7 +296,7 @@ const ChangeEmail = () => {
                 </span>
                 <button
                   type="button"
-                  className={`text-sm ${canResendOtp ? 'text-black dark:text-white hover:text-[#848E9C] dark:hover:text-gray-300 cursor-pointer' : 'text-[#5E6673] cursor-not-allowed'}`}
+                  className={`text-sm ${canResendOtp ? 'text-white dark:text-white hover:text-[#848E9C] dark:hover:text-gray-300 cursor-pointer' : 'text-[#5E6673] cursor-not-allowed'}`}
                   onClick={handleResendOTP}
                   disabled={!canResendOtp || loading}
                 >
@@ -334,7 +334,7 @@ const ChangeEmail = () => {
                 value={newEmail}
                 onChange={(e) => setNewEmail(e.target.value)}
                 placeholder="Enter new email address"
-                className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-yellow-500 outline-none transition-all"
+                className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-[#2EBD85] outline-none transition-all"
                 disabled={loading}
               />
             </div>
@@ -347,7 +347,7 @@ const ChangeEmail = () => {
                   type="checkbox"
                   checked={agreeToWithdrawalRestriction}
                   onChange={() => setAgreeToWithdrawalRestriction(!agreeToWithdrawalRestriction)}
-                  className="w-4 h-4 text-yellow-600 border-[#2A2A2A] rounded focus:ring-yellow-500"
+                  className="w-4 h-4 text-[#2EBD85] border-[#2A2A2A] rounded focus:ring-[#2EBD85]"
                   disabled={loading}
                 />
               </div>

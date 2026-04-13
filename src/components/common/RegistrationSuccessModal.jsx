@@ -21,18 +21,18 @@ const RegistrationSuccessModal = ({ isOpen, onClose }) => {
     <div className={`fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4 transition-all duration-300 ${
       showContent ? 'opacity-100' : 'opacity-0'
     }`}>
-      <div className={`bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden transform transition-all duration-300 relative ${
+      <div className={`bg-[#1E1E1E] rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden transform transition-all duration-300 relative ${
         showContent ? 'scale-100 translate-y-0' : 'scale-95 translate-y-8'
       }`}>
         
         {/* Background Pattern */}
-        <div className="absolute top-0 left-0 w-full h-20 bg-white">
+        <div className="absolute top-0 left-0 w-full h-20 bg-[#1E1E1E]">
         </div>
 
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white bg-opacity-80 border border-gray-200 flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-200 shadow-sm"
+          className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-[#2A2A2A] border border-[#3a3a3a] flex items-center justify-center hover:bg-[#2A2A2A] hover:scale-110 transition-all duration-200 shadow-sm"
           style={{ color: '#2EBD85' }}
         >
           <X className="h-4 w-4" />
@@ -50,7 +50,7 @@ const RegistrationSuccessModal = ({ isOpen, onClose }) => {
                 
                 {/* Sparkle Effects */}
                 <div 
-                  className="absolute -top-1 -right-1 h-4 w-4 text-yellow-400 animate-bounce" 
+                  className="absolute -top-1 -right-1 h-4 w-4 text-[#2EBD85] animate-bounce" 
                   style={{ animationDelay: '0.5s' }}
                 >
                   <Sparkles className="h-4 w-4" />
@@ -67,8 +67,8 @@ const RegistrationSuccessModal = ({ isOpen, onClose }) => {
 
           {/* Header */}
           <div className="text-center px-6 mb-4">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">
-              Welcome to AXONI!
+            <h1 className="text-2xl font-bold text-white mb-2">
+              Welcome to GLD!
             </h1>
             <div className="w-12 h-1 rounded-full mx-auto mb-3" style={{ backgroundColor: '#2EBD85' }}></div>
             <p className="text-gray-600 text-base leading-relaxed">

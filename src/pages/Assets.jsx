@@ -88,7 +88,7 @@ export default function Assets() {
   // Mobile Assets Screen
   if (isMobile) {
     return (
-      <div className="min-h-screen bg-[#121212] text-white pb-20">
+      <div className="bg-[#121212] text-white pb-20">
         {/* Balance Card */}
         <div className="px-4 pt-2 pb-4">
           <div className="mb-1">
@@ -130,7 +130,7 @@ export default function Assets() {
               </svg>
               <span className="text-[10px] text-[#848E9C]">Withdraw</span>
             </button>
-            <button onClick={() => navigate('/conversion')} className="flex flex-col items-center gap-1.5 py-3 bg-[#1E1E1E] rounded-xl">
+            <button onClick={() => navigate('/transfer')} className="flex flex-col items-center gap-1.5 py-3 bg-[#1E1E1E] rounded-xl">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4" />
               </svg>

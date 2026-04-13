@@ -868,6 +868,47 @@ const TradeForm = ({
         <span>Fees: 0.1%</span>
       </div>
 
+      {/* Trading info panel — desktop only */}
+      <div className="hidden md:block" style={{ marginTop: 12, padding: '12px', background: '#121212', borderRadius: 8, border: '1px solid #1E1E1E' }}>
+        <div style={{ fontSize: 10, color: '#5E6673', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Trading Info</div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+          <span style={{ fontSize: 11, color: '#848E9C' }}>Order Type</span>
+          <span style={{ fontSize: 11, color: '#fff' }}>Limit</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+          <span style={{ fontSize: 11, color: '#848E9C' }}>Trading Pair</span>
+          <span style={{ fontSize: 11, color: '#2EBD85' }}>{cryptoData?.cryptoSymbol || 'BTC'}/{cryptoData?.usdtSymbol || 'USDT'}</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+          <span style={{ fontSize: 11, color: '#848E9C' }}>Maker Fee</span>
+          <span style={{ fontSize: 11, color: '#fff', fontFamily: 'monospace' }}>0.1%</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+          <span style={{ fontSize: 11, color: '#848E9C' }}>Taker Fee</span>
+          <span style={{ fontSize: 11, color: '#fff', fontFamily: 'monospace' }}>0.1%</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+          <span style={{ fontSize: 11, color: '#848E9C' }}>Min Order</span>
+          <span style={{ fontSize: 11, color: '#fff', fontFamily: 'monospace' }}>0.00001 {cryptoData?.cryptoSymbol || 'BTC'}</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <span style={{ fontSize: 11, color: '#848E9C' }}>Settlement</span>
+          <span style={{ fontSize: 11, color: '#fff' }}>Instant</span>
+        </div>
+      </div>
+
+      <div style={{ marginTop: 8, padding: '12px', background: '#121212', borderRadius: 8, border: '1px solid #1E1E1E' }}>
+        <div style={{ fontSize: 10, color: '#5E6673', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Spot Wallet</div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+          <span style={{ fontSize: 11, color: '#848E9C' }}>USDT Balance</span>
+          <span style={{ fontSize: 11, color: '#fff', fontFamily: 'monospace' }}>{formatNumber(getAvailableBalance(), 4)} {effectiveIsBuy ? 'USDT' : (cryptoData?.cryptoSymbol || 'BTC')}</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <span style={{ fontSize: 11, color: '#848E9C' }}>Max {effectiveIsBuy ? 'Buy' : 'Sell'}</span>
+          <span style={{ fontSize: 11, color: '#2EBD85', fontFamily: 'monospace' }}>{formatNumber(getMaxAmount(), 8)} {cryptoData?.cryptoSymbol || 'BTC'}</span>
+        </div>
+      </div>
+
       {/* Notification */}
       {notification && (
         <div className={`notification ${notification.type}`}>

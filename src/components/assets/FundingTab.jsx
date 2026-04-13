@@ -50,7 +50,7 @@ const FundingTab = () => {
   };
 
   return (
-    <div className="bg-[#1E1E1E] text-white p-6 min-h-screen">
+    <div className="bg-[#1E1E1E] text-white p-6">
       {/* Breadcrumb */}
       <div className="flex items-center text-[#5E6673] text-sm mb-6">
         <span className="text-white font-medium">Funding</span>
@@ -67,7 +67,7 @@ const FundingTab = () => {
 
           {loading ? (
             <div className="text-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500 mx-auto"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#2EBD85] mx-auto"></div>
               <p className="text-[#5E6673] mt-2">Loading...</p>
             </div>
           ) : error ? (
@@ -102,7 +102,7 @@ const FundingTab = () => {
             Quick Actions
           </h3>
           <div className="grid grid-cols-2 gap-4">
-            <button className="bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-4 rounded-lg font-medium transition-colors">
+            <button className="bg-[#2EBD85]/50 hover:bg-[#2EBD85] text-white py-3 px-4 rounded-lg font-medium transition-colors">
               Deposit
             </button>
             <button className="bg-[#1E1E1E] hover:bg-[#2A2A2A] text-[#848E9C] py-3 px-4 rounded-lg font-medium transition-colors border border-[#2A2A2A]">

@@ -91,7 +91,7 @@ const EarnOverview = () => {
     { 
       question: 'What is Earn?', 
       isExpanded: true,
-      answer: 'AXONI Earn provides you with a way to generate interest on your assets through multiple investment choices. Products include Simple Earn, Loan, and On-chain Earn.'
+      answer: 'GLD Earn provides you with a way to generate interest on your assets through multiple investment choices. Products include Simple Earn, Loan, and On-chain Earn.'
     },
     { 
       question: 'What is annual percentage rate (APR)?', 
@@ -106,7 +106,7 @@ const EarnOverview = () => {
     { 
       question: 'What are the risks?', 
       isExpanded: false,
-      answer: 'AXONI accesses third party DeFi protocols, and only provides related services such as project display and revenue distribution, and does not take responsibility for any asset losses caused by potential risks such as contract vulnerabilities, hacking incidents, or termination of business.'
+      answer: 'GLD accesses third party DeFi protocols, and only provides related services such as project display and revenue distribution, and does not take responsibility for any asset losses caused by potential risks such as contract vulnerabilities, hacking incidents, or termination of business.'
     },
   ]);
 
@@ -126,7 +126,7 @@ const EarnOverview = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#121212] text-white pb-20">
+    <div className="bg-[#121212] text-white pb-20">
       {/* Hero Section */}
       <section className="relative px-4 sm:px-6 lg:px-8 py-12 lg:py-20 bg-[#000000]">
         <div className="max-w-7xl mx-auto">

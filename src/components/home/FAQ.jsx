@@ -26,7 +26,7 @@ const FAQ = () => {
 
   const faqs = [
     {
-      question: 'How do I create an account on AXONI?',
+      question: 'How do I create an account on GLD?',
       answer: 'Creating an account is simple. Click "Sign Up", enter your email, set a password, and verify your email with the OTP code. You can then complete KYC verification to access all trading features.'
     },
     {
@@ -35,7 +35,7 @@ const FAQ = () => {
     },
     {
       question: 'What trading options are available?',
-      answer: 'AXONI offers Spot Trading (POS) for buying and selling crypto directly, Futures Trading (POW) with leverage, and Convert for quick swaps between cryptocurrencies with zero slippage.'
+      answer: 'GLD offers Spot Trading (POS) for buying and selling crypto directly, Futures Trading (POW) with leverage, and Convert for quick swaps between cryptocurrencies with zero slippage.'
     },
     {
       question: 'How do I withdraw my funds?',
@@ -43,23 +43,23 @@ const FAQ = () => {
     },
     {
       question: 'Is my account and funds secure?',
-      answer: 'Yes. AXONI uses industry-standard security including encrypted data storage, two-factor authentication, and regular Proof of Reserves audits to ensure your funds are always backed 1:1.'
+      answer: 'Yes. GLD uses industry-standard security including encrypted data storage, two-factor authentication, and regular Proof of Reserves audits to ensure your funds are always backed 1:1.'
     },
     {
       question: 'What are the trading fees?',
-      answer: 'AXONI offers competitive trading fees. Spot trading starts at 0.1% maker/taker fees, and conversion has zero trading fees. Check your account tier for specific fee schedules.'
+      answer: 'GLD offers competitive trading fees. Spot trading starts at 0.1% maker/taker fees, and conversion has zero trading fees. Check your account tier for specific fee schedules.'
     }
   ];
 
   return (
-    <div className="bg-[#121212] py-10 md:py-16">
+    <div className="bg-[#0a0a0a] py-6 md:py-10">
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
         <div className="max-w-3xl">
           <h2 className="text-lg md:text-3xl font-bold mb-2 text-white">
             Frequently asked questions
           </h2>
           <p className="text-[#848E9C] text-sm md:text-base mb-6 md:mb-10">
-            Everything you need to know about trading on AXONI.
+            Everything you need to know about trading on GLD.
           </p>
 
           <div className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-xl px-4 md:px-6">

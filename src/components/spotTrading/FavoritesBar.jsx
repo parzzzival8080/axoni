@@ -62,7 +62,7 @@ const FavoriteItem = ({ coin, isActive, onClick, compact = false }) => {
   
   return (
     <div
-      className={`flex items-center space-x-3 py-2 px-3 transition-colors duration-150 hover:bg-[#131722] ${isActive ? 'border-b-2 border-yellow-500' : ''}`}
+      className={`flex items-center space-x-3 py-2 px-3 transition-colors duration-150 hover:bg-[#131722] ${isActive ? 'border-b-2 border-[#2EBD85]' : ''}`}
       onClick={onClick}
       style={{ cursor: 'pointer' }}
     >
@@ -197,7 +197,7 @@ const MoreModal = ({ remainingCoins, activeId, onCoinSelect, isOpen, onClose }) 
             <div
               key={coin.crypto_symbol + 'USDT'}
               className={`flex items-center space-x-3 py-3 px-4 cursor-pointer transition-colors duration-150 hover:bg-[#131722] border-b border-[#1a1a1a] last:border-b-0 ${
-                coin.coin_id === activeId ? 'bg-[#131722] border-l-4 border-yellow-500' : ''
+                coin.coin_id === activeId ? 'bg-[#131722] border-l-4 border-[#2EBD85]' : ''
               }`}
               onClick={() => {
                 onCoinSelect(coin);

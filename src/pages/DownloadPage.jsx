@@ -42,7 +42,7 @@ const DownloadPage = () => {
 
     const downloadLink = document.createElement("a");
     downloadLink.href = directDownloadUrl;
-    downloadLink.setAttribute("download", "AXONI.apk");
+    downloadLink.setAttribute("download", "GLD.apk");
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
@@ -123,7 +123,7 @@ const DownloadPage = () => {
               <span className="text-[#2EBD85]">Unlimited</span> possibilities
             </h3>
             <p className="landing__description">
-              Download the AXONI app to trade crypto on the go. Gain access to
+              Download the GLD app to trade crypto on the go. Gain access to
               diverse tokens and trading pairs, advanced market data and more!
             </p>
           </div>
@@ -158,7 +158,7 @@ const DownloadPage = () => {
           <div className="landing__footer-brand">
             <div className="landing__logo">
               <img src={logo} alt="logo" className="object-contain" />
-              <h3 className="landing__logo-text">AXONI APP</h3>
+              <h3 className="landing__logo-text">GLD APP</h3>
             </div>
             <p className="landing__footer-tagline">Crypto exchange on the go</p>
           </div>

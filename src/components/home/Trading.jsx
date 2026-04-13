@@ -65,7 +65,7 @@ const Trading = () => {
   }, []);
 
   return (
-    <div className="bg-[#121212] py-10 md:py-16">
+    <div className="bg-[#0a0a0a] py-6 md:py-10">
       <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-lg md:text-3xl font-bold text-white">

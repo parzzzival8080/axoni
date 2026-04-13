@@ -13,33 +13,33 @@ const ProfileNavBar = () => {
   ];
 
   return (
-    <nav className="bg-white border-b border-gray-200 w-full">
+    <nav className="bg-[#1E1E1E] border-b border-[#2A2A2A] w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ul className="flex overflow-x-auto hide-scrollbar -mb-px">
           {navItems.map((item, index) => (
             <li key={index} className="flex-shrink-0">
-              <Link 
-                to={item.path} 
+              <Link
+                to={item.path}
                 className={`
                   group relative flex items-center py-3 px-1 mr-6 md:mr-8
                   text-sm font-medium transition-colors duration-200
                   ${
                     location.pathname === item.path
-                      ? 'text-black font-medium'
-                      : 'text-gray-600 hover:text-gray-900'
+                      ? 'text-white font-medium'
+                      : 'text-[#848E9C] hover:text-white'
                   }
                 `}
               >
                 <span className="whitespace-nowrap">
                   {item.label}
                   {item.badge && (
-                    <span className="ml-1.5 px-1.5 py-0.5 rounded text-xs font-medium bg-[#c8ff00] text-black uppercase">
+                    <span className="ml-1.5 px-1.5 py-0.5 rounded text-xs font-medium bg-[#2EBD85] text-white uppercase">
                       {item.badge}
                     </span>
                   )}
                 </span>
                 {location.pathname === item.path && (
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-black"></span>
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#2EBD85]"></span>
                 )}
               </Link>
             </li>

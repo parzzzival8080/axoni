@@ -11,7 +11,7 @@ const SecondaryTabs = ({ tabs, activeTab, onTabClick }) => {
                   h-8 px-4 text-sm rounded-2xl flex items-center justify-center cursor-pointer transition-colors duration-200 font-normal
                   ${activeTab === tab.id 
                     ? 'bg-black text-white font-medium' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}
+                    : 'bg-gray-100 text-[#848E9C] hover:bg-gray-200'}
                 `}
                 onClick={() => onTabClick(tab.id)}
             >

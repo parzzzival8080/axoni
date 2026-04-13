@@ -25,7 +25,7 @@ const MobileSettingsPanel = () => {
               ) : (
                 <Sun size={20} className="text-gray-600" />
               )}
-              <span className="text-sm font-medium text-gray-900 dark:text-white">
+              <span className="text-sm font-medium text-white dark:text-white">
                 {isDark ? "Dark Mode" : "Light Mode"}
               </span>
             </div>
@@ -49,7 +49,7 @@ const MobileSettingsPanel = () => {
           >
             <div className="flex items-center gap-3">
               <Globe size={20} className="text-gray-600 dark:text-[#5E6673]" />
-              <span className="text-sm font-medium text-gray-900 dark:text-white">
+              <span className="text-sm font-medium text-white dark:text-white">
                 Language / Currency
               </span>
             </div>

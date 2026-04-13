@@ -357,7 +357,7 @@ function App() {
   const activeStep = selectedNetwork ? 3 : selectedCryptoSymbol ? 2 : 1;
 
   return (
-    <div className="min-h-screen bg-[#121212] text-white font-sans">
+    <div className="bg-[#121212] text-white font-sans">
       {/* Main Content Area */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-2xl font-semibold mb-6 text-white">Deposit</h1>
@@ -618,7 +618,7 @@ function App() {
               {activeStep === 3 && selectedCoinDetails && (
                 <div className="border border-[#2A2A2A] rounded-lg p-4 md:p-6 space-y-4">
                   {/* Warning Message */}
-                  <div className="flex items-start p-3 bg-yellow-50 border border-yellow-200 rounded-md text-yellow-800 text-sm">
+                  <div className="flex items-start p-3 bg-[#2EBD85]/5 border border-[#2EBD85]/20 rounded-md text-[#2EBD85] text-sm">
                     <InfoCircleIcon />
                     <span>
                       Only use this address to deposit {selectedCryptoSymbol}.
@@ -941,7 +941,7 @@ function App() {
                               transaction.status === 'approved' || transaction.status === 'completed' || transaction.status === 'confirmed'
                                 ? 'bg-green-100 text-green-800'
                                 : transaction.status === 'pending'
-                                ? 'bg-yellow-100 text-yellow-800'
+                                ? 'bg-[#2EBD85]/10 text-[#2EBD85]'
                                 : transaction.status === 'failed' || transaction.status === 'rejected'
                                 ? 'bg-red-100 text-red-800'
                                 : 'bg-[#1E1E1E] text-white'

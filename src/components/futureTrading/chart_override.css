@@ -87,28 +87,24 @@ iframe {
   stroke: rgb(26, 26, 26) !important;
 }
 
-/* Ensure chart borders match the specified color */
+/* Clean chart borders */
 .chart-section,
 .chart-area,
 .TVChartContainer {
-  border: 1px solid rgb(26, 26, 26) !important;
+  border: none !important;
   border-radius: 0 !important;
 }
 
-/* Increase chart height */
+/* Chart fills its container */
 .future-trading-container .chart-section {
-  min-height: 500px !important;
-  height: 500px !important;
-  max-height: 500px !important;
   overflow: hidden !important;
   position: relative !important;
   z-index: 1 !important;
+  height: 100% !important;
 }
 
 .TVChartContainer {
   height: 100% !important;
-  min-height: 450px !important;
-  max-height: 450px !important;
   overflow: hidden !important;
 }
 

@@ -341,7 +341,7 @@ const Conversion = () => {
     };
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="bg-black text-white">
       {/* Header */}
       <div className="flex flex-col items-center justify-center text-center py-12 bg-black">
         <h1 className="text-5xl font-bold mb-3 text-[#2EBD85]">Convert</h1>
@@ -516,14 +516,14 @@ const Conversion = () => {
               className="flex justify-between items-center w-full text-left py-2"
               onClick={() => setOpenFAQIndex(openFAQIndex === 0 ? null : 0)}
             >
-              <span className="text-base font-medium">How do I convert crypto on AXONI?</span>
+              <span className="text-base font-medium">How do I convert crypto on GLD?</span>
               <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-gray-500 transform ${openFAQIndex === 0 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
             {openFAQIndex === 0 && (
               <div className="pt-2 pb-4 text-gray-300 text-sm">
-                <p>To convert crypto on AXONI, navigate to the 'Convert' page. Select the cryptocurrency you want to convert from (e.g., USDT) and the cryptocurrency you want to convert to (e.g., BTC). Enter the amount you wish to convert, review the exchange rate, and confirm the transaction. Conversion on AXONI is designed to be quick and straightforward, with zero trading fees.</p>
+                <p>To convert crypto on GLD, navigate to the 'Convert' page. Select the cryptocurrency you want to convert from (e.g., USDT) and the cryptocurrency you want to convert to (e.g., BTC). Enter the amount you wish to convert, review the exchange rate, and confirm the transaction. Conversion on GLD is designed to be quick and straightforward, with zero trading fees.</p>
               </div>
             )}
           </div>
@@ -533,14 +533,14 @@ const Conversion = () => {
               className="flex justify-between items-center w-full text-left py-2"
               onClick={() => setOpenFAQIndex(openFAQIndex === 1 ? null : 1)}
             >
-              <span className="text-base font-medium">Which crypto can I convert on AXONI?</span>
+              <span className="text-base font-medium">Which crypto can I convert on GLD?</span>
               <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-gray-500 transform ${openFAQIndex === 1 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
             {openFAQIndex === 1 && (
               <div className="pt-2 pb-4 text-gray-300 text-sm">
-                <p>AXONI supports a wide range of cryptocurrencies for conversion, including major assets like BTC, ETH, USDT, and many altcoins. Our platform continuously updates its supported list, so you can check the 'From' and 'To' currency selectors on the Convert page for the most current options available for your region.</p>
+                <p>GLD supports a wide range of cryptocurrencies for conversion, including major assets like BTC, ETH, USDT, and many altcoins. Our platform continuously updates its supported list, so you can check the 'From' and 'To' currency selectors on the Convert page for the most current options available for your region.</p>
               </div>
             )}
           </div>
@@ -557,7 +557,7 @@ const Conversion = () => {
             </button>
             {openFAQIndex === 2 && (
               <div className="pt-2 pb-4 text-gray-300 text-sm">
-                <p>Crypto conversion on AXONI offers a simpler, more direct way to exchange one cryptocurrency for another, typically at a fixed rate with zero trading fees and no slippage. It's ideal for users who want to quickly swap assets without engaging in complex order book trading. Trading, on the other hand, involves buying and selling assets on a spot or futures market, where prices fluctuate based on supply and demand, and may involve various order types and fees.</p>
+                <p>Crypto conversion on GLD offers a simpler, more direct way to exchange one cryptocurrency for another, typically at a fixed rate with zero trading fees and no slippage. It's ideal for users who want to quickly swap assets without engaging in complex order book trading. Trading, on the other hand, involves buying and selling assets on a spot or futures market, where prices fluctuate based on supply and demand, and may involve various order types and fees.</p>
               </div>
             )}
           </div>
@@ -574,7 +574,7 @@ const Conversion = () => {
             </button>
             {openFAQIndex === 3 && (
               <div className="pt-2 pb-4 text-gray-300 text-sm">
-                <p>The AXONI crypto converter is designed for ease of use. Key conditions include: zero trading fees, no slippage (you get exactly the quoted amount), and lower limits for smaller transactions. While there are minimum and maximum conversion amounts per transaction, these are clearly displayed on the conversion interface. Ensure you have sufficient balance in your spot wallet for the conversion.</p>
+                <p>The GLD crypto converter is designed for ease of use. Key conditions include: zero trading fees, no slippage (you get exactly the quoted amount), and lower limits for smaller transactions. While there are minimum and maximum conversion amounts per transaction, these are clearly displayed on the conversion interface. Ensure you have sufficient balance in your spot wallet for the conversion.</p>
               </div>
             )}
           </div>
@@ -591,7 +591,7 @@ const Conversion = () => {
             </button>
             {openFAQIndex === 4 && (
               <div className="pt-2 pb-4 text-gray-300 text-sm">
-                <p>After a successful conversion on AXONI, the converted cryptocurrency will be immediately credited to your Spot Wallet. You can view your updated balances and transaction history in the 'Assets' section of your account. The conversion history also provides a detailed record of all your past conversions.</p>
+                <p>After a successful conversion on GLD, the converted cryptocurrency will be immediately credited to your Spot Wallet. You can view your updated balances and transaction history in the 'Assets' section of your account. The conversion history also provides a detailed record of all your past conversions.</p>
               </div>
             )}
           </div>
@@ -625,7 +625,7 @@ const Conversion = () => {
             </button>
             {openFAQIndex === 6 && (
               <div className="pt-2 pb-4 text-gray-300 text-sm">
-                <p>Once your crypto is converted and credited to your Spot Wallet, you can easily deposit or withdraw it from the 'Assets' section of your AXONI account. Navigate to 'Assets', select the cryptocurrency, and choose between 'Deposit' or 'Withdraw' to proceed with your transaction. Follow the on-screen instructions, ensuring all details are correct for secure transfers.</p>
+                <p>Once your crypto is converted and credited to your Spot Wallet, you can easily deposit or withdraw it from the 'Assets' section of your GLD account. Navigate to 'Assets', select the cryptocurrency, and choose between 'Deposit' or 'Withdraw' to proceed with your transaction. Follow the on-screen instructions, ensuring all details are correct for secure transfers.</p>
               </div>
             )}
           </div>

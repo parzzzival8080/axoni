@@ -409,7 +409,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
             
             {/* Background refresh indicator */}
             {isBackgroundRefresh && (
-              <div className="flex items-center bg-yellow-800 bg-opacity-90 px-3 py-1 rounded-full text-xs text-yellow-300">
+              <div className="flex items-center bg-[#259A6C] bg-opacity-90 px-3 py-1 rounded-full text-xs text-[#2EBD85]">
                 <FontAwesomeIcon icon={faSyncAlt} className="animate-spin mr-2" size="xs" />
                 Auto-updating...
               </div>
@@ -484,7 +484,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                         order.status === 'open_position' ? 'bg-green-900 bg-opacity-30 text-green-400 border border-green-700' :
                         order.status === 'close_position' ? 'bg-gray-900 bg-opacity-30 text-gray-400 border border-gray-700' :
                         order.status === 'liquidated' ? 'bg-red-900 bg-opacity-30 text-red-400 border border-red-700' :
-                        'bg-yellow-900 bg-opacity-30 text-yellow-400 border border-yellow-700'
+                        'bg-yellow-900 bg-opacity-30 text-[#2EBD85] border border-[#2EBD85]'
                       }`}>
                         {order.status === 'open_position' ? 'Open Position' :
                          order.status === 'close_position' ? 'Closed Position' :
@@ -496,7 +496,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                       <div className="flex space-x-2">
                         {order.status !== 'close_position' && (
                           <button 
-                            className="bg-[#00b897] text-black font-medium py-1 px-3 rounded-full hover:bg-opacity-90 transition-colors flex items-center"
+                            className="bg-[#00b897] text-white font-medium py-1 px-3 rounded-full hover:bg-opacity-90 transition-colors flex items-center"
                             onClick={() => handleAddMargin(order)}
                           >
                             <FontAwesomeIcon icon={faPlus} className="mr-1" size="xs" />
@@ -582,7 +582,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                 <>
                   <div className="mb-5 text-center">
                     <div className="w-16 h-16 rounded-full bg-yellow-900 bg-opacity-20 mx-auto flex items-center justify-center mb-4">
-                      <FontAwesomeIcon icon={faExclamationTriangle} className="text-3xl text-yellow-500" />
+                      <FontAwesomeIcon icon={faExclamationTriangle} className="text-3xl text-[#2EBD85]" />
                     </div>
                     <p className="text-white text-lg mb-2">Confirm Position Close</p>
                     <p className="text-gray-400 text-sm">Are you sure you want to close this position? This action cannot be undone.</p>
@@ -701,11 +701,11 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                             value={marginAmount}
                             onChange={(e) => setMarginAmount(e.target.value)}
                             placeholder="0.00"
-                            className="w-full bg-[#12141C] border border-gray-700 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:border-yellow-500"
+                            className="w-full bg-[#12141C] border border-gray-700 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-[#2EBD85] focus:border-[#2EBD85]"
                           />
                           <button
                             onClick={handleMaxAmount}
-                            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-yellow-500 text-xs font-bold px-2 py-1 hover:text-yellow-400"
+                            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-[#2EBD85] text-xs font-bold px-2 py-1 hover:text-[#2EBD85]"
                           >
                             MAX
                           </button>

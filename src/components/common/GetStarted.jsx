@@ -10,7 +10,7 @@ const GetStarted = () => {
     navigate('/');
   };
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-8">
+    <div className="bg-[#0a0a0a] flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-lg text-center">
         {/* Image Container - Responsive and properly centered */}
         <div className="mb-2 sm:mb-3 flex justify-center">
@@ -24,7 +24,7 @@ const GetStarted = () => {
         </div>
         
         {/* Title - Responsive with better spacing */}
-        <h1 className="text-xl sm:text-[28px] font-semibold text-gray-900 mb-8 sm:mb-10 lg:mb-12 px-4 leading-tight">
+        <h1 className="text-xl sm:text-[28px] font-semibold text-white mb-8 sm:mb-10 lg:mb-12 px-4 leading-tight">
           Let's get you started
         </h1>
         

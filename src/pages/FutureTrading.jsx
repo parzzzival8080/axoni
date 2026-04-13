@@ -33,6 +33,7 @@ const FutureTrading = () => {
   const [orderHistoryRefreshTrigger, setOrderHistoryRefreshTrigger] = useState(0);
   const [orderHistoryData, setOrderHistoryData] = useState([]);
   const [mobileTradeTab, setMobileTradeTab] = useState(''); // '' | 'buy' | 'sell'
+  const [mobileView, setMobileView] = useState('orderbook'); // 'chart' | 'orderbook' | 'orders'
   
   // Unified notification system
   const {
@@ -274,71 +275,83 @@ const FutureTrading = () => {
   // Example: {error && !walletData && <div className="inline-warning">{error}</div>}
 
   return (
-    <div className="future-trading-container">
-      <SubHeader 
-        cryptoData={subHeaderData} // Use memoized data
+    <div className="future-trading-container" style={{ background: '#0a0a0a', minHeight: '100vh' }}>
+      <SubHeader
+        cryptoData={subHeaderData}
         coinPairId={coinPairId}
-        tradableCoins={tradableCoins} // Pass tradableCoins as a prop
-        loading={loading} // Pass loading state
-      />
-      <FavoritesBar 
-        activeCoinPairId={coinPairId} 
         tradableCoins={tradableCoins}
-        onCoinSelect={handleCoinSelect}
+        loading={loading}
       />
-      <>
-        <div className="main-container">
-          <TradingChartDynamic 
-            selectedSymbol={walletData?.symbol} 
-          />
-          <OrderBook 
-            cryptoData={subHeaderData} // Use memoized data for OrderBook too if it consumes similar props
-          />
-          <div className="trade-form-container desktop-only">
-            <TradeForm 
-              walletData={walletData}
-              coinPairId={coinPairId}
-              tradableCoins={tradableCoins}
-              onTradeSuccess={handleTradeSuccess}
-              uid={uid}
-              orderHistoryData={orderHistoryData}
-            />
+
+      {/* Desktop: 3-column layout */}
+      <div className="hidden md:flex" style={{ borderTop: '1px solid #1E1E1E', height: 'calc(100vh - 120px)', minHeight: 450 }}>
+        <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', borderRight: '1px solid #1E1E1E' }}>
+          <TradingChartDynamic selectedSymbol={walletData?.symbol} />
+        </div>
+
+        <div style={{ width: 280, flexShrink: 0, borderRight: '1px solid #1E1E1E', overflow: 'hidden', background: '#0a0a0a' }}>
+          <OrderBook cryptoData={subHeaderData} />
+        </div>
+
+        <div style={{ width: 300, flexShrink: 0, overflow: 'auto', background: '#0a0a0a', borderLeft: '1px solid #1E1E1E' }}>
+          <TradeForm walletData={walletData} coinPairId={coinPairId} tradableCoins={tradableCoins} onTradeSuccess={handleTradeSuccess} uid={uid} orderHistoryData={orderHistoryData} />
+        </div>
+      </div>
+
+      {/* Desktop: Orders table below */}
+      <div className="hidden md:block orders-container">
+        <OrdersSection refreshTrigger={orderHistoryRefreshTrigger} walletData={walletData} onOrderHistoryData={handleOrderHistoryData} />
+      </div>
+
+      {/* Mobile: chart + orderbook stacked */}
+      <div className="md:hidden" style={{ paddingBottom: 120 }}>
+        {/* Chart */}
+        <div style={{ height: '45vh', minHeight: 250 }}>
+          <TradingChartDynamic selectedSymbol={walletData?.symbol} />
+        </div>
+
+        {/* Tabs: Order Book / Positions */}
+        <div style={{ display: 'flex', borderBottom: '1px solid #1E1E1E', background: '#0a0a0a' }}>
+          {[
+            { key: 'orderbook', label: 'Order Book' },
+            { key: 'orders', label: 'Positions' },
+          ].map(tab => (
+            <button
+              key={tab.key}
+              onClick={() => setMobileView(tab.key)}
+              style={{
+                padding: '8px 16px',
+                fontSize: 12,
+                fontWeight: mobileView === tab.key ? 600 : 400,
+                color: mobileView === tab.key ? '#fff' : '#5E6673',
+                background: 'transparent',
+                border: 'none',
+                borderBottom: mobileView === tab.key ? '2px solid #2EBD85' : '2px solid transparent',
+                cursor: 'pointer',
+              }}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Tab content */}
+        {mobileView === 'orderbook' && (
+          <OrderBook cryptoData={subHeaderData} />
+        )}
+        {mobileView === 'orders' && (
+          <div className="orders-container">
+            <OrdersSection refreshTrigger={orderHistoryRefreshTrigger} walletData={walletData} onOrderHistoryData={handleOrderHistoryData} />
           </div>
-        </div>
-        <div className="orders-container">
-          <OrdersSection 
-            refreshTrigger={orderHistoryRefreshTrigger} 
-            walletData={walletData}
-            onOrderHistoryData={handleOrderHistoryData}
-          />
-        </div>
-        {/* Mobile app bar with buy/sell buttons */}
-        <div className="future-mobile-trade-bar">
-          <button 
-            className="future-mobile-trade-btn buy" 
-            onClick={() => handleMobileTradeTab('buy')}
-          >
-            Buy / Long
-          </button>
-          <button 
-            className="future-mobile-trade-btn sell" 
-            onClick={() => handleMobileTradeTab('sell')}
-          >
-            Sell / Short
-          </button>
-        </div>
-        {renderMobileTradeForm()}
-        {/* Unified Notification System */}
-        <UnifiedNotification 
-          notification={notification}
-          onClose={hideNotification}
-          position="bottom-center"
-          className="unified-notification-override"
-        />
-      </>
-      
-      {/* Walkthrough Trigger — desktop only */}
-      {!isMobile && <FutureTradingWalkthroughTrigger />}
+        )}
+      </div>
+
+      <div className="future-mobile-trade-bar">
+        <button className="future-mobile-trade-btn buy" onClick={() => handleMobileTradeTab('buy')}>Buy / Long</button>
+        <button className="future-mobile-trade-btn sell" onClick={() => handleMobileTradeTab('sell')}>Sell / Short</button>
+      </div>
+      {renderMobileTradeForm()}
+      <UnifiedNotification notification={notification} onClose={hideNotification} position="bottom-center" className="unified-notification-override" />
     </div>
   );
 };

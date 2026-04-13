@@ -644,10 +644,10 @@ const Transfer = () => {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: scrollbarStyles }} />
-      <div className="min-h-screen bg-[#121212] text-white font-sans">
+      <div className="bg-[#121212] text-white font-sans">
         {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 py-8">
-          <h1 className="text-2xl font-bold mb-8 text-black">Transfer</h1>
+          <h1 className="text-2xl font-bold mb-8 text-white">Transfer</h1>
 
           <div className="flex flex-col gap-8">
             {/* Transfer Form - Half Width */}
@@ -902,7 +902,7 @@ const Transfer = () => {
                 <div className="transfer-balance-display flex flex-row gap-4 mt-2">
                   <div className="flex items-center bg-[#1E1E1E] dark:bg-gray-800 rounded-full px-4 py-2 shadow-sm border border-[#2A2A2A] dark:border-gray-700 min-w-[150px]">
                     <svg
-                      className="w-4 h-4 mr-2 text-yellow-600 dark:text-yellow-400"
+                      className="w-4 h-4 mr-2 text-[#2EBD85] dark:text-[#2EBD85]"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -986,7 +986,7 @@ const Transfer = () => {
           <div className="transfer-history-section mt-12">
             <div className="flex border-b border-[#2A2A2A] dark:border-gray-700 mb-6">
               <button
-                className={`py-4 mr-6 text-sm font-medium border-b-2 border-yellow-500 text-yellow-500 dark:text-yellow-400`}
+                className={`py-4 mr-6 text-sm font-medium border-b-2 border-[#2EBD85] text-[#2EBD85] dark:text-[#2EBD85]`}
                 style={{ pointerEvents: "none" }}
               >
                 Transfer history <InfoIcon />
@@ -1005,7 +1005,7 @@ const Transfer = () => {
             {/* Loading State */}
             {isHistoryLoading && (
               <div className="flex justify-center items-center py-16">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500 dark:border-yellow-400"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#2EBD85] dark:border-[#2EBD85]"></div>
               </div>
             )}
 
@@ -1036,7 +1036,7 @@ const Transfer = () => {
                 </p>
                 <button
                   onClick={fetchTransferHistory}
-                  className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition-colors dark:bg-yellow-600 dark:hover:bg-yellow-700"
+                  className="px-4 py-2 bg-[#2EBD85] text-white rounded-md hover:bg-[#2EBD85] transition-colors dark:bg-[#2EBD85] dark:hover:bg-[#259A6C]"
                 >
                   Try Again
                 </button>
@@ -1127,7 +1127,7 @@ const Transfer = () => {
                               transfer.status === "approved"
                                 ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
                                 : transfer.status === "pending"
-                                ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                                ? "bg-[#2EBD85]/10 text-[#2EBD85] dark:bg-[#2EBD85]/15 dark:text-[#2EBD85]"
                                 : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
                             }`}
                           >

@@ -87,7 +87,7 @@ const CryptoPriceSection = ({ cryptoData, isLoading }) => {
                     <td className="py-4 px-4 text-white">${crypto.marketCap.toFixed(3)}B</td>
                     <td className="py-4 px-4">
                       <div className="flex justify-center space-x-2">
-                        <button className="py-1 px-3 bg-[#2EBD85] hover:bg-[#FF8C24] text-white text-sm rounded transition-colors font-medium">
+                        <button className="py-1 px-3 bg-[#2EBD85] hover:bg-[#259A6C] text-white text-sm rounded transition-colors font-medium">
                           Trade
                         </button>
                         <button className="py-1 px-3 bg-gray-700 hover:bg-gray-600 text-white text-sm rounded transition-colors font-medium">

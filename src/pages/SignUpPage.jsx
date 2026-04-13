@@ -1130,7 +1130,7 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#121212]">
+    <div className="flex flex-col bg-[#121212]">
       {isMobile ? (
         <div className="flex items-center px-4 h-12 bg-[#121212]">
           <button onClick={() => navigate("/login")} className="flex items-center gap-1 text-white">
@@ -1171,7 +1171,7 @@ const SignUpPage = () => {
                       className={`w-6 h-6 rounded-lg flex items-center justify-center text-sm font-medium transition-colors duration-200
                                      ${
                                        currentStep >= step
-                                         ? "bg-[#2EBD85] text-white border-[#F0B90B]"
+                                         ? "bg-[#2EBD85] text-white border-[#2EBD85]"
                                          : "bg-[#1E1E1E] text-[#5E6673] border border-[#2A2A2A]"
                                      }`}
                     >
@@ -1318,7 +1318,7 @@ const SignUpPage = () => {
                   htmlFor="terms"
                   className="text-sm text-[#848E9C] leading-relaxed"
                 >
-                  By creating an account, I agree to AXONI{" "}
+                  By creating an account, I agree to GLD{" "}
                   <a
                     href="#"
                     className="text-[#2EBD85] hover:underline font-medium"

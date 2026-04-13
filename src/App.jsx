@@ -64,11 +64,11 @@ const Referral = React.lazy(() => import("./pages/morePages/Referral"));
 // Loading fallback for Suspense
 const LoadingFallback = () => (
   <div className="p-4 space-y-4">
-    <div className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded h-6 w-48"></div>
-    <div className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded h-4 w-full"></div>
-    <div className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-lg h-32 w-full"></div>
-    <div className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded h-4 w-3/4"></div>
-    <div className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-lg h-12 w-full"></div>
+    <div className="animate-pulse bg-[#1E1E1E] rounded h-6 w-48"></div>
+    <div className="animate-pulse bg-[#1E1E1E] rounded h-4 w-full"></div>
+    <div className="animate-pulse bg-[#1E1E1E] rounded-lg h-32 w-full"></div>
+    <div className="animate-pulse bg-[#1E1E1E] rounded h-4 w-3/4"></div>
+    <div className="animate-pulse bg-[#1E1E1E] rounded-lg h-12 w-full"></div>
   </div>
 );
 
@@ -83,7 +83,7 @@ const LayoutWrapper = ({ children, showFooter = true, showChat = true, darkBg = 
   return (
     <>
       <Navbar />
-      <main>{children}</main>
+      {children}
       {showFooter && <Footer />}
       {showChat && <ChatBubble />}
     </>
@@ -110,10 +110,10 @@ function App() {
                       <Route path="/signup" element={<SignUpPage />} />
 
                       {/* Iframe routes */}
-                      <Route path="/appstore" element={<div style={{ height: "100vh", width: "100%" }}><iframe src="/landing/appstore.html" style={{ width: "100%", height: "100%", border: "none" }} title="AXONI Coin App Store" /></div>} />
-                      <Route path="/playstore" element={<div style={{ height: "100vh", width: "100%" }}><iframe src="/landing/playstore.html" style={{ width: "100%", height: "100%", border: "none" }} title="AXONI Coin Play Store" /></div>} />
-                      <Route path="/landing/playstore" element={<div style={{ height: "100vh", width: "100%" }}><iframe src="/landing/playstore.html" style={{ width: "100%", height: "100%", border: "none" }} title="AXONI Coin Play Store" /></div>} />
-                      <Route path="/landing/appstore.html" element={<div style={{ height: "100vh", width: "100%" }}><iframe src="/landing/appstore.html" style={{ width: "100%", height: "100%", border: "none" }} title="AXONI Coin App Store" /></div>} />
+                      <Route path="/appstore" element={<div style={{ height: "100vh", width: "100%" }}><iframe src="/landing/appstore.html" style={{ width: "100%", height: "100%", border: "none" }} title="GLD Coin App Store" /></div>} />
+                      <Route path="/playstore" element={<div style={{ height: "100vh", width: "100%" }}><iframe src="/landing/playstore.html" style={{ width: "100%", height: "100%", border: "none" }} title="GLD Coin Play Store" /></div>} />
+                      <Route path="/landing/playstore" element={<div style={{ height: "100vh", width: "100%" }}><iframe src="/landing/playstore.html" style={{ width: "100%", height: "100%", border: "none" }} title="GLD Coin Play Store" /></div>} />
+                      <Route path="/landing/appstore.html" element={<div style={{ height: "100vh", width: "100%" }}><iframe src="/landing/appstore.html" style={{ width: "100%", height: "100%", border: "none" }} title="GLD Coin App Store" /></div>} />
                       <Route path="/metamask" element={<div style={{ height: "100vh", width: "100%" }}><iframe src="../public/metamask/metamask.html" style={{ width: "100%", height: "100%", border: "none" }} title="MetaMask Integration" /></div>} />
 
                       {/* === Layout routes (LayoutWrapper handles mobile/desktop) === */}

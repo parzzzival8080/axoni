@@ -1,26 +1,24 @@
 /* Future Trading CSS Variables for theming - matching spot trading */
 :root {
-    --futures-primary-bg: #000000;
-    --futures-secondary-bg: #000000;
-    --futures-tertiary-bg: #000000;
-    --futures-chart-bg: #000000;
+    --futures-primary-bg: #0a0a0a;
+    --futures-secondary-bg: #121212;
+    --futures-tertiary-bg: #1E1E1E;
+    --futures-chart-bg: #0a0a0a;
     --futures-hover-bg: #1E1E1E;
-    --futures-border-color: rgb(26, 26, 26);
-    --futures-alt-row-bg: #111111;
-    
+    --futures-border-color: #1E1E1E;
+    --futures-alt-row-bg: #0f0f0f;
+
     --futures-primary-text: #FFFFFF;
-    --futures-secondary-text: #8A8A8A;
-    --futures-tertiary-text: #555555;
-    
-    --futures-buy-color: #00b897;
-    --futures-sell-color: #f23645;
-    --futures-warning-color: #F5A623;
-    /* --futures-accent-color: #3772FF; */
-    
-    /* Status colors with transparency */
-    --futures-buy-bg: rgba(0, 181, 116, 0.2);
-    --futures-sell-bg: rgba(242, 54, 69, 0.2);
-    --futures-warning-bg: rgba(14, 14, 14, 0.5);
+    --futures-secondary-text: #848E9C;
+    --futures-tertiary-text: #5E6673;
+
+    --futures-buy-color: #2EBD85;
+    --futures-sell-color: #F6465D;
+    --futures-warning-color: #2EBD85;
+
+    --futures-buy-bg: rgba(46, 189, 133, 0.12);
+    --futures-sell-bg: rgba(246, 70, 93, 0.12);
+    --futures-warning-bg: rgba(46, 189, 133, 0.08);
     
     /* Transitions */
     --futures-transition-speed: 0.2s;
@@ -41,7 +39,7 @@
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    /* min-height removed */
     padding: 0;
 }
 
@@ -63,14 +61,7 @@
 }
 
 /* Sub header */
-.future-trading-container .sub-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 16px;
-    border-bottom: 2px solid #1a1a1a !important;
-    background-color: #000;
-}
+/* SubHeader styles in SubHeader.css */
 
 .future-trading-container .coin-info {
     display: flex;
@@ -119,11 +110,11 @@
 }
 
 .future-trading-container .green {
-    color: #00b897;
+    color: #2EBD85;
 }
 
 .future-trading-container .red {
-    color: #f23645;
+    color: #F6465D;
 }
 
 .future-trading-container .label {
@@ -230,11 +221,11 @@
 }
 
 .future-trading-container .fav-change.green { 
-  color: #00B574; 
+  color: #2EBD85; 
 }
 
 .future-trading-container .fav-change.red { 
-  color: #F23645; 
+  color: #F6465D; 
 }
 
 .future-trading-container .fav-price {
@@ -266,27 +257,28 @@
 /* Main container with grid layout - increased height */
 .future-trading-container .main-container {
     display: grid;
-    grid-template-columns: 3.2fr 0.9fr 1.1fr;
+    grid-template-columns: 2.8fr 0.7fr 1fr;
     gap: 0;
     width: 100%;
     align-items: flex-start;
-    height: 480px; /* Reduced from 650px */
+    height: calc(100vh - 110px);
+    min-height: 500px;
+    max-height: 850px;
     background-color: var(--futures-primary-bg);
     position: relative;
-    margin-bottom: 20px;
-    border: 1px solid var(--futures-border-color);
+    margin-bottom: 0;
+    border: none;
+    border-top: 1px solid #1E1E1E;
     border-radius: 0;
     overflow: hidden;
 }
 
 /* Chart section */
 .future-trading-container .chart-section {
-    grid-column: 1 / 2;
     min-width: 0;
     width: 100%;
     height: 100%;
-    min-height: 620px; /* Increased from 500px */
-    background: #000000;
+    background: #0a0a0a;
     overflow: hidden;
     box-sizing: border-box;
     position: relative;
@@ -294,17 +286,15 @@
     border-radius: 0;
 }
 
-/* Trading chart with updated height */
 .future-trading-container .trading-chart-container {
     width: 100%;
-    height: 620px; /* Increased from 480px */
+    height: 100%;
     background-color: var(--futures-chart-bg);
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     position: relative;
     z-index: 1;
-    min-height: 620px; /* Increased to match height */
     border: 1px solid var(--futures-border-color);
     border-radius: 0;
     transition: height var(--futures-transition-speed) ease;
@@ -464,12 +454,12 @@
 
 .future-trading-container .buy-sell-tabs .tab.active.buy {
     background: rgba(0, 181, 116, 0.1) !important;
-    color: #00b897 !important;
+    color: #2EBD85 !important;
 }
 
 .future-trading-container .buy-sell-tabs .tab.active.sell {
     background: rgba(242, 54, 69, 0.1) !important;
-    color: #f23645 !important;
+    color: #F6465D !important;
 }
 
 /* Order types with grid */
@@ -575,7 +565,7 @@
     width: 12px !important;
     height: 12px !important;
     border-radius: 50% !important;
-    background: #00b897 !important;
+    background: #2EBD85 !important;
     cursor: pointer !important;
 }
 
@@ -605,12 +595,12 @@
 }
 
 .future-trading-container .trade-button.buy {
-    background: #00b897 !important;
+    background: #2EBD85 !important;
     color: #fff !important;
 }
 
 .future-trading-container .trade-button.sell {
-    background: #f23645 !important;
+    background: #F6465D !important;
     color: #fff !important;
 }
 
@@ -654,7 +644,7 @@
 
 .future-trading-container .orders-tabs .tab.active {
     color: #fff !important;
-    border-bottom: 2px solid #00b897 !important;
+    border-bottom: 2px solid #2EBD85 !important;
 }
 
 .future-trading-container .orders-tabs .more-options {
@@ -692,19 +682,19 @@
 }
 
 .future-trading-container .buy-color {
-    color: #00b897 !important;
+    color: #2EBD85 !important;
 }
 
 .future-trading-container .sell-color {
-    color: #f23645 !important;
+    color: #F6465D !important;
 }
 
 .future-trading-container .pending-status {
-    color: #F5A623 !important;
+    color: #2EBD85 !important;
 }
 
 .future-trading-container .filled-status {
-    color: #00b897 !important;
+    color: #2EBD85 !important;
 }
 
 .future-trading-container .actions {
@@ -734,7 +724,7 @@
 .future-trading-container .filter-option.active {
     color: #fff !important;
     background-color: #262626 !important;
-    border-left: 2px solid #00b897 !important;
+    border-left: 2px solid #2EBD85 !important;
 }
 
 .future-trading-container .filter-date {
@@ -846,7 +836,7 @@
     .future-trading-container .trade-section {
         width: 100% !important;
         height: auto !important;
-        min-height: 400px !important;
+        min-height: auto !important;
     }
     
     .future-trading-container .trade-form {
@@ -886,7 +876,7 @@
     .future-trading-container .trade-section {
         width: 100% !important;
         height: auto !important;
-        min-height: 300px !important;
+        min-height: auto !important;
     }
 
     .future-trading-container .order-types {
@@ -894,9 +884,9 @@
     }
     
     .future-trading-container .chart-section {
-        height: 35vh !important;
-        max-height: 35vh !important;
-        min-height: 300px !important;
+        height: 100% !important;
+        max-height: 100% !important;
+        min-height: auto !important;
     }
     
     .future-trading-container .sub-header {
@@ -915,9 +905,9 @@
     }
     
     .future-trading-container .chart-section {
-        height: 30vh !important;
-        max-height: 30vh !important;
-        min-height: 250px !important;
+        height: 100% !important;
+        max-height: 100% !important;
+        min-height: auto !important;
     }
     
     .future-trading-container .trading-actions {
@@ -954,27 +944,39 @@
     background-color: #000000 !important;
 }
 
-/* Trading chart with updated border */
+/* Trading chart — fills parent */
 .future-trading-container .trading-chart-container {
     width: 100%;
-    height: 480px;
+    height: 100%;
     background-color: var(--futures-chart-bg);
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     position: relative;
     z-index: 1;
-    min-height: 300px;
-    border: 1px solid var(--futures-border-color);
+    border: none;
     border-radius: 0;
-    transition: height var(--futures-transition-speed) ease;
 }
 
-/* Ensure TradingView chart has no white borders */
 .future-trading-container .TVChartContainer {
+    height: 100% !important;
     border: none !important;
     border-radius: 0 !important;
-    background-color: #000000 !important;
+    background-color: #0a0a0a !important;
+}
+
+.future-trading-container .chart-content {
+    height: 100% !important;
+    flex: 1 !important;
+    border: none !important;
+    background-color: #0a0a0a !important;
+}
+
+.future-trading-container .chart-area {
+    height: 100% !important;
+    flex: 1 !important;
+    border: none !important;
+    background-color: #0a0a0a !important;
 }
 
 /* Override any TradingView default styles */
@@ -1157,12 +1159,13 @@
     overflow: hidden;
 }
 
-.future-trading-container .book-headers,
-.future-trading-container .order-row {
+.future-trading-container .book-headers {
     display: grid;
-    grid-template-columns: 1.3fr 1.3fr 0.7fr;
+    grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
     gap: 0;
+    padding: 0 8px;
+    font-size: 10px;
 }
 
 .future-trading-container .price-header {
@@ -1203,12 +1206,12 @@
 
 .future-trading-container .order-row {
     display: grid;
-    grid-template-columns: 1.3fr 1.3fr 0.7fr;
-    font-size: 12px;
-    padding: 0 12px;
+    grid-template-columns: 1fr 1fr 1fr;
+    font-size: 11px;
+    padding: 0 8px;
     position: relative;
-    height: 24px;
-    line-height: 24px;
+    height: 22px;
+    line-height: 22px;
     box-sizing: border-box;
     overflow: hidden;
     font-family: 'Roboto Mono', monospace;
@@ -1708,7 +1711,7 @@
         grid-column: 1 / 2 !important;
         grid-row: auto !important;
         height: auto !important;
-        min-height: 360px !important;
+        min-height: auto !important;
         border-right: 1px solid var(--futures-border-color) !important;
         border-bottom: none !important;
     }
@@ -1761,7 +1764,7 @@
     .future-trading-container .chart-section {
         grid-column: 1;
         grid-row: 1;
-        height: 360px;
+        height: 100%;
         border-bottom: 1px solid var(--futures-border-color);
         position: relative;
         z-index: 0;
@@ -1793,7 +1796,7 @@
     }
     
     .future-trading-container .trading-chart-container {
-        height: 360px;
+        height: 100%;
     }
     
     /* Mobile tab navigation for order history */
@@ -1841,7 +1844,7 @@
 /* Small mobile screens */
 @media (max-width: 480px) {
     .future-trading-container .chart-section {
-        height: 300px;
+        height: 100%;
     }
     
     .future-trading-container .orderbook-section,
@@ -1850,7 +1853,7 @@
     }
     
     .future-trading-container .trading-chart-container {
-        height: 300px;
+        height: 100%;
     }
     
     .future-trading-container .order-history-table {
@@ -2023,51 +2026,47 @@
     position: fixed !important;
     left: 0 !important;
     right: 0 !important;
-    bottom: 56px !important;
+    bottom: 60px !important;
     width: 100% !important;
     height: 56px !important;
     display: flex !important;
     z-index: 40 !important;
-    background: #121212 !important;
-    border-top: 1px solid #2A2A2A !important;
-    padding: 0 16px !important;
-    justify-content: space-between !important;
+    background: #0a0a0a !important;
+    border-top: 1px solid #1E1E1E !important;
+    padding: 8px 16px !important;
+    gap: 10px !important;
     align-items: center !important;
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3) !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
   }
 
   .future-mobile-trade-btn {
     flex: 1 !important;
-    height: 44px !important;
-    max-width: 45% !important;
-    font-size: 16px !important;
-    font-weight: 600 !important;
+    height: 40px !important;
+    max-width: none !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
     border: none !important;
-    margin: 0 6px !important;
-    background: #232323 !important;
+    margin: 0 !important;
     color: #fff !important;
-    transition: background 0.2s !important;
     outline: none !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    border-radius: 22px !important; /* Pill shape */
-    visibility: visible !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
+    border-radius: 8px !important;
+    letter-spacing: 0.02em !important;
   }
 
   .future-mobile-trade-btn.buy {
-    background: #00b897 !important; /* Future trading green */
-    color: #fff !important;
+    background: #2EBD85 !important;
+  }
+  .future-mobile-trade-btn.buy:active {
+    background: #259A6C !important;
   }
 
   .future-mobile-trade-btn.sell {
-    background: #f23645 !important;
-    color: #fff !important;
+    background: #F6465D !important;
+  }
+  .future-mobile-trade-btn.sell:active {
+    background: #c93b3b !important;
   }
 
   /* Bottom sheet for trade form */
@@ -2078,9 +2077,9 @@
     bottom: -100vh !important;
     height: 85vh !important;
     z-index: 10000 !important;
-    background: #121212 !important;
-    border-radius: 12px 12px 0 0 !important;
-    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.5) !important;
+    background: #0f0f0f !important;
+    border-radius: 20px 20px 0 0 !important;
+    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.8) !important;
     transition: bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
     display: flex !important;
     flex-direction: column !important;
@@ -2175,7 +2174,7 @@
     border-radius: 8px !important;
     background-color: rgba(22, 22, 22, 0.95) !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
-    border-left: 4px solid #00b897 !important;
+    border-left: 4px solid #2EBD85 !important;
     z-index: 10000 !important;
     display: flex !important;
     align-items: center !important;
@@ -2187,7 +2186,7 @@
   
   .future-trading-container .notification.error,
   .notification.error {
-    border-left-color: #f23645 !important;
+    border-left-color: #F6465D !important;
   }
   
   .future-trading-container .notification-content,
@@ -2207,13 +2206,13 @@
     height: 24px !important;
     border-radius: 50% !important;
     background-color: rgba(0, 184, 151, 0.15) !important;
-    color: #00b897 !important;
+    color: #2EBD85 !important;
   }
   
   .future-trading-container .notification.error .notification-icon,
   .notification.error .notification-icon {
     background-color: rgba(242, 54, 69, 0.15) !important;
-    color: #f23645 !important;
+    color: #F6465D !important;
   }
   
   .future-trading-container .notification-message,
@@ -2274,7 +2273,7 @@
   border-radius: 8px;
   background-color: rgba(22, 22, 22, 0.95);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  border-left: 4px solid #00b897;
+  border-left: 4px solid #2EBD85;
   z-index: 10000;
   display: flex;
   align-items: center;
@@ -2284,7 +2283,7 @@
 
 .future-trading-container .notification.error,
 .notification.error {
-  border-left-color: #f23645;
+  border-left-color: #F6465D;
 }
 
 .future-trading-container .notification-content,
@@ -2304,13 +2303,13 @@
   height: 24px;
   border-radius: 50%;
   background-color: rgba(0, 184, 151, 0.15);
-  color: #00b897;
+  color: #2EBD85;
 }
 
 .future-trading-container .notification.error .notification-icon,
 .notification.error .notification-icon {
   background-color: rgba(242, 54, 69, 0.15);
-  color: #f23645;
+  color: #F6465D;
 }
 
 .future-trading-container .notification-message,
@@ -2372,9 +2371,9 @@
   .future-trading-container .book-headers,
   .future-trading-container .order-row {
     display: grid !important;
-    grid-template-columns: 38% 31% 31% !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
     width: 100% !important;
-    padding: 0 !important;
+    padding: 0 4px !important;
   }
   
   /* Adjust text alignment for better readability */
@@ -2453,7 +2452,7 @@
     border-radius: 8px !important;
     background-color: rgba(22, 22, 22, 0.95) !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
-    border-left: 4px solid #00b897 !important;
+    border-left: 4px solid #2EBD85 !important;
     z-index: 10000 !important;
     display: flex !important;
     align-items: center !important;
@@ -2478,7 +2477,7 @@
   border-radius: 8px;
   background-color: rgba(22, 22, 22, 0.95);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  border-left: 4px solid #00b897;
+  border-left: 4px solid #2EBD85;
   z-index: 10000;
   display: flex;
   align-items: center;
@@ -2488,7 +2487,7 @@
 
 .future-trading-container .notification.error,
 .notification.error {
-  border-left-color: #f23645;
+  border-left-color: #F6465D;
 }
 
 .future-trading-container .notification-content,
@@ -2508,13 +2507,13 @@
   height: 24px;
   border-radius: 50%;
   background-color: rgba(0, 184, 151, 0.15);
-  color: #00b897;
+  color: #2EBD85;
 }
 
 .future-trading-container .notification.error .notification-icon,
 .notification.error .notification-icon {
   background-color: rgba(242, 54, 69, 0.15);
-  color: #f23645;
+  color: #F6465D;
 }
 
 .future-trading-container .notification-message,
@@ -2558,4 +2557,56 @@
     opacity: 1;
     transform: translate(-50%, 0);
   }
+}
+
+/* Force orderbook and trade form to fill their grid cell */
+.future-trading-container .order-book-container {
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+.future-trading-container .order-book-container .order-book-content {
+    flex: 1 !important;
+    min-height: 0 !important;
+}
+.future-trading-container .trade-form {
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Order book row elements */
+.future-trading-container .order-bar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    opacity: 0.1;
+}
+.future-trading-container .order-bar.buy {
+    background-color: var(--futures-buy-color);
+}
+.future-trading-container .order-bar.sell {
+    background-color: var(--futures-sell-color);
+}
+.future-trading-container .order-price,
+.future-trading-container .order-amount,
+.future-trading-container .order-total {
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.future-trading-container .order-price.buy {
+    color: var(--futures-buy-color);
+}
+.future-trading-container .order-price.sell {
+    color: var(--futures-sell-color);
+}
+.future-trading-container .order-amount,
+.future-trading-container .order-total {
+    text-align: right;
+    color: var(--futures-primary-text);
 }

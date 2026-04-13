@@ -33,10 +33,10 @@ const MetaMaskWallet = () => {
     setShowDetails(false);
   };
 
-  // Try to fetch AXONI address when connected and no address is available
+  // Try to fetch GLD address when connected and no address is available
   useEffect(() => {
     if (isConnected && !COINCHIWalletAddress) {
-      console.log('Attempting to fetch AXONI wallet address on mount');
+      console.log('Attempting to fetch GLD wallet address on mount');
       fetchCOINCHIWalletAddress();
     }
   }, [isConnected, COINCHIWalletAddress, fetchCOINCHIWalletAddress]);
@@ -198,10 +198,10 @@ const MetaMaskWallet = () => {
             </div>
           </div>
 
-          {/* AXONI Wallet Address */}
+          {/* GLD Wallet Address */}
           <div style={{ marginBottom: '16px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-              <span style={{ fontSize: '12px', color: '#9ca3af' }}>AXONI Deposit Address</span>
+              <span style={{ fontSize: '12px', color: '#9ca3af' }}>GLD Deposit Address</span>
               <div style={{ display: 'flex', gap: '8px' }}>
                 {COINCHIWalletAddress && (
                   <button
@@ -223,7 +223,7 @@ const MetaMaskWallet = () => {
                     fetchCOINCHIWalletAddress();
                   }}
                   style={{ fontSize: '12px', color: '#f97316', background: 'none', border: 'none', cursor: 'pointer' }}
-                  title="Refresh AXONI address"
+                  title="Refresh GLD address"
                 >
                   <FaSync style={{ fontSize: '10px' }} />
                 </button>
@@ -313,7 +313,7 @@ const MetaMaskWallet = () => {
               onMouseLeave={(e) => e.target.style.background = '#f97316'}
             >
               <FaArrowDown />
-              Deposit to AXONI
+              Deposit to GLD
             </button>
             <div className="secondary-actions" style={{ display: 'flex', gap: '8px' }}>
               <button

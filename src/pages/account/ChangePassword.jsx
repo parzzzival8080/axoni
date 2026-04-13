@@ -211,11 +211,11 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#121212] dark:bg-black text-black dark:text-white">
+    <div className="bg-[#121212] dark:bg-black text-white dark:text-white">
       <div className="max-w-2xl mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <div className="flex items-center text-sm text-[#5E6673] dark:text-[#5E6673] mb-8">
-          <Link to="/account/profile/security" className="hover:text-yellow-500 transition-colors">
+          <Link to="/account/profile/security" className="hover:text-[#2EBD85] transition-colors">
             Security center
           </Link>
           <FiChevronRight className="mx-2" />
@@ -261,7 +261,7 @@ const ChangePassword = () => {
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
                     placeholder="Enter verification code sent to your email"
-                    className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-yellow-500 outline-none transition-all"
+                    className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-[#2EBD85] outline-none transition-all"
                     disabled={loading}
                   />
                 </div>
@@ -271,7 +271,7 @@ const ChangePassword = () => {
                   </span>
                   <button
                     type="button"
-                    className={`text-sm ${canResendOtp ? 'text-yellow-500 hover:text-yellow-600 cursor-pointer' : 'text-[#5E6673] cursor-not-allowed'}`}
+                    className={`text-sm ${canResendOtp ? 'text-[#2EBD85] hover:text-[#259A6C] cursor-pointer' : 'text-[#5E6673] cursor-not-allowed'}`}
                     onClick={handleResendOTP}
                     disabled={!canResendOtp || loading}
                   >
@@ -285,7 +285,7 @@ const ChangePassword = () => {
                   type="submit"
                   className={`w-32 py-3 rounded-md font-medium transition-colors ${
                     otp && !loading
-                      ? 'bg-yellow-600 text-white hover:bg-yellow-700'
+                      ? 'bg-[#2EBD85] text-white hover:bg-[#259A6C]'
                       : 'bg-gray-300 dark:bg-gray-700 text-[#5E6673] dark:text-[#5E6673] cursor-not-allowed'
                   }`}
                   disabled={!otp || loading}
@@ -313,7 +313,7 @@ const ChangePassword = () => {
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="Enter your new password"
-                    className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-yellow-500 outline-none transition-all"
+                    className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-[#2EBD85] outline-none transition-all"
                     disabled={loading}
                   />
                   <button
@@ -341,7 +341,7 @@ const ChangePassword = () => {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Enter your new password again"
-                    className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-yellow-500 outline-none transition-all"
+                    className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-[#2EBD85] outline-none transition-all"
                     disabled={loading}
                   />
                   <button
@@ -362,7 +362,7 @@ const ChangePassword = () => {
                     type="checkbox"
                     checked={agreeToWithdrawalRestriction}
                     onChange={() => setAgreeToWithdrawalRestriction(!agreeToWithdrawalRestriction)}
-                    className="w-4 h-4 text-yellow-600 border-[#2A2A2A] rounded focus:ring-yellow-500"
+                    className="w-4 h-4 text-[#2EBD85] border-[#2A2A2A] rounded focus:ring-[#2EBD85]"
                     disabled={loading}
                   />
                 </div>
@@ -377,7 +377,7 @@ const ChangePassword = () => {
                   type="submit"
                   className={`w-32 py-3 rounded-md font-medium transition-colors ${
                     newPassword && confirmPassword && agreeToWithdrawalRestriction && !loading
-                      ? 'bg-yellow-600 text-white hover:bg-yellow-700'
+                      ? 'bg-[#2EBD85] text-white hover:bg-[#259A6C]'
                       : 'bg-gray-300 dark:bg-gray-700 text-[#5E6673] dark:text-[#5E6673] cursor-not-allowed'
                   }`}
                   disabled={!newPassword || !confirmPassword || !agreeToWithdrawalRestriction || loading}

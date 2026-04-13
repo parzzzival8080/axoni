@@ -226,7 +226,7 @@ const Overview = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#1E1E1E]">
+      <div className="bg-[#1E1E1E]">
         {!isMobile && <ProfileNavBar currentPath="/profile/overview" />}
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="flex justify-center items-center py-16">
@@ -242,7 +242,7 @@ const Overview = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-[#1E1E1E]">
+      <div className="bg-[#1E1E1E]">
         {!isMobile && <ProfileNavBar currentPath="/profile/overview" />}
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="flex flex-col items-center justify-center py-16">
@@ -280,7 +280,7 @@ const Overview = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#121212] text-white relative">
+    <div className="bg-[#121212] text-white relative">
       {!isMobile && <ProfileNavBar currentPath="/profile/overview" />}
 
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -471,7 +471,7 @@ const Overview = () => {
                 </h2>
                 <Link
                   to="/my-assets"
-                  className="text-[#2EBD85] hover:text-yellow-600 text-sm font-medium flex items-center"
+                  className="text-[#2EBD85] hover:text-[#259A6C] text-sm font-medium flex items-center"
                 >
                   View All <FiArrowRight className="ml-1" />
                 </Link>

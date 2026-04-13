@@ -560,7 +560,7 @@ const LoginForm = () => {
                     <a
                       href="#"
                       onClick={(e) => { e.preventDefault(); handleResendOtp(); }}
-                      className={`${canResendOtp ? 'text-yellow-500 hover:text-yellow-400' : 'text-gray-500 cursor-not-allowed'}`}
+                      className={`${canResendOtp ? 'text-[#2EBD85] hover:text-[#2EBD85]' : 'text-gray-500 cursor-not-allowed'}`}
                     >
                       Resend OTP
                     </a>
@@ -690,7 +690,7 @@ const LoginForm = () => {
       ) : (
         <div className="qr-code-container">
           <img src="/assets/login/qr-code.png" alt="Login QR Code" className="qr-code" />
-          <p>Scan with the AXONI App to log in</p>
+          <p>Scan with the GLD App to log in</p>
         </div>
       )}
       <br />

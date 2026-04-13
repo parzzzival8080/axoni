@@ -1,107 +1,49 @@
 import React from 'react';
-import laptop from '../../assets/homepage/laptop.png';
-import styles from './TradingGame.module.css';
+import { Link } from 'react-router-dom';
 
-const TradingGame = () => {
-  return (
-    <div className="relative z-0 min-h-[75vh] bg-black overflow-hidden">
-      {/* Blurry yellow Background Effect */}
-      <div className="absolute inset-0">
-        {/* Main yellow blur in the center-right */}
-        <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-yellow-500/30 rounded-full blur-3xl transform -translate-y-1/2" />
-        
-        {/* Secondary yellow blur for more depth */}
-        <div className="absolute top-1/3 right-1/3 w-80 h-80 bg-amber-600/20 rounded-full blur-3xl" />
-        
-        {/* Additional subtle blur on the left */}
-        <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-yellow-700/15 rounded-full blur-3xl" />
+const stats = [
+  { value: "500+", label: "Trading Pairs" },
+  { value: "$2B+", label: "24h Volume" },
+  { value: "3M+", label: "Global Users" },
+  { value: "<10ms", label: "Order Execution" },
+];
+
+const TradingGame = () => (
+  <div className="relative bg-[#0a0a0a] py-8 md:py-12 overflow-hidden">
+    {/* Subtle background glow */}
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#2EBD85]/[0.03] rounded-full blur-[120px]" />
+
+    <div className="relative container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
+      <div className="text-center max-w-2xl mx-auto mb-12">
+        <h2 className="text-2xl md:text-4xl font-bold text-white mb-3">
+          Level up your trading game
+        </h2>
+        <p className="text-[#848E9C] text-sm md:text-base leading-relaxed">
+          Low costs, high-speed execution, powerful tools, and deep liquidity — everything you need to trade with confidence.
+        </p>
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-4 h-[70vh] flex flex-col justify-center pb-32 lg:pb-40">        <div className="text-center">
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-            Level up your trading game
-          </h2>
-          <p className="text-gray-300 text-base md:text-lg mb-12 md:mb-16 max-w-2xl mx-auto">
-            Access low costs, high-speed transactions, powerful developer tools,
-            and more.
-          </p>
-
-          {/* Laptop Image Container */}
-          <div className="flex justify-center">
-            <div className="relative max-w-4xl w-full">
-              <img
-                src={laptop}
-                alt="Trading Platform"
-                className="w-full h-auto drop-shadow-2xl"
-              />
-            </div>
+      {/* Stats grid */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+        {stats.map((s) => (
+          <div key={s.label} className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-xl p-5 text-center">
+            <p className="text-2xl md:text-3xl font-bold text-[#2EBD85] mb-1">{s.value}</p>
+            <p className="text-[#848E9C] text-xs md:text-sm">{s.label}</p>
           </div>
-        </div>
+        ))}
       </div>
 
-      {/* Bottom Ticker Bar */}
-      <div className={styles.tickerBar}>
-        <div className={styles.tickerOuter + " py-3"}>
-          <div className={styles.tickerScroll}>
-            <div className={styles.tickerContent}>
-              <div className="flex items-center space-x-2 whitespace-nowrap">
-                <span className="text-xs sm:text-sm text-gray-400">BTC</span>
-                <span className="text-xs sm:text-sm text-white font-medium">$103,655.35</span>
-                <span className="text-green-400 text-xs">(+1.00%)</span>
-              </div>
-              <div className="flex items-center space-x-2 whitespace-nowrap">
-                <span className="text-xs sm:text-sm text-gray-400">ETH</span>
-                <span className="text-xs sm:text-sm text-white font-medium">$3,456.78</span>
-                <span className="text-red-400 text-xs">(-2.34%)</span>
-              </div>
-              <div className="flex items-center space-x-2 whitespace-nowrap">
-                <span className="text-xs sm:text-sm text-gray-400">BNB</span>
-                <span className="text-xs sm:text-sm text-white font-medium">$645.23</span>
-                <span className="text-green-400 text-xs">(+0.87%)</span>
-              </div>
-              <div className="flex items-center space-x-2 whitespace-nowrap">
-                <span className="text-xs sm:text-sm text-gray-400">ADA</span>
-                <span className="text-xs sm:text-sm text-white font-medium">$1.23</span>
-                <span className="text-green-400 text-xs">(+3.45%)</span>
-              </div>
-              <div className="flex items-center space-x-2 whitespace-nowrap">
-                <span className="text-xs sm:text-sm text-gray-400">SOL</span>
-                <span className="text-xs sm:text-sm text-white font-medium">$234.56</span>
-                <span className="text-red-400 text-xs">(-1.23%)</span>
-              </div>
-              {/* Duplicate items for continuous scrolling effect */}
-              <div className="flex items-center space-x-2 whitespace-nowrap">
-                <span className="text-xs sm:text-sm text-gray-400">BTC</span>
-                <span className="text-xs sm:text-sm text-white font-medium">$103,655.35</span>
-                <span className="text-green-400 text-xs">(+1.00%)</span>
-              </div>
-              <div className="flex items-center space-x-2 whitespace-nowrap">
-                <span className="text-xs sm:text-sm text-gray-400">ETH</span>
-                <span className="text-xs sm:text-sm text-white font-medium">$3,456.78</span>
-                <span className="text-red-400 text-xs">(-2.34%)</span>
-              </div>
-              <div className="flex items-center space-x-2 whitespace-nowrap">
-                <span className="text-xs sm:text-sm text-gray-400">BNB</span>
-                <span className="text-xs sm:text-sm text-white font-medium">$645.23</span>
-                <span className="text-green-400 text-xs">(+0.87%)</span>
-              </div>
-              <div className="flex items-center space-x-2 whitespace-nowrap">
-                <span className="text-xs sm:text-sm text-gray-400">ADA</span>
-                <span className="text-xs sm:text-sm text-white font-medium">$1.23</span>
-                <span className="text-green-400 text-xs">(+3.45%)</span>
-              </div>
-              <div className="flex items-center space-x-2 whitespace-nowrap">
-                <span className="text-xs sm:text-sm text-gray-400">SOL</span>
-                <span className="text-xs sm:text-sm text-white font-medium">$234.56</span>
-                <span className="text-red-400 text-xs">(-1.23%)</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="text-center">
+        <Link
+          to="/spot-trading"
+          className="inline-flex items-center gap-2 bg-[#2EBD85] hover:bg-[#259A6C] text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors"
+        >
+          Start Trading
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </Link>
       </div>
     </div>
-  );
-};
+  </div>
+);
 
 export default TradingGame;

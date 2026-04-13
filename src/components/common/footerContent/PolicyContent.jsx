@@ -94,7 +94,7 @@ const PrivacyPolicy = () => {
   //   );
 
   return (
-    <div className="min-h-screen bg-[#121212]">
+    <div className="bg-[#121212]">
       {/* Breadcrumb */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
         <nav className="flex items-center space-x-2 text-sm text-[#5E6673]">
@@ -116,7 +116,7 @@ const PrivacyPolicy = () => {
           <div className="flex-1 w-full xl:max-w-4xl">
             {/* Header */}
             <div className="mb-8">
-              <h1 className="text-3xl sm:text-4xl font-bold text-black mb-6">
+              <h1 className="text-3xl sm:text-4xl font-bold text-white mb-6">
                 Privacy Policy
               </h1>
               <p className="text-[#5E6673] text-sm mb-6">
@@ -174,7 +174,7 @@ const PrivacyPolicy = () => {
             {/* Content Sections */}
             <div className="space-y-8 sm:space-y-12">
               <section id="introduction">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
                   1. PRIVACY AGREEMENT AND DISCLAIMER
                 </h2>
                 <div className="space-y-4 text-white leading-relaxed">
@@ -204,7 +204,7 @@ const PrivacyPolicy = () => {
               </section>
 
               <section id="scope">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
                   2. SCOPE OF APPLICATION
                 </h2>
                 <div className="space-y-4 text-white leading-relaxed">
@@ -248,7 +248,7 @@ const PrivacyPolicy = () => {
               </section>
 
               <section id="information-use">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
                   3. INFORMATION USE
                 </h2>
                 <div className="space-y-4 text-white leading-relaxed">
@@ -274,7 +274,7 @@ const PrivacyPolicy = () => {
               </section>
 
               <section id="information-storage">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
                   4. INFORMATION STORAGE AND EXCHANGE
                 </h2>
                 <div className="space-y-4 text-white leading-relaxed">
@@ -290,7 +290,7 @@ const PrivacyPolicy = () => {
               </section>
 
               <section id="cookies">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
                   5. USE OF COOKIES
                 </h2>
                 <div className="space-y-4 text-white leading-relaxed">
@@ -313,12 +313,12 @@ const PrivacyPolicy = () => {
               </section>
 
               <section id="indemnification">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
                   6. Indemnification
                 </h2>
                 <div className="space-y-4 text-white leading-relaxed">
                   <p>
-                    You agree to indemnify and hold AXONI coin, its affiliates,
+                    You agree to indemnify and hold GLD coin, its affiliates,
                     and their respective officers, directors, employees, and
                     agents harmless from and against any claims, liabilities,
                     damages, losses, and expenses arising from your use of our
@@ -328,7 +328,7 @@ const PrivacyPolicy = () => {
               </section>
 
               <section id="security">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
                   7. INFORMATION SECURITY
                 </h2>
                 <div className="space-y-4 text-white leading-relaxed">
@@ -378,7 +378,7 @@ const PrivacyPolicy = () => {
               </section>
 
               <section id="data-protection">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
                   8. PROTECTION OF PERSONAL DATA
                 </h2>
                 <div className="space-y-4 text-white leading-relaxed">
@@ -393,7 +393,7 @@ const PrivacyPolicy = () => {
 
                   <div className="space-y-4">
                     <div>
-                      <h4 className="font-semibold text-black mb-2">
+                      <h4 className="font-semibold text-white mb-2">
                         Physical measures
                       </h4>
                       <p>
@@ -403,7 +403,7 @@ const PrivacyPolicy = () => {
                     </div>
 
                     <div>
-                      <h4 className="font-semibold text-black mb-2">
+                      <h4 className="font-semibold text-white mb-2">
                         Electronic Measures
                       </h4>
                       <p>
@@ -414,7 +414,7 @@ const PrivacyPolicy = () => {
                     </div>
 
                     <div>
-                      <h4 className="font-semibold text-black mb-2">
+                      <h4 className="font-semibold text-white mb-2">
                         Managerial Measures
                       </h4>
                       <p>
@@ -425,7 +425,7 @@ const PrivacyPolicy = () => {
                     </div>
 
                     <div>
-                      <h4 className="font-semibold text-black mb-2">
+                      <h4 className="font-semibold text-white mb-2">
                         Technical Measures
                       </h4>
                       <p>
@@ -436,7 +436,7 @@ const PrivacyPolicy = () => {
                     </div>
 
                     <div>
-                      <h4 className="font-semibold text-black mb-2">
+                      <h4 className="font-semibold text-white mb-2">
                         Additional Measures
                       </h4>
                       <p> Our web server is protected by a firewall.</p>
@@ -462,7 +462,7 @@ const PrivacyPolicy = () => {
               </section>
 
               <section id="disclaimer">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
                   9. DISCLAIMER
                 </h2>
                 <div className="space-y-4 text-white leading-relaxed">
@@ -496,7 +496,7 @@ const PrivacyPolicy = () => {
               </section>
 
               <section id="withdrawal">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
                   10. ACCOUNT TIERS AND CORRESPONDING LIMITS
                 </h2>
                 <div className="space-y-4 text-white leading-relaxed">
@@ -538,7 +538,7 @@ const PrivacyPolicy = () => {
 
             {/* Contact Information */}
             <div className="mt-16 p-6 bg-[#1E1E1E] rounded-lg">
-              <h3 className="text-lg font-semibold text-black mb-3">
+              <h3 className="text-lg font-semibold text-white mb-3">
                 Questions About This Privacy Policy?
               </h3>
               <p className="text-[#848E9C] mb-3">

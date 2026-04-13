@@ -51,7 +51,7 @@ const resolveTitle = (pathname) => {
   for (const { prefix, title } of ROUTE_TITLE_PATTERNS) {
     if (pathname.startsWith(prefix)) return title;
   }
-  return "Axoni";
+  return "GLD";
 };
 
 const handleBack = (navigate) => {

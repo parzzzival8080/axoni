@@ -945,7 +945,7 @@ const VerifyPage = () => {
  // Show loading state while checking verification status
  if (isCheckingStatus) {
  return (
- <div className="min-h-screen bg-[#121212] flex flex-col items-center justify-center py-8 px-4 font-sans">
+ <div className="bg-[#121212] flex flex-col items-center justify-center py-8 px-4 font-sans">
  <div className="flex flex-col items-center">
  <Loader2 size={48} className="animate-spin text-[#5E6673] mb-4" />
  <p className="text-[#848E9C]">
@@ -959,15 +959,15 @@ const VerifyPage = () => {
  // Show verification status screens for already processed users
  if (verificationStatus === VERIFICATION_STATUS.PENDING) {
  return (
- <div className="min-h-screen bg-[#121212] flex flex-col items-center py-8 px-4 font-sans">
+ <div className="bg-[#121212] flex flex-col items-center py-8 px-4 font-sans">
  <div className="w-full max-w-4xl mb-6">
  {!isMobile && <ProfileNavBar />}
  </div>
  <div className="w-full max-w-md flex flex-col items-center justify-center bg-[#1E1E1E] rounded-xl p-8 mt-12 shadow">
- <span className="inline-flex items-center px-6 py-2 rounded-full bg-yellow-100 text-yellow-700 font-semibold text-lg border border-yellow-300 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-700 animate-pulse mb-4">
+ <span className="inline-flex items-center px-6 py-2 rounded-full bg-[#2EBD85]/10 text-[#2EBD85] font-semibold text-lg border border-[#2EBD85] dark:bg-[#2EBD85]/15 dark:text-[#2EBD85] dark:border-[#2EBD85] animate-pulse mb-4">
  <CheckCircle2
  size={28}
- className="mr-2 text-yellow-500"
+ className="mr-2 text-[#2EBD85]"
  strokeWidth={2}
  />
  Verification Pending
@@ -994,7 +994,7 @@ const VerifyPage = () => {
 
  if (verificationStatus === VERIFICATION_STATUS.VERIFIED) {
  return (
- <div className="min-h-screen bg-[#121212] flex flex-col items-center py-8 px-4 font-sans">
+ <div className="bg-[#121212] flex flex-col items-center py-8 px-4 font-sans">
  <div className="w-full max-w-4xl mb-6">
  {!isMobile && <ProfileNavBar />}
  </div>
@@ -1024,14 +1024,14 @@ const VerifyPage = () => {
 
  if (verificationStatus === VERIFICATION_STATUS.REJECTED) {
  return (
- <div className="min-h-screen bg-[#121212] flex flex-col items-center py-8 px-4 font-sans">
+ <div className="bg-[#121212] flex flex-col items-center py-8 px-4 font-sans">
  <div className="w-full max-w-4xl mb-6">
  {!isMobile && <ProfileNavBar />}
  </div>
  <div className="w-full max-w-md flex flex-col items-center justify-center bg-[#1E1E1E] rounded-xl p-8 mt-12 shadow">
- <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4">
+ <div className="w-16 h-16 bg-[#F6465D]/10 rounded-full flex items-center justify-center mb-4">
  <svg
- className="w-8 h-8 text-red-600 dark:text-red-400"
+ className="w-8 h-8 text-[#F6465D]"
  fill="none"
  stroke="currentColor"
  viewBox="0 0 24 24"
@@ -1443,10 +1443,10 @@ const VerifyPage = () => {
  return (
  <div className="w-full text-center py-12 flex flex-col items-center">
  <div className="flex items-center justify-center mb-4">
- <span className="inline-flex items-center px-6 py-2 rounded-full bg-yellow-100 text-yellow-700 font-semibold text-lg border border-yellow-300 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-700 animate-pulse">
+ <span className="inline-flex items-center px-6 py-2 rounded-full bg-[#2EBD85]/10 text-[#2EBD85] font-semibold text-lg border border-[#2EBD85] dark:bg-[#2EBD85]/15 dark:text-[#2EBD85] dark:border-[#2EBD85] animate-pulse">
  <CheckCircle2
  size={32}
- className="mr-2 text-yellow-500"
+ className="mr-2 text-[#2EBD85]"
  strokeWidth={2}
  />
  Pending Review
@@ -1457,7 +1457,7 @@ const VerifyPage = () => {
  </h2>
  <p className="text-base text-[#848E9C] mb-8 max-w-md mx-auto">
  Thank you! Your information has been submitted and is now{" "}
- <span className="font-semibold text-yellow-500 dark:text-yellow-400">
+ <span className="font-semibold text-[#2EBD85] dark:text-[#2EBD85]">
  pending review
  </span>
  .<br />
@@ -1487,7 +1487,7 @@ const VerifyPage = () => {
  const showNavigation = currentStep > 1 && currentStep < 6;
 
  return (
- <div className="min-h-screen bg-[#121212] flex flex-col items-center py-8 px-4 font-sans">
+ <div className="bg-[#121212] flex flex-col items-center py-8 px-4 font-sans">
  <div className="w-full max-w-4xl mb-6">
  {!isMobile && <ProfileNavBar />}
  </div>

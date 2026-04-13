@@ -45,7 +45,7 @@ export const MetaMaskProvider = ({ children }) => {
       try {
         const MMSDK = new MetaMaskSDK({
           dappMetadata: {
-            name: "AXONI Trading Platform",
+            name: "GLD Trading Platform",
             url: window.location.href,
           },
           infuraAPIKey: import.meta.env.VITE_INFURA_API_KEY, // Optional - use Vite env variable
@@ -90,7 +90,7 @@ export const MetaMaskProvider = ({ children }) => {
           setIsConnected(true);
           await fetchBalance(currentAccount, provider);
           
-          // Fetch AXONI wallet address when connected
+          // Fetch GLD wallet address when connected
           await fetchCOINCHIWalletAddress();
           
           // Update localStorage with current account
@@ -134,7 +134,7 @@ export const MetaMaskProvider = ({ children }) => {
         setIsConnected(true);
         await fetchBalance(accounts[0]);
         
-        // Fetch AXONI wallet address when connected
+        // Fetch GLD wallet address when connected
         await fetchCOINCHIWalletAddress();
         
         // Store connection state
@@ -215,7 +215,7 @@ export const MetaMaskProvider = ({ children }) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
-  // Fetch AXONI wallet address
+  // Fetch GLD wallet address
   const fetchCOINCHIWalletAddress = async () => {
     console.log('🔍 fetchCOINCHIWalletAddress called');
     try {
@@ -224,7 +224,7 @@ export const MetaMaskProvider = ({ children }) => {
       const authToken = localStorage.getItem('authToken');
       const apiKey = '5lPMMw7mIuyzQQDjlKJbe0dY';
       
-      console.log('🔍 Fetching AXONI wallet address with UID:', uid);
+      console.log('🔍 Fetching GLD wallet address with UID:', uid);
       console.log('🔍 All localStorage items:', {
         uid: localStorage.getItem('uid'),
         user_id: localStorage.getItem('user_id'),
@@ -282,16 +282,16 @@ export const MetaMaskProvider = ({ children }) => {
       }
       
       const url = `https://api.axoni.co/api/v1/metamask-address/${uid}?apikey=${apiKey}`;
-      console.log('🔍 Fetching AXONI address from URL:', url);
+      console.log('🔍 Fetching GLD address from URL:', url);
       
       const response = await fetch(url);
       
-      console.log('🔍 AXONI API Response status:', response.status);
-      console.log('🔍 AXONI API Response headers:', Object.fromEntries(response.headers.entries()));
+      console.log('🔍 GLD API Response status:', response.status);
+      console.log('🔍 GLD API Response headers:', Object.fromEntries(response.headers.entries()));
       
       if (response.ok) {
         const responseText = await response.text();
-        console.log('🔍 AXONI wallet address response (raw):', responseText);
+        console.log('🔍 GLD wallet address response (raw):', responseText);
         console.log('🔍 Response text length:', responseText.length);
         
         // The API returns the address directly as a string
@@ -319,7 +319,7 @@ export const MetaMaskProvider = ({ children }) => {
         console.log('🔍 Address length:', address?.length);
         
         if (address) {
-          console.log('🔍 Setting AXONI wallet address to:', address);
+          console.log('🔍 Setting GLD wallet address to:', address);
           setCOINCHIWalletAddress(address);
           return address;
         } else {
@@ -329,12 +329,12 @@ export const MetaMaskProvider = ({ children }) => {
         }
       } else {
         const errorText = await response.text();
-        console.error('🔍 ❌ Failed to fetch AXONI wallet address:', response.status, response.statusText, errorText);
+        console.error('🔍 ❌ Failed to fetch GLD wallet address:', response.status, response.statusText, errorText);
         setCOINCHIWalletAddress(''); // Set empty to stop loading
         return '';
       }
     } catch (err) {
-      console.error('🔍 ❌ Error fetching AXONI wallet address:', err);
+      console.error('🔍 ❌ Error fetching GLD wallet address:', err);
       setCOINCHIWalletAddress(''); // Set empty to stop loading
       return '';
     }

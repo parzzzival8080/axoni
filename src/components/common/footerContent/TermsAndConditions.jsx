@@ -41,7 +41,7 @@ const TermsAndConditions = () => {
     { id: 'definitions', title: 'DEFINITION OF TERMS', number: '3.' },
     { id: 'compliance', title: 'COMPLIANCE WITH BOT AND AUTOMATED TRADING RESTRICTIONS', number: '4.' },
     { id: 'trading', title: 'CRYPTOCURRENCY TRADING', number: '5.' },
-    { id: 'services', title: 'AXONI COIN AND SERVICES', number: '6.' },
+    { id: 'services', title: 'GLD COIN AND SERVICES', number: '6.' },
     { id: 'intellectual-property', title: 'INTELLECTUAL PROPERTY', number: '7.' },
     { id: 'privacy', title: 'PRIVACY POLICY', number: '8.' },
     { id: 'liability', title: 'LIMITATION OF LIABILITY', number: '9.' },
@@ -57,7 +57,7 @@ const TermsAndConditions = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#121212]">
+    <div className="bg-[#121212]">
       {/* Breadcrumb */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
         <nav className="flex items-center space-x-2 text-sm text-[#5E6673]">
@@ -75,7 +75,7 @@ const TermsAndConditions = () => {
           <div className="flex-1 w-full xl:max-w-4xl">
             {/* Header */}
             <div className="mb-8">
-              <h1 className="text-3xl sm:text-4xl font-bold text-black mb-6">Terms of Service</h1>
+              <h1 className="text-3xl sm:text-4xl font-bold text-white mb-6">Terms of Service</h1>
               <p className="text-[#5E6673] text-sm mb-6">Published on January 01, 2024</p>
               
               {/* Mobile Table of Contents Toggle */}
@@ -128,16 +128,16 @@ const TermsAndConditions = () => {
             {/* Content Sections */}
             <div className="space-y-8 sm:space-y-12">
               <section id="introduction">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">1. INTRODUCTION</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">1. INTRODUCTION</h2>
                 <div className="space-y-4 text-white leading-relaxed">
-                    <p>Welcome to AXONI coin ("Exchange," "We," "Us," or "Our"). By using our website and services, you agree to be bound by these Terms of Service ("Terms"). 
+                    <p>Welcome to GLD coin ("Exchange," "We," "Us," or "Our"). By using our website and services, you agree to be bound by these Terms of Service ("Terms"). 
                         Please read them carefully before accessing or using our platform. If you do not agree with any part of these Terms, you should not use our services.
                     </p>
                 </div>
               </section>
 
               <section id="special-reminder">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">2. SPECIAL REMINDER</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">2. SPECIAL REMINDER</h2>
                 <div className="space-y-4 text-white leading-relaxed">
                     <div className="bg-amber-50 border-l-4 border-amber-400 p-4 sm:p-6 mb-6">
                       <div className="flex items-start">
@@ -162,7 +162,7 @@ const TermsAndConditions = () => {
               </section>
 
               <section id="definitions">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">3. DEFINITION OF TERMS</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">3. DEFINITION OF TERMS</h2>
                 <div className="space-y-4 text-white leading-relaxed">
                   <ul className="space-y-4">
                     <li>
@@ -174,8 +174,8 @@ const TermsAndConditions = () => {
                         entitled to vote for election of directors or other managing authority.
                     </li>
                     <li>
-                        <strong>Application:</strong> means the software program provided by the Company downloaded by You on any electronic device, named AXONI coin Company (referred to as either 'the Company,' 'we,' 'Us,' or 'Our' in this Agreement)
-                         refers to AXONI coin.
+                        <strong>Application:</strong> means the software program provided by the Company downloaded by You on any electronic device, named GLD coin Company (referred to as either 'the Company,' 'we,' 'Us,' or 'Our' in this Agreement)
+                         refers to GLD coin.
                     </li>
                     <li>
                         <strong>Country:</strong> refers to: California, United States.
@@ -201,7 +201,7 @@ const TermsAndConditions = () => {
               </section>
 
               <section id="compliance">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">4. COMPREHENSIVE TERMS OF SERVICE: COMPLIANCE WITH BOT AND AUTOMATED TRADING RESTRICTIONS</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">4. COMPREHENSIVE TERMS OF SERVICE: COMPLIANCE WITH BOT AND AUTOMATED TRADING RESTRICTIONS</h2>
                 <div className="space-y-6 text-white leading-relaxed">
                   <p>
                     The Terms of Service (ToS) for trading platforms establish the rules and responsibilities of users to ensure fair, lawful, and secure operations. 
@@ -210,7 +210,7 @@ const TermsAndConditions = () => {
                   </p>
                   
                   <div>
-                    <h3 className="text-base sm:text-lg font-semibold text-black mb-3">Use of Services</h3>
+                    <h3 className="text-base sm:text-lg font-semibold text-white mb-3">Use of Services</h3>
                     <ul className="space-y-2">
                       <li>
                           <strong>Eligibility:</strong> You must be at least 18 years old and have the legal capacity to enter into contracts to use our services.
@@ -231,7 +231,7 @@ const TermsAndConditions = () => {
                   </div>
 
                   <div>
-                    <h3 className="text-lg font-semibold text-black mb-3">Definition of Bots and Automated Trading Systems</h3>
+                    <h3 className="text-lg font-semibold text-white mb-3">Definition of Bots and Automated Trading Systems</h3>
                     <ul className="space-y-2">
                       <li>
                           <strong>Bots:</strong> Software programs or scripts automating trades, market monitoring, or strategy execution without direct user intervention.
@@ -246,7 +246,7 @@ const TermsAndConditions = () => {
                   </div>
 
                   <div>
-                    <h3 className="text-lg font-semibold text-black mb-3">Key Provisions on Prohibited Activities</h3>
+                    <h3 className="text-lg font-semibold text-white mb-3">Key Provisions on Prohibited Activities</h3>
                     <p>Prohibited actions include:</p>
                     <ul className="space-y-2 mt-2">
                       <li>• Automated placement, cancellation, or modification of orders.</li>
@@ -258,7 +258,7 @@ const TermsAndConditions = () => {
                   </div>
 
                   <div>
-                    <h3 className="text-lg font-semibold text-black mb-3">Implications Under SEC Regulations</h3>
+                    <h3 className="text-lg font-semibold text-white mb-3">Implications Under SEC Regulations</h3>
                     <ul className="space-y-2">
                       <li>
                           <strong>Market Manipulation:</strong> Practices like spoofing (placing fake orders to manipulate prices) or layering (sending false supply/demand signals) are violations of federal securities laws.
@@ -273,7 +273,7 @@ const TermsAndConditions = () => {
                   </div>
 
                   <div>
-                    <h3 className="text-lg font-semibold text-black mb-3">Penalties for Violations</h3>
+                    <h3 className="text-lg font-semibold text-white mb-3">Penalties for Violations</h3>
                     <ul className="space-y-2">
                       <li>• Fines and financial penalties.</li>
                       <li>• Suspension or permanent account bans.</li>
@@ -282,7 +282,7 @@ const TermsAndConditions = () => {
                   </div>
 
                   <div>
-                    <h3 className="text-lg font-semibold text-black mb-3">Platform Enforcement Measures</h3>
+                    <h3 className="text-lg font-semibold text-white mb-3">Platform Enforcement Measures</h3>
                     <p>To ensure compliance and security, platforms employ:</p>
                     <ul className="space-y-2 mt-2">
                       <li>
@@ -300,11 +300,11 @@ const TermsAndConditions = () => {
               </section>
 
               <section id="trading">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">5. CRYPTOCURRENCY TRADING</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">5. CRYPTOCURRENCY TRADING</h2>
                  <div className="space-y-4 text-white leading-relaxed">
                   <ul className="space-y-3">
                     <li>
-                        <strong>Risks:</strong> AXONI coin trading involves significant risks, and the value of AXONI coin and other cryptocurrencies can be highly volatile. 
+                        <strong>Risks:</strong> GLD coin trading involves significant risks, and the value of GLD coin and other cryptocurrencies can be highly volatile. 
                         You acknowledge and understand the risks associated with trading digital assets.
                     </li>
                     <li>
@@ -312,34 +312,34 @@ const TermsAndConditions = () => {
                          financial advisor before making any trading decisions.
                     </li>
                     <li>
-                        <strong>Fees:</strong> Fees and charges related to AXONI coin trading are outlined in a separate fee schedule available on our website.
+                        <strong>Fees:</strong> Fees and charges related to GLD coin trading are outlined in a separate fee schedule available on our website.
                     </li>
                   </ul>
                 </div>
               </section>
 
               <section id="services">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">6. AXONI COIN AND SERVICES</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">6. GLD COIN AND SERVICES</h2>
                  <div className="space-y-4 text-white leading-relaxed">
                   <ul className="space-y-3">
                     <li>
-                        <strong>Availability:</strong> We will make reasonable efforts to ensure the availability of AXONI coin and a wide range of services on our platform. 
-                        However, we do not guarantee the availability of AXONI coin or specific services.
+                        <strong>Availability:</strong> We will make reasonable efforts to ensure the availability of GLD coin and a wide range of services on our platform. 
+                        However, we do not guarantee the availability of GLD coin or specific services.
                     </li>
                     <li>
-                        <strong>Modifications:</strong> We reserve the right to modify or discontinue AXONI coin or any services at any time without prior notice.
+                        <strong>Modifications:</strong> We reserve the right to modify or discontinue GLD coin or any services at any time without prior notice.
                     </li>
                   </ul>
                 </div>
               </section>
 
               <section id="intellectual-property">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">7. INTELLECTUAL PROPERTY</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">7. INTELLECTUAL PROPERTY</h2>
                  <div className="space-y-4 text-white leading-relaxed">
                   <ul className="space-y-3">
                     <li>
                         <strong>Ownership:</strong> All content and materials on our platform, including logos, trademarks, graphics, and software, are the property of 
-                        AXONI coin and are protected by intellectual property laws.
+                        GLD coin and are protected by intellectual property laws.
                     </li>
                     <li>
                         <strong>Limited License:</strong> You are granted a limited, non-exclusive, non-transferable license to access and use our platform for personal, non-commercial purposes.
@@ -349,14 +349,14 @@ const TermsAndConditions = () => {
               </section>
 
               <section id="privacy">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">8. PRIVACY POLICY</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">8. PRIVACY POLICY</h2>
                 <div className="space-y-4 text-white leading-relaxed">
                   <p>Please refer to our Privacy Policy, which outlines how we collect, use, and protect your personal information.</p>
                 </div>
               </section>
 
               <section id="liability">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">9. LIMITATION OF LIABILITY</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">9. LIMITATION OF LIABILITY</h2>
                 <div className="space-y-4 text-white leading-relaxed">
                   <ul className="space-y-3">
                     <li>
@@ -371,14 +371,14 @@ const TermsAndConditions = () => {
               </section>
 
               <section id="indemnification">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">10. INDEMNIFICATION</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">10. INDEMNIFICATION</h2>
                 <div className="space-y-4 text-white leading-relaxed">
-                  <p>You agree to indemnify and hold AXONI coin, its affiliates, and their respective officers, directors, employees, and agents harmless from and against any claims, liabilities, damages, losses, and expenses arising from your use of our platform.</p>
+                  <p>You agree to indemnify and hold GLD coin, its affiliates, and their respective officers, directors, employees, and agents harmless from and against any claims, liabilities, damages, losses, and expenses arising from your use of our platform.</p>
                 </div>
               </section>
 
               <section id="governing-law">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">11. GOVERNING LAW AND DISPUTE RESOLUTION</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">11. GOVERNING LAW AND DISPUTE RESOLUTION</h2>
                 <div className="space-y-4 text-white leading-relaxed">
                   <p>
                     These Terms shall be governed by and construed in accordance with the laws of California, United States. Any disputes arising out of or relating to these Terms
@@ -388,7 +388,7 @@ const TermsAndConditions = () => {
               </section>
 
               <section id="changes">
-                <h2 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">12. CHANGES TO TERMS</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">12. CHANGES TO TERMS</h2>
                 <div className="space-y-4 text-white leading-relaxed">
                   <p>
                     We may update or modify these Terms at any time. Any changes will be posted on our website, and your continued use of our platform after the 
@@ -400,7 +400,7 @@ const TermsAndConditions = () => {
 
             {/* Contact Information */}
             <div className="mt-16 p-6 bg-[#1E1E1E] rounded-lg">
-              <h3 className="text-lg font-semibold text-black mb-3">Questions About These Terms?</h3>
+              <h3 className="text-lg font-semibold text-white mb-3">Questions About These Terms?</h3>
               <p className="text-[#848E9C] mb-3">
                 If you have any questions about these Terms of Service, please contact our support team.
               </p>

@@ -711,7 +711,7 @@ function withdraw() {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: scrollbarStyles }} />
-      <div className="min-h-screen bg-[#121212] text-white font-sans">
+      <div className="bg-[#121212] text-white font-sans">
         {/* Main Content */}
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <h1 className="text-2xl font-semibold mb-6 text-white">
@@ -928,7 +928,7 @@ function withdraw() {
                       </label>
                       <button
                         onClick={() => setIsAddressBookOpen(!isAddressBookOpen)}
-                        className="text-sm text-black hover:text-[#848E9C] font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                        className="text-sm text-white hover:text-[#848E9C] font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                         disabled={!selectedNetwork || showOtpStep}
                       >
                         Manage address book <ChevronRightIcon />
@@ -959,7 +959,7 @@ function withdraw() {
                           addressValidation.error
                             ? "border-red-200 focus:ring-red-100 focus:border-red-300 bg-red-50"
                             : addressValidation.warning
-                              ? "border-yellow-200 focus:ring-yellow-100 focus:border-yellow-300 bg-yellow-50"
+                              ? "border-[#2EBD85]/20 focus:ring-yellow-100 focus:border-[#2EBD85] bg-[#2EBD85]/5"
                               : withdrawalAddress &&
                                   addressValidation.isValid &&
                                   !addressValidation.error &&
@@ -1042,9 +1042,9 @@ function withdraw() {
                         <div className="mt-2 flex items-start space-x-2">
                           <FontAwesomeIcon
                             icon={faQuestionCircle}
-                            className="text-yellow-400 mt-0.5 text-xs flex-shrink-0"
+                            className="text-[#2EBD85] mt-0.5 text-xs flex-shrink-0"
                           />
-                          <p className="text-xs text-yellow-600 leading-relaxed">
+                          <p className="text-xs text-[#2EBD85] leading-relaxed">
                             {addressValidation.warning}
                           </p>
                         </div>
@@ -1112,7 +1112,7 @@ function withdraw() {
                             setIsAccountDropdownOpen(!isAccountDropdownOpen)
                           }
                           disabled={!withdrawalAddress || showOtpStep}
-                          className="text-black hover:text-[#848E9C] font-medium flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="text-white hover:text-[#848E9C] font-medium flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           {selectedAccount} ({accountOptions.length}){" "}
                           <ChevronDownIcon />
@@ -1222,14 +1222,14 @@ function withdraw() {
                     </span>
                   </div>
 
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-6">
+                  <div className="bg-[#2EBD85]/5 border border-[#2EBD85]/20 rounded-lg p-6 mb-6">
                     <div className="flex items-start space-x-3">
                       <ShieldCheckIcon />
                       <div className="flex-1">
                         <h3 className="text-sm font-medium text-yellow-900 mb-2">
                           Security Verification Required
                         </h3>
-                        <p className="text-sm text-yellow-700 mb-4">
+                        <p className="text-sm text-[#2EBD85] mb-4">
                           For your security, we've sent a 6-character
                           verification code to your registered email address.
                           Please enter the code below to complete your
@@ -1252,7 +1252,7 @@ function withdraw() {
                               value={otpCode}
                               onChange={handleOtpChange}
                               maxLength="6"
-                              className="w-full h-12 px-4 text-center text-lg font-mono tracking-widest bg-[#121212] border border-yellow-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+                              className="w-full h-12 px-4 text-center text-lg font-mono tracking-widest bg-[#121212] border border-[#2EBD85] rounded-md focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-[#2EBD85]"
                             />
                             {otpError && (
                               <p className="mt-2 text-sm text-red-600">
@@ -1262,14 +1262,14 @@ function withdraw() {
                           </div>
 
                           <div className="flex items-center justify-between text-sm">
-                            <div className="text-yellow-700">
+                            <div className="text-[#2EBD85]">
                               {otpTimer > 0 ? (
                                 <span>Resend code in {otpTimer}s</span>
                               ) : (
                                 <button
                                   onClick={handleResendOtp}
                                   disabled={!canResendOtp}
-                                  className="text-yellow-600 hover:text-yellow-800 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                                  className="text-[#2EBD85] hover:text-[#259A6C] font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                   Resend verification code
                                 </button>
@@ -1281,7 +1281,7 @@ function withdraw() {
                             <button
                               onClick={handleBackFromOtp}
                               disabled={isVerifyingOtp}
-                              className="flex-1 h-11 px-4 py-2 border border-[#2A2A2A] text-[#848E9C] text-sm font-medium rounded-md hover:bg-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                              className="flex-1 h-11 px-4 py-2 border border-[#2A2A2A] text-[#848E9C] text-sm font-medium rounded-md hover:bg-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2EBD85] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                             >
                               Back
                             </button>

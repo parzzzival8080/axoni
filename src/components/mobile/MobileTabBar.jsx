@@ -98,13 +98,21 @@ const tabs = [
   { label: "Account", IconComponent: AccountIcon, path: "/account/profile" },
 ];
 
+const TransferIcon = ({ active }) => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M8 7h12l-4-4" />
+    <path d="M16 17H4l4 4" />
+  </svg>
+);
+
 const tradeOptions = [
   { label: "Spot", IconComponent: SpotIcon, path: "/spot-trading", description: "Buy and sell crypto" },
   { label: "Futures", IconComponent: FuturesIcon, path: "/future-trading", description: "Trade with leverage" },
   { label: "Convert", IconComponent: ConvertIcon, path: "/conversion", description: "Swap crypto instantly" },
+  { label: "Transfer", IconComponent: TransferIcon, path: "/transfer", description: "Move funds between wallets" },
 ];
 
-const TRADE_PATHS = ["/spot-trading", "/future-trading", "/conversion"];
+const TRADE_PATHS = ["/spot-trading", "/future-trading", "/conversion", "/transfer"];
 
 const MobileTabBar = () => {
   const navigate = useNavigate();

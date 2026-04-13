@@ -27,7 +27,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
   const [txHash, setTxHash] = useState("");
   const [error, setError] = useState("");
 
-  // Fetch AXONI wallet address when modal opens
+  // Fetch GLD wallet address when modal opens
   useEffect(() => {
     if (isOpen && selectedCoin && !COINCHIWalletAddress) {
       fetchCOINCHIWalletAddress();
@@ -51,7 +51,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
     }
 
     if (!COINCHIWalletAddress) {
-      setError("AXONI deposit address not found");
+      setError("GLD deposit address not found");
       return;
     }
 
@@ -192,7 +192,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
             {/* <p className="text-gray-300 mb-4">Connect MetaMask to continue</p> */}
             {/* <button
               onClick={connectWallet}
-              className="bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition-colors font-medium"
+              className="bg-[#2EBD85]/50 text-white px-6 py-2 rounded-lg hover:bg-[#2EBD85] transition-colors font-medium"
             >
               Connect MetaMask
             </button> */}
@@ -212,12 +212,12 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
                 href={`https://etherscan.io/tx/${txHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-yellow-400 text-xs font-mono break-all hover:text-yellow-300 transition-colors"
+                className="text-[#2EBD85] text-xs font-mono break-all hover:text-[#2EBD85] transition-colors"
               >
                 {txHash}
               </a>
             </div>
-            <div className="bg-yellow-900 border border-yellow-700 rounded-lg p-3 mb-4">
+            <div className="bg-yellow-900 border border-[#2EBD85] rounded-lg p-3 mb-4">
               <p className="text-xs text-yellow-200">
                 <strong>Note:</strong> Confirmation takes 5-15 minutes
               </p>
@@ -238,12 +238,12 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
             <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 mb-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center">
-                  <FaWallet className="text-yellow-500 mr-2 text-sm" />
+                  <FaWallet className="text-[#2EBD85] mr-2 text-sm" />
                   <span className="text-white font-medium text-sm">
                     MetaMask
                   </span>
                 </div>
-                <span className="text-yellow-400 font-bold text-sm">
+                <span className="text-[#2EBD85] font-bold text-sm">
                   {balance} {selectedCoin}
                 </span>
               </div>
@@ -256,7 +256,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
                   </span>
                   <button
                     onClick={() => navigator.clipboard.writeText(account)}
-                    className="text-ora nge-400 hover:text-yellow-300 transition-colors"
+                    className="text-ora nge-400 hover:text-[#2EBD85] transition-colors"
                     title="Copy address"
                   >
                     Copy
@@ -265,15 +265,15 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
               </div>
             </div>
 
-            {/* AXONI Deposit Address - Compact */}
+            {/* GLD Deposit Address - Compact */}
             <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 mb-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center">
-                  <div className="w-4 h-4 bg-yellow-500 rounded mr-2 flex items-center justify-center">
+                  <div className="w-4 h-4 bg-[#2EBD85]/50 rounded mr-2 flex items-center justify-center">
                     <span className="text-white text-xs font-bold">F</span>
                   </div>
                   <span className="text-white font-medium text-sm">
-                    AXONI Wallet
+                    GLD Wallet
                   </span>
                 </div>
                 <span className="text-green-400 text-xs">Ethereum</span>
@@ -290,7 +290,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
                       onClick={() =>
                         navigator.clipboard.writeText(COINCHIWalletAddress)
                       }
-                      className="text-yellow-400 hover:text-yellow-300 transition-colors"
+                      className="text-[#2EBD85] hover:text-[#2EBD85] transition-colors"
                       title="Copy address"
                     >
                       Copy
@@ -302,8 +302,8 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
 
             {/* Transfer Arrow - Compact */}
             <div className="flex justify-center mb-4">
-              <div className="bg-yellow-500 bg-opacity-20 p-2 rounded-full">
-                <FaArrowRight className="text-yellow-500 text-sm" />
+              <div className="bg-[#2EBD85]/50 bg-opacity-20 p-2 rounded-full">
+                <FaArrowRight className="text-[#2EBD85] text-sm" />
               </div>
             </div>
 
@@ -318,7 +318,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
                   value={depositAmount}
                   onChange={(e) => setDepositAmount(e.target.value)}
                   placeholder="0.00"
-                  className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 text-white placeholder-gray-400"
+                  className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-[#2EBD85] focus:border-[#2EBD85] text-white placeholder-gray-400"
                   step="0.000001"
                   min="0.001"
                   max={balance}
@@ -326,7 +326,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
                 <div className="absolute right-3 top-3 flex items-center gap-2">
                   <button
                     onClick={handleMaxAmount}
-                    className="bg-yellow-500 bg-opacity-20 text-yellow-400 px-2 py-1 rounded text-xs hover:bg-opacity-30 transition-colors"
+                    className="bg-[#2EBD85]/50 bg-opacity-20 text-[#2EBD85] px-2 py-1 rounded text-xs hover:bg-opacity-30 transition-colors"
                     type="button"
                   >
                     MAX
@@ -350,9 +350,9 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
             )}
 
             {/* Important Information - Compact */}
-            <div className="bg-yellow-900 border border-yellow-700 rounded-lg p-3 mb-4">
+            <div className="bg-yellow-900 border border-[#2EBD85] rounded-lg p-3 mb-4">
               <div className="flex items-start">
-                <FaExclamationTriangle className="text-yellow-400 mr-2 mt-0.5 flex-shrink-0 text-sm" />
+                <FaExclamationTriangle className="text-[#2EBD85] mr-2 mt-0.5 flex-shrink-0 text-sm" />
                 <div className="text-xs text-yellow-200">
                   <p className="font-medium mb-1">Important:</p>
                   <ul className="list-disc list-inside space-y-0.5 text-xs">
@@ -382,7 +382,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
                   parseFloat(depositAmount) > parseFloat(balance) ||
                   !COINCHIWalletAddress
                 }
-                className="flex-1 bg-yellow-500 text-white py-2.5 rounded-lg hover:bg-yellow-600 disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 font-medium text-sm"
+                className="flex-1 bg-[#2EBD85]/50 text-white py-2.5 rounded-lg hover:bg-[#2EBD85] disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 font-medium text-sm"
               >
                 {isDepositing ? (
                   <>

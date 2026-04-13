@@ -35,7 +35,7 @@ const Security = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#121212] flex items-center justify-center">
+      <div className="bg-[#121212] flex items-center justify-center">
         {!isMobile && <ProfileNavBar />}
         <div className="animate-spin rounded-full h-6 w-6 border-2 border-[#2EBD85] border-t-transparent"></div>
       </div>
@@ -44,7 +44,7 @@ const Security = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-[#121212] flex flex-col items-center justify-center px-6">
+      <div className="bg-[#121212] flex flex-col items-center justify-center px-6">
         {!isMobile && <ProfileNavBar />}
         <p className="text-[#848E9C] text-sm mb-4">{error}</p>
         <button onClick={() => window.location.reload()} className="px-5 py-2.5 bg-[#2EBD85] text-white rounded-lg text-sm font-medium">Try Again</button>
@@ -54,7 +54,7 @@ const Security = () => {
 
   if (isMobile) {
     return (
-      <div className="min-h-screen bg-[#121212] text-white pb-20">
+      <div className="bg-[#121212] text-white pb-20">
         <div className="px-4 pt-2">
           <h2 className="text-lg font-semibold mb-4">Security</h2>
 
@@ -146,7 +146,7 @@ const Security = () => {
 
   // Desktop
   return (
-    <div className="min-h-screen bg-[#121212] text-white relative">
+    <div className="bg-[#121212] text-white relative">
       <ProfileNavBar />
       <div className="max-w-4xl mx-auto px-4 py-8">
         <h3 className="text-xl font-semibold mb-6">Authentication methods</h3>

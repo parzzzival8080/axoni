@@ -152,8 +152,8 @@ const SubHeader = ({ cryptoData, coinPairId, tradableCoins, loading }) => {
   const turnoverM = ((price * (Math.random() * 100) + 50) / 1000).toFixed(2);
 
   return (
-    <div className="sub-header md:flex md:justify-between md:items-center md:flex-nowrap flex-wrap bg-okx-primary border-b border-okx-border">
-      <div className="coin-info md:w-auto w-full flex items-center justify-between">
+    <div className="sub-header">
+      <div className="coin-info">
         <div className="coin-selector" ref={dropdownRef}>
           <div 
             className="selected-coin flex items-center bg-transparent border-0 rounded-none p-1 cursor-pointer" 
@@ -333,35 +333,22 @@ const SubHeader = ({ cryptoData, coinPairId, tradableCoins, loading }) => {
           <FontAwesomeIcon icon={farStar} />
         </div>
       </div>
-      <div className="price-stats w-full md:w-auto overflow-x-auto md:overflow-visible scrollbar-hide flex md:justify-center justify-start pb-2 md:pb-0 pt-2 md:pt-0 gap-5 md:gap-8">
-        <div className="stat flex-shrink-0 min-w-[80px] md:min-w-0 md:text-center text-left">
-          <div className="value green text-sm md:text-base font-semibold">{formattedPrice}</div>
-          <div className="label text-xs md:text-xs text-gray-400 whitespace-nowrap flex md:justify-center justify-start items-center">
-            {cryptoName || cryptoSymbol} price <FontAwesomeIcon icon={faExternalLinkAlt} className="ml-1 text-[10px]" />
-          </div>
-          <div className="sub-value text-xs text-gray-500">${formattedPrice}</div>
+      <div className="price-stats">
+        <div className="stat">
+          <div style={{ fontSize: 14, fontWeight: 600, color: '#2EBD85', fontFamily: 'monospace' }}>{formattedPrice}</div>
+          <div style={{ fontSize: 10, color: '#5E6673', marginTop: 1 }}>{cryptoSymbol} price</div>
         </div>
-        {/* <div className="stat flex-shrink-0 min-w-[80px] md:min-w-0 md:text-center text-left">
-          <div className="value text-sm md:text-base font-semibold">{low24h}</div>
-          <div className="label text-xs md:text-xs text-gray-400 whitespace-nowrap">24h low</div>
-        </div> */}
-        <div className="stat flex-shrink-0 min-w-[80px] md:min-w-0 md:text-center text-left">
-          <div className="value text-sm md:text-base font-semibold">{high24h}</div>
-          <div className="label text-xs md:text-xs text-gray-400 whitespace-nowrap">24h high</div>
+        <div className="stat">
+          <div style={{ fontSize: 13, fontWeight: 500, color: '#fff', fontFamily: 'monospace' }}>{high24h}</div>
+          <div style={{ fontSize: 10, color: '#5E6673', marginTop: 1 }}>24h high</div>
         </div>
-        <div className="stat flex-shrink-0 min-w-[80px] md:min-w-0 md:text-center text-left">
-          <div className="value text-sm md:text-base font-semibold">{volumeK}K</div>
-          <div className="label text-xs md:text-xs text-gray-400 whitespace-nowrap">24h volume ({cryptoSymbol})</div>
+        <div className="stat">
+          <div style={{ fontSize: 13, fontWeight: 500, color: '#fff', fontFamily: 'monospace' }}>{volumeK}K</div>
+          <div style={{ fontSize: 10, color: '#5E6673', marginTop: 1 }}>24h vol ({cryptoSymbol})</div>
         </div>
-        <div className="stat flex-shrink-0 min-w-[80px] md:min-w-0 md:text-center text-left">
-          <div className="value text-sm md:text-base font-semibold">{turnoverM}M</div>
-          <div className="label text-xs md:text-xs text-gray-400 whitespace-nowrap">24h turnover ({usdtSymbol || 'USDT'})</div>
-        </div>
-      </div>
-      <div className="trading-actions w-full md:w-auto flex items-center justify-start md:justify-end gap-2 mt-2 md:mt-0 pb-1 md:pb-0">
-       
-        <div className="settings w-8 h-8 flex items-center justify-center bg-okx-secondary hover:bg-okx-secondary-hover rounded cursor-pointer ml-1">
-          <FontAwesomeIcon icon={faCog} />
+        <div className="stat">
+          <div style={{ fontSize: 13, fontWeight: 500, color: '#fff', fontFamily: 'monospace' }}>{turnoverM}M</div>
+          <div style={{ fontSize: 10, color: '#5E6673', marginTop: 1 }}>24h turnover</div>
         </div>
       </div>
     </div>
