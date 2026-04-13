@@ -35,7 +35,7 @@ header.navbar-header {
 }
 
 .logo img {
-    height: 36px;
+    height: 32px;
     display: block;
 }
 
@@ -213,7 +213,7 @@ header.navbar-header {
 .nav-item::after {
     content: '';
     position: absolute;
-    height: 20px;
+    height: 28px;
     width: 100%;
     left: 0;
     bottom: -20px;
@@ -1048,7 +1048,7 @@ header.navbar-header {
   border-radius: 8px !important;
   box-shadow: 0 2px 8px rgba(0,0,0,0.10) !important;
   padding: 0 12px !important;
-  height: 36px !important;
+  height: 32px !important;
   min-width: 280px !important;
   transition: box-shadow 0.2s !important;
   z-index: 1200;
@@ -1480,7 +1480,7 @@ header.navbar-header {
     
     /* Reduce size of logo */
     .logo img {
-      height: 20px;
+      height: 28px;
     }
     
     /* Login/Signup buttons */
@@ -1829,7 +1829,7 @@ header.navbar-header {
   .okx-navbar-search-box {
     min-width: 50px !important;
     margin-right: 6px !important;
-    height: 36px !important;
+    height: 32px !important;
   }
   
   .okx-navbar-search-box input {
@@ -2255,7 +2255,7 @@ header.navbar-header {
 
 /* Logo styling */
 .logo img {
-    height: 36px !important;
+    height: 32px !important;
     display: block !important;
 }
 
