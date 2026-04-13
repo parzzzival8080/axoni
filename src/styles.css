@@ -1191,14 +1191,15 @@ h1, h2, h3, h4 {
   top: 100%;
   left: -100px;
   width: 360px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  background-color: #1E1E1E;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
   padding: 16px;
   z-index: 999;
-  color: #000;
+  color: #fff;
   display: none;
   margin-top: 0;
+  border: 1px solid #2A2A2A;
 }
 
 .nav-item::after {
