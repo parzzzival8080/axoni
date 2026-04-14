@@ -5,12 +5,12 @@ const TradeRewardsPopup = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-[#0a0a0a] bg-opacity-70 flex items-center justify-center z-50 p-4">
       <div className="relative bg-gradient-to-br from-gray-900 via-black to-gray-900 border border-gray-800 rounded-2xl max-w-md w-full mx-4 overflow-hidden shadow-2xl">
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-[#2EBD85] transition-colors z-10"
+          className="absolute top-4 right-4 text-[#5E6673] hover:text-[#2EBD85] transition-colors z-10"
         >
           <FaTimes size={20} />
         </button>
@@ -68,7 +68,7 @@ const TradeRewardsPopup = ({ isOpen, onClose }) => {
               <div className="flex-shrink-0 w-6 h-6 bg-gradient-to-br from-[#2EBD85] to-[#2EBD85] rounded-full flex items-center justify-center mt-0.5 border border-[#2EBD85]/30">
                 <span className="text-white text-xs font-bold">🎯</span>
               </div>
-              <p className="text-gray-300 text-sm leading-relaxed">
+              <p className="text-[#848E9C] text-sm leading-relaxed">
                 <strong className="text-[#2EBD85]">Something Big is Coming!</strong> Get ready for an exciting airdrop on the GLD Trading Platform!
               </p>
             </div>
@@ -77,7 +77,7 @@ const TradeRewardsPopup = ({ isOpen, onClose }) => {
               <div className="flex-shrink-0 w-6 h-6 bg-gradient-to-br from-[#2EBD85] to-[#2EBD85] rounded-full flex items-center justify-center mt-0.5 border border-[#2EBD85]/30">
                 <span className="text-white text-xs font-bold">💰</span>
               </div>
-              <p className="text-gray-400 text-sm leading-relaxed">
+              <p className="text-[#5E6673] text-sm leading-relaxed">
                 We're preparing to reward our loyal traders in a major way — and the more you trade, the more eligibility points you earn.
               </p>
             </div>
@@ -86,7 +86,7 @@ const TradeRewardsPopup = ({ isOpen, onClose }) => {
               <div className="flex-shrink-0 w-6 h-6 bg-gradient-to-br from-[#2EBD85] to-[#2EBD85] rounded-full flex items-center justify-center mt-0.5 border border-[#2EBD85]/30">
                 <span className="text-white text-xs font-bold">⚡</span>
               </div>
-              <p className="text-gray-400 text-sm leading-relaxed">
+              <p className="text-[#5E6673] text-sm leading-relaxed">
                 Every transaction gets you closer to unlocking exclusive rewards in our upcoming airdrop event. Start trading now and be part of the momentum — GLD is about to change the game.
               </p>
             </div>
@@ -96,7 +96,7 @@ const TradeRewardsPopup = ({ isOpen, onClose }) => {
           <div className="flex space-x-3">
             <button
               onClick={onClose}
-              className="flex-1 bg-gray-900 hover:bg-gray-800 text-gray-400 hover:text-gray-300 font-medium py-3 px-4 rounded-lg transition-all duration-200 border border-gray-700 hover:border-gray-600"
+              className="flex-1 bg-gray-900 hover:bg-[#1E1E1E] text-[#5E6673] hover:text-[#848E9C] font-medium py-3 px-4 rounded-lg transition-all duration-200 border border-[#2A2A2A] hover:border-[#2A2A2A]"
             >
               Skip
             </button>

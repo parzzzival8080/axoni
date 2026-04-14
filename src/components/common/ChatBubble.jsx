@@ -63,7 +63,7 @@ const ChatBubble = () => {
             </div>
             <button
               onClick={handleClose}
-              className="text-gray-400 hover:text-white transition-colors p-1"
+              className="text-[#5E6673] hover:text-white transition-colors p-1"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                 <path d="M18 6L6 18M6 6l12 12" />
@@ -73,11 +73,11 @@ const ChatBubble = () => {
 
           {!isChatLoaded && !loadFailed && (
             <div
-              className="flex flex-col items-center justify-center gap-4 bg-[#121212] sm:w-[380px] w-full"
+              className="flex flex-col items-center justify-center gap-4 bg-[#0a0a0a] sm:w-[380px] w-full"
               style={{ height: 560 }}
             >
               <div className="w-12 h-12 rounded-full border-2 border-[#2A2A2A] border-t-[#2EBD85] animate-spin" />
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-[#5E6673]">
                 Connecting to support...
               </span>
             </div>
@@ -85,14 +85,14 @@ const ChatBubble = () => {
 
           {loadFailed && (
             <div
-              className="flex flex-col items-center justify-center gap-4 bg-[#121212] sm:w-[380px] w-full px-6 text-center"
+              className="flex flex-col items-center justify-center gap-4 bg-[#0a0a0a] sm:w-[380px] w-full px-6 text-center"
               style={{ height: 560 }}
             >
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#F6465D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10" />
                 <path d="M12 8v4M12 16h.01" />
               </svg>
-              <span className="text-sm text-gray-400">
+              <span className="text-sm text-[#5E6673]">
                 Unable to connect to support.<br />This may be due to your network or region.
               </span>
               <button
@@ -104,13 +104,13 @@ const ChatBubble = () => {
               </button>
               <button
                 onClick={handleRetry}
-                className="text-xs text-gray-500 hover:text-gray-300 transition-colors underline"
+                className="text-xs text-[#5E6673] hover:text-[#848E9C] transition-colors underline"
               >
                 Refresh chat support
               </button>
               <a
                 href="mailto:customerservice@axoni.tech"
-                className="text-xs text-gray-500 hover:text-gray-300 transition-colors underline"
+                className="text-xs text-[#5E6673] hover:text-[#848E9C] transition-colors underline"
               >
                 Or email us at customerservice@axoni.tech
               </a>

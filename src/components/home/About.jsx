@@ -1,43 +1,47 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const services = [
+const features = [
   {
     title: "Spot Trading",
-    desc: "Buy and sell crypto at current market prices with deep liquidity.",
+    desc: "Buy, sell, and trade 50+ cryptocurrencies with deep liquidity and tight spreads.",
+    cta: "Trade now",
     link: "/spot-trading",
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" /><polyline points="16 7 22 7 22 13" />
       </svg>
     ),
   },
   {
-    title: "Perpetual Futures",
-    desc: "Trade with up to 100x leverage on top cryptocurrencies.",
+    title: "Futures Trading",
+    desc: "Trade perpetual contracts with up to 100x leverage on BTC, ETH, and 50+ altcoins.",
+    cta: "Trade futures",
     link: "/future-trading",
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
       </svg>
     ),
   },
   {
-    title: "GLD Earn",
-    desc: "Earn passive income with flexible staking and savings products.",
+    title: "Earn",
+    desc: "Put your crypto to work. Earn passive income with flexible staking up to 12% APY.",
+    cta: "Start earning",
     link: "/earn",
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10" /><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01" />
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10" /><path d="M16 8l-8 8M8 8h8v8" />
       </svg>
     ),
   },
   {
     title: "Convert",
-    desc: "Instant crypto swaps with zero slippage. Simple and fast.",
+    desc: "Swap between cryptocurrencies instantly with zero slippage. No order book needed.",
+    cta: "Convert now",
     link: "/conversion",
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M8 7h12l-4-4M16 17H4l4 4" />
       </svg>
     ),
@@ -45,25 +49,30 @@ const services = [
 ];
 
 const Services = () => (
-  <div className="bg-[#0a0a0a] py-8 md:py-12">
+  <div className="bg-[#0a0a0a] py-16 md:py-24">
     <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-      <div className="mb-10">
-        <h2 className="text-xl md:text-3xl font-bold text-white mb-2">Trade your way</h2>
-        <p className="text-[#848E9C] text-sm md:text-base">Multiple products designed for every type of trader</p>
+      <div className="text-center mb-14">
+        <h2 className="text-2xl md:text-4xl lg:text-[42px] font-bold text-white mb-4 tracking-tight">One platform, endless possibilities</h2>
+        <p className="text-[#848E9C] text-sm md:text-base max-w-lg mx-auto">Everything you need to buy, sell, trade, and earn crypto — all in one place.</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {services.map((s) => (
+      {/* 2x2 feature grid — large cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {features.map((f) => (
           <Link
-            key={s.title}
-            to={s.link}
-            className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-xl p-5 hover:border-[#2EBD85]/30 transition-all group"
+            key={f.title}
+            to={f.link}
+            className="group bg-[#1E1E1E] border border-[#2A2A2A] rounded-2xl p-8 md:p-10 hover:border-[#2EBD85]/30 transition-all duration-300"
           >
-            <div className="w-10 h-10 rounded-xl bg-[#2EBD85]/10 flex items-center justify-center mb-4 group-hover:bg-[#2EBD85]/20 transition-colors">
-              {s.icon}
+            <div className="w-14 h-14 rounded-2xl bg-[#2EBD85]/10 flex items-center justify-center mb-6 group-hover:bg-[#2EBD85]/20 transition-colors">
+              {f.icon}
             </div>
-            <h3 className="text-white font-semibold mb-1.5">{s.title}</h3>
-            <p className="text-[#848E9C] text-sm leading-relaxed">{s.desc}</p>
+            <h3 className="text-white text-xl md:text-2xl font-semibold mb-3">{f.title}</h3>
+            <p className="text-[#848E9C] text-sm md:text-base leading-relaxed mb-6">{f.desc}</p>
+            <span className="inline-flex items-center text-[#2EBD85] text-sm font-medium group-hover:gap-2 transition-all">
+              {f.cta}
+              <svg className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
           </Link>
         ))}
       </div>

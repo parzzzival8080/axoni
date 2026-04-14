@@ -89,7 +89,7 @@ const Profile = () => {
 
   if (isLoading) {
     return (
-      <div className="bg-[#121212] flex items-center justify-center">
+      <div className="bg-[#0a0a0a] flex items-center justify-center">
         {!isMobile && <ProfileNavBar />}
         <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#2EBD85] border-t-transparent"></div>
       </div>
@@ -98,7 +98,7 @@ const Profile = () => {
 
   if (error) {
     return (
-      <div className="bg-[#121212] flex flex-col items-center justify-center px-6">
+      <div className="bg-[#0a0a0a] flex flex-col items-center justify-center px-6">
         {!isMobile && <ProfileNavBar />}
         <p className="text-[#848E9C] text-sm mb-4">{error}</p>
         <button onClick={() => window.location.reload()} className="px-5 py-2.5 bg-[#2EBD85] text-white rounded-lg text-sm font-medium">
@@ -111,7 +111,7 @@ const Profile = () => {
   // Mobile Account Screen
   if (isMobile) {
     return (
-      <div className="bg-[#121212] text-white pb-20">
+      <div className="bg-[#0a0a0a] text-white pb-20">
         {/* Profile Card */}
         <div className="px-4 pt-2 pb-4">
           <div className="flex items-center gap-4 mb-5">
@@ -205,7 +205,7 @@ const Profile = () => {
 
   // Desktop layout (unchanged)
   return (
-    <div className="bg-[#121212] text-white relative">
+    <div className="bg-[#0a0a0a] text-white relative">
       <ProfileNavBar />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-2xl font-semibold mb-8">Profile</h1>

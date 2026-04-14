@@ -57,7 +57,7 @@ const TermsAndConditions = () => {
   );
 
   return (
-    <div className="bg-[#121212]">
+    <div className="bg-[#0a0a0a]">
       {/* Breadcrumb */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
         <nav className="flex items-center space-x-2 text-sm text-[#5E6673]">
@@ -89,7 +89,7 @@ const TermsAndConditions = () => {
                 </button>
                 
                 {showMobileTOC && (
-                  <div className="mt-3 bg-[#121212] border border-[#2A2A2A] rounded-lg p-4">
+                  <div className="mt-3 bg-[#0a0a0a] border border-[#2A2A2A] rounded-lg p-4">
                     <nav className="flex flex-col space-y-1">
                       {tableOfContents.map((item) => (
                         <button
@@ -414,7 +414,7 @@ const TermsAndConditions = () => {
           {/* Table of Contents Sidebar - Hidden on mobile and tablet */}
           <div className="hidden xl:block w-80 flex-shrink-0">
             <div className="sticky top-6">
-              <div className="bg-[#121212] border border-[#2A2A2A] rounded-lg p-6">
+              <div className="bg-[#0a0a0a] border border-[#2A2A2A] rounded-lg p-6">
                 <h3 className="text-lg font-semibold text-white mb-3">Table of Contents</h3>
                 <nav className="flex flex-col">
                   {tableOfContents.map((item) => (

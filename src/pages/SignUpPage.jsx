@@ -1130,9 +1130,9 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="flex flex-col bg-[#121212]">
+    <div className="flex flex-col bg-[#0a0a0a]">
       {isMobile ? (
-        <div className="flex items-center px-4 h-12 bg-[#121212]">
+        <div className="flex items-center px-4 h-12 bg-[#0a0a0a]">
           <button onClick={() => navigate("/login")} className="flex items-center gap-1 text-white">
             <ChevronLeft size={20} />
             <span className="text-sm">Log in</span>
@@ -1143,7 +1143,7 @@ const SignUpPage = () => {
       )}
       <div className="flex flex-1 overflow-hidden">
         {/* Left Section */}
-        <div className="hidden md:flex md:w-2/5 bg-[#121212] p-0 justify-center items-center overflow-y-auto border-r border-[#2A2A2A]">
+        <div className="hidden md:flex md:w-2/5 bg-[#0a0a0a] p-0 justify-center items-center overflow-y-auto border-r border-[#2A2A2A]">
           <img
             src="/assets/login/signup.png"
             alt="Sign up illustration"
@@ -1157,7 +1157,7 @@ const SignUpPage = () => {
         </div>
 
         {/* Right Section */}
-        <div className="w-full md:w-3/5 bg-[#121212] text-white p-8 md:p-12 lg:p-16 overflow-y-auto">
+        <div className="w-full md:w-3/5 bg-[#0a0a0a] text-white p-8 md:p-12 lg:p-16 overflow-y-auto">
           <div className="max-w-md mx-auto w-full">
             <h2 className="text-3xl font-semibold mb-9 text-white">Let's get you started</h2>
 

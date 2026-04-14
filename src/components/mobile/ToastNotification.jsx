@@ -12,7 +12,7 @@ const STYLES = {
   success: "bg-green-500 text-white",
   error: "bg-red-500 text-white",
   warning: "bg-[#2EBD85]/50 text-white",
-  info: "bg-gray-800 text-white",
+  info: "bg-[#1E1E1E] text-white",
 };
 
 let showToastFn = null;

@@ -341,11 +341,11 @@ const Conversion = () => {
     };
 
   return (
-    <div className="bg-black text-white">
+    <div className="bg-[#0a0a0a] text-white">
       {/* Header */}
       <div className="flex flex-col items-center justify-center text-center py-12 bg-black">
         <h1 className="text-5xl font-bold mb-3 text-[#2EBD85]">Convert</h1>
-        <div className="flex items-center space-x-3 text-gray-500 text-sm">
+        <div className="flex items-center space-x-3 text-[#5E6673] text-sm">
           <span>Zero trading fees</span>
           <span className="w-1 h-1 rounded-full bg-gray-500"></span>
           <span>Lower limits</span>
@@ -372,7 +372,7 @@ const Conversion = () => {
         
         {/* From section */}
         <div className="bg-gray-900 rounded-lg p-4 mb-4">
-          <label className="block text-sm text-gray-400 mb-2">From</label>
+          <label className="block text-sm text-[#5E6673] mb-2">From</label>
           <div className="flex items-center">
             <input 
               className="w-full bg-transparent text-white text-xl font-medium focus:outline-none" 
@@ -382,7 +382,7 @@ const Conversion = () => {
               onChange={handleFromAmountChange}
             />
             <div 
-              className="flex items-center space-x-1 cursor-pointer bg-gray-800 rounded-lg px-3 py-2"
+              className="flex items-center space-x-1 cursor-pointer bg-[#1E1E1E] rounded-lg px-3 py-2"
               onClick={openFromModal}
             >
               <div className="w-6 h-6 rounded-full overflow-hidden bg-gray-700 flex-shrink-0">
@@ -393,14 +393,14 @@ const Conversion = () => {
                 />
               </div>
               <span className="font-medium">{fromCurrency.symbol}</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#5E6673]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </div>
           </div>
           
           {/* Balance info */}
-          <div className="mt-2 text-xs text-gray-500">
+          <div className="mt-2 text-xs text-[#5E6673]">
             {balance.loading ? (
               <span>Loading balance...</span>
             ) : balance.error ? (
@@ -416,7 +416,7 @@ const Conversion = () => {
         
         {/* To section */}
         <div className="bg-gray-900 rounded-lg p-4 mb-6">
-          <label className="block text-sm text-gray-400 mb-2">To</label>
+          <label className="block text-sm text-[#5E6673] mb-2">To</label>
           <div className="flex items-center">
             <input 
               className="w-full bg-transparent text-white text-xl font-medium focus:outline-none" 
@@ -426,7 +426,7 @@ const Conversion = () => {
               onChange={handleToAmountChange}
             />
             <div 
-              className="flex items-center space-x-1 cursor-pointer bg-gray-800 rounded-lg px-3 py-2"
+              className="flex items-center space-x-1 cursor-pointer bg-[#1E1E1E] rounded-lg px-3 py-2"
               onClick={openToModal}
             >
               <div className="w-6 h-6 rounded-full overflow-hidden bg-gray-700 flex-shrink-0">
@@ -437,14 +437,14 @@ const Conversion = () => {
                 />
               </div>
               <span className="font-medium">{toCurrency.symbol}</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#5E6673]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </div>
           </div>
           
           {/* Exchange rate */}
-          <div className="mt-2 text-xs text-gray-500">
+          <div className="mt-2 text-xs text-[#5E6673]">
             Exchange rate: 1 USDT = {formatNumber(0.000022)} BTC
           </div>
         </div>
@@ -461,7 +461,7 @@ const Conversion = () => {
         {/* Conversion history link */}
         {/* <div className="conversion-history-section mt-4 text-center">
           <button 
-            className="flex items-center justify-center mx-auto text-sm text-gray-400 hover:text-gray-300"
+            className="flex items-center justify-center mx-auto text-sm text-[#5E6673] hover:text-[#848E9C]"
             onClick={openHistoryModal}
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -517,12 +517,12 @@ const Conversion = () => {
               onClick={() => setOpenFAQIndex(openFAQIndex === 0 ? null : 0)}
             >
               <span className="text-base font-medium">How do I convert crypto on GLD?</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-gray-500 transform ${openFAQIndex === 0 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-[#5E6673] transform ${openFAQIndex === 0 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
             {openFAQIndex === 0 && (
-              <div className="pt-2 pb-4 text-gray-300 text-sm">
+              <div className="pt-2 pb-4 text-[#848E9C] text-sm">
                 <p>To convert crypto on GLD, navigate to the 'Convert' page. Select the cryptocurrency you want to convert from (e.g., USDT) and the cryptocurrency you want to convert to (e.g., BTC). Enter the amount you wish to convert, review the exchange rate, and confirm the transaction. Conversion on GLD is designed to be quick and straightforward, with zero trading fees.</p>
               </div>
             )}
@@ -534,12 +534,12 @@ const Conversion = () => {
               onClick={() => setOpenFAQIndex(openFAQIndex === 1 ? null : 1)}
             >
               <span className="text-base font-medium">Which crypto can I convert on GLD?</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-gray-500 transform ${openFAQIndex === 1 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-[#5E6673] transform ${openFAQIndex === 1 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
             {openFAQIndex === 1 && (
-              <div className="pt-2 pb-4 text-gray-300 text-sm">
+              <div className="pt-2 pb-4 text-[#848E9C] text-sm">
                 <p>GLD supports a wide range of cryptocurrencies for conversion, including major assets like BTC, ETH, USDT, and many altcoins. Our platform continuously updates its supported list, so you can check the 'From' and 'To' currency selectors on the Convert page for the most current options available for your region.</p>
               </div>
             )}
@@ -551,12 +551,12 @@ const Conversion = () => {
               onClick={() => setOpenFAQIndex(openFAQIndex === 2 ? null : 2)}
             >
               <span className="text-base font-medium">How is crypto conversion different from trading?</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-gray-500 transform ${openFAQIndex === 2 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-[#5E6673] transform ${openFAQIndex === 2 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
             {openFAQIndex === 2 && (
-              <div className="pt-2 pb-4 text-gray-300 text-sm">
+              <div className="pt-2 pb-4 text-[#848E9C] text-sm">
                 <p>Crypto conversion on GLD offers a simpler, more direct way to exchange one cryptocurrency for another, typically at a fixed rate with zero trading fees and no slippage. It's ideal for users who want to quickly swap assets without engaging in complex order book trading. Trading, on the other hand, involves buying and selling assets on a spot or futures market, where prices fluctuate based on supply and demand, and may involve various order types and fees.</p>
               </div>
             )}
@@ -568,12 +568,12 @@ const Conversion = () => {
               onClick={() => setOpenFAQIndex(openFAQIndex === 3 ? null : 3)}
             >
               <span className="text-base font-medium">What are the conditions of crypto converter?</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-gray-500 transform ${openFAQIndex === 3 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-[#5E6673] transform ${openFAQIndex === 3 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
             {openFAQIndex === 3 && (
-              <div className="pt-2 pb-4 text-gray-300 text-sm">
+              <div className="pt-2 pb-4 text-[#848E9C] text-sm">
                 <p>The GLD crypto converter is designed for ease of use. Key conditions include: zero trading fees, no slippage (you get exactly the quoted amount), and lower limits for smaller transactions. While there are minimum and maximum conversion amounts per transaction, these are clearly displayed on the conversion interface. Ensure you have sufficient balance in your spot wallet for the conversion.</p>
               </div>
             )}
@@ -585,12 +585,12 @@ const Conversion = () => {
               onClick={() => setOpenFAQIndex(openFAQIndex === 4 ? null : 4)}
             >
               <span className="text-base font-medium">Where can I find my converted crypto?</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-gray-500 transform ${openFAQIndex === 4 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-[#5E6673] transform ${openFAQIndex === 4 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
             {openFAQIndex === 4 && (
-              <div className="pt-2 pb-4 text-gray-300 text-sm">
+              <div className="pt-2 pb-4 text-[#848E9C] text-sm">
                 <p>After a successful conversion on GLD, the converted cryptocurrency will be immediately credited to your Spot Wallet. You can view your updated balances and transaction history in the 'Assets' section of your account. The conversion history also provides a detailed record of all your past conversions.</p>
               </div>
             )}
@@ -602,12 +602,12 @@ const Conversion = () => {
               onClick={() => setOpenFAQIndex(openFAQIndex === 5 ? null : 5)}
             >
               <span className="text-base font-medium">How do I check my conversion orders?</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-gray-500 transform ${openFAQIndex === 5 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-[#5E6673] transform ${openFAQIndex === 5 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
             {openFAQIndex === 5 && (
-              <div className="pt-2 pb-4 text-gray-300 text-sm">
+              <div className="pt-2 pb-4 text-[#848E9C] text-sm">
                 <p>You can check your conversion orders by clicking on the 'Conversion history' link located below the 'Convert' button on the main Convert page. This will open a modal displaying a list of your past conversions, including the date, cryptocurrencies involved, amount, and status.</p>
               </div>
             )}
@@ -619,12 +619,12 @@ const Conversion = () => {
               onClick={() => setOpenFAQIndex(openFAQIndex === 6 ? null : 6)}
             >
               <span className="text-base font-medium">How can I deposit/withdraw the crypto converted?</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-gray-500 transform ${openFAQIndex === 6 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 text-[#5E6673] transform ${openFAQIndex === 6 ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
             {openFAQIndex === 6 && (
-              <div className="pt-2 pb-4 text-gray-300 text-sm">
+              <div className="pt-2 pb-4 text-[#848E9C] text-sm">
                 <p>Once your crypto is converted and credited to your Spot Wallet, you can easily deposit or withdraw it from the 'Assets' section of your GLD account. Navigate to 'Assets', select the cryptocurrency, and choose between 'Deposit' or 'Withdraw' to proceed with your transaction. Follow the on-screen instructions, ensuring all details are correct for secure transfers.</p>
               </div>
             )}
@@ -649,14 +649,14 @@ const Conversion = () => {
       
       {/* Conversion History Modal */}
       {isHistoryModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0a0a0a] bg-opacity-75">
           <div className="relative bg-[#1A1A1A] rounded-lg w-full max-w-2xl max-h-[80vh] overflow-hidden">
             {/* Modal Header */}
             <div className="flex justify-between items-center p-4 border-b border-gray-800">
               <h3 className="text-xl font-semibold text-white">Conversion History</h3>
               <button 
                 onClick={closeHistoryModal}
-                className="text-gray-400 hover:text-white"
+                className="text-[#5E6673] hover:text-white"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -673,10 +673,10 @@ const Conversion = () => {
               ) : historyError ? (
                 <div className="text-red-500 text-center py-6">{historyError}</div>
               ) : conversionHistory.length === 0 ? (
-                <div className="text-gray-400 text-center py-6">No conversion history found</div>
+                <div className="text-[#5E6673] text-center py-6">No conversion history found</div>
               ) : (
                 <div className="space-y-4">
-                  <div className="grid grid-cols-5 gap-2 text-sm text-gray-400 border-b border-gray-800 pb-2">
+                  <div className="grid grid-cols-5 gap-2 text-sm text-[#5E6673] border-b border-gray-800 pb-2">
                     <div>Date</div>
                     <div>From</div>
                     <div>To</div>
@@ -686,7 +686,7 @@ const Conversion = () => {
                   
                   {conversionHistory.map((item) => (
                     <div key={item.id} className="grid grid-cols-5 gap-2 py-3 border-b border-gray-800 text-sm">
-                      <div className="text-gray-300">
+                      <div className="text-[#848E9C]">
                         {new Date(item.created_at || Date.now()).toLocaleDateString()}
                       </div>
                       <div className="text-white font-medium">{item.convert_from}</div>
@@ -709,7 +709,7 @@ const Conversion = () => {
             <div className="border-t border-gray-800 p-4 flex justify-end">
               <button
                 onClick={closeHistoryModal}
-                className="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition-colors"
+                className="px-4 py-2 bg-[#1E1E1E] text-white rounded-md hover:bg-gray-700 transition-colors"
               >
                 Close
               </button>

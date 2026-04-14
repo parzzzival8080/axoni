@@ -705,7 +705,7 @@ const TradeForm = ({
             <span
               key={label}
               className={`text-xs font-medium select-none transition-colors duration-200 ${
-                sliderValue >= index * 25 ? "text-white" : "text-gray-400"
+                sliderValue >= index * 25 ? "text-white" : "text-[#5E6673]"
               }`}
             >
               {label}

@@ -711,7 +711,7 @@ function withdraw() {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: scrollbarStyles }} />
-      <div className="bg-[#121212] text-white font-sans">
+      <div className="bg-[#0a0a0a] text-white font-sans">
         {/* Main Content */}
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <h1 className="text-2xl font-semibold mb-6 text-white">
@@ -727,7 +727,7 @@ function withdraw() {
                   className={`flex items-center mb-4 ${activeStep >= 1 ? "opacity-100" : "opacity-50"}`}
                 >
                   <span
-                    className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 ${activeStep >= 1 ? "bg-[#121212] text-white" : "border border-[#2A2A2A] bg-[#121212] text-[#5E6673]"}`}
+                    className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 ${activeStep >= 1 ? "bg-[#0a0a0a] text-white" : "border border-[#2A2A2A] bg-[#0a0a0a] text-[#5E6673]"}`}
                   >
                     1
                   </span>
@@ -768,7 +768,7 @@ function withdraw() {
                       <ChevronDownIcon />
                     </button>
                     {isCryptoDropdownOpen && (
-                      <div className="absolute top-full left-0 mt-1 w-full max-w-md bg-[#121212] border border-[#2A2A2A] rounded-lg shadow-lg z-20">
+                      <div className="absolute top-full left-0 mt-1 w-full max-w-md bg-[#0a0a0a] border border-[#2A2A2A] rounded-lg shadow-lg z-20">
                         <div className="p-3 border-b border-[#2A2A2A]">
                           <div className="flex items-center bg-[#1E1E1E] rounded-md px-3 py-1.5">
                             <SearchIcon />
@@ -777,7 +777,7 @@ function withdraw() {
                               placeholder="Search crypto"
                               value={searchTerm}
                               onChange={(e) => setSearchTerm(e.target.value)}
-                              className="w-full bg-transparent text-sm text-white placeholder-gray-500 focus:outline-none ml-1"
+                              className="w-full bg-transparent text-sm text-white placeholder-[#5E6673] focus:outline-none ml-1"
                               autoFocus
                             />
                           </div>
@@ -828,7 +828,7 @@ function withdraw() {
                   className={`flex items-center mb-4 ${activeStep >= 2 ? "opacity-100" : "opacity-50"}`}
                 >
                   <span
-                    className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 ${activeStep >= 2 ? "bg-[#121212] text-white" : "border border-[#2A2A2A] bg-[#121212] text-[#5E6673]"}`}
+                    className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 ${activeStep >= 2 ? "bg-[#0a0a0a] text-white" : "border border-[#2A2A2A] bg-[#0a0a0a] text-[#5E6673]"}`}
                   >
                     2
                   </span>
@@ -849,7 +849,7 @@ function withdraw() {
                       disabled={showOtpStep}
                       className={`py-2.5 px-4 text-sm font-medium focus:outline-none relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:transition-all after:duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
                         withdrawalDestination === "on-chain"
-                          ? "text-white after:bg-[#121212] after:w-full" // Active tab style
+                          ? "text-white after:bg-[#0a0a0a] after:w-full" // Active tab style
                           : "text-[#5E6673] hover:text-[#848E9C] after:bg-gray-700 after:w-0 hover:after:w-full" // Inactive tab style
                       }`}
                     >
@@ -860,7 +860,7 @@ function withdraw() {
                       disabled={showOtpStep}
                       className={`py-2.5 px-4 text-sm font-medium focus:outline-none relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:transition-all after:duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
                         withdrawalDestination === "internal"
-                          ? "text-white after:bg-[#121212] after:w-full"
+                          ? "text-white after:bg-[#0a0a0a] after:w-full"
                           : "text-[#5E6673] hover:text-[#848E9C] after:bg-gray-700 after:w-0 hover:after:w-full"
                       }`}
                     >
@@ -903,7 +903,7 @@ function withdraw() {
                         <ChevronDownIcon />
                       </button>
                       {isNetworkDropdownOpen && networkOptions.length > 0 && (
-                        <div className="absolute top-full left-0 mt-1 w-full bg-[#121212] border border-[#2A2A2A] rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
+                        <div className="absolute top-full left-0 mt-1 w-full bg-[#0a0a0a] border border-[#2A2A2A] rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
                           {networkOptions.map((option) => (
                             <div
                               key={option.value}
@@ -991,7 +991,7 @@ function withdraw() {
                         )}
                       {/* Address Book Dropdown */}
                       {isAddressBookOpen && !showOtpStep && (
-                        <div className="absolute top-full left-0 mt-1 w-full bg-[#121212] border border-[#2A2A2A] rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
+                        <div className="absolute top-full left-0 mt-1 w-full bg-[#0a0a0a] border border-[#2A2A2A] rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
                           {addressBookEntries.filter(
                             (entry) =>
                               !selectedNetwork ||
@@ -1059,7 +1059,7 @@ function withdraw() {
                   className={`flex items-center mb-4 ${activeStep >= 3 ? "opacity-100" : "opacity-50"}`}
                 >
                   <span
-                    className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 ${activeStep >= 3 ? "bg-[#121212] text-white" : "border border-[#2A2A2A] bg-[#121212] text-[#5E6673]"}`}
+                    className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 ${activeStep >= 3 ? "bg-[#0a0a0a] text-white" : "border border-[#2A2A2A] bg-[#0a0a0a] text-[#5E6673]"}`}
                   >
                     3
                   </span>
@@ -1118,7 +1118,7 @@ function withdraw() {
                           <ChevronDownIcon />
                         </button>
                         {isAccountDropdownOpen && !showOtpStep && (
-                          <div className="absolute right-0 mt-1 w-40 bg-[#121212] border border-[#2A2A2A] rounded-md shadow-lg z-10">
+                          <div className="absolute right-0 mt-1 w-40 bg-[#0a0a0a] border border-[#2A2A2A] rounded-md shadow-lg z-10">
                             {accountOptions.map((acc) => (
                               <div
                                 key={acc}
@@ -1214,7 +1214,7 @@ function withdraw() {
               {showOtpStep && (
                 <section>
                   <div className="flex items-center mb-4">
-                    <span className="flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 bg-[#121212] text-white">
+                    <span className="flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 bg-[#0a0a0a] text-white">
                       4
                     </span>
                     <span className="font-medium text-white">
@@ -1252,7 +1252,7 @@ function withdraw() {
                               value={otpCode}
                               onChange={handleOtpChange}
                               maxLength="6"
-                              className="w-full h-12 px-4 text-center text-lg font-mono tracking-widest bg-[#121212] border border-[#2EBD85] rounded-md focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-[#2EBD85]"
+                              className="w-full h-12 px-4 text-center text-lg font-mono tracking-widest bg-[#0a0a0a] border border-[#2EBD85] rounded-md focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-[#2EBD85]"
                             />
                             {otpError && (
                               <p className="mt-2 text-sm text-red-600">

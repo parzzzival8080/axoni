@@ -1,8 +1,108 @@
 import { useState, useEffect, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { heroBanners } from "../../config/homepageImages";
 
 const AUTO_PLAY_INTERVAL = 6000;
+
+const HeroMarketCard = () => {
+  const [coins, setCoins] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let mounted = true;
+    fetch('https://api.axoni.co/api/v1/coins?apikey=5lPMMw7mIuyzQQDjlKJbe0dY')
+      .then(r => r.json())
+      .then(data => {
+        if (!mounted) return;
+        setCoins(Array.isArray(data) ? data.slice(0, 5) : Array.isArray(data.data) ? data.data.slice(0, 5) : []);
+      })
+      .catch(() => {})
+      .finally(() => mounted && setLoading(false));
+    return () => { mounted = false; };
+  }, []);
+
+  return (
+    <div className="hidden lg:block flex-1 max-w-[480px]">
+      {/* Hot coins card */}
+      <div className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-2xl overflow-hidden">
+        {/* Tabs */}
+        <div className="flex items-center gap-6 px-5 pt-5 pb-3">
+          <span className="text-white font-bold text-base">Hot</span>
+          <span className="text-[#5E6673] text-sm cursor-pointer hover:text-white transition-colors">New listing</span>
+          <span className="text-[#2EBD85] text-xs ml-auto cursor-pointer hover:underline" onClick={() => navigate('/market')}>View 50+ cryptos &rsaquo;</span>
+        </div>
+
+        {/* Table header */}
+        <div className="flex items-center px-5 py-2 text-[10px] text-[#5E6673] uppercase tracking-wider">
+          <span className="flex-1">Name</span>
+          <span className="w-24 text-right">Last Price</span>
+          <span className="w-20 text-right">Change</span>
+        </div>
+
+        {/* Coin rows */}
+        <div>
+          {loading ? (
+            Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="flex items-center px-5 py-3 animate-pulse">
+                <div className="w-8 h-8 rounded-full bg-[#2A2A2A] mr-3" />
+                <div className="w-12 h-4 bg-[#2A2A2A] rounded" />
+                <div className="w-16 h-4 bg-[#2A2A2A] rounded ml-auto" />
+              </div>
+            ))
+          ) : (
+            coins.map((coin, i) => {
+              const change = parseFloat(coin.price_change_24h || 0);
+              const isPos = change >= 0;
+              return (
+                <div
+                  key={coin.coin_pair || i}
+                  className="flex items-center px-5 py-3 hover:bg-white/[0.03] cursor-pointer transition-colors"
+                  onClick={() => navigate(coin.coin_pair ? `/spot-trading?coin_pair_id=${coin.coin_pair}` : '/spot-trading')}
+                >
+                  <div className="flex items-center gap-3 flex-1">
+                    {coin.logo_path ? (
+                      <img src={coin.logo_path} alt={coin.symbol} className="w-8 h-8 rounded-full" onError={e => { e.target.style.display = 'none'; }} />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-[#2A2A2A] flex items-center justify-center text-[10px] font-bold text-white">{(coin.symbol || '?').slice(0, 2)}</div>
+                    )}
+                    <span className="text-white font-semibold text-sm">{coin.symbol}</span>
+                  </div>
+                  <span className="w-24 text-right text-white text-sm font-medium font-mono">
+                    {parseFloat(coin.price || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </span>
+                  <span className={`w-20 text-right text-sm font-semibold ${isPos ? 'text-[#2EBD85]' : 'text-[#F6465D]'}`}>
+                    {isPos ? '+' : ''}{change.toFixed(2)}%
+                  </span>
+                </div>
+              );
+            })
+          )}
+        </div>
+      </div>
+
+      {/* News card */}
+      <div className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-2xl mt-4 p-5">
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-white font-bold text-base">News</span>
+          <span className="text-[#2EBD85] text-xs cursor-pointer hover:underline" onClick={() => navigate('/help/category/announcements')}>More &rsaquo;</span>
+        </div>
+        <div className="space-y-3">
+          {[
+            "GLD Now Supports 50+ Trading Pairs",
+            "Proof of Reserves: April 2026 Audit Published",
+            "Simple Earn: Up to 12% APY on Stablecoins",
+            "New: Perpetual Futures for SOL, ADA, DOT",
+          ].map((headline, i) => (
+            <p key={i} className="text-[#848E9C] text-sm leading-snug hover:text-white cursor-pointer transition-colors truncate">
+              {headline}
+            </p>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const HeroBanner = ({ isLoggedIn = false }) => {
   const [current, setCurrent] = useState(0);
@@ -12,10 +112,6 @@ const HeroBanner = ({ isLoggedIn = false }) => {
     setCurrent((c) => (c + 1) % banners.length);
   }, [banners.length]);
 
-  const prev = useCallback(() => {
-    setCurrent((c) => (c - 1 + banners.length) % banners.length);
-  }, [banners.length]);
-
   useEffect(() => {
     if (banners.length <= 1) return;
     const timer = setInterval(next, AUTO_PLAY_INTERVAL);
@@ -23,142 +119,78 @@ const HeroBanner = ({ isLoggedIn = false }) => {
   }, [next, banners.length]);
 
   if (!banners.length) return null;
-
   const banner = banners[current];
 
-  const bgStyle = banner.image
-    ? { backgroundImage: `url(${banner.image})`, backgroundSize: "cover", backgroundPosition: "center" }
-    : { background: banner.gradient || "linear-gradient(135deg, #1E1E1E 0%, #121212 100%)" };
-
   return (
-    <div className="relative w-full overflow-hidden group" style={{ minHeight: 400 }}>
-      {/* Background */}
-      <div className="absolute inset-0 transition-all duration-1000 ease-in-out" style={bgStyle} />
+    <div className="bg-[#0a0a0a]">
+      <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 pt-12 md:pt-20 pb-10 md:pb-16">
+        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
 
-      {/* Glow effects */}
-      <div className="absolute -top-40 right-0 w-[600px] h-[600px] bg-[#2EBD85]/[0.04] rounded-full blur-[150px]" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#2EBD85]/[0.03] rounded-full blur-[120px]" />
+          {/* Left — Big bold text */}
+          <div className="flex-1 max-w-2xl">
+            <h1 className="text-4xl sm:text-5xl md:text-[52px] lg:text-[64px] font-bold text-white leading-[1.08] tracking-tight mb-6">
+              {banner.title}
+            </h1>
+            <p className="text-[#848E9C] text-base md:text-lg leading-relaxed mb-8 max-w-md">
+              {banner.subtitle}
+            </p>
 
-      {/* Subtle grid */}
-      <div className="absolute inset-0 opacity-[0.015]" style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
+            {/* Buttons */}
+            {!isLoggedIn ? (
+              <div className="flex flex-wrap items-center gap-3 mb-6">
+                <Link
+                  to="/signup"
+                  className="bg-white hover:bg-gray-100 text-black px-7 py-3.5 rounded-full text-sm font-semibold transition-colors"
+                >
+                  Sign up
+                </Link>
+                <Link
+                  to="/download"
+                  className="bg-[#1E1E1E] hover:bg-[#252525] border border-[#2A2A2A] text-white px-7 py-3.5 rounded-full text-sm font-medium transition-colors flex items-center gap-2"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                  Download app
+                </Link>
+              </div>
+            ) : (
+              <div className="flex flex-wrap items-center gap-3 mb-6">
+                <Link to={banner.link} className="bg-white hover:bg-gray-100 text-black px-7 py-3.5 rounded-full text-sm font-semibold transition-colors">
+                  {banner.cta}
+                </Link>
+                <Link to="/my-assets" className="bg-[#1E1E1E] hover:bg-[#252525] border border-[#2A2A2A] text-white px-7 py-3.5 rounded-full text-sm font-medium transition-colors">
+                  View Assets
+                </Link>
+              </div>
+            )}
 
-      {banner.image && (
-        <div className="absolute inset-0 bg-gradient-to-r from-[#121212] via-[#121212]/60 to-transparent" />
-      )}
-
-      {/* Content */}
-      <div className="relative z-10 h-full container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 flex items-center pt-8 pb-8" style={{ minHeight: 400 }}>
-        <div className="flex items-center justify-between w-full gap-12">
-          {/* Left — Main content */}
-          <div className="flex-1 max-w-xl">
+            {/* Carousel dots */}
             {banners.length > 1 && (
-              <div className="flex items-center gap-2 mb-6">
-                {banners.map((b, i) => (
+              <div className="flex items-center gap-1.5 mb-10">
+                {banners.map((_, i) => (
                   <button
-                    key={b.id}
+                    key={i}
                     onClick={() => setCurrent(i)}
-                    className={`text-xs font-medium px-3 py-1 rounded-full transition-all duration-300 ${
-                      i === current
-                        ? "bg-[#2EBD85] text-white"
-                        : "bg-white/5 text-[#5E6673] hover:bg-white/10 hover:text-[#848E9C]"
+                    className={`rounded-full transition-all duration-300 ${
+                      i === current ? "w-6 h-1.5 bg-[#2EBD85]" : "w-1.5 h-1.5 bg-[#2A2A2A] hover:bg-[#3a3a3a]"
                     }`}
-                  >
-                    {b.tag || `0${i + 1}`}
-                  </button>
+                  />
                 ))}
               </div>
             )}
 
-            <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-4 leading-[1.1]">
-              {banner.title}
-            </h1>
-            <p className="text-[#848E9C] text-base lg:text-lg mb-8 leading-relaxed max-w-md">
-              {banner.subtitle}
-            </p>
-
-            {/* CTA — signup for guests, trade button for logged in */}
-            {!isLoggedIn ? (
-              <div className="flex items-center gap-3">
-                <input
-                  type="text"
-                  placeholder="Email / Phone number"
-                  aria-label="Email or phone number"
-                  className="bg-white/5 border border-[#2A2A2A] text-white placeholder-[#5E6673] px-5 py-3 rounded-xl text-sm w-64 focus:outline-none focus:border-[#2EBD85] transition-colors backdrop-blur-sm"
-                />
-                <Link
-                  to="/signup"
-                  className="bg-[#2EBD85] hover:bg-[#259A6C] text-white px-7 py-3 rounded-xl text-sm font-semibold transition-colors whitespace-nowrap"
-                >
-                  Sign up
-                </Link>
-              </div>
-            ) : (
-              <Link
-                to={banner.link}
-                className="inline-flex items-center gap-2 bg-[#2EBD85] hover:bg-[#259A6C] text-white px-7 py-3 rounded-xl text-sm font-semibold transition-colors"
-              >
-                {banner.cta}
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </Link>
-            )}
-
-            {!isLoggedIn && (
-              <p className="text-[#5E6673] text-xs mt-3">
-                Sign up to receive up to <span className="text-[#2EBD85]">$2,000</span> in rewards
-              </p>
-            )}
-          </div>
-
-          {/* Right — Stats card */}
-          <div className="hidden lg:flex flex-col gap-3 w-72">
-            <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-5">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-2 h-2 rounded-full bg-[#2EBD85] animate-pulse" />
-                <span className="text-[#848E9C] text-xs font-medium">Live Market</span>
-              </div>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-white text-sm font-medium">BTC/USDT</span>
-                  <span className="text-[#2EBD85] text-xs font-medium">+2.34%</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-white text-sm font-medium">ETH/USDT</span>
-                  <span className="text-[#F6465D] text-xs font-medium">-1.12%</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-white text-sm font-medium">SOL/USDT</span>
-                  <span className="text-[#2EBD85] text-xs font-medium">+5.67%</span>
-                </div>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-4 text-center">
-                <p className="text-xl font-bold text-white">500+</p>
-                <p className="text-[#5E6673] text-[10px] mt-0.5">Trading Pairs</p>
-              </div>
-              <div className="bg-white/[0.03] backdrop-blur-sm border border-white/[0.06] rounded-2xl p-4 text-center">
-                <p className="text-xl font-bold text-white">&lt;10ms</p>
-                <p className="text-[#5E6673] text-[10px] mt-0.5">Execution</p>
-              </div>
+            {/* Trust logos / partners */}
+            <div className="flex items-center gap-8 opacity-40">
+              <span className="text-white text-xs font-bold tracking-widest uppercase">Trusted by</span>
+              <span className="text-white text-sm font-bold">CoinGecko</span>
+              <span className="text-white text-sm font-bold">CoinMarketCap</span>
+              <span className="text-white text-sm font-bold hidden sm:block">DeFiLlama</span>
             </div>
           </div>
+
+          {/* Right — Live market card */}
+          <HeroMarketCard />
         </div>
       </div>
-
-      {/* Bottom fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#121212] to-transparent" />
-
-      {/* Arrows */}
-      {banners.length > 1 && (
-        <>
-          <button onClick={prev} className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/5 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity z-20 hover:bg-white/10">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M15 18l-6-6 6-6"/></svg>
-          </button>
-          <button onClick={next} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/5 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity z-20 hover:bg-white/10">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 18l6-6-6-6"/></svg>
-          </button>
-        </>
-      )}
     </div>
   );
 };

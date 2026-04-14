@@ -280,7 +280,7 @@ const Overview = () => {
   }
 
   return (
-    <div className="bg-[#121212] text-white relative">
+    <div className="bg-[#0a0a0a] text-white relative">
       {!isMobile && <ProfileNavBar currentPath="/profile/overview" />}
 
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -306,7 +306,7 @@ const Overview = () => {
           {/* Left Column - 2/3 width */}
           <div className="lg:col-span-2 space-y-6">
             {/* Portfolio Overview */}
-            <div className="bg-[#121212] rounded-xl shadow-sm border border-[#2A2A2A] p-6">
+            <div className="bg-[#0a0a0a] rounded-xl shadow-sm border border-[#2A2A2A] p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-lg font-semibold text-white">
                   Portfolio Overview
@@ -376,7 +376,7 @@ const Overview = () => {
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-[#121212] rounded-xl shadow-sm border border-[#2A2A2A] p-6">
+            <div className="bg-[#0a0a0a] rounded-xl shadow-sm border border-[#2A2A2A] p-6">
               <h2 className="text-lg font-semibold text-white mb-4">
                 Quick Actions
               </h2>
@@ -464,7 +464,7 @@ const Overview = () => {
             </div>
 
             {/* Top Assets */}
-            <div className="bg-[#121212] rounded-xl shadow-sm border border-[#2A2A2A] p-6">
+            <div className="bg-[#0a0a0a] rounded-xl shadow-sm border border-[#2A2A2A] p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-white">
                   Top Assets

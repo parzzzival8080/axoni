@@ -1,40 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-const MiniChart = ({ isPositive }) => {
-  const points = useMemo(() => {
-    const pts = [];
-    let y = 20;
-    for (let i = 0; i < 12; i++) {
-      y += (Math.random() - (isPositive ? 0.35 : 0.65)) * 8;
-      y = Math.max(5, Math.min(35, y));
-      pts.push(`${i * 7},${y}`);
-    }
-    return pts.join(' ');
-  }, [isPositive]);
-
-  return (
-    <svg width="60" height="28" viewBox="0 0 77 40" fill="none">
-      <polyline
-        points={points}
-        stroke={isPositive ? '#2EBD85' : '#F6465D'}
-        strokeWidth="1.5"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-};
-
-const formatVolume = (vol) => {
-  if (!vol) return '--';
-  const n = parseFloat(vol);
-  if (n >= 1e9) return '$' + (n / 1e9).toFixed(2) + 'B';
-  if (n >= 1e6) return '$' + (n / 1e6).toFixed(2) + 'M';
-  if (n >= 1e3) return '$' + (n / 1e3).toFixed(1) + 'K';
-  return '$' + n.toFixed(2);
-};
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Trading = () => {
   const [coins, setCoins] = useState([]);
@@ -59,81 +24,85 @@ const Trading = () => {
     return () => { isMounted = false; };
   }, []);
 
-  return (
-    <div className="bg-[#0a0a0a] py-6 md:py-10">
-      <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-        <div className="flex items-center justify-between mb-5">
-          <h2 className="text-lg md:text-3xl font-bold text-white">Trending</h2>
-          <button onClick={() => navigate('/market')} className="text-[#2EBD85] text-sm font-medium hover:underline">View all</button>
-        </div>
+  const topCoins = coins.slice(0, 6);
 
-        <div className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-xl overflow-hidden">
-          {/* Header */}
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-[#2A2A2A]">
-                <th className="text-left text-[#5E6673] text-xs font-normal py-3 px-4 w-[40%]">Pair</th>
-                <th className="text-right text-[#5E6673] text-xs font-normal py-3 px-4">Price</th>
-                <th className="text-right text-[#5E6673] text-xs font-normal py-3 px-4 hidden md:table-cell">24h Volume</th>
-                <th className="text-center text-[#5E6673] text-xs font-normal py-3 px-4 hidden md:table-cell">7d</th>
-                <th className="text-right text-[#5E6673] text-xs font-normal py-3 px-4">24h Change</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr><td colSpan={5} className="py-12 text-center text-[#5E6673] text-sm animate-pulse">Loading...</td></tr>
-              ) : coins.length === 0 ? (
-                <tr><td colSpan={5} className="py-12 text-center text-[#5E6673] text-sm">No coins found</td></tr>
-              ) : (
-                coins.slice(0, 8).map((coin, index) => {
-                  const symbol = coin.symbol && coin.pair_name ? `${coin.symbol}/${coin.pair_name}` : coin.symbol || '-';
-                  const price = coin.price ? parseFloat(coin.price).toLocaleString(undefined, { maximumFractionDigits: 2 }) : '-';
-                  const change = coin.price_change_24h != null ? parseFloat(coin.price_change_24h).toFixed(2) : '0.00';
-                  const isPositive = parseFloat(change) >= 0;
+  return (
+    <div className="bg-[#0a0a0a] py-20 md:py-32">
+      <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
+        <div className="flex flex-col md:flex-row items-start gap-12 md:gap-20">
+
+          {/* Left — Text */}
+          <div className="flex-1 max-w-md pt-8">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight tracking-tight mb-5">
+              Build your portfolio
+            </h2>
+            <p className="text-[#848E9C] text-sm md:text-base leading-relaxed mb-8">
+              Take control of your financial future. Whether you're a seasoned trader or just starting out, easily trade over 500 cryptocurrencies on your terms, with low fees.
+            </p>
+            <Link
+              to="/spot-trading"
+              className="inline-flex bg-white hover:bg-gray-100 text-black px-8 py-3.5 rounded-full text-sm font-semibold transition-colors"
+            >
+              Buy crypto
+            </Link>
+          </div>
+
+          {/* Right — 3x2 coin cards grid */}
+          <div className="flex-1 w-full">
+            {loading ? (
+              <div className="grid grid-cols-3 gap-3">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-2xl p-5 animate-pulse">
+                    <div className="w-10 h-10 rounded-full bg-[#2A2A2A] mb-3" />
+                    <div className="w-16 h-4 bg-[#2A2A2A] rounded mb-2" />
+                    <div className="w-20 h-3 bg-[#2A2A2A] rounded mb-4" />
+                    <div className="w-14 h-4 bg-[#2A2A2A] rounded" />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-3 gap-3">
+                {topCoins.map((coin, index) => {
+                  const change = coin.price_change_24h != null ? parseFloat(coin.price_change_24h) : 0;
+                  const isPositive = change >= 0;
+                  const price = coin.price ? parseFloat(coin.price) : 0;
 
                   return (
-                    <tr
+                    <button
                       key={coin.coin_pair || index}
-                      className="hover:bg-[#252525] transition-colors cursor-pointer border-b border-[#2A2A2A]/50 last:border-b-0"
                       onClick={() => navigate(coin.coin_pair ? `/spot-trading?coin_pair_id=${coin.coin_pair}` : '/spot-trading')}
+                      className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-2xl p-5 text-left hover:border-[#3a3a3a] transition-colors group"
                     >
-                      <td className="py-3 px-4">
-                        <div className="flex items-center gap-3">
-                          {coin.logo_path ? (
-                            <img src={coin.logo_path} alt={symbol} className="w-8 h-8 rounded-full bg-[#2A2A2A] object-contain" onError={e => { e.target.onerror = null; e.target.style.display = 'none'; }} />
-                          ) : (
-                            <div className="w-8 h-8 bg-[#2A2A2A] rounded-full flex items-center justify-center"><span className="text-[10px] font-bold text-white">{symbol.split('/')[0].slice(0, 2)}</span></div>
-                          )}
-                          <div>
-                            <p className="text-sm font-semibold text-white">{symbol}</p>
-                            <p className="text-[10px] text-[#5E6673] hidden md:block">{coin.name || symbol.split('/')[0]}</p>
-                          </div>
+                      {/* Coin icon */}
+                      {coin.logo_path ? (
+                        <img
+                          src={coin.logo_path}
+                          alt={coin.symbol}
+                          className="w-10 h-10 rounded-full mb-3"
+                          onError={e => { e.target.onerror = null; e.target.style.display = 'none'; }}
+                        />
+                      ) : (
+                        <div className="w-10 h-10 rounded-full bg-[#2A2A2A] flex items-center justify-center mb-3">
+                          <span className="text-xs font-bold text-white">{(coin.symbol || '?').slice(0, 2)}</span>
                         </div>
-                      </td>
-                      <td className="py-3 px-4 text-right">
-                        <span className="text-sm font-medium text-white">${price}</span>
-                      </td>
-                      <td className="py-3 px-4 text-right hidden md:table-cell">
-                        <span className="text-xs text-[#848E9C] font-mono">{formatVolume(coin.volume_24h || (parseFloat(coin.price || 1) * (50000 + Math.random() * 500000)))}</span>
-                      </td>
-                      <td className="py-3 px-4 hidden md:table-cell">
-                        <div className="flex justify-center">
-                          <MiniChart isPositive={isPositive} />
-                        </div>
-                      </td>
-                      <td className="py-3 px-4 text-right">
-                        <span className={`inline-block text-xs font-semibold px-2.5 py-1 rounded-md min-w-[64px] text-center ${
-                          isPositive ? 'bg-[#2EBD85]/15 text-[#2EBD85]' : 'bg-[#F6465D]/15 text-[#F6465D]'
-                        }`}>
-                          {isPositive ? '+' : ''}{change}%
-                        </span>
-                      </td>
-                    </tr>
+                      )}
+
+                      {/* Name & price */}
+                      <p className="text-white font-semibold text-sm mb-0.5">{coin.symbol || '--'}</p>
+                      <p className="text-[#848E9C] text-xs mb-3">
+                        ${price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 })}
+                      </p>
+
+                      {/* Change */}
+                      <p className={`text-base font-semibold ${isPositive ? 'text-[#2EBD85]' : 'text-[#F6465D]'}`}>
+                        {isPositive ? '+' : ''}{change.toFixed(2)}%
+                      </p>
+                    </button>
                   );
-                })
-              )}
-            </tbody>
-          </table>
+                })}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

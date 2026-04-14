@@ -396,7 +396,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
             <button
               onClick={forceRefresh}
               disabled={loading || isBackgroundRefresh}
-              className="flex items-center bg-gray-800 bg-opacity-90 hover:bg-opacity-100 px-3 py-1 rounded-full text-xs text-gray-300 hover:text-white transition-colors disabled:opacity-50"
+              className="flex items-center bg-[#1E1E1E] bg-opacity-90 hover:bg-opacity-100 px-3 py-1 rounded-full text-xs text-[#848E9C] hover:text-white transition-colors disabled:opacity-50"
               title="Refresh order history"
             >
               <FontAwesomeIcon 
@@ -430,8 +430,8 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                   alt="No records found"
                   className="w-16 h-16 mb-4"
                 />
-                <p className="text-base font-medium text-gray-400 mb-1">No records found</p>
-                <p className="text-sm text-gray-500">Get started with your first transaction</p>
+                <p className="text-base font-medium text-[#5E6673] mb-1">No records found</p>
+                <p className="text-sm text-[#5E6673]">Get started with your first transaction</p>
               </div>
             </div>
           ) : (
@@ -482,7 +482,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                     <td className="text-left">
                       <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                         order.status === 'open_position' ? 'bg-green-900 bg-opacity-30 text-green-400 border border-green-700' :
-                        order.status === 'close_position' ? 'bg-gray-900 bg-opacity-30 text-gray-400 border border-gray-700' :
+                        order.status === 'close_position' ? 'bg-gray-900 bg-opacity-30 text-[#5E6673] border border-[#2A2A2A]' :
                         order.status === 'liquidated' ? 'bg-red-900 bg-opacity-30 text-red-400 border border-red-700' :
                         'bg-yellow-900 bg-opacity-30 text-[#2EBD85] border border-[#2EBD85]'
                       }`}>
@@ -512,7 +512,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                           </button>
                         )}
                         {order.status === 'close_position' && (
-                          <span className="text-gray-500 text-sm">Closed</span>
+                          <span className="text-[#5E6673] text-sm">Closed</span>
                         )}
                       </div>
                     </td>
@@ -546,7 +546,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
             Showing {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, processedData.length)} of {processedData.length} orders
           </div>
           {lastUpdated && (
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-[#5E6673]">
               Last updated: {lastUpdated.toLocaleTimeString()}
             </div>
           )}
@@ -555,15 +555,15 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
     
       {/* Confirmation Popup */}
       {showPopup && selectedPosition && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70">
-          <div className="bg-[#181A20] rounded-lg shadow-xl max-w-md w-full mx-4 overflow-hidden border border-gray-700">
-            <div className="flex justify-between items-center p-4 border-b border-gray-700">
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-[#0a0a0a] bg-opacity-70">
+          <div className="bg-[#181A20] rounded-lg shadow-xl max-w-md w-full mx-4 overflow-hidden border border-[#2A2A2A]">
+            <div className="flex justify-between items-center p-4 border-b border-[#2A2A2A]">
               <h3 className="text-lg font-medium text-white">
                 {closeSuccess ? 'Position Closed' : 'Close Position'}
               </h3>
               <button 
                 onClick={closePopup}
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-[#5E6673] hover:text-white transition-colors"
               >
                 <FontAwesomeIcon icon={faTimes} />
               </button>
@@ -576,7 +576,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                     <FontAwesomeIcon icon={faCheckCircle} className="text-3xl text-green-500" />
                   </div>
                   <p className="text-white text-lg mb-2">Position closed successfully</p>
-                  <p className="text-gray-400 text-sm">Your position has been closed and funds have been returned to your wallet.</p>
+                  <p className="text-[#5E6673] text-sm">Your position has been closed and funds have been returned to your wallet.</p>
                 </div>
               ) : (
                 <>
@@ -585,28 +585,28 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                       <FontAwesomeIcon icon={faExclamationTriangle} className="text-3xl text-[#2EBD85]" />
                     </div>
                     <p className="text-white text-lg mb-2">Confirm Position Close</p>
-                    <p className="text-gray-400 text-sm">Are you sure you want to close this position? This action cannot be undone.</p>
+                    <p className="text-[#5E6673] text-sm">Are you sure you want to close this position? This action cannot be undone.</p>
                   </div>
                   
-                  <div className="bg-gray-800 bg-opacity-50 rounded-lg p-4 mb-5">
+                  <div className="bg-[#1E1E1E] bg-opacity-50 rounded-lg p-4 mb-5">
                     <div className="grid grid-cols-2 gap-2 text-sm">
-                      <div className="text-gray-400">Position ID:</div>
+                      <div className="text-[#5E6673]">Position ID:</div>
                       <div className="text-white font-medium">{selectedPosition.future_id}</div>
                       
-                      <div className="text-gray-400">Coin:</div>
+                      <div className="text-[#5E6673]">Coin:</div>
                       <div className="text-white font-medium">{selectedPosition.coin}</div>
                       
-                      <div className="text-gray-400">Entry Price:</div>
+                      <div className="text-[#5E6673]">Entry Price:</div>
                       <div className="text-white font-medium">
                         ${Number(selectedPosition.entry_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </div>
                       
-                      <div className="text-gray-400">Asset Value:</div>
+                      <div className="text-[#5E6673]">Asset Value:</div>
                       <div className="text-white font-medium">
                         {Number(selectedPosition.asset).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {selectedPosition.coin}
                       </div>
                       
-                      <div className="text-gray-400">Unrealized PnL:</div>
+                      <div className="text-[#5E6673]">Unrealized PnL:</div>
                       <div className="text-white font-medium">
                         {(() => {
                           const asset = Number(selectedPosition.asset) || 0;
@@ -617,7 +617,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                         })()} USDT
                       </div>
                       
-                      <div className="text-gray-400">Return:</div>
+                      <div className="text-[#5E6673]">Return:</div>
                       <div className="text-white font-medium">
                         {Number(selectedPosition.return_percentage).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%
                       </div>
@@ -627,7 +627,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                   <div className="flex justify-end space-x-3">
                     <button 
                       onClick={closePopup}
-                      className="px-4 py-2 bg-transparent border border-gray-600 text-gray-300 rounded-md hover:bg-gray-700 transition-colors"
+                      className="px-4 py-2 bg-transparent border border-[#2A2A2A] text-[#848E9C] rounded-md hover:bg-gray-700 transition-colors"
                     >
                       Cancel
                     </button>
@@ -648,15 +648,15 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
     
       {/* Add Margin Modal */}
       {showAddMarginModal && selectedPosition && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70">
-          <div className="bg-[#181A20] rounded-lg shadow-xl max-w-md w-full mx-4 overflow-hidden border border-gray-700">
-            <div className="flex justify-between items-center p-4 border-b border-gray-700">
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-[#0a0a0a] bg-opacity-70">
+          <div className="bg-[#181A20] rounded-lg shadow-xl max-w-md w-full mx-4 overflow-hidden border border-[#2A2A2A]">
+            <div className="flex justify-between items-center p-4 border-b border-[#2A2A2A]">
               <h3 className="text-lg font-medium text-white">
                 {addMarginSuccess ? 'Margin Added' : 'Add Margin'}
               </h3>
               <button 
                 onClick={closeAddMarginModal}
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-[#5E6673] hover:text-white transition-colors"
               >
                 <FontAwesomeIcon icon={faTimes} />
               </button>
@@ -669,39 +669,39 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                     <FontAwesomeIcon icon={faCheckCircle} className="text-3xl text-green-500" />
                   </div>
                   <p className="text-white text-lg mb-2">Margin added successfully</p>
-                  <p className="text-gray-400 text-sm">Additional margin has been added to your position.</p>
+                  <p className="text-[#5E6673] text-sm">Additional margin has been added to your position.</p>
                 </div>
               ) : (
                 <>
                   <div className="mb-5">
-                    <div className="bg-gray-800 bg-opacity-50 rounded-lg p-4 mb-5">
+                    <div className="bg-[#1E1E1E] bg-opacity-50 rounded-lg p-4 mb-5">
                       <div className="grid grid-cols-2 gap-2 text-sm mb-4">
-                        <div className="text-gray-400">Position ID:</div>
+                        <div className="text-[#5E6673]">Position ID:</div>
                         <div className="text-white font-medium">{selectedPosition.future_id}</div>
                         
-                        <div className="text-gray-400">Coin:</div>
+                        <div className="text-[#5E6673]">Coin:</div>
                         <div className="text-white font-medium">{selectedPosition.coin}</div>
                         
-                        <div className="text-gray-400">Current Margin:</div>
+                        <div className="text-[#5E6673]">Current Margin:</div>
                         <div className="text-white font-medium">
                           {Number(selectedPosition.margin).toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })} USDT
                         </div>
                         
-                        <div className="text-gray-400">Entry Price:</div>
+                        <div className="text-[#5E6673]">Entry Price:</div>
                         <div className="text-white font-medium">
                           ${Number(selectedPosition.entry_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </div>
                       </div>
                       
                       <div className="mb-4">
-                        <label className="block text-gray-400 text-sm mb-2">Amount (USDT)</label>
+                        <label className="block text-[#5E6673] text-sm mb-2">Amount (USDT)</label>
                         <div className="relative">
                           <input
                             type="number"
                             value={marginAmount}
                             onChange={(e) => setMarginAmount(e.target.value)}
                             placeholder="0.00"
-                            className="w-full bg-[#12141C] border border-gray-700 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-[#2EBD85] focus:border-[#2EBD85]"
+                            className="w-full bg-[#12141C] border border-[#2A2A2A] rounded-md py-2 px-3 text-white focus:outline-none focus:ring-1 focus:ring-[#2EBD85] focus:border-[#2EBD85]"
                           />
                           <button
                             onClick={handleMaxAmount}
@@ -710,12 +710,12 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                             MAX
                           </button>
                         </div>
-                        <div className="text-xs text-gray-500 mt-1">
+                        <div className="text-xs text-[#5E6673] mt-1">
                           Max Available: {maxAvailableMargin.toFixed(2)} USDT
                         </div>
                       </div>
                       
-                      <div className="text-xs text-gray-400">
+                      <div className="text-xs text-[#5E6673]">
                         <div className="mb-1">Currently Assigned Margin: {Number(selectedPosition.margin).toFixed(2)} USDT</div>
                         <div>Max addable: {maxAvailableMargin.toFixed(2)} USDT</div>
                       </div>
@@ -753,13 +753,13 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                 <h3 className="text-base font-medium text-white mb-1">
                   {apiResponse.success ? 'Position Updated Successfully' : 'Position Update Failed'}
                 </h3>
-                <p className="text-sm text-gray-300">
+                <p className="text-sm text-[#848E9C]">
                   {apiResponse.message || (apiResponse.success ? 'Your position has been updated.' : 'Unable to update position. Please try again later.')}
                 </p>
               </div>
               <button 
                 onClick={() => setShowNotification(false)}
-                className="ml-3 flex-shrink-0 text-gray-400 hover:text-white transition-colors"
+                className="ml-3 flex-shrink-0 text-[#5E6673] hover:text-white transition-colors"
               >
                 <FontAwesomeIcon icon={faTimes} className="text-lg" />
               </button>

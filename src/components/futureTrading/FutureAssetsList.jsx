@@ -32,13 +32,13 @@ export default function FutureAssetsList() {
     fetchAssets();
   }, []);
 
-  if (isLoading) return <div className="py-8 text-center text-gray-400 dark:text-gray-500">Loading assets...</div>;
+  if (isLoading) return <div className="py-8 text-center text-[#5E6673] dark:text-[#5E6673]">Loading assets...</div>;
   if (error) return <div className="py-8 text-center text-red-500">{error}</div>;
-  if (!assets.length) return <div className="py-8 text-center text-gray-400 dark:text-gray-500">No assets found.</div>;
+  if (!assets.length) return <div className="py-8 text-center text-[#5E6673] dark:text-[#5E6673]">No assets found.</div>;
 
   return (
     <div className="overflow-x-auto mt-4">
-      <table className="min-w-full bg-black dark:bg-black rounded-lg divide-y divide-[#23272F]">
+      <table className="min-w-full bg-[#0a0a0a] dark:bg-[#0a0a0a] rounded-lg divide-y divide-[#23272F]">
         <thead>
           <tr className="text-xs text-white uppercase font-semibold border-b border-[#23272F]">
             <th className="px-4 py-2 text-left font-medium text-xs">Asset</th>
@@ -64,9 +64,9 @@ export default function FutureAssetsList() {
         </tbody>
       </table>
       {/* Pagination Controls */}
-      <div className="flex items-center justify-between px-4 py-3 bg-black border-t border-[#23272F] text-xs text-white">
+      <div className="flex items-center justify-between px-4 py-3 bg-[#0a0a0a] border-t border-[#23272F] text-xs text-white">
         <button
-          className={`px-2 py-1 rounded bg-black hover:bg-[#181A20] transition disabled:opacity-40 disabled:cursor-not-allowed border border-[#23272F]`}
+          className={`px-2 py-1 rounded bg-[#0a0a0a] hover:bg-[#181A20] transition disabled:opacity-40 disabled:cursor-not-allowed border border-[#23272F]`}
           onClick={() => setPage(p => Math.max(1, p - 1))}
           disabled={page === 1}
         >
@@ -76,7 +76,7 @@ export default function FutureAssetsList() {
           Showing {(page - 1) * PAGE_SIZE + 1}-{Math.min(page * PAGE_SIZE, assets.length)} of {assets.length} assets
         </span>
         <button
-          className={`px-2 py-1 rounded bg-black hover:bg-[#181A20] transition disabled:opacity-40 disabled:cursor-not-allowed border border-[#23272F]`}
+          className={`px-2 py-1 rounded bg-[#0a0a0a] hover:bg-[#181A20] transition disabled:opacity-40 disabled:cursor-not-allowed border border-[#23272F]`}
           onClick={() => setPage(p => Math.min(totalPages, p + 1))}
           disabled={page === totalPages}
         >

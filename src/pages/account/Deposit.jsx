@@ -357,7 +357,7 @@ function App() {
   const activeStep = selectedNetwork ? 3 : selectedCryptoSymbol ? 2 : 1;
 
   return (
-    <div className="bg-[#121212] text-white font-sans">
+    <div className="bg-[#0a0a0a] text-white font-sans">
       {/* Main Content Area */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-2xl font-semibold mb-6 text-white">Deposit</h1>
@@ -376,8 +376,8 @@ function App() {
                 <span
                   className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 ${
                     activeStep >= 1
-                      ? "bg-[#121212] text-white"
-                      : "border border-[#2A2A2A] bg-[#121212] text-[#5E6673]"
+                      ? "bg-[#0a0a0a] text-white"
+                      : "border border-[#2A2A2A] bg-[#0a0a0a] text-[#5E6673]"
                   }`}
                 >
                   1
@@ -426,7 +426,7 @@ function App() {
 
                   {/* Crypto Selection Dropdown Modal */}
                   {isCryptoDropdownOpen && (
-                    <div className="absolute top-full left-0 mt-1 w-full max-w-md bg-[#121212] border border-[#2A2A2A] rounded-lg shadow-lg z-20">
+                    <div className="absolute top-full left-0 mt-1 w-full max-w-md bg-[#0a0a0a] border border-[#2A2A2A] rounded-lg shadow-lg z-20">
                       {/* Search Input inside Dropdown */}
                       <div className="p-3 border-b border-[#2A2A2A]">
                         <div className="flex items-center bg-[#1E1E1E] rounded-md px-3 py-1.5">
@@ -436,7 +436,7 @@ function App() {
                             placeholder="Search crypto"
                             value={searchTerm}
                             onChange={handleSearchChange}
-                            className="w-full bg-transparent text-sm text-white placeholder-gray-500 focus:outline-none ml-1"
+                            className="w-full bg-transparent text-sm text-white placeholder-[#5E6673] focus:outline-none ml-1"
                             autoFocus // Focus on search when dropdown opens
                           />
                         </div>
@@ -499,7 +499,7 @@ function App() {
                         className={`inline-flex items-center px-3 py-1.5 border rounded-full text-sm font-medium transition-colors duration-150 focus:outline-none ${
                           selectedCryptoSymbol === symbol
                             ? "bg-indigo-100 border-indigo-300 text-indigo-800"
-                            : "bg-[#121212] border-[#2A2A2A] text-[#848E9C] hover:bg-[#1E1E1E] hover:border-[#3A3A3A]"
+                            : "bg-[#0a0a0a] border-[#2A2A2A] text-[#848E9C] hover:bg-[#1E1E1E] hover:border-[#3A3A3A]"
                         }`}
                       >
                         <ImageWithFallback
@@ -526,8 +526,8 @@ function App() {
                 <span
                   className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 ${
                     activeStep >= 2
-                      ? "bg-[#121212] text-white"
-                      : "border border-[#2A2A2A] bg-[#121212] text-[#5E6673]"
+                      ? "bg-[#0a0a0a] text-white"
+                      : "border border-[#2A2A2A] bg-[#0a0a0a] text-[#5E6673]"
                   }`}
                 >
                   2
@@ -567,7 +567,7 @@ function App() {
 
                   {/* Network Dropdown */}
                   {isNetworkDropdownOpen && networkOptions.length > 0 && (
-                    <div className="absolute top-full left-0 mt-1 w-full bg-[#121212] border border-[#2A2A2A] rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
+                    <div className="absolute top-full left-0 mt-1 w-full bg-[#0a0a0a] border border-[#2A2A2A] rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
                       {networkOptions.map((option) => (
                         <div
                           key={option.value}
@@ -601,8 +601,8 @@ function App() {
                 <span
                   className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium mr-3 ${
                     activeStep >= 3
-                      ? "bg-[#121212] text-white"
-                      : "border border-[#2A2A2A] bg-[#121212] text-[#5E6673]"
+                      ? "bg-[#0a0a0a] text-white"
+                      : "border border-[#2A2A2A] bg-[#0a0a0a] text-[#5E6673]"
                   }`}
                 >
                   3
@@ -890,16 +890,16 @@ function App() {
           {/* Deposit History Table */}
           {!isLoadingHistory && !historyError && (
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-[#2A2A2A] dark:divide-gray-700 bg-[#121212] dark:bg-[#121212] rounded shadow-md">
-                <thead className="bg-[#1E1E1E] dark:bg-gray-800">
+              <table className="min-w-full divide-y divide-[#2A2A2A] dark:divide-gray-700 bg-[#0a0a0a] dark:bg-[#0a0a0a] rounded shadow-md">
+                <thead className="bg-[#1E1E1E] dark:bg-[#1E1E1E]">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-gray-300 uppercase tracking-wider">Date</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-gray-300 uppercase tracking-wider">Coin</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-gray-300 uppercase tracking-wider">Amount</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-gray-300 uppercase tracking-wider">Status</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-[#848E9C] uppercase tracking-wider">Date</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-[#848E9C] uppercase tracking-wider">Coin</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-[#848E9C] uppercase tracking-wider">Amount</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-[#848E9C] uppercase tracking-wider">Status</th>
                   </tr>
                 </thead>
-                <tbody className="bg-[#121212] dark:bg-[#121212] divide-y divide-gray-100 dark:divide-gray-800">
+                <tbody className="bg-[#0a0a0a] dark:bg-[#0a0a0a] divide-y divide-gray-100 dark:divide-gray-800">
                   {depositHistory.length === 0 ? (
                     <tr>
                       <td colSpan={4} className="text-center text-[#5E6673] dark:text-[#5E6673] py-8">
@@ -908,7 +908,7 @@ function App() {
                     </tr>
                   ) : (
                     paginatedDepositHistory.map((transaction, index) => (
-                      <tr key={transaction.id || index} className="hover:bg-[#1E1E1E] dark:hover:bg-gray-800 transition-colors">
+                      <tr key={transaction.id || index} className="hover:bg-[#1E1E1E] dark:hover:bg-[#1E1E1E] transition-colors">
                         <td className="px-4 py-3 text-xs text-[#848E9C] dark:text-gray-200 whitespace-nowrap">
                           {transaction.date ? new Date(transaction.date).toLocaleString() : '-'}
                         </td>
@@ -975,7 +975,7 @@ function App() {
                   className={`px-3 py-1.5 text-sm font-medium rounded-md border transition-colors ${
                     currentPage === 1
                       ? 'bg-[#1E1E1E] text-[#5E6673] border-[#2A2A2A] cursor-not-allowed'
-                      : 'bg-[#121212] text-[#848E9C] border-[#2A2A2A] hover:bg-[#1E1E1E] hover:border-[#3A3A3A]'
+                      : 'bg-[#0a0a0a] text-[#848E9C] border-[#2A2A2A] hover:bg-[#1E1E1E] hover:border-[#3A3A3A]'
                   }`}
                 >
                   Previous
@@ -1002,7 +1002,7 @@ function App() {
                         className={`px-3 py-1.5 text-sm font-medium rounded-md border transition-colors ${
                           currentPage === pageNum
                             ? 'bg-indigo-600 text-white border-indigo-600'
-                            : 'bg-[#121212] text-[#848E9C] border-[#2A2A2A] hover:bg-[#1E1E1E] hover:border-[#3A3A3A]'
+                            : 'bg-[#0a0a0a] text-[#848E9C] border-[#2A2A2A] hover:bg-[#1E1E1E] hover:border-[#3A3A3A]'
                         }`}
                       >
                         {pageNum}
@@ -1018,7 +1018,7 @@ function App() {
                   className={`px-3 py-1.5 text-sm font-medium rounded-md border transition-colors ${
                     currentPage === totalPages
                       ? 'bg-[#1E1E1E] text-[#5E6673] border-[#2A2A2A] cursor-not-allowed'
-                      : 'bg-[#121212] text-[#848E9C] border-[#2A2A2A] hover:bg-[#1E1E1E] hover:border-[#3A3A3A]'
+                      : 'bg-[#0a0a0a] text-[#848E9C] border-[#2A2A2A] hover:bg-[#1E1E1E] hover:border-[#3A3A3A]'
                   }`}
                 >
                   Next

@@ -88,7 +88,7 @@ export default function Assets() {
   // Mobile Assets Screen
   if (isMobile) {
     return (
-      <div className="bg-[#121212] text-white pb-20">
+      <div className="bg-[#0a0a0a] text-white pb-20">
         {/* Balance Card */}
         <div className="px-4 pt-2 pb-4">
           <div className="mb-1">

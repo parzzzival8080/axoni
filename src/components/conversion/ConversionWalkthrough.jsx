@@ -61,7 +61,7 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
       title: "Live Exchange Rate",
       description:
         "View the current exchange rate between your selected currencies. Rates are updated in real-time to ensure accurate conversions.",
-      target: ".mt-2.text-xs.text-gray-500:last-of-type",
+      target: ".mt-2.text-xs.text-[#5E6673]:last-of-type",
       position: "top",
       type: "highlight",
       duration: 4000,

@@ -126,19 +126,19 @@ const EarnOverview = () => {
   ];
 
   return (
-    <div className="bg-[#121212] text-white pb-20">
+    <div className="bg-[#0a0a0a] text-white pb-20">
       {/* Hero Section */}
-      <section className="relative px-4 sm:px-6 lg:px-8 py-12 lg:py-20 bg-[#000000]">
+      <section className="relative px-4 sm:px-6 lg:px-8 py-20 md:py-32 bg-[#0a0a0a]">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-center">
             <div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight tracking-tight">
                 Put your crypto to <span className="text-[#2EBD85]">work</span>
               </h1>
-              <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+              <p className="text-[#848E9C] text-base md:text-lg mb-8 leading-relaxed">
                 Earn daily rewards on 100+ tokens including USDT, USDC and ETH.
               </p>
-              <button className="bg-[#2EBD85] hover:bg-[#259A6C] text-white font-semibold px-8 py-4 rounded-lg transition-colors duration-200 shadow-lg">
+              <button className="bg-white hover:bg-gray-100 text-black font-semibold px-8 py-3.5 rounded-full transition-colors">
                 Activate Auto-earn
               </button>
           </div>
@@ -155,13 +155,13 @@ const EarnOverview = () => {
       </section>
 
       {/* Earn Options Section */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 bg-[#000000]">
+      <section className="px-4 sm:px-6 lg:px-8 py-12 bg-[#0a0a0a]">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {earnOptions.map((option, index) => (
               <div 
                 key={index} 
-                className="bg-gray-800/50 rounded-xl p-6 text-center hover:bg-gray-800/70 transition-colors border border-gray-700 cursor-pointer"
+                className="bg-[#1E1E1E] rounded-2xl p-6 text-center hover:bg-[#252525] transition-colors border border-[#2A2A2A] cursor-pointer"
               >
                 <div className="w-12 h-12 bg-[#2EBD85]/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <i className={`${option.icon} text-xl text-[#2EBD85]`}></i>
@@ -174,7 +174,7 @@ const EarnOverview = () => {
       </section>
 
       {/* Products Section */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 bg-[#000000]">
+      <section className="px-4 sm:px-6 lg:px-8 py-12 bg-[#0a0a0a]">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-white mb-8">Products</h2>
         
@@ -183,7 +183,7 @@ const EarnOverview = () => {
               <select 
                 value={selectedProduct} 
                 onChange={(e) => setSelectedProduct(e.target.value)}
-                className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-4 focus:outline-none focus:ring-1 focus:ring-[#2EBD85]"
+                className="bg-[#1E1E1E] text-white border border-[#2A2A2A] rounded-2xl py-2 px-4 focus:outline-none focus:ring-1 focus:ring-[#2EBD85]"
               >
               <option value="All products">All products</option>
               <option value="USDT">USDT</option>
@@ -194,7 +194,7 @@ const EarnOverview = () => {
               <select 
                 value={selectedTerm} 
                 onChange={(e) => setSelectedTerm(e.target.value)}
-                className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-4 focus:outline-none focus:ring-1 focus:ring-[#2EBD85]"
+                className="bg-[#1E1E1E] text-white border border-[#2A2A2A] rounded-2xl py-2 px-4 focus:outline-none focus:ring-1 focus:ring-[#2EBD85]"
               >
               <option value="All terms">All terms</option>
               <option value="3 days">3 days</option>
@@ -206,7 +206,7 @@ const EarnOverview = () => {
           
             <div className="relative w-full lg:w-80">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-5 w-5 text-[#5E6673]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
               </div>
@@ -215,30 +215,30 @@ const EarnOverview = () => {
               placeholder="Search crypto"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 pl-10 pr-4 w-full focus:outline-none focus:ring-1 focus:ring-[#2EBD85] placeholder-gray-400"
+                className="bg-[#1E1E1E] text-white border border-[#2A2A2A] rounded-2xl py-2 pl-10 pr-4 w-full focus:outline-none focus:ring-1 focus:ring-[#2EBD85] placeholder-gray-400"
             />
           </div>
         </div>
 
-          <div className="overflow-x-auto rounded-lg shadow-md bg-black/70">
+          <div className="overflow-x-auto rounded-2xl shadow-md bg-black/70">
             <table className="min-w-full divide-y divide-gray-800">
           <thead>
             <tr>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Token</th>
-                  <th className="px-6 py-4 text-right text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#5E6673] uppercase tracking-wider">Token</th>
+                  <th className="px-6 py-4 text-right text-xs font-semibold text-[#5E6673] uppercase tracking-wider">
                     Market APR 
                     <svg className="inline-block w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7"></path>
                     </svg>
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Term</th>
-                  <th className="px-6 py-4 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider">Action</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#5E6673] uppercase tracking-wider">Term</th>
+                  <th className="px-6 py-4 text-center text-xs font-semibold text-[#5E6673] uppercase tracking-wider">Action</th>
             </tr>
           </thead>
               <tbody className="divide-y divide-gray-800">
                 {loading && (
                   <tr>
-                    <td colSpan={4} className="py-12 text-center text-gray-400">
+                    <td colSpan={4} className="py-12 text-center text-[#5E6673]">
                       <div className="flex justify-center items-center">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#2EBD85]"></div>
                         <span className="ml-3">Loading products...</span>
@@ -255,19 +255,19 @@ const EarnOverview = () => {
                 
                 {!loading && !error && filteredCoins.length === 0 && (
                   <tr>
-                    <td colSpan={4} className="py-12 text-center text-gray-400">No products found.</td>
+                    <td colSpan={4} className="py-12 text-center text-[#5E6673]">No products found.</td>
                   </tr>
                 )}
                 
                 {!loading && !error && filteredCoins.map((coin, index) => (
-                  <tr key={coin.symbol || index} className="hover:bg-gray-800/50 transition-colors">
+                  <tr key={coin.symbol || index} className="hover:bg-[#1E1E1E] transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         {coin.logo_path ? (
                           <img 
                             src={coin.logo_path} 
                             alt={coin.symbol} 
-                            className="w-8 h-8 rounded-full bg-gray-800 object-contain shadow"
+                            className="w-8 h-8 rounded-full bg-[#1E1E1E] object-contain shadow"
                             onError={(e) => { 
                               e.target.onerror = null; 
                               e.target.src = 'https://via.placeholder.com/32/444/fff?text=' + (coin.symbol?.charAt(0) || '?'); 
@@ -294,15 +294,15 @@ const EarnOverview = () => {
                       <span className="text-green-400 font-semibold">{coin.marketApr}</span>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="text-gray-300">{coin.term}</span>
+                      <span className="text-[#848E9C]">{coin.term}</span>
                     </td>
                     <td className="px-6 py-4 text-center">
                       {coin.action ? (
-                        <button className="bg-[#2EBD85] hover:bg-[#259A6C] text-white font-medium px-4 py-2 rounded-lg transition-colors">
+                        <button className="bg-[#2EBD85] hover:bg-[#259A6C] text-white font-medium px-4 py-2 rounded-2xl transition-colors">
                           {coin.action}
                         </button>
                   ) : (
-                        <button className="text-gray-400 hover:text-white transition-colors p-2">
+                        <button className="text-[#5E6673] hover:text-white transition-colors p-2">
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
                           </svg>
@@ -326,19 +326,19 @@ const EarnOverview = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 bg-[#000000]">
+      <section className="px-4 sm:px-6 lg:px-8 py-12 bg-[#0a0a0a]">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-white mb-8">FAQ</h2>
           <div className="space-y-4">
           {faqItems.map((item, index) => (
-              <div key={index} className="bg-gray-800/50 rounded-xl border border-gray-700 overflow-hidden">
+              <div key={index} className="bg-[#1E1E1E] rounded-2xl border border-[#2A2A2A] overflow-hidden">
                 <button 
-                  className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-800/70 transition-colors"
+                  className="w-full flex items-center justify-between p-6 text-left hover:bg-[#252525] transition-colors"
                 onClick={() => toggleFaqItem(index)}
               >
                   <span className="text-white font-medium text-lg">{item.question}</span>
                   <svg 
-                    className={`w-5 h-5 text-gray-400 transition-transform ${item.isExpanded ? 'rotate-180' : ''}`} 
+                    className={`w-5 h-5 text-[#5E6673] transition-transform ${item.isExpanded ? 'rotate-180' : ''}`} 
                     fill="none" 
                     stroke="currentColor" 
                     viewBox="0 0 24 24"
@@ -348,7 +348,7 @@ const EarnOverview = () => {
                 </button>
               {item.isExpanded && item.answer && (
                   <div className="px-6 pb-6">
-                    <p className="text-gray-300 leading-relaxed">{item.answer}</p>
+                    <p className="text-[#848E9C] leading-relaxed">{item.answer}</p>
                 </div>
               )}
             </div>

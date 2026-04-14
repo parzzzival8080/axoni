@@ -15,7 +15,7 @@ const ImageWithFallback = ({ src, alt, description, className = "" }) => {
   return (
     <div className="my-6">
       {!imageError ? (
-        <div className="rounded-lg overflow-hidden border border-[#2A2A2A] bg-[#121212]">
+        <div className="rounded-lg overflow-hidden border border-[#2A2A2A] bg-[#0a0a0a]">
           {imageLoading && (
             <div className="w-full h-64 md:h-80 bg-[#1E1E1E] flex items-center justify-center">
               <div className="animate-spin rounded-full h-6 w-6 border-2 border-[#2EBD85] border-t-transparent"></div>
@@ -450,7 +450,7 @@ const WithdrawalGuide = () => {
   );
 
   return (
-    <div className="bg-[#121212]">
+    <div className="bg-[#0a0a0a]">
       {/* Subtle yellow Header Section */}
       <div className="bg-gradient-to-r from-gray-50 to-yellow-50 border-b border-yellow-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -529,35 +529,35 @@ const WithdrawalGuide = () => {
             <div className="flex gap-2">
               <button
                 onClick={() => handleShare('native')}
-                className="p-2 bg-[#121212] hover:bg-[#2EBD85]/5 rounded-lg transition-colors border border-[#2A2A2A] hover:border-[#2EBD85]/20"
+                className="p-2 bg-[#0a0a0a] hover:bg-[#2EBD85]/5 rounded-lg transition-colors border border-[#2A2A2A] hover:border-[#2EBD85]/20"
                 title="Share"
               >
                 <Share2 className="w-4 h-4 text-[#5E6673] hover:text-[#2EBD85]" />
               </button>
               <button
                 onClick={() => handleShare('facebook')}
-                className="p-2 bg-[#121212] hover:bg-[#2EBD85]/5 rounded-lg transition-colors border border-[#2A2A2A] hover:border-[#2EBD85]/20"
+                className="p-2 bg-[#0a0a0a] hover:bg-[#2EBD85]/5 rounded-lg transition-colors border border-[#2A2A2A] hover:border-[#2EBD85]/20"
                 title="Share on Facebook"
               >
                 <Facebook className="w-4 h-4 text-[#5E6673] hover:text-[#2EBD85]" />
               </button>
               <button
                 onClick={() => handleShare('linkedin')}
-                className="p-2 bg-[#121212] hover:bg-[#2EBD85]/5 rounded-lg transition-colors border border-[#2A2A2A] hover:border-[#2EBD85]/20"
+                className="p-2 bg-[#0a0a0a] hover:bg-[#2EBD85]/5 rounded-lg transition-colors border border-[#2A2A2A] hover:border-[#2EBD85]/20"
                 title="Share on LinkedIn"
               >
                 <Linkedin className="w-4 h-4 text-[#5E6673] hover:text-[#2EBD85]" />
               </button>
               <button
                 onClick={() => handleShare('twitter')}
-                className="p-2 bg-[#121212] hover:bg-[#2EBD85]/5 rounded-lg transition-colors border border-[#2A2A2A] hover:border-[#2EBD85]/20"
+                className="p-2 bg-[#0a0a0a] hover:bg-[#2EBD85]/5 rounded-lg transition-colors border border-[#2A2A2A] hover:border-[#2EBD85]/20"
                 title="Share on Twitter"
               >
                 <MessageCircle className="w-4 h-4 text-[#5E6673] hover:text-[#2EBD85]" />
               </button>
               <button
                 onClick={() => handleShare('copy')}
-                className="p-2 bg-[#121212] hover:bg-[#1E1E1E] rounded-lg transition-colors border border-[#2A2A2A] hover:border-[#2A2A2A]"
+                className="p-2 bg-[#0a0a0a] hover:bg-[#1E1E1E] rounded-lg transition-colors border border-[#2A2A2A] hover:border-[#2A2A2A]"
                 title="Copy Link"
               >
                 <Link2 className="w-4 h-4 text-[#5E6673] hover:text-[#848E9C]" />
@@ -655,7 +655,7 @@ const WithdrawalGuide = () => {
                 <input
                   type="text"
                   placeholder="Search FAQs..."
-                  className="w-full pl-3 pr-3 py-2 text-sm border border-[#2A2A2A] rounded-md focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-[#2EBD85] bg-[#121212]"
+                  className="w-full pl-3 pr-3 py-2 text-sm border border-[#2A2A2A] rounded-md focus:outline-none focus:ring-2 focus:ring-[#2EBD85] focus:border-[#2EBD85] bg-[#0a0a0a]"
                   value={faqSearch}
                   onChange={(e) => setFaqSearch(e.target.value)}
                 />

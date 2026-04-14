@@ -517,135 +517,7 @@ const Navbar = () => {
             </div>
         </div> */}
 
-          <div
-            className="nav-item hidden"
-            onMouseEnter={() => setShowMoreDropdown(true)}
-            onMouseLeave={() => setShowMoreDropdown(false)}
-            style={{ position: "relative" }}
-          >
-            More <i className="fas fa-chevron-down"></i>
-            {showMoreDropdown && (
-              <div
-                className="dropdown-menu more-dropdown-menu"
-                style={{
-                  width: "480px",
-                  display: "flex",
-                  padding: "32px 40px",
-                  gap: "48px",
-                  position: "absolute",
-                  left: 0,
-                  top: "100%",
-                }}
-                onMouseEnter={() => setShowMoreDropdown(true)}
-                onMouseLeave={() => setShowMoreDropdown(false)}
-              >
-                {/* Left Column: Products */}
-                <div style={{ flex: 1 }}>
-                  <div
-                    style={{
-                      fontWeight: 600,
-                      color: "#777",
-                      fontSize: "13px",
-                      marginBottom: "18px",
-                    }}
-                  >
-                    Products
-                  </div>
-                  <Link to="/okb" className="dropdown-link">
-                    <div className="dropdown-item" style={{ gap: "12px" }}>
-                      <i className="fas fa-coins"></i> OKB
-                    </div>
-                  </Link>
-                  <Link to="/security-of-funds" className="dropdown-link">
-                    <div className="dropdown-item" style={{ gap: "12px" }}>
-                      <i className="fas fa-shield-alt"></i> Security of funds
-                    </div>
-                  </Link>
-                  <Link to="/status" className="dropdown-link">
-                    <div className="dropdown-item" style={{ gap: "12px" }}>
-                      <i className="fas fa-chart-bar"></i> Status
-                    </div>
-                  </Link>
-                  <Link to="/proof-of-reserves" className="dropdown-link">
-                    <div className="dropdown-item" style={{ gap: "12px" }}>
-                      <i className="fas fa-file-invoice-dollar"></i> Proof of
-                      Reserves
-                    </div>
-                  </Link>
-                  <Link to="/okx-protect" className="dropdown-link">
-                    <div className="dropdown-item" style={{ gap: "12px" }}>
-                      <i className="fas fa-user-shield"></i> OKX Protect
-                    </div>
-                  </Link>
-                </div>
-                {/* Right Column: Others */}
-                <div style={{ flex: 1 }}>
-                  <div
-                    style={{
-                      fontWeight: 600,
-                      color: "#777",
-                      fontSize: "13px",
-                      marginBottom: "18px",
-                    }}
-                  >
-                    Others
-                  </div>
-                  <Link
-                    to="/pages/morePages/CampaignCenter"
-                    className="dropdown-link"
-                  >
-                    <div className="dropdown-item" style={{ gap: "12px" }}>
-                      <i className="fas fa-bullhorn"></i> Campaign center
-                    </div>
-                  </Link>
-                  <Link
-                    to="/pages/morePages/MyRewards"
-                    className="dropdown-link"
-                  >
-                    <div className="dropdown-item" style={{ gap: "12px" }}>
-                      <i className="fas fa-gift"></i> My rewards
-                    </div>
-                  </Link>
-                  <Link
-                    to="/pages/morePages/Referral"
-                    className="dropdown-link"
-                  >
-                    <div className="dropdown-item" style={{ gap: "12px" }}>
-                      <i className="fas fa-user-friends"></i> Referral
-                    </div>
-                  </Link>
-
-                  <div
-                    className="dropdown-item"
-                    onClick={openComingSoon}
-                    style={{ gap: "12px" }}
-                  >
-                    <i className="fas fa-handshake"></i> Affiliates
-                  </div>
-                  <ComingSoon
-                    isOpen={isComingSoonOpen}
-                    onClose={closeComingSoon}
-                  />
-
-                  <Link to="/okx-ventures" className="dropdown-link">
-                    <div className="dropdown-item" style={{ gap: "12px" }}>
-                      <i className="fas fa-rocket"></i> OKX Ventures
-                    </div>
-                  </Link>
-                  <Link to="/trade-on-tradingview" className="dropdown-link">
-                    <div className="dropdown-item" style={{ gap: "12px" }}>
-                      <i className="fas fa-chart-line"></i> Trade on TradingView
-                    </div>
-                  </Link>
-                  <Link to="/listing-application" className="dropdown-link">
-                    <div className="dropdown-item" style={{ gap: "12px" }}>
-                      <i className="fas fa-list-alt"></i> Listing application
-                    </div>
-                  </Link>
-                </div>
-              </div>
-            )}
-          </div>
+          {/* More dropdown removed */}
         </nav>
       </div>
 
@@ -1027,7 +899,7 @@ const Navbar = () => {
               </div>
             </div>
             {!isAuthenticated && (
-              <div className="mobile-auth-links p-4 border-b border-gray-700">
+              <div className="mobile-auth-links p-4 border-b border-[#2A2A2A]">
                 <Link
                   to="/login"
                   className="block text-center py-3 px-4 mb-2 text-white bg-[#2EBD85] hover:bg-[#259A6C] rounded-md text-sm font-medium transition-colors"
@@ -1155,7 +1027,7 @@ const Navbar = () => {
                 <div className="w-2 h-2 rounded-full bg-[#2EBD85]" style={{ boxShadow: '0 0 6px #2EBD85' }}></div>
                 <span className="text-white text-sm font-semibold">Customer Support</span>
               </div>
-              <button onClick={() => { setShowChat(false); setIsChatLoaded(false); }} className="text-gray-400 hover:text-white transition-colors p-1">
+              <button onClick={() => { setShowChat(false); setIsChatLoaded(false); }} className="text-[#5E6673] hover:text-white transition-colors p-1">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                   <path d="M18 6L6 18M6 6l12 12" />
                 </svg>
@@ -1164,9 +1036,9 @@ const Navbar = () => {
 
             {/* Loading skeleton */}
             {!isChatLoaded && (
-              <div className="flex flex-col items-center justify-center gap-4 bg-[#121212]" style={{ width: 380, height: 560 }}>
+              <div className="flex flex-col items-center justify-center gap-4 bg-[#0a0a0a]" style={{ width: 380, height: 560 }}>
                 <div className="w-12 h-12 rounded-full border-2 border-[#2A2A2A] border-t-[#2EBD85] animate-spin" />
-                <span className="text-sm text-gray-500">Connecting to support...</span>
+                <span className="text-sm text-[#5E6673]">Connecting to support...</span>
               </div>
             )}
 

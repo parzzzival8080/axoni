@@ -458,7 +458,7 @@ const TradingChart = ({ selectedSymbol = "BTC" }) => {
     <div className="trading-chart trading-chart-container md:relative md:z-auto z-0 overflow-hidden">
       {/* Timeframe Tabs */}
       <div className="timeframe-tabs mb-6">
-        <div className="flex space-x-1 bg-black border border-[#2EBD85]/20 rounded-lg p-1 w-fit">
+        <div className="flex space-x-1 bg-[#0a0a0a] border border-[#2EBD85]/20 rounded-lg p-1 w-fit">
           {timeframes.map((tf) => (
             <button
               key={tf.value}

@@ -644,7 +644,7 @@ const Transfer = () => {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: scrollbarStyles }} />
-      <div className="bg-[#121212] text-white font-sans">
+      <div className="bg-[#0a0a0a] text-white font-sans">
         {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 py-8">
           <h1 className="text-2xl font-bold mb-8 text-white">Transfer</h1>
@@ -688,7 +688,7 @@ const Transfer = () => {
                     <ChevronDownIcon />
                   </button>
                   {isAssetDropdownOpen && (
-                    <div className="absolute z-10 mt-1 w-full bg-[#121212] border border-[#2A2A2A] rounded-lg shadow-lg overflow-hidden">
+                    <div className="absolute z-10 mt-1 w-full bg-[#0a0a0a] border border-[#2A2A2A] rounded-lg shadow-lg overflow-hidden">
                       <style>{scrollbarStyles}</style>
 
                       {/* Search input */}
@@ -812,7 +812,7 @@ const Transfer = () => {
 
                     {/* From Dropdown */}
                     {isFromDropdownOpen && (
-                      <div className="absolute left-0 right-0 mt-2 bg-[#121212] border border-[#2A2A2A] rounded-lg shadow-lg z-50">
+                      <div className="absolute left-0 right-0 mt-2 bg-[#0a0a0a] border border-[#2A2A2A] rounded-lg shadow-lg z-50">
                         {accountOptions.map((account) => (
                           <button
                             key={account}
@@ -854,7 +854,7 @@ const Transfer = () => {
 
                     {/* To Dropdown */}
                     {isToDropdownOpen && (
-                      <div className="absolute left-0 right-0 mt-2 bg-[#121212] border border-[#2A2A2A] rounded-lg shadow-lg z-50">
+                      <div className="absolute left-0 right-0 mt-2 bg-[#0a0a0a] border border-[#2A2A2A] rounded-lg shadow-lg z-50">
                         {accountOptions.map((account) => (
                           <button
                             key={account}
@@ -900,7 +900,7 @@ const Transfer = () => {
                   </div>
                 </div>
                 <div className="transfer-balance-display flex flex-row gap-4 mt-2">
-                  <div className="flex items-center bg-[#1E1E1E] dark:bg-gray-800 rounded-full px-4 py-2 shadow-sm border border-[#2A2A2A] dark:border-gray-700 min-w-[150px]">
+                  <div className="flex items-center bg-[#1E1E1E] dark:bg-[#1E1E1E] rounded-full px-4 py-2 shadow-sm border border-[#2A2A2A] dark:border-[#2A2A2A] min-w-[150px]">
                     <svg
                       className="w-4 h-4 mr-2 text-[#2EBD85] dark:text-[#2EBD85]"
                       fill="none"
@@ -910,7 +910,7 @@ const Transfer = () => {
                       <circle cx="12" cy="12" r="10" strokeWidth="2" />
                       <path d="M8 12h8" strokeWidth="2" />
                     </svg>
-                    <span className="text-xs text-[#848E9C] dark:text-gray-300 font-semibold mr-1">
+                    <span className="text-xs text-[#848E9C] dark:text-[#848E9C] font-semibold mr-1">
                       Spot
                     </span>
                     <span className="text-sm text-white dark:text-white font-bold">
@@ -920,7 +920,7 @@ const Transfer = () => {
                       {selectedAsset}
                     </span>
                   </div>
-                  <div className="flex items-center bg-[#1E1E1E] dark:bg-gray-800 rounded-full px-4 py-2 shadow-sm border border-[#2A2A2A] dark:border-gray-700 min-w-[150px]">
+                  <div className="flex items-center bg-[#1E1E1E] dark:bg-[#1E1E1E] rounded-full px-4 py-2 shadow-sm border border-[#2A2A2A] dark:border-[#2A2A2A] min-w-[150px]">
                     <svg
                       className="w-4 h-4 mr-2 text-purple-600 dark:text-purple-400"
                       fill="none"
@@ -930,7 +930,7 @@ const Transfer = () => {
                       <circle cx="12" cy="12" r="10" strokeWidth="2" />
                       <path d="M16 12H8" strokeWidth="2" />
                     </svg>
-                    <span className="text-xs text-[#848E9C] dark:text-gray-300 font-semibold mr-1">
+                    <span className="text-xs text-[#848E9C] dark:text-[#848E9C] font-semibold mr-1">
                       Future
                     </span>
                     <span className="text-sm text-white dark:text-white font-bold">
@@ -984,7 +984,7 @@ const Transfer = () => {
 
           {/* Transfer History */}
           <div className="transfer-history-section mt-12">
-            <div className="flex border-b border-[#2A2A2A] dark:border-gray-700 mb-6">
+            <div className="flex border-b border-[#2A2A2A] dark:border-[#2A2A2A] mb-6">
               <button
                 className={`py-4 mr-6 text-sm font-medium border-b-2 border-[#2EBD85] text-[#2EBD85] dark:text-[#2EBD85]`}
                 style={{ pointerEvents: "none" }}
@@ -994,7 +994,7 @@ const Transfer = () => {
             </div>
 
             {/* Table Headers */}
-            <div className="grid grid-cols-5 gap-4 py-3 border-b border-[#2A2A2A] dark:border-gray-700 text-sm text-[#5E6673] dark:text-[#5E6673]">
+            <div className="grid grid-cols-5 gap-4 py-3 border-b border-[#2A2A2A] dark:border-[#2A2A2A] text-sm text-[#5E6673] dark:text-[#5E6673]">
               <div>Asset</div>
               <div>Amount</div>
               <div>From</div>
@@ -1048,7 +1048,7 @@ const Transfer = () => {
               !historyError &&
               transferHistory.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-16">
-                  <div className="w-20 h-20 mb-4 flex items-center justify-center bg-[#1E1E1E] dark:bg-gray-800 rounded-full">
+                  <div className="w-20 h-20 mb-4 flex items-center justify-center bg-[#1E1E1E] dark:bg-[#1E1E1E] rounded-full">
                     <svg
                       className="w-10 h-10 text-[#5E6673] dark:text-[#5E6673]"
                       fill="none"
@@ -1086,7 +1086,7 @@ const Transfer = () => {
                     return (
                       <div
                         key={index}
-                        className="grid grid-cols-5 gap-4 py-4 border-b border-gray-100 dark:border-gray-800 hover:bg-[#1E1E1E] dark:hover:bg-[#121212] transition-colors"
+                        className="grid grid-cols-5 gap-4 py-4 border-b border-gray-100 dark:border-gray-800 hover:bg-[#1E1E1E] dark:hover:bg-[#0a0a0a] transition-colors"
                       >
                         {/* Asset */}
                         <div className="flex items-center">
@@ -1111,11 +1111,11 @@ const Transfer = () => {
                           {parseFloat(transfer.amount).toFixed(2)}
                         </div>
                         {/* From */}
-                        <div className="text-[#848E9C] dark:text-gray-300 capitalize">
+                        <div className="text-[#848E9C] dark:text-[#848E9C] capitalize">
                           {transfer.transfer_from || "—"}
                         </div>
                         {/* To */}
-                        <div className="text-[#848E9C] dark:text-gray-300 capitalize">
+                        <div className="text-[#848E9C] dark:text-[#848E9C] capitalize">
                           {transfer.transfer_to || "—"}
                         </div>
                         {/* Status */}

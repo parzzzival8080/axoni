@@ -79,7 +79,7 @@ const MobileHeader = ({ title, actions, darkBg = false }) => {
       <div className="fixed bottom-20 right-3 z-[200] shadow-2xl" style={{ borderRadius: 12, overflow: 'hidden' }}>
         <div className="flex items-center justify-between bg-[#1E1E1E] px-3 py-2">
           <span className="text-white text-sm font-semibold">Live Chat</span>
-          <button onClick={() => { setShowChat(false); setIsChatLoaded(false); }} className="text-gray-400 hover:text-white p-1 active:opacity-60">
+          <button onClick={() => { setShowChat(false); setIsChatLoaded(false); }} className="text-[#5E6673] hover:text-white p-1 active:opacity-60">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
               <path d="M18 6L6 18M6 6l12 12" />
             </svg>
@@ -87,9 +87,9 @@ const MobileHeader = ({ title, actions, darkBg = false }) => {
         </div>
 
         {!isChatLoaded && (
-          <div className="flex flex-col items-center justify-center gap-3 bg-[#121212]" style={{ width: 340, height: 520 }}>
+          <div className="flex flex-col items-center justify-center gap-3 bg-[#0a0a0a]" style={{ width: 340, height: 520 }}>
             <div className="w-10 h-10 rounded-full border-2 border-[#2A2A2A] border-t-[#2EBD85] animate-spin" />
-            <span className="text-xs text-gray-500">Connecting to support...</span>
+            <span className="text-xs text-[#5E6673]">Connecting to support...</span>
           </div>
         )}
 
@@ -105,7 +105,7 @@ const MobileHeader = ({ title, actions, darkBg = false }) => {
     )}
 
     <header
-      className="fixed top-0 left-0 right-0 z-50 bg-[#121212]"
+      className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]"
       style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
     >
       <div className="flex items-center justify-between h-11 px-4">

@@ -147,13 +147,13 @@ const Market = () => {
   );
 
   return (
-    <div className="w-full bg-black text-white pb-16">
+    <div className="w-full bg-[#0a0a0a] text-white pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Title and Subtitle */}
         <h1 className="text-2xl md:text-4xl font-bold text-white mb-1 md:mb-2">
           Markets
         </h1>
-        <p className="text-gray-400 mb-4 md:mb-8 text-sm md:text-lg max-w-2xl">
+        <p className="text-[#5E6673] mb-4 md:mb-8 text-sm md:text-lg max-w-2xl">
           Live prices, changes, and trading actions for all available markets.
         </p>
 
@@ -166,7 +166,7 @@ const Market = () => {
               className={`px-4 py-2 text-sm font-medium transition-colors ${
                 activeMarketTab === tab
                   ? "border-b-2 border-[#2EBD85] text-white"
-                  : "text-gray-400 hover:text-white"
+                  : "text-[#5E6673] hover:text-white"
               }`}
             >
               {tab}
@@ -178,7 +178,7 @@ const Market = () => {
         <div className="mb-6 flex justify-between items-center">
           <input
             type="text"
-            className="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-4 w-full max-w-xs focus:outline-none focus:ring-1 focus:ring-[#2EBD85] placeholder-gray-500"
+            className="bg-[#1E1E1E] text-white border border-[#2A2A2A] rounded-2xl py-2 px-4 w-full max-w-xs focus:outline-none focus:ring-1 focus:ring-[#2EBD85] placeholder-[#5E6673]"
             placeholder="Search by symbol or name..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -186,7 +186,7 @@ const Market = () => {
           <button
             onClick={() => fetchMarketData(activeMarketTab, true)}
             disabled={refreshing}
-            className="ml-4 flex items-center space-x-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors disabled:opacity-50"
+            className="ml-4 flex items-center space-x-2 px-4 py-2 bg-[#1E1E1E] hover:bg-[#252525] text-white rounded-2xl transition-colors disabled:opacity-50"
             title="Refresh market data"
           >
             <svg
@@ -207,20 +207,20 @@ const Market = () => {
         </div>
 
         {/* Coin Table */}
-        <div className="overflow-x-auto rounded-lg shadow-md bg-black/70">
+        <div className="overflow-x-auto rounded-2xl shadow-md bg-[#1E1E1E]">
           <table className="min-w-full divide-y divide-gray-800">
             <thead>
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-semibold text-[#5E6673] uppercase tracking-wider">
                   Pair
                 </th>
-                <th className="px-4 py-3 text-right text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                <th className="px-4 py-3 text-right text-xs font-semibold text-[#5E6673] uppercase tracking-wider">
                   Last Price
                 </th>
-                <th className="px-4 py-3 text-right text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                <th className="px-4 py-3 text-right text-xs font-semibold text-[#5E6673] uppercase tracking-wider">
                   24H Change
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider hidden sm:table-cell">
+                <th className="px-4 py-3 text-center text-xs font-semibold text-[#5E6673] uppercase tracking-wider hidden sm:table-cell">
                   Actions
                 </th>
               </tr>
@@ -232,17 +232,17 @@ const Market = () => {
                   {Array.from({ length: 8 }).map((_, i) => (
                     <tr key={`skeleton-${i}`} className="animate-pulse">
                       <td className="flex items-center gap-3 py-3 px-4">
-                        <div className="w-7 h-7 bg-gray-700 rounded-full"></div>
-                        <div className="h-4 w-20 bg-gray-700 rounded"></div>
+                        <div className="w-7 h-7 bg-[#252525] rounded-full"></div>
+                        <div className="h-4 w-20 bg-[#252525] rounded"></div>
                       </td>
                       <td className="text-right px-4">
-                        <div className="h-4 w-16 bg-gray-700 rounded ml-auto"></div>
+                        <div className="h-4 w-16 bg-[#252525] rounded ml-auto"></div>
                       </td>
                       <td className="text-right px-4">
-                        <div className="h-4 w-12 bg-gray-700 rounded ml-auto"></div>
+                        <div className="h-4 w-12 bg-[#252525] rounded ml-auto"></div>
                       </td>
                       <td className="text-center px-4 hidden sm:table-cell">
-                        <div className="h-6 w-20 bg-gray-700 rounded mx-auto"></div>
+                        <div className="h-6 w-20 bg-[#252525] rounded mx-auto"></div>
                       </td>
                     </tr>
                   ))}
@@ -255,7 +255,7 @@ const Market = () => {
                       <div className="text-red-500 text-sm">{error}</div>
                       <button
                         onClick={() => fetchMarketData(activeMarketTab, true)}
-                        className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm transition-colors"
+                        className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-2xl text-sm transition-colors"
                       >
                         Try Again
                       </button>
@@ -268,14 +268,14 @@ const Market = () => {
                 filteredCoins.length === 0 &&
                 coins.length > 0 && (
                   <tr>
-                    <td colSpan={4} className="py-8 text-center text-gray-400">
+                    <td colSpan={4} className="py-8 text-center text-[#5E6673]">
                       No coins match your search "{search}".
                     </td>
                   </tr>
                 )}
               {!loading && !error && coins.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="py-8 text-center text-gray-400">
+                  <td colSpan={4} className="py-8 text-center text-[#5E6673]">
                     No market data available.
                   </td>
                 </tr>
@@ -298,14 +298,14 @@ const Market = () => {
                         <img
                           src={coin.logo_path}
                           alt={coin.symbol}
-                          className="w-7 h-7 rounded-full bg-gray-800 object-contain shadow"
+                          className="w-7 h-7 rounded-full bg-[#1E1E1E] object-contain shadow"
                           onError={(e) => {
                             e.target.onerror = null;
                             e.target.style.display = "none";
                           }}
                         />
                       ) : (
-                        <div className="w-7 h-7 bg-gray-700 rounded-full flex items-center justify-center">
+                        <div className="w-7 h-7 bg-[#252525] rounded-full flex items-center justify-center">
                           <span className="text-xs font-semibold text-white">
                             {coin.symbol?.slice(0, 1)}
                           </span>
@@ -316,7 +316,7 @@ const Market = () => {
                           {coin.symbol || coin.name || "-"}
                         </span>
                         {coin.pair_name && (
-                          <span className="text-gray-500 text-xs">
+                          <span className="text-[#5E6673] text-xs">
                             /{coin.pair_name}
                           </span>
                         )}

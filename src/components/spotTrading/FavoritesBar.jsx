@@ -17,7 +17,7 @@ const FavoriteItem = ({ coin, isActive, onClick, compact = false }) => {
   const priceChange = parseFloat(coin.price_change_24h?.toString() || '0');
   const coinId = coin.coin_id;
   
-  const changeClass = priceChange > 0 ? 'text-green-500' : priceChange < 0 ? 'text-red-500' : 'text-gray-400';
+  const changeClass = priceChange > 0 ? 'text-green-500' : priceChange < 0 ? 'text-red-500' : 'text-[#5E6673]';
   const changeSign = priceChange > 0 ? '+' : '';
   const [imageError, setImageError] = useState(false);
   
@@ -51,7 +51,7 @@ const FavoriteItem = ({ coin, isActive, onClick, compact = false }) => {
             <span className={`font-medium ${changeClass}`}>
               {changeSign}{priceChange.toFixed(2)}%
             </span>
-            <span className="text-gray-400">
+            <span className="text-[#5E6673]">
               {parseFloat(price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 })}
             </span>
           </div>
@@ -99,14 +99,14 @@ const FavoriteItem = ({ coin, isActive, onClick, compact = false }) => {
 
 // --- Skeleton Loader for Favorites ---
 const FavoritesSkeleton = () => (
-  <div className="flex items-center space-x-4 py-2 px-4 bg-[#121212] overflow-x-auto scrollbar-hide">
-    <span className="text-sm font-medium text-gray-300 whitespace-nowrap">Favorites:</span>
+  <div className="flex items-center space-x-4 py-2 px-4 bg-[#0a0a0a] overflow-x-auto scrollbar-hide">
+    <span className="text-sm font-medium text-[#848E9C] whitespace-nowrap">Favorites:</span>
     {Array.from({ length: 8 }).map((_, i) => (
       <div className="flex items-center space-x-3 py-2 px-3 animate-pulse" key={i}>
-        <div className="w-6 h-6 rounded-full bg-gray-800" />
-        <div className="h-4 w-20 bg-gray-800 rounded" />
-        <div className="h-4 w-12 bg-gray-800 rounded" />
-        <div className="h-4 w-16 bg-gray-800 rounded" />
+        <div className="w-6 h-6 rounded-full bg-[#1E1E1E]" />
+        <div className="h-4 w-20 bg-[#1E1E1E] rounded" />
+        <div className="h-4 w-12 bg-[#1E1E1E] rounded" />
+        <div className="h-4 w-16 bg-[#1E1E1E] rounded" />
       </div>
     ))}
   </div>
@@ -117,7 +117,7 @@ const EmptyFavorites = () => {
   // Hide on mobile — takes up too much space for nothing
   if (typeof window !== 'undefined' && window.innerWidth < 768) return null;
   return (
-    <div className="flex items-center justify-center py-3 px-6 bg-[#121212]">
+    <div className="flex items-center justify-center py-3 px-6 bg-[#0a0a0a]">
       <div className="flex items-center space-x-3 text-[#5E6673]">
         <FontAwesomeIcon icon={faHeart} className="w-4 h-4 text-[#5E6673]" />
         <span className="text-xs">No favorites yet</span>
@@ -173,7 +173,7 @@ const MoreModal = ({ remainingCoins, activeId, onCoinSelect, isOpen, onClose }) 
 
   return (
     <div 
-      className="fixed inset-0 bg-[#121212] bg-opacity-50 flex items-center justify-center"
+      className="fixed inset-0 bg-[#0a0a0a] bg-opacity-50 flex items-center justify-center"
       style={{ zIndex: 2147483647 }}
     >
       <div 
@@ -185,7 +185,7 @@ const MoreModal = ({ remainingCoins, activeId, onCoinSelect, isOpen, onClose }) 
           <h3 className="text-white font-semibold text-lg">More Favorites</h3>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors p-1 rounded"
+            className="text-[#5E6673] hover:text-white transition-colors p-1 rounded"
           >
             <FontAwesomeIcon icon={faTimes} className="w-4 h-4" />
           </button>
@@ -221,7 +221,7 @@ const MoreButton = ({ remainingCoins, activeId, onCoinSelect }) => {
     <>
       <button
         onClick={() => setIsModalOpen(true)}
-        className="flex items-center space-x-2 py-2 px-3 transition-colors duration-150 hover:bg-[#131722] text-gray-400 hover:text-white rounded"
+        className="flex items-center space-x-2 py-2 px-3 transition-colors duration-150 hover:bg-[#131722] text-[#5E6673] hover:text-white rounded"
         title={`${remainingCoins.length} more favorites`}
       >
         <FontAwesomeIcon icon={faEllipsisH} className="w-4 h-4" />
@@ -403,8 +403,8 @@ const FavoritesBar = ({ activeCoinPairId }) => {
   };
 
   return (
-    <div className="favorites-bar-container flex items-center space-x-4 py-2 px-4 bg-[#121212] overflow-x-auto scrollbar-hide relative">
-      <span className="text-sm font-medium text-gray-300 whitespace-nowrap">Favorites:</span>
+    <div className="favorites-bar-container flex items-center space-x-4 py-2 px-4 bg-[#0a0a0a] overflow-x-auto scrollbar-hide relative">
+      <span className="text-sm font-medium text-[#848E9C] whitespace-nowrap">Favorites:</span>
       
       {/* Show first 4 favorites */}
       {visibleFavorites.map((coin) => (
@@ -429,7 +429,7 @@ const FavoritesBar = ({ activeCoinPairId }) => {
       <button 
         onClick={() => fetchFavorites(true)} 
         disabled={refreshing}
-        className="ml-auto flex-shrink-0 text-gray-400 hover:text-white transition-colors p-1 rounded-full hover:bg-[#131722]"
+        className="ml-auto flex-shrink-0 text-[#5E6673] hover:text-white transition-colors p-1 rounded-full hover:bg-[#131722]"
         title="Refresh favorites"
       >
         <FontAwesomeIcon 

@@ -945,7 +945,7 @@ const VerifyPage = () => {
  // Show loading state while checking verification status
  if (isCheckingStatus) {
  return (
- <div className="bg-[#121212] flex flex-col items-center justify-center py-8 px-4 font-sans">
+ <div className="bg-[#0a0a0a] flex flex-col items-center justify-center py-8 px-4 font-sans">
  <div className="flex flex-col items-center">
  <Loader2 size={48} className="animate-spin text-[#5E6673] mb-4" />
  <p className="text-[#848E9C]">
@@ -959,7 +959,7 @@ const VerifyPage = () => {
  // Show verification status screens for already processed users
  if (verificationStatus === VERIFICATION_STATUS.PENDING) {
  return (
- <div className="bg-[#121212] flex flex-col items-center py-8 px-4 font-sans">
+ <div className="bg-[#0a0a0a] flex flex-col items-center py-8 px-4 font-sans">
  <div className="w-full max-w-4xl mb-6">
  {!isMobile && <ProfileNavBar />}
  </div>
@@ -994,7 +994,7 @@ const VerifyPage = () => {
 
  if (verificationStatus === VERIFICATION_STATUS.VERIFIED) {
  return (
- <div className="bg-[#121212] flex flex-col items-center py-8 px-4 font-sans">
+ <div className="bg-[#0a0a0a] flex flex-col items-center py-8 px-4 font-sans">
  <div className="w-full max-w-4xl mb-6">
  {!isMobile && <ProfileNavBar />}
  </div>
@@ -1024,7 +1024,7 @@ const VerifyPage = () => {
 
  if (verificationStatus === VERIFICATION_STATUS.REJECTED) {
  return (
- <div className="bg-[#121212] flex flex-col items-center py-8 px-4 font-sans">
+ <div className="bg-[#0a0a0a] flex flex-col items-center py-8 px-4 font-sans">
  <div className="w-full max-w-4xl mb-6">
  {!isMobile && <ProfileNavBar />}
  </div>
@@ -1115,7 +1115,7 @@ const VerifyPage = () => {
  <button
  onClick={handleNextStep}
  disabled={!currentUserId || isLoading}
- className="w-full bg-black text-white font-semibold rounded-lg py-3 text-sm shadow-md hover:bg-gray-800 transition duration-150 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+ className="w-full bg-[#0a0a0a] text-white font-semibold rounded-lg py-3 text-sm shadow-md hover:bg-[#1E1E1E] transition duration-150 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
  >
  {isLoading ? (
  <Loader2 size={18} className="animate-spin mr-2" />
@@ -1468,7 +1468,7 @@ const VerifyPage = () => {
  onClick={() => {
  window.location.href = "/";
  }}
- className="px-8 py-2.5 bg-black text-white font-semibold rounded-lg text-sm shadow-md hover:bg-gray-800 transition"
+ className="px-8 py-2.5 bg-[#0a0a0a] text-white font-semibold rounded-lg text-sm shadow-md hover:bg-[#1E1E1E] transition"
  style={{ borderRadius: 9999 }}
  >
  Done
@@ -1487,7 +1487,7 @@ const VerifyPage = () => {
  const showNavigation = currentStep > 1 && currentStep < 6;
 
  return (
- <div className="bg-[#121212] flex flex-col items-center py-8 px-4 font-sans">
+ <div className="bg-[#0a0a0a] flex flex-col items-center py-8 px-4 font-sans">
  <div className="w-full max-w-4xl mb-6">
  {!isMobile && <ProfileNavBar />}
  </div>
@@ -1503,7 +1503,7 @@ const VerifyPage = () => {
  </h1>
  <div className="w-full bg-[#2A2A2A] rounded-full h-1.5 mt-3 mb-1">
  <div
- className="bg-black dark:bg-[#1E1E1E] h-1.5 rounded-full transition-all duration-300 ease-out"
+ className="bg-[#0a0a0a] dark:bg-[#1E1E1E] h-1.5 rounded-full transition-all duration-300 ease-out"
  style={{ width: `${progress}%` }}
  ></div>
  </div>
@@ -1542,7 +1542,7 @@ const VerifyPage = () => {
  currentStep === 5 ? handleSubmitVerification : handleNextStep
  }
  disabled={isNextDisabled()}
- className="px-5 py-2.5 bg-black text-white font-semibold rounded-lg text-sm shadow-md hover:bg-gray-800 transition duration-150 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[140px]"
+ className="px-5 py-2.5 bg-[#0a0a0a] text-white font-semibold rounded-lg text-sm shadow-md hover:bg-[#1E1E1E] transition duration-150 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[140px]"
  >
  {isLoading && currentStep === 5 ? (
  <>

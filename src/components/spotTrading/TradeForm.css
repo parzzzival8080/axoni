@@ -772,11 +772,40 @@
   }
 }
 
-/* Pill-shaped buttons for spot trading */
-.spot-trading-container .trade-form button,
-.spot-trading-container .trade-form .buy-btn,
-.spot-trading-container .trade-form .sell-btn,
-.spot-trading-container .trade-form .tab-btn,
+/* Trade type toggle (Buy/Sell) */
+.spot-trading-container .trade-form .trade-type-toggle {
+  display: flex;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--input-bg, #1a1a1a);
+  border: 1px solid var(--border-color, #333);
+  height: 36px;
+}
 .spot-trading-container .trade-form .toggle-btn {
-  border-radius: 9999px !important;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary, #848E9C);
+  background: transparent;
+  border: none;
+  border-radius: 0 !important;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.spot-trading-container .trade-form .toggle-btn.active {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Trade form CTA buttons */
+.spot-trading-container .trade-form .buy-btn,
+.spot-trading-container .trade-form .sell-btn {
+  border-radius: 8px !important;
+}
+.spot-trading-container .trade-form .spot-login-pill-btn {
+  border-radius: 50px !important;
 }

@@ -10,7 +10,7 @@ const MobileSettingsPanel = () => {
   return (
     <>
       <div className="px-4 py-3 border-t border-gray-200 dark:border-[#2A2A2A]">
-        <h3 className="text-xs font-medium text-gray-500 dark:text-[#5E6673] uppercase tracking-wider mb-3">
+        <h3 className="text-xs font-medium text-[#5E6673] dark:text-[#5E6673] uppercase tracking-wider mb-3">
           Settings
         </h3>
         <div className="space-y-2">
@@ -53,7 +53,7 @@ const MobileSettingsPanel = () => {
                 Language / Currency
               </span>
             </div>
-            <span className="text-xs text-gray-400">›</span>
+            <span className="text-xs text-[#5E6673]">›</span>
           </button>
         </div>
       </div>

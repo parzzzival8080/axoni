@@ -211,7 +211,7 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="bg-[#121212] dark:bg-black text-white dark:text-white">
+    <div className="bg-[#0a0a0a] dark:bg-[#0a0a0a] text-white dark:text-white">
       <div className="max-w-2xl mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <div className="flex items-center text-sm text-[#5E6673] dark:text-[#5E6673] mb-8">
@@ -261,7 +261,7 @@ const ChangePassword = () => {
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
                     placeholder="Enter verification code sent to your email"
-                    className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-[#2EBD85] outline-none transition-all"
+                    className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-[#1E1E1E] border-0 rounded-md focus:ring-2 focus:ring-[#2EBD85] outline-none transition-all"
                     disabled={loading}
                   />
                 </div>
@@ -313,7 +313,7 @@ const ChangePassword = () => {
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="Enter your new password"
-                    className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-[#2EBD85] outline-none transition-all"
+                    className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-[#1E1E1E] border-0 rounded-md focus:ring-2 focus:ring-[#2EBD85] outline-none transition-all"
                     disabled={loading}
                   />
                   <button
@@ -341,7 +341,7 @@ const ChangePassword = () => {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Enter your new password again"
-                    className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-[#2EBD85] outline-none transition-all"
+                    className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-[#1E1E1E] border-0 rounded-md focus:ring-2 focus:ring-[#2EBD85] outline-none transition-all"
                     disabled={loading}
                   />
                   <button
@@ -390,7 +390,7 @@ const ChangePassword = () => {
         )}
 
         {/* Passkey Promotion */}
-        <div className="fixed bottom-0 right-0 bg-[#121212] dark:bg-[#121212] p-4 rounded-tl-lg shadow-lg max-w-xs">
+        <div className="fixed bottom-0 right-0 bg-[#0a0a0a] dark:bg-[#0a0a0a] p-4 rounded-tl-lg shadow-lg max-w-xs">
           <h3 className="font-bold text-lg">Passkeys</h3>
           <p className="text-sm text-[#848E9C] dark:text-[#5E6673]">One-click verification for secure login</p>
         </div>

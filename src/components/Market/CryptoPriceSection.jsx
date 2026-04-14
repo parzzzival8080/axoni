@@ -14,25 +14,25 @@ const CryptoPriceSection = ({ cryptoData, isLoading }) => {
   const LoadingIndicator = () => (
     <div className="flex flex-col items-center justify-center py-20">
       <div className="w-10 h-10 border-4 border-gray-300 border-t-[#2EBD85] rounded-full animate-spin mb-4"></div>
-      <p className="text-gray-400">Loading cryptocurrency data...</p>
+      <p className="text-[#5E6673]">Loading cryptocurrency data...</p>
     </div>
   );
 
   // Empty state component
   const EmptyState = () => (
     <div className="flex items-center justify-center py-20">
-      <p className="text-gray-400">No cryptocurrencies match the selected filters.</p>
+      <p className="text-[#5E6673]">No cryptocurrencies match the selected filters.</p>
     </div>
   );
 
   return (
     <div className="mt-8">
       <h2 className="text-2xl font-bold text-white mb-2">Today's cryptocurrency prices</h2>
-      <p className="text-gray-400 mb-6">
+      <p className="text-[#5E6673] mb-6">
         View the latest prices for the hundreds of digital assets listed on OKX, alongside their daily price change and market cap statistics.
       </p>
 
-      <div className="bg-gray-800 rounded-lg overflow-hidden">
+      <div className="bg-[#1E1E1E] rounded-lg overflow-hidden">
         {isLoading ? (
           <LoadingIndicator />
         ) : cryptoData.length === 0 ? (
@@ -42,9 +42,9 @@ const CryptoPriceSection = ({ cryptoData, isLoading }) => {
             <table className="w-full">
               <thead>
                 <tr className="bg-gray-900 text-left">
-                  <th className="py-3 px-4 text-gray-400 font-medium">Name</th>
-                  <th className="py-3 px-4 text-gray-400 font-medium">Price</th>
-                  <th className="py-3 px-4 text-gray-400 font-medium">
+                  <th className="py-3 px-4 text-[#5E6673] font-medium">Name</th>
+                  <th className="py-3 px-4 text-[#5E6673] font-medium">Price</th>
+                  <th className="py-3 px-4 text-[#5E6673] font-medium">
                     <div className="flex items-center">
                       Change
                       <svg className="ml-1 w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -52,7 +52,7 @@ const CryptoPriceSection = ({ cryptoData, isLoading }) => {
                       </svg>
                     </div>
                   </th>
-                  <th className="py-3 px-4 text-gray-400 font-medium">
+                  <th className="py-3 px-4 text-[#5E6673] font-medium">
                     <div className="flex items-center">
                       Market cap
                       <svg className="ml-1 w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -60,7 +60,7 @@ const CryptoPriceSection = ({ cryptoData, isLoading }) => {
                       </svg>
                     </div>
                   </th>
-                  <th className="py-3 px-4 text-gray-400 font-medium text-center">Action</th>
+                  <th className="py-3 px-4 text-[#5E6673] font-medium text-center">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-700">
@@ -68,13 +68,13 @@ const CryptoPriceSection = ({ cryptoData, isLoading }) => {
                   <tr key={crypto.id} className="hover:bg-gray-750 transition-colors">
                     <td className="py-4 px-4">
                       <div className="flex items-center">
-                        <div className="text-gray-500 mr-4 w-6 text-right">{index + 1}</div>
+                        <div className="text-[#5E6673] mr-4 w-6 text-right">{index + 1}</div>
                         <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center mr-3">
                           {crypto.name.charAt(0)}
                         </div>
                         <div>
                           <div className="font-medium text-white">{crypto.name}</div>
-                          <div className="text-xs text-gray-400">{crypto.fullName}</div>
+                          <div className="text-xs text-[#5E6673]">{crypto.fullName}</div>
                         </div>
                       </div>
                     </td>
@@ -106,49 +106,49 @@ const CryptoPriceSection = ({ cryptoData, isLoading }) => {
       {!isLoading && cryptoData.length > 0 && (
         <div className="flex justify-center mt-6 space-x-1">
           <button 
-            className="w-8 h-8 flex items-center justify-center rounded border border-gray-700 text-gray-400 hover:bg-gray-800 transition-colors"
+            className="w-8 h-8 flex items-center justify-center rounded border border-[#2A2A2A] text-[#5E6673] hover:bg-[#1E1E1E] transition-colors"
             onClick={goToPrevPage}
           >
             ‹
           </button>
           <button 
             className={`w-8 h-8 flex items-center justify-center rounded text-sm transition-colors
-              ${currentPage === 1 ? 'bg-[#2EBD85] text-white' : 'border border-gray-700 text-gray-400 hover:bg-gray-800'}`}
+              ${currentPage === 1 ? 'bg-[#2EBD85] text-white' : 'border border-[#2A2A2A] text-[#5E6673] hover:bg-[#1E1E1E]'}`}
             onClick={() => goToPage(1)}
           >
             1
           </button>
           <button 
             className={`w-8 h-8 flex items-center justify-center rounded text-sm transition-colors
-              ${currentPage === 2 ? 'bg-[#2EBD85] text-white' : 'border border-gray-700 text-gray-400 hover:bg-gray-800'}`}
+              ${currentPage === 2 ? 'bg-[#2EBD85] text-white' : 'border border-[#2A2A2A] text-[#5E6673] hover:bg-[#1E1E1E]'}`}
             onClick={() => goToPage(2)}
           >
             2
           </button>
           <button 
             className={`w-8 h-8 flex items-center justify-center rounded text-sm transition-colors
-              ${currentPage === 3 ? 'bg-[#2EBD85] text-white' : 'border border-gray-700 text-gray-400 hover:bg-gray-800'}`}
+              ${currentPage === 3 ? 'bg-[#2EBD85] text-white' : 'border border-[#2A2A2A] text-[#5E6673] hover:bg-[#1E1E1E]'}`}
             onClick={() => goToPage(3)}
           >
             3
           </button>
           <button 
             className={`w-8 h-8 flex items-center justify-center rounded text-sm transition-colors
-              ${currentPage === 4 ? 'bg-[#2EBD85] text-white' : 'border border-gray-700 text-gray-400 hover:bg-gray-800'}`}
+              ${currentPage === 4 ? 'bg-[#2EBD85] text-white' : 'border border-[#2A2A2A] text-[#5E6673] hover:bg-[#1E1E1E]'}`}
             onClick={() => goToPage(4)}
           >
             4
           </button>
-          <span className="w-8 h-8 flex items-center justify-center text-gray-400">...</span>
+          <span className="w-8 h-8 flex items-center justify-center text-[#5E6673]">...</span>
           <button 
             className={`w-8 h-8 flex items-center justify-center rounded text-sm transition-colors
-              ${currentPage === 12 ? 'bg-[#2EBD85] text-white' : 'border border-gray-700 text-gray-400 hover:bg-gray-800'}`}
+              ${currentPage === 12 ? 'bg-[#2EBD85] text-white' : 'border border-[#2A2A2A] text-[#5E6673] hover:bg-[#1E1E1E]'}`}
             onClick={() => goToPage(12)}
           >
             12
           </button>
           <button 
-            className="w-8 h-8 flex items-center justify-center rounded border border-gray-700 text-gray-400 hover:bg-gray-800 transition-colors"
+            className="w-8 h-8 flex items-center justify-center rounded border border-[#2A2A2A] text-[#5E6673] hover:bg-[#1E1E1E] transition-colors"
             onClick={goToNextPage}
           >
             ›

@@ -2,7 +2,7 @@ import React from "react";
 
 const Legal = () => {
   return (
-    <div className="bg-black text-white">
+    <div className="bg-[#0a0a0a] text-white">
       {/* Hero Section */}
       <section className="py-12 px-4">
         <div className="container mx-auto max-w-6xl">
@@ -13,7 +13,7 @@ const Legal = () => {
             <h2 className="text-2xl font-semibold text-[#2EBD85] mb-6">
               Licenses and Registrations
             </h2>
-            <p className="text-lg text-gray-300 mb-8 leading-relaxed">
+            <p className="text-lg text-[#848E9C] mb-8 leading-relaxed">
               GLD is committed to working closely and collaboratively with
               regulators from around the world. GLD currently holds the
               following regulatory licenses, registrations and/or other legal
@@ -33,7 +33,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • France
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD Markets Ltd has been granted registration as a{" "}
                   <a
@@ -70,7 +70,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Lithuania
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD UAB S.A. has been granted a{" "}
                   <a
@@ -105,7 +105,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Poland
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD (Poland) Sp.z.o.o has obtained a{" "}
                   <a
@@ -129,7 +129,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Italy
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD (Italy) S.r.l obtained authorization from the Organismo
                   per la gestione degli elenchi degli agenti in attività
@@ -148,7 +148,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Spain
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD (Spain) Technologies, has obtained a{" "}
                   <a
@@ -181,7 +181,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Kazakhstan
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   The GLD Group entities have been granted a category "A" type
                   1 license at an{" "}
@@ -204,7 +204,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Australia
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD Australia Derivatives Pty Ltd holds an{" "}
                   <a
@@ -265,7 +265,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Singapore
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   As per{" "}
                   <a
@@ -305,7 +305,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Netherlands & Amsterdam
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD is registered with the Dutch Central Bank (DNB) as a
                   provider of services for the exchange between virtual and fiat
@@ -329,7 +329,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Malaysia
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD is licensed as a Recognized Market Operator (Digital
                   Asset Exchange) by the
@@ -353,7 +353,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • British Virgin Islands
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD has obtained the required{" "}
                   <a
@@ -384,7 +384,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Dubai
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD Global Entity has been granted a Category 1 License by
                   the{" "}
@@ -407,7 +407,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Kazakhstan
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   The GLD Group entities have been granted a category "A" type
                   1 license at an{" "}
@@ -439,7 +439,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Luxembourg
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD operates in compliance with Luxembourg’s regulatory
                   framework for digital asset service providers. Relevant GLD
@@ -462,7 +462,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Czech Republic
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD operates in accordance with the Czech Republic’s
                   regulatory framework governing virtual asset service
@@ -485,7 +485,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Denmark
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD conducts digital asset–related activities in Denmark in
                   compliance with the Danish Anti-Money Laundering Act and
@@ -508,7 +508,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Finland
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD operates under Finland’s regulatory regime for virtual
                   asset service providers. Relevant entities are subject to
@@ -530,7 +530,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Germany
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD conducts digital asset activities in Germany in
                   accordance with the German Banking Act and related financial
@@ -553,7 +553,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Greece
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD complies with Greece’s regulatory framework for virtual
                   asset service providers, including AML and financial market
@@ -575,7 +575,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Hungary
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD operates in compliance with Hungary’s regulatory and AML
                   framework governing virtual asset service providers, under the
@@ -597,7 +597,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Portugal
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD conducts virtual asset–related activities in Portugal in
                   accordance with applicable AML and financial regulations,
@@ -619,7 +619,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Romania
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD operates in Romania under the applicable regulatory
                   framework for digital and virtual asset services, subject to
@@ -641,7 +641,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Sweden
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD operates in accordance with Sweden’s regulatory
                   framework governing virtual asset service providers. Relevant
@@ -672,7 +672,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Switzerland
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD conducts digital asset–related activities in Switzerland
                   in accordance with Swiss financial market and blockchain
@@ -694,7 +694,7 @@ const Legal = () => {
               <h3 className="text-2xl font-bold mb-4 text-[#2EBD85]">
                 • Belgium
               </h3>
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-4 text-[#848E9C]">
                 <p>
                   GLD operates in Belgium in compliance with the regulatory
                   framework applicable to virtual asset service providers, under
@@ -713,7 +713,7 @@ const Legal = () => {
             </div>
 
             {/* Other Legal Matters */}
-            <div className="border-t border-gray-700 pt-8">
+            <div className="border-t border-[#2A2A2A] pt-8">
               <h2 className="text-2xl font-semibold text-[#2EBD85] mb-6">
                 Other Legal Matters
               </h2>
@@ -724,7 +724,7 @@ const Legal = () => {
                   <h3 className="text-xl font-bold mb-4">
                     Regulatory Authorities
                   </h3>
-                  <div className="space-y-4 text-gray-300">
+                  <div className="space-y-4 text-[#848E9C]">
                     <p>
                       GLD operates under the oversight of various regulatory
                       authorities across multiple jurisdictions. Our commitment
@@ -745,7 +745,7 @@ const Legal = () => {
                   <h3 className="text-xl font-bold mb-4">
                     Service Restrictions
                   </h3>
-                  <div className="space-y-4 text-gray-300">
+                  <div className="space-y-4 text-[#848E9C]">
                     <p>
                       GLD services may not be available in all jurisdictions.
                       We maintain a list of restricted countries and territories
@@ -766,7 +766,7 @@ const Legal = () => {
                   <h3 className="text-xl font-bold mb-4">
                     Legal and Compliance Contact
                   </h3>
-                  <div className="space-y-4 text-gray-300">
+                  <div className="space-y-4 text-[#848E9C]">
                     <p>
                       For questions regarding our regulatory status, licensing,
                       or compliance matters, please contact our legal
@@ -807,11 +807,11 @@ const Legal = () => {
             </div>
 
             {/* Last Updated */}
-            <div className="bg-gray-900/50 border border-gray-700 p-6 rounded-lg">
-              <p className="text-sm text-gray-400">
+            <div className="bg-gray-900/50 border border-[#2A2A2A] p-6 rounded-lg">
+              <p className="text-sm text-[#5E6673]">
                 <strong>Last updated:</strong> September 18, 2022
               </p>
-              <p className="text-sm text-gray-400 mt-2">
+              <p className="text-sm text-[#5E6673] mt-2">
                 This page is subject to regular updates to reflect changes in
                 our regulatory status and licensing. Please check back regularly
                 for the most current information.

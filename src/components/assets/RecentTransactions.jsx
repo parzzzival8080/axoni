@@ -67,7 +67,7 @@ const RecentTransactions = () => {
   }, [spotOrders, futureOrders]);
 
   return (
-    <div className="bg-[#121212] rounded-lg shadow-sm border border-[#2A2A2A] p-6 mb-6">
+    <div className="bg-[#0a0a0a] rounded-lg shadow-sm border border-[#2A2A2A] p-6 mb-6">
       <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
         Recent Transactions
         <span className="ml-2 px-2 py-0.5 rounded text-xs font-medium bg-[#2EBD85]/10 text-[#2EBD85]">Live</span>

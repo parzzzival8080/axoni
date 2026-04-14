@@ -33,7 +33,7 @@ const NavigationTabs = ({ activeTab, onTabClick }) => {
             className={`relative py-4 px-1 cursor-pointer transition-colors duration-200 whitespace-nowrap`}
             onClick={() => onTabClick(tab.id)}
           >
-            <span className={`${activeTab === tab.id ? 'text-white font-medium' : 'text-gray-400 hover:text-gray-300'}`}>
+            <span className={`${activeTab === tab.id ? 'text-white font-medium' : 'text-[#5E6673] hover:text-[#848E9C]'}`}>
               {tab.label}
               {tab.id === 'premarket' && (
                 <span className="ml-1 px-1.5 py-0.5 text-xs font-medium bg-[#2EBD85] text-white rounded-sm">
@@ -56,7 +56,7 @@ const NavigationTabs = ({ activeTab, onTabClick }) => {
           >
             <input
               type="text"
-              className="bg-gray-800 text-white border border-gray-700 rounded-lg py-1.5 px-3 pr-8 w-60 focus:outline-none focus:ring-1 focus:ring-[#2EBD85] placeholder-gray-500"
+              className="bg-[#1E1E1E] text-white border border-[#2A2A2A] rounded-lg py-1.5 px-3 pr-8 w-60 focus:outline-none focus:ring-1 focus:ring-[#2EBD85] placeholder-[#5E6673]"
               placeholder="Search..."
               value={searchQuery}
               onChange={handleSearchChange}
@@ -64,7 +64,7 @@ const NavigationTabs = ({ activeTab, onTabClick }) => {
             />
             <button 
               type="button" 
-              className="absolute right-2 text-gray-400 hover:text-white transition-colors"
+              className="absolute right-2 text-[#5E6673] hover:text-white transition-colors"
               onClick={toggleSearch}
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -75,7 +75,7 @@ const NavigationTabs = ({ activeTab, onTabClick }) => {
           </form>
         ) : (
           <button 
-            className="p-2 text-gray-400 hover:text-white transition-colors rounded-full hover:bg-gray-800"
+            className="p-2 text-[#5E6673] hover:text-white transition-colors rounded-full hover:bg-[#1E1E1E]"
             onClick={toggleSearch}
           >
             <svg 

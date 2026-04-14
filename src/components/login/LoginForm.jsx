@@ -493,7 +493,7 @@ const LoginForm = () => {
         forgotPasswordMode ? (
           <div className="w-full max-w-md mx-auto p-4">
             <div className="flex items-center mb-4">
-              <a href="#" onClick={(e) => { e.preventDefault(); handleBackToLogin(); }} className="text-gray-400 hover:text-white flex items-center">
+              <a href="#" onClick={(e) => { e.preventDefault(); handleBackToLogin(); }} className="text-[#5E6673] hover:text-white flex items-center">
                 <span className="mr-1">&larr;</span> Back to login
               </a>
             </div>
@@ -555,12 +555,12 @@ const LoginForm = () => {
 
                 <div className="text-center text-sm">
                   {otpTimer > 0 ? (
-                    <p className="text-gray-400">Resend OTP in {otpTimer} seconds</p>
+                    <p className="text-[#5E6673]">Resend OTP in {otpTimer} seconds</p>
                   ) : (
                     <a
                       href="#"
                       onClick={(e) => { e.preventDefault(); handleResendOtp(); }}
-                      className={`${canResendOtp ? 'text-[#2EBD85] hover:text-[#2EBD85]' : 'text-gray-500 cursor-not-allowed'}`}
+                      className={`${canResendOtp ? 'text-[#2EBD85] hover:text-[#2EBD85]' : 'text-[#5E6673] cursor-not-allowed'}`}
                     >
                       Resend OTP
                     </a>
@@ -624,7 +624,7 @@ const LoginForm = () => {
               </form>
             )}
 
-            <div className="text-xs text-center text-gray-400 mt-8">
+            <div className="text-xs text-center text-[#5E6673] mt-8">
               This site is protected by Google reCAPTCHA to ensure you're not a bot. <a href="#" className="text-[#2EBD85] hover:text-[#259A6C]">Learn more</a>
             </div>
           </div>

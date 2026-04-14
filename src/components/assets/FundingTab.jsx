@@ -60,7 +60,7 @@ const FundingTab = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Funding Wallet Overview */}
-        <div className="bg-[#121212] rounded-lg p-6 shadow-sm border border-[#2A2A2A]">
+        <div className="bg-[#0a0a0a] rounded-lg p-6 shadow-sm border border-[#2A2A2A]">
           <h3 className="text-lg font-semibold text-white mb-6">
             Funding Wallet
           </h3>
@@ -97,7 +97,7 @@ const FundingTab = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-[#121212] rounded-lg p-6 shadow-sm border border-[#2A2A2A]">
+        <div className="bg-[#0a0a0a] rounded-lg p-6 shadow-sm border border-[#2A2A2A]">
           <h3 className="text-lg font-semibold text-white mb-6">
             Quick Actions
           </h3>
@@ -118,7 +118,7 @@ const FundingTab = () => {
         </div>
 
         {/* Recent Funding Activity */}
-        <div className="lg:col-span-2 bg-[#121212] rounded-lg p-6 shadow-sm border border-[#2A2A2A]">
+        <div className="lg:col-span-2 bg-[#0a0a0a] rounded-lg p-6 shadow-sm border border-[#2A2A2A]">
           <h3 className="text-lg font-semibold text-white mb-6">
             Recent Activity
           </h3>

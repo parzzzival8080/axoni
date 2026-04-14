@@ -4,8 +4,8 @@ const FreezeModal = ({ isOpen, onClose, message }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-      <div className="bg-gray-800 rounded-lg shadow-xl p-8 max-w-md w-full mx-4">
+    <div className="fixed inset-0 bg-[#0a0a0a] bg-opacity-75 flex items-center justify-center z-50">
+      <div className="bg-[#1E1E1E] rounded-lg shadow-xl p-8 max-w-md w-full mx-4">
         <div className="text-center">
           <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-[#2EBD85]/50">
             <svg className="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -13,10 +13,10 @@ const FreezeModal = ({ isOpen, onClose, message }) => {
             </svg>
           </div>
           <h3 className="mt-5 text-2xl font-bold text-white">Prompt</h3>
-          <div className="mt-4 text-gray-300">
+          <div className="mt-4 text-[#848E9C]">
             <p>{message}</p>
           </div>
-          <div className="mt-6 text-sm text-gray-400">
+          <div className="mt-6 text-sm text-[#5E6673]">
             <p>For assistance, please contact our support team.</p>
           </div>
         </div>

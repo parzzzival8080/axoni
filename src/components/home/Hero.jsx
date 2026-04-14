@@ -145,7 +145,7 @@ const Hero = () => {
             type="text"
             placeholder="Email / Mobile"
             aria-label="Email or mobile number"
-            className="bg-[#121212] border border-[#2A2A2A] text-white px-4 py-2.5 rounded-lg focus:outline-none focus:border-[#2EBD85] text-sm w-56"
+            className="bg-[#0a0a0a] border border-[#2A2A2A] text-white px-4 py-2.5 rounded-lg focus:outline-none focus:border-[#2EBD85] text-sm w-56"
           />
           <Link
             to="/signup"
@@ -258,7 +258,7 @@ const Hero = () => {
           <h3 className="text-[#2EBD85] font-semibold mb-2">
             Complete Your Verification
           </h3>
-          <p className="text-gray-300 mb-4">
+          <p className="text-[#848E9C] mb-4">
             To access all trading features and ensure account security, please
             complete your identity verification.
           </p>
@@ -271,7 +271,7 @@ const Hero = () => {
             </Link>
             <Link
               to="/account/profile"
-              className="border border-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors text-center"
+              className="border border-[#2A2A2A] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#1E1E1E] transition-colors text-center"
             >
               View Profile
             </Link>
@@ -280,21 +280,21 @@ const Hero = () => {
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
-        <div className="bg-gray-800/50 p-4 rounded-lg">
+        <div className="bg-[#1E1E1E] p-4 rounded-lg">
           <h4 className="text-white font-medium mb-2">Limited Access</h4>
-          <p className="text-gray-400 text-sm">
+          <p className="text-[#5E6673] text-sm">
             Some features are restricted until verification
           </p>
         </div>
-        <div className="bg-gray-800/50 p-4 rounded-lg">
+        <div className="bg-[#1E1E1E] p-4 rounded-lg">
           <h4 className="text-white font-medium mb-2">Quick Verification</h4>
-          <p className="text-gray-400 text-sm">
+          <p className="text-[#5E6673] text-sm">
             Usually completed within minutes
           </p>
         </div>
-        <div className="bg-gray-800/50 p-4 rounded-lg">
+        <div className="bg-[#1E1E1E] p-4 rounded-lg">
           <h4 className="text-white font-medium mb-2">Full Features</h4>
-          <p className="text-gray-400 text-sm">
+          <p className="text-[#5E6673] text-sm">
             Access all trading and withdrawal features
           </p>
         </div>
@@ -322,7 +322,7 @@ const Hero = () => {
         <h3 className="text-[#2EBD85] font-semibold mb-2">
           Verification Under Review
         </h3>
-        <p className="text-gray-300 mb-4">
+        <p className="text-[#848E9C] mb-4">
           Your verification documents have been submitted and are currently
           being reviewed. You will be notified by email once your account is
           verified. This may take up to 24 hours.
@@ -336,7 +336,7 @@ const Hero = () => {
           </Link>
           <Link
             to="/account/profile"
-            className="border border-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors text-center"
+            className="border border-[#2A2A2A] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#1E1E1E] transition-colors text-center"
           >
             View Profile
           </Link>
@@ -344,21 +344,21 @@ const Hero = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
-        <div className="bg-gray-800/50 p-4 rounded-lg">
+        <div className="bg-[#1E1E1E] p-4 rounded-lg">
           <h4 className="text-white font-medium mb-2">Under Review</h4>
-          <p className="text-gray-400 text-sm">
+          <p className="text-[#5E6673] text-sm">
             Your documents are being processed
           </p>
         </div>
-        <div className="bg-gray-800/50 p-4 rounded-lg">
+        <div className="bg-[#1E1E1E] p-4 rounded-lg">
           <h4 className="text-white font-medium mb-2">Email Notification</h4>
-          <p className="text-gray-400 text-sm">
+          <p className="text-[#5E6673] text-sm">
             You'll be notified once approved
           </p>
         </div>
-        <div className="bg-gray-800/50 p-4 rounded-lg">
+        <div className="bg-[#1E1E1E] p-4 rounded-lg">
           <h4 className="text-white font-medium mb-2">Limited Trading</h4>
-          <p className="text-gray-400 text-sm">
+          <p className="text-[#5E6673] text-sm">
             Some features available while pending
           </p>
         </div>
@@ -378,7 +378,7 @@ const Hero = () => {
         <br />
         <span className="text-[#2EBD85]">{userName}!</span>
       </h1>
-      <p className="text-gray-300 text-lg">
+      <p className="text-[#848E9C] text-lg">
         Your account is fully verified. Access all features and start trading
         with confidence.
       </p>
@@ -392,7 +392,7 @@ const Hero = () => {
         </Link>
         <Link
           to="/account/overview"
-          className="bg-gray-800 text-white px-6 py-4 rounded-lg font-semibold hover:bg-gray-700 transition-colors text-center"
+          className="bg-[#1E1E1E] text-white px-6 py-4 rounded-lg font-semibold hover:bg-gray-700 transition-colors text-center"
         >
           View Dashboard
         </Link>
@@ -401,14 +401,14 @@ const Hero = () => {
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 mt-6">
         <Link
           to="/deposit"
-          className="bg-gray-800/50 hover:bg-gray-700/50 p-4 rounded-lg transition-colors text-center"
+          className="bg-[#1E1E1E] hover:bg-gray-700/50 p-4 rounded-lg transition-colors text-center"
         >
           <FaWallet className="text-[#2EBD85] text-xl mx-auto mb-2" />
           <h4 className="text-white font-medium text-sm">Deposit</h4>
         </Link>
         <Link
           to="/transfer"
-          className="bg-gray-800/50 hover:bg-gray-700/50 p-4 rounded-lg transition-colors text-center"
+          className="bg-[#1E1E1E] hover:bg-gray-700/50 p-4 rounded-lg transition-colors text-center"
         >
           <svg
             className="w-5 h-5 text-[#2EBD85] mx-auto mb-2"
@@ -427,7 +427,7 @@ const Hero = () => {
         </Link>
         <Link
           to="/my-assets"
-          className="bg-gray-800/50 hover:bg-gray-700/50 p-4 rounded-lg transition-colors text-center"
+          className="bg-[#1E1E1E] hover:bg-gray-700/50 p-4 rounded-lg transition-colors text-center"
         >
           <svg
             className="w-5 h-5 text-[#2EBD85] mx-auto mb-2"
@@ -446,7 +446,7 @@ const Hero = () => {
         </Link>
         <Link
           to="/account/profile"
-          className="bg-gray-800/50 hover:bg-gray-700/50 p-4 rounded-lg transition-colors text-center"
+          className="bg-[#1E1E1E] hover:bg-gray-700/50 p-4 rounded-lg transition-colors text-center"
         >
           <svg
             className="w-5 h-5 text-[#2EBD85] mx-auto mb-2"
@@ -472,7 +472,7 @@ const Hero = () => {
     if (!isLoggedIn) {
       return (
         <div className="flex flex-col sm:flex-row items-center justify-center sm:space-x-4 space-y-3 sm:space-y-0 max-w-4xl mx-auto">
-          <p className="text-gray-300 text-sm sm:text-base sm:mr-2">
+          <p className="text-[#848E9C] text-sm sm:text-base sm:mr-2">
             Register now and receive up to{" "}
             <span className="text-[#2EBD85] font-semibold">$2,000</span> worth
             of exclusive gifts for newcomers!
@@ -488,7 +488,7 @@ const Hero = () => {
     } else if (verificationStatus === VERIFICATION_STATUS.PENDING) {
       return (
         <div className="flex flex-col sm:flex-row items-center justify-center sm:space-x-4 space-y-3 sm:space-y-0 max-w-4xl mx-auto">
-          <p className="text-gray-300 text-sm sm:text-base sm:mr-2">
+          <p className="text-[#848E9C] text-sm sm:text-base sm:mr-2">
             Your verification is{" "}
             <span className="text-[#2EBD85] font-semibold">under review</span>.
             You'll be notified once approved!
@@ -504,7 +504,7 @@ const Hero = () => {
     } else if (!isVerified) {
       return (
         <div className="flex flex-col sm:flex-row items-center justify-center sm:space-x-4 space-y-3 sm:space-y-0 max-w-4xl mx-auto">
-          <p className="text-gray-300 text-sm sm:text-base sm:mr-2">
+          <p className="text-[#848E9C] text-sm sm:text-base sm:mr-2">
             Complete your verification to unlock{" "}
             <span className="text-[#2EBD85] font-semibold">
               all trading features
@@ -522,7 +522,7 @@ const Hero = () => {
     } else {
       return (
         <div className="flex flex-col sm:flex-row items-center justify-center sm:space-x-4 space-y-3 sm:space-y-0 max-w-4xl mx-auto">
-          <p className="text-gray-300 text-sm sm:text-base sm:mr-2">
+          <p className="text-[#848E9C] text-sm sm:text-base sm:mr-2">
             Welcome back! Your account is fully verified.{" "}
             <span className="text-[#2EBD85] font-semibold">Start trading</span>{" "}
             with access to all features.

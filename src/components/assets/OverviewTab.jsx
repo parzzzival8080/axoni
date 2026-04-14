@@ -74,7 +74,7 @@ const OverviewTab = () => {
         {/* Left Section */}
         <div className="lg:col-span-2 space-y-6">
           {/* Estimated Value Section */}
-          <div className="bg-[#121212] rounded-lg p-6 shadow-sm border border-[#2A2A2A]">
+          <div className="bg-[#0a0a0a] rounded-lg p-6 shadow-sm border border-[#2A2A2A]">
             <div className="flex items-center justify-between mb-4">
               <span className="text-[#848E9C]">Estimated total value</span>
             </div>
@@ -136,7 +136,7 @@ const OverviewTab = () => {
         {/* Right Section */}
         <div className="space-y-6">
           {/* Allocation Section */}
-          <div className="bg-[#121212] rounded-lg p-6 shadow-sm border border-[#2A2A2A]">
+          <div className="bg-[#0a0a0a] rounded-lg p-6 shadow-sm border border-[#2A2A2A]">
             <h3 className="text-lg font-semibold text-white mb-6">
               Allocation
             </h3>

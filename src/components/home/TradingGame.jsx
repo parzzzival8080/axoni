@@ -1,46 +1,79 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-const stats = [
-  { value: "500+", label: "Trading Pairs" },
-  { value: "$2B+", label: "24h Volume" },
-  { value: "3M+", label: "Global Users" },
-  { value: "<10ms", label: "Order Execution" },
+const trustItems = [
+  {
+    title: "Proven reliability",
+    desc: "Trade with confidence. Over 3M traders trust GLD to keep them in control through every market move.",
+    icon: (
+      <svg width="64" height="64" viewBox="0 0 80 80" fill="none">
+        <rect x="15" y="30" width="50" height="35" rx="3" stroke="#848E9C" strokeWidth="2" fill="none" />
+        <path d="M20 30L40 15L60 30" stroke="#848E9C" strokeWidth="2" fill="none" />
+        <rect x="33" y="42" width="14" height="23" rx="1" stroke="#848E9C" strokeWidth="1.5" fill="none" />
+        <circle cx="40" cy="50" r="3" stroke="#848E9C" strokeWidth="1.5" />
+      </svg>
+    ),
+  },
+  {
+    title: "Transparent reserves",
+    desc: "Your assets are secure and verified through our Proof of Reserves. We're here for you 24/7.",
+    icon: (
+      <svg width="64" height="64" viewBox="0 0 80 80" fill="none">
+        <rect x="18" y="12" width="34" height="48" rx="3" stroke="#848E9C" strokeWidth="2" fill="none" />
+        <line x1="26" y1="24" x2="44" y2="24" stroke="#848E9C" strokeWidth="1.5" />
+        <line x1="26" y1="32" x2="40" y2="32" stroke="#848E9C" strokeWidth="1.5" />
+        <line x1="26" y1="40" x2="44" y2="40" stroke="#848E9C" strokeWidth="1.5" />
+        <circle cx="54" cy="44" r="14" stroke="#848E9C" strokeWidth="2" fill="none" />
+        <path d="M48 44L52 48L60 40" stroke="#848E9C" strokeWidth="2" fill="none" />
+      </svg>
+    ),
+  },
+  {
+    title: "Easy deposits",
+    desc: "Make instant, seamless deposits on-chain. Multiple payment methods including crypto and fiat.",
+    icon: (
+      <svg width="64" height="64" viewBox="0 0 80 80" fill="none">
+        <rect x="12" y="18" width="40" height="50" rx="6" stroke="#848E9C" strokeWidth="2" fill="none" />
+        <rect x="20" y="26" width="24" height="16" rx="2" stroke="#848E9C" strokeWidth="1.5" fill="none" />
+        <circle cx="32" cy="56" r="3" stroke="#848E9C" strokeWidth="1.5" />
+        <circle cx="58" cy="30" r="10" stroke="#848E9C" strokeWidth="2" fill="none" />
+        <path d="M58 25V35M53 30H63" stroke="#848E9C" strokeWidth="1.5" />
+      </svg>
+    ),
+  },
+  {
+    title: "Secure verification",
+    desc: "Verify your identity in minutes with photo ID. Once set up, access all trading features.",
+    icon: (
+      <svg width="64" height="64" viewBox="0 0 80 80" fill="none">
+        <rect x="14" y="20" width="36" height="40" rx="4" stroke="#848E9C" strokeWidth="2" fill="none" />
+        <circle cx="32" cy="34" r="8" stroke="#848E9C" strokeWidth="1.5" fill="none" />
+        <path d="M22 52c0-6 4.5-10 10-10s10 4 10 10" stroke="#848E9C" strokeWidth="1.5" fill="none" />
+        <circle cx="58" cy="44" r="12" stroke="#848E9C" strokeWidth="2" fill="#2EBD85" fillOpacity="0.15" />
+        <path d="M52 44L56 48L64 40" stroke="#2EBD85" strokeWidth="2" fill="none" />
+      </svg>
+    ),
+  },
 ];
 
 const TradingGame = () => (
-  <div className="relative bg-[#0a0a0a] py-8 md:py-12 overflow-hidden">
-    {/* Subtle background glow */}
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#2EBD85]/[0.03] rounded-full blur-[120px]" />
+  <div className="bg-[#0a0a0a] py-20 md:py-32">
+    <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
+      {/* Big centered heading */}
+      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-16 md:mb-24 tracking-tight">
+        Your secure partner for<br className="hidden sm:block" /> crypto trading
+      </h2>
 
-    <div className="relative container mx-auto px-4 sm:px-8 md:px-16 lg:px-24">
-      <div className="text-center max-w-2xl mx-auto mb-12">
-        <h2 className="text-2xl md:text-4xl font-bold text-white mb-3">
-          Level up your trading game
-        </h2>
-        <p className="text-[#848E9C] text-sm md:text-base leading-relaxed">
-          Low costs, high-speed execution, powerful tools, and deep liquidity — everything you need to trade with confidence.
-        </p>
-      </div>
-
-      {/* Stats grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-        {stats.map((s) => (
-          <div key={s.label} className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-xl p-5 text-center">
-            <p className="text-2xl md:text-3xl font-bold text-[#2EBD85] mb-1">{s.value}</p>
-            <p className="text-[#848E9C] text-xs md:text-sm">{s.label}</p>
+      {/* 4 trust columns */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-8">
+        {trustItems.map((item) => (
+          <div key={item.title} className="text-center">
+            <div className="flex justify-center mb-6">
+              {item.icon}
+            </div>
+            <h3 className="text-white font-bold text-lg mb-3">{item.title}</h3>
+            <p className="text-[#848E9C] text-sm leading-relaxed">{item.desc}</p>
           </div>
         ))}
-      </div>
-
-      <div className="text-center">
-        <Link
-          to="/spot-trading"
-          className="inline-flex items-center gap-2 bg-[#2EBD85] hover:bg-[#259A6C] text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors"
-        >
-          Start Trading
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </Link>
       </div>
     </div>
   </div>

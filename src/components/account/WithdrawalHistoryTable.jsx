@@ -66,7 +66,7 @@ const WithdrawalHistoryTableBase = forwardRef((props, ref) => {
 
   return (
     <section className="w-full">
-      <div className="flex justify-between items-center border-b border-gray-200 mb-6 pb-2 dark:border-gray-700">
+      <div className="flex justify-between items-center border-b border-gray-200 mb-6 pb-2 dark:border-[#2A2A2A]">
         <h2 className="text-lg font-semibold text-white dark:text-gray-100">
           Withdrawal History
         </h2>
@@ -90,16 +90,16 @@ const WithdrawalHistoryTableBase = forwardRef((props, ref) => {
           <table className="min-w-full divide-y divide-[#2A2A2A] bg-[#0a0a0a] rounded shadow-md">
             <thead className="bg-[#1E1E1E]">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-gray-300 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-[#848E9C] uppercase tracking-wider">
                   Date
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-gray-300 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-[#848E9C] uppercase tracking-wider">
                   Coin
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-gray-300 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-[#848E9C] uppercase tracking-wider">
                   Amount
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-gray-300 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-[#848E9C] uppercase tracking-wider">
                   Status
                 </th>
               </tr>
@@ -109,7 +109,7 @@ const WithdrawalHistoryTableBase = forwardRef((props, ref) => {
                 <tr>
                   <td
                     colSpan={3}
-                    className="text-center text-gray-500 dark:text-gray-400 py-8"
+                    className="text-center text-[#5E6673] dark:text-[#5E6673] py-8"
                   >
                     {hasLoaded ? "No withdrawal history found." : "Loading..."}
                   </td>

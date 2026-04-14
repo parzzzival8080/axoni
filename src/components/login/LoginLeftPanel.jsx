@@ -83,7 +83,7 @@ const LoginLeftPanel = () => {
           {/* Stats row */}
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 16, paddingTop: 16, borderTop: '1px solid #1E1E1E' }}>
             <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 16, fontWeight: 700, color: '#2EBD85' }}>500+</div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: '#2EBD85' }}>50+</div>
               <div style={{ fontSize: 10, color: '#5E6673', marginTop: 2 }}>Trading Pairs</div>
             </div>
             <div style={{ textAlign: 'center' }}>

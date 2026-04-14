@@ -18,7 +18,7 @@ const RegistrationSuccessModal = ({ isOpen, onClose }) => {
   if (!isVisible) return null;
 
   return (
-    <div className={`fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4 transition-all duration-300 ${
+    <div className={`fixed inset-0 bg-[#0a0a0a] bg-opacity-60 flex items-center justify-center z-50 p-4 transition-all duration-300 ${
       showContent ? 'opacity-100' : 'opacity-0'
     }`}>
       <div className={`bg-[#1E1E1E] rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden transform transition-all duration-300 relative ${
@@ -96,7 +96,7 @@ const RegistrationSuccessModal = ({ isOpen, onClose }) => {
 
           {/* Subtle Footer */}
           <div className="text-center px-6">
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-[#5E6673]">
               Need help? Visit our{' '}
               <span className="hover:underline cursor-pointer font-medium" style={{ color: '#2EBD85' }}>
                 support center

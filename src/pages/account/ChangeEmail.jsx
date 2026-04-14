@@ -206,7 +206,7 @@ const ChangeEmail = () => {
   };
 
   return (
-    <div className="bg-[#121212] dark:bg-black text-white dark:text-white">
+    <div className="bg-[#0a0a0a] dark:bg-[#0a0a0a] text-white dark:text-white">
       <div className="max-w-2xl mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <div className="flex items-center text-sm text-[#5E6673] dark:text-[#5E6673] mb-8">
@@ -221,12 +221,12 @@ const ChangeEmail = () => {
         <h1 className="text-2xl font-semibold mb-8">Change email</h1>
 
         {/* Warning Notice */}
-        <div className="bg-[#1E1E1E] dark:bg-gray-800 rounded-md p-4 mb-8">
+        <div className="bg-[#1E1E1E] dark:bg-[#1E1E1E] rounded-md p-4 mb-8">
           <div className="flex items-start">
             <div className="flex-shrink-0 mt-0.5">
               <FiAlertCircle className="h-5 w-5 text-white dark:text-white" />
             </div>
-            <p className="ml-3 text-sm text-[#848E9C] dark:text-gray-300">
+            <p className="ml-3 text-sm text-[#848E9C] dark:text-[#848E9C]">
               To protect your account, you won't be able to withdraw funds or use P2P trading to sell crypto for 24 hours after you reset or change your account email.
             </p>
           </div>
@@ -254,8 +254,8 @@ const ChangeEmail = () => {
         {/* Step 1: Request OTP */}
         {changeEmailStep === 'request-otp' && (
           <div className="space-y-6">
-            <div className="bg-[#1E1E1E] dark:bg-gray-800 rounded-md p-4">
-              <p className="text-sm text-[#848E9C] dark:text-gray-300">
+            <div className="bg-[#1E1E1E] dark:bg-[#1E1E1E] rounded-md p-4">
+              <p className="text-sm text-[#848E9C] dark:text-[#848E9C]">
                 We'll send a verification code to your current email: <span className="font-medium">{currentEmail}</span>
               </p>
             </div>
@@ -263,7 +263,7 @@ const ChangeEmail = () => {
             <div className="pt-4">
               <button
                 onClick={handleRequestOTP}
-                className="px-6 py-3 rounded-md bg-black text-white font-medium transition-colors hover:bg-[#121212] disabled:bg-gray-300 disabled:dark:bg-gray-700 disabled:text-[#5E6673] disabled:dark:text-[#5E6673] disabled:cursor-not-allowed"
+                className="px-6 py-3 rounded-md bg-[#0a0a0a] text-white font-medium transition-colors hover:bg-[#0a0a0a] disabled:bg-gray-300 disabled:dark:bg-gray-700 disabled:text-[#5E6673] disabled:dark:text-[#5E6673] disabled:cursor-not-allowed"
                 disabled={loading}
               >
                 {loading ? 'Sending...' : 'Send code'}
@@ -286,7 +286,7 @@ const ChangeEmail = () => {
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
                   placeholder="Enter verification code"
-                  className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-[#2EBD85] outline-none transition-all"
+                  className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-[#1E1E1E] border-0 rounded-md focus:ring-2 focus:ring-[#2EBD85] outline-none transition-all"
                   disabled={loading}
                 />
               </div>
@@ -296,7 +296,7 @@ const ChangeEmail = () => {
                 </span>
                 <button
                   type="button"
-                  className={`text-sm ${canResendOtp ? 'text-white dark:text-white hover:text-[#848E9C] dark:hover:text-gray-300 cursor-pointer' : 'text-[#5E6673] cursor-not-allowed'}`}
+                  className={`text-sm ${canResendOtp ? 'text-white dark:text-white hover:text-[#848E9C] dark:hover:text-[#848E9C] cursor-pointer' : 'text-[#5E6673] cursor-not-allowed'}`}
                   onClick={handleResendOTP}
                   disabled={!canResendOtp || loading}
                 >
@@ -310,7 +310,7 @@ const ChangeEmail = () => {
                 type="submit"
                 className={`w-32 py-3 rounded-md font-medium transition-colors ${
                   otp && !loading
-                    ? 'bg-black text-white hover:bg-[#121212]'
+                    ? 'bg-[#0a0a0a] text-white hover:bg-[#0a0a0a]'
                     : 'bg-gray-300 dark:bg-gray-700 text-[#5E6673] dark:text-[#5E6673] cursor-not-allowed'
                 }`}
                 disabled={!otp || loading}
@@ -334,7 +334,7 @@ const ChangeEmail = () => {
                 value={newEmail}
                 onChange={(e) => setNewEmail(e.target.value)}
                 placeholder="Enter new email address"
-                className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-gray-800 border-0 rounded-md focus:ring-2 focus:ring-[#2EBD85] outline-none transition-all"
+                className="w-full px-4 py-3 bg-[#1E1E1E] dark:bg-[#1E1E1E] border-0 rounded-md focus:ring-2 focus:ring-[#2EBD85] outline-none transition-all"
                 disabled={loading}
               />
             </div>
@@ -361,7 +361,7 @@ const ChangeEmail = () => {
                 type="submit"
                 className={`w-32 py-3 rounded-md font-medium transition-colors ${
                   newEmail && agreeToWithdrawalRestriction && !loading
-                    ? 'bg-black text-white hover:bg-[#121212]'
+                    ? 'bg-[#0a0a0a] text-white hover:bg-[#0a0a0a]'
                     : 'bg-gray-300 dark:bg-gray-700 text-[#5E6673] dark:text-[#5E6673] cursor-not-allowed'
                 }`}
                 disabled={!newEmail || !agreeToWithdrawalRestriction || loading}

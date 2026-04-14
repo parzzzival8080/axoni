@@ -51,19 +51,19 @@ const FaqSection = () => {
         {faqs.map(faq => (
           <div 
             key={faq.id} 
-            className={`bg-gray-800 rounded-lg overflow-hidden border border-gray-700`}
+            className={`bg-[#1E1E1E] rounded-lg overflow-hidden border border-[#2A2A2A]`}
           >
             <div 
               className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-750 transition-colors"
               onClick={() => toggleFaq(faq.id)}
             >
               <h3 className="font-medium text-white">{faq.question}</h3>
-              <div className="text-2xl text-gray-400 flex items-center justify-center w-6 h-6">
+              <div className="text-2xl text-[#5E6673] flex items-center justify-center w-6 h-6">
                 {openFaqs.includes(faq.id) ? '−' : '+'}
               </div>
             </div>
             {openFaqs.includes(faq.id) && (
-              <div className="p-4 pt-0 text-gray-400 border-t border-gray-700">
+              <div className="p-4 pt-0 text-[#5E6673] border-t border-[#2A2A2A]">
                 <p>{faq.answer}</p>
               </div>
             )}
