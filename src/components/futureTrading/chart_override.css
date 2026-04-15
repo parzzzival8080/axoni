@@ -11,14 +11,14 @@
 .chart-markup-table,
 .tv-chart-container,
 .tv-chart-container__bg {
-  background-color: #000000 !important;
+  background-color: #0a0a0a !important;
   border: none !important;
   border-radius: 0 !important;
 }
 
 /* Target the chart canvas */
 .chart-container canvas {
-  background-color: #000000 !important;
+  background-color: #0a0a0a !important;
 }
 
 /* Target the specific navy yellow background */
@@ -29,31 +29,31 @@ body .chart-container__chartarea--themed-dark,
 body .layout__area--center,
 body .tv-chart-container,
 body iframe {
-  background-color: #000000 !important;
+  background-color: #0a0a0a !important;
   border: none !important;
 }
 
 /* Target the main chart area where candlesticks are displayed */
 .chart-container__chartarea--themed-dark {
-  background-color: #000000 !important;
+  background-color: #0a0a0a !important;
 }
 
 /* Target the specific navy background in TradingView */
 .chart-page .chart-container {
-  background-color: #000000 !important;
+  background-color: #0a0a0a !important;
 }
 
 /* Target the background of the price and time scales */
 .chart-page .chart-container .price-axis,
 .chart-page .chart-container .time-axis {
-  background-color: #000000 !important;
+  background-color: #0a0a0a !important;
 }
 
 /* Target all TradingView elements */
 .tradingview-widget-container,
 .tradingview-widget-container iframe,
 .tradingview-widget-container div {
-  background-color: #000000 !important;
+  background-color: #0a0a0a !important;
   border: none !important;
   border-radius: 0 !important;
 }
@@ -67,18 +67,18 @@ body iframe {
 
 /* Override any potential TradingView default styles */
 iframe {
-  background-color: #000000 !important;
+  background-color: #0a0a0a !important;
   border: none !important;
 }
 
 /* Force all chart elements to have black background */
 .chart-page .chart-container .chart-container__chartarea {
-  background-color: #000000 !important;
+  background-color: #0a0a0a !important;
 }
 
 /* Override any potential white backgrounds */
 .chart-page .chart-container .chart-container__chartarea canvas {
-  background-color: #000000 !important;
+  background-color: #0a0a0a !important;
 }
 
 /* Ensure grid lines use the correct color */
@@ -115,7 +115,7 @@ iframe {
 .chart-page .chart-container *:after,
 .chart-page .chart-container *:hover,
 .chart-page .chart-container *:focus {
-  background-color: #000000 !important;
+  background-color: #0a0a0a !important;
 }
 
 /* Override any potential background colors in chart elements */
@@ -123,7 +123,7 @@ iframe {
 .chart-page .chart-container svg *,
 .chart-page .chart-container canvas,
 .chart-page .chart-container div {
-  background-color: #000000 !important;
+  background-color: #0a0a0a !important;
 }
 
 /* Ensure all chart elements have black background */
@@ -131,12 +131,12 @@ iframe {
 .chart-page *, 
 .layout__area--center, 
 .layout__area--center * {
-  background-color: #000000 !important;
+  background-color: #0a0a0a !important;
 }
 
 /* Fix for navy yellow background in TradingView */
 .tv-chart-container__bg {
-  fill: #000000 !important;
+  fill: #0a0a0a !important;
 }
 
 /* Fix for chart container overflow */
@@ -149,22 +149,22 @@ iframe {
 .chart-page .chart-container .chart-container__chartarea--themed-dark,
 .chart-page .chart-container .chart-container__chartarea--themed-dark *,
 .chart-page .chart-container .chart-container__chartarea * {
-  background-color: #000000 !important;
+  background-color: #0a0a0a !important;
 }
 
 /* Target the TradingView iframe directly */
 .TVChartContainer iframe {
-  background-color: #000000 !important;
+  background-color: #0a0a0a !important;
 }
 
 /* Target the iframe content */
 .TVChartContainer iframe html,
 .TVChartContainer iframe body {
-  background-color: #000000 !important;
+  background-color: #0a0a0a !important;
 }
 
 /* Fix for any gradient backgrounds */
 [style*="background-image"] {
   background-image: none !important;
-  background-color: #000000 !important;
+  background-color: #0a0a0a !important;
 }

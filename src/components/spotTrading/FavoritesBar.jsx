@@ -29,7 +29,7 @@ const FavoriteItem = ({ coin, isActive, onClick, compact = false }) => {
       <div className="flex items-center space-x-2 w-full">
         {/* Coin Logo with Fallback */}
         {imageError ? (
-          <div className="w-5 h-5 rounded-full bg-gray-700 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
+          <div className="w-5 h-5 rounded-full bg-[#252525] flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
             {symbol?.charAt(0) || 'C'}
           </div>
         ) : (
@@ -68,7 +68,7 @@ const FavoriteItem = ({ coin, isActive, onClick, compact = false }) => {
     >
       {/* Coin Logo with Fallback */}
       {imageError ? (
-        <div className="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center text-xs font-bold text-white">
+        <div className="w-6 h-6 rounded-full bg-[#252525] flex items-center justify-center text-xs font-bold text-white">
           {symbol?.charAt(0) || 'C'}
         </div>
       ) : (

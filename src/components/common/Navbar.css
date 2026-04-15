@@ -1537,7 +1537,7 @@ header.navbar-header {
   top: 0;
   left: 0;
   right: 0;
-  background-color: #121212;
+  background-color: #0a0a0a;
   z-index: 9000;
   display: flex;
   flex-direction: column;
@@ -1569,7 +1569,7 @@ header.navbar-header {
   left: 0;
   width: 100%;
   height: 56px;
-  background-color: #121212;
+  background-color: #0a0a0a;
   display: flex;
   align-items: center;
   padding: 0 16px;
@@ -1620,7 +1620,7 @@ header.navbar-header {
   width: 95%;
   max-width: 400px;
   height: 100%;
-  background-color: #121212;
+  background-color: #0a0a0a;
   z-index: 9999 !important;
   overflow-y: auto;
   animation: slideIn 0.3s ease;
@@ -2099,7 +2099,7 @@ header *,
 
 /* Desktop navbar header only */
 header.navbar-header {
-    background-color: #121212 !important;
+    background-color: #0a0a0a !important;
     border-bottom: 1px solid #2A2A2A !important;
     padding: 0 32px !important;
     height: 56px !important;
@@ -2247,7 +2247,7 @@ header.navbar-header {
 }
 
 .signup-btn {
-    background: #000000 !important;
+    background: #0a0a0a !important;
     color: #ffffff !important;
     border: 1px solid rgba(255, 255, 255, 0.8) !important;
     border-radius: 20px !important;

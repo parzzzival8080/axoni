@@ -97,11 +97,11 @@
   }
   
   .categories-list li:hover {
-    color: #000000;
+    color: #0a0a0a;
   }
   
   .categories-list li.active {
-    color: #000000;
+    color: #0a0a0a;
   }
   
   /* Announcements List */
@@ -154,8 +154,8 @@
   }
   
   .pagination-arrow:hover {
-    color: #000000;
-    border-color: #000000;
+    color: #0a0a0a;
+    border-color: #0a0a0a;
   }
   
   .pagination-number {
@@ -173,14 +173,14 @@
   }
   
   .pagination-number:hover {
-    color: #000000;
-    border-color: #000000;
+    color: #0a0a0a;
+    border-color: #0a0a0a;
   }
   
   .pagination-number.active {
-    background-color: #000000;
+    background-color: #0a0a0a;
     color: white;
-    border-color: #000000;
+    border-color: #0a0a0a;
   }
   
   .pagination-ellipsis {

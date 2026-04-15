@@ -807,7 +807,7 @@ const Legal = () => {
             </div>
 
             {/* Last Updated */}
-            <div className="bg-gray-900/50 border border-[#2A2A2A] p-6 rounded-lg">
+            <div className="bg-[#0f0f0f]/50 border border-[#2A2A2A] p-6 rounded-lg">
               <p className="text-sm text-[#5E6673]">
                 <strong>Last updated:</strong> September 18, 2022
               </p>

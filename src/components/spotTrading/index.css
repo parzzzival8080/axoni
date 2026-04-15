@@ -6,25 +6,25 @@
 /* Force black background on TradingView chart */
 .TVChartContainer iframe,
 .TVChartContainer div {
-	background-color: #000000 !important;
+	background-color: #0a0a0a !important;
 }
 
 /* Target the chart specifically */
 .chart-area {
-	background-color: #000000 !important;
+	background-color: #0a0a0a !important;
 }
 
 /* Target TradingView elements */
 .chart-markup-table,
 .tv-chart-container,
 .tv-chart__area {
-	background-color: #000000 !important;
+	background-color: #0a0a0a !important;
 }
 
 .orders-section {
 	width: 100%;
 	border-radius: 4px;
-	background-color: #000000;
+	background-color: #0a0a0a;
 	border: 1px solid #2a2e39;
 }
 
@@ -33,7 +33,7 @@
 	align-items: center;
 	padding: 0 16px;
 	border-bottom: 1px solid #2a2e39;
-	background-color: #000000;
+	background-color: #0a0a0a;
 	height: 48px;
 	gap: 24px;
 }

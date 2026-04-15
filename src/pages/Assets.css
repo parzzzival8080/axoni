@@ -6,12 +6,12 @@
   width: 100%;
   margin: 0;
   padding: 0;
-  background-color: #121212;
+  background-color: #0a0a0a;
   /* min-height removed */
 }
 
 .assets-header {
-  background-color: #121212;
+  background-color: #0a0a0a;
   border-bottom: 1px solid #2A2A2A;
   margin-bottom: 24px;
   width: 100%;
@@ -22,7 +22,7 @@
   display: flex;
   overflow-x: auto;
   white-space: nowrap;
-  background-color: #121212;
+  background-color: #0a0a0a;
   width: 100%;
   border-bottom: 1px solid #2A2A2A;
   padding-left: 96px;
@@ -61,7 +61,7 @@
 /* Assets content */
 .assets-content {
   padding: 0 16px;
-  background-color: #121212;
+  background-color: #0a0a0a;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -184,7 +184,7 @@
   display: flex;
   border-bottom: 1px solid #2A2A2A;
   margin-bottom: 16px;
-  background-color: #121212;
+  background-color: #0a0a0a;
 }
 
 .tab {
@@ -264,7 +264,7 @@
 .assets-table {
   margin-bottom: 24px;
   overflow-x: auto;
-  background-color: #121212;
+  background-color: #0a0a0a;
 }
 
 .assets-table table {

@@ -5,7 +5,7 @@ import ToastNotification from "../components/mobile/ToastNotification";
 
 const MobileLayout = ({ children, title, actions, darkBg = false, hideTabBar = false, hideHeader = false }) => {
   return (
-    <div className={`${darkBg ? "bg-[#121212]" : "bg-[#121212]"}`}>
+    <div className={`${darkBg ? "bg-[#0a0a0a]" : "bg-[#0a0a0a]"}`}>
       {!hideHeader && <MobileHeader title={title} actions={actions} darkBg={darkBg} />}
       <ToastNotification />
       <main

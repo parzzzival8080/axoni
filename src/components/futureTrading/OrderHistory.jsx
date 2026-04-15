@@ -482,7 +482,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                     <td className="text-left">
                       <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                         order.status === 'open_position' ? 'bg-green-900 bg-opacity-30 text-green-400 border border-green-700' :
-                        order.status === 'close_position' ? 'bg-gray-900 bg-opacity-30 text-[#5E6673] border border-[#2A2A2A]' :
+                        order.status === 'close_position' ? 'bg-[#0f0f0f] bg-opacity-30 text-[#5E6673] border border-[#2A2A2A]' :
                         order.status === 'liquidated' ? 'bg-red-900 bg-opacity-30 text-red-400 border border-red-700' :
                         'bg-yellow-900 bg-opacity-30 text-[#2EBD85] border border-[#2EBD85]'
                       }`}>
@@ -627,7 +627,7 @@ const OrderHistory = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =>
                   <div className="flex justify-end space-x-3">
                     <button 
                       onClick={closePopup}
-                      className="px-4 py-2 bg-transparent border border-[#2A2A2A] text-[#848E9C] rounded-md hover:bg-gray-700 transition-colors"
+                      className="px-4 py-2 bg-transparent border border-[#2A2A2A] text-[#848E9C] rounded-md hover:bg-[#252525] transition-colors"
                     >
                       Cancel
                     </button>

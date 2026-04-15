@@ -392,7 +392,7 @@ const Hero = () => {
         </Link>
         <Link
           to="/account/overview"
-          className="bg-[#1E1E1E] text-white px-6 py-4 rounded-lg font-semibold hover:bg-gray-700 transition-colors text-center"
+          className="bg-[#1E1E1E] text-white px-6 py-4 rounded-lg font-semibold hover:bg-[#252525] transition-colors text-center"
         >
           View Dashboard
         </Link>
@@ -401,14 +401,14 @@ const Hero = () => {
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 mt-6">
         <Link
           to="/deposit"
-          className="bg-[#1E1E1E] hover:bg-gray-700/50 p-4 rounded-lg transition-colors text-center"
+          className="bg-[#1E1E1E] hover:bg-[#252525]/50 p-4 rounded-lg transition-colors text-center"
         >
           <FaWallet className="text-[#2EBD85] text-xl mx-auto mb-2" />
           <h4 className="text-white font-medium text-sm">Deposit</h4>
         </Link>
         <Link
           to="/transfer"
-          className="bg-[#1E1E1E] hover:bg-gray-700/50 p-4 rounded-lg transition-colors text-center"
+          className="bg-[#1E1E1E] hover:bg-[#252525]/50 p-4 rounded-lg transition-colors text-center"
         >
           <svg
             className="w-5 h-5 text-[#2EBD85] mx-auto mb-2"
@@ -427,7 +427,7 @@ const Hero = () => {
         </Link>
         <Link
           to="/my-assets"
-          className="bg-[#1E1E1E] hover:bg-gray-700/50 p-4 rounded-lg transition-colors text-center"
+          className="bg-[#1E1E1E] hover:bg-[#252525]/50 p-4 rounded-lg transition-colors text-center"
         >
           <svg
             className="w-5 h-5 text-[#2EBD85] mx-auto mb-2"
@@ -446,7 +446,7 @@ const Hero = () => {
         </Link>
         <Link
           to="/account/profile"
-          className="bg-[#1E1E1E] hover:bg-gray-700/50 p-4 rounded-lg transition-colors text-center"
+          className="bg-[#1E1E1E] hover:bg-[#252525]/50 p-4 rounded-lg transition-colors text-center"
         >
           <svg
             className="w-5 h-5 text-[#2EBD85] mx-auto mb-2"

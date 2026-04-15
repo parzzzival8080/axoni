@@ -342,20 +342,20 @@ const Conversion = () => {
 
   return (
     <div className="bg-[#0a0a0a] text-white">
-      {/* Header */}
-      <div className="flex flex-col items-center justify-center text-center py-12 bg-black">
-        <h1 className="text-5xl font-bold mb-3 text-[#2EBD85]">Convert</h1>
-        <div className="flex items-center space-x-3 text-[#5E6673] text-sm">
-          <span>Zero trading fees</span>
-          <span className="w-1 h-1 rounded-full bg-gray-500"></span>
-          <span>Lower limits</span>
-          <span className="w-1 h-1 rounded-full bg-gray-500"></span>
-          <span>Simple transactions</span>
+      {/* Header — compact on mobile */}
+      <div className="flex flex-col items-center justify-center text-center py-6 md:py-12 bg-[#0a0a0a]">
+        <h1 className="text-2xl md:text-5xl font-bold mb-2 text-white">Convert</h1>
+        <div className="flex items-center space-x-2 text-[#5E6673] text-xs md:text-sm">
+          <span>Zero fees</span>
+          <span className="w-1 h-1 rounded-full bg-[#2A2A2A]"></span>
+          <span>Instant swap</span>
+          <span className="w-1 h-1 rounded-full bg-[#2A2A2A]"></span>
+          <span>Simple</span>
         </div>
       </div>
 
       {/* Main content */}
-      <div className="max-w-xl mx-auto px-4 mb-16">
+      <div className="max-w-xl mx-auto px-4 pb-24 md:mb-16">
         {/* Success message */}
         {conversionSuccess && (
           <div className="bg-green-900/20 border border-green-800 text-green-400 px-4 py-3 rounded-lg mb-4" role="alert">
@@ -371,7 +371,7 @@ const Conversion = () => {
         )}
         
         {/* From section */}
-        <div className="bg-gray-900 rounded-lg p-4 mb-4">
+        <div className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-2xl p-4 mb-3">
           <label className="block text-sm text-[#5E6673] mb-2">From</label>
           <div className="flex items-center">
             <input 
@@ -385,7 +385,7 @@ const Conversion = () => {
               className="flex items-center space-x-1 cursor-pointer bg-[#1E1E1E] rounded-lg px-3 py-2"
               onClick={openFromModal}
             >
-              <div className="w-6 h-6 rounded-full overflow-hidden bg-gray-700 flex-shrink-0">
+              <div className="w-6 h-6 rounded-full overflow-hidden bg-[#252525] flex-shrink-0">
                 <img 
                   className="w-full h-full object-cover" 
                   src={fromCurrency.icon || TetherLogo}
@@ -415,7 +415,7 @@ const Conversion = () => {
         </div>
         
         {/* To section */}
-        <div className="bg-gray-900 rounded-lg p-4 mb-6">
+        <div className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-2xl p-4 mb-6">
           <label className="block text-sm text-[#5E6673] mb-2">To</label>
           <div className="flex items-center">
             <input 
@@ -429,7 +429,7 @@ const Conversion = () => {
               className="flex items-center space-x-1 cursor-pointer bg-[#1E1E1E] rounded-lg px-3 py-2"
               onClick={openToModal}
             >
-              <div className="w-6 h-6 rounded-full overflow-hidden bg-gray-700 flex-shrink-0">
+              <div className="w-6 h-6 rounded-full overflow-hidden bg-[#252525] flex-shrink-0">
                 <img 
                   className="w-full h-full object-cover" 
                   src={toCurrency.icon || Coin} 
@@ -451,7 +451,7 @@ const Conversion = () => {
         
         {/* Convert button */}
         <button 
-          className={`w-full py-3.5 px-6 rounded-full font-medium text-white transition-colors duration-200 ${isSubmitting || (!isAuthenticated ? '' : (!fromAmount || !toAmount || !!conversionError)) ? 'bg-gray-700 cursor-not-allowed' : 'bg-[#2EBD85] hover:bg-[#2EBD85]'}`}
+          className={`w-full py-3.5 px-6 rounded-full font-medium text-white transition-colors duration-200 ${isSubmitting || (!isAuthenticated ? '' : (!fromAmount || !toAmount || !!conversionError)) ? 'bg-[#252525] cursor-not-allowed' : 'bg-[#2EBD85] hover:bg-[#2EBD85]'}`}
           onClick={handleConvert}
           disabled={isSubmitting || (!isAuthenticated ? false : (!fromAmount || !toAmount || !!conversionError))}
         >
@@ -511,7 +511,7 @@ const Conversion = () => {
         
         <div className="space-y-4">
           {/* FAQ items */}
-          <div className="border-b border-gray-800 pb-4">
+          <div className="border-b border-[#1E1E1E] pb-4">
             <button 
               className="flex justify-between items-center w-full text-left py-2"
               onClick={() => setOpenFAQIndex(openFAQIndex === 0 ? null : 0)}
@@ -528,7 +528,7 @@ const Conversion = () => {
             )}
           </div>
           
-          <div className="border-b border-gray-800 pb-4">
+          <div className="border-b border-[#1E1E1E] pb-4">
             <button 
               className="flex justify-between items-center w-full text-left py-2"
               onClick={() => setOpenFAQIndex(openFAQIndex === 1 ? null : 1)}
@@ -545,7 +545,7 @@ const Conversion = () => {
             )}
           </div>
           
-          <div className="border-b border-gray-800 pb-4">
+          <div className="border-b border-[#1E1E1E] pb-4">
             <button 
               className="flex justify-between items-center w-full text-left py-2"
               onClick={() => setOpenFAQIndex(openFAQIndex === 2 ? null : 2)}
@@ -562,7 +562,7 @@ const Conversion = () => {
             )}
           </div>
           
-          <div className="border-b border-gray-800 pb-4">
+          <div className="border-b border-[#1E1E1E] pb-4">
             <button 
               className="flex justify-between items-center w-full text-left py-2"
               onClick={() => setOpenFAQIndex(openFAQIndex === 3 ? null : 3)}
@@ -579,7 +579,7 @@ const Conversion = () => {
             )}
           </div>
           
-          <div className="border-b border-gray-800 pb-4">
+          <div className="border-b border-[#1E1E1E] pb-4">
             <button 
               className="flex justify-between items-center w-full text-left py-2"
               onClick={() => setOpenFAQIndex(openFAQIndex === 4 ? null : 4)}
@@ -596,7 +596,7 @@ const Conversion = () => {
             )}
           </div>
           
-          <div className="border-b border-gray-800 pb-4">
+          <div className="border-b border-[#1E1E1E] pb-4">
             <button 
               className="flex justify-between items-center w-full text-left py-2"
               onClick={() => setOpenFAQIndex(openFAQIndex === 5 ? null : 5)}
@@ -613,7 +613,7 @@ const Conversion = () => {
             )}
           </div>
           
-          <div className="border-b border-gray-800 pb-4">
+          <div className="border-b border-[#1E1E1E] pb-4">
             <button 
               className="flex justify-between items-center w-full text-left py-2"
               onClick={() => setOpenFAQIndex(openFAQIndex === 6 ? null : 6)}
@@ -652,7 +652,7 @@ const Conversion = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0a0a0a] bg-opacity-75">
           <div className="relative bg-[#1A1A1A] rounded-lg w-full max-w-2xl max-h-[80vh] overflow-hidden">
             {/* Modal Header */}
-            <div className="flex justify-between items-center p-4 border-b border-gray-800">
+            <div className="flex justify-between items-center p-4 border-b border-[#1E1E1E]">
               <h3 className="text-xl font-semibold text-white">Conversion History</h3>
               <button 
                 onClick={closeHistoryModal}
@@ -676,7 +676,7 @@ const Conversion = () => {
                 <div className="text-[#5E6673] text-center py-6">No conversion history found</div>
               ) : (
                 <div className="space-y-4">
-                  <div className="grid grid-cols-5 gap-2 text-sm text-[#5E6673] border-b border-gray-800 pb-2">
+                  <div className="grid grid-cols-5 gap-2 text-sm text-[#5E6673] border-b border-[#1E1E1E] pb-2">
                     <div>Date</div>
                     <div>From</div>
                     <div>To</div>
@@ -685,7 +685,7 @@ const Conversion = () => {
                   </div>
                   
                   {conversionHistory.map((item) => (
-                    <div key={item.id} className="grid grid-cols-5 gap-2 py-3 border-b border-gray-800 text-sm">
+                    <div key={item.id} className="grid grid-cols-5 gap-2 py-3 border-b border-[#1E1E1E] text-sm">
                       <div className="text-[#848E9C]">
                         {new Date(item.created_at || Date.now()).toLocaleDateString()}
                       </div>
@@ -706,10 +706,10 @@ const Conversion = () => {
             </div>
             
             {/* Modal Footer */}
-            <div className="border-t border-gray-800 p-4 flex justify-end">
+            <div className="border-t border-[#1E1E1E] p-4 flex justify-end">
               <button
                 onClick={closeHistoryModal}
-                className="px-4 py-2 bg-[#1E1E1E] text-white rounded-md hover:bg-gray-700 transition-colors"
+                className="px-4 py-2 bg-[#1E1E1E] text-white rounded-md hover:bg-[#252525] transition-colors"
               >
                 Close
               </button>
@@ -718,8 +718,7 @@ const Conversion = () => {
         </div>
       )}
       
-      {/* Walkthrough Trigger */}
-      <ConversionWalkthroughTrigger />
+      {/* Walkthrough removed */}
     </div>
   )
 }

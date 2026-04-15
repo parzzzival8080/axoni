@@ -1132,17 +1132,20 @@ const SignUpPage = () => {
   return (
     <div className="flex flex-col bg-[#0a0a0a]">
       {isMobile ? (
-        <div className="flex items-center px-4 h-12 bg-[#0a0a0a]">
-          <button onClick={() => navigate("/login")} className="flex items-center gap-1 text-white">
+        <div className="flex items-center justify-between px-4 h-12 bg-[#0a0a0a]">
+          <button onClick={() => navigate(-1)} className="flex items-center text-white">
             <ChevronLeft size={20} />
-            <span className="text-sm">Log in</span>
+          </button>
+          <span className="text-white text-base font-semibold">Sign up</span>
+          <button onClick={() => navigate("/login")} className="text-[#2EBD85] text-sm font-medium">
+            Log in
           </button>
         </div>
       ) : (
         <Navbar />
       )}
       <div className="flex flex-1 overflow-hidden">
-        {/* Left Section */}
+        {/* Left Section — desktop only */}
         <div className="hidden md:flex md:w-2/5 bg-[#0a0a0a] p-0 justify-center items-center overflow-y-auto border-r border-[#2A2A2A]">
           <img
             src="/assets/login/signup.png"
@@ -1157,43 +1160,28 @@ const SignUpPage = () => {
         </div>
 
         {/* Right Section */}
-        <div className="w-full md:w-3/5 bg-[#0a0a0a] text-white p-8 md:p-12 lg:p-16 overflow-y-auto">
+        <div className="w-full md:w-3/5 bg-[#0a0a0a] text-white px-5 py-6 md:p-12 lg:p-16 overflow-y-auto">
           <div className="max-w-md mx-auto w-full">
-            <h2 className="text-3xl font-semibold mb-9 text-white">Let's get you started</h2>
+            <h2 className="text-2xl md:text-3xl font-semibold mb-6 md:mb-9 text-white">{isMobile ? 'Create account' : "Let's get you started"}</h2>
 
-            {/* Progress Bar */}
-            <div className="relative mb-9">
-              <div className="absolute top-1/2 left-0 w-full h-px bg-[#2A2A2A] -translate-y-1/2"></div>
-              <div className="flex justify-between relative z-0">
+            {/* Progress Bar — clean line with dots */}
+            <div className="mb-8">
+              <div className="flex items-center gap-1 mb-3">
                 {[1, 2, 3, 4].map((step) => (
-                  <div key={step} className="flex flex-col items-center">
-                    <div
-                      className={`w-6 h-6 rounded-lg flex items-center justify-center text-sm font-medium transition-colors duration-200
-                                     ${
-                                       currentStep >= step
-                                         ? "bg-[#2EBD85] text-white border-[#2EBD85]"
-                                         : "bg-[#1E1E1E] text-[#5E6673] border border-[#2A2A2A]"
-                                     }`}
-                    >
-                      {step}
-                    </div>
-                    <span
-                      className={`text-xs mt-2 whitespace-nowrap transition-colors duration-200 ${
-                        currentStep >= step
-                          ? "text-white font-medium"
-                          : "text-[#5E6673]"
-                      }`}
-                    >
-                      {step === 1
-                        ? "Country"
-                        : step === 2
-                        ? "Credentials"
-                        : step === 3
-                        ? "Verification"
-                        : "Profile"}
-                    </span>
+                  <div key={step} className="flex-1 flex items-center">
+                    <div className={`h-1 w-full rounded-full transition-colors duration-300 ${
+                      currentStep >= step ? 'bg-[#2EBD85]' : 'bg-[#2A2A2A]'
+                    }`} />
                   </div>
                 ))}
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-white text-xs font-medium">
+                  Step {currentStep} of 4
+                </span>
+                <span className="text-[#5E6673] text-xs">
+                  {currentStep === 1 ? "Country" : currentStep === 2 ? "Credentials" : currentStep === 3 ? "Verification" : "Profile"}
+                </span>
               </div>
             </div>
 

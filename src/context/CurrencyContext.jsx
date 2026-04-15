@@ -5,7 +5,13 @@ const CurrencyContext = createContext();
 export const useCurrency = () => {
   const context = useContext(CurrencyContext);
   if (!context) {
-    throw new Error("useCurrency must be used within a CurrencyProvider");
+    // Fallback instead of throwing — prevents crash during lazy loading
+    return {
+      selectedCurrency: 'USD',
+      formatCurrency: (val) => `$${parseFloat(val || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      changeCurrency: () => {},
+      currencies: ['USD'],
+    };
   }
   return context;
 };

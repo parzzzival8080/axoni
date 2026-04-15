@@ -850,7 +850,7 @@ function withdraw() {
                       className={`py-2.5 px-4 text-sm font-medium focus:outline-none relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:transition-all after:duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
                         withdrawalDestination === "on-chain"
                           ? "text-white after:bg-[#0a0a0a] after:w-full" // Active tab style
-                          : "text-[#5E6673] hover:text-[#848E9C] after:bg-gray-700 after:w-0 hover:after:w-full" // Inactive tab style
+                          : "text-[#5E6673] hover:text-[#848E9C] after:bg-[#252525] after:w-0 hover:after:w-full" // Inactive tab style
                       }`}
                     >
                       On-chain withdrawal
@@ -861,7 +861,7 @@ function withdraw() {
                       className={`py-2.5 px-4 text-sm font-medium focus:outline-none relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:transition-all after:duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
                         withdrawalDestination === "internal"
                           ? "text-white after:bg-[#0a0a0a] after:w-full"
-                          : "text-[#5E6673] hover:text-[#848E9C] after:bg-gray-700 after:w-0 hover:after:w-full"
+                          : "text-[#5E6673] hover:text-[#848E9C] after:bg-[#252525] after:w-0 hover:after:w-full"
                       }`}
                     >
                       Internal withdrawal

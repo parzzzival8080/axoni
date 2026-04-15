@@ -23,7 +23,7 @@ const MobileSettingsPanel = () => {
               {isDark ? (
                 <Moon size={20} className="text-[#2EBD85]" />
               ) : (
-                <Sun size={20} className="text-gray-600" />
+                <Sun size={20} className="text-[#5E6673]" />
               )}
               <span className="text-sm font-medium text-white dark:text-white">
                 {isDark ? "Dark Mode" : "Light Mode"}
@@ -48,7 +48,7 @@ const MobileSettingsPanel = () => {
             className="flex items-center justify-between w-full px-3 py-3 rounded-lg bg-gray-50 dark:bg-[#1E1E1E]"
           >
             <div className="flex items-center gap-3">
-              <Globe size={20} className="text-gray-600 dark:text-[#5E6673]" />
+              <Globe size={20} className="text-[#5E6673] dark:text-[#5E6673]" />
               <span className="text-sm font-medium text-white dark:text-white">
                 Language / Currency
               </span>

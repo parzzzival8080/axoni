@@ -296,7 +296,7 @@
 .crypto-icon.btc { background-color: #F7931A; }
 .crypto-icon.eth { background-color: #627EEA; }
 .crypto-icon.usdt { background-color: #26A17B; }
-.crypto-icon.xrp { background-color: #000000; }
+.crypto-icon.xrp { background-color: #0a0a0a; }
 .crypto-icon.bnb { background-color: #F3BA2F; }
 .crypto-icon.sol { background-color: #65AAEA; }
 .crypto-icon.usdc { background-color: #2775CA; }
@@ -308,9 +308,9 @@
 .crypto-icon.sui { background-color: #4DA2FE; }
 .crypto-icon.link { background-color: #2A5ADA; }
 .crypto-icon.avax { background-color: #E84142; }
-.crypto-icon.xlm { background-color: #000000; }
+.crypto-icon.xlm { background-color: #0a0a0a; }
 .crypto-icon.shib { background-color: #FFA409; }
-.crypto-icon.leo { background-color: #000000; }
+.crypto-icon.leo { background-color: #0a0a0a; }
 .crypto-icon.hbar { background-color: #00ADD8; }
 .crypto-icon.ton { background-color: #0098EA; }
 .crypto-icon.bch { background-color: #8DC351; }
@@ -322,7 +322,7 @@
 .crypto-icon.uni { background-color: #FF007A; }
 .crypto-icon.apt { background-color: #2FD6BF; }
 .crypto-icon.dai { background-color: #F5AC37; }
-.crypto-icon.near { background-color: #000000; }
+.crypto-icon.near { background-color: #0a0a0a; }
 
 /* Responsive Adjustments */
 @media (max-width: 992px) {

@@ -5,7 +5,7 @@
   flex-direction: column;
   width: 100vw;
   min-height: auto;
-  background-color: #121212;
+  background-color: #0a0a0a;
 }
 
 /* Main Content Area */
@@ -18,7 +18,7 @@
 /* Left Section */
 .left-section {
   width: 40%;
-  background-color: #121212;
+  background-color: #0a0a0a;
   color: #fff;
   padding: 80px 60px;
   display: flex;
@@ -92,7 +92,7 @@
 /* Right Section — Dark (was white) */
 .right-section {
   width: 60%;
-  background-color: #121212;
+  background-color: #0a0a0a;
   color: #fff;
   padding: 60px;
   display: flex;
@@ -247,7 +247,7 @@
 
 .continue-text p {
   display: inline-block;
-  background-color: #121212;
+  background-color: #0a0a0a;
   padding: 0 12px;
   font-size: 13px;
   color: #5E6673;

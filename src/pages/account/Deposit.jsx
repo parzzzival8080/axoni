@@ -890,7 +890,7 @@ function App() {
           {/* Deposit History Table */}
           {!isLoadingHistory && !historyError && (
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-[#2A2A2A] dark:divide-gray-700 bg-[#0a0a0a] dark:bg-[#0a0a0a] rounded shadow-md">
+              <table className="min-w-full divide-y divide-[#2A2A2A] dark:divide-[#2A2A2A] bg-[#0a0a0a] dark:bg-[#0a0a0a] rounded shadow-md">
                 <thead className="bg-[#1E1E1E] dark:bg-[#1E1E1E]">
                   <tr>
                     <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-[#848E9C] uppercase tracking-wider">Date</th>
@@ -899,7 +899,7 @@ function App() {
                     <th className="px-4 py-3 text-left text-xs font-medium text-[#848E9C] dark:text-[#848E9C] uppercase tracking-wider">Status</th>
                   </tr>
                 </thead>
-                <tbody className="bg-[#0a0a0a] dark:bg-[#0a0a0a] divide-y divide-gray-100 dark:divide-gray-800">
+                <tbody className="bg-[#0a0a0a] dark:bg-[#0a0a0a] divide-y divide-gray-100 dark:divide-[#1E1E1E]">
                   {depositHistory.length === 0 ? (
                     <tr>
                       <td colSpan={4} className="text-center text-[#5E6673] dark:text-[#5E6673] py-8">

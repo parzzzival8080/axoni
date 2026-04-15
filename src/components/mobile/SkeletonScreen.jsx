@@ -1,7 +1,7 @@
 import React from "react";
 
 const SkeletonBlock = ({ className = "" }) => (
-  <div className={`animate-pulse bg-gray-200 dark:bg-gray-700 rounded ${className}`} />
+  <div className={`animate-pulse bg-gray-200 dark:bg-[#252525] rounded ${className}`} />
 );
 
 const SkeletonScreen = ({ variant = "default" }) => {

@@ -2,67 +2,39 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { X } from "lucide-react";
 
-// Custom tab bar icons — outlined (inactive) and filled (active)
-const HomeIcon = ({ active }) => active ? (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12.707 2.293a1 1 0 00-1.414 0l-9 9A1 1 0 003 13h1v7a2 2 0 002 2h4v-5a1 1 0 011-1h2a1 1 0 011 1v5h4a2 2 0 002-2v-7h1a1 1 0 00.707-1.707l-9-9z" />
-  </svg>
-) : (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z" />
+// Tab bar icons — thin, refined, OKX-style
+const HomeIcon = ({ active }) => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? "2" : "1.5"} strokeLinecap="round" strokeLinejoin="round">
+    <path d="M3 10.5L12 3l9 7.5"/>
+    <path d="M5 9v10a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1V9"/>
   </svg>
 );
 
-const MarketsIcon = ({ active }) => active ? (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M3 3v18h18v-2H5V3H3zm14 4a1 1 0 011 1v8a1 1 0 11-2 0V8a1 1 0 011-1zm-4 4a1 1 0 011 1v4a1 1 0 11-2 0v-4a1 1 0 011-1zm-4 2a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1z" />
-  </svg>
-) : (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="16" y="7" width="3" height="10" rx="1" />
-    <rect x="11.5" y="11" width="3" height="6" rx="1" />
-    <rect x="7" y="13" width="3" height="4" rx="1" />
-    <path d="M3 3v18h18" />
+const MarketsIcon = ({ active }) => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? "2" : "1.5"} strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
   </svg>
 );
 
-const TradeIcon = ({ active }) => active ? (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z" />
-    <path d="M7 10l5-5 5 5M7 14l5 5 5-5" opacity="0.9" />
-  </svg>
-) : (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M8 7l4-4 4 4" />
-    <path d="M16 17l-4 4-4-4" />
-    <path d="M12 3v18" />
-    <path d="M4 12h16" />
+const TradeIcon = ({ active }) => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? "2" : "1.5"} strokeLinecap="round" strokeLinejoin="round">
+    <path d="M7 10l5-5 5 5"/>
+    <path d="M17 14l-5 5-5-5"/>
   </svg>
 );
 
-const AssetsIcon = ({ active }) => active ? (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M21 7H3a1 1 0 00-1 1v8a1 1 0 001 1h18a1 1 0 001-1V8a1 1 0 00-1-1zm-1 8H4V9h16v6z" />
-    <path d="M5 5h14a1 1 0 011 1v1H4V6a1 1 0 011-1z" opacity="0.6" />
-    <circle cx="16" cy="12" r="2" />
-  </svg>
-) : (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="2" y="7" width="20" height="10" rx="2" />
-    <path d="M6 7V5a2 2 0 012-2h8a2 2 0 012 2v2" />
-    <circle cx="16" cy="12" r="1.5" />
+const AssetsIcon = ({ active }) => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? "2" : "1.5"} strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="5" width="20" height="14" rx="2"/>
+    <path d="M16 12a1 1 0 100-2 1 1 0 000 2z" fill="currentColor"/>
+    <path d="M2 9h20"/>
   </svg>
 );
 
-const AccountIcon = ({ active }) => active ? (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-    <circle cx="12" cy="8" r="4" />
-    <path d="M20 21a8 8 0 00-16 0" />
-  </svg>
-) : (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="8" r="3.5" />
-    <path d="M20 21c0-3.87-3.58-7-8-7s-8 3.13-8 7" />
+const AccountIcon = ({ active }) => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? "2" : "1.5"} strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="8" r="3"/>
+    <path d="M5 20c0-3.87 3.13-7 7-7s7 3.13 7 7"/>
   </svg>
 );
 

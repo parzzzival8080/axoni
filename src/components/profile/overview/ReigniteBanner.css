@@ -28,7 +28,7 @@
 .banner-message {
   font-size: 18px;
   font-weight: 700;
-  color: #000000;
+  color: #0a0a0a;
   line-height: 1.2;
   margin: 0 0 12px 0;
 }
@@ -37,7 +37,7 @@
   display: inline-block;
   background-color: transparent;
   border: none;
-  color: #000000;
+  color: #0a0a0a;
   font-size: 14px;
   text-decoration: underline;
   cursor: pointer;

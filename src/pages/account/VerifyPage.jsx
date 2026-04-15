@@ -1207,7 +1207,7 @@ const VerifyPage = () => {
  ${
  selectedIdInfo?.name === type.name
  ? "bg-[#1E1E1E] border-black dark:border-white ring-2 ring-black dark:ring-white"
- : "border-[#2A2A2A] hover:border-black dark:hover:border-white hover:bg-[#1E1E1E] dark:hover:bg-gray-700 bg-[#1E1E1E]"
+ : "border-[#2A2A2A] hover:border-black dark:hover:border-white hover:bg-[#1E1E1E] dark:hover:bg-[#252525] bg-[#1E1E1E]"
  }`}
  >
  <div className="flex items-center">
@@ -1403,7 +1403,7 @@ const VerifyPage = () => {
  <button
  onClick={stopCamera}
  disabled={isLoading}
- className="px-4 py-2 bg-[#1E1E1E]0 text-white rounded-lg hover:bg-gray-600 transition-colors disabled:opacity-50"
+ className="px-4 py-2 bg-[#1E1E1E]0 text-white rounded-lg hover:bg-[#2A2A2A] transition-colors disabled:opacity-50"
  >
  Cancel
  </button>
@@ -1533,7 +1533,7 @@ const VerifyPage = () => {
  <button
  onClick={handlePrevStep}
  disabled={isLoading || !currentUserId}
- className="px-5 py-2.5 text-sm font-medium text-white border border-[#2A2A2A] rounded-lg hover:bg-[#1E1E1E] dark:hover:bg-gray-700 transition duration-150 flex items-center disabled:opacity-70 disabled:cursor-not-allowed"
+ className="px-5 py-2.5 text-sm font-medium text-white border border-[#2A2A2A] rounded-lg hover:bg-[#1E1E1E] dark:hover:bg-[#252525] transition duration-150 flex items-center disabled:opacity-70 disabled:cursor-not-allowed"
  >
  <ChevronLeft size={16} className="mr-1" /> Back
  </button>

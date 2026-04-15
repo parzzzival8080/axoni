@@ -92,7 +92,7 @@
 }
 
 .deposit-btn {
-  background-color: #000;
+  background-color: #0a0a0a;
   color: #fff;
 }
 
@@ -139,7 +139,7 @@
   transform: translateX(-50%);
   width: 16px;
   height: 2px;
-  background-color: #000;
+  background-color: #0a0a0a;
 }
 
 .empty-chart {

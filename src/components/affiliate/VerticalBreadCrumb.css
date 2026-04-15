@@ -32,7 +32,7 @@
 }
 
 .breadcrumb-circle.active {
-  background-color: #000;
+  background-color: #0a0a0a;
   color: #fff;
 }
 
@@ -42,7 +42,7 @@
   left: 20px; /* Center within the circle */
   width: 2px;
   height: 40px;
-  background-color: #000;
+  background-color: #0a0a0a;
 }
 
 .breadcrumb-label {

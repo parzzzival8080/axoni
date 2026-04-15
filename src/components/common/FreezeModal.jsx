@@ -23,7 +23,7 @@ const FreezeModal = ({ isOpen, onClose, message }) => {
         <div className="mt-8">
           <button
             onClick={onClose}
-            className="w-full bg-gray-700 text-white font-medium py-3 rounded-md hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gray-500"
+            className="w-full bg-[#252525] text-white font-medium py-3 rounded-md hover:bg-[#2A2A2A] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gray-500"
           >
             Close
           </button>

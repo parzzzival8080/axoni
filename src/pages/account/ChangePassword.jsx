@@ -286,7 +286,7 @@ const ChangePassword = () => {
                   className={`w-32 py-3 rounded-md font-medium transition-colors ${
                     otp && !loading
                       ? 'bg-[#2EBD85] text-white hover:bg-[#259A6C]'
-                      : 'bg-gray-300 dark:bg-gray-700 text-[#5E6673] dark:text-[#5E6673] cursor-not-allowed'
+                      : 'bg-gray-300 dark:bg-[#252525] text-[#5E6673] dark:text-[#5E6673] cursor-not-allowed'
                   }`}
                   disabled={!otp || loading}
                 >
@@ -378,7 +378,7 @@ const ChangePassword = () => {
                   className={`w-32 py-3 rounded-md font-medium transition-colors ${
                     newPassword && confirmPassword && agreeToWithdrawalRestriction && !loading
                       ? 'bg-[#2EBD85] text-white hover:bg-[#259A6C]'
-                      : 'bg-gray-300 dark:bg-gray-700 text-[#5E6673] dark:text-[#5E6673] cursor-not-allowed'
+                      : 'bg-gray-300 dark:bg-[#252525] text-[#5E6673] dark:text-[#5E6673] cursor-not-allowed'
                   }`}
                   disabled={!newPassword || !confirmPassword || !agreeToWithdrawalRestriction || loading}
                 >

@@ -14,6 +14,7 @@ import { VerifyStatusProvider } from "./context/VerifyStatusContext";
 import { useIsMobile } from "./hooks/useIsMobile";
 import MobileLayout from "./layouts/MobileLayout";
 import ErrorBoundary from "./components/common/ErrorBoundary";
+import ProtectedRoute from "./components/common/ProtectedRoute";
 
 // Initialize dark mode from localStorage before first render
 if (typeof window !== 'undefined') {
@@ -118,36 +119,15 @@ function App() {
 
                       {/* === Layout routes (LayoutWrapper handles mobile/desktop) === */}
 
-                      {/* Trading — hideHeader because trading has its own SubHeader, keep tabBar for navigation */}
+                      {/* === PUBLIC ROUTES === */}
+
+                      {/* Trading — spot is public */}
                       <Route path="/spot-trading" element={<LayoutWrapper showFooter={false} showChat={false} darkBg><SpotTrading /></LayoutWrapper>} />
-                      <Route path="/future-trading" element={<LayoutWrapper showFooter={false} showChat={false} darkBg><FutureTrading /></LayoutWrapper>} />
 
-                      {/* Finance */}
-                      <Route path="/deposit" element={<LayoutWrapper showChat={false} darkBg><Deposit /></LayoutWrapper>} />
-                      <Route path="/withdraw" element={<LayoutWrapper showChat={false} darkBg><Withdraw /></LayoutWrapper>} />
-                      <Route path="/transfer" element={<LayoutWrapper showChat={false} darkBg><Transfer /></LayoutWrapper>} />
-                      <Route path="/conversion" element={<LayoutWrapper showChat={false} darkBg><Conversion /></LayoutWrapper>} />
-
-                      {/* Earn */}
-                      <Route path="/earn" element={<LayoutWrapper darkBg><Earn /></LayoutWrapper>} />
-                      <Route path="/earn/simple-earn" element={<LayoutWrapper darkBg><SimpleEarn /></LayoutWrapper>} />
-
-                      {/* Account */}
-                      <Route path="/account/overview" element={<LayoutWrapper><Overview /></LayoutWrapper>} />
-                      <Route path="/account/profile" element={<LayoutWrapper><Profile /></LayoutWrapper>} />
-                      <Route path="/account/profile/verify" element={<LayoutWrapper><VerifyPage /></LayoutWrapper>} />
-                      <Route path="/account/profile/security" element={<LayoutWrapper><Security /></LayoutWrapper>} />
-                      <Route path="/account/profile/preferences" element={<LayoutWrapper><ComingSoon title="Preferences" message="This feature is coming soon" /></LayoutWrapper>} />
-                      <Route path="/account/profile/sub-accounts" element={<LayoutWrapper><ComingSoon title="Sub-accounts" message="This feature is coming soon" /></LayoutWrapper>} />
-                      <Route path="/account/profile/api" element={<LayoutWrapper><ComingSoon title="API Management" message="This feature is coming soon" /></LayoutWrapper>} />
-                      <Route path="/account/profile/third-party" element={<LayoutWrapper><ComingSoon title="Third-party Authorization" message="This feature is coming soon" /></LayoutWrapper>} />
-                      <Route path="/account/profile/security/change-password" element={<LayoutWrapper><ChangePassword /></LayoutWrapper>} />
-                      <Route path="/account/profile/security/change-email" element={<LayoutWrapper><ChangeEmail /></LayoutWrapper>} />
-
-                      {/* Market */}
+                      {/* Market — public */}
                       <Route path="/market" element={<LayoutWrapper darkBg><Market /></LayoutWrapper>} />
 
-                      {/* Info pages */}
+                      {/* Info pages — public */}
                       <Route path="/download" element={<LayoutWrapper showChat={false}><DownloadPage /></LayoutWrapper>} />
                       <Route path="/about-us" element={<LayoutWrapper showChat={false}><AboutUs /></LayoutWrapper>} />
                       <Route path="/legal" element={<LayoutWrapper showChat={false}><Legal /></LayoutWrapper>} />
@@ -155,23 +135,52 @@ function App() {
                       <Route path="/terms-conditions" element={<LayoutWrapper showChat={false}><TermsAndConditions /></LayoutWrapper>} />
                       <Route path="/privacy-policy" element={<LayoutWrapper showChat={false}><PrivacyPolicy /></LayoutWrapper>} />
 
-                      {/* Help/Support */}
+                      {/* Help/Support — public */}
                       <Route path="/help/category/announcements" element={<LayoutWrapper><Announcement /></LayoutWrapper>} />
                       <Route path="/help/announcements/:articleSlug" element={<LayoutWrapper><Article /></LayoutWrapper>} />
                       <Route path="/help/deposit/:depositGuideSlug" element={<LayoutWrapper showChat={false}><DepositGuide /></LayoutWrapper>} />
                       <Route path="/help/withdrawal/:withdrawalGuideSlug" element={<LayoutWrapper showChat={false}><WithdrawalGuide /></LayoutWrapper>} />
 
-                      {/* More pages */}
-                      <Route path="/pages/morePages/CampaignCenter" element={<LayoutWrapper><CampaignCenter /></LayoutWrapper>} />
-                      <Route path="/pages/morePages/MyRewards" element={<LayoutWrapper><MyRewards /></LayoutWrapper>} />
-                      <Route path="/pages/morePages/Referral" element={<LayoutWrapper><Referral /></LayoutWrapper>} />
-
-                      {/* Coming soon / misc */}
+                      {/* Coming soon — public */}
                       <Route path="/coming-soon" element={<LayoutWrapper showFooter={false}><ComingSoon /></LayoutWrapper>} />
-                      <Route path="/my-assets" element={<LayoutWrapper darkBg><Assets /></LayoutWrapper>} />
 
-                      {/* Home */}
+                      {/* Home — public */}
                       <Route path="/" element={<LayoutWrapper darkBg><HomePage /></LayoutWrapper>} />
+
+                      {/* === PROTECTED ROUTES (require login) === */}
+
+                      {/* Trading — futures requires login */}
+                      <Route path="/future-trading" element={<ProtectedRoute><LayoutWrapper showFooter={false} showChat={false} darkBg><FutureTrading /></LayoutWrapper></ProtectedRoute>} />
+
+                      {/* Finance — all require login */}
+                      <Route path="/deposit" element={<ProtectedRoute><LayoutWrapper showChat={false} darkBg><Deposit /></LayoutWrapper></ProtectedRoute>} />
+                      <Route path="/withdraw" element={<ProtectedRoute><LayoutWrapper showChat={false} darkBg><Withdraw /></LayoutWrapper></ProtectedRoute>} />
+                      <Route path="/transfer" element={<ProtectedRoute><LayoutWrapper showChat={false} darkBg><Transfer /></LayoutWrapper></ProtectedRoute>} />
+                      <Route path="/conversion" element={<ProtectedRoute><LayoutWrapper showChat={false} darkBg><Conversion /></LayoutWrapper></ProtectedRoute>} />
+
+                      {/* Earn — requires login */}
+                      <Route path="/earn" element={<ProtectedRoute><LayoutWrapper darkBg><Earn /></LayoutWrapper></ProtectedRoute>} />
+                      <Route path="/earn/simple-earn" element={<ProtectedRoute><LayoutWrapper darkBg><SimpleEarn /></LayoutWrapper></ProtectedRoute>} />
+
+                      {/* Account — all require login */}
+                      <Route path="/account/overview" element={<ProtectedRoute><LayoutWrapper><Overview /></LayoutWrapper></ProtectedRoute>} />
+                      <Route path="/account/profile" element={<ProtectedRoute><LayoutWrapper><Profile /></LayoutWrapper></ProtectedRoute>} />
+                      <Route path="/account/profile/verify" element={<ProtectedRoute><LayoutWrapper><VerifyPage /></LayoutWrapper></ProtectedRoute>} />
+                      <Route path="/account/profile/security" element={<ProtectedRoute><LayoutWrapper><Security /></LayoutWrapper></ProtectedRoute>} />
+                      <Route path="/account/profile/preferences" element={<ProtectedRoute><LayoutWrapper><ComingSoon title="Preferences" message="This feature is coming soon" /></LayoutWrapper></ProtectedRoute>} />
+                      <Route path="/account/profile/sub-accounts" element={<ProtectedRoute><LayoutWrapper><ComingSoon title="Sub-accounts" message="This feature is coming soon" /></LayoutWrapper></ProtectedRoute>} />
+                      <Route path="/account/profile/api" element={<ProtectedRoute><LayoutWrapper><ComingSoon title="API Management" message="This feature is coming soon" /></LayoutWrapper></ProtectedRoute>} />
+                      <Route path="/account/profile/third-party" element={<ProtectedRoute><LayoutWrapper><ComingSoon title="Third-party Authorization" message="This feature is coming soon" /></LayoutWrapper></ProtectedRoute>} />
+                      <Route path="/account/profile/security/change-password" element={<ProtectedRoute><LayoutWrapper><ChangePassword /></LayoutWrapper></ProtectedRoute>} />
+                      <Route path="/account/profile/security/change-email" element={<ProtectedRoute><LayoutWrapper><ChangeEmail /></LayoutWrapper></ProtectedRoute>} />
+
+                      {/* Assets — requires login */}
+                      <Route path="/my-assets" element={<ProtectedRoute><LayoutWrapper darkBg><Assets /></LayoutWrapper></ProtectedRoute>} />
+
+                      {/* More pages — require login */}
+                      <Route path="/pages/morePages/CampaignCenter" element={<ProtectedRoute><LayoutWrapper><CampaignCenter /></LayoutWrapper></ProtectedRoute>} />
+                      <Route path="/pages/morePages/MyRewards" element={<ProtectedRoute><LayoutWrapper><MyRewards /></LayoutWrapper></ProtectedRoute>} />
+                      <Route path="/pages/morePages/Referral" element={<ProtectedRoute><LayoutWrapper><Referral /></LayoutWrapper></ProtectedRoute>} />
 
                       {/* 404 catch-all — must be last */}
                       <Route path="*" element={<NotFound />} />

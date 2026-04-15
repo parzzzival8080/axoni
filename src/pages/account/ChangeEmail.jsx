@@ -263,7 +263,7 @@ const ChangeEmail = () => {
             <div className="pt-4">
               <button
                 onClick={handleRequestOTP}
-                className="px-6 py-3 rounded-md bg-[#0a0a0a] text-white font-medium transition-colors hover:bg-[#0a0a0a] disabled:bg-gray-300 disabled:dark:bg-gray-700 disabled:text-[#5E6673] disabled:dark:text-[#5E6673] disabled:cursor-not-allowed"
+                className="px-6 py-3 rounded-md bg-[#0a0a0a] text-white font-medium transition-colors hover:bg-[#0a0a0a] disabled:bg-gray-300 disabled:dark:bg-[#252525] disabled:text-[#5E6673] disabled:dark:text-[#5E6673] disabled:cursor-not-allowed"
                 disabled={loading}
               >
                 {loading ? 'Sending...' : 'Send code'}
@@ -311,7 +311,7 @@ const ChangeEmail = () => {
                 className={`w-32 py-3 rounded-md font-medium transition-colors ${
                   otp && !loading
                     ? 'bg-[#0a0a0a] text-white hover:bg-[#0a0a0a]'
-                    : 'bg-gray-300 dark:bg-gray-700 text-[#5E6673] dark:text-[#5E6673] cursor-not-allowed'
+                    : 'bg-gray-300 dark:bg-[#252525] text-[#5E6673] dark:text-[#5E6673] cursor-not-allowed'
                 }`}
                 disabled={!otp || loading}
               >
@@ -362,7 +362,7 @@ const ChangeEmail = () => {
                 className={`w-32 py-3 rounded-md font-medium transition-colors ${
                   newEmail && agreeToWithdrawalRestriction && !loading
                     ? 'bg-[#0a0a0a] text-white hover:bg-[#0a0a0a]'
-                    : 'bg-gray-300 dark:bg-gray-700 text-[#5E6673] dark:text-[#5E6673] cursor-not-allowed'
+                    : 'bg-gray-300 dark:bg-[#252525] text-[#5E6673] dark:text-[#5E6673] cursor-not-allowed'
                 }`}
                 disabled={!newEmail || !agreeToWithdrawalRestriction || loading}
               >

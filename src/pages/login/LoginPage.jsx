@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 import LoginForm from '../../components/login/LoginForm';
 import LoginLeftPanel from '../../components/login/LoginLeftPanel';
@@ -11,34 +11,38 @@ const LoginPage = () => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
 
-  return (
-    <div className="layout">
-      {isMobile ? (
-        <div className="flex items-center px-4 h-12 bg-black">
+  if (isMobile) {
+    return (
+      <div className="bg-[#0a0a0a] min-h-[100dvh] flex flex-col">
+        {/* Mobile header */}
+        <div className="flex items-center justify-between px-4 h-12 flex-shrink-0">
           <button onClick={() => navigate("/")} className="flex items-center gap-1 text-white">
             <ChevronLeft size={20} />
-            <span className="text-sm">Back</span>
+          </button>
+          <span className="text-white text-base font-semibold">Log in</span>
+          <button onClick={() => navigate("/signup")} className="text-[#2EBD85] text-sm font-medium">
+            Sign up
           </button>
         </div>
-      ) : (
-        <Navbar />
-      )}
 
+        {/* Form */}
+        <div className="flex-1 px-5 pt-4 pb-8 overflow-y-auto">
+          <LoginForm />
+        </div>
+      </div>
+    );
+  }
+
+  // Desktop
+  return (
+    <div className="layout">
+      <Navbar />
       <div className="split-container">
-        {/* Left Section (Dark) */}
         <LoginLeftPanel />
-
-        {/* Right Section (White) */}
         <div className="right-section">
           <LoginForm />
         </div>
       </div>
-
-      {!isMobile && (
-        <div className="chat-bubble">
-          <i className="fas fa-comment-dots"></i>
-        </div>
-      )}
     </div>
   );
 };

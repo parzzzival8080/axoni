@@ -5,7 +5,7 @@
 
 .landing {
   font-family: 'Inter', sans-serif;
-  background-color: #000000;
+  background-color: #0a0a0a;
   color: #FFFFFF;
   line-height: 1.6;
   margin: 0;
@@ -94,7 +94,7 @@
   justify-content: center;
   gap: 8px;
   background-color: #2EBD85;
-  color: #000000;
+  color: #0a0a0a;
   border: none;
   border-radius: 50px;
   padding: 12px 24px;
@@ -209,7 +209,7 @@
   .landing__logo-square::after {
     content: '';
     position: absolute;
-    background-color: #000000;
+    background-color: #0a0a0a;
   }
   
   .landing__logo-square::before {
@@ -395,12 +395,12 @@
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 12px;
-  color: #000000; /* Accent yellow */
+  color: #0a0a0a; /* Accent yellow */
 }
 
 .modal p {
   font-size: 14px;
-  color: #000000;
+  color: #0a0a0a;
   margin-bottom: 16px;
   line-height: 1.4;
   white-space: pre-line;
@@ -436,7 +436,7 @@
 /* Cancel button */
 .modal-buttons button:last-child {
   background-color: #ffffff;
-  color: #000000;
+  color: #0a0a0a;
 }
 
 .modal-buttons button:last-child:hover {

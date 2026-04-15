@@ -1,7 +1,7 @@
 /* Future Trading CSS Variables for theming - matching spot trading */
 :root {
     --futures-primary-bg: #0a0a0a;
-    --futures-secondary-bg: #121212;
+    --futures-secondary-bg: #0a0a0a;
     --futures-tertiary-bg: #1E1E1E;
     --futures-chart-bg: #0a0a0a;
     --futures-hover-bg: #1E1E1E;
@@ -51,7 +51,7 @@
     padding: 0 16px;
     height: 56px;
     border-bottom: 2px solid #1a1a1a !important;
-    background-color: #000;
+    background-color: #0a0a0a;
 }
 
 .future-trading-container .header-left,
@@ -159,7 +159,7 @@
   display: flex;
   align-items: center;
   overflow-x: auto;
-  background: #000;
+  background: #0a0a0a;
   border-bottom: 1px solid #232323;
   height: 40px;
   gap: 0;
@@ -308,7 +308,7 @@
     max-width: unset;
     flex: 1 1 0;
     height: 340px;
-    background: #000000;
+    background: #0a0a0a;
     overflow: hidden;
     border-left: 1px solid var(--futures-border-color);
     margin: 0;
@@ -323,7 +323,7 @@
 .future-trading-container .trade-section {
     grid-column: 3;
     height: 340px; /* Reduced from 100% */
-    background: #000000;
+    background: #0a0a0a;
     overflow: hidden; /* Prevent overflow */
     position: relative; /* Ensure proper stacking context */
     z-index: 1;
@@ -377,7 +377,7 @@
 /* Orders section */
 .future-trading-container .orders-section {
     width: 100% !important;
-    background: #000 !important;
+    background: #0a0a0a !important;
     border: 1px solid #1a1a1a !important;
     border-radius: 0 !important;
     margin-top: 0 !important; /* Remove top margin as we've added it to the container */
@@ -389,7 +389,7 @@
 .future-trading-container .order-history-container {
     width: 100% !important;
     margin-top: 8px !important;
-    background: #000 !important;
+    background: #0a0a0a !important;
     box-sizing: border-box !important;
     border: 2px solid #1a1a1a !important;
     border-radius: 4px !important;
@@ -397,7 +397,7 @@
 
 /* Trade form section with improved grid system */
 .future-trading-container .trade-form {
-    background: #000 !important;
+    background: #0a0a0a !important;
     border-radius: 4px !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
     padding: 12px 10px !important;
@@ -408,12 +408,12 @@
     grid-template-rows: auto auto auto 1fr auto !important;
     gap: 8px !important;
     scrollbar-width: thin;
-    scrollbar-color: #222 #121212;
+    scrollbar-color: #222 #0a0a0a;
 }
 
 .future-trading-container .trade-form::-webkit-scrollbar {
     width: 8px;
-    background: #121212;
+    background: #0a0a0a;
 }
 
 .future-trading-container .trade-form::-webkit-scrollbar-thumb {
@@ -620,7 +620,7 @@
 /* Orders section */
 .future-trading-container .orders-section {
     width: 100% !important;
-    background: #000 !important;
+    background: #0a0a0a !important;
     border: 2px solid #1a1a1a !important;
     border-radius: 4px !important;
     margin-top: 8px !important;
@@ -630,7 +630,7 @@
     display: flex !important;
     overflow-x: auto !important;
     border-bottom: 1px solid #1a1a1a !important;
-    background: #000 !important;
+    background: #0a0a0a !important;
 }
 
 .future-trading-container .orders-tabs .tab {
@@ -924,7 +924,7 @@
 .future-trading-container .trade-form,
 .future-trading-container .orders-section,
 .future-trading-container .order-history-container {
-    background: #000 !important;
+    background: #0a0a0a !important;
 }
 
 /* TradingView chart specific overrides */
@@ -932,7 +932,7 @@
 .future-trading-container .chart-container,
 .future-trading-container .tv-chart-container,
 .future-trading-container iframe {
-    background-color: #000000 !important;
+    background-color: #0a0a0a !important;
     border: none !important;
 }
 
@@ -941,7 +941,7 @@
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
-    background-color: #000000 !important;
+    background-color: #0a0a0a !important;
 }
 
 /* Trading chart — fills parent */
@@ -985,7 +985,7 @@
 .future-trading-container .tradingview-widget-container div {
     border: none !important;
     border-radius: 0 !important;
-    background-color: #000000 !important;
+    background-color: #0a0a0a !important;
 }
 
 /* Chart navigation */
@@ -1781,7 +1781,7 @@
         position: relative;
         z-index: 1;
         margin-top: 10px;
-        background-color: var(--futures-primary-bg, #000000);
+        background-color: var(--futures-primary-bg, #0a0a0a);
     }
     
     .future-trading-container .trade-section {

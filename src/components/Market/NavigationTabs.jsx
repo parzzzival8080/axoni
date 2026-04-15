@@ -25,7 +25,7 @@ const NavigationTabs = ({ activeTab, onTabClick }) => {
   };
 
   return (
-    <div className="flex justify-between items-center mb-6 border-b border-gray-800 pb-1">
+    <div className="flex justify-between items-center mb-6 border-b border-[#1E1E1E] pb-1">
       <div className="flex space-x-6 overflow-x-auto hide-scrollbar">
         {tabs.map(tab => (
           <div 

@@ -71,7 +71,7 @@ const RegistrationSuccessModal = ({ isOpen, onClose }) => {
               Welcome to GLD!
             </h1>
             <div className="w-12 h-1 rounded-full mx-auto mb-3" style={{ backgroundColor: '#2EBD85' }}></div>
-            <p className="text-gray-600 text-base leading-relaxed">
+            <p className="text-[#5E6673] text-base leading-relaxed">
               Your account has been successfully created.<br />
               <span className="font-medium" style={{ color: '#2EBD85' }}>Get ready to start trading!</span>
             </p>

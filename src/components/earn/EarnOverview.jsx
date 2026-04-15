@@ -215,13 +215,13 @@ const EarnOverview = () => {
               placeholder="Search crypto"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-[#1E1E1E] text-white border border-[#2A2A2A] rounded-2xl py-2 pl-10 pr-4 w-full focus:outline-none focus:ring-1 focus:ring-[#2EBD85] placeholder-gray-400"
+                className="bg-[#1E1E1E] text-white border border-[#2A2A2A] rounded-2xl py-2 pl-10 pr-4 w-full focus:outline-none focus:ring-1 focus:ring-[#2EBD85] placeholder-[#5E6673]"
             />
           </div>
         </div>
 
           <div className="overflow-x-auto rounded-2xl shadow-md bg-black/70">
-            <table className="min-w-full divide-y divide-gray-800">
+            <table className="min-w-full divide-y divide-[#1E1E1E]">
           <thead>
             <tr>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-[#5E6673] uppercase tracking-wider">Token</th>
@@ -235,7 +235,7 @@ const EarnOverview = () => {
                   <th className="px-6 py-4 text-center text-xs font-semibold text-[#5E6673] uppercase tracking-wider">Action</th>
             </tr>
           </thead>
-              <tbody className="divide-y divide-gray-800">
+              <tbody className="divide-y divide-[#1E1E1E]">
                 {loading && (
                   <tr>
                     <td colSpan={4} className="py-12 text-center text-[#5E6673]">
@@ -274,7 +274,7 @@ const EarnOverview = () => {
                             }} 
                           />
                         ) : (
-                          <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
+                          <div className="w-8 h-8 bg-[#252525] rounded-full flex items-center justify-center">
                             <span className="text-sm font-semibold text-white">{coin.symbol?.charAt(0) || '?'}</span>
                           </div>
                         )}
@@ -315,7 +315,7 @@ const EarnOverview = () => {
         </table>
 
             {!loading && !error && filteredCoins.length > 0 && (
-              <div className="px-6 py-4 border-t border-gray-800 text-center">
+              <div className="px-6 py-4 border-t border-[#1E1E1E] text-center">
                 <button className="text-[#2EBD85] hover:text-[#2EBD85] font-medium transition-colors">
                   View more
                 </button>

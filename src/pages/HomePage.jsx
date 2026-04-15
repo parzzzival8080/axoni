@@ -9,6 +9,7 @@ import TradingGame from '../components/home/TradingGame';
 import TradeRewardsPopup from '../components/common/TradeRewardsPopup';
 import { useIsMobile } from '../hooks/useIsMobile';
 import MobileHomeScreen from '../components/mobile/MobileHomeScreen';
+import MobileGuestHome from '../components/mobile/MobileGuestHome';
 
 const HomePage = () => {
   const isMobile = useIsMobile();
@@ -40,27 +41,21 @@ const HomePage = () => {
     return <MobileHomeScreen />;
   }
 
-  // Desktop or mobile guest: show full landing page
+  // Mobile guest: show OKX-style guest home
+  if (isMobile && !isLoggedIn) {
+    return <MobileGuestHome />;
+  }
+
+  // Desktop: full landing page
   return (
     <div className="bg-[#0a0a0a]">
       <Hero />
-      {!isMobile && (
-        <>
-          <TradingGame />
-          <Trading />
-          <Journey />
-          <About />
-          <News />
-          <FAQ />
-        </>
-      )}
-      {isMobile && !isLoggedIn && (
-        <>
-          <Trading />
-          <FAQ />
-        </>
-      )}
-
+      <TradingGame />
+      <Trading />
+      <Journey />
+      <About />
+      <News />
+      <FAQ />
       <TradeRewardsPopup
         isOpen={showRewardsPopup}
         onClose={handleCloseRewardsPopup}

@@ -26,7 +26,7 @@ const FavoriteItem = ({ coin, isActive, onClick }) => {
     >
       {/* Coin Logo with Fallback */}
       {imageError ? (
-        <div className="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center text-xs font-bold text-white">
+        <div className="w-6 h-6 rounded-full bg-[#252525] flex items-center justify-center text-xs font-bold text-white">
           {coin.symbol.charAt(0)}
         </div>
       ) : (

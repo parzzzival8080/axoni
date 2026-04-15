@@ -1,6 +1,6 @@
 /* Global styles */
 :root {
-  --bg-color: #000000;
+  --bg-color: #0a0a0a;
   --text-color: #ffffff;
   --secondary-text: #7e8299;
   --primary-color: #0052ff;
@@ -18,7 +18,7 @@
 }
 
 body {
-  background-color: #121212;
+  background-color: #0a0a0a;
   color: var(--text-color);
   font-size: 16px;
   line-height: 1.5;

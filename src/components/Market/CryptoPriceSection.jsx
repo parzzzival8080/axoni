@@ -41,7 +41,7 @@ const CryptoPriceSection = ({ cryptoData, isLoading }) => {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="bg-gray-900 text-left">
+                <tr className="bg-[#0f0f0f] text-left">
                   <th className="py-3 px-4 text-[#5E6673] font-medium">Name</th>
                   <th className="py-3 px-4 text-[#5E6673] font-medium">Price</th>
                   <th className="py-3 px-4 text-[#5E6673] font-medium">
@@ -63,13 +63,13 @@ const CryptoPriceSection = ({ cryptoData, isLoading }) => {
                   <th className="py-3 px-4 text-[#5E6673] font-medium text-center">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-700">
+              <tbody className="divide-y divide-[#2A2A2A]">
                 {cryptoData.map((crypto, index) => (
                   <tr key={crypto.id} className="hover:bg-gray-750 transition-colors">
                     <td className="py-4 px-4">
                       <div className="flex items-center">
                         <div className="text-[#5E6673] mr-4 w-6 text-right">{index + 1}</div>
-                        <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center mr-3">
+                        <div className="w-8 h-8 rounded-full bg-[#252525] flex items-center justify-center mr-3">
                           {crypto.name.charAt(0)}
                         </div>
                         <div>
@@ -90,7 +90,7 @@ const CryptoPriceSection = ({ cryptoData, isLoading }) => {
                         <button className="py-1 px-3 bg-[#2EBD85] hover:bg-[#259A6C] text-white text-sm rounded transition-colors font-medium">
                           Trade
                         </button>
-                        <button className="py-1 px-3 bg-gray-700 hover:bg-gray-600 text-white text-sm rounded transition-colors font-medium">
+                        <button className="py-1 px-3 bg-[#252525] hover:bg-[#2A2A2A] text-white text-sm rounded transition-colors font-medium">
                           Convert
                         </button>
                       </div>

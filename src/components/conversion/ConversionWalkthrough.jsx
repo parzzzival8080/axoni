@@ -41,7 +41,7 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
       title: "Select Source Currency",
       description:
         "Choose which cryptocurrency you want to convert from. Enter the amount you wish to convert and view your available balance here.",
-      target: ".bg-gray-900:first-of-type",
+      target: ".bg-[#0f0f0f]:first-of-type",
       position: "right",
       type: "highlight",
       duration: 5000,
@@ -51,7 +51,7 @@ const ConversionWalkthrough = ({ onClose, isOpen }) => {
       title: "Select Target Currency",
       description:
         "Choose which cryptocurrency you want to convert to. The converted amount will be calculated automatically based on current exchange rates.",
-      target: ".bg-gray-900:nth-of-type(2)",
+      target: ".bg-[#0f0f0f]:nth-of-type(2)",
       position: "right",
       type: "highlight",
       duration: 5000,

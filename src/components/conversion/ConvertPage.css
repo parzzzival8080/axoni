@@ -146,7 +146,7 @@
 .conversion-preview-btn {
   width: 100%;
   padding: 16px 0;
-  background: #000; /* Black button - strong CTA */
+  background: #0a0a0a; /* Black button - strong CTA */
   color: #fff;
   font-size: 16px;
   font-weight: 600;

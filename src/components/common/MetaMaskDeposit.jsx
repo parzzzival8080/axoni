@@ -171,7 +171,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
       }}
     >
       <div
-        className="bg-gray-900 border border-[#2A2A2A] rounded-lg p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto shadow-2xl"
+        className="bg-[#0f0f0f] border border-[#2A2A2A] rounded-lg p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-6">
@@ -227,7 +227,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
                 resetDeposit();
                 onClose();
               }}
-              className="bg-gray-700 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors"
+              className="bg-[#252525] text-white px-6 py-2 rounded-lg hover:bg-[#2A2A2A] transition-colors"
             >
               Close
             </button>
@@ -318,7 +318,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
                   value={depositAmount}
                   onChange={(e) => setDepositAmount(e.target.value)}
                   placeholder="0.00"
-                  className="w-full p-3 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg focus:ring-2 focus:ring-[#2EBD85] focus:border-[#2EBD85] text-white placeholder-gray-400"
+                  className="w-full p-3 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg focus:ring-2 focus:ring-[#2EBD85] focus:border-[#2EBD85] text-white placeholder-[#5E6673]"
                   step="0.000001"
                   min="0.001"
                   max={balance}
@@ -368,7 +368,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
             <div className="flex gap-3">
               <button
                 onClick={onClose}
-                className="flex-1 bg-gray-700 border border-[#2A2A2A] text-[#848E9C] py-2.5 rounded-lg hover:bg-gray-600 transition-colors font-medium text-sm"
+                className="flex-1 bg-[#252525] border border-[#2A2A2A] text-[#848E9C] py-2.5 rounded-lg hover:bg-[#2A2A2A] transition-colors font-medium text-sm"
                 disabled={isDepositing}
               >
                 Cancel
@@ -382,7 +382,7 @@ const MetaMaskDeposit = ({ isOpen, onClose, selectedCoin = "ETH" }) => {
                   parseFloat(depositAmount) > parseFloat(balance) ||
                   !COINCHIWalletAddress
                 }
-                className="flex-1 bg-[#2EBD85]/50 text-white py-2.5 rounded-lg hover:bg-[#2EBD85] disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 font-medium text-sm"
+                className="flex-1 bg-[#2EBD85]/50 text-white py-2.5 rounded-lg hover:bg-[#2EBD85] disabled:bg-[#2A2A2A] disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 font-medium text-sm"
               >
                 {isDepositing ? (
                   <>

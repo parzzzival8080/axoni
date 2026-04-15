@@ -6,7 +6,7 @@ const TradeRewardsPopup = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-[#0a0a0a] bg-opacity-70 flex items-center justify-center z-50 p-4">
-      <div className="relative bg-gradient-to-br from-gray-900 via-black to-gray-900 border border-gray-800 rounded-2xl max-w-md w-full mx-4 overflow-hidden shadow-2xl">
+      <div className="relative bg-gradient-to-br from-gray-900 via-black to-gray-900 border border-[#1E1E1E] rounded-2xl max-w-md w-full mx-4 overflow-hidden shadow-2xl">
         {/* Close button */}
         <button
           onClick={onClose}
@@ -16,7 +16,7 @@ const TradeRewardsPopup = ({ isOpen, onClose }) => {
         </button>
 
         {/* Header illustration area */}
-        <div className="relative bg-gradient-to-br from-gray-900 via-black to-gray-800 px-6 py-8 text-center border-b border-gray-800">
+        <div className="relative bg-gradient-to-br from-gray-900 via-black to-gray-800 px-6 py-8 text-center border-b border-[#1E1E1E]">
           {/* Decorative elements */}
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute top-4 left-4 text-[#2EBD85] opacity-20">
@@ -96,7 +96,7 @@ const TradeRewardsPopup = ({ isOpen, onClose }) => {
           <div className="flex space-x-3">
             <button
               onClick={onClose}
-              className="flex-1 bg-gray-900 hover:bg-[#1E1E1E] text-[#5E6673] hover:text-[#848E9C] font-medium py-3 px-4 rounded-lg transition-all duration-200 border border-[#2A2A2A] hover:border-[#2A2A2A]"
+              className="flex-1 bg-[#0f0f0f] hover:bg-[#1E1E1E] text-[#5E6673] hover:text-[#848E9C] font-medium py-3 px-4 rounded-lg transition-all duration-200 border border-[#2A2A2A] hover:border-[#2A2A2A]"
             >
               Skip
             </button>

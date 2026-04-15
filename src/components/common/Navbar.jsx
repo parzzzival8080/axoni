@@ -909,7 +909,7 @@ const Navbar = () => {
                 </Link>
                 <Link
                   to="/signup"
-                  className="block text-center py-3 px-4 text-white bg-gray-700 hover:bg-gray-600 rounded-md text-sm font-medium transition-colors"
+                  className="block text-center py-3 px-4 text-white bg-[#252525] hover:bg-[#2A2A2A] rounded-md text-sm font-medium transition-colors"
                   onClick={toggleMobileMenu}
                 >
                   Sign Up

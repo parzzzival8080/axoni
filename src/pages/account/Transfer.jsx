@@ -646,12 +646,12 @@ const Transfer = () => {
       <style dangerouslySetInnerHTML={{ __html: scrollbarStyles }} />
       <div className="bg-[#0a0a0a] text-white font-sans">
         {/* Main Content */}
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <h1 className="text-2xl font-bold mb-8 text-white">Transfer</h1>
+        <div className="max-w-7xl mx-auto px-4 py-4 md:py-8 pb-24 md:pb-8">
+          <h1 className="text-xl md:text-2xl font-bold mb-5 md:mb-8 text-white">Transfer</h1>
 
-          <div className="flex flex-col gap-8">
-            {/* Transfer Form - Half Width */}
-            <div className="max-w-md">
+          <div className="flex flex-col gap-6 md:gap-8">
+            {/* Transfer Form */}
+            <div className="max-w-md w-full">
               {/* Asset Dropdown */}
               <div className="transfer-asset-section mb-6">
                 <label className="block text-sm font-medium text-[#848E9C] mb-2">
@@ -696,7 +696,7 @@ const Transfer = () => {
                         <input
                           type="text"
                           placeholder="Search assets..."
-                          className="w-full h-11 flex items-center justify-center px-4 py-2 bg-[#2EBD85] text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2EBD85] hover:bg-[#2EBD85] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                          className="w-full h-10 px-3 py-2 bg-[#1E1E1E] border border-[#2A2A2A] text-white text-sm rounded-lg focus:outline-none focus:border-[#2EBD85] placeholder-[#5E6673]"
                           value={searchTerm}
                           onChange={(e) => setSearchTerm(e.target.value)}
                           onClick={(e) => e.stopPropagation()} // Prevent dropdown from closing
@@ -1086,7 +1086,7 @@ const Transfer = () => {
                     return (
                       <div
                         key={index}
-                        className="grid grid-cols-5 gap-4 py-4 border-b border-gray-100 dark:border-gray-800 hover:bg-[#1E1E1E] dark:hover:bg-[#0a0a0a] transition-colors"
+                        className="grid grid-cols-5 gap-4 py-4 border-b border-gray-100 dark:border-[#1E1E1E] hover:bg-[#1E1E1E] dark:hover:bg-[#0a0a0a] transition-colors"
                       >
                         {/* Asset */}
                         <div className="flex items-center">
@@ -1147,7 +1147,7 @@ const Transfer = () => {
       </div>
 
       {/* Walkthrough Trigger */}
-      <TransferWalkthroughTrigger />
+      {/* Walkthrough removed */}
     </>
   );
 };

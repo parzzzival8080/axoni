@@ -4,7 +4,7 @@
   --buy-color: #2EBD85;
   --sell-color: #F6465D;
   --primary-bg: #0a0a0a;
-  --secondary-bg: #121212;
+  --secondary-bg: #0a0a0a;
   --input-bg: #1a1a1a;
   --border-color: #333;
   --focus-color: #2EBD85;
@@ -44,19 +44,19 @@
   box-sizing: border-box;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: #232323 #000000;
+  scrollbar-color: #232323 #0a0a0a;
 }
 
 .spot-trading-container .trade-form::-webkit-scrollbar {
   width: 8px;
-  background: #000000;
+  background: #0a0a0a;
 }
 .spot-trading-container .trade-form::-webkit-scrollbar-thumb {
   background: #232323;
   border-radius: 8px;
 }
 .spot-trading-container .trade-form::-webkit-scrollbar-track {
-  background: #000000;
+  background: #0a0a0a;
 }
 
 .spot-trading-container .trade-form .top-controls {

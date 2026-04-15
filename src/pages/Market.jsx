@@ -5,14 +5,18 @@ import SecondaryTabs from "../components/Market/SecondaryTabs";
 import CryptoPriceSection from "../components/Market/CryptoPriceSection";
 import FaqSection from "../components/Market/FaqSection";
 import { useCurrency } from "../context/CurrencyContext";
+import { useIsMobile } from "../hooks/useIsMobile";
 import "../components/Market/Market.css";
 
 const Market = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { formatCurrency } = useCurrency();
+  const isMobile = useIsMobile();
 
-  const [activeMarketTab, setActiveMarketTab] = useState("ALL"); // Crypto, Spot, Future
+  const [activeMarketTab, setActiveMarketTab] = useState("ALL");
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 5;
   // Live coin data
   const [coins, setCoins] = useState([]);
   const [search, setSearch] = useState("");
@@ -148,21 +152,59 @@ const Market = () => {
 
   return (
     <div className="w-full bg-[#0a0a0a] text-white pb-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Title and Subtitle */}
-        <h1 className="text-2xl md:text-4xl font-bold text-white mb-1 md:mb-2">
-          Markets
-        </h1>
-        <p className="text-[#5E6673] mb-4 md:mb-8 text-sm md:text-lg max-w-2xl">
-          Live prices, changes, and trading actions for all available markets.
-        </p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
+
+        {/* Mobile: Quick trade navigation */}
+        {isMobile && (
+          <>
+            <div className="flex gap-2 overflow-x-auto pb-3 -mx-1 px-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+              {[
+                { label: "Spot", path: "/spot-trading", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg> },
+                { label: "Futures", path: "/future-trading", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg> },
+                { label: "Convert", path: "/conversion", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 7h12l-4-4M16 17H4l4 4"/></svg> },
+                { label: "Transfer", path: "/transfer", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 9l4-4 4 4M11 19l4 4 4-4"/><line x1="9" y1="5" x2="9" y2="16"/><line x1="15" y1="8" x2="15" y2="19"/></svg> },
+                { label: "Earn", path: "/earn", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2EBD85" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg> },
+              ].map((item) => (
+                <button key={item.label} onClick={() => navigate(item.path)} className="flex items-center gap-1.5 bg-[#1E1E1E] border border-[#2A2A2A] rounded-full px-3.5 py-2 flex-shrink-0 active:bg-[#252525]">
+                  {item.icon}
+                  <span className="text-white text-xs font-medium">{item.label}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Marquee price ticker */}
+            <div className="overflow-hidden py-2 border-y border-[#1E1E1E]">
+              <div className="flex animate-marquee gap-6 whitespace-nowrap">
+                {[...coins.slice(0, 10), ...coins.slice(0, 10)].map((coin, i) => {
+                  const ch = parseFloat(coin.price_change_24h || 0);
+                  return (
+                    <span key={i} className="inline-flex items-center gap-1.5 flex-shrink-0">
+                      <span className="text-white text-[11px] font-medium">{coin.symbol}</span>
+                      <span className={`text-[11px] font-semibold ${ch >= 0 ? 'text-[#2EBD85]' : 'text-[#F6465D]'}`}>{ch >= 0 ? '+' : ''}{ch.toFixed(2)}%</span>
+                    </span>
+                  );
+                })}
+              </div>
+              <style>{`
+                @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+                .animate-marquee { animation: marquee 20s linear infinite; }
+              `}</style>
+            </div>
+          </>
+        )}
+
+        {/* Title — desktop only */}
+        <div className="hidden md:block">
+          <h1 className="text-4xl font-bold text-white mb-2">Markets</h1>
+          <p className="text-[#5E6673] mb-8 text-lg max-w-2xl">Live prices and trading pairs.</p>
+        </div>
 
         {/* Market Type Tabs */}
-        <div className="flex space-x-1 border-b border-gray-800 mb-6">
+        <div className="flex space-x-1 border-b border-[#1E1E1E] mb-4 md:mb-6">
           {["ALL", "POS", "POW"].map((tab) => (
             <button
               key={tab}
-              onClick={() => setActiveMarketTab(tab)}
+              onClick={() => { setActiveMarketTab(tab); setPage(1); }}
               className={`px-4 py-2 text-sm font-medium transition-colors ${
                 activeMarketTab === tab
                   ? "border-b-2 border-[#2EBD85] text-white"
@@ -181,7 +223,7 @@ const Market = () => {
             className="bg-[#1E1E1E] text-white border border-[#2A2A2A] rounded-2xl py-2 px-4 w-full max-w-xs focus:outline-none focus:ring-1 focus:ring-[#2EBD85] placeholder-[#5E6673]"
             placeholder="Search by symbol or name..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
           />
           <button
             onClick={() => fetchMarketData(activeMarketTab, true)}
@@ -208,7 +250,7 @@ const Market = () => {
 
         {/* Coin Table */}
         <div className="overflow-x-auto rounded-2xl shadow-md bg-[#1E1E1E]">
-          <table className="min-w-full divide-y divide-gray-800">
+          <table className="min-w-full divide-y divide-[#1E1E1E]">
             <thead>
               <tr>
                 <th className="px-4 py-3 text-left text-xs font-semibold text-[#5E6673] uppercase tracking-wider">
@@ -225,7 +267,7 @@ const Market = () => {
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-800">
+            <tbody className="divide-y divide-[#1E1E1E]">
               {loading && (
                 <>
                   {/* Loading skeleton rows */}
@@ -282,7 +324,7 @@ const Market = () => {
               )}
               {!loading &&
                 !error &&
-                filteredCoins.map((coin, idx) => (
+                filteredCoins.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((coin, idx) => (
                   <tr
                     key={coin.symbol + (coin.pair_name || "") || idx}
                     className="cursor-pointer sm:cursor-default"
@@ -371,6 +413,32 @@ const Market = () => {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination */}
+        {filteredCoins.length > PAGE_SIZE && (() => {
+          const totalPages = Math.ceil(filteredCoins.length / PAGE_SIZE);
+          return (
+            <div className="flex items-center justify-center gap-1.5 mt-5">
+              <button
+                onClick={() => setPage(p => Math.max(1, p - 1))}
+                disabled={page === 1}
+                className="px-3 py-2 text-xs font-medium rounded-lg bg-[#1E1E1E] border border-[#2A2A2A] text-white disabled:opacity-20 disabled:cursor-not-allowed"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+              </button>
+              <span className="text-xs text-[#848E9C] px-3">
+                <span className="text-white font-semibold">{page}</span> / {totalPages}
+              </span>
+              <button
+                onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                disabled={page >= totalPages}
+                className="px-3 py-2 text-xs font-medium rounded-lg bg-[#1E1E1E] border border-[#2A2A2A] text-white disabled:opacity-20 disabled:cursor-not-allowed"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 18l6-6-6-6"/></svg>
+              </button>
+            </div>
+          );
+        })()}
       </div>
     </div>
   );

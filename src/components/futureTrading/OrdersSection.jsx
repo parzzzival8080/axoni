@@ -8,7 +8,7 @@ const OrdersSection = ({ refreshTrigger = 0, walletData, onOrderHistoryData }) =
 
   return (
     <div className="orders-section" style={{ backgroundColor: '#000000', marginTop: '20px' }}>
-      <div className="orders-tabs flex items-center border-b border-gray-800 mb-4">
+      <div className="orders-tabs flex items-center border-b border-[#1E1E1E] mb-4">
         <div
           className={`tab ${activeTab === 'order-history' ? 'active' : ''}`}
           onClick={() => setActiveTab('order-history')}

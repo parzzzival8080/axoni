@@ -40,13 +40,13 @@
   }
   
   .close-button:hover {
-    color: #000000;
+    color: #0a0a0a;
   }
   
   .modal-title {
     font-size: 24px;
     font-weight: 700;
-    color: #000000;
+    color: #0a0a0a;
     margin: 0 0 24px 0;
     text-align: center;
   }
@@ -64,7 +64,7 @@
   .qr-code-box {
     width: 100px;
     height: 100px;
-    background-color: #000000;
+    background-color: #0a0a0a;
     border: 1px solid #e6e6e6;
     position: relative;
     display: grid;
@@ -80,7 +80,7 @@
   }
   
   .qr-pattern:nth-child(1) {
-    background-color: #000000;
+    background-color: #0a0a0a;
   }
   
   .qr-pattern:nth-child(2) {
@@ -88,7 +88,7 @@
   }
   
   .qr-pattern:nth-child(3) {
-    background-color: #000000;
+    background-color: #0a0a0a;
   }
   
   .qr-pattern:nth-child(4) {
@@ -96,7 +96,7 @@
   }
   
   .qr-pattern:nth-child(5) {
-    background-color: #000000;
+    background-color: #0a0a0a;
   }
   
   .qr-pattern:nth-child(6) {
@@ -104,7 +104,7 @@
   }
   
   .qr-pattern:nth-child(7) {
-    background-color: #000000;
+    background-color: #0a0a0a;
   }
   
   .qr-pattern:nth-child(8) {
@@ -112,7 +112,7 @@
   }
   
   .qr-pattern:nth-child(9) {
-    background-color: #000000;
+    background-color: #0a0a0a;
   }
   
   .download-info {
@@ -122,7 +122,7 @@
   .app-name {
     font-size: 18px;
     font-weight: 600;
-    color: #000000;
+    color: #0a0a0a;
     margin: 0 0 8px 0;
   }
   

@@ -549,7 +549,7 @@ const SubHeader = ({ cryptoData, coinPairId, availableCoins, onCoinSelect, loadi
                }}
              >
                              <div 
-                 className="w-12 h-12 mr-4 flex items-center justify-center rounded-full overflow-hidden bg-gray-700 flex-shrink-0"
+                 className="w-12 h-12 mr-4 flex items-center justify-center rounded-full overflow-hidden bg-[#252525] flex-shrink-0"
                  style={{
                    width: '48px !important',
                    height: '48px !important',

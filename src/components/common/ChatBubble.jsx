@@ -138,7 +138,7 @@ const ChatBubble = () => {
       <button
         onClick={() => setShowChat((v) => !v)}
         title="Customer Support"
-        className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-[9999] flex items-center justify-center w-14 h-14 rounded-full shadow-lg transition-all duration-200 active:scale-95"
+        className="hidden md:flex fixed bottom-6 right-6 z-[9999] items-center justify-center w-14 h-14 rounded-full shadow-lg transition-all duration-200 active:scale-95"
         style={{
           background: "#2EBD85",
           boxShadow: "0 4px 20px rgba(46,189,133,0.4)",
