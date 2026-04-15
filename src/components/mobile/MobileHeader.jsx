@@ -94,7 +94,7 @@ const MobileHeader = ({ title, actions, darkBg = false }) => {
         )}
 
         <iframe
-          src="https://bot-chatter.vercel.app/livechat/widget?color=2EBD85&source=axoni.co"
+          src="https://bot-chatter.vercel.app/livechat/widget?color=2EBD85&source=gld.co"
           width="340"
           height="520"
           style={{ border: 'none', borderRadius: 12, boxShadow: '0 4px 24px rgba(0,0,0,0.15)', display: isChatLoaded ? 'block' : 'none' }}

@@ -34,14 +34,11 @@ const DownloadPage = () => {
     setIsNoticeOpen(false);
   };
 
-  const appDownloadUrl = "https://api.axoni.co/api/v1/download-axoni-apk";
+  const appDownloadUrl = "/downloads/gld-app.apk";
 
   const handleAppDownload = () => {
-    const directDownloadUrl = appDownloadUrl;
-    window.open(directDownloadUrl, "_blank", "noopener,noreferrer");
-
     const downloadLink = document.createElement("a");
-    downloadLink.href = directDownloadUrl;
+    downloadLink.href = appDownloadUrl;
     downloadLink.setAttribute("download", "GLD.apk");
     document.body.appendChild(downloadLink);
     downloadLink.click();

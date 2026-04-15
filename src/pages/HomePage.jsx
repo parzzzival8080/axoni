@@ -14,7 +14,20 @@ import MobileGuestHome from '../components/mobile/MobileGuestHome';
 const HomePage = () => {
   const isMobile = useIsMobile();
   const [showRewardsPopup, setShowRewardsPopup] = useState(false);
-  const isLoggedIn = !!localStorage.getItem('authToken');
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('authToken'));
+
+  // Listen for auth changes (logout/login from other components)
+  useEffect(() => {
+    const checkAuth = () => setIsLoggedIn(!!localStorage.getItem('authToken'));
+    window.addEventListener('storage', checkAuth);
+    window.addEventListener('focus', checkAuth);
+    // Also check on every render
+    checkAuth();
+    return () => {
+      window.removeEventListener('storage', checkAuth);
+      window.removeEventListener('focus', checkAuth);
+    };
+  }, []);
 
   useEffect(() => {
     const checkForRecentSignIn = () => {

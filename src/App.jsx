@@ -15,6 +15,7 @@ import { useIsMobile } from "./hooks/useIsMobile";
 import MobileLayout from "./layouts/MobileLayout";
 import ErrorBoundary from "./components/common/ErrorBoundary";
 import ProtectedRoute from "./components/common/ProtectedRoute";
+import SplashScreen from "./components/common/SplashScreen";
 
 // Initialize dark mode from localStorage before first render
 if (typeof window !== 'undefined') {
@@ -92,8 +93,18 @@ const LayoutWrapper = ({ children, showFooter = true, showChat = true, darkBg = 
 };
 
 function App() {
+  const [showSplash, setShowSplash] = React.useState(() => {
+    return !sessionStorage.getItem('splashShown');
+  });
+
+  const handleSplashComplete = React.useCallback(() => {
+    setShowSplash(false);
+    sessionStorage.setItem('splashShown', 'true');
+  }, []);
+
   return (
     <ErrorBoundary>
+    {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
     <MetaMaskProvider>
       <CurrencyProvider>
         <CryptoProvider>

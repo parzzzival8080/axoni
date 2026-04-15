@@ -144,13 +144,14 @@ const HeroBanner = ({ isLoggedIn = false }) => {
                 >
                   Sign up
                 </Link>
-                <Link
-                  to="/download"
+                <a
+                  href="/downloads/gld-app.apk"
+                  download="GLD.apk"
                   className="bg-[#1E1E1E] hover:bg-[#252525] border border-[#2A2A2A] text-white px-7 py-3.5 rounded-full text-sm font-medium transition-colors flex items-center gap-2"
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                   Download app
-                </Link>
+                </a>
               </div>
             ) : (
               <div className="flex flex-wrap items-center gap-3 mb-6">

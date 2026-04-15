@@ -77,7 +77,7 @@ const articleData = {
         steps: [
           {
             number: 1,
-            content: 'Log in to your account at <strong>axoni.co</strong>, go to the <strong class="text-white">Assets</strong>, and select <strong class="text-[#2EBD85]">Withdrawal</strong>.'
+            content: 'Log in to your account at <strong>gld.co</strong>, go to the <strong class="text-white">Assets</strong>, and select <strong class="text-[#2EBD85]">Withdrawal</strong>.'
           },
           {
             number: 2,

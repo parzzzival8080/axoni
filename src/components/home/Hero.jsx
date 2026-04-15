@@ -131,102 +131,7 @@ const Hero = () => {
     checkAuthAndVerification();
   }, [fetchVerificationStatus]);
 
-  // Content for non-logged in users
-  const renderGuestContent = () => (
-    <div className="flex-1 space-y-5 md:space-y-6">
-      {/* Desktop signup bar */}
-      <div className="hidden md:flex items-center gap-4 bg-[#1E1E1E] border border-[#2A2A2A] rounded-xl p-5">
-        <div className="flex-1">
-          <h3 className="text-white text-lg font-semibold mb-1">Start your crypto journey</h3>
-          <p className="text-[#848E9C] text-sm">Register now and receive up to <span className="text-[#2EBD85] font-medium">$2,000</span> in rewards</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <input
-            type="text"
-            placeholder="Email / Mobile"
-            aria-label="Email or mobile number"
-            className="bg-[#0a0a0a] border border-[#2A2A2A] text-white px-4 py-2.5 rounded-lg focus:outline-none focus:border-[#2EBD85] text-sm w-56"
-          />
-          <Link
-            to="/signup"
-            className="bg-[#2EBD85] text-white px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-[#259A6C] transition-colors whitespace-nowrap"
-          >
-            Sign up
-          </Link>
-        </div>
-      </div>
-
-      {/* Mobile app-like layout */}
-      <div className="md:hidden px-1 pt-2">
-        <div className="text-center mb-4">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#2EBD85] to-[#259A6C] flex items-center justify-center mx-auto mb-3">
-            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-            </svg>
-          </div>
-          <h1 className="text-2xl font-bold leading-tight mb-2">
-            Trade Crypto with
-            <br />
-            <span className="text-[#2EBD85]">Confidence</span>
-          </h1>
-          <p className="text-[#848E9C] text-sm">
-            Fast, secure, and reliable trading platform
-          </p>
-        </div>
-
-        <div className="space-y-3">
-          <Link
-            to="/signup"
-            className="flex items-center justify-center w-full bg-[#2EBD85] text-white py-3.5 rounded-xl font-semibold text-sm hover:bg-[#259A6C] transition-colors"
-          >
-            Create Account
-          </Link>
-          <Link
-            to="/login"
-            className="flex items-center justify-center w-full bg-[#1E1E1E] border border-[#2A2A2A] text-white py-3.5 rounded-xl font-semibold text-sm hover:bg-[#2A2A2A] transition-colors"
-          >
-            Log In
-          </Link>
-        </div>
-
-        {/* Feature cards */}
-        <div className="grid grid-cols-3 gap-3 mt-6">
-          <div className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-xl p-3 text-center">
-            <div className="w-9 h-9 rounded-full bg-[#2EBD85]/10 flex items-center justify-center mx-auto mb-2">
-              <svg className="w-4 h-4 text-[#2EBD85]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
-            </div>
-            <p className="text-[10px] text-[#848E9C] font-medium">Secure</p>
-          </div>
-          <div className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-xl p-3 text-center">
-            <div className="w-9 h-9 rounded-full bg-[#2EBD85]/10 flex items-center justify-center mx-auto mb-2">
-              <svg className="w-4 h-4 text-[#2EBD85]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-            </div>
-            <p className="text-[10px] text-[#848E9C] font-medium">Fast</p>
-          </div>
-          <div className="bg-[#1E1E1E] border border-[#2A2A2A] rounded-xl p-3 text-center">
-            <div className="w-9 h-9 rounded-full bg-[#2EBD85]/10 flex items-center justify-center mx-auto mb-2">
-              <svg className="w-4 h-4 text-[#2EBD85]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-            </div>
-            <p className="text-[10px] text-[#848E9C] font-medium">Low Fees</p>
-          </div>
-        </div>
-
-        {/* Demo button */}
-        <button
-          onClick={() => navigate("/spot-trading")}
-          className="w-full mt-4 text-[#2EBD85] text-sm font-medium py-2"
-        >
-          Try Demo Trading &rarr;
-        </button>
-      </div>
-    </div>
-  );
+  // Guest content removed — mobile guests use MobileGuestHome, desktop guests use HeroBanner
 
   // Content for logged in but unverified users
   const renderUnverifiedContent = () => (
@@ -671,12 +576,7 @@ const Hero = () => {
         {isLoggedIn ? getLoggedInHero() : <HeroBanner isLoggedIn={false} />}
       </div>
 
-      {/* Mobile guest view */}
-      <div className="md:hidden pb-2">
-        <div className="container mx-auto px-4">
-          {!isLoggedIn && renderGuestContent()}
-        </div>
-      </div>
+      {/* Mobile guest view handled by MobileGuestHome in HomePage */}
     </div>
   );
 };

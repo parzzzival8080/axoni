@@ -776,28 +776,28 @@ const Legal = () => {
                       <li>
                         • Legal Department:{" "}
                         <a
-                          href="mailto:legal@axoni.co"
+                          href="mailto:legal@gld.co"
                           className="text-[#2EBD85] underline hover:text-[#2EBD85]"
                         >
-                          legal@axoni.co
+                          legal@gld.co
                         </a>
                       </li>
                       <li>
                         • Compliance Team:{" "}
                         <a
-                          href="mailto:compliance@axoni.co"
+                          href="mailto:compliance@gld.co"
                           className="text-[#2EBD85] underline hover:text-[#2EBD85]"
                         >
-                          compliance@axoni.co
+                          compliance@gld.co
                         </a>
                       </li>
                       <li>
                         • General Support:{" "}
                         <a
-                          href="mailto:support@axoni.co"
+                          href="mailto:support@gld.co"
                           className="text-[#2EBD85] underline hover:text-[#2EBD85]"
                         >
-                          support@axoni.co
+                          support@gld.co
                         </a>
                       </li>
                     </ul>

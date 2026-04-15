@@ -84,7 +84,8 @@ const Profile = () => {
   const handleLogout = () => {
     localStorage.clear();
     sessionStorage.clear();
-    window.location.href = '/';
+    window.location.replace('/');
+    window.location.reload(true);
   };
 
   if (isLoading) {
