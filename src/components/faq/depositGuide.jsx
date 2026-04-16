@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import DOMPurify from 'dompurify';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Share2, Facebook, Linkedin, MessageCircle, Link2, ChevronRight, Eye, Clock, Calendar } from 'lucide-react';
-import HowDoIMakeADepositAsset1 from '../../assets/assets/ASSET 1 (1).png';
-import HowDoIMakeADepositAsset2 from '../../assets/assets/ASSET 2 (1).png';
-import WhyHaveIStillNotReceivedMyDepositAsset1 from '../../assets/assets/ASSET 4.png';
-import HowDoIFindMyDepositAddress from '../../assets/assets/ASSET 5.png';
+
+
+
+
 
 // Enhanced Image Component with Loading States
 const ImageWithFallback = ({ src, alt, description, className = "" }) => {
@@ -81,7 +81,7 @@ const articleData = {
         steps: [
           {
             number: 1,
-            content: 'Log in to your account at <strong class="text-[#2EBD85]">gld.co</strong>, navigate to the <strong class="text-white">Assets</strong> section, and click on <strong class="text-[#2EBD85]">Deposit</strong>.'
+            content: 'Log in to your account at <strong class="text-[#2EBD85]">gldcoin.co</strong>, navigate to the <strong class="text-white">Assets</strong> section, and click on <strong class="text-[#2EBD85]">Deposit</strong>.'
           },
           {
             number: 2,

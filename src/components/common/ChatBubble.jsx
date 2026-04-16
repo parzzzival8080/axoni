@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-const CHAT_URL = "https://bot-chatter.vercel.app/livechat/widget?color=2EBD85&source=gld.co";
+const CHAT_URL = "https://bot-chatter.vercel.app/livechat/widget?color=2EBD85&source=gldcoin.co";
 const LOAD_TIMEOUT = 15000;
 
 const ChatBubble = () => {
@@ -109,10 +109,10 @@ const ChatBubble = () => {
                 Refresh chat support
               </button>
               <a
-                href="mailto:customerservice@gld.co"
+                href="mailto:customerservice@gldcoin.co"
                 className="text-xs text-[#5E6673] hover:text-[#848E9C] transition-colors underline"
               >
-                Or email us at customerservice@gld.co
+                Or email us at customerservice@gldcoin.co
               </a>
             </div>
           )}

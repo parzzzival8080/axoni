@@ -546,7 +546,7 @@ const PrivacyPolicy = () => {
                 contact our support team.
               </p>
               <div className="space-y-1 text-sm text-[#848E9C]">
-                <p>Email: customerservice@gld.co</p>
+                <p>Email: customerservice@gldcoin.co</p>
                 <p>Support Center: Available 24/7</p>
               </div>
             </div>

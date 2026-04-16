@@ -1045,7 +1045,7 @@ const Navbar = () => {
             )}
 
             <iframe
-              src="https://bot-chatter.vercel.app/livechat/widget?color=2EBD85&source=gld.co"
+              src="https://bot-chatter.vercel.app/livechat/widget?color=2EBD85&source=gldcoin.co"
               width="380"
               height="560"
               style={{ border: 'none', borderRadius: 12, boxShadow: '0 4px 24px rgba(0,0,0,0.15)', display: isChatLoaded ? 'block' : 'none' }}

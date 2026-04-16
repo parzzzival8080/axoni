@@ -1,13 +1,16 @@
+import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ children }) => {
-  const isLoggedIn = !!localStorage.getItem('authToken');
-
-  if (!isLoggedIn) {
+  try {
+    const isLoggedIn = !!localStorage.getItem('authToken');
+    if (!isLoggedIn) {
+      return <Navigate to="/login" replace />;
+    }
+    return <React.Suspense fallback={null}>{children}</React.Suspense>;
+  } catch {
     return <Navigate to="/login" replace />;
   }
-
-  return children;
 };
 
 export default ProtectedRoute;

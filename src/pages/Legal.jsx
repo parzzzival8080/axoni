@@ -776,28 +776,28 @@ const Legal = () => {
                       <li>
                         • Legal Department:{" "}
                         <a
-                          href="mailto:legal@gld.co"
+                          href="mailto:legal@gldcoin.co"
                           className="text-[#2EBD85] underline hover:text-[#2EBD85]"
                         >
-                          legal@gld.co
+                          legal@gldcoin.co
                         </a>
                       </li>
                       <li>
                         • Compliance Team:{" "}
                         <a
-                          href="mailto:compliance@gld.co"
+                          href="mailto:compliance@gldcoin.co"
                           className="text-[#2EBD85] underline hover:text-[#2EBD85]"
                         >
-                          compliance@gld.co
+                          compliance@gldcoin.co
                         </a>
                       </li>
                       <li>
                         • General Support:{" "}
                         <a
-                          href="mailto:support@gld.co"
+                          href="mailto:support@gldcoin.co"
                           className="text-[#2EBD85] underline hover:text-[#2EBD85]"
                         >
-                          support@gld.co
+                          support@gldcoin.co
                         </a>
                       </li>
                     </ul>

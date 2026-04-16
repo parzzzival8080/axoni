@@ -65,18 +65,18 @@ const defaultConfig = {
     referralIllustration: '/public/images/referral-illustration.svg'
   },
   names: {
-    siteName: 'AXONI',
-    siteNameLong: 'AXONI COIN',
+    siteName: 'GLD',
+    siteNameLong: 'GLD COIN',
     tagline: 'Best Cryptocurrency Trading Platform for Futures & Spot',
     taglineShort: 'Your trusted crypto partner',
     companyName: 'COINCHICoin Investments LLC',
-    companyNameLegal: 'axoni.co',
-    supportEmail: 'support@axoni.co',
-    contactEmail: 'contact@axoni.co',
-    contactPhone: '+1-800-AXONI-COIN',
-    websiteUrl: 'https://axoni.co',
-    description: 'AXONI is a secure, fast, and user-friendly cryptocurrency trading platform for spot and futures trading.',
-    metaKeywords: 'cryptocurrency, trading, bitcoin, ethereum, altcoins, futures, spot, exchange, AXONI, crypto platform',
+    companyNameLegal: 'gldcoin.co',
+    supportEmail: 'support@gldcoin.co',
+    contactEmail: 'contact@gldcoin.co',
+    contactPhone: '+1-800-GLD',
+    websiteUrl: 'https://gldcoin.co',
+    description: 'GLD is a secure, fast, and user-friendly cryptocurrency trading platform for spot and futures trading.',
+    metaKeywords: 'cryptocurrency, trading, bitcoin, ethereum, altcoins, futures, spot, exchange, GLD, crypto platform',
     address: 'California, United States',
     socialMedia: {
       twitter: '@COINCHICoin',
@@ -93,8 +93,8 @@ const defaultConfig = {
     appStoreQR: '',
     playStoreQR: '',
     downloadQRUrl: 'https://api.axoni.co/api/v1/download-axoni-apk',
-    appStoreQRUrl: 'https://apps.apple.com/app/AXONI-coin',
-    playStoreQRUrl: 'https://play.google.com/store/apps/details?id=com.AXONI coin',
+    appStoreQRUrl: 'https://apps.apple.com/app/gld-coin',
+    playStoreQRUrl: 'https://play.google.com/store/apps/details?id=com.gldcoin',
     iosDownloadUrl: 'https://api.axoni.co/api/v1/download-ios',
     androidDownloadUrl: 'https://api.axoni.co/api/v1/download-apk'
   },
@@ -103,7 +103,7 @@ const defaultConfig = {
     secondaryUrl: 'https://api.axoni.co/api/v1',
     socketUrl: 'wss://socket.axoni.co',
     chartDataUrl: 'https://api.axoni.co/api/v1',
-    supportUrl: 'https://support.axoni.co',
+    supportUrl: 'https://support.gldcoin.co',
     tradingViewDatafeed: 'https://api.axoni.co/api/v1',
     chartsStorageUrl: 'https://saveload.tradingview.com',
     userAccountUrl: 'https://django.bhtokens.com/api/user_account',
@@ -383,14 +383,14 @@ export const WhiteLabelProvider = ({ children }) => {
       metadata: {
         exportedAt: new Date().toISOString(),
         version: '1.0.0',
-        source: 'AXONI Admin Panel'
+        source: 'GLD Admin Panel'
       }
     };
     
     const dataStr = JSON.stringify(exportData, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = `AXONI-config-${new Date().toISOString().split('T')[0]}.json`;
+    const exportFileDefaultName = `GLD-config-${new Date().toISOString().split('T')[0]}.json`;
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
