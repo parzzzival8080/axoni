@@ -183,25 +183,25 @@ const DownloadPage = () => {
                 <text x="80" y="229" fill="#fff" fontSize="11" fontWeight="600" fontFamily="system-ui">BTC</text>
                 <text x="80" y="241" fill="#5E6673" fontSize="8" fontFamily="system-ui">Bitcoin</text>
                 <text x="175" y="229" fill="#fff" fontSize="10" fontWeight="500" fontFamily="monospace" textAnchor="end">$72,341</text>
-                <text x="210" y="229" fill="#2EBD85" fontSize="9" fontFamily="monospace">+2.3%</text>
+                <text x="190" y="229" fill="#2EBD85" fontSize="8" fontFamily="monospace">+2.3%</text>
                 {/* ETH */}
                 <circle cx="62" cy="268" r="10" fill="#627EEA" opacity="0.2"/><text x="59" y="272" fill="#627EEA" fontSize="9" fontWeight="700" fontFamily="system-ui">E</text>
                 <text x="80" y="265" fill="#fff" fontSize="11" fontWeight="600" fontFamily="system-ui">ETH</text>
                 <text x="80" y="277" fill="#5E6673" fontSize="8" fontFamily="system-ui">Ethereum</text>
                 <text x="175" y="265" fill="#fff" fontSize="10" fontWeight="500" fontFamily="monospace" textAnchor="end">$2,318</text>
-                <text x="210" y="265" fill="#F6465D" fontSize="9" fontFamily="monospace">-0.4%</text>
+                <text x="190" y="265" fill="#F6465D" fontSize="8" fontFamily="monospace">-0.4%</text>
                 {/* SOL */}
                 <circle cx="62" cy="304" r="10" fill="#9945FF" opacity="0.2"/><text x="59" y="308" fill="#9945FF" fontSize="9" fontWeight="700" fontFamily="system-ui">S</text>
                 <text x="80" y="301" fill="#fff" fontSize="11" fontWeight="600" fontFamily="system-ui">SOL</text>
                 <text x="80" y="313" fill="#5E6673" fontSize="8" fontFamily="system-ui">Solana</text>
                 <text x="175" y="301" fill="#fff" fontSize="10" fontWeight="500" fontFamily="monospace" textAnchor="end">$83.52</text>
-                <text x="210" y="301" fill="#2EBD85" fontSize="9" fontFamily="monospace">+5.6%</text>
+                <text x="190" y="301" fill="#2EBD85" fontSize="8" fontFamily="monospace">+5.6%</text>
                 {/* XRP */}
                 <circle cx="62" cy="340" r="10" fill="#fff" opacity="0.1"/><text x="58" y="344" fill="#fff" fontSize="9" fontWeight="700" fontFamily="system-ui">X</text>
                 <text x="80" y="337" fill="#fff" fontSize="11" fontWeight="600" fontFamily="system-ui">XRP</text>
                 <text x="80" y="349" fill="#5E6673" fontSize="8" fontFamily="system-ui">Ripple</text>
                 <text x="175" y="337" fill="#fff" fontSize="10" fontWeight="500" fontFamily="monospace" textAnchor="end">$1.35</text>
-                <text x="210" y="337" fill="#2EBD85" fontSize="9" fontFamily="monospace">+1.4%</text>
+                <text x="190" y="337" fill="#2EBD85" fontSize="8" fontFamily="monospace">+1.4%</text>
                 {/* Bottom nav */}
                 <line x1="38" y1="380" x2="222" y2="380" stroke="#1E1E1E" strokeWidth="0.5"/>
                 <text x="65" y="400" fill="#2EBD85" fontSize="8" fontWeight="600" fontFamily="system-ui" textAnchor="middle">Home</text>
@@ -211,10 +211,6 @@ const DownloadPage = () => {
                 {/* Gradient def */}
                 <defs><linearGradient id="dlGreen" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#2EBD85"/><stop offset="100%" stopColor="#2EBD85" stopOpacity="0"/></linearGradient></defs>
               </svg>
-              {/* Floating coins */}
-              <div style={{ position: 'absolute', top: 30, right: -10, width: 40, height: 40, borderRadius: '50%', background: '#F7931A20', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, animation: 'float 3s ease-in-out infinite' }}>₿</div>
-              <div style={{ position: 'absolute', bottom: 80, left: -5, width: 32, height: 32, borderRadius: '50%', background: '#627EEA20', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, animation: 'float 3s ease-in-out infinite 1s' }}>Ξ</div>
-              <style>{`@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }`}</style>
             </div>
           </div>
         </div>
