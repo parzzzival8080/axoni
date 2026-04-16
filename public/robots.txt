@@ -1,11 +1,15 @@
-# https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Allow: /
 
-# Disallow sensitive or admin paths if any (uncomment as needed)
-# Disallow: /admin/
-# Disallow: /private/
+# Protected pages
+Disallow: /admin/
+Disallow: /account/
+Disallow: /deposit
+Disallow: /withdraw
+Disallow: /transfer
 
-Sitemap: https://axoni.co/sitemap.xml
-er-agent: *
-Disallow:
+# Assets
+Disallow: /assets/
+Disallow: /datafeeds/
+
+Sitemap: https://gldcoin.co/sitemap.xml

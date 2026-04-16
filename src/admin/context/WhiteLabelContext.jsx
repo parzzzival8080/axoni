@@ -69,7 +69,7 @@ const defaultConfig = {
     siteNameLong: 'GLD COIN',
     tagline: 'Best Cryptocurrency Trading Platform for Futures & Spot',
     taglineShort: 'Your trusted crypto partner',
-    companyName: 'COINCHICoin Investments LLC',
+    companyName: 'GLD Investments LLC',
     companyNameLegal: 'gldcoin.co',
     supportEmail: 'support@gldcoin.co',
     contactEmail: 'contact@gldcoin.co',
@@ -79,13 +79,13 @@ const defaultConfig = {
     metaKeywords: 'cryptocurrency, trading, bitcoin, ethereum, altcoins, futures, spot, exchange, GLD, crypto platform',
     address: 'California, United States',
     socialMedia: {
-      twitter: '@COINCHICoin',
-      telegram: '@COINCHICoinOfficial',
-      discord: 'COINCHICoin Community',
-      facebook: 'COINCHICoin',
-      youtube: 'COINCHICoin',
-      linkedin: 'COINCHICoin',
-      instagram: 'COINCHICoin'
+      twitter: '@GLD',
+      telegram: '@GLDOfficial',
+      discord: 'GLD Community',
+      facebook: 'GLD',
+      youtube: 'GLD',
+      linkedin: 'GLD',
+      instagram: 'GLD'
     }
   },
   qr: {
