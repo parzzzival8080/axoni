@@ -6,7 +6,7 @@ const CryptoContext = createContext();
 export const useCrypto = () => {
   const context = useContext(CryptoContext);
   if (!context) {
-    throw new Error('useCrypto must be used within a CryptoProvider');
+    return { coins: [], loading: false, error: null };
   }
   return context;
 };

@@ -6,7 +6,7 @@ const MetaMaskContext = createContext();
 export const useMetaMask = () => {
   const context = useContext(MetaMaskContext);
   if (!context) {
-    throw new Error('useMetaMask must be used within a MetaMaskProvider');
+    return { account: null, isConnected: false, connect: () => {}, disconnect: () => {} };
   }
   return context;
 };
