@@ -625,6 +625,7 @@ const SignUpPage = () => {
           email: formData.email.trim().toLowerCase(),
           password: formData.password,
           confirm_password: formData.confirmPassword,
+          source: "GLD",
         };
 
         console.log("Attempting registration with payload:", {
@@ -1034,6 +1035,7 @@ const SignUpPage = () => {
                 {
                   user_id: parseInt(storedUserId),
                   password: formData.password,
+                  source: "GLD",
                 },
                 { headers: { Authorization: `Bearer ${storedToken}` } }
               );
