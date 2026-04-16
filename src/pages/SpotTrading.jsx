@@ -16,6 +16,7 @@ import {
   getCacheStats,
   fetchCoinPriceData
 } from '../services/spotTradingApi';
+import CoinDescription from '../components/common/CoinDescription';
 import '../components/spotTrading/SpotTrading.css';
 
 const SpotTrading = () => {
@@ -667,6 +668,9 @@ const SpotTrading = () => {
         pricePollingError={pricePollingError}
         isPolling={isPolling}
       />
+
+      {/* Coin description — collapsible */}
+      <CoinDescription symbol={cryptoData?.crypto_symbol || cryptoData?.cryptoSymbol || 'BTC'} coinData={cryptoData} />
 
       {/* Desktop: 3-column layout */}
       <div className="hidden md:flex" style={{ borderTop: '1px solid #1E1E1E', height: 'calc(100vh - 120px)', minHeight: 450 }}>

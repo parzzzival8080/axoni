@@ -9,6 +9,7 @@ import OrdersSection from '../components/futureTrading/OrdersSection';
 import FutureTradingWalkthroughTrigger from '../components/futureTrading/FutureTradingWalkthroughTrigger';
 import { fetchTradableCoins, fetchWalletData } from '../services/futureTradingApi';
 import { useIsMobile } from '../hooks/useIsMobile';
+import CoinDescription from '../components/common/CoinDescription';
 import '../components/futureTrading/FutureTrading.css';
 import UnifiedNotification from '../components/common/UnifiedNotification';
 import '../components/common/UnifiedNotification.css';
@@ -282,6 +283,9 @@ const FutureTrading = () => {
         tradableCoins={tradableCoins}
         loading={loading}
       />
+
+      {/* Coin description */}
+      <CoinDescription symbol={walletData?.symbol || 'BTC'} coinData={subHeaderData} />
 
       {/* Desktop: 3-column layout */}
       <div className="hidden md:flex" style={{ borderTop: '1px solid #1E1E1E', height: 'calc(100vh - 120px)', minHeight: 450 }}>
