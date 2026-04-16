@@ -165,16 +165,13 @@ const articleData = {
         type: 'section',
         title: 'What to Do Next',
         steps: [
+          
           {
             number: 1,
-            content: 'Check your transaction on the blockchain explorer using your transaction hash (TXID).'
-          },
-          {
-            number: 2,
             content: 'If the transaction shows as confirmed on the blockchain but hasn\'t appeared in your account, wait up to 30 minutes for processing.'
           },
           {
-            number: 3,
+            number: 2,
             content: 'Contact our support team if your deposit hasn\'t appeared after 24 hours of blockchain confirmation.'
           }
         ]
@@ -316,7 +313,6 @@ const articleData = {
       }
     ],
     notes: [
-      'You can also check the transaction on the blockchain using the transaction hash (TXID).',
       'Pending deposits usually resolve within 30 minutes to 2 hours depending on network congestion.',
       'Contact support if a deposit shows as failed or has been pending for over 24 hours.',
       'Different networks have different confirmation requirements - Bitcoin may take longer than Ethereum.'
