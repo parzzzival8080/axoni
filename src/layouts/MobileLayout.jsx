@@ -2,10 +2,12 @@ import React from "react";
 import MobileHeader from "../components/mobile/MobileHeader";
 import MobileTabBar from "../components/mobile/MobileTabBar";
 import ToastNotification from "../components/mobile/ToastNotification";
+import AppBanner from "../components/common/AppBanner";
 
 const MobileLayout = ({ children, title, actions, darkBg = false, hideTabBar = false, hideHeader = false }) => {
   return (
     <div className={`${darkBg ? "bg-[#0a0a0a]" : "bg-[#0a0a0a]"}`}>
+      <AppBanner />
       {!hideHeader && <MobileHeader title={title} actions={actions} darkBg={darkBg} />}
       <ToastNotification />
       <main

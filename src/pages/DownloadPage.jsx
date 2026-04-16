@@ -6,10 +6,25 @@ import DownloadImage3 from "../assets/assets/laptop.png";
 import logo from "../assets/logo/logo.png";
 import ComingSoon from "../components/common/ComingSoon";
 
+const getDevice = () => {
+  const ua = navigator.userAgent || '';
+  if (/iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) return 'ios';
+  if (/android/i.test(ua)) return 'android';
+  if (/Mac/.test(ua)) return 'mac';
+  if (/Win/.test(ua)) return 'windows';
+  return 'other';
+};
+
+const isStandalone = () => {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+};
+
 const DownloadPage = () => {
   const [isComingSoonOpen, setIsComingSoonOpen] = useState(false);
   const [isNoticeOpen, setIsNoticeOpen] = useState(false);
-  const [noticeStore, setNoticeStore] = useState(null); // "playstore" or "appstore"
+  const [noticeStore, setNoticeStore] = useState(null);
+  const device = getDevice();
+  const alreadyInstalled = isStandalone();
 
   const openComingSoonModal = () => setIsComingSoonOpen(true);
   const closeComingSoonModal = () => setIsComingSoonOpen(false);
@@ -47,6 +62,38 @@ const DownloadPage = () => {
 
   return (
     <div className="landing">
+      {/* Smart device banner */}
+      {!alreadyInstalled && (
+        <div style={{ background: '#1E1E1E', borderBottom: '1px solid #2A2A2A', padding: '12px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ width: 36, height: 36, borderRadius: 10, background: '#2EBD85', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg>
+            </div>
+            <div>
+              <p style={{ color: '#fff', fontSize: 13, fontWeight: 600, margin: 0 }}>GLD Trading App</p>
+              <p style={{ color: '#5E6673', fontSize: 11, margin: 0 }}>
+                {device === 'ios' ? 'Add to Home Screen for the best experience' :
+                 device === 'android' ? 'Download the Android app (24MB)' :
+                 'Trade crypto on any device'}
+              </p>
+            </div>
+          </div>
+          {device === 'ios' ? (
+            <button onClick={() => { setNoticeStore('appstore'); setIsNoticeOpen(true); }} style={{ background: '#2EBD85', color: '#fff', border: 'none', borderRadius: 8, padding: '8px 16px', fontSize: 12, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+              Install
+            </button>
+          ) : device === 'android' ? (
+            <a href="/downloads/gld-app.apk" download="GLD.apk" style={{ background: '#2EBD85', color: '#fff', border: 'none', borderRadius: 8, padding: '8px 16px', fontSize: 12, fontWeight: 600, cursor: 'pointer', textDecoration: 'none', whiteSpace: 'nowrap' }}>
+              Download
+            </a>
+          ) : (
+            <button onClick={handleAppDownload} style={{ background: '#2EBD85', color: '#fff', border: 'none', borderRadius: 8, padding: '8px 16px', fontSize: 12, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+              Download
+            </button>
+          )}
+        </div>
+      )}
+
       {/* Hero Section */}
       <section className="landing__hero">
         <div className="landing__container">
@@ -63,10 +110,10 @@ const DownloadPage = () => {
               className="landing__buttons"
               style={{ display: "flex", gap: "20px", marginTop: "20px" }}
             >
-              {/* Play Store button — direct APK download */}
+              {/* Play Store button — show warning modal first */}
               <a
-                href="/downloads/gld-app.apk"
-                download="GLD.apk"
+                href="#"
+                onClick={(e) => { e.preventDefault(); setNoticeStore("playstore"); setIsNoticeOpen(true); }}
                 style={{ display: "inline-block" }}
               >
                 <img
@@ -251,9 +298,11 @@ const DownloadPage = () => {
             {noticeStore === "appstore" ? (
               <>
                 <h2 style={{ color: '#fff', fontSize: 20, fontWeight: 700, marginBottom: 6 }}>Install GLD on iOS</h2>
-                <p style={{ color: '#848E9C', fontSize: 13, marginBottom: 20, lineHeight: 1.5 }}>
-                  Add GLD to your home screen for a native app experience.
-                </p>
+                <div style={{ background: '#2A2A2A', borderRadius: 10, padding: '10px 14px', marginBottom: 16 }}>
+                  <p style={{ color: '#848E9C', fontSize: 11, lineHeight: 1.5, margin: 0 }}>
+                    This app is not available in your region through the official App Store. You can install it as a web app by following the steps below.
+                  </p>
+                </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
                   <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
                     <div style={{ width: 28, height: 28, borderRadius: 8, background: '#2EBD85', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#fff', fontSize: 13, fontWeight: 700 }}>1</div>
@@ -284,9 +333,11 @@ const DownloadPage = () => {
             ) : (
               <>
                 <h2 style={{ color: '#fff', fontSize: 20, fontWeight: 700, marginBottom: 6 }}>Download GLD</h2>
-                <p style={{ color: '#848E9C', fontSize: 13, marginBottom: 20, lineHeight: 1.5 }}>
-                  Download the GLD app directly as an APK file.
-                </p>
+                <div style={{ background: '#2A2A2A', borderRadius: 10, padding: '10px 14px', marginBottom: 16 }}>
+                  <p style={{ color: '#848E9C', fontSize: 11, lineHeight: 1.5, margin: 0 }}>
+                    This app is not available in your region through the official Google Play Store. You can download it directly as an APK from an alternative source.
+                  </p>
+                </div>
                 <div style={{ display: 'flex', gap: 10 }}>
                   <a href="/downloads/gld-app.apk" download="GLD.apk" style={{ flex: 1, padding: '12px 0', background: '#2EBD85', color: '#fff', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: 'pointer', textAlign: 'center', textDecoration: 'none' }}>
                     Download APK
