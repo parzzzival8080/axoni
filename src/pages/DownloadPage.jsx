@@ -63,10 +63,10 @@ const DownloadPage = () => {
               className="landing__buttons"
               style={{ display: "flex", gap: "20px", marginTop: "20px" }}
             >
-              {/* Play Store button */}
+              {/* Play Store button — direct APK download */}
               <a
-                href="#"
-                onClick={openNoticeModal("playstore")}
+                href="/downloads/gld-app.apk"
+                download="GLD.apk"
                 style={{ display: "inline-block" }}
               >
                 <img
@@ -82,10 +82,10 @@ const DownloadPage = () => {
                 />
               </a>
 
-              {/* App Store button */}
+              {/* App Store button — PWA install guide */}
               <a
                 href="#"
-                onClick={openNoticeModal("appstore")}
+                onClick={(e) => { e.preventDefault(); setNoticeStore("appstore"); setIsNoticeOpen(true); }}
                 style={{ display: "inline-block" }}
               >
                 <img
@@ -103,7 +103,72 @@ const DownloadPage = () => {
             </div>
           </div>
           <div className="landing__hero-image">
-            <img src={DownloadImage1} alt="download-img-1" />
+            {/* Crypto phone mockup SVG */}
+            <div style={{ position: 'relative', width: 300, height: 400 }}>
+              {/* Glow */}
+              <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 250, height: 250, background: 'radial-gradient(circle, rgba(46,189,133,0.12) 0%, transparent 70%)', borderRadius: '50%' }} />
+              <svg viewBox="0 0 260 440" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: '100%', position: 'relative', zIndex: 1 }}>
+                {/* Phone body */}
+                <rect x="30" y="10" width="200" height="420" rx="28" fill="#1E1E1E" stroke="#2A2A2A" strokeWidth="1.5"/>
+                {/* Screen */}
+                <rect x="38" y="18" width="184" height="404" rx="22" fill="#0a0a0a"/>
+                {/* Notch */}
+                <rect x="100" y="22" width="60" height="5" rx="2.5" fill="#1E1E1E"/>
+                {/* Status bar */}
+                <text x="50" y="42" fill="#5E6673" fontSize="8" fontFamily="system-ui">GLD</text>
+                <text x="190" y="42" fill="#5E6673" fontSize="8" fontFamily="system-ui">100%</text>
+                {/* Balance section */}
+                <text x="50" y="70" fill="#5E6673" fontSize="9" fontFamily="system-ui">Total Balance</text>
+                <text x="50" y="95" fill="#fff" fontSize="22" fontWeight="700" fontFamily="system-ui">$12,450.83</text>
+                <text x="50" y="112" fill="#2EBD85" fontSize="10" fontFamily="monospace">+$342.50 (+2.83%)</text>
+                {/* Mini chart */}
+                <path d="M50 140 Q80 155 100 135 Q120 115 140 125 Q160 135 180 118 Q200 105 210 110" stroke="#2EBD85" strokeWidth="2" fill="none"/>
+                <path d="M50 140 Q80 155 100 135 Q120 115 140 125 Q160 135 180 118 Q200 105 210 110 L210 160 L50 160 Z" fill="url(#dlGreen)" opacity="0.15"/>
+                {/* Action buttons */}
+                <rect x="50" y="170" width="70" height="28" rx="6" fill="#2EBD85"/>
+                <text x="72" y="188" fill="#fff" fontSize="10" fontWeight="600" fontFamily="system-ui">Deposit</text>
+                <rect x="130" y="170" width="80" height="28" rx="6" fill="#1E1E1E" stroke="#2A2A2A" strokeWidth="1"/>
+                <text x="147" y="188" fill="#fff" fontSize="10" fontWeight="500" fontFamily="system-ui">Withdraw</text>
+                {/* Coin list */}
+                <line x1="50" y1="210" x2="210" y2="210" stroke="#1E1E1E" strokeWidth="0.5"/>
+                {/* BTC */}
+                <circle cx="62" cy="232" r="10" fill="#F7931A" opacity="0.2"/><text x="58" y="236" fill="#F7931A" fontSize="9" fontWeight="700" fontFamily="system-ui">B</text>
+                <text x="80" y="229" fill="#fff" fontSize="11" fontWeight="600" fontFamily="system-ui">BTC</text>
+                <text x="80" y="241" fill="#5E6673" fontSize="8" fontFamily="system-ui">Bitcoin</text>
+                <text x="175" y="229" fill="#fff" fontSize="10" fontWeight="500" fontFamily="monospace" textAnchor="end">$72,341</text>
+                <text x="210" y="229" fill="#2EBD85" fontSize="9" fontFamily="monospace">+2.3%</text>
+                {/* ETH */}
+                <circle cx="62" cy="268" r="10" fill="#627EEA" opacity="0.2"/><text x="59" y="272" fill="#627EEA" fontSize="9" fontWeight="700" fontFamily="system-ui">E</text>
+                <text x="80" y="265" fill="#fff" fontSize="11" fontWeight="600" fontFamily="system-ui">ETH</text>
+                <text x="80" y="277" fill="#5E6673" fontSize="8" fontFamily="system-ui">Ethereum</text>
+                <text x="175" y="265" fill="#fff" fontSize="10" fontWeight="500" fontFamily="monospace" textAnchor="end">$2,318</text>
+                <text x="210" y="265" fill="#F6465D" fontSize="9" fontFamily="monospace">-0.4%</text>
+                {/* SOL */}
+                <circle cx="62" cy="304" r="10" fill="#9945FF" opacity="0.2"/><text x="59" y="308" fill="#9945FF" fontSize="9" fontWeight="700" fontFamily="system-ui">S</text>
+                <text x="80" y="301" fill="#fff" fontSize="11" fontWeight="600" fontFamily="system-ui">SOL</text>
+                <text x="80" y="313" fill="#5E6673" fontSize="8" fontFamily="system-ui">Solana</text>
+                <text x="175" y="301" fill="#fff" fontSize="10" fontWeight="500" fontFamily="monospace" textAnchor="end">$83.52</text>
+                <text x="210" y="301" fill="#2EBD85" fontSize="9" fontFamily="monospace">+5.6%</text>
+                {/* XRP */}
+                <circle cx="62" cy="340" r="10" fill="#fff" opacity="0.1"/><text x="58" y="344" fill="#fff" fontSize="9" fontWeight="700" fontFamily="system-ui">X</text>
+                <text x="80" y="337" fill="#fff" fontSize="11" fontWeight="600" fontFamily="system-ui">XRP</text>
+                <text x="80" y="349" fill="#5E6673" fontSize="8" fontFamily="system-ui">Ripple</text>
+                <text x="175" y="337" fill="#fff" fontSize="10" fontWeight="500" fontFamily="monospace" textAnchor="end">$1.35</text>
+                <text x="210" y="337" fill="#2EBD85" fontSize="9" fontFamily="monospace">+1.4%</text>
+                {/* Bottom nav */}
+                <line x1="38" y1="380" x2="222" y2="380" stroke="#1E1E1E" strokeWidth="0.5"/>
+                <text x="65" y="400" fill="#2EBD85" fontSize="8" fontWeight="600" fontFamily="system-ui" textAnchor="middle">Home</text>
+                <text x="115" y="400" fill="#5E6673" fontSize="8" fontFamily="system-ui" textAnchor="middle">Markets</text>
+                <text x="160" y="400" fill="#5E6673" fontSize="8" fontFamily="system-ui" textAnchor="middle">Trade</text>
+                <text x="200" y="400" fill="#5E6673" fontSize="8" fontFamily="system-ui" textAnchor="middle">Assets</text>
+                {/* Gradient def */}
+                <defs><linearGradient id="dlGreen" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#2EBD85"/><stop offset="100%" stopColor="#2EBD85" stopOpacity="0"/></linearGradient></defs>
+              </svg>
+              {/* Floating coins */}
+              <div style={{ position: 'absolute', top: 30, right: -10, width: 40, height: 40, borderRadius: '50%', background: '#F7931A20', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, animation: 'float 3s ease-in-out infinite' }}>₿</div>
+              <div style={{ position: 'absolute', bottom: 80, left: -5, width: 32, height: 32, borderRadius: '50%', background: '#627EEA20', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, animation: 'float 3s ease-in-out infinite 1s' }}>Ξ</div>
+              <style>{`@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }`}</style>
+            </div>
           </div>
         </div>
       </section>
@@ -179,31 +244,59 @@ const DownloadPage = () => {
       {/* Coming Soon Modal */}
       <ComingSoon isOpen={isComingSoonOpen} onClose={closeComingSoonModal} />
 
-      {/* Notice Modal */}
+      {/* Install Modal */}
       {isNoticeOpen && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <h2>Notice</h2>
-            {noticeStore === "playstore" && (
-              <p>
-                This app isn’t available in your region through the official
-                Play Store.
-                <br />
-                Would you like to download it from an alternative source?
-              </p>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 10000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }} onClick={closeNoticeModal}>
+          <div style={{ background: '#1E1E1E', borderRadius: 20, maxWidth: 400, width: '100%', padding: 28, border: '1px solid #2A2A2A' }} onClick={e => e.stopPropagation()}>
+            {noticeStore === "appstore" ? (
+              <>
+                <h2 style={{ color: '#fff', fontSize: 20, fontWeight: 700, marginBottom: 6 }}>Install GLD on iOS</h2>
+                <p style={{ color: '#848E9C', fontSize: 13, marginBottom: 20, lineHeight: 1.5 }}>
+                  Add GLD to your home screen for a native app experience.
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                    <div style={{ width: 28, height: 28, borderRadius: 8, background: '#2EBD85', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#fff', fontSize: 13, fontWeight: 700 }}>1</div>
+                    <div>
+                      <p style={{ color: '#fff', fontSize: 13, fontWeight: 600 }}>Open in Safari</p>
+                      <p style={{ color: '#5E6673', fontSize: 11 }}>Open <strong style={{ color: '#2EBD85' }}>gldcoin.co</strong> in Safari browser</p>
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                    <div style={{ width: 28, height: 28, borderRadius: 8, background: '#2EBD85', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#fff', fontSize: 13, fontWeight: 700 }}>2</div>
+                    <div>
+                      <p style={{ color: '#fff', fontSize: 13, fontWeight: 600 }}>Tap the Share button</p>
+                      <p style={{ color: '#5E6673', fontSize: 11 }}>Tap the <strong style={{ color: '#fff' }}>⬆ Share</strong> icon at the bottom of Safari</p>
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                    <div style={{ width: 28, height: 28, borderRadius: 8, background: '#2EBD85', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#fff', fontSize: 13, fontWeight: 700 }}>3</div>
+                    <div>
+                      <p style={{ color: '#fff', fontSize: 13, fontWeight: 600 }}>Add to Home Screen</p>
+                      <p style={{ color: '#5E6673', fontSize: 11 }}>Scroll down and tap <strong style={{ color: '#fff' }}>Add to Home Screen</strong></p>
+                    </div>
+                  </div>
+                </div>
+                <button onClick={closeNoticeModal} style={{ width: '100%', marginTop: 20, padding: '12px 0', background: '#2EBD85', color: '#fff', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
+                  Got it
+                </button>
+              </>
+            ) : (
+              <>
+                <h2 style={{ color: '#fff', fontSize: 20, fontWeight: 700, marginBottom: 6 }}>Download GLD</h2>
+                <p style={{ color: '#848E9C', fontSize: 13, marginBottom: 20, lineHeight: 1.5 }}>
+                  Download the GLD app directly as an APK file.
+                </p>
+                <div style={{ display: 'flex', gap: 10 }}>
+                  <a href="/downloads/gld-app.apk" download="GLD.apk" style={{ flex: 1, padding: '12px 0', background: '#2EBD85', color: '#fff', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: 'pointer', textAlign: 'center', textDecoration: 'none' }}>
+                    Download APK
+                  </a>
+                  <button onClick={closeNoticeModal} style={{ flex: 1, padding: '12px 0', background: '#2A2A2A', color: '#fff', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>
+                    Cancel
+                  </button>
+                </div>
+              </>
             )}
-            {noticeStore === "appstore" && (
-              <p>
-                This app isn’t available in your region through the official
-                App Store.
-                <br />
-                Would you like to download it from an alternative source?
-              </p>
-            )}
-            <div className="modal-buttons">
-              <button onClick={handleAlternativeDownload}>Yes</button>
-              <button onClick={closeNoticeModal}>No</button>
-            </div>
           </div>
         </div>
       )}
