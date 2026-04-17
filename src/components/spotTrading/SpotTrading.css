@@ -2540,13 +2540,21 @@ textarea {
 }
 
 .form-input {
-  width: 100%;
-  padding: 10px 12px;
-  background: #2A2A2A;
-  border: 1px solid #1E1E1E;
-  border-radius: 4px;
-  color: #fff;
-  font-size: 16px;
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  line-height: normal !important;
+  padding: 14px 12px !important;
+  margin: 0 !important;
+  background: #1a1a1a !important;
+  border: 1px solid #333 !important;
+  border-radius: 8px !important;
+  color: #fff !important;
+  font-size: 15px !important;
+  box-sizing: border-box !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
 }
 
 .slider-container {

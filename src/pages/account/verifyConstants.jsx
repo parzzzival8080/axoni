@@ -57,6 +57,7 @@ export const countries = [
   { code: "NZ", name: "New Zealand", flag: "\u{1F1F3}\u{1F1FF}" },
   { code: "PH", name: "Philippines", flag: "\u{1F1F5}\u{1F1ED}" },
   { code: "PK", name: "Pakistan", flag: "\u{1F1F5}\u{1F1F0}" },
+  { code: "PG", name: "Papua New Guinea", flag: "\u{1F1F5}\u{1F1EC}" },
   { code: "PL", name: "Poland", flag: "\u{1F1F5}\u{1F1F1}" },
   { code: "PT", name: "Portugal", flag: "\u{1F1F5}\u{1F1F9}" },
   { code: "RO", name: "Romania", flag: "\u{1F1F7}\u{1F1F4}" },

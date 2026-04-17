@@ -210,14 +210,15 @@
 
 .spot-trading-container .trade-form .form-group input {
   width: 100%;
-  height: var(--input-height);
+  height: 44px;
+  line-height: 44px;
   background-color: var(--input-bg);
   border: 1px solid var(--border-color);
   border-radius: 8px !important;
-  padding: 0 var(--spacing-md);
+  padding: 0 12px;
   color: var(--text-primary);
   font-family: 'Roboto Mono', monospace;
-  font-size: var(--font-size-md);
+  font-size: 14px;
   transition: border-color var(--transition-speed) var(--transition-easing);
   box-sizing: border-box;
 }

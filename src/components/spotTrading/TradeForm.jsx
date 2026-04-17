@@ -621,6 +621,27 @@ const TradeForm = ({
 
   return (
     <div className="trade-form">
+      <style>{`
+        .trade-form .form-input,
+        .trade-form .form-group input[type="text"],
+        .trade-form .form-group input[type="number"],
+        .trade-form input.form-input {
+          display: block;
+          width: 100%;
+          height: auto;
+          padding: 14px 12px;
+          margin: 0;
+          background: #1a1a1a;
+          border: 1px solid #333;
+          border-radius: 8px;
+          color: #fff;
+          font-size: 15px;
+          font-family: 'Roboto Mono', monospace;
+          line-height: normal;
+          box-sizing: border-box;
+          -webkit-appearance: none;
+        }
+      `}</style>
       {/* Buy/Sell toggle - only show in desktop mode when isBuy prop is not provided */}
       {isBuy === undefined && (
         <div className="trade-type-toggle">
@@ -649,24 +670,24 @@ const TradeForm = ({
       )}
 
       {/* Price input */}
-      <div className="form-group">
-        <label>Price ({cryptoData?.usdtSymbol || "USDT"})</label>
+      <div style={{ marginBottom: 8 }}>
+        <div style={{ color: '#848E9C', fontSize: 12, marginBottom: 4 }}>Price ({cryptoData?.usdtSymbol || "USDT"})</div>
         <input
           type="text"
           value={formatPrice(price)}
           onChange={(e) => setPrice(e.target.value)}
-          className="form-input"
+          style={{ width: '100%', height: 38, padding: '0 10px', background: '#1a1a1a', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 13, fontFamily: "'Roboto Mono', monospace", boxSizing: 'border-box', outline: 'none' }}
         />
       </div>
 
       {/* Amount input */}
-      <div className="form-group">
-        <label>Amount ({cryptoData?.cryptoSymbol || "BTC"})</label>
+      <div style={{ marginBottom: 8 }}>
+        <div style={{ color: '#848E9C', fontSize: 12, marginBottom: 4 }}>Amount ({cryptoData?.cryptoSymbol || "BTC"})</div>
         <input
           type="text"
           value={amount}
           onChange={handleAmountChange}
-          className="form-input"
+          style={{ width: '100%', height: 38, padding: '0 10px', background: '#1a1a1a', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 13, fontFamily: "'Roboto Mono', monospace", boxSizing: 'border-box', outline: 'none' }}
         />
       </div>
 
