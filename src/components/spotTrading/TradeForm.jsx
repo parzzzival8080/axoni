@@ -621,48 +621,52 @@ const TradeForm = ({
 
   return (
     <div className="trade-form">
-      <style>{`
-        .trade-form .form-input,
-        .trade-form .form-group input[type="text"],
-        .trade-form .form-group input[type="number"],
-        .trade-form input.form-input {
-          display: block;
-          width: 100%;
-          height: auto;
-          padding: 14px 12px;
-          margin: 0;
-          background: #1a1a1a;
-          border: 1px solid #333;
-          border-radius: 8px;
-          color: #fff;
-          font-size: 15px;
-          font-family: 'Roboto Mono', monospace;
-          line-height: normal;
-          box-sizing: border-box;
-          -webkit-appearance: none;
-        }
-      `}</style>
       {/* Buy/Sell toggle - only show in desktop mode when isBuy prop is not provided */}
       {isBuy === undefined && (
-        <div className="trade-type-toggle">
+        <div
+          style={{
+            display: 'flex',
+            gap: 6,
+            marginBottom: 12,
+            background: '#1a1a1a',
+            borderRadius: 999,
+            padding: 4,
+            height: 48,
+          }}
+        >
           <button
-            className={`toggle-btn ${localIsBuy ? "active" : ""}`}
             onClick={() => setLocalIsBuy(true)}
-            style={
-              localIsBuy
-                ? {
-                    backgroundColor: "#2EBD85",
-                    color: "white",
-                    fontWeight: "bold",
-                  }
-                : {}
-            }
+            style={{
+              flex: 1,
+              height: '100%',
+              padding: 0,
+              margin: 0,
+              border: 'none',
+              borderRadius: 999,
+              fontSize: 15,
+              fontWeight: 700,
+              cursor: 'pointer',
+              background: localIsBuy ? '#2EBD85' : 'transparent',
+              color: '#fff',
+            }}
           >
             Buy
           </button>
           <button
-            className={`toggle-btn ${!localIsBuy ? "active" : ""}`}
             onClick={() => setLocalIsBuy(false)}
+            style={{
+              flex: 1,
+              height: '100%',
+              padding: 0,
+              margin: 0,
+              border: 'none',
+              borderRadius: 999,
+              fontSize: 15,
+              fontWeight: 700,
+              cursor: 'pointer',
+              background: !localIsBuy ? '#F6465D' : 'transparent',
+              color: '#fff',
+            }}
           >
             Sell
           </button>
@@ -670,24 +674,56 @@ const TradeForm = ({
       )}
 
       {/* Price input */}
-      <div style={{ marginBottom: 8 }}>
-        <div style={{ color: '#848E9C', fontSize: 12, marginBottom: 4 }}>Price ({cryptoData?.usdtSymbol || "USDT"})</div>
+      <div style={{ marginBottom: 12 }}>
+        <div style={{ display: 'block', fontSize: 13, color: '#8e8e8e', marginBottom: 6 }}>
+          Price ({cryptoData?.usdtSymbol || "USDT"})
+        </div>
         <input
           type="text"
           value={formatPrice(price)}
           onChange={(e) => setPrice(e.target.value)}
-          style={{ width: '100%', height: 38, padding: '0 10px', background: '#1a1a1a', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 13, fontFamily: "'Roboto Mono', monospace", boxSizing: 'border-box', outline: 'none' }}
+          style={{
+            display: 'block',
+            width: '100%',
+            height: 44,
+            lineHeight: '44px',
+            padding: '0 12px',
+            background: '#1a1a1a',
+            border: '1px solid #2A2A2A',
+            borderRadius: 6,
+            color: '#fff',
+            fontSize: 15,
+            fontFamily: "'Roboto Mono', monospace",
+            boxSizing: 'border-box',
+            outline: 'none',
+          }}
         />
       </div>
 
       {/* Amount input */}
-      <div style={{ marginBottom: 8 }}>
-        <div style={{ color: '#848E9C', fontSize: 12, marginBottom: 4 }}>Amount ({cryptoData?.cryptoSymbol || "BTC"})</div>
+      <div style={{ marginBottom: 12 }}>
+        <div style={{ display: 'block', fontSize: 13, color: '#8e8e8e', marginBottom: 6 }}>
+          Amount ({cryptoData?.cryptoSymbol || "BTC"})
+        </div>
         <input
           type="text"
           value={amount}
           onChange={handleAmountChange}
-          style={{ width: '100%', height: 38, padding: '0 10px', background: '#1a1a1a', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 13, fontFamily: "'Roboto Mono', monospace", boxSizing: 'border-box', outline: 'none' }}
+          style={{
+            display: 'block',
+            width: '100%',
+            height: 44,
+            lineHeight: '44px',
+            padding: '0 12px',
+            background: '#1a1a1a',
+            border: '1px solid #2A2A2A',
+            borderRadius: 6,
+            color: '#fff',
+            fontSize: 15,
+            fontFamily: "'Roboto Mono', monospace",
+            boxSizing: 'border-box',
+            outline: 'none',
+          }}
         />
       </div>
 
@@ -737,19 +773,30 @@ const TradeForm = ({
 
       {/* Total display */}
       <div
-        className="form-group total-container"
-        style={{ borderRadius: "4px", overflow: "hidden" }}
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          height: 44,
+          padding: '0 12px',
+          background: '#1a1a1a',
+          border: '1px solid #2A2A2A',
+          borderRadius: 6,
+          marginBottom: 12,
+        }}
       >
-        <label>Total ({cryptoData?.usdtSymbol || "USDT"})</label>
+        <span style={{ color: '#8e8e8e', fontSize: 13 }}>
+          Total ({cryptoData?.usdtSymbol || "USDT"})
+        </span>
         <span
           style={{
-            flex: 1,
-            textAlign: "right",
-            fontFamily: "monospace",
+            textAlign: 'right',
+            fontFamily: "'Roboto Mono', monospace",
+            fontSize: 15,
+            color: '#fff',
             fontWeight: 500,
           }}
         >
-          {/* Display total with 8 decimals but preserve full precision internally */}
           {formatNumber(parseFloat(total) || 0, 8, false)}
         </span>
       </div>
@@ -853,30 +900,20 @@ const TradeForm = ({
         </button>
       ) : (
         <button
-          className="spot-login-pill-btn"
           onClick={() => (window.location.href = "/login")}
           style={{
-            width: "100% !important",
-            padding: "12px 0 !important",
-            fontSize: "16px !important",
-            fontWeight: "600 !important",
-            backgroundColor: "#ffffff !important",
-            color: "#000000 !important",
-            border: "none !important",
-            borderRadius: "50px !important" /* Pill shape */,
-            cursor: "pointer !important",
-            transition: "all 0.2s !important",
-            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1) !important",
-            margin: "10px 0 !important",
-            display: "block !important",
-          }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.backgroundColor = "#f5f5f5 !important";
-            e.currentTarget.style.transform = "translateY(-1px)";
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.backgroundColor = "#ffffff !important";
-            e.currentTarget.style.transform = "translateY(0)";
+            width: '100%',
+            height: 44,
+            padding: 0,
+            fontSize: 15,
+            fontWeight: 600,
+            backgroundColor: '#ffffff',
+            color: '#000000',
+            border: 'none',
+            borderRadius: 6,
+            cursor: 'pointer',
+            margin: '10px 0',
+            display: 'block',
           }}
         >
           LOGIN TO TRADE
