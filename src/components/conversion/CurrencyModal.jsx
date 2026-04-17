@@ -6,7 +6,6 @@ const CurrencyModal = ({ onClose, onSelectCurrency }) => {
   const [activeTab, setActiveTab] = useState('All');
   const [currencies, setCurrencies] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchCurrencies = async () => {
@@ -53,8 +52,7 @@ const CurrencyModal = ({ onClose, onSelectCurrency }) => {
         setCurrencies(formattedCurrencies);
       } catch (err) {
         console.error('Error fetching currencies:', err);
-        setError('Failed to load currencies. Please try again later.');
-        
+
         // Fallback to default currencies if API fails
         setCurrencies([
           { id: 'usdt', symbol: 'USDT', name: 'Tether', icon: '🟢', price: 1, isStablecoin: true },
@@ -140,8 +138,6 @@ const CurrencyModal = ({ onClose, onSelectCurrency }) => {
           <div className="currency-list">
             {loading ? (
               <div className="currency-loading">Loading currencies...</div>
-            ) : error ? (
-              <div className="currency-error">{error}</div>
             ) : filteredCurrencies.length > 0 ? (
               filteredCurrencies.map((currency) => (
                 <div 
