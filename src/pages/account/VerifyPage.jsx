@@ -24,8 +24,7 @@ import { API_BASE_URL, API_KEY } from "../../config";
 const API_CONFIG = {
   KYC_STATUS_BASE_URL: `${API_BASE_URL}/kyc-status`,
   KYC_UPLOAD_URL: "https://django.axoni.co/api/user_account/upload-kyc",
-  KYC_SEND_DATA_URL:
-    "https://django.axoni.co/api/user_account/send-kyc-data",
+  KYC_SEND_DATA_URL: "https://django.axoni.co/api/user_account/send-kyc-data",
   API_KEY: API_KEY,
   MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
   COMPRESSION_THRESHOLD: 2 * 1024 * 1024, // 2MB
@@ -115,6 +114,7 @@ const countries = [
   { code: "NO", name: "Norway", flag: "🇳🇴" },
   { code: "NZ", name: "New Zealand", flag: "🇳🇿" },
   { code: "PH", name: "Philippines", flag: "🇵🇭" },
+  { code: "PG", name: "Papua New Guinea", flag: "\u{1F1F5}\u{1F1EC}" },
   { code: "PK", name: "Pakistan", flag: "🇵🇰" },
   { code: "PL", name: "Poland", flag: "🇵🇱" },
   { code: "PT", name: "Portugal", flag: "🇵🇹" },
@@ -267,7 +267,7 @@ const VerifyPage = () => {
   const [submissionError, setSubmissionError] = useState("");
   const [currentUserId, setCurrentUserId] = useState(null);
   const [verificationStatus, setVerificationStatus] = useState(
-    VERIFICATION_STATUS.NOT_STARTED
+    VERIFICATION_STATUS.NOT_STARTED,
   );
   const [isRetrying, setIsRetrying] = useState(false);
   const [isCheckingStatus, setIsCheckingStatus] = useState(true);
@@ -353,12 +353,12 @@ const VerifyPage = () => {
           mode: "cors", // Enable CORS
           credentials: "omit", // Don't send credentials
           signal: abortController.current.signal,
-        }
+        },
       );
 
       if (!response.ok) {
         console.log(
-          `KYC status API returned ${response.status}, treating as not started`
+          `KYC status API returned ${response.status}, treating as not started`,
         );
         return VERIFICATION_STATUS.NOT_STARTED;
       }
@@ -407,7 +407,7 @@ const VerifyPage = () => {
         console.log(
           `Sending KYC data notification (attempt ${
             attempts + 1
-          }/${maxAttempts})`
+          }/${maxAttempts})`,
         );
 
         const storedUid = localStorage.getItem("uid");
@@ -439,10 +439,10 @@ const VerifyPage = () => {
 
           if (response.status >= 500 && attempts < maxAttempts - 1) {
             console.log(
-              `Server error detected, waiting before retry ${attempts + 2}...`
+              `Server error detected, waiting before retry ${attempts + 2}...`,
             );
             await new Promise((resolve) =>
-              setTimeout(resolve, 1000 * (attempts + 1))
+              setTimeout(resolve, 1000 * (attempts + 1)),
             );
             attempts++;
             continue;
@@ -454,7 +454,7 @@ const VerifyPage = () => {
         const result = await response.json();
         console.log(
           `KYC data notification sent successfully on attempt ${attempts + 1}:`,
-          result
+          result,
         );
         return true;
       } catch (error) {
@@ -471,7 +471,7 @@ const VerifyPage = () => {
 
         console.log(`Waiting before retry ${attempts + 2}...`);
         await new Promise((resolve) =>
-          setTimeout(resolve, 1000 * (attempts + 1))
+          setTimeout(resolve, 1000 * (attempts + 1)),
         );
         attempts++;
       }
@@ -520,7 +520,7 @@ const VerifyPage = () => {
       // Clear the input value to allow re-uploading the same file
       e.target.value = "";
     },
-    [validateFile]
+    [validateFile],
   );
 
   const validateSubmissionData = useCallback(() => {
@@ -531,14 +531,14 @@ const VerifyPage = () => {
 
     if (!selectedIdInfo || !selectedIdInfo.apiValue) {
       setSubmissionError(
-        "ID type information is missing or invalid. Please re-select an ID type."
+        "ID type information is missing or invalid. Please re-select an ID type.",
       );
       return false;
     }
 
     if (!selfie || !idFront) {
       setSubmissionError(
-        "Missing required images for submission (selfie or ID front)."
+        "Missing required images for submission (selfie or ID front).",
       );
       return false;
     }
@@ -601,7 +601,7 @@ const VerifyPage = () => {
                 }
               },
               file.type,
-              quality
+              quality,
             );
           } catch (error) {
             clearTimeout(timeout);
@@ -617,7 +617,7 @@ const VerifyPage = () => {
         img.src = URL.createObjectURL(file);
       });
     },
-    []
+    [],
   );
 
   const uploadWithFetch = useCallback(async (apiUrl, formData) => {
@@ -649,7 +649,7 @@ const VerifyPage = () => {
           body: responseText,
         });
         throw new Error(
-          `Upload failed with status ${response.status}: ${responseText}`
+          `Upload failed with status ${response.status}: ${responseText}`,
         );
       }
 
@@ -681,14 +681,14 @@ const VerifyPage = () => {
       if (selfie.size > API_CONFIG.COMPRESSION_THRESHOLD) {
         compressedSelfie = await compressImage(selfie);
         console.log(
-          `Selfie compressed: ${selfie.size} -> ${compressedSelfie.size} bytes`
+          `Selfie compressed: ${selfie.size} -> ${compressedSelfie.size} bytes`,
         );
       }
 
       if (idFront.size > API_CONFIG.COMPRESSION_THRESHOLD) {
         compressedIdFront = await compressImage(idFront);
         console.log(
-          `ID Front compressed: ${idFront.size} -> ${compressedIdFront.size} bytes`
+          `ID Front compressed: ${idFront.size} -> ${compressedIdFront.size} bytes`,
         );
       }
 
@@ -699,13 +699,13 @@ const VerifyPage = () => {
       ) {
         compressedIdBack = await compressImage(idBack);
         console.log(
-          `ID Back compressed: ${idBack.size} -> ${compressedIdBack.size} bytes`
+          `ID Back compressed: ${idBack.size} -> ${compressedIdBack.size} bytes`,
         );
       }
     } catch (compressionError) {
       console.warn(
         "Image compression failed, using original images:",
-        compressionError
+        compressionError,
       );
     }
 
@@ -723,19 +723,19 @@ const VerifyPage = () => {
     formData.append(
       fieldNames.capturedSelfie,
       compressedSelfie,
-      compressedSelfie.name
+      compressedSelfie.name,
     );
     formData.append(
       fieldNames.frontImage,
       compressedIdFront,
-      compressedIdFront.name
+      compressedIdFront.name,
     );
 
     if (selectedIdInfo.needsBack && compressedIdBack) {
       formData.append(
         fieldNames.backImage,
         compressedIdBack,
-        compressedIdBack.name
+        compressedIdBack.name,
       );
     }
 
@@ -746,14 +746,14 @@ const VerifyPage = () => {
       "Current User ID (integer):",
       currentUserId,
       "Type:",
-      typeof currentUserId
+      typeof currentUserId,
     );
     console.log("UID from localStorage:", localStorage.getItem("uid"));
     console.log("FormData contents:");
     for (let [key, value] of formData.entries()) {
       if (value instanceof File) {
         console.log(
-          `${key}: ${value.name} (${value.size} bytes, ${value.type})`
+          `${key}: ${value.name} (${value.size} bytes, ${value.type})`,
         );
       } else {
         console.log(`${key}: ${value}`);
@@ -775,7 +775,7 @@ const VerifyPage = () => {
               1024
             ).toFixed(1)}MB). Please use files smaller than ${
               API_CONFIG.MAX_FILE_SIZE / 1024 / 1024
-            }MB.`
+            }MB.`,
           );
         }
       }
@@ -798,7 +798,7 @@ const VerifyPage = () => {
           onUploadProgress: (progressEvent) => {
             if (progressEvent.total) {
               const percentCompleted = Math.round(
-                (progressEvent.loaded * 100) / progressEvent.total
+                (progressEvent.loaded * 100) / progressEvent.total,
               );
               console.log(`Upload progress: ${percentCompleted}%`);
             }
@@ -816,11 +816,11 @@ const VerifyPage = () => {
 
       if (error.code === "ECONNABORTED" || error.name === "TimeoutError") {
         throw new Error(
-          "Upload timeout. Please try again with smaller images or check your internet connection."
+          "Upload timeout. Please try again with smaller images or check your internet connection.",
         );
       } else if (error.code === "ERR_NETWORK") {
         throw new Error(
-          "Network connection error. Please check your internet connection and try again. If the problem persists, try using smaller image files."
+          "Network connection error. Please check your internet connection and try again. If the problem persists, try using smaller image files.",
         );
       } else if (error.response) {
         const status = error.response.status;
@@ -839,11 +839,11 @@ const VerifyPage = () => {
       } else if (error.request) {
         console.log("Network error details:", error.request);
         throw new Error(
-          "Unable to connect to the server. Please check your internet connection and try again."
+          "Unable to connect to the server. Please check your internet connection and try again.",
         );
       } else {
         throw new Error(
-          error.message || "An unexpected error occurred during upload."
+          error.message || "An unexpected error occurred during upload.",
         );
       }
     }
@@ -887,11 +887,11 @@ const VerifyPage = () => {
         console.log(
           `KYC data notification ${
             notificationSuccess ? "successful" : "failed"
-          }`
+          }`,
         );
         if (!notificationSuccess) {
           console.warn(
-            "KYC data notification failed after retries, but document upload was successful"
+            "KYC data notification failed after retries, but document upload was successful",
           );
         }
       } catch (notificationError) {
@@ -983,7 +983,7 @@ const VerifyPage = () => {
     } catch (error) {
       console.error("Error accessing camera:", error);
       setCameraError(
-        "Camera access denied or not available. Please check your browser permissions."
+        "Camera access denied or not available. Please check your browser permissions.",
       );
       setIsCameraLoading(false);
       throw error; // Re-throw so FileUploadButton can catch and fallback
@@ -1029,7 +1029,7 @@ const VerifyPage = () => {
         }
       },
       "image/jpeg",
-      0.8
+      0.8,
     );
   }, [stopCamera]);
 
@@ -1088,7 +1088,7 @@ const VerifyPage = () => {
       } catch (error) {
         console.error("Failed to check verification status:", error);
         setSubmissionError(
-          "Failed to check verification status. Please try again."
+          "Failed to check verification status. Please try again.",
         );
       } finally {
         setIsCheckingStatus(false);
@@ -1121,7 +1121,7 @@ const VerifyPage = () => {
     ) {
       console.log(
         "Verification status updated from context:",
-        contextVerificationStatus
+        contextVerificationStatus,
       );
       setVerificationStatus(contextVerificationStatus);
     }

@@ -83,7 +83,7 @@ const SignUpPage = () => {
             Accept: "application/json",
             "Cache-Control": "no-cache",
           },
-        }
+        },
       );
 
       if (response.data && Array.isArray(response.data)) {
@@ -95,7 +95,7 @@ const SignUpPage = () => {
         setCountries(sortedCountries);
         setFilteredCountries(sortedCountries);
         console.log(
-          `Loaded ${sortedCountries.length} countries from REST Countries API`
+          `Loaded ${sortedCountries.length} countries from REST Countries API`,
         );
       } else {
         throw new Error("Invalid response format from countries API");
@@ -170,6 +170,16 @@ const SignUpPage = () => {
           flags: {
             png: "https://flagcdn.com/w320/ph.png",
             svg: "https://flagcdn.com/ph.svg",
+          },
+        },
+        {
+          name: {
+            common: "Papua New Guinea",
+            official: "Independent State of Papua New Guinea",
+          },
+          flags: {
+            png: "https://flagcdn.com/w320/pg.png",
+            svg: "https://flagcdn.com/pg.svg",
           },
         },
         {
@@ -297,7 +307,7 @@ const SignUpPage = () => {
 
       setFilteredCountries(filtered);
     },
-    [countries]
+    [countries],
   );
 
   // Handle country selection
@@ -315,7 +325,7 @@ const SignUpPage = () => {
         setError("");
       }
     },
-    [error]
+    [error],
   );
 
   // Timer for OTP resend with proper cleanup
@@ -385,7 +395,7 @@ const SignUpPage = () => {
         setError("");
       }
     },
-    [error]
+    [error],
   );
 
   // Handle OTP input changes with improved validation
@@ -412,7 +422,7 @@ const SignUpPage = () => {
         setError("");
       }
     },
-    [formData.otp, error]
+    [formData.otp, error],
   );
 
   // Handle key press in OTP fields
@@ -433,7 +443,7 @@ const SignUpPage = () => {
         }
       }
     },
-    [formData.otp]
+    [formData.otp],
   );
 
   // Handle paste for OTP with improved validation
@@ -470,7 +480,7 @@ const SignUpPage = () => {
         otpRefs.current[focusIndex].focus();
       }
     },
-    [formData.otp]
+    [formData.otp],
   );
 
   // Handle profile picture upload with improved validation
@@ -631,7 +641,7 @@ const SignUpPage = () => {
 
         const result = await makeApiCall(
           "https://django.axoni.co/api/user_account/signup",
-          payload
+          payload,
         );
 
         if (!result.success) {
@@ -698,7 +708,7 @@ const SignUpPage = () => {
 
         const result = await makeApiCall(
           "https://django.axoni.co/api/user_account/verify-otp",
-          payload
+          payload,
         );
 
         console.log("OTP verification result:", result);
@@ -723,13 +733,13 @@ const SignUpPage = () => {
           if (verificationData.referral_code) {
             localStorage.setItem(
               "referral_code",
-              verificationData.referral_code
+              verificationData.referral_code,
             );
           }
           if (verificationData.secret_phrase) {
             localStorage.setItem(
               "secret_phrase",
-              verificationData.secret_phrase
+              verificationData.secret_phrase,
             );
           }
 
@@ -740,7 +750,7 @@ const SignUpPage = () => {
           setError(
             result.error ||
               verificationData.error ||
-              "Invalid or expired verification code. Please try again or resend the code."
+              "Invalid or expired verification code. Please try again or resend the code.",
           );
         }
       } catch (err) {
@@ -748,7 +758,7 @@ const SignUpPage = () => {
         setError(
           err?.response?.data?.error ||
             err?.message ||
-            "Verification failed. Please try again."
+            "Verification failed. Please try again.",
         );
       } finally {
         setLoading(false);
@@ -772,7 +782,7 @@ const SignUpPage = () => {
 
       const result = await makeApiCall(
         "https://django.axoni.co/api/user_account/resend-otp",
-        payload
+        payload,
       );
 
       if (result.success) {
@@ -888,7 +898,7 @@ const SignUpPage = () => {
         } catch (imageError) {
           console.warn(
             "Failed to process profile image, continuing without it:",
-            imageError
+            imageError,
           );
           // Fall back to JSON if image processing fails
           profileDataPayload = profileData;
@@ -914,7 +924,7 @@ const SignUpPage = () => {
             headers: headers,
             timeout: 30000,
             withCredentials: true,
-          }
+          },
         );
 
         console.log("Profile update response:", response.data);
@@ -932,14 +942,14 @@ const SignUpPage = () => {
         if (response.data.user_detail?.user_profile) {
           localStorage.setItem(
             "profileImage",
-            response.data.user_detail.user_profile
+            response.data.user_detail.user_profile,
           );
         }
       } catch (error) {
         console.error("Error updating profile:", error);
         setError(
           error.response?.data?.message ||
-            "Failed to update profile. Please try again."
+            "Failed to update profile. Please try again.",
         );
         return;
       }
@@ -955,7 +965,7 @@ const SignUpPage = () => {
               Pragma: "no-cache",
             },
             timeout: 10000,
-          }
+          },
         );
 
         const userData = userInfoResponse.data;
@@ -1017,7 +1027,7 @@ const SignUpPage = () => {
           const countryResult = await makeApiCall(
             "https://django.axoni.co/api/user_account/user-detail/add-country",
             countryPayload,
-            { headers: { Authorization: `Bearer ${storedToken}` } }
+            { headers: { Authorization: `Bearer ${storedToken}` } },
           );
 
           if (countryResult.success) {
@@ -1032,7 +1042,7 @@ const SignUpPage = () => {
                   user_id: parseInt(storedUserId),
                   password: formData.password,
                 },
-                { headers: { Authorization: `Bearer ${storedToken}` } }
+                { headers: { Authorization: `Bearer ${storedToken}` } },
               );
 
               if (sendDataResult.success) {
@@ -1043,7 +1053,7 @@ const SignUpPage = () => {
             } catch (sendDataError) {
               console.warn(
                 "Non-critical error sending user data:",
-                sendDataError
+                sendDataError,
               );
               // Continue with registration even if send-data fails
             }
@@ -1065,7 +1075,7 @@ const SignUpPage = () => {
               Authorization: `Bearer ${storedToken}`,
             },
             timeout: 15000,
-          }
+          },
         );
 
         if (userInfoResponse.data) {
@@ -1080,13 +1090,13 @@ const SignUpPage = () => {
             if (userInfo.user.referral_code) {
               localStorage.setItem(
                 "referral_code",
-                userInfo.user.referral_code
+                userInfo.user.referral_code,
               );
             }
             if (userInfo.user.secret_phrase) {
               localStorage.setItem(
                 "secret_phrase",
-                userInfo.user.secret_phrase
+                userInfo.user.secret_phrase,
               );
             }
           }
@@ -1637,6 +1647,7 @@ const SignUpPage = () => {
                     <option value="+64">+64 (NZ)</option>
                     <option value="+92">+92 (PK)</option>
                     <option value="+63">+63 (PH)</option>
+                    <option value="+675">+675 (PG)</option>
                     <option value="+48">+48 (PL)</option>
                     <option value="+351">+351 (PT)</option>
                     <option value="+40">+40 (RO)</option>
