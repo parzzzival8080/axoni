@@ -955,17 +955,17 @@ function withdraw() {
                         value={withdrawalAddress}
                         onChange={(e) => setWithdrawalAddress(e.target.value)}
                         disabled={!selectedNetwork || showOtpStep}
-                        className={`flex items-center justify-between w-full h-12 px-3 bg-[#1E1E1E] border rounded-lg text-sm focus:outline-none focus:ring-1 disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${
+                        className={`flex items-center justify-between w-full h-12 px-3 bg-[#1E1E1E] text-white placeholder:text-[#5E6673] border rounded-lg text-sm focus:outline-none focus:ring-1 disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${
                           addressValidation.error
-                            ? "border-red-200 focus:ring-red-100 focus:border-red-300 bg-red-50"
+                            ? "border-red-500/60 focus:ring-red-500/30 focus:border-red-500"
                             : addressValidation.warning
-                              ? "border-[#2EBD85]/20 focus:ring-yellow-100 focus:border-[#2EBD85] bg-[#2EBD85]/5"
+                              ? "border-[#2EBD85]/40 focus:ring-[#2EBD85]/20 focus:border-[#2EBD85]"
                               : withdrawalAddress &&
                                   addressValidation.isValid &&
                                   !addressValidation.error &&
                                   !addressValidation.warning
-                                ? "border-green-200 focus:ring-green-100 focus:border-green-300 bg-green-50"
-                                : "border-[#2A2A2A] focus:ring-gray-100 focus:border-[#2A2A2A]"
+                                ? "border-[#2EBD85]/60 focus:ring-[#2EBD85]/30 focus:border-[#2EBD85]"
+                                : "border-[#2A2A2A] focus:ring-[#2A2A2A] focus:border-[#2A2A2A]"
                         }`}
                       />
                       {/* Simple Chevron for visual cue, actual dropdown is separate for address book */}

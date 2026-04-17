@@ -221,6 +221,11 @@ const Conversion = () => {
 
     const handleFromCurrencySelect = (currency) => {
       setFromCurrency(currency);
+      if (toCurrency.symbol && currency.symbol && toCurrency.symbol.toLowerCase() === currency.symbol.toLowerCase()) {
+        setToCurrency({ id: 'btc', symbol: 'BTC', name: 'Bitcoin', icon: Coin, price: 0 });
+        setFromAmount('');
+        setToAmount('');
+      }
       setIsFromModalOpen(false);
     };
 
@@ -634,16 +639,18 @@ const Conversion = () => {
 
       {/* Modals */}
       {isFromModalOpen && (
-        <FromCurrencyModal 
-          onClose={closeFromModal} 
+        <FromCurrencyModal
+          onClose={closeFromModal}
           onSelectCurrency={handleFromCurrencySelect}
+          excludeSymbol={toCurrency.symbol}
         />
       )}
 
       {isToModalOpen && (
-        <CurrencyModal 
-          onClose={closeToModal} 
+        <CurrencyModal
+          onClose={closeToModal}
           onSelectCurrency={handleToCurrencySelect}
+          excludeSymbol={fromCurrency.symbol}
         />
       )}
       

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './CurrencyModal.css';
 
-const CurrencyModal = ({ onClose, onSelectCurrency }) => {
+const CurrencyModal = ({ onClose, onSelectCurrency, excludeSymbol }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('All');
   const [currencies, setCurrencies] = useState([]);
@@ -70,11 +70,14 @@ const CurrencyModal = ({ onClose, onSelectCurrency }) => {
   }, []);
   
   const filteredCurrencies = currencies
-    .filter(currency => 
-      (currency.symbol && currency.symbol.toLowerCase().includes(searchQuery.toLowerCase())) || 
+    .filter(currency =>
+      !excludeSymbol || (currency.symbol && currency.symbol.toLowerCase() !== excludeSymbol.toLowerCase())
+    )
+    .filter(currency =>
+      (currency.symbol && currency.symbol.toLowerCase().includes(searchQuery.toLowerCase())) ||
       (currency.name && currency.name.toLowerCase().includes(searchQuery.toLowerCase()))
     )
-    .filter(currency => 
+    .filter(currency =>
       activeTab === 'All' || (activeTab === 'Stablecoins' && currency.isStablecoin)
     );
 
