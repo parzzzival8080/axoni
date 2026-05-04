@@ -2327,7 +2327,7 @@ textarea {
     position: fixed !important;
     left: 0 !important;
     right: 0 !important;
-    bottom: 60px !important;
+    bottom: calc(60px + env(safe-area-inset-bottom, 0px)) !important;
     width: 100% !important;
     height: 56px !important;
     display: flex !important;
@@ -2449,9 +2449,9 @@ textarea {
     visibility: visible !important;
   }
   
-  /* Bottom padding for trade bar (52px) + tab bar (60px) */
+  /* Bottom padding for trade bar (56px) + tab bar (60px) + iOS safe area */
   .spot-trading-container {
-    padding-bottom: 120px !important;
+    padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px)) !important;
   }
 
   .orders-container {

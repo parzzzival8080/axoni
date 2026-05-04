@@ -24,6 +24,9 @@ const config: CapacitorConfig = {
       resize: 'body',
       style: 'DARK',
     },
+    CapacitorUpdater: {
+      autoUpdate: true,
+    },
   },
 };
 

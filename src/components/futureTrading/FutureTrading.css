@@ -2026,7 +2026,7 @@
     position: fixed !important;
     left: 0 !important;
     right: 0 !important;
-    bottom: 60px !important;
+    bottom: calc(60px + env(safe-area-inset-bottom, 0px)) !important;
     width: 100% !important;
     height: 56px !important;
     display: flex !important;
@@ -2138,11 +2138,11 @@
     visibility: visible !important;
   }
   
-  /* Add extra padding to the bottom of the page to account for the fixed bar */
+  /* Add extra padding to the bottom of the page to account for the fixed bar (56px) + tab bar (60px) + iOS safe area */
   .future-trading-container {
-    padding-bottom: 70px !important;
+    padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px)) !important;
   }
-  
+
   /* Ensure the orders container doesn't get hidden behind the bar */
   .future-trading-container .orders-container {
     margin-bottom: 80px !important;
