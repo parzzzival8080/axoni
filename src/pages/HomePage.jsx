@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Seo from '../components/common/Seo';
 import Hero from '../components/home/Hero';
 import Trading from '../components/home/Trading';
 import Journey from '../components/home/Journey';
@@ -62,6 +63,10 @@ const HomePage = () => {
   // Desktop: full landing page
   return (
     <div className="bg-[#0a0a0a]">
+      <Seo
+        path="/"
+        description="GLD - Trade Bitcoin, Ethereum & 50+ crypto with low fees. Spot trading, futures up to 100x leverage, staking up to 12% APY. Secure platform with Proof of Reserves. Sign up and get $2,000 in rewards."
+      />
       <Hero />
       <TradingGame />
       <Trading />

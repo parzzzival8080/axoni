@@ -7,6 +7,7 @@ import FaqSection from "../components/Market/FaqSection";
 import { useCurrency } from "../context/CurrencyContext";
 import { useIsMobile } from "../hooks/useIsMobile";
 import "../components/Market/Market.css";
+import Seo from "../components/common/Seo";
 
 const Market = () => {
   const navigate = useNavigate();
@@ -152,6 +153,11 @@ const Market = () => {
 
   return (
     <div className="w-full bg-[#0a0a0a] text-white pb-16">
+      <Seo
+        title="Market Prices — Live Crypto Rates"
+        path="/market"
+        description="Live cryptocurrency prices for Bitcoin, Ethereum and 50+ altcoins. 24h change, volume and market cap. Trade with low fees on GLD."
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
 
         {/* Mobile: Quick trade navigation */}

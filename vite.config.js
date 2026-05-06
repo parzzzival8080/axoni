@@ -36,6 +36,7 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
+    target: 'es2019',
     commonjsOptions: {
       transformMixedEsModules: true
     }

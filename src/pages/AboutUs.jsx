@@ -1,10 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaShieldAlt, FaGlobe, FaUsers, FaChartLine, FaHandshake } from 'react-icons/fa';
+import Seo from '../components/common/Seo';
 
 const AboutUs = () => {
   return (
     <div className="bg-[#0a0a0a] text-white">
+      <Seo
+        title="About Us"
+        path="/about-us"
+        description="Learn about GLD — your trusted partner for cryptocurrency trading and investment. Building the future of finance with security, transparency, and innovation."
+      />
 
       {/* Hero */}
       <section className="py-20 md:py-32 px-4">

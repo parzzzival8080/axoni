@@ -5,6 +5,7 @@ import DownloadImage2 from "../assets/assets/asset2.png";
 import DownloadImage3 from "../assets/assets/laptop.png";
 import logo from "../assets/logo/logo.png";
 import ComingSoon from "../components/common/ComingSoon";
+import Seo from "../components/common/Seo";
 
 const getDevice = () => {
   const ua = navigator.userAgent || '';
@@ -62,6 +63,11 @@ const DownloadPage = () => {
 
   return (
     <div className="landing">
+      <Seo
+        title="Download GLD App — iOS, Android & Desktop"
+        path="/download"
+        description="Download the GLD crypto trading app for iPhone, Android, Mac and Windows. Trade Bitcoin, Ethereum and 50+ coins on the go with low fees and secure storage."
+      />
       {/* Smart device banner */}
       {!alreadyInstalled && (
         <div style={{ background: '#1E1E1E', borderBottom: '1px solid #2A2A2A', padding: '12px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>

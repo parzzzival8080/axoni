@@ -1,8 +1,14 @@
 import React from "react";
+import Seo from "../components/common/Seo";
 
 const Legal = () => {
   return (
     <div className="bg-[#0a0a0a] text-white">
+      <Seo
+        title="Legal — Licenses & Registrations"
+        path="/legal"
+        description="GLD's licenses, registrations and regulatory disclosures. Compliance information for our cryptocurrency trading platform."
+      />
       {/* Hero Section */}
       <section className="py-12 px-4">
         <div className="container mx-auto max-w-6xl">
