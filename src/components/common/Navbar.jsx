@@ -738,8 +738,10 @@ const Navbar = () => {
 
         {isAuthenticated ? (
           <div className="auth-menu-container">
-            {/* MetaMask Wallet Component */}
-            <MetaMaskWallet />
+            {/* MetaMask Wallet Component (desktop only — mobile copy lives next to hamburger) */}
+            <div className="metamask-desktop-slot">
+              <MetaMaskWallet />
+            </div>
             {/* Assets Dropdown - hidden on mobile */}
             <div className="dropdown-container">
               <div className="assets-dropdown">
@@ -883,6 +885,42 @@ const Navbar = () => {
 
           {/* Language icon with support dropdown */}
         </div>
+
+        {/* Mobile-only top-bar icons: notification bell + MetaMask wallet */}
+        {isAuthenticated && (
+          <div className="mobile-top-icons">
+            <div className="right-nav-item mobile-notifications">
+              <button
+                className="navbar-icon-link"
+                type="button"
+                aria-label="Notifications"
+                style={{
+                  background: "none",
+                  border: "none",
+                  padding: 0,
+                  margin: 0,
+                  cursor: "pointer",
+                }}
+              >
+                <i className="far fa-bell"></i>
+              </button>
+              <div className="right-dropdown-menu notifications-menu">
+                {notifications.map((notification) => (
+                  <Link to={notification.path} key={notification.id}>
+                    <div className="notification-item">
+                      <h4 className="notification-title">{notification.title}</h4>
+                      <p className="notification-time">{notification.time}</p>
+                    </div>
+                  </Link>
+                ))}
+                <Link to="/help/category/announcements" className="more-link">
+                  More announcements
+                </Link>
+              </div>
+            </div>
+            <MetaMaskWallet />
+          </div>
+        )}
 
         {/* Mobile-only hamburger menu button */}
         <div className="mobile-menu-toggle" onClick={toggleMobileMenu}>

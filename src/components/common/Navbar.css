@@ -2332,6 +2332,73 @@ header.navbar-header {
     color: #e5e7eb !important;
 }
 
+/* ─── Mobile-only top-bar icons (notification + MetaMask) ─── */
+/* Default: hide on desktop, show on mobile via the @media block below */
+.mobile-top-icons {
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    .mobile-top-icons {
+        display: flex !important;
+        align-items: center;
+        gap: 6px;
+        margin-right: 6px;
+    }
+
+    .mobile-top-icons .right-nav-item {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        cursor: pointer;
+    }
+
+    .mobile-top-icons .navbar-icon-link i {
+        color: #ffffff;
+        font-size: 18px;
+    }
+
+    /* Compact MetaMask wallet inside the mobile bar */
+    .mobile-top-icons .metamask-wallet-container {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .mobile-top-icons .metamask-wallet-container .wallet-display,
+    .mobile-top-icons .metamask-wallet-container .connect-button {
+        min-width: 0 !important;
+        padding: 6px 10px !important;
+        font-size: 12px !important;
+        gap: 6px !important;
+    }
+
+    /* Hide the desktop-slot MetaMask on mobile (we use the one in mobile-top-icons) */
+    .metamask-desktop-slot {
+        display: none !important;
+    }
+
+    /* Hover-open the notifications dropdown on mobile too */
+    .mobile-top-icons .right-nav-item .right-dropdown-menu {
+        display: none;
+        position: absolute;
+        top: calc(100% + 6px);
+        right: 0;
+        background: #0f0f0f;
+        border: 1px solid #2A2A2A;
+        border-radius: 8px;
+        min-width: 240px;
+        z-index: 1100;
+    }
+
+    .mobile-top-icons .right-nav-item:hover .right-dropdown-menu,
+    .mobile-top-icons .right-nav-item:focus-within .right-dropdown-menu {
+        display: block;
+    }
+}
+
 .metamask-deposit-modal .bg-gray-50 {
     background-color: #1f2937 !important;
 }
