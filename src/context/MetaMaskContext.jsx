@@ -574,16 +574,51 @@ export const MetaMaskProvider = ({ children }) => {
   // Scan the connected address for native + ERC-20 balances on a given chain.
   // Reads happen via the active MetaMask provider — the wallet must be on that chain
   // to read its balances. We auto-switch when needed unless `noSwitch` is true.
+  // Falls back to the live injected provider + localStorage account so callers that
+  // captured stale React state immediately after connectWallet() still work.
   const detectAssetsForChain = async (targetChainKey, opts = {}) => {
-    if (!provider || !account) return [];
+    const activeProvider = provider || pickInjectedMetaMaskProvider();
+    const activeAccount = account || localStorage.getItem('metamask_account') || '';
+    if (!activeProvider || !activeAccount) {
+      console.warn('detectAssetsForChain: no provider/account', {
+        hasProvider: !!activeProvider,
+        account: activeAccount,
+      });
+      return [];
+    }
     const chain = SUPPORTED_CHAINS[targetChainKey];
     if (!chain) return [];
 
     // Switch chain first if not already on it (unless caller opts out)
-    const currentHex = await provider.request({ method: 'eth_chainId' });
+    const currentHex = await activeProvider.request({ method: 'eth_chainId' });
     if (currentHex.toLowerCase() !== chain.chainId.toLowerCase() && !opts.noSwitch) {
-      const ok = await switchChain(targetChainKey);
-      if (!ok) return [];
+      try {
+        await activeProvider.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: chain.chainId }],
+        });
+      } catch (switchErr) {
+        if (switchErr.code === 4902) {
+          try {
+            await activeProvider.request({
+              method: 'wallet_addEthereumChain',
+              params: [{
+                chainId: chain.chainId,
+                chainName: chain.name,
+                nativeCurrency: chain.nativeCurrency,
+                rpcUrls: chain.rpcUrls,
+                blockExplorerUrls: chain.blockExplorerUrls,
+              }],
+            });
+          } catch (addErr) {
+            console.warn(`Could not add ${chain.name}:`, addErr.message);
+            return [];
+          }
+        } else {
+          console.warn(`Could not switch to ${chain.name}:`, switchErr.message);
+          return [];
+        }
+      }
       // small wait so provider reports the new chain
       await new Promise((r) => setTimeout(r, 300));
     }
@@ -593,8 +628,8 @@ export const MetaMaskProvider = ({ children }) => {
     for (const t of tokens) {
       try {
         const baseUnits = t.native
-          ? await readNativeBalance(provider, account)
-          : await readErc20Balance(provider, t.address, account);
+          ? await readNativeBalance(activeProvider, activeAccount)
+          : await readErc20Balance(activeProvider, t.address, activeAccount);
         results.push({
           ...t,
           balanceBaseUnits: baseUnits,
@@ -628,7 +663,9 @@ export const MetaMaskProvider = ({ children }) => {
   // Auto-switches chain to targetChainKey if needed.
   // Returns { txHash, error }.
   const sendDeposit = async ({ chainKey: targetChainKey, token, amount, to }) => {
-    if (!provider || !account) return { error: 'Wallet not connected' };
+    const activeProvider = provider || pickInjectedMetaMaskProvider();
+    const activeAccount = account || localStorage.getItem('metamask_account') || '';
+    if (!activeProvider || !activeAccount) return { error: 'Wallet not connected' };
     if (!to) return { error: 'Missing destination address' };
     if (!token) return { error: 'Missing token' };
     if (!amount || parseFloat(amount) <= 0) return { error: 'Invalid amount' };
@@ -636,10 +673,33 @@ export const MetaMaskProvider = ({ children }) => {
     // Make sure we're on the right chain
     const targetChain = SUPPORTED_CHAINS[targetChainKey];
     if (!targetChain) return { error: `Unsupported chain: ${targetChainKey}` };
-    const currentHex = await provider.request({ method: 'eth_chainId' });
+    const currentHex = await activeProvider.request({ method: 'eth_chainId' });
     if (currentHex.toLowerCase() !== targetChain.chainId.toLowerCase()) {
-      const ok = await switchChain(targetChainKey);
-      if (!ok) return { error: `Failed to switch to ${targetChain.name}` };
+      try {
+        await activeProvider.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: targetChain.chainId }],
+        });
+      } catch (switchErr) {
+        if (switchErr.code === 4902) {
+          try {
+            await activeProvider.request({
+              method: 'wallet_addEthereumChain',
+              params: [{
+                chainId: targetChain.chainId,
+                chainName: targetChain.name,
+                nativeCurrency: targetChain.nativeCurrency,
+                rpcUrls: targetChain.rpcUrls,
+                blockExplorerUrls: targetChain.blockExplorerUrls,
+              }],
+            });
+          } catch (addErr) {
+            return { error: `Failed to add ${targetChain.name}` };
+          }
+        } else {
+          return { error: `Failed to switch to ${targetChain.name}` };
+        }
+      }
     }
 
     try {
@@ -647,20 +707,20 @@ export const MetaMaskProvider = ({ children }) => {
       let txParams;
       if (token.native) {
         txParams = {
-          from: account,
+          from: activeAccount,
           to,
           value: '0x' + BigInt(amountBaseUnits).toString(16),
         };
       } else {
         // ERC-20 transfer: call token contract with `transfer(to, amount)`
         txParams = {
-          from: account,
+          from: activeAccount,
           to: token.address,
           data: encodeTransfer(to, amountBaseUnits),
           value: '0x0',
         };
       }
-      const txHash = await provider.request({
+      const txHash = await activeProvider.request({
         method: 'eth_sendTransaction',
         params: [txParams],
       });

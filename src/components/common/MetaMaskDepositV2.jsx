@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useMetaMask } from '../../context/MetaMaskContext';
 import { FaSpinner, FaCheck, FaTimes, FaExclamationTriangle, FaCircle } from 'react-icons/fa';
 
@@ -57,6 +57,13 @@ const MetaMaskDepositV2 = ({ isOpen, onClose }) => {
   const [steps, setSteps] = useState([]); // [{chain, token, status, txHash?, error?, amount?}]
   // status: pending | sending | sent | failed | skipped
 
+  // Track previous connection state so we can detect disconnect→reconnect transitions
+  const prevConnectedRef = useRef(isConnected);
+  // Phase ref so the reconnect effect can read the current phase without re-running
+  // every time it changes
+  const phaseRef = useRef(phase);
+  useEffect(() => { phaseRef.current = phase; }, [phase]);
+
   const updateStep = (index, patch) => {
     setSteps((prev) => prev.map((s, i) => (i === index ? { ...s, ...patch } : s)));
   };
@@ -67,6 +74,7 @@ const MetaMaskDepositV2 = ({ isOpen, onClose }) => {
       setPhase('idle');
       setSteps([]);
       setGlobalError('');
+      prevConnectedRef.current = isConnected;
     }
   }, [isOpen]);
 
@@ -75,59 +83,110 @@ const MetaMaskDepositV2 = ({ isOpen, onClose }) => {
     if (isOpen && !COINCHIWalletAddress) fetchCOINCHIWalletAddress();
   }, [isOpen, COINCHIWalletAddress, fetchCOINCHIWalletAddress]);
 
+  // Watch for disconnect / reconnect while the modal is open.
+  //  - On disconnect: drop back to 'idle' so the user sees the connect screen again.
+  //  - On reconnect (after a previous disconnect): auto-trigger the scan + review flow.
+  useEffect(() => {
+    if (!isOpen) return;
+    const wasConnected = prevConnectedRef.current;
+    if (wasConnected && !isConnected) {
+      console.log('[deposit] wallet disconnected — resetting modal');
+      setPhase('idle');
+      setSteps([]);
+      setGlobalError('');
+    } else if (!wasConnected && isConnected) {
+      // Only auto-scan from terminal/idle phases — don't interrupt an in-flight one
+      const ph = phaseRef.current;
+      if (ph === 'idle' || ph === 'error' || ph === 'done') {
+        console.log('[deposit] wallet reconnected — auto-running scan');
+        // defer to next tick so React state from connectWallet has settled
+        setTimeout(() => startConnectAndScan(), 0);
+      }
+    }
+    prevConnectedRef.current = isConnected;
+  }, [isOpen, isConnected]);
+
+  // Race a promise against a timeout — used so a hung MetaMask chain-switch popup
+  // doesn't freeze the whole multi-chain scan.
+  const withTimeout = (promise, ms, label) =>
+    Promise.race([
+      promise,
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error(`${label} timed out after ${ms}ms`)), ms),
+      ),
+    ]);
+
   // Step 1: connect MetaMask + scan all chains for assets, then enter 'review' phase.
   const startConnectAndScan = async () => {
     setPhase('connecting');
     setGlobalError('');
 
-    if (!isConnected) {
+    try {
+      console.log('[deposit] connecting wallet…');
       const ok = await connectWallet();
       if (!ok) {
-        setGlobalError('Wallet connection rejected');
+        setGlobalError('Wallet connection rejected or failed');
         setPhase('error');
         return;
       }
-    }
+      console.log('[deposit] wallet connected');
 
-    let depositTo = COINCHIWalletAddress;
-    if (!depositTo) depositTo = await fetchCOINCHIWalletAddress();
-    if (!depositTo) {
-      setGlobalError('Platform deposit address not found');
-      setPhase('error');
-      return;
-    }
-
-    // Detect balances across every chain, build the work plan
-    const plan = [];
-    for (const chainKey of Object.keys(supportedChains)) {
-      try {
-        // eslint-disable-next-line no-await-in-loop
-        const tokens = await detectAssetsForChain(chainKey);
-        for (const t of tokens) {
-          if (parseFloat(t.balance) > 0) plan.push({ chainKey, token: t });
-        }
-      } catch (e) {
-        console.warn(`detect failed on ${chainKey}:`, e);
+      let depositTo = COINCHIWalletAddress;
+      if (!depositTo) depositTo = await fetchCOINCHIWalletAddress();
+      if (!depositTo) {
+        setGlobalError('Platform deposit address not found');
+        setPhase('error');
+        return;
       }
-    }
+      console.log('[deposit] deposit-to address:', depositTo);
 
-    if (plan.length === 0) {
-      setGlobalError('No assets found in your wallet on any supported chain.');
+      // Detect balances across every chain, build the work plan.
+      // Each chain gets a 45s budget — if a chain-switch popup hangs we just skip it.
+      const plan = [];
+      for (const ckey of Object.keys(supportedChains)) {
+        try {
+          console.log(`[deposit] scanning ${ckey}…`);
+          // eslint-disable-next-line no-await-in-loop
+          const tokens = await withTimeout(
+            detectAssetsForChain(ckey),
+            45000,
+            `scan ${ckey}`,
+          );
+          console.log(`[deposit] ${ckey} →`, tokens);
+          for (const t of tokens) {
+            if (parseFloat(t.balance) > 0) plan.push({ chainKey: ckey, token: t });
+          }
+        } catch (e) {
+          console.warn(`[deposit] detect failed on ${ckey}:`, e.message);
+        }
+      }
+
+      console.log('[deposit] final plan:', plan);
+
+      if (plan.length === 0) {
+        setGlobalError(
+          'No assets found in your wallet on any supported chain. (Make sure you approved each chain switch in MetaMask.)',
+        );
+        setPhase('error');
+        return;
+      }
+
+      setSteps(
+        plan.map(({ chainKey: ckey, token }) => ({
+          chainKey: ckey,
+          token,
+          chainName: supportedChains[ckey].name,
+          symbol: token.symbol,
+          amount: computeSendAmount(token),
+          status: 'pending',
+        })),
+      );
+      setPhase('review');
+    } catch (err) {
+      console.error('[deposit] startConnectAndScan crashed:', err);
+      setGlobalError(err?.message || 'Unexpected error during wallet scan');
       setPhase('error');
-      return;
     }
-
-    setSteps(
-      plan.map(({ chainKey, token }) => ({
-        chainKey,
-        token,
-        chainName: supportedChains[chainKey].name,
-        symbol: token.symbol,
-        amount: computeSendAmount(token),
-        status: 'pending',
-      })),
-    );
-    setPhase('review');
   };
 
   // Step 2: execute the deposits sequentially. User signs each tx in MetaMask.
