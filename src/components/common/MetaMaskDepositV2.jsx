@@ -268,14 +268,10 @@ const MetaMaskDepositV2 = ({ isOpen, onClose }) => {
             </p>
             <button
               onClick={startConnectAndScan}
-              disabled={!COINCHIWalletAddress}
-              className="bg-[#2EBD85] text-white px-8 py-2.5 rounded-lg hover:bg-[#259A6C] transition-colors font-medium text-sm w-full disabled:bg-[#2A2A2A] disabled:cursor-not-allowed"
+              className="bg-[#2EBD85] text-white px-8 py-2.5 rounded-lg hover:bg-[#259A6C] transition-colors font-medium text-sm w-full"
             >
               Continue
             </button>
-            {!COINCHIWalletAddress && (
-              <div className="text-[#5E6673] text-xs mt-3">Loading deposit address…</div>
-            )}
           </div>
         )}
 
