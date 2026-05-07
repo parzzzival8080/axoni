@@ -16,10 +16,24 @@ const MetaMaskWallet = () => {
     formatAddress,
     COINCHIWalletAddress,
     fetchCOINCHIWalletAddress,
+    currentChain,
+    chainKey,
+    supportedChains,
+    switchChain,
   } = useMetaMask();
 
   const [showDetails, setShowDetails] = useState(false);
   const [showDepositModal, setShowDepositModal] = useState(false);
+  const [switchingChain, setSwitchingChain] = useState(false);
+
+  const symbol = currentChain?.nativeCurrency?.symbol || 'ETH';
+  const explorer = currentChain?.blockExplorerUrls?.[0] || 'https://etherscan.io';
+
+  const handleChainSwitch = async (key) => {
+    setSwitchingChain(true);
+    await switchChain(key);
+    setSwitchingChain(false);
+  };
 
   const handleConnect = async () => {
     const success = await connectWallet();
@@ -92,8 +106,8 @@ const MetaMaskWallet = () => {
           <FaEthereum />
         </div>
         <div className="wallet-info">
-          <span className="balance-label">ETH Balance</span>
-          <span className="balance-value">{formatBalance(balance)} ETH</span>
+          <span className="balance-label">{symbol} Balance</span>
+          <span className="balance-value">{formatBalance(balance)} {symbol}</span>
         </div>
         <div className="status-indicator">
           <div className="network-dot"></div>
@@ -146,7 +160,7 @@ const MetaMaskWallet = () => {
             }}>
               <span style={{ fontSize: '13px', fontFamily: 'monospace', color: '#ffffff', flex: 1 }}>{formatAddress(account)}</span>
               <a
-                href={`https://etherscan.io/address/${account}`}
+                href={`${explorer}/address/${account}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ color: '#9ca3af', textDecoration: 'none', fontSize: '12px' }}
@@ -154,6 +168,46 @@ const MetaMaskWallet = () => {
                 <FaExternalLinkAlt />
               </a>
             </div>
+          </div>
+
+          {/* Chain Switcher */}
+          <div style={{ marginBottom: '16px' }}>
+            <div style={{ fontSize: '12px', color: '#9ca3af', marginBottom: '8px' }}>Network</div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+              {Object.entries(supportedChains || {}).map(([key, c]) => {
+                const active = chainKey === key;
+                return (
+                  <button
+                    key={key}
+                    onClick={() => !active && handleChainSwitch(key)}
+                    disabled={switchingChain || active}
+                    style={{
+                      flex: '1 1 calc(50% - 6px)',
+                      padding: '8px 10px',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      borderRadius: '6px',
+                      border: active ? '1px solid #2EBD85' : '1px solid #4b5563',
+                      background: active ? 'rgba(46,189,133,0.15)' : '#374151',
+                      color: active ? '#2EBD85' : '#fff',
+                      cursor: active || switchingChain ? 'default' : 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                    }}
+                  >
+                    {active && <span>●</span>}
+                    {c.name}
+                  </button>
+                );
+              })}
+            </div>
+            {switchingChain && (
+              <div style={{ fontSize: '11px', color: '#9ca3af', marginTop: '6px' }}>
+                Confirm in MetaMask…
+              </div>
+            )}
           </div>
 
           {/* Balance info */}
@@ -190,7 +244,7 @@ const MetaMaskWallet = () => {
               }}>
                 <FaEthereum style={{ fontSize: '18px', color: '#f97316' }} />
                 <span style={{ fontSize: '18px', fontWeight: 'bold', color: '#ffffff' }}>{formatBalance(balance)}</span>
-                <span style={{ fontSize: '14px', color: '#9ca3af' }}>ETH</span>
+                <span style={{ fontSize: '14px', color: '#9ca3af' }}>{symbol}</span>
               </div>
               <div style={{ fontSize: '11px', color: '#6b7280', textAlign: 'center' }}>
                 ≈ $0.00 USD

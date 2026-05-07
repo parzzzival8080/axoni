@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 // Make sure to install this library: npm install qrcode.react
 import { QRCodeSVG } from "qrcode.react";
 import { Spinner, ChevronDownIcon, CopyIcon, CheckIcon, InfoCircleIcon, QuestionCircleIcon, SearchIcon, ImageWithFallback } from "../../components/common/Icons";
+import MetaMaskDepositV2 from "../../components/common/MetaMaskDepositV2";
 
 // --- Main Deposit Component ---
 
@@ -21,6 +22,7 @@ function App() {
 
   const [coins, setCoins] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMetaMaskOpen, setIsMetaMaskOpen] = useState(false);
   const [error, setError] = useState(null);
   const [selectedCryptoSymbol, setSelectedCryptoSymbol] = useState(null); // Start with null
   const [searchTerm, setSearchTerm] = useState(""); // Search term for crypto dropdown
@@ -360,7 +362,16 @@ function App() {
     <div className="bg-[#0a0a0a] text-white font-sans">
       {/* Main Content Area */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-2xl font-semibold mb-6 text-white">Deposit</h1>
+        <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+          <h1 className="text-2xl font-semibold text-white">Deposit</h1>
+          <button
+            onClick={() => setIsMetaMaskOpen(true)}
+            className="bg-[#2EBD85] hover:bg-[#259A6C] text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 transition-colors"
+          >
+            <span>🦊</span>
+            Deposit from MetaMask
+          </button>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column: Deposit Steps */}
@@ -1029,6 +1040,11 @@ function App() {
 
         </section>
       </main>
+
+      <MetaMaskDepositV2
+        isOpen={isMetaMaskOpen}
+        onClose={() => setIsMetaMaskOpen(false)}
+      />
     </div>
   );
 }

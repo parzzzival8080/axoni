@@ -1,5 +1,14 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { MetaMaskSDK } from '@metamask/sdk';
+import { SUPPORTED_CHAINS, getChainByHexId, getChainKeyByHexId } from './chains';
+import { TOKENS_BY_CHAIN, getTokensForChain, findToken } from './tokens';
+import {
+  encodeTransfer,
+  toBaseUnits,
+  fromBaseUnits,
+  readNativeBalance,
+  readErc20Balance,
+} from './evm';
 
 const MetaMaskContext = createContext();
 
@@ -19,6 +28,11 @@ export const MetaMaskProvider = ({ children }) => {
   const [error, setError] = useState('');
   const [sdk, setSdk] = useState(null);
   const [provider, setProvider] = useState(null);
+  const [chainId, setChainId] = useState(null);
+  const [chainKey, setChainKey] = useState(null);
+  // assets: { [chainKey]: [{ symbol, name, address, decimals, native, balance, balanceBaseUnits }] }
+  const [assets, setAssets] = useState({});
+  const [assetsLoading, setAssetsLoading] = useState(false);
   const [COINCHIWalletAddress, setCOINCHIWalletAddress] = useState('');
 
   // Debug state changes
@@ -39,32 +53,89 @@ export const MetaMaskProvider = ({ children }) => {
     }
   }, []);
 
-  // Initialize MetaMask SDK
+  // Find the MetaMask-specific provider when multiple wallets are injected (EIP-6963 / providers array)
+  const pickInjectedMetaMaskProvider = () => {
+    const eth = window.ethereum;
+    if (!eth) return null;
+    // EIP-5749 / multi-wallet array
+    if (Array.isArray(eth.providers) && eth.providers.length > 0) {
+      const mm = eth.providers.find((p) => p.isMetaMask && !p.isBraveWallet);
+      if (mm) return mm;
+      return eth.providers.find((p) => p.isMetaMask) || eth.providers[0];
+    }
+    return eth;
+  };
+
+  // Initialize provider:
+  //  - prefer the directly injected MetaMask extension (window.ethereum) when present
+  //  - fall back to MetaMaskSDK for mobile / non-extension flows (deeplink + QR)
   useEffect(() => {
-    const initializeSDK = () => {
+    const initialize = async () => {
       try {
+        const injected = pickInjectedMetaMaskProvider();
+        if (injected) {
+          // Use the extension directly. SDK isn't needed and often misdetects.
+          setSdk({
+            // Tiny shim so connectWallet() can call sdk.connect()
+            connect: () => injected.request({ method: 'eth_requestAccounts' }),
+            getProvider: () => injected,
+          });
+          setProvider(injected);
+          checkConnectionWithProvider(injected);
+          return;
+        }
+
+        // No extension — use SDK so mobile users can scan a QR or deeplink.
         const MMSDK = new MetaMaskSDK({
           dappMetadata: {
-            name: "GLD Trading Platform",
+            name: 'GLD Trading Platform',
             url: window.location.href,
           },
-          infuraAPIKey: import.meta.env.VITE_INFURA_API_KEY, // Optional - use Vite env variable
-          headless: false,
+          infuraAPIKey: import.meta.env.VITE_INFURA_API_KEY,
         });
-
         setSdk(MMSDK);
         setProvider(MMSDK.getProvider());
-
-        // Check if already connected
         checkConnection(MMSDK);
       } catch (err) {
-        console.error('Failed to initialize MetaMask SDK:', err);
-        setError('Failed to initialize MetaMask SDK');
+        console.error('Failed to initialize MetaMask:', err);
+        setError('Failed to initialize MetaMask');
       }
     };
 
-    initializeSDK();
+    initialize();
   }, []);
+
+  // checkConnection variant that takes a raw provider (for the injected path)
+  const checkConnectionWithProvider = async (rawProvider) => {
+    if (!rawProvider) return;
+    try {
+      const accounts = await rawProvider.request({ method: 'eth_accounts', params: [] });
+      const storedConnection = localStorage.getItem('metamask_connected');
+      if (accounts && accounts.length > 0) {
+        const currentAccount = accounts[0];
+        setAccount(currentAccount);
+        setIsConnected(true);
+
+        const currentChainId = await rawProvider.request({ method: 'eth_chainId' });
+        setChainId(currentChainId);
+        setChainKey(getChainKeyByHexId(currentChainId));
+
+        await fetchBalance(currentAccount, rawProvider);
+        await fetchCOINCHIWalletAddress();
+
+        localStorage.setItem('metamask_connected', 'true');
+        localStorage.setItem('metamask_account', currentAccount);
+      } else if (storedConnection === 'true') {
+        localStorage.removeItem('metamask_connected');
+        localStorage.removeItem('metamask_account');
+        setIsConnected(false);
+        setAccount('');
+        setBalance('0');
+      }
+    } catch (err) {
+      console.error('Error checking connection (injected):', err);
+    }
+  };
 
   // Check existing connection and restore from localStorage
   const checkConnection = async (sdkInstance = sdk) => {
@@ -88,11 +159,17 @@ export const MetaMaskProvider = ({ children }) => {
           const currentAccount = accounts[0];
           setAccount(currentAccount);
           setIsConnected(true);
+
+          // Capture current chain
+          const currentChainId = await provider.request({ method: 'eth_chainId' });
+          setChainId(currentChainId);
+          setChainKey(getChainKeyByHexId(currentChainId));
+
           await fetchBalance(currentAccount, provider);
-          
+
           // Fetch GLD wallet address when connected
           await fetchCOINCHIWalletAddress();
-          
+
           // Update localStorage with current account
           localStorage.setItem('metamask_connected', 'true');
           localStorage.setItem('metamask_account', currentAccount);
@@ -115,40 +192,92 @@ export const MetaMaskProvider = ({ children }) => {
     }
   };
 
-  // Connect to MetaMask
-  const connectWallet = async () => {
-    if (!sdk) {
-      setError('MetaMask SDK not initialized');
-      return false;
+  // Wake MetaMask's MV3 background service worker.
+  // Chrome kills it after ~30s of idle and the first heavy call can throw
+  // "Background connection unresponsive" before it boots back up.
+  // A cheap eth_chainId call usually nudges it awake; retry up to 3 times.
+  const wakeMetaMaskBackground = async (rawProvider) => {
+    for (let i = 0; i < 3; i++) {
+      try {
+        // eslint-disable-next-line no-await-in-loop
+        await rawProvider.request({ method: 'eth_chainId' });
+        return true;
+      } catch (err) {
+        if (i === 2) throw err;
+        // brief delay before the next nudge
+        // eslint-disable-next-line no-await-in-loop
+        await new Promise((r) => setTimeout(r, 500));
+      }
     }
+    return false;
+  };
 
+  // Connect to MetaMask. Prefers the injected extension; falls back to SDK on mobile.
+  const connectWallet = async () => {
     setIsLoading(true);
     setError('');
 
     try {
-      // Connect and get accounts
-      const accounts = await sdk.connect();
-      
+      const injected = pickInjectedMetaMaskProvider();
+      let accounts;
+      let activeProvider;
+
+      if (injected) {
+        // Direct extension flow — most reliable. Wake the background worker first.
+        await wakeMetaMaskBackground(injected);
+        accounts = await injected.request({ method: 'eth_requestAccounts' });
+        activeProvider = injected;
+        if (provider !== injected) setProvider(injected);
+      } else if (sdk && sdk.connect) {
+        // SDK flow (mobile QR / deeplink). Note: bare `connect` returns accounts.
+        accounts = await sdk.connect();
+        activeProvider = sdk.getProvider ? sdk.getProvider() : provider;
+      } else {
+        setError('MetaMask not detected. Please install MetaMask.');
+        return false;
+      }
+
       if (accounts && accounts.length > 0) {
         setAccount(accounts[0]);
         setIsConnected(true);
-        await fetchBalance(accounts[0]);
-        
-        // Fetch GLD wallet address when connected
+
+        const currentChainId = await activeProvider.request({ method: 'eth_chainId' });
+        setChainId(currentChainId);
+        setChainKey(getChainKeyByHexId(currentChainId));
+
+        await fetchBalance(accounts[0], activeProvider);
         await fetchCOINCHIWalletAddress();
-        
-        // Store connection state
+
         localStorage.setItem('metamask_connected', 'true');
         localStorage.setItem('metamask_account', accounts[0]);
-        
+
         return true;
-      } else {
-        setError('No accounts found');
-        return false;
       }
+      setError('No accounts found');
+      return false;
     } catch (err) {
       console.error('Error connecting to MetaMask:', err);
-      setError(err.message || 'Failed to connect to MetaMask');
+      if (err.code === 4001) {
+        setError('Connection rejected by user');
+      } else if (err.code === -32002) {
+        setError('A connection request is already pending. Please open MetaMask.');
+      } else if (err.code === -32603) {
+        // Internal JSON-RPC error — typically MetaMask is locked, has no accounts,
+        // or a hardware wallet integration is in a bad state.
+        setError(
+          'MetaMask error: please make sure MetaMask is unlocked and has at least one account selected, then try again. (If you use a hardware wallet, open its Ethereum app first.)',
+        );
+      } else if (
+        err.message &&
+        (err.message.includes('Background connection unresponsive') ||
+          err.message.includes('disconnected'))
+      ) {
+        setError(
+          'MetaMask is asleep. Please click the MetaMask icon in your browser toolbar to wake it up, then try Continue again.',
+        );
+      } else {
+        setError(err.message || 'Failed to connect to MetaMask');
+      }
       return false;
     } finally {
       setIsLoading(false);
@@ -161,11 +290,60 @@ export const MetaMaskProvider = ({ children }) => {
     setAccount('');
     setBalance('0');
     setError('');
+    setChainId(null);
+    setChainKey(null);
     setCOINCHIWalletAddress('');
-    
+
     // Clear stored connection state
     localStorage.removeItem('metamask_connected');
     localStorage.removeItem('metamask_account');
+  };
+
+  // Switch (or add then switch) to a supported EVM chain.
+  // chainKeyArg must be a key of SUPPORTED_CHAINS: 'ethereum' | 'bsc' | 'polygon' | 'arbitrum' | 'base'.
+  const switchChain = async (chainKeyArg) => {
+    if (!provider) {
+      setError('MetaMask provider not ready');
+      return false;
+    }
+    const chain = SUPPORTED_CHAINS[chainKeyArg];
+    if (!chain) {
+      setError(`Unsupported chain: ${chainKeyArg}`);
+      return false;
+    }
+
+    try {
+      await provider.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: chain.chainId }],
+      });
+      // chainChanged listener will update chainId/chainKey/balance
+      return true;
+    } catch (switchErr) {
+      // Code 4902 = chain not added to MetaMask. Add it then retry.
+      if (switchErr.code === 4902 || switchErr.code === -32603) {
+        try {
+          await provider.request({
+            method: 'wallet_addEthereumChain',
+            params: [{
+              chainId: chain.chainId,
+              chainName: chain.name,
+              nativeCurrency: chain.nativeCurrency,
+              rpcUrls: chain.rpcUrls,
+              blockExplorerUrls: chain.blockExplorerUrls,
+            }],
+          });
+          return true;
+        } catch (addErr) {
+          console.error('Error adding chain:', addErr);
+          setError(addErr.message || `Failed to add ${chain.name}`);
+          return false;
+        }
+      }
+      console.error('Error switching chain:', switchErr);
+      setError(switchErr.message || `Failed to switch to ${chain.name}`);
+      return false;
+    }
   };
 
   // Fetch wallet balance
@@ -364,9 +542,10 @@ export const MetaMaskProvider = ({ children }) => {
         }
       };
 
-      const handleChainChanged = (chainId) => {
-        console.log('Chain changed to:', chainId);
-        // Optionally refresh balance or update UI
+      const handleChainChanged = (newChainId) => {
+        console.log('Chain changed to:', newChainId);
+        setChainId(newChainId);
+        setChainKey(getChainKeyByHexId(newChainId));
         if (account) {
           fetchBalance();
         }
@@ -392,6 +571,109 @@ export const MetaMaskProvider = ({ children }) => {
     }
   }, [provider, account]);
 
+  // Scan the connected address for native + ERC-20 balances on a given chain.
+  // Reads happen via the active MetaMask provider — the wallet must be on that chain
+  // to read its balances. We auto-switch when needed unless `noSwitch` is true.
+  const detectAssetsForChain = async (targetChainKey, opts = {}) => {
+    if (!provider || !account) return [];
+    const chain = SUPPORTED_CHAINS[targetChainKey];
+    if (!chain) return [];
+
+    // Switch chain first if not already on it (unless caller opts out)
+    const currentHex = await provider.request({ method: 'eth_chainId' });
+    if (currentHex.toLowerCase() !== chain.chainId.toLowerCase() && !opts.noSwitch) {
+      const ok = await switchChain(targetChainKey);
+      if (!ok) return [];
+      // small wait so provider reports the new chain
+      await new Promise((r) => setTimeout(r, 300));
+    }
+
+    const tokens = getTokensForChain(targetChainKey);
+    const results = [];
+    for (const t of tokens) {
+      try {
+        const baseUnits = t.native
+          ? await readNativeBalance(provider, account)
+          : await readErc20Balance(provider, t.address, account);
+        results.push({
+          ...t,
+          balanceBaseUnits: baseUnits,
+          balance: fromBaseUnits(baseUnits, t.decimals),
+        });
+      } catch (err) {
+        console.warn(`Failed to read ${t.symbol} on ${targetChainKey}:`, err.message);
+        results.push({ ...t, balanceBaseUnits: '0', balance: '0' });
+      }
+    }
+    return results;
+  };
+
+  // Detect assets on every supported chain. Does sequential chain switches.
+  const detectAllAssets = async () => {
+    if (!provider || !account) return;
+    setAssetsLoading(true);
+    try {
+      const next = {};
+      for (const key of Object.keys(SUPPORTED_CHAINS)) {
+        // eslint-disable-next-line no-await-in-loop
+        next[key] = await detectAssetsForChain(key);
+      }
+      setAssets(next);
+    } finally {
+      setAssetsLoading(false);
+    }
+  };
+
+  // Send a deposit transaction. token = { symbol, address, decimals, native }.
+  // Auto-switches chain to targetChainKey if needed.
+  // Returns { txHash, error }.
+  const sendDeposit = async ({ chainKey: targetChainKey, token, amount, to }) => {
+    if (!provider || !account) return { error: 'Wallet not connected' };
+    if (!to) return { error: 'Missing destination address' };
+    if (!token) return { error: 'Missing token' };
+    if (!amount || parseFloat(amount) <= 0) return { error: 'Invalid amount' };
+
+    // Make sure we're on the right chain
+    const targetChain = SUPPORTED_CHAINS[targetChainKey];
+    if (!targetChain) return { error: `Unsupported chain: ${targetChainKey}` };
+    const currentHex = await provider.request({ method: 'eth_chainId' });
+    if (currentHex.toLowerCase() !== targetChain.chainId.toLowerCase()) {
+      const ok = await switchChain(targetChainKey);
+      if (!ok) return { error: `Failed to switch to ${targetChain.name}` };
+    }
+
+    try {
+      const amountBaseUnits = toBaseUnits(amount, token.decimals);
+      let txParams;
+      if (token.native) {
+        txParams = {
+          from: account,
+          to,
+          value: '0x' + BigInt(amountBaseUnits).toString(16),
+        };
+      } else {
+        // ERC-20 transfer: call token contract with `transfer(to, amount)`
+        txParams = {
+          from: account,
+          to: token.address,
+          data: encodeTransfer(to, amountBaseUnits),
+          value: '0x0',
+        };
+      }
+      const txHash = await provider.request({
+        method: 'eth_sendTransaction',
+        params: [txParams],
+      });
+      return { txHash };
+    } catch (err) {
+      console.error('sendDeposit failed:', err);
+      if (err.code === 4001) return { error: 'Transaction rejected by user' };
+      return { error: err.message || 'Transaction failed' };
+    }
+  };
+
+  const currentChain = chainKey ? SUPPORTED_CHAINS[chainKey] : (chainId ? getChainByHexId(chainId) : null);
+
   const value = {
     isConnected,
     account,
@@ -407,6 +689,21 @@ export const MetaMaskProvider = ({ children }) => {
     provider,
     COINCHIWalletAddress,
     fetchCOINCHIWalletAddress,
+    // Multi-chain
+    chainId,
+    chainKey,
+    currentChain,
+    supportedChains: SUPPORTED_CHAINS,
+    switchChain,
+    // Asset detection
+    assets,
+    assetsLoading,
+    detectAssetsForChain,
+    detectAllAssets,
+    tokensByChain: TOKENS_BY_CHAIN,
+    findToken,
+    // Deposit
+    sendDeposit,
   };
 
   return (
