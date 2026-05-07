@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
 import ConnectionIndicator from "./ConnectionIndicator";
+import MetaMaskDepositV2 from "../common/MetaMaskDepositV2";
+import { useMetaMask } from "../../context/MetaMaskContext";
 
 const TAB_ROUTES = ["/", "/market", "/spot-trading", "/my-assets", "/account/profile"];
 
@@ -67,6 +69,8 @@ const MobileHeader = ({ title, actions, darkBg = false }) => {
   const location = useLocation();
   const [showChat, setShowChat] = useState(false);
   const [isChatLoaded, setIsChatLoaded] = useState(false);
+  const [isMetaMaskOpen, setIsMetaMaskOpen] = useState(false);
+  const { isConnected } = useMetaMask();
 
   const isTabRoute = TAB_ROUTES.includes(location.pathname);
   const isHome = location.pathname === "/";
@@ -151,12 +155,27 @@ const MobileHeader = ({ title, actions, darkBg = false }) => {
                 </svg>
                 <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-[#F6465D] rounded-full"></span>
               </button>
+              {/* MetaMask deposit shortcut — opens connect + multi-chain scan flow */}
+              <button
+                onClick={() => setIsMetaMaskOpen(true)}
+                className="active:opacity-60 relative"
+                aria-label="Deposit from MetaMask"
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#848E9C" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="6" width="20" height="13" rx="2" />
+                  <path d="M22 11h-5a2 2 0 100 4h5" />
+                </svg>
+                {isConnected && (
+                  <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-[#2EBD85] rounded-full" />
+                )}
+              </button>
             </>
           )}
           {actions}
         </div>
       </div>
     </header>
+    <MetaMaskDepositV2 isOpen={isMetaMaskOpen} onClose={() => setIsMetaMaskOpen(false)} />
     </>
   );
 };
